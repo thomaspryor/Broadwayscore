@@ -7,65 +7,57 @@
   "publishDate": "2019-04-17",
   "showScoreExcerpt": "Practically every single thing about 'Hadestown' is perfect...She has created a god among musicals.",
   "originalScore": null,
-  "assignedScore": 97,
+  "assignedScore": 94,
   "source": "show-score",
   "sourceMethod": "archive",
   "scoreSource": null,
   "llmScore": {
-    "score": 97,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 90.5,
-      "high": 100
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 95,
-      "performances": 98,
-      "direction": 99
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Practically every single thing about \"Hadestown\" is perfect",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "she has created a god among musicals",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Rachel Chavkin has proven that she is one of the best directors in the history of musical theater",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: This is an unqualified rave review with superlatives throughout ('perfect,' 'masterpiece,' 'god among musicals') and explicit recommendation to see it 'over and over,' despite one minor criticism about a confusing song. | GPT-4o-mini: The review expresses overwhelming enthusiasm for 'Hadestown,' highlighting its perfection in direction, performances, and overall impact, despite a minor critique of one song.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite being a single excerpt, the language is unambiguously superlative - calling something 'practically perfect' and 'a god among musicals' represents the highest level of critical praise possible. | GPT-4o: The excerpt uses extremely positive language, describing the show as 'perfect' and 'a god among musicals', indicating a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review excerpt uses extremely strong, positive language, calling the musical 'perfect' and a 'god among musicals,' indicating a rave review.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:53:04.981Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:59:31.575Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 97,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 95,
-    "openaiScore": 98,
+    "openaiScore": 92,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hadestown-2019/medium--christian-lewis_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:35:52.748Z",

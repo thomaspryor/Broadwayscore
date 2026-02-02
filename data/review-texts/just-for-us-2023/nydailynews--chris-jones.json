@@ -9,7 +9,7 @@
   "showScoreExcerpt": "“Silly, sure, but humanizing at the same time.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/just-for-us-2023/nydailynews--chris-jones_2026-01-29.html",
@@ -27,67 +27,52 @@
   "archiveOrgTimestamp": "20230627200613",
   "archiveOrgUrl": "http://web.archive.org/web/20230627200613/https://www.nydailynews.com/entertainment/broadway/ny-broadway-alex-edelman-just-for-us-broadway-review-20230627-i7u44ducibe7rhxkzcvo4fluxq-story.html",
   "llmScore": {
-    "score": 82,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's very clever and very funny",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "I suspect if this Broadway show does well this summer, as it surely should, he will be back",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "These gags are often hilarious",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic consistently praises the show's cleverness, humor, and Edelman's performance skills, with clear prediction of success and repeated use of positive descriptors like 'very funny' and 'hilarious'.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic consistently praises Edelman's performance as 'very funny,' 'very clever,' and 'hilarious,' explicitly states the show 'surely should' do well, and predicts Edelman will return to Broadway, indicating strong recommendation. | GPT-4o: The review is filled with praise for Edelman's performance, describing it as 'very clever and very funny' and predicting success for the show. The critic's tone is enthusiastic, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, highlighting Edelman's cleverness and humor. The critic explicitly states the show is 'very funny' and suggests it 'surely should' do well.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:22:06.676Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3118,
-    "outputTokens": 310,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:19.910Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "complete",
   "wordCount": 597,

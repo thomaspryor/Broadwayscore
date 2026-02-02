@@ -7,45 +7,29 @@
   "publishDate": "March 22, 2024",
   "dtliExcerpt": "Director Jessica Stone beautifully navigates the musical’s tricky order: execute the level of physical extravagance any circus-musical hybrid of this monumental scale demands, but keep Jacob’s potent, time-leaping personal story intact.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Up",
   "archivePath": "data/archives/reviews/water-for-elephants-2024/broadwaynews--brittani-samuel_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:35:28.847Z",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 78,
-    "confidence": "low",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 85
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 82
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "beautifully navigates",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "execute the level of physical extravagance",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "potent, time-leaping personal story intact",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Praises the director's skill in balancing spectacle with story integrity, suggesting successful execution of a challenging production, but excerpt is too brief for high confidence.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the direction, choreography, and puppetry while noting limitations in the score and story balance. The positive tone and description of 'charming show' indicates a recommendation despite acknowledged flaws. | Gemini: The review is generally positive, highlighting the direction, choreography, and puppetry. While noting some weaknesses in the score and book, the overall impression is favorable, leading to a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,27 +38,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:35:06.583Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2352,
-    "outputTokens": 287,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:52.686Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "sources": [
     "dtli"

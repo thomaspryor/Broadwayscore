@@ -9,71 +9,56 @@
   "bwwExcerpt": "Along with the revival of The Sign in Sidney Brustein's Window earlier this year, this second-ever Broadway production of Purlie Victorious makes you wonder how many other vital works by Black playwrights are sitting somewhere, underused and underseen, waiting to be brought up under the bright lights where they belong.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": "B+",
-  "assignedScore": 85,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 85,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Leon is doing exceptional work here",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "extracting hilarious performances from the entire ensemble",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's a feat to be seen, felt, and enthralled by",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Strong praise for direction and performances with emphatic endorsement ('exceptional work', 'hilarious', 'feat to be seen') suggests clear recommendation despite being a brief excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ rating and concluding phrase 'a feat to be seen, felt, and enthralled by' clearly indicate a positive recommendation, with praise for direction and performances throughout. | GPT-4o: The critic highlights exceptional work and hilarious performances, suggesting a strong recommendation. The original B+ rating aligns with a high Positive score. | Gemini: The critic praises the direction and performances, calling it a 'feat to be seen, felt, and enthralled by.' The B+ rating also indicates a positive recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:54:34.542Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2367,
-    "outputTokens": 323,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:02.901Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 70,
-    "scoreDelta": 8,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",

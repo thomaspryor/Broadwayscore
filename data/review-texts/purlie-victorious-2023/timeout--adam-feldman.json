@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "originalScoreNormalized": 80,
@@ -22,60 +22,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 73,
+      "low": 75,
       "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the show's new Broadway production is a joyous affair, broad in comedy and in spirit",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Purlie Victorious doesn't crack: Directed knowingly by Kenny Leon",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Comedies often age badly, and comedies about race are even riskier",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic clearly states the production is 'joyous' and praises Leon's direction as 'knowing,' overcoming potential concerns about the material's age. | GPT-4o-mini: The review expresses strong positive sentiment about the direction and overall enjoyment of the production, despite acknowledging potential risks in the material.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and description of the production as 'joyous' with praise for direction indicates a clear positive recommendation, though limited text prevents full assessment. | GPT-4o: The critic's original rating of 4/5 strongly suggests a positive review. The excerpt describes the production as 'a joyous affair,' indicating a strong recommendation. The use of 'knowingly directed' and 'broad in comedy and in spirit' supports a positive assessment. | Gemini: The critic uses positive language like \"joyous affair\" and the rating is 4/5, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:27.527Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:43.846Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 79,

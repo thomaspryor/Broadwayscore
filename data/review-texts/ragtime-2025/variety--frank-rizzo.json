@@ -9,7 +9,7 @@
   "dtliExcerpt": "It’s a thrilling experience, though on the Vivian Beaumont Theater’s vast stage this pageant of a musical feels a bit skimpy. Not that the musical needs opulent sets, but it does call for stunning stagecraft to match the awe of its aspirations. It’s achieved here only intermittently.",
   "showScoreExcerpt": "\"In productions large or small â or, here, imperfectly in-between, though still glorious â everything is the service of the show that creates with words, music and movement a grand American tapestry â tears and all.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "urlUpdated": "2026-01-23T05:27:32.724Z",
@@ -18,11 +18,11 @@
   "sourceMethod": "brightdata",
   "bwwExcerpt": "In productions large or small — or, here, imperfectly in-between, though still glorious — everything is the service of the show that creates with words, music and movement a grand American tapestry — tears and all.",
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,55 +30,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "reverberates with the directness, passion and allegorical heft of an American folk epic",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "expanded and exceptional version",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's a savvy choice given the positive reception it received",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review uses strong positive language like 'exceptional' and 'passion' while praising the director's vision and noting the production's positive reception, indicating clear recommendation despite being an excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show calling it 'exceptional', 'thrilling', and 'glorious', while acknowledging staging limitations that prevent it from being a rave. | GPT-4o: The review praises the production as thrilling and exceptional, despite noting some staging imperfections. The overall tone is positive, highlighting the show's impact and thematic resonance. | Gemini: The review acknowledges imperfections but ultimately calls the production \"still glorious,\" indicating a positive recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:01:40.949Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2454,
-    "outputTokens": 332,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:13:18.494Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "scoreDelta": 3,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

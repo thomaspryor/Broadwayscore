@@ -6,7 +6,7 @@
   "url": "https://www.latimes.com/entertainment-arts/story/2025-11-13/review-theater-mark-strong-lesley-manville-robert-ickes-sophocles-oedipus-broadway",
   "publishDate": "2025-11-14",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 76,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "archivePath": "data/archives/reviews/oedipus-2025/latimes--charles-mcnulty_2026-02-01.html",
@@ -15,67 +15,52 @@
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 72,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
-      "performances": 82,
-      "direction": 70
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "His 'Oedipus' is more prose than poetry. The family dynamics are well drawn, though a tad overdone.",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Manville delivers a performance as sublimely seething as her Oscar-nominated turn in 'Phantom Thread'",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "what we're left with is the astute understanding of a special kind of hubris that afflicts the more talented politicians",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "McNulty praises the strong performances, particularly Manville and Strong, and appreciates the modern political relevance, but criticizes the adaptation as 'more prose than poetry' with structural issues and diminished cathartic impact.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt contains positive descriptors like 'smart and sleek direction' and 'charismatic' performance, plus notes it's the 'buzziest' show of the season. However, this appears to be opening description rather than final verdict, so confidence is low. | GPT-4o: The review highlights the production as a 'buzzy' and 'chic' offering with 'smart and sleek direction' and a 'charismatic' lead, suggesting a positive reception. However, the text is truncated, and the full verdict is not available, leading to a medium confidence level. | Gemini: The review excerpt highlights \"smart and sleek direction\" and a \"charismatic\" lead, suggesting a positive experience, but the limited text and aggregator context indicate a likely positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:42:35.791Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4469,
-    "outputTokens": 385,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:04.613Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "extractedPhrase": "avoid",
   "dtliExcerpt": "It’s election night in Robert Icke’s “Oedipus,” a modern retelling of Sophocles’ “Oedipus the King” that must be the buzziest, if not the chicest, Broadway offering of the fall season. The production, a prestigious London import that opened at Studio 54 on Thursday under Icke’s smart and sleek direction, stars a charismatic Mark Strong in the title role.",

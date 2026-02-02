@@ -9,40 +9,24 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 87,
+  "assignedScore": 81,
   "llmScore": {
-    "score": 87,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 88,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "does just that with a singular vision and a collective collaboration that is smart, inspiring and thoroughly entertaining",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "captures the sweep of history in all its complexities without sacrifice of character or credibility",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "A musical that captures the sweep of history in all its complexities without sacrifice of character or credibility is no easy feat",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong unqualified praise highlighting the show's achievement of a difficult artistic goal with superlatives like 'singular vision,' 'smart, inspiring and thoroughly entertaining' with no reservations expressed.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the show as achieving a difficult feat with 'singular vision' and describes it as 'smart, inspiring and thoroughly entertaining,' indicating strong positive recommendation. | GPT-4o: The review praises the musical for its smart, inspiring, and thoroughly entertaining execution, indicating a highly positive reception and strong recommendation. | Gemini: The review uses positive language like \"smart, inspiring and thoroughly entertaining\" to describe the musical, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,27 +35,22 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:06:21.663Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2378,
-    "outputTokens": 364,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:38.381Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 87,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 90,
-    "geminiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

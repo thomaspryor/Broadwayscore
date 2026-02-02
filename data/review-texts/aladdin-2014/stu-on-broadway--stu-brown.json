@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives two positive reviews - one enthusiastic for families and one more measured for general audiences. Despite some criticisms about lack of depth compared to other Disney shows, the overall assessment is positive with clear recommendation. | GPT-4o: The review highlights the show's charm, energy, and strong performances, particularly praising James Monroe Iglehart's role as the Genie. While it notes some shortcomings compared to other Disney adaptations, it still recommends the show as enjoyable and entertaining, especially for families. | Gemini: The review is split into two sections, one for families and one for a general audience. Both sections recommend the show, though with some reservations for the general audience. The overall tone is positive, placing it in the 'Positive' bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly recommends the show for families and calls it 'solidly good, sometimes great' and 'enjoyable' for general audiences, though notes it lacks the enchantment of Disney's best theatrical productions. | GPT-4o: The review provides a generally positive assessment of the show, highlighting its entertainment value and strong performances, especially for families. However, it notes that the show lacks the depth and enchantment of other Disney productions, which suggests some reservations. | Gemini: The review is generally positive, calling the show \"enjoyable and energetically fine.\" While it doesn't reach the heights of Lion King or Beauty and the Beast, it's still a recommended experience, especially for families.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:12:23.923Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:07:31.859Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 71,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 73,

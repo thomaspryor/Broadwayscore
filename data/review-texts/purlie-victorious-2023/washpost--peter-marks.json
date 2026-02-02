@@ -10,45 +10,29 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "extremely funny anti-racist farce",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "zanily vivacious production",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "everyone...seems rhapsodically absorbed",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong positive language throughout with praise for the comedy's effectiveness, the vivacious production, and unanimous cast engagement, though this appears to be an excerpt limiting full assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses strongly positive language like 'extremely funny,' 'zanily vivacious,' and 'rhapsodically absorbed,' indicating clear enthusiasm for the production and performances. | GPT-4o: The review describes the production as 'extremely funny' and 'zanily vivacious,' with the cast 'rhapsodically absorbed,' indicating a highly positive reception. | Gemini: The review describes the production as \"extremely funny\" and notes that everyone involved seems \"rhapsodically absorbed,\" indicating a positive experience and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,27 +41,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:56:20.037Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2423,
-    "outputTokens": 313,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:11.244Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/purlie-victorious-2023/washpost--peter-marks_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:13:45.962Z",

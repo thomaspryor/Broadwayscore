@@ -9,16 +9,16 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 62,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 62,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt shows appreciation for the technical design team but describes the show as 'rambunctious' and pushing concepts to extremes, suggesting ambivalence. However, with only curated excerpts available, the full verdict is unclear. | GPT-4o: The review highlights the strong creative team and the ambitious nature of the production, suggesting a positive reception. However, the lack of a clear, explicit recommendation and the text quality warning lead to a medium confidence level. | Gemini: The review highlights the talent involved in the production but doesn't explicitly recommend or discourage seeing it. The comparison to transforming Party Monster into a musical suggests a potentially chaotic or niche experience, contributing to the 'mixed' classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt highlights strong production values and creative team excellence, suggesting a positive assessment, but with only one curated quote available and no clear overall verdict, conservative scoring within positive range is warranted. | GPT-4o: The review highlights the high quality of the production's design elements and suggests an innovative approach, indicating a positive impression. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review highlights the talents of the design team, suggesting a positive experience, but the comparison to a potential 'Party Monster' musical tempers the enthusiasm. Given the single excerpt, a conservative positive score is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:47:42.139Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:22:01.369Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 72,
     "openaiScore": 78,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 16,
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

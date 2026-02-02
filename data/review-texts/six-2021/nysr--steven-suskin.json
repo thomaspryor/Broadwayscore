@@ -10,74 +10,58 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": "5/5 stars",
-  "assignedScore": 88,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": null,
   "originalScoreNormalized": 100,
   "scoreSource": "og-description",
   "scoreExtractedFrom": "archive",
   "llmScore": {
-    "score": 88,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 85,
-      "performances": 90,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "★★★★★",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "a rafter-raising entertainment that'll get you throwing your proverbial bonnet in the air",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Six offers so much more, and does so with steady propulsion and an irresistible sense of high style",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Five-star review with enthusiastic language like 'rafter-raising entertainment' and 'irresistible sense of high style', praising performances, production values, and overall appeal despite acknowledging it's not traditional.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic gives 5/5 stars and uses enthusiastic language like 'rafter-raising entertainment,' 'mass appeal,' 'incredibly high sense of style,' and describes it as having 'irresistible sense of high style' with 'steady propulsion.' The praise for performances, production values, and overall experience is consistently strong throughout. | Gemini: The critic gives the show 5/5 stars and uses overwhelmingly positive language, calling it a \"rafter-raising entertainment\" with \"mass appeal, immediacy, enthusiasm, and an incredibly high sense of style.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:07:12.948Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3723,
-    "outputTokens": 355,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:40:43.261Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,

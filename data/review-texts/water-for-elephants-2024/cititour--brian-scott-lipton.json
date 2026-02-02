@@ -9,71 +9,56 @@
   "bwwExcerpt": "It’s all quite entertaining, but also a bit vexing, since these activities keep getting in the way of the show’s main plot. But eventually you realize that there’s not of lot a plot here, nor is it all that original (even if Sara Gruen’s 2006 novel which forms the basis for the musical, was a number one best seller, and the show’s book is by three-time Tony Award nominee Rick Elice). In fact, all the diversions simply add up to a major cause of coitus interruptus.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 45,
+    "score": 61,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's all quite entertaining",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "a bit vexing, since these activities keep getting in the way of the show's main plot",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "there's not of lot a plot here, nor is it all that original",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "While the critic finds elements entertaining, they criticize fundamental structural problems including lack of plot, unoriginality, and diversions that interfere with storytelling, suggesting more problems than strengths.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Single excerpt shows mixed sentiment - acknowledging entertainment value while criticizing structural issues and lack of originality. Conservative scoring due to limited text and potential cherry-picking. | GPT-4o: The review describes the show as entertaining but ultimately flawed due to a lack of plot and originality, leading to a negative overall impression. | Gemini: The review describes the show as \"entertaining\" but also \"vexing\" and notes the plot is not original. This suggests a mixed reaction, leaning towards the positive side of mixed.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:35:11.394Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2417,
-    "outputTokens": 311,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:55.663Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 50,
-    "scoreDelta": 2,
+    "claudeScore": 60,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Down",
   "rescoreReason": "scored on brief excerpt, now has fullText",

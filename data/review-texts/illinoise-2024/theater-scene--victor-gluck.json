@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"Justin Peck’s evening length ballet...has the energy of Jerome Robbins’ 'Fancy Free'\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 72,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 85,
-      "performances": 78,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "While Illinoise does not seem bigger than its individual parts nor transcend them, it is both satisfying and moving",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "it is both satisfying and moving",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Some will find Illinoise an emotional experience; others will be impressed by the vigor and high spirits",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The reviewer acknowledges significant strengths in performances, music, and production values, calling it 'satisfying and moving,' but notes it doesn't transcend its parts, suggesting a qualified positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic finds the show 'satisfying and moving' with 'inventive choreography' and praises individual performances, though notes it 'does not seem bigger than its individual parts nor transcend them,' indicating a positive but not effusive recommendation. | Gemini: The review is mostly positive, highlighting the energy, choreography, and performances. However, the critic notes that it doesn't quite transcend its parts, suggesting a reservation. The truncated text makes it difficult to be certain of the final verdict, but the overall tone leans positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:19:44.608Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4069,
-    "outputTokens": 353,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:16:38.162Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 70,
-    "scoreDelta": 8,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 74,

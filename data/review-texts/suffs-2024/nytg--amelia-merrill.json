@@ -10,71 +10,56 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "A",
-  "assignedScore": 72,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 72,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 73,
+      "high": 83
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 55,
-      "music": 75,
-      "performances": 78,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "has memorable music, star-making performances, and an inspiring message with moments that tug at the heartstrings",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "forgoes accuracy in favor of a fun time. This isn't necessarily a bad thing. But as a tool for civic education – which the show seems to market itself as – it's simplistic",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Suffs has a rating of 93 on Show-Score, marking it an 'audience acclaimed' show as many users call it a must-see production",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review balances clear praise for music, performances, and production values against significant concerns about historical accuracy and characterization, ultimately presenting a qualified positive assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic gives an 'A' rating and praises the music, performances, and production beauty, while noting it's a 'fun time' despite historical liberties. The positive elements outweigh the concerns about accuracy. | GPT-4o: The original rating of 'A' and the description of the show as 'audience acclaimed' with many calling it a 'must-see' strongly indicate a rave review. Despite some noted inaccuracies, the overall tone and the high praise for performances and production suggest an enthusiastic recommendation. | Gemini: The review highlights positive aspects like memorable music and star-making performances, but also points out historical inaccuracies and simplifications. The overall tone suggests a recommendation with reservations, placing it in the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:15:01.439Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3079,
-    "outputTokens": 388,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:07.643Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "openaiScore": 95,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "wrongProduction": true,
   "wrongProductionReason": "2022, Public Theater",

@@ -8,65 +8,56 @@
   "fullText": "Hadestown – 18 June 2024, 29 September 2021 It has been several years since I saw Hadestown, but I’ve been enjoying watching the refreshingly diverse casting choices from far, and enjoying speculating how these different vocal styles morph these characters into more and more iconic, universal allegories. I decided to take the plunge again to see Ani DiFranco, who was, of course, out the night that I went to see the show. Her understudy, Tara Jackson, sang the roof off the building and was an absolutely spellbinding Persephone. I was also floored by Issa Briones, whose voice was incredibly smooth. Jordan Fisher met my expectations, and Jon Jon Briones brought the right vocals for Hermes, but the awkwardness of his dance moves was quite distracting. It was very clear that he was struggling to emulate previous actors in this role, instead of creating it for himself. I was decidedly neutral on Philip Boykin, though I will say that his gestures in the unspoken, subtextual moments were spot on. I had the incredible privilege of being there on a night, where Eva Noblezada, the original Eurydice, and Reeve Carney, the original Orpheus, were in the audience two rows in front of me. Watching them watch the show was a real, unexpected treat. Seeing the show for a second time, felt different, and I don’t think it was just the cast. I listen to the soundtrack a lot, and I found that, in the years since I saw it live, I have filled in a layer of detail and meaning that isn’t actually present in the text of the show. I have embellished the moments that meant something to me. I seem to remember more love between Orpheus and Eurydice before Eurydice descends to Hadestown. Seeing it this time, I felt a lot of focus on their differences and incompatibility. It simultaneously felt more painful, because they were clinging to desperation, and less painful, because their attachments to each other didn’t seem as real or important. By contrast, I found Amber Gray’s Persephone to be very dry and detached, where Tara Jackson felt full of life. I really felt the lost love between Hades and Persephone in a way that made my heart ache. This time through I was more interested in their web of the story than that of Orpheus and Eurydice. All this to say, I applaud the producers and casting agents of Hadestown for welcoming in people of different cultures to tell this story with different nuances, and not seeking out carbon copies of the original cast. The energy was dynamic and fresh, and the performances were absolutely beautiful. I left ready to sing it again. I did not attend this performance on a press pass.",
   "showScoreExcerpt": "Diverse casting choices morph these characters iconic, universal allegories.",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 79,
   "source": "show-score",
   "sourceMethod": "playwright",
   "scoreSource": null,
   "llmScore": {
-    "score": 84,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 85,
-      "performances": 85,
-      "direction": 75
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The energy was dynamic and fresh, and the performances were absolutely beautiful. I left ready to sing it again.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Tara Jackson, sang the roof off the building and was an absolutely spellbinding Persephone",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the awkwardness of his dance moves was quite distracting",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The reviewer expresses clear enthusiasm for the performances and production, praising the casting diversity and leaving 'ready to sing it again,' despite some critical observations about individual performances. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and the fresh energy of the production, despite some mixed feelings about specific cast members.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite some mixed elements (criticism of Jon Jon Briones' dancing, neutral on Philip Boykin), the review concludes with strong praise for the diverse casting, beautiful performances, and dynamic energy, ending on an enthusiastic note about wanting to experience it again. | Gemini: Despite some reservations about certain performances and a changed perception of the story, the reviewer ultimately praises the dynamic energy, beautiful performances, and diverse casting, indicating a positive overall experience.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:54:19.103Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:01:22.212Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 84,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "archivePath": "data/archives/reviews/hadestown-2019/pagesonstages--mason-pilevsky_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:41:11.271Z",

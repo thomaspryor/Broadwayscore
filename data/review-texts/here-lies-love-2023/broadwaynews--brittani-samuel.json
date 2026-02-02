@@ -7,42 +7,26 @@
   "publishDate": "July 20, 2023",
   "fullText": "David Byrne’s immersive musical is a thrilling pageant of theatrics, but abstracts Filipino history better than enacting it. Toni Morrison asserted that the writer’s responsibility is to remember. By remembering the world, the writer holds enough power to create it anew. Scottish-born artist David Byrne takes up this charge of transformation in his Big beat-laced musical “Here Lies Love.” The work remembers the infamous Philippine first family, Imelda and Ferdinand Marcos, who flirted themselves to power in the 1960s but then warped their democratically elected might into an abusive monocracy. Conceiver-composer-lyricist Byrne, composer Fatboy Slim and director Alex Timbers — who have continued to develop the project since its world premiere in 2013 — dress up this dense Filipino history as a hyper-pixelated, discotheque dance party. It’s an irrefutably great time — one that rivals the Hell’s Kitchen clubs mere blocks away — even as the weight of autocratic abuse hovers just above the lustered air. An expertly crafted dramaturgical installation wraps the walls outside the theater, and the production itself uses historical footage from the Marcos’ regime to contextualize all of the funk-fueled revelry, but how much right does anyone who is not Filipino have to party here? It’s a difficult question to consider, and one Byrne, Fatboy Slim and Timbers completely avoid by driving up the production’s universal amiability.",
   "originalScore": null,
-  "assignedScore": 54,
+  "assignedScore": 77,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 54,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 47.5,
-      "high": 60.5
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it was easy to surrender to \"Here Lies Love.\"",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "But that ease feels directly tied to my lack of cultural connection to the musical's complicated history.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "who decides when populism helps Filipino people — offering greater representation to a wider audience — and when it harms them?",
-        "sentiment": "neutral",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic admits enjoyment but questions whether their positive response comes from cultural distance, raising serious ethical concerns about the production's treatment of Filipino history without clear recommendation either way. | GPT-4o-mini: The review expresses a mixed sentiment, acknowledging ease of enjoyment while questioning the cultural implications, leading to a conditional recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges the show is entertaining and well-crafted but raises serious concerns about cultural appropriation and the ethics of turning Filipino tragedy into Western entertainment, ultimately questioning who has the right to tell this story. | GPT-4o: The review praises the production as a thrilling and enjoyable experience, despite raising questions about cultural representation. The positive tone and enjoyment of the production are clear, but the cultural concerns introduce some reservations. | Gemini: The review acknowledges the show is a \"great time\" and \"irrefutably\" enjoyable, but raises questions about cultural appropriation and the handling of Filipino history. The overall tone suggests a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,20 +35,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:58.421Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:39.844Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 54,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 55,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dtliExcerpt": "As a frequenter of both, it was easy to surrender to “Here Lies Love.” But that ease feels directly tied to my lack of cultural connection to the musical’s complicated history. The production boasts that it can be enjoyed by all, but who decides when populism helps Filipino people — offering greater representation to a wider audience — and when it harms them?",
   "sources": [

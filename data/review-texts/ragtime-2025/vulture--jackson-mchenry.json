@@ -16,64 +16,48 @@
     "score": 78,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 80,
-      "performances": 85,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "High points like that, when those voices combine with James Moore's sumptuous orchestra and crystallize into an omnisensory wallop, make this Ragtime impossible to dismiss",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Ragtime, with its thudding sentimentality, is not a truly great musical, but deBessonet has enough finesse to convince you that it might come close",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "As Coalhouse, a character first introduced as a virtuosic pianist who later goes on a quest for violent revenge, Henry is stunning",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic acknowledges the musical's flaws but praises the production's evolution, standout performances, and emotional impact, ultimately finding it 'impossible to dismiss' despite being 'easy to quibble with.'",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges flaws ('thudding sentimentality,' 'not a truly great musical') but consistently praises the production's growth, stellar performances, and emotional impact, concluding it's 'impossible to dismiss' despite being 'easy to quibble with.' | Gemini: The review acknowledges flaws and moments of being \"overliteral\" but ultimately concludes that the high points make the show \"impossible to dismiss.\" This indicates a positive recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:01:47.468Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4101,
-    "outputTokens": 415,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:13:36.840Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dtliExcerpt": "Ragtime settles into a richer and more internal mode quickly, in a large part due to the textured performances of its leads and the thought they’ve applied to Ahrens and Flaherty’s score.",
   "bwwExcerpt": "The fantasy of endless space is what matters, a great chimeric promise, this production understands, that both sustains the nation and goes unfulfilled. Even America has an end. Ragtime, with its thudding sentimentality, is not a truly great musical, but deBessonet has enough finesse to convince you that it might come close.",

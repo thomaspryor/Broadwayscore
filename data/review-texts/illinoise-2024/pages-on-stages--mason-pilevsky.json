@@ -9,71 +9,55 @@
   "showScoreExcerpt": "Truly in awe of the duality and interconnectedness of the pulse of Illinoise.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 84,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 84,
+    "confidence": "low",
     "range": {
-      "low": 82,
-      "high": 88
+      "low": 79,
+      "high": 89
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 78,
-      "performances": 85,
-      "direction": 90
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Illinoise stands out as a beautiful, last minute attempt to throw in a purely fictional, breathtaking dance piece",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "This show is very different from the rest of its season. It embodies all of the elements of phenomenal theatre",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "This show is still dancing around inside me as I think about the effortless way these dancers uplift a heavy story",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic uses superlatives like 'breathtaking,' 'phenomenal theatre,' and 'beautiful,' while praising the seamless collaboration and unique artistic vision, with only minor critiques about vocals and ending.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses language like 'beautiful,' 'breathtaking,' 'phenomenal theatre,' and 'true magic' while emphasizing the show's uniqueness and collaborative excellence. Despite minor critiques about the ending and vocals, the overall tone is deeply appreciative and the review concludes with lasting emotional impact. | Gemini: The review is overwhelmingly positive, praising the show's unique qualities and collaborative spirit, but it does mention some minor issues (vocals hard to understand, ending slightly rushed) which keeps it from being a rave.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:19:39.392Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3217,
-    "outputTokens": 383,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:16:21.075Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 88,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,

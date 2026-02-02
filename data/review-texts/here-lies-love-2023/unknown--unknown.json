@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,33 +21,22 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 85,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the kind of stimulant that makes you believe you could dance all night",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "more party than parable",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic describes the show as an energizing experience that creates a euphoric, dance-all-night feeling, with positive language about its party atmosphere and musical impact.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear enthusiasm with positive language about the show being a 'stimulant' that energizes audiences, though limited to one quote requires conservative scoring within positive range. | GPT-4o: The excerpt highlights the show's energetic and enjoyable nature, suggesting it leaves audiences wanting more. The phrase 'stimulant that makes you believe you could dance all night' indicates a positive experience, though the lack of full context suggests scoring conservatively within the positive range. | Gemini: The review excerpt suggests an enjoyable and stimulating experience, indicating a positive recommendation, but the limited text and the phrase 'more party than parable' suggests some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,19 +45,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:59:00.413Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2358,
-    "outputTokens": 282,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:07.561Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

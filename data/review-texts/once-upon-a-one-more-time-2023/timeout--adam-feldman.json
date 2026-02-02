@@ -8,64 +8,56 @@
   "showScoreExcerpt": "“Simard is delicious; the rest of the show, if you turn off your brain, is merely yummy in a candy-coated way. That’s not nothing: ‘Once Upon a One More Time’ is a well-assembled and entertaining diversion...Musicals are capable of more ambitious roles than merely carrying Spears.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/once-upon-a-one-more-time-broadway",
   "originalScore": "3/5",
-  "assignedScore": 65,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 65,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 77,
-      "direction": 68
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Simard is delicious",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "well-assembled and entertaining diversion",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Musicals are capable of more ambitious roles than merely carrying Spears",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review offers qualified praise calling it an 'entertaining diversion' but criticizes the show's lack of ambition and suggests it requires turning off your brain, indicating mixed feelings with slight positive lean. | GPT-4o-mini: The review highlights strong performances but suggests the show lacks depth, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 rating and language like 'entertaining diversion' but 'turn off your brain' and criticism that 'musicals are capable of more' suggests a mixed verdict that acknowledges entertainment value while noting significant limitations. | GPT-4o: The review highlights some positive aspects, such as being 'entertaining' and 'well-assembled', but also suggests it lacks ambition and depth. The original 3/5 rating and 'Flat' aggregator verdict support a mixed classification. | Gemini: The review calls the show \"entertaining\" and \"yummy in a candy-coated way\", indicating a positive, though not overwhelmingly enthusiastic, recommendation. The 3/5 rating also supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:20.406Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:58.631Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 0,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "I didn’t wanna go, but I admit that a piece of me had a lot of fun at Once Upon a One More Time, a bubblegum-feminist Cinderella story constructed around the pop hits of Britney Spears. For a fan of more substantial musicals, with original scores, it’s a masochistic pleasure. Fine, Broadway, gimme more! Hit me, Broadway, one more time.",
   "sources": [

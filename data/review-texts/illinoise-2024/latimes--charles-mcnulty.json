@@ -8,67 +8,58 @@
   "dtliExcerpt": "This has not been a banner year for new musicals on Broadway, but with “Illinoise,” the final show I saw this season, I glimpsed the majestic future.",
   "fullText": "",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 82,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 84,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "low",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 71,
-      "music": 88,
-      "performances": 87,
-      "direction": 83
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "rescuing Broadway from its hidebound habits",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "path-clearing",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "I glimpsed the majestic future",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: McNulty delivers a clearly positive review praising the innovative form, performances, and vision while acknowledging some structural weaknesses, positioning it as groundbreaking for Broadway's future. | GPT-4o-mini: The review expresses strong admiration for the innovative aspects of 'Illinoise' and its emotional resonance, leading to a clear recommendation despite some caveats about the book's structure.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The phrase 'majestic future' indicates the critic sees this as groundbreaking and exceptional, despite the single excerpt limitation requiring moderate confidence. | Gemini: The phrase \"I glimpsed the majestic future\" indicates a positive outlook on the show, suggesting it is worth seeing. Given the single excerpt warning, the score is placed in the middle of the positive range.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:55:47.604Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:00.891Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 84,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 88,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "archivePath": "data/archives/reviews/illinoise-2024/latimes--charles-mcnulty_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:43:10.576Z",

@@ -8,16 +8,16 @@
   "fullText": null,
   "showScoreExcerpt": "A stylish, resonant, high-energy musical...There are obvious parallels to today's politics.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 74,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": null,
   "llmScore": {
-    "score": 79,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -25,26 +25,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 78
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "stylish, resonant, high-energy musical",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "obvious parallels to today's politics",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "A stylish, resonant, high-energy musical",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong positive descriptors ('stylish, resonant, high-energy') suggest clear recommendation, but extremely limited excerpt makes confidence low. | GPT-4o-mini: The review expresses a positive sentiment about the musical's style and energy, indicating a strong recommendation despite lacking detailed critique.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The adjectives 'stylish, resonant, high-energy' are clearly positive descriptors of the musical itself, indicating a recommendation, though the single excerpt and lack of full context warrants a conservative score within the positive range. | GPT-4o: The excerpt describes the show as 'stylish, resonant, high-energy,' which are positive descriptors suggesting a recommendation. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review uses positive adjectives to describe the musical, suggesting a recommendation. However, with only one excerpt available, the score is placed in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:19:17.666Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:03:51.991Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

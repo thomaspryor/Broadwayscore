@@ -9,64 +9,56 @@
   "bwwExcerpt": "As inventively staged by wunderkind director Alex Timbers (\"Rocky,\" \"Peter and the Starcatcher\"), \"Here Lies Love\" is a high-energy, immersive experience not unlike \"Sleep No More\" and \"Fuerza Bruta\" where audience members stand throughout the show and can freely move around. But it is also a smart, edgy musical about a celebrity-seeking political leader, her rags-to-riches journey, the corruption of her regime and her relationship with those around her. In essence, \"Here Lies Love\" is a discoth",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HERE-LIES-LOVE-2023",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "inventively staged by wunderkind director Alex Timbers",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "high-energy, immersive experience",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "smart, edgy musical",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The excerpt shows consistent praise for direction, concept, and intelligence of the material, but the review cuts off mid-sentence making a complete assessment impossible. | GPT-4o-mini: The review highlights the inventive staging and immersive experience, indicating a strong recommendation despite lacking specific critiques.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows positive language about inventive staging and describes it as 'smart, edgy' but is severely truncated mid-sentence. Single excerpt warning requires conservative scoring within positive range. | GPT-4o: The review highlights the inventive staging and immersive experience, suggesting a positive impression. However, due to the single excerpt warning and lack of a full verdict, the score is conservatively placed in the middle of the Positive range. | Gemini: The review highlights the show as a \"high-energy, immersive experience\" and a \"smart, edgy musical,\" indicating a positive assessment. However, the truncated nature of the text and the single excerpt available suggest a conservative score within the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:30.702Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:29.382Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 71,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

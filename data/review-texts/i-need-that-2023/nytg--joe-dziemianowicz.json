@@ -9,42 +9,26 @@
   "bwwExcerpt": "The cast, directed by Moritz von Stuelpnagel, hugs the tonal contours skillfully. From the get-go, it’s a safe bet that Sam and his home will transform. Thanks to a late-in-the-game twist, he also gets a shot to step up as a dad. In the end, I Need That is pleasant but leaves you wanting. “Things don’t give your life meaning. People do,” Amelia declares, as if it’s a newsflash. Sorry — it doesn't take a play to know that. Average Rating: 56.7% { \"@context\":\"https://schema.org\", \"@type",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": 56,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 56,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 50,
-      "high": 62
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 48,
+      "book": null,
       "music": null,
-      "performances": 68,
-      "direction": 63
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "pleasant but leaves you wanting",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The cast, directed by Moritz von Stuelpnagel, hugs the tonal contours skillfully",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "it doesn't take a play to know that",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic praises the cast and direction but finds the play itself predictable and unsatisfying, with a dismissive tone toward the writing that suggests a lukewarm mixed response. | GPT-4o-mini: The review expresses a mixed sentiment, highlighting some skillful direction but ultimately feeling unsatisfied with the overall impact of the play.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises DeVito's performance as 'shining' but criticizes the play as 'wispy,' 'all too expected,' and not quite getting to significance. The final assessment 'pleasant but leaves you wanting' clearly places this in mixed territory. | GPT-4o: The review praises Danny DeVito's performance but criticizes the play for being expected and not reaching its intended significance. The overall tone suggests a mixed reception, acknowledging some highlights but ultimately finding the play lacking. | Gemini: The review praises Danny DeVito's performance and the cast's skill, but ultimately finds the play itself to be somewhat lacking and predictable. It's a positive review with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:15:48.474Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:52.101Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 56,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 57,
-    "openaiScore": 55,
-    "scoreDelta": 2,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "showScoreExcerpt": "“The vintage board game Sorry! wasn't designed to be played alone. Leave it to Emmy winner Danny DeVito, who shines as the aimless widow Sam in ‘I Need That’, to turn the unlikely moment into a theatrical highlight that’s silly, sad, and, no joke, poetic.”",

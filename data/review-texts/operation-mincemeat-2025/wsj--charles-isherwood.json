@@ -8,18 +8,18 @@
   "dtliExcerpt": "Audiences are always receptive to flights into jubilant escapism—perhaps particularly now—and this plucky musical provides it in generous doses.",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "But the limited run has been extended more than once, and the surprise sensation of the Broadway season has been the unabashedly silly ‘Oh, Mary!,’ which also lampoons history, albeit more cavalierly. Audiences are always receptive to flights into jubilant escapism—perhaps particularly now—and this plucky musical provides it in generous doses.",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
       "low": 73,
-      "high": 85
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,46 +29,38 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "surprise sensation of the Broadway season",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this plucky musical provides it in generous doses",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Audiences are always receptive to flights into jubilant escapism",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review emphasizes the show's success as a 'surprise sensation' with extended runs and audience appeal, positioning it as effective escapist entertainment that delivers what audiences want. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's escapism and appeal, indicating a clear recommendation despite the lack of specific critiques.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes the musical as 'plucky' and notes it provides 'jubilant escapism' in 'generous doses' with audiences being 'receptive' to it, indicating a positive recommendation though the excerpt is limited. | GPT-4o: The review highlights the musical's ability to deliver 'jubilant escapism' in 'generous doses,' suggesting a strong positive reception. The use of 'plucky' and 'generous' indicates a favorable view, aligning with the aggregator's positive verdicts. | Gemini: The review excerpt indicates a positive reception and describes the musical as providing 'jubilant escapism,' suggesting a recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T02:28:08.704Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:39.077Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "contentTier": "excerpt",

@@ -9,42 +9,26 @@
   "showScoreExcerpt": "“...funny and sophisticated. The jokes are biting and some lines are impressively abrasive. But it edges away from the satire. Neugebauer’s fine direction instead leans into the acid drama of fraught sibling relationships. The play treats each character’s plight with an earnest consideration. There’s a more reflective, tragicomic stance as it considers what happens to families afraid to confront the past.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 76,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 50,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "caustic family drama",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "blistering reunion of his heirs",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "The production is the first of Jacobs-Jenkins' original works to be on Broadway",
-        "sentiment": "neutral",
-        "strength": 1
-      }
-    ],
-    "reasoning": "This excerpt appears to be primarily plot summary and background information without any clear evaluative language or recommendation signals.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the writing as 'funny and sophisticated' with 'biting' jokes, commends Neugebauer's 'fine direction,' and treats the work with earnest consideration, indicating a solid positive recommendation. | GPT-4o: The review highlights the play's humor, sophistication, and the fine direction, indicating a positive reception. Although it notes the play edges away from satire, it appreciates the earnest treatment of characters and the reflective stance, suggesting a recommendation with some reservations. | Gemini: The review highlights the play's strengths, such as its humor, sophistication, and the director's handling of the sibling dynamics, suggesting a positive experience overall, even if it edges away from satire.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:31:07.298Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2493,
-    "outputTokens": 306,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:32.408Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,

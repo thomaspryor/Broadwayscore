@@ -9,71 +9,56 @@
   "showScoreExcerpt": "“Treating tough truths with quick humor would seem like another defining feature of Edelman’s inheritance.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 82,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "nimbly clever solo show",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "turn his experience into hilarious social commentary",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "college-buddy congeniality is the key to this 75-minute narrative set",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review consistently praises Edelman's cleverness and ability to transform difficult subject matter into compelling comedy, with no significant negative elements mentioned.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Edelman's cleverness and ability to turn a dangerous experience into 'hilarious social commentary,' though the tone is more analytical than enthusiastic. | GPT-4o: The review highlights Edelman's charm and the cleverness of his show, suggesting it's an enjoyable experience. However, the review lacks strong language to classify it as a rave, and the truncated text leaves some uncertainty about the overall verdict. | Gemini: The review describes the show as \"hilarious social commentary\" and highlights Edelman's \"nimbly clever\" performance, indicating a positive recommendation despite the potentially sensitive subject matter.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:22:21.096Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2536,
-    "outputTokens": 324,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:06.632Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 50,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 50,

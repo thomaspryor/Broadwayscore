@@ -9,71 +9,56 @@
   "bwwExcerpt": "It’s been said “dying is easy, comedy is hard”. Well, anyone who’s seen Gutenberg! The Musical might challenge that little showbiz maxim because Josh Gad and Andrew Rannells—the entire cast of this hilarious two-hander—are making the comedy seem downright effortless. The two stars, appearing together on Broadway for the first time since their Tony nominated turns in the original company of The Book of Mormon, are simply divine delivering a master class in musical comedy and likely setting a lan",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": "B",
-  "assignedScore": 62,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 62,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 45,
-      "music": 50,
-      "performances": 82,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "They are winning leading men — even as their antics on a bare-bones, brick-backed set rarely surmount to much beyond a SNL sketch",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The entire show might be better suited for the late-night slot at a comedy club as opposed to Broadway",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Gad and Rannells strike perfect comedic balance. The two deliver pitch-perfect utterances",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The reviewer praises the lead performances highly but clearly questions whether the material belongs on Broadway, suggesting it's more suitable for a comedy club - this indicates entertainment value but doubts about the show's Broadway worthiness.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B rating and overall positive tone about the performers and comedy indicate a recommendation, though the critic suggests it might be better suited for a smaller venue than Broadway. | GPT-4o: The review highlights the comedic performances of Gad and Rannells as a strong point, despite suggesting the show might be better suited for a comedy club. The original B rating aligns with a positive but not overwhelmingly enthusiastic recommendation. | Gemini: The critic gives the show a B rating and states that they giggled throughout the show. While they suggest it might be better suited for a comedy club, the overall tone is positive, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:35:58.435Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2769,
-    "outputTokens": 377,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:03.407Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 87,
-    "openaiScore": 90,
-    "scoreDelta": 3,
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

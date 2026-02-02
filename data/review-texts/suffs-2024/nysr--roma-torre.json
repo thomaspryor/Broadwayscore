@@ -10,71 +10,55 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": 92,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 92,
+    "score": 95,
     "confidence": "high",
     "range": {
       "low": 90,
-      "high": 95
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 92,
-      "performances": 95,
-      "direction": 90
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "★★★★★ It's been nearly nine years since Hamilton took Broadway by storm, and now comes a worthy successor",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "her work on this production is nothing short of masterful",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Suffs, like Hamilton before it, is poised to etch its own place in theatre history",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Five-star review with consistent superlatives, comparing it favorably to Hamilton as a 'worthy successor' and calling the work 'masterful' with predictions of theater history.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic gives a perfect 5/5 stars and uses superlative language throughout, calling Taub's work 'masterful,' the production 'nothing short of masterful,' and comparing it favorably to Hamilton as a 'worthy successor' that will make theatre history. | Gemini: The critic gives the show 5/5 stars and compares it to Hamilton, calling it \"masterful\" and saying it transcends entertainment. This is a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:14:49.781Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3951,
-    "outputTokens": 356,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:57:49.413Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 95,
+    "openaiScore": null,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,

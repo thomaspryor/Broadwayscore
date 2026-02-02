@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Water for Elephants is a show that works best when it embraces its circus spectacle and lets the talented ensemble cast shine in moments of pure theatrical magic.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "Water for Elephants is a show that works best when it embraces its circus spectacle and lets the talented ensemble cast shine in moments of pure theatrical magic.",
   "needsScoring": true,
   "llmScore": {
-    "score": 72,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 78
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "works best when it embraces its circus spectacle",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "talented ensemble cast shine in moments of pure theatrical magic",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review emphasizes positive elements like spectacle and cast performances with strong language ('theatrical magic'), but the conditional phrasing ('works best when') suggests the show doesn't always achieve this level.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights positive elements (spectacle, talented cast, theatrical magic) but the phrase 'works best when' suggests some inconsistency or missed opportunities in other moments. | GPT-4o: The review highlights the show's strengths in its spectacle and ensemble cast, suggesting a positive experience, though it implies there may be areas where it doesn't fully succeed. | Gemini: The review highlights the show's strengths, particularly the circus spectacle and ensemble cast, suggesting a positive experience overall, but the phrasing \"works best when\" implies that there are also weaker elements.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:15:39.952Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2334,
-    "outputTokens": 291,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:52.397Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

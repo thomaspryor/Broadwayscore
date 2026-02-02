@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 61,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the show isn't terrible ('far from heinous') but clearly indicates it becomes tiresome and repetitive, suggesting neither recommendation nor strong discouragement. | GPT-4o: The review suggests that the show is neither terrible nor outstanding, indicating a mixed reception. The phrase 'far from heinous' suggests it is not bad, but 'not a 100% laugh riot' implies it doesn't fully succeed as a comedy. | Gemini: The review states the show is \"far from heinous\" but also \"not a 100% laugh riot,\" indicating a mixed reaction. The \"rich dish\" comment suggests it can be overwhelming, further supporting a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the show isn't terrible ('far from heinous') but clearly indicates it becomes tiresome and repetitive, suggesting neither a recommendation nor complete dismissal. | GPT-4o: The review suggests that the show is neither terrible nor a complete success. The phrase 'far from heinous' implies it's not bad, but 'not a 100% laugh riot' and 'once you get the gist, you’ve had about enough' indicate limitations, leading to a mixed verdict. | Gemini: The review states the show is 'far from heinous' but 'not a 100% laugh riot,' indicating a mixed reaction. The phrase 'once you get the gist, you've had about enough' suggests it may become tiresome.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,20 +45,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:31:27.485Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:37:56.206Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 60,
+    "openaiScore": 62,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

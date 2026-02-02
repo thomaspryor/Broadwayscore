@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "The rotten apples don’t fall very far from the dead tree in Branden Jacobs-Jenkins’s great family comedy “Appropriate.” First seen in 2014, the play receives its belated but totally riveting first Broadway production, which opened Monday at Second Stage’s Helen Hayes Theater.",
@@ -19,60 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
+      "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 86
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "great family comedy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "totally riveting first Broadway production",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "marvelous direction",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic consistently praises the play as 'great,' the production as 'totally riveting,' and singles out 'marvelous direction' and exceptional performances, with only minor character critique. | GPT-4o-mini: The review expresses strong praise for the performances and direction, indicating a clear recommendation to see the show despite minor critiques.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses highly positive language throughout, calling the production 'totally riveting' with 'marvelous direction' and praising the performances extensively, particularly highlighting Sarah Paulson's work and the overall ensemble. | GPT-4o: The review is overwhelmingly positive, praising the direction, performances, and writing of the play. The critic uses strong language to describe the production as 'riveting' and highlights the excellence of the cast and direction, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the writing, direction, and performances, but notes some flaws. The overall tone suggests a recommendation with minor reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:31:13.396Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:24.799Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 53,

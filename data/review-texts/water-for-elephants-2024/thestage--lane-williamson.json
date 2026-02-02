@@ -9,18 +9,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 39,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 39,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 33,
-      "high": 45
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,48 +28,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 35
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "she appears undersized, and there's no life in her blank eyes",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "there's little of the thrill of either here",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "large-scale puppetry on Broadway is expected to wow",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The review criticizes the central puppet element as disappointing and lacks theatrical excitement, with no positive elements mentioned to offset these significant production failures. | GPT-4o-mini: The review expresses significant disappointment in the production, particularly highlighting the lack of excitement and life, leading to a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The review criticizes key production elements (undersized puppet, lifeless eyes) and concludes there's little thrill, indicating disappointment. However, this is only one excerpt so scoring conservatively within negative range. | GPT-4o: The review criticizes the production's key element, the puppetry, as underwhelming and lacking excitement, leading to a negative recommendation. | Gemini: The review excerpt expresses disappointment with a key element of the show, the elephant puppet, and states that the production lacks the thrill of both circus and theatre. This suggests a negative overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:44:12.016Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:06.215Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 39,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 40,
-    "scoreDelta": 2,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/water-for-elephants-2024/thestage--lane-williamson_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:37:41.645Z",

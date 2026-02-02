@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a mesmerizing evening of dance, music and visual poetry that transcends the boundaries of traditional musical theater.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,38 +18,22 @@
   "showScoreExcerpt": "The result is a mesmerizing evening of dance, music and visual poetry that transcends the boundaries of traditional musical theater.",
   "needsScoring": true,
   "llmScore": {
-    "score": 88,
-    "confidence": "low",
+    "score": 90,
+    "confidence": "medium",
     "range": {
-      "low": 82,
+      "low": 85,
       "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 88,
+      "music": null,
       "performances": null,
-      "direction": 88
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "mesmerizing evening",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "transcends the boundaries of traditional musical theater",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "visual poetry",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Highly positive language with superlatives like 'mesmerizing' and 'transcends' indicates strong recommendation, but excerpt is too brief to determine full critical assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language is highly enthusiastic with words like 'mesmerizing' and 'transcends boundaries' indicating strong praise and clear recommendation. | GPT-4o: The review uses highly enthusiastic language, describing the production as 'mesmerizing' and 'transcending boundaries', which strongly indicates a rave recommendation. | Gemini: The review uses highly positive language like \"mesmerizing\" and \"transcends the boundaries,\" indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,19 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:00:39.561Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2326,
-    "outputTokens": 308,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:16:06.731Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)"
+  "contentTierReason": "Short text (20 words)",
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

@@ -8,74 +8,58 @@
   "fullText": "Robert Icke is one of our best and most exciting theatrical talents, full stop. Any announcement of new work from the writer-director, known stateside lately for his incendiary updates of the Oresteia, Hamlet and The Doctor (from Schnitzler's Professor Bernhardi), are reason enough to immediately secure at least one round of tickets. So it's curious that he's hit a wall with Sophocles' Oedipus. There's still the baseline level of competence for which he's come to be known – a sleek, glass-paneled modernist set by Hildegard Bechtler; laser-sharp performances, this time led by the phenomenal pairing of Mark Strong and Lesley Manville – that is leagues above most others' hopes for excellence. But without the profound insight (modern and timeless) he's excavated from those other works, there's little to generate the same theatrical electricity.\n\nMaybe it's because, more than other Greek texts, Oedipus is something of a one-trick pony; a revelation waiting to happen. Icke is aware of this, writing in his script's introduction that, \"The tradition of Greek tragedy was to take a known story and re-tell it, changing it, re-making it to meet the present moment.\" This he does with his usual cleverness, setting the tale on election night and turning Oedipus into an Obama-esque charismatic campaigning on hope, and the promise to solve the cold-case murder of his predecessor (and his wife Jocasta's first husband).\n\nThat might not be the smartest investigation to open, as the blind prophet Teiresias (Samuel Brewer) sneaks into Oedipus' office to cryptically suggest. It's a nice Classical touch to keep the soothsayer, but it introduces a dramaturgical pitfall: In order to hold interest in a story whose surprises we already know, you either line up those dominoes and have a hell of a time toppling them, or you seek ways of making them fall that reveal fresh, new patterns. Icke's Oresteia managed both while leaning harder into the latter route; reframing its entire chain of events as a tribunal judging its main character's soul, and our own sense of right and wrong, every step of the way. His Oedipus, while glowing with his usual whip-smart language, doesn't have much fun in the toppling. Each domino falls with complete earnestness, and without broader examination, even though we'd been tipped off by an earlier character and our own cultural literacy. There's simply no tension. Thankfully, there's little of that, too, in wondering whether Icke's next project will be worthy of appraisal. And if you see me soon, front row, at Oedipus, it's because there are far worse places to be than at a Robert Icke production, or in the company of Strong and Manville.",
   "dtliExcerpt": "His Oedipus, while glowing with his usual whip-smart language, doesn’t have much fun in the toppling. Each domino falls (“I killed who?! You’re my what?”) with complete earnestness, and without broader examination, even though we’d been tipped off by an earlier character and our own cultural literacy. There’s simply no tension. Thankfully, there’s little of that, too, in wondering whether Icke’s next project – his every project – will be worthy of appraisal. And if you see me soon, front row, at Oedipus, it’s because there are far worse places to be than at a Robert Icke production, or in the company of Strong and Manville.",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T23:40:00.000Z",
   "bwwExcerpt": "Robert Icke is one of our best and most exciting theatrical talents, full stop. Any announcement of new work from the writer-director, known stateside lately for his incendiary updates of the Oresteia, Hamlet and The Doctor (from Schnitzler’s Professor Bernhardi), are reason enough to immediately secure at least one round of tickets. So it’s curious that he’s hit a wall with Sophocles’ Oedipus.",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 68,
+    "score": 64,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 70
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "There's simply no tension",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "laser-sharp performances, this time led by the phenomenal pairing of Mark Strong and Lesley Manville",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "there are far worse places to be than at a Robert Icke production",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises the performances and direction while criticizing the script's lack of tension and insight, ultimately offering a qualified recommendation based on the creative team's reputation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges significant flaws (lack of theatrical electricity, no tension, earnest but uninteresting execution) while praising the baseline competence, performances, and noting they'd still attend. This is classic mixed territory - neither enthusiastic recommendation nor discouragement. | Gemini: The review acknowledges Icke's talent and the strong performances but ultimately finds the production lacking the depth and tension of his previous works. It doesn't discourage seeing it entirely, but it's not a strong recommendation either.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:43:19.475Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2955,
-    "outputTokens": 336,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:56:26.653Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "scoreDelta": 7,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 65,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "showScoreExcerpt": null,

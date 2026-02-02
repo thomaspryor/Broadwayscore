@@ -8,7 +8,7 @@
   "showScoreExcerpt": "\"Aside from the tonic of Iglehart’s djinn, however, Aladdin is short on magic.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": 60,
-  "assignedScore": 60,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/aladdin-2014/time-out-new-york--adam-feldman_2026-01-27.html",
@@ -34,11 +34,11 @@
   "scoreConfidence": "medium",
   "extractedRating": "3/5",
   "llmScore": {
-    "score": 60,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -49,7 +49,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic's own rating of 60 places this squarely in mixed territory, and the phrase 'exactly what you'd expect' suggests competent but unremarkable execution without surprise or elevation. | GPT-4o: The original rating of 60 suggests a mixed review, and the excerpt describes the show as delivering what is expected, which indicates neither a strong recommendation nor a discouragement. | Gemini: The critic's own rating is 60, which falls squarely in the Mixed bucket. The quote suggests it meets expectations but doesn't exceed them, indicating a middle-ground assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic's own 60 rating and the phrase 'exactly what you'd expect' suggests competent but unremarkable execution that neither disappoints nor surprises. | GPT-4o: The original rating of 60 suggests a mixed review, and the quote indicates that the show meets expectations without exceeding them, aligning with a 'mixed' classification. | Gemini: The review states it delivers what you'd expect, which isn't necessarily a strong endorsement. The original rating of 60 also suggests a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,21 +59,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:13:02.190Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:08:25.272Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 57,
-    "previousVersion": "3.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 60,
-    "geminiScore": 60,
+    "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

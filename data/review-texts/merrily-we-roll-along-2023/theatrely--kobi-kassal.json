@@ -9,71 +9,56 @@
   "bwwExcerpt": "Further, it's hard to go wrong when you have Daniel Radcliffe, Jonathan Groff, and Lindsay Mendez above the title. The heart of the show lies with this trio whose genuine connection and truth shines out across the Hudson stage eight times a week. Groff, who has the charisma down pat, dazzles as Frank. When paired with Radcliffe’s Charley, filled with loveable charm, and Mendez’s Mary who is utterly gut-wrenching to watch as her true love slips away, this trio equals Broadway perfection.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 93,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
+    "score": 93,
     "confidence": "high",
     "range": {
       "low": 88,
-      "high": 95
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 88,
-      "performances": 95,
-      "direction": 90
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "if you want a healthy dose of Broadway serotonin, get thee to the Hudson immediately",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Some true theatre magic is happening on that stage, and for that we will forever be grateful",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "this trio equals Broadway perfection",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The reviewer uses superlative language throughout ('Broadway perfection', 'true theatre magic', 'tour de force') and explicitly urges readers to see the show immediately, indicating unqualified enthusiasm.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review is overwhelmingly positive with superlatives throughout ('Broadway perfection', 'tour de force', 'true theatre magic') and ends with an explicit recommendation to 'get thee to the Hudson immediately', indicating this is a must-see production. | GPT-4o: The review is overwhelmingly positive, highlighting the exceptional performances, direction, and production quality. The critic uses strong language to convey that this revival is a must-see, describing it as 'Broadway perfection' and 'theatre magic.' | Gemini: The review is overwhelmingly positive, using phrases like \"Broadway perfection\" and \"true theatre magic.\" The explicit recommendation to \"get thee to the Hudson immediately\" and the overall tone indicate a rave review.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:36:28.929Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3393,
-    "outputTokens": 345,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:03.759Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 85,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "For the entirety of the almost two hour and forty five minute run time, all 970 audience members seated at the Hudson Theatre for Merrily We Roll Along are quietly attentive as they behold a true Sondheim classic, reborn.",

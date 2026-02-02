@@ -9,42 +9,26 @@
   "showScoreExcerpt": "“There’s a certain kind of numbness that sets in when you’re stuck in a theater and you realize that the characters up onstage are going to keep playing the same scene, over and over again, for the rest of the evening.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/i-need-that-broadway",
   "originalScore": null,
-  "assignedScore": 23,
+  "assignedScore": 44,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 23,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 15.5,
-      "high": 30.5
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 25
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "There's a certain kind of numbness that sets in when you're stuck in a theater",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "characters up onstage are going to keep playing the same scene, over and over again",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "numbness that sets in when you’re stuck in a theater",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic describes a deeply negative theater experience characterized by repetitiveness, audience numbness, and feeling 'stuck,' indicating a clear pan of the production. | GPT-4o-mini: The review expresses a strong sense of dissatisfaction and boredom with the repetitive nature of the performance, indicating a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically dismantles the play as repetitive, clichéd, and poorly written, comparing it to kids bashing action figures together and concluding that no actor can make it work when the play is 'phoning it in.' | GPT-4o: The review is overwhelmingly negative, criticizing the play for its repetitive and simplistic conflict, lack of character depth, and reliance on clichés. The critic suggests that the play is phoning it in and does not recommend it. | Gemini: The review is overwhelmingly negative, criticizing the writing, characters, and overall quality of the play. The reviewer clearly states that even Danny DeVito's performance cannot save the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:21:43.104Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:11.933Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 23,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
+    "claudeScore": 42,
     "openaiScore": 20,
-    "scoreDelta": 5,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "bwwExcerpt": "In Theresa Rebeck’s I Need That — which makes its 100-minute run time feel as stretched out as the waistband of an old pair of sweatpants — Danny DeVito is Character B, or Sam. His daughter, Lucy DeVito, is also his daughter onstage, a.k.a. Character A, or Amelia. Sam, a big fan of old sweatpants, isn’t quite a hoarder, but he’s close. He doesn’t go outside, his house is bursting with heaps and heaps of “junk” (according to Amelia) or “treasure” (according to him), and it’s bad enough that the n",
   "bwwThumb": "Meh",

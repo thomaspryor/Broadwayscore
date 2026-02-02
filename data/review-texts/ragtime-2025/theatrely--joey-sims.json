@@ -16,64 +16,49 @@
     "score": 78,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 55,
-      "music": 88,
-      "performances": 85,
-      "direction": 45
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this revival remains expertly cast, gorgeously sung and, for all its imperfections, still deeply powerful",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "All are superb, just faultless",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "deBessonet's physical staging has not grown alongside these performers",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite significant staging flaws and some dated script elements, the critic emphasizes the production's continued power, superb performances, and gorgeous music, concluding with hope stirring again.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges significant flaws in staging and sets but emphasizes the production's strengths in casting, vocals, and emotional power, ultimately finding it worthwhile despite not matching its previous incarnation. | GPT-4o: The review acknowledges some flaws in the staging and character depth but ultimately praises the performances and music, recommending the show for its powerful impact and expert casting. | Gemini: The review acknowledges flaws in the staging and character development but praises the cast, music, and overall power of the production, ultimately recommending it despite its imperfections.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:01:30.117Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3266,
-    "outputTokens": 342,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:12:45.010Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sourceMethod": "playwright",
   "scoreSource": "extracted-strong-negative",

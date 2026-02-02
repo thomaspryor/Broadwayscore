@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging limitations in sophistication and innovation, the critic clearly predicts success and highlights the show's entertaining spirit, indicating a positive recommendation for its intended audience. | GPT-4o: The review acknowledges that the show may not be as imaginative or sophisticated as others, but highlights its comic spirit and potential popularity, suggesting a positive recommendation despite some reservations. | Gemini: The review suggests the show will be a 'popular hit' due to its 'ebullient comic spirit,' indicating a positive experience, although it acknowledges it's not the 'most sophisticated entertainment,' suggesting reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear positive recommendation despite acknowledging it's not sophisticated - critic sees it as entertaining and predicts success with its intended audience. | GPT-4o: The review acknowledges limitations in sophistication but highlights the show's comic spirit and potential popularity, indicating a positive recommendation with some reservations. | Gemini: The review suggests the show is enjoyable and likely to be a hit, but also notes it's not the most sophisticated, indicating a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:11:22.719Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:05:34.788Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 71,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 73,

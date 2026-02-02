@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "The madcap World War II comedy from London, which opened Thursday night at the Golden Theatre, is an often tiring wallop of frenetic hyperactivity. There’s ample cleverness and some witty lines, but the Red Bull tweeness gets grating.",
@@ -19,69 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 48,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 52
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 55,
-      "music": 62,
-      "performances": 70,
-      "direction": 45
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "an often tiring wallop of frenetic hyperactivity",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "I found the story absorbing; the yuks, abusive",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "for some, it will be too much",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite acknowledging some clever elements and strong individual performances, the critic finds the overall production exhausting and grating, with more criticism than praise and a warning that it may be 'too much' for audiences.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges clever writing and good performances but finds the show 'tiring,' 'grating,' and 'too much,' suggesting neither strong recommendation nor complete dismissal. | GPT-4o: The review highlights both cleverness and wit but also criticizes the show for being overly frenetic and tiring. The critic appreciates some aspects like the absorbing story and certain performances but finds the overall execution grating and overly silly. | Gemini: The review highlights both positive and negative aspects. While there's cleverness and an absorbing story, the reviewer finds the hyperactivity tiring and the humor abusive, suggesting a mixed experience overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:47:52.531Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3362,
-    "outputTokens": 338,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:14.187Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 45,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (47 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 47,

@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Theatergoers thirsty for something festive, fresh and funny — which is to say, just about all lovers of theater who have endured the drought of the past 18 months — will find much to delight in at the Brooks Atkinson Theatre, where the musical “Six” has opened.",
@@ -18,38 +18,22 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 85,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "will find much to delight in",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "A wave of pure joy rippled across the theater",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "festive, fresh and funny",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review expresses clear enthusiasm with phrases like 'much to delight' and 'wave of pure joy,' indicating a strong positive recommendation despite being incomplete.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic clearly recommends the show with phrases like 'much to delight in' and describes 'a wave of pure joy' from the audience, though the truncated text prevents seeing the full assessment. | GPT-4o: The review is highly positive, emphasizing the joy and delight the show brings, and the critic's tone is enthusiastic about the production's return and execution. | Gemini: The review clearly recommends the show, highlighting its festive and funny nature, and suggesting it will delight theatergoers. The opening paragraph is very positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,27 +42,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:06:08.517Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2522,
-    "outputTokens": 313,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:38:50.963Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -18,67 +18,52 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
-      "music": 72,
-      "performances": 85,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a genre-busting celebration of musical storytelling that bursts with both hilarity and heart",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The pitch-perfect cast of five — who originated the roles in the acclaimed London production — operate like a well-oiled comedic machine",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's a pity that Mike Walker's sound mix in the Golden Theatre is so muddy because the audience is liable to miss some of the best lyrical jokes",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review consistently praises the performances, humor, and storytelling while noting some technical issues, but the overall tone is enthusiastic and recommending.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is highly positive about the performances, comedy, and creativity, but notes technical issues like muddy sound mix. The enthusiastic language about the cast being 'pitch-perfect' and the show being a 'celebration' indicates strong recommendation despite some flaws. | GPT-4o: The review praises the cast's comedic performance, the clever dialogue, and the engaging storytelling. Despite some technical issues with the sound mix, the overall tone is positive, highlighting the show's humor and heart. The truncation warning suggests caution, but the provided excerpts and context indicate a positive reception. | Gemini: The review is mostly positive, highlighting the humor, performances, and cleverness of the production. However, the truncated text and mention of a muddy sound mix suggest some reservations, preventing a higher score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:47:21.283Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3640,
-    "outputTokens": 369,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:33.138Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 82,

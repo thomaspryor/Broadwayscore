@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "The joy of the show is watching Radcliffe, Mendez, and Groff together, because they are quite visibly having the time of their performing lives.",
@@ -19,67 +19,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 95,
-      "performances": 88,
-      "direction": 78
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The most charming and delightful scene on Broadway right now",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "it's mainly still just as good it was in its luminous downtown incarnation",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "More general shortcomings of the book swing into view on Broadway far more than downtown",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite significant criticism of the book's structural weaknesses, the critic is clearly enchanted by the performances, Sondheim's music, and the overall production, calling it 'charming and delightful' and praising it as 'still just as good' as the acclaimed downtown version.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly recommends the show despite acknowledging flaws, praising the performances, chemistry, and Sondheim's material while noting specific issues with the Broadway transfer and book problems. | Gemini: The review is largely positive, highlighting the strong performances and Sondheim's music. However, it also points out some issues with the transfer to Broadway and shortcomings in the book, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:35:25.835Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4636,
-    "outputTokens": 367,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:13.020Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,

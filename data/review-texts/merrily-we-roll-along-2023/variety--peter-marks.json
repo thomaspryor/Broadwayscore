@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Maria Friedman, is a triumph of casting and conception that makes the case for this Sondheim musical more persuasively than any previous incarnation.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,55 +18,38 @@
   "showScoreExcerpt": "The production, directed by Maria Friedman, is a triumph of casting and conception that makes the case for this Sondheim musical more persuasively than any previous incarnation.",
   "needsScoring": true,
   "llmScore": {
-    "score": 88,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "triumph of casting and conception",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "makes the case for this Sondheim musical more persuasively than any previous incarnation",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review uses strong superlative language ('triumph') and positions this as the definitive production of the musical, indicating clear enthusiasm despite being a brief excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening with context about the show's commercial challenges, the critic calls this production 'a triumph' that makes the strongest case for the musical to date, indicating strong recommendation. | GPT-4o: The critic describes the production as a 'triumph' and highlights its persuasive power, indicating a strong recommendation to see the show. | Gemini: Despite the opening discussing the show's initial failure and critique of commercial theater, the review explicitly calls the current production a \"triumph\" and the most persuasive incarnation, indicating a rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:05:02.652Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2339,
-    "outputTokens": 285,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:42.104Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 88,
   "textWordCount": 93,
@@ -105,5 +88,21 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--trish-deitch.json",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (93 words)"
+  "contentTierReason": "Short text (93 words)",
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  },
+  "rescoreCompletedAt": "2026-02-02T00:34:42.104Z"
 }

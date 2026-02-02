@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that feels unnervingly relevant to today's world. The production crackles with tension and intelligence.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,58 +18,37 @@
   "showScoreExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that feels unnervingly relevant to today's world. The production crackles with tension and intelligence.",
   "needsScoring": true,
   "llmScore": {
-    "score": 82,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "powerhouse performance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "crackles with tension and intelligence",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "unnervingly relevant",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Strong praise for lead performance and production qualities with clear enthusiasm, though brief excerpt limits confidence in overall assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt contains strong praise for the lead performance and production quality, but with only one curated quote available, I'm scoring conservatively in the lower positive range. | GPT-4o: The review excerpt praises the performance and the production's tension and intelligence, suggesting a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review highlights a 'powerhouse performance' and describes the production as 'gripping' and full of 'tension and intelligence,' indicating a positive experience. However, due to the limited excerpt, a score in the middle of the 'Positive' range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:10:30.796Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2345,
-    "outputTokens": 288,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:18:46.947Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
@@ -102,5 +81,20 @@
     "Word count too low: 92 (min: 300)",
     "Show title not found in text"
   ],
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 88,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

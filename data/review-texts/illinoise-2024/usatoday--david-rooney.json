@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This gorgeous dance musical based on Sufjan Stevens' indie-folk song cycle captures the yearning spirit of the original album while expanding it into a deeply moving theatrical experience.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,59 +18,53 @@
   "showScoreExcerpt": "This gorgeous dance musical based on Sufjan Stevens' indie-folk song cycle captures the yearning spirit of the original album while expanding it into a deeply moving theatrical experience.",
   "needsScoring": true,
   "llmScore": {
-    "score": 85,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 88,
+      "music": null,
       "performances": null,
-      "direction": 82
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This gorgeous dance musical",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "deeply moving theatrical experience",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "captures the yearning spirit of the original album while expanding it",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong positive language throughout with words like 'gorgeous' and 'deeply moving' indicates clear recommendation despite being a brief excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Clear positive language with 'gorgeous' and 'deeply moving theatrical experience' indicates strong recommendation, though brief review suggests solid positive rather than rave territory. | GPT-4o: The review uses highly positive language, describing the show as 'gorgeous' and 'deeply moving,' indicating a strong recommendation. | Gemini: The review uses positive language like 'gorgeous' and 'deeply moving' indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:00:57.374Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2336,
-    "outputTokens": 304,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:17:40.299Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 92,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

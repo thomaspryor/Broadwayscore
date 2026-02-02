@@ -10,42 +10,26 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 45,
+    "score": 60,
     "confidence": "medium",
     "range": {
-      "low": 35,
-      "high": 55
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Taub can get a little too preachy and sanctimonious",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "the piece could use some extra drama",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "the piece still could use just a bit of judicious editing",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review criticizes the book writer as 'preachy and sanctimonious' and identifies multiple structural problems including lack of drama, predictable story, and need for editing, suggesting more problems than strengths.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Single excerpt shows clear criticisms (preachy writing, predictable structure, needs editing) but lacks any positive verdict or recommendation language. Given this is a curated quote and may not represent the full review sentiment, scoring conservatively in mixed range. | GPT-4o: The review highlights issues with the writing being preachy and lacking drama, suggesting a lack of engagement. The need for editing further indicates dissatisfaction, aligning with a negative verdict. | Gemini: The review points out flaws in the writing and suggests the piece could use more drama and editing, indicating a mixed assessment. The aggregator verdict also suggests a flat response.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,29 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:14:30.153Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2388,
-    "outputTokens": 338,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:57:05.988Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 50,
-    "scoreDelta": 2,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (49 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 49,

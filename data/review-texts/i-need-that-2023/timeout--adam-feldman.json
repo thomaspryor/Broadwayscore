@@ -17,57 +17,49 @@
     "score": 64,
     "confidence": "high",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 40
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "His vulnerable, hilarious performance is a certifiable gem",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "If only this treasure weren't so often lost in the piles that surround it",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "His vulnerable, hilarious performance is a certifiable gem.",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Strong praise for DeVito's performance is significantly undercut by criticism that the surrounding production buries this treasure, suggesting a mixed experience where one element shines but the overall show disappoints. | GPT-4o-mini: While the performance is highly praised, the overall production seems to suffer from significant issues, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises DeVito's performance as a 'certifiable gem' but clearly indicates the overall production buries this treasure in problems ('piles that surround it'). The 3/5 rating and 'Flat' aggregator verdict confirm this mixed assessment. | GPT-4o: The review praises DeVito's performance as a standout but suggests that the overall production is lacking. The critic's original rating of 3/5 and the aggregator context of being 'flat' support a mixed classification. | Gemini: The review praises DeVito's performance but suggests the overall production has issues, indicating a mixed assessment. The phrase \"lost in the piles that surround it\" implies significant flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T22:48:03.662Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:50:46.346Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
+    "geminiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/i-need-that-2023/timeout--adam-feldman_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:31:11.099Z",

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,38 +21,22 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 85,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "visually stunning staging filled with bravura performances",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "speaks, directly and eloquently, to the present moment",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "DeBessonet succeeds by getting out of the show's way",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Strong praise for direction, performances, and contemporary relevance with no negative caveats indicates clear positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the director's approach, describes the staging as 'visually stunning' with 'bravura performances,' and notes the show's contemporary relevance - all positive indicators, though the single excerpt warning necessitates conservative scoring. | GPT-4o: The excerpt praises the staging and performances, indicating a positive reception. The language suggests a strong recommendation, but due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review excerpt highlights the director's success and the visually stunning staging, suggesting a positive experience. However, due to the limited text and single excerpt, the score is placed in the middle of the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -61,19 +45,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:13:01.111Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2365,
-    "outputTokens": 315,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:13:15.339Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

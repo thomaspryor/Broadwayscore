@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "Disney Theatricals can let out a sigh of relief. Its “Lion King” franchise on cute animal puppets is safe. Very safe.",
@@ -19,67 +19,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 38,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 32,
-      "high": 44
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 25,
-      "music": 30,
-      "performances": 45,
-      "direction": 35
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "By the time the second act rolls around, the acrobats have been turned into filler by director Jessica Stone to prop up a story with little drama going on",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Because Gustin and McCalla are stuck playing such colorless characters",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It's a moving effect that is never repeated with any of the other many puppet animals that follow",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review criticizes fundamental elements including colorless characters, lack of drama, disappointing puppets compared to superior shows, and direction that turns performers into filler, with only isolated praise for one puppet sequence.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic praises specific elements like Silver Star's aerial ballet and opening circus effects but finds the story lacking in drama, characters colorless, and key puppet work disappointing compared to superior shows. | Gemini: The review highlights some impressive elements like the horse performance and initial acrobatics, but criticizes the lack of drama, character development, and the underwhelming portrayal of other animals. It neither strongly recommends nor discourages seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:36:32.520Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3244,
-    "outputTokens": 369,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:20.531Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 45,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 47,

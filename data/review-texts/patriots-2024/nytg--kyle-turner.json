@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"It’s an easily digestible version of history\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/patriots-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 69,
   "source": "show-score",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Morgan’s Wikipedia-esque play does its best to track the perilous tango between oligarchy and politics, but it’s built around the assumption that it’s amusing and ironic that one man who created a monster got chewed up and spit out by it, and the rest of us have to pay.",
@@ -20,67 +20,51 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 70,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Morgan's Wikipedia-esque play does its best to track the perilous tango between oligarchy and politics, but it's built around the assumption that it's amusing and ironic",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Rupert Goold enlivens a mediocre play into a fairly entertaining spectacle",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Rupert Goold's electric direction elevates the material to make history feel like a blur of lights and sound",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review calls the play 'mediocre' and 'oversimplified' but praises Goold's 'electric direction' that 'elevates the material' into 'fairly entertaining spectacle,' suggesting qualified recommendation despite script weaknesses.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic explicitly calls the play 'mediocre' and 'oversimplified' but credits the director with making it 'fairly entertaining' and 'electric.' This is a classic mixed review where production values rescue weak material. | Gemini: The review acknowledges the play's weaknesses (oversimplified, one-dimensional characters) but praises the direction for making it an entertaining spectacle. This suggests a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:51:25.799Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3043,
-    "outputTokens": 395,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:56.722Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 70,
-    "scoreDelta": 8,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "archivePath": "data/archives/reviews/patriots-2024/nytg--kyle-turner_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:29:25.931Z",

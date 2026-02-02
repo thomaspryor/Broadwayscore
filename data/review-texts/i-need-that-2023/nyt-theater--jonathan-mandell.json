@@ -14,59 +14,51 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 42,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 30.5,
-      "high": 53.5
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 23,
+      "book": null,
       "music": null,
-      "performances": 60,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Its plot is paltry. Its insights are pat. It promises more laughs than it delivers.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "does deliver Danny DeVito, and for some, that will be enough",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "the slightest of comedies",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review systematically criticizes the play's fundamental elements (plot, insights, laughs) while suggesting only DeVito's star power might appeal to some viewers, indicating weak recommendation overall. | GPT-4o-mini: The review is predominantly negative, highlighting significant weaknesses in the script while only offering a mild acknowledgment of Danny DeVito's presence as a redeeming factor. | Note: Models differed by 13 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The review uses consistently negative descriptors like 'slightest,' 'paltry,' and 'pat,' and explicitly states the play fails to deliver on its promises, indicating clear disappointment without recommendation. | GPT-4o: The review highlights several negative aspects of the play, including a weak plot and unfulfilled comedic potential, indicating a clear negative recommendation. | Gemini: The review uses negative language to describe the play's plot, insights, and humor, indicating a negative overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:15:41.446Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:49.111Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 35,
-    "scoreDelta": 13,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "fullText added after excerpt-based scoring",

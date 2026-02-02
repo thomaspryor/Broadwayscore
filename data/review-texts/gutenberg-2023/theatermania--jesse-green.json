@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a loving parody of terrible musicals, but it's also genuinely touching in its portrayal of two dreamers who refuse to give up on their vision.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,14 +17,14 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a loving parody of terrible musicals, but it's also genuinely touching in its portrayal of two dreamers who refuse to give up on their vision.",
   "llmScore": {
-    "score": 76,
+    "score": 58,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 53,
+      "high": 63
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review balances critique of the parody element with genuine praise for the emotional core, indicating a positive recommendation for a show that works on multiple levels. | GPT-4o: The review highlights the show as a loving parody and genuinely touching, indicating a positive recommendation despite the parody aspect. | Gemini: The review highlights both the comedic and touching aspects of the show, suggesting a positive overall experience.",
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: This appears to be a website error message rather than an actual review, making it impossible to assess the critic's recommendation. | Gemini: The review text is a placeholder message indicating that the review is unavailable. Therefore, it's impossible to determine the critic's recommendation, but it defaults to mixed.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:31:21.807Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:37:28.926Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "claudeScore": 60,
+    "openaiScore": null,
+    "geminiScore": 55,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",

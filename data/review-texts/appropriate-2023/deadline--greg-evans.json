@@ -9,64 +9,56 @@
   "bwwExcerpt": "Pay attention to those loud, annoying cicadas – they seem to have a story to tell. At least they do in Branden Jacobs-Jenkins superb, marvelously performed Appropriate, the Second Stage production opening tonight at the Helen Hayes Theater with one of the best casts – headed by an astonishing Sarah Paulson – on Broadway. A blistering family drama directed by Lila Neugebauer (easily matching her exemplary work in 2018’s The Waverly Gallery), Appropriate is a wicked cacophony of nerve-wrenching my",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 91,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 91,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 86,
+      "high": 96
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "A blistering family drama directed by Lila Neugebauer (easily matching her exemplary work in 2018's The Waverly Gallery)",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "wicked cacophony of nerve-wrenching mystery, old resentments and laugh-out-loud comedy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the latter all the more remarkable coming, as it does, within a story about the darkest horrors of America's legacies",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong positive language throughout with 'blistering,' 'exemplary,' and 'remarkable,' praising both direction and the play's ability to blend comedy with serious themes, with no negative caveats. | GPT-4o-mini: The review expresses strong enthusiasm for the direction and the blend of drama and comedy, indicating a must-see production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout - 'superb', 'astonishing', 'one of the best casts on Broadway', 'exemplary work', and describes the ending as having 'remarkable emotional force and stunning stagecraft', indicating a clear must-see recommendation. | GPT-4o: The review uses highly enthusiastic language, praising the direction, cast, and emotional impact of the play, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"superb\" and \"marvelously performed\" and praises the cast, indicating a strong recommendation. The additional context further emphasizes the positive aspects of the production.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:02.463Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:06.535Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 90,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“...’Appropriate’ provides an ending that’s remarkable in its emotional force and stunning in its stagecraft. Neugebauer, Jacobs-Jenkins and their very fine cast resurrect the spirits of history and leave them abandoned, clamorous, implacable and going nowhere anytime soon.”",

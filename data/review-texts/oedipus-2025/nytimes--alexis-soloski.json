@@ -6,7 +6,7 @@
   "url": "https://www.nytimes.com/2025/11/13/theater/oedipus-review-strong-manville.html",
   "publishDate": "November 13, 2025",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "designation": "Critics_Pick",
   "dtliThumb": "Up",
   "bwwThumb": "Up",
@@ -15,67 +15,51 @@
   "bwwExcerpt": "Critic's Pick. Icke's change in timeline trades catastrophe for suspense, ontological disaster for down-to-the-cuticles nail biting. Is this a fair exchange? Maybe. Is it electrifying? God, yes. The results are slick, sleek, mordant. It's a spine tingler, if not quite the ethics tangler of the original.",
   "showScoreExcerpt": "Criticâs Pick: \"Is it electrifying? God, yes. The results are slick, sleek, mordant. Itâs a spine tingler, if not quite the ethics tangler of the original.\"",
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Is it electrifying? God, yes. The results are slick, sleek, mordant. It's a spine tingler",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "this adaptation's political focus and provocations are original and bracing",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Manville dismantles this woman's carefully constructed identity, thread by thread, cell by cell",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic is clearly enthusiastic about the production despite some reservations about the adaptation choices, praising it as 'electrifying' and 'original and bracing' with particular acclaim for Manville's performance.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the production as 'electrifying' and 'slick, sleek, mordant' while acknowledging it's 'not quite the ethics tangler of the original.' Despite some reservations about departures from Sophocles, the overall assessment is positive with strong praise for performances and direction. | Gemini: The review is largely positive, highlighting strong performances and an electrifying adaptation, but also notes some flaws and changes that may not appeal to all viewers. Therefore, it's a positive recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:43:10.066Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3998,
-    "outputTokens": 366,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:56:08.673Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "scoreDelta": 8,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "garbageFullText": "Icke’s change in timeline trades catastrophe for suspense, ontological disaster for down-to-the-cuticles nail biting. Is this a fair exchange? Maybe. Is it electrifying? God, yes. The results are slick, sleek, mordant. It’s a spine tingler, if not quite the ethics tangler of the original.",
   "garbageReason": "No theater-related keywords found",

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The immersive musical about Imelda Marcos is a dazzling spectacle that transforms the Broadway Theatre into a disco-era dance club, though the show's political complexities sometimes get lost in the party atmosphere.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,55 +18,38 @@
   "showScoreExcerpt": "The immersive musical about Imelda Marcos is a dazzling spectacle that transforms the Broadway Theatre into a disco-era dance club, though the show's political complexities sometimes get lost in the party atmosphere.",
   "needsScoring": true,
   "llmScore": {
-    "score": 65,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 50,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "dazzling spectacle that transforms the Broadway Theatre into a disco-era dance club",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "political complexities sometimes get lost in the party atmosphere",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review praises the production design and spectacle but critiques the show's handling of its serious subject matter, indicating a mixed experience with more good than bad.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges the production as a 'dazzling spectacle' and 'propulsive and glittering ball' but raises concerns that the political complexities 'get lost in the party atmosphere,' suggesting admiration for the theatrical achievement tempered by reservations about the show's handling of serious subject matter. | GPT-4o: The review describes the show as a 'dazzling spectacle' with a 'propulsive and glittering ball,' indicating a strong recommendation despite some political complexities being overshadowed by the party atmosphere. | Gemini: The review highlights the show as a \"dazzling spectacle\" but also notes that \"political complexities sometimes get lost,\" indicating a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:59:04.951Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2348,
-    "outputTokens": 289,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:16.497Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 65,
   "textWordCount": 901,
@@ -105,5 +88,21 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--naveen-kumar.json",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (117 words)"
+  "contentTierReason": "Short text (117 words)",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
+  "rescoreCompletedAt": "2026-02-02T00:24:16.497Z"
 }

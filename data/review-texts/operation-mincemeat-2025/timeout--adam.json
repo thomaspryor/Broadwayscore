@@ -8,7 +8,7 @@
   "fullText": null,
   "dtliExcerpt": "If this looks to you like actors having fun, there’s a good chance you’ll dig what Operation Mincemeat is grinding. To me, it looks like actors pushing too hard. They don’t stop nudging you with their elbows, and while moments of that can tickle—I misled more than once at Hodgson’s bluff obliviousness—two and a half hours of it gets a little exhausting.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 61,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
@@ -18,11 +18,11 @@
   "contentTier": "excerpt",
   "wordCount": 0,
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges some enjoyable moments but criticizes the overall execution as exhausting and overly forced, suggesting a lukewarm recommendation at best. | GPT-4o: The review suggests that while there are enjoyable moments, the overall experience is tiring and the actors' performances feel forced. This indicates a mixed reception with some positive aspects. | Gemini: The review acknowledges potential enjoyment for some viewers but ultimately finds the performance exhausting, indicating a mixed recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show may work for some audiences but expresses personal reservations about the performances being over-the-top and the length being exhausting, indicating a lukewarm assessment. | GPT-4o: The review highlights both positive and negative aspects, noting some enjoyable moments but also describing the performance as exhausting. The single excerpt suggests a mixed experience overall. | Gemini: The review presents a mixed opinion. While some may enjoy the actors' energy, the reviewer finds it exhausting after a while, suggesting a middle-ground recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,20 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:59:11.143Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:30:50.126Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
+    "claudeScore": 60,
+    "openaiScore": 60,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

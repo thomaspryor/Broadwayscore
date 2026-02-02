@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,54 +21,53 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 35,
-    "confidence": "low",
+    "score": 43,
+    "confidence": "medium",
     "range": {
-      "low": 25,
-      "high": 45
+      "low": 38,
+      "high": 48
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 30,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Putin is played, largely, for comedy",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "jokes are met with silence",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The excerpt suggests audience rejection of the comedy, with jokes failing to land, indicating significant problems with the production's effectiveness.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The excerpt describes failed comedy with silent audience reception, suggesting poor execution. However, this is only one curated quote and may not represent the full review verdict, so I'm scoring conservatively within the negative range. | GPT-4o: The excerpt suggests that the comedic elements of the show are not landing with the audience, which is a significant issue for a production that relies on humor. The lack of laughter indicates a failure to engage the audience, leading to a negative assessment. | Gemini: The excerpt suggests the comedic elements of the play are not landing well with the audience, indicating a mixed reception. The silence following jokes suggests a lack of engagement or enjoyment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:10:48.403Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2321,
-    "outputTokens": 267,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:44.732Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 35,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

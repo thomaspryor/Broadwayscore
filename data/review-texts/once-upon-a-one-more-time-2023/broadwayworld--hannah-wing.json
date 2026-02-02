@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ONCE-UPON-A-ONE-MORE-TIME-2023",
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 68,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 78,
-      "performances": 85,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This cast is worthy of Broadway",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "This modern fairytale is missing something that even the magic of a fantastic cast and high-quality production might not be able to fix",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Once Upon a One More Time is close to 'happily ever after,' but it has some workshopping to do before it becomes a fairy tale fit for Broadway royalty",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The reviewer praises the cast performances and musical numbers highly but identifies significant structural problems with the story that prevent a full recommendation, concluding it needs more work before being Broadway-ready.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the cast and production quality but identifies significant story problems, concluding the show needs more work before being Broadway-ready. | GPT-4o: The review praises the cast and the high-energy numbers but notes significant shortcomings in the story and inclusivity, suggesting it needs workshopping before being Broadway-ready. | Gemini: The review praises the cast, choreography, and vocal performances, particularly in the high-energy numbers. However, it also notes that the story needs more inclusion and workshopping before it's ready for Broadway royalty, indicating a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:45:33.626Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3080,
-    "outputTokens": 365,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:40.741Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 62,
+    "openaiScore": 66,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "sources": [
     "bww-roundup"

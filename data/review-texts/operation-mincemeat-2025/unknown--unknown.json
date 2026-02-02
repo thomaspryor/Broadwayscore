@@ -22,66 +22,45 @@
   "wordCount": 0,
   "llmScore": {
     "score": 62,
-    "confidence": "low",
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 70
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 58,
+      "music": null,
       "performances": null,
-      "direction": 65
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I can't say the score is destined for greatness",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "rigorously silly comic staging",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "facilitates a clever rhyme here and there",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This fragment shows mixed sentiment with modest praise for staging and occasional clever moments, but explicitly states the score won't be great, suggesting a qualified, lukewarm response.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly states the score isn't destined for greatness but acknowledges positive elements like clever rhymes and comic staging. This suggests a lukewarm assessment with both criticisms and praise, placing it in mixed territory. | GPT-4o: The review excerpt suggests a mixed opinion, acknowledging some cleverness and comic elements but not indicating overall greatness. The single excerpt and text quality warning suggest caution, leading to a middle-range score within the Mixed bucket. | Gemini: The review excerpt suggests the score isn't great, but it does facilitate some clever moments and staging. This indicates a mixed reaction, not strongly positive or negative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:48:53.038Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2339,
-    "outputTokens": 318,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:02.485Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": 62,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

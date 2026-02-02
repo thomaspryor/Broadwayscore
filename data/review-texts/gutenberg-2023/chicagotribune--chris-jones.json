@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "dtliThumb": "MEH",
   "dtliExcerpt": "But the reality here is that this is a show relying on two skilled comic actors and their contrasting relationship. These two stars could do this kind of thing in their sleep, should they so choose, and I suspect their challenge will come from messing with each other and keeping everything fresh.",
@@ -18,60 +18,51 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 64,
-    "confidence": "high",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 63,
+      "book": null,
       "music": null,
-      "performances": 70,
-      "direction": 60
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "certainly knows how to structure narrative gags",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "does have a little scenic climax that's well worth waiting for",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "this is a show relying on two skilled comic",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The review acknowledges structural competence and some worthwhile moments but the excerpt cuts off mid-sentence and lacks a clear overall recommendation, suggesting measured praise without strong enthusiasm. | GPT-4o-mini: The review acknowledges some strengths in humor and structure but suggests a reliance on comic performances without strong overall enthusiasm.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic acknowledges the stars' skills and some effective moments but finds the show derivative, overly crude in spots, and notes humor that will likely divide audiences. The lukewarm conclusion suggests it's mainly for existing fans. | Gemini: The review acknowledges flaws (crude humor, derivative nature) but ultimately suggests it's enjoyable, especially for fans of the stars. The final sentence indicates a positive, albeit qualified, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:04:34.473Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:56.618Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "scoreDelta": 3,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,

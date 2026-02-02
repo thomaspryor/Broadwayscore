@@ -9,71 +9,56 @@
   "bwwExcerpt": "Halfway through the first act of this Broadway revival of Merrily We Roll Along, Daniel Radcliffe sits on the set of a television talk show and launches into a frenetic performance of the song Franklin Shepard, Inc. He sings, he shouts, he swivels and writhes in his chair, he imitates a telephone and the buzz of an intercom and the patter of Hollywood agents. He talks like a machinegun, he makes you laugh, he belts out a jazzy chorus, he fills the stage and he never leaves his chair. It’s the gr",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": "4/5 stars",
-  "assignedScore": 65,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 80
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "He sings, he shouts, he swivels and writhes in his chair, he imitates a telephone and the buzz of an intercom and the patter of Hollywood agents",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "he makes you laugh, he belts out a jazzy chorus, he fills the stage and he never leaves his chair",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's the gr",
-        "sentiment": "neutral",
-        "strength": 1
-      }
-    ],
-    "reasoning": "The excerpt enthusiastically praises Daniel Radcliffe's performance with vivid, energetic language, but cuts off mid-sentence before completing the overall assessment, making it impossible to determine the critic's full verdict on the production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and enthusiastic description of Radcliffe's performance suggest positive sentiment, but with only one truncated excerpt ending mid-sentence, scoring conservatively within Positive range. | GPT-4o: The review excerpt highlights a standout performance by Daniel Radcliffe, suggesting an engaging and entertaining production. The original 4/5 star rating indicates a positive reception, though the single excerpt and lack of full context suggest scoring conservatively within the positive range. | Gemini: The review excerpt describes a dynamic and engaging performance by Daniel Radcliffe, suggesting a positive experience. The 4/5 star rating further supports a positive classification, although the single excerpt and truncated text warrant a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:36:18.787Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2431,
-    "outputTokens": 373,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:43.912Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 79,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dateUnknown": true,

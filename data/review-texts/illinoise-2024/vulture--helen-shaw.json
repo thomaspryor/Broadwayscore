@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Illinoise is a dance musical that uses Sufjan Stevens's 2005 album Illinois as its score, and it's a gorgeous, melancholy meditation on place, memory, and the stories we tell about ourselves.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,33 +18,22 @@
   "showScoreExcerpt": "Illinoise is a dance musical that uses Sufjan Stevens's 2005 album Illinois as its score, and it's a gorgeous, melancholy meditation on place, memory, and the stories we tell about ourselves.",
   "needsScoring": true,
   "llmScore": {
-    "score": 80,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 85
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 85,
+      "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "gorgeous, melancholy meditation",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "uses Sufjan Stevens's 2005 album Illinois as its score",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The descriptive language 'gorgeous' and 'melancholy meditation' suggests strong appreciation, but this appears to be a very brief excerpt lacking explicit recommendation language.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic describes the show as 'gorgeous' which is clearly positive praise, though the brief excerpt lacks explicit recommendation language or detailed evaluation. | GPT-4o: The review describes the show as 'gorgeous' and a 'meditation,' indicating a deeply positive impression and strong recommendation. | Gemini: The review uses positive language like \"gorgeous\" and \"meditation,\" suggesting a positive experience, but lacks the enthusiasm for a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,19 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:01:06.850Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2348,
-    "outputTokens": 284,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:17:51.182Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

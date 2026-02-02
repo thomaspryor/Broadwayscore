@@ -7,15 +7,15 @@
   "publishDate": "November 3, 2023",
   "fullText": "Theresa Rebeck’s latest theatrical venture is one of her limpest — a frustratingly monotone, predictable and seasonless dose of comfort theater. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “I Need That.” What does it say when a man cannot remember his siblings, but can recite with excruciating detail the history of a 67-year-old bottle cap buried in a pile of random junk? It might suggest that the memory of a simple piece of metal (a keepsake from selling soda on Friday nights at church bingo) provides more comfort than family. In veteran playwright Theresa Rebeck’s new dud of a play “I Need That,” aluminum is thicker than blood. The show follows a stubborn older man named Sam (78-year-old Danny DeVito) who amasses domestic junk — magazines, board games, records — much to the chagrin of both the health department and his only child Amelia (Lucy DeVito, the screen favorite’s actual daughter). Rebeck plops each character on opposite ends of the play’s sole conflict — to keep or not to keep, that’s their only question. The two repeat the same argument for the vast majority of the play; each scene resembles the previous one. Rebeck lazily shoots darts at dramatic stakes — the threat of home seizure from the aforementioned government agency; Sam’s best friend Foster’s (Ray Anthony Thomas) habit of pilfering and pawning treasures found in Sam’s trash — but neither stick. Sam hardly cares and since the ever-watchable, ever-hammy Danny DeVito is the singular lifeblood of this play, neither do we. It’s not that the production is terrible by any means. It remains humorous and heartwarming at the right times, but with all the thrill of TV dinner meatloaf: low effort, over quickly and indistinguishable on the inside.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 41,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 45,
+    "score": 41,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -23,26 +23,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 40
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's not that the production is terrible by any means",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "with all the thrill of TV dinner meatloaf: low effort, over quickly and indistinguishable on the inside",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It remains humorous and heartwarming at the right times",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges some positive qualities but delivers a damning comparison to TV dinner meatloaf, suggesting mediocrity and lack of effort that makes the production hard to recommend.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic calls it a 'dud' and 'limp,' criticizing it as predictable and repetitive, though acknowledges it's 'not terrible by any means' and has some humor and heart, keeping it in the negative rather than pan range. | GPT-4o: The review describes the play as 'one of her limpest' and a 'dud,' indicating a negative assessment. While acknowledging some humor and heartwarming moments, it ultimately suggests the production is low effort and not worth seeing. | Gemini: The review acknowledges humorous and heartwarming moments, but ultimately describes the play as \"limpest\" and \"low effort,\" indicating a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,20 +35,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:43.390Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:43.216Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "dtliExcerpt": "It’s not that the production is terrible by any means. It remains humorous and heartwarming at the right times, but with all the thrill of TV dinner meatloaf: low effort, over quickly and indistinguishable on the inside.",
   "sources": [

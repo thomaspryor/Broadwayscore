@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and concluding praise ('balm and a tonic') clearly indicate a positive recommendation, despite some critiques of the score compared to other Menken works. | GPT-4o: The review is highly positive, praising the production's humor, relevance, and performances. The original 4/5 star rating strongly suggests a positive recommendation. | Gemini: The critic gives the show 4 out of 5 stars and explicitly states that it \"remains...the most adult-friendly of Disney's screen-to-stage confections\". While not a rave, it's a clear positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating combined with language like 'successful stage adaptation,' 'balm and tonic,' and praise for performances and direction clearly indicates a positive recommendation, though not quite reaching rave territory. | GPT-4o: The review is highly positive, praising the production's humor, performances, and relevance. The critic's 4/5 star rating aligns with a strong recommendation to see the show. | Gemini: The critic gives the show 4 out of 5 stars and describes it as a \"buoyant diversion\" that is still a \"balm and a tonic.\" While noting some elements are stronger than others, the overall tone is positive and recommends seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,12 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:11:57.371Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:06:56.041Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "3.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 80,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,59 +21,53 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "her performance alone brings sufficient pleasure to make this trip to Britney-land worth a visit",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The musical's primary assets are its splendid cast and the silly smartness of the integration of song and story",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Ms. Simard, is one of Broadway's unsung, or undersung, treasures",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic explicitly recommends seeing the show ('worth a visit') and praises both the cast and the integration of songs, with particular enthusiasm for Jennifer Simard's performance.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly states the show is 'worth a visit' based on the cast performance, but the single excerpt warning and focus on one performer suggests this may be a qualified recommendation rather than full endorsement. | GPT-4o: The review highlights the strong performances and clever integration of song and story, particularly praising Jennifer Simard's role. The phrase 'worth a visit' suggests a positive recommendation, though the single excerpt limits full context. | Gemini: The review highlights the strength of the cast, particularly Jennifer Simard, and explicitly states that her performance makes the show \"worth a visit.\" Given the single excerpt warning, a score in the middle of the positive range is appropriate.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:08:50.741Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2401,
-    "outputTokens": 355,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:01.738Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

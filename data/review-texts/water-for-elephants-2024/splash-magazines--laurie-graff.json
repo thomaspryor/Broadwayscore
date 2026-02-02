@@ -9,71 +9,56 @@
   "bwwExcerpt": "They fly through the air with the greatest of ease… literally. Right in front of your eyes is the show within the show – the circus. The most astonishing artistry included acrobatics, hand-balancing, tossing partners, aerials, gymnastics, trapeze, clowning, juggling and pole dancing. All interwoven into a big bang of a Broadway book with music and choreography. It was stunning to see the exquisite work, to hold your breath as the kinkers performed their magic moves. And the puppets. The menageri",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 88,
+    "score": 74,
     "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The most astonishing artistry",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It was stunning to see the exquisite work",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "big bang of a Broadway book with music and choreography",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong superlatives like 'astonishing artistry' and 'stunning' indicate clear enthusiasm and recommendation, though the review appears cut off mid-sentence.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear admiration for the performances and spectacle with words like 'stunning', 'astonishing artistry', and 'exquisite work'. However, given this is only one curated excerpt and the text cuts off mid-sentence, I'm scoring conservatively in the lower positive range. | GPT-4o: The review excerpt describes the show as 'stunning' and highlights the 'exquisite work' of the performers, indicating a strong positive reaction. Despite the single excerpt warning, the language suggests a highly enthusiastic recommendation. | Gemini: The review excerpt is overwhelmingly positive, highlighting the stunning artistry and exquisite work. While it's only a single excerpt, the enthusiastic tone suggests a recommendation, albeit with some reservations due to the limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:36:16.123Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2423,
-    "outputTokens": 319,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:49.089Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "scoreDelta": 8,
+    "claudeScore": 72,
+    "openaiScore": 88,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",

@@ -9,64 +9,56 @@
   "showScoreExcerpt": "\"Among the teachings of his Jewish upbringing is empathy, and even sitting outnumbered in that racist, antisemitic gathering he struggles to remain true to those values. That struggle provides Edelman with a mighty intellectual conundrum, a worthy and funny debate of the heart and a show that can stand proud on Broadway.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "mighty intellectual conundrum",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "worthy and funny debate of the heart",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "show that can stand proud on Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic praises the show's intellectual depth and declares it worthy of Broadway with confidence, indicating a clear positive recommendation despite this being an excerpt. | GPT-4o-mini: The review expresses a strong appreciation for the show's themes and its ability to engage audiences, indicating a clear recommendation despite a lack of specific details.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'can stand proud on Broadway' indicates a positive recommendation, describing it as 'worthy and funny' with substantial intellectual content, though the single excerpt limits confidence in the full review's verdict. | GPT-4o: The excerpt describes the show as 'worthy and funny' and capable of standing 'proud on Broadway,' indicating a positive reception. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt indicates a positive assessment, calling the show 'worthy and funny' and stating it 'can stand proud on Broadway.' Given that this is the only excerpt, a conservative score in the positive range is appropriate.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:14:59.319Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:12.469Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

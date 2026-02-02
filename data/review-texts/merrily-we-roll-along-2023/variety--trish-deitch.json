@@ -9,64 +9,57 @@
   "showScoreExcerpt": "“What makes the musical hard for first-time audiences is the fact that it’s like a jigsaw puzzle doled out one piece at a time, so you don’t see a complete picture until the last piece is placed and the show is over...That’s why ‘Merrily We Roll Along’ is art and not comfortably commercial theater.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/merrily-we-roll-along-broadway",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 76,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 52,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 45,
-      "high": 60
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Commercial theater — theater written mostly to entertain audiences, for the purpose of making money — is the enemy",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "It's not a show written to easily entertain",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "flopped after 16 performances on Broadway in 1981",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This excerpt appears to be analytical commentary about the show's philosophy and history rather than a review of the current production, making it impossible to determine the critic's recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic frames the show's complexity and non-commercial nature as artistic virtues rather than flaws, suggesting appreciation for what makes it challenging and worthwhile, though acknowledging it's not easily accessible. | GPT-4o: The review acknowledges the show's artistic value but highlights its challenging structure, suggesting it's not easily entertaining. This indicates a mixed recommendation, appreciating the art but recognizing it may not appeal to all audiences. | Gemini: The review positions the show as 'art' rather than 'comfortably commercial theater,' suggesting it's worth seeing despite its challenging nature. The reviewer implies that the show's artistic merit outweighs its difficulty for some audiences.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:36:46.231Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2438,
-    "outputTokens": 332,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:46.248Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
   "rescoreReason": "low-conf: prompt=3.0.0, delta=18, upgrading to V5 + 3 models",
   "previousLlmScore": 69,
   "archivePath": "data/archives/reviews/merrily-we-roll-along-2023/variety--trish-deitch_2026-02-01.html",

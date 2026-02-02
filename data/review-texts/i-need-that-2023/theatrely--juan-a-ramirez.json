@@ -9,69 +9,55 @@
   "bwwExcerpt": "Sam (Danny DeVito), the collector extraordinaire in question, wakes up one day to a reminder from his daughter Amelia (Lucy DeVito) that, unless he complies with a months-old government notice to clear up the overstuffed property, he will be evicted. Foster (Ray Anthony Thomas), his friendly neighbor, agrees he should start throwing out the obvious trash. So do we. And that’s about it in terms of movement in the work, which is less a play than a 100-minute cycle of scenes in which Amelia or Fost",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 25,
-    "confidence": "low",
+    "score": 44,
+    "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 23
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "dramatically inert play",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "hands-thrown-up direction",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "not much...inspired a need to lean in for closer inspection",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic uses harsh language to describe both the script as 'dramatically inert' and the direction as giving up, indicating fundamental problems that make this difficult to recommend. | GPT-4o-mini: The review expresses strong criticism of both the play and the direction, indicating a clear lack of recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic finds the play lacking in substance and direction, calling it 'dramatically inert' and criticizing its weak comedy, cheap sentimentality, and meandering dialogue that becomes 'grating.' | Gemini: The review is overwhelmingly negative, criticizing the play's inertness, weak comedy, and cheap sentimentality. The performances are described as adequate but not particularly compelling, and the direction is criticized.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
-    },
-    "humanReviewOverride": {
-      "previousConfidence": "high",
-      "reason": "LLM Pan (25) too harsh for Meh review. Override to thumb-based 60.",
-      "appliedAt": "2026-02-01T17:37:53.679Z"
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:17:50.331Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:50:38.916Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
-    "scoreDelta": 0,
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "But after that initial bait-and-switch, not much in Rebeck’s dramatically inert play, or Moritz von Stuelpnagel hands-thrown-up direction, inspired a need to lean in for closer inspection.",

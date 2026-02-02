@@ -7,7 +7,7 @@
   "publishDate": "November 2, 2023",
   "dtliExcerpt": "DeVito is a star for a reason: His vulnerable, hilarious performance is a certifiable gem. If only this treasure weren’t so often lost in the piles that surround it.",
   "originalScore": null,
-  "assignedScore": 66,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/i-need-that/",
@@ -24,60 +24,52 @@
   "fetchTier": 1,
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 66,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 75
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 53,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 68
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "DeVito is a star for a reason: His vulnerable, hilarious performance is a certifiable gem",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "good-natured but threadbare comedy",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "If only this treasure weren't so often lost in the piles that surround it",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review praises DeVito's performance as a 'certifiable gem' but criticizes the play as 'slight' and 'threadbare,' resulting in a mixed recommendation that leans slightly positive due to the strong lead performance. | GPT-4o-mini: The review highlights strong performances, particularly by DeVito, but indicates that the script is lacking, leading to a mixed-positive recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises DeVito's performance as a 'certifiable gem' but clearly indicates the production has significant problems that undermine this strong performance, suggesting a show with redeeming qualities but notable flaws. | GPT-4o: The review highlights a standout performance by DeVito but suggests that the overall production is cluttered, indicating a mixed reception. The positive note on DeVito's performance is countered by the critique of the surrounding elements. | Gemini: The review praises DeVito's performance but suggests the overall production has significant flaws, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:18:07.042Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:50:49.771Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 66,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 70,
-    "scoreDelta": 8,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "sources": [
     "dtli"

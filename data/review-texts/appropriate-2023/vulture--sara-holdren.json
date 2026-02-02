@@ -9,64 +9,56 @@
   "showScoreExcerpt": "“Neugebauer is doing fine work with the whole ensemble, and Paulson and Stoll provide a supercharged core.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 89,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 92,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Jacobs-Jenkins's writing lives entirely and electrically in the space of 'and'",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Neugebauer is doing fine work with the whole ensemble, and Paulson and Stoll provide a supercharged core",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It is funny, and it does burn",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: This is a deeply engaged, intellectually rigorous review that praises the writing, performances, and direction while acknowledging the challenging subject matter as a strength rather than weakness. | GPT-4o-mini: The review expresses strong enthusiasm for the writing, performances, and direction, indicating a must-see production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the director's work and highlights strong central performances, suggesting a positive assessment, but the limited text makes it difficult to gauge the full verdict with certainty. | GPT-4o: The review highlights strong performances and effective direction, suggesting a positive experience. However, without the full text, the degree of enthusiasm is unclear, leading to a medium confidence level. | Gemini: The review excerpt praises the direction and performances, suggesting a positive but not overwhelmingly enthusiastic recommendation. The aggregator verdict also indicates a positive reception.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:31:34.279Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:35.824Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "In the sensitive hands of director Lila Neugebauer and her top-notch cast, these people are complicated and they’re blinkered, monstrous and pitiable, trying and failing, not individually hateful and collectively matured in a slow cooker of unexamined bias and malice.",
   "sources": [

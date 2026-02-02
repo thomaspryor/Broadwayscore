@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"The show itself is a retro-mashup with Gabrielle Slade’s bedazzled costumes featuring Reformation-inspired silhouettes; Carrie-Anne Ingrouille’s choreography showcases Tudor-meets-pop moves; and Emma Bailey’s scenery and Tim Deiling’s lighting feels like what a royal ballroom might look like in a techno disco. \n\nUltimately, the queens’ own stories of overcoming struggles and the show’s circuitous journey to Broadway are also beacons for the power of positivity, perseverance, and coming together in times of struggle. Just like these six “ex-wives,” we’ve all had it rough for the past year and a half, and the queens are here to bring in a new regime. Long may they reign.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/six",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/six-2021/nytg--suzy-evans_2026-01-27.html",
@@ -34,11 +34,11 @@
   "scoreSource": "extracted-thumbs-up",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -46,26 +46,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "beacons for the power of positivity, perseverance, and coming together in times of struggle",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the queens are here to bring in a new regime. Long may they reign",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "retro-mashup with Gabrielle Slade's bedazzled costumes featuring Reformation-inspired silhouettes",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review expresses clear enthusiasm for the production's design elements and thematic resonance, with an uplifting conclusion that functions as a recommendation despite being an excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review concludes with positive sentiment about the show's empowering message and impact, though the single excerpt limitation and focus on production elements rather than clear recommendation language warrants a conservative positive score. | GPT-4o: The review highlights the show's positive themes and creative elements, suggesting a recommendation. However, the single excerpt and lack of explicit 'must-see' language lead to a conservative score within the Positive range. | Gemini: The review describes the show positively, highlighting the costumes, choreography, and overall message of positivity and perseverance. The final line, \"Long may they reign,\" suggests a positive overall impression.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -74,27 +58,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:07:24.675Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2473,
-    "outputTokens": 353,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:40:50.729Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 95,
-    "scoreDelta": 0,
+    "claudeScore": 76,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 95,

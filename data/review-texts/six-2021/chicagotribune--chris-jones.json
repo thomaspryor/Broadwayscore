@@ -10,74 +10,59 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 75,
-      "performances": 85,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a practical, entertaining, well-executed, self-aware show that knows how to please its audience and delivers a soupçon of Broadway pizzazz and good humor",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "This is not one of any of those musicals [that move the formative bar, have riveting story lines, or scores of aching beauty]",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Having fun, as this frothy, clever, good-time show demands? One hundred percent.",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic clearly enjoyed the show and recommends it as entertaining and well-executed, despite acknowledging its limitations as not being groundbreaking or deeply meaningful.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Jones clearly recommends the show as fun and entertaining, praising the performances and concept while acknowledging it's not groundbreaking. His positive assessment outweighs any reservations about artistic ambition. | GPT-4o: The critic describes the show as entertaining, well-executed, and self-aware, emphasizing its ability to please the audience. The overall tone is positive with no significant reservations, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the show's entertainment value and execution. While not groundbreaking, it's described as pleasing and well-suited for the current Broadway audience, making it a recommended show with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:06:15.509Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3541,
-    "outputTokens": 376,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:38:54.867Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 76,

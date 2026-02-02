@@ -6,64 +6,56 @@
   "url": "https://deadline.com/2023/06/britney-spears-broadway-review-once-upon-a-one-more-time-deadline-1235421229/",
   "publishDate": "June 22, 2023",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 74,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 89,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 85,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Smart, funny, splendid to look at",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "all with a beat you can dance to",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "is a delight",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Multiple strong positive descriptors ('smart', 'funny', 'splendid') culminating in 'is a delight' signals clear enthusiasm and recommendation despite being a brief excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm and joy about the production, indicating a strong recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 'wish-come-true' language suggests positive sentiment, though the comment about predictable plot indicates some reservations. The aggregator context supports an 'Up' verdict. | GPT-4o: The review suggests an overall positive experience, highlighting the show's uplifting nature despite predictable elements. The lack of a full review text and the mention of predictability introduce some reservations, but the tone remains positive. | Gemini: The review suggests the show is enjoyable and uplifting, but also predictable. The aggregator context also indicates a positive reception.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:13.440Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:58.861Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "showScoreExcerpt": "“The wish-come-true of ’Once Upon a One More Time’ is that it lifts without apology or even a slight blush...To spoil the plot beyond this would be unfair, even though you’ll likely see most of the twists and turns coming, or at least predict the overall story arc.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/once-upon-a-one-more-time-broadway",

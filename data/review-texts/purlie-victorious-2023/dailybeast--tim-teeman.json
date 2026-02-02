@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Ossie Davis’ Purlie Victorious (A Non-Confederate Romp Through the Cotton Patch) is both uproarious satire and cultural gut punch—with the biggest clue in its lead character’s name and the play’s title.",
@@ -19,60 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This wonderful cast does precisely that, playing the laughs for every ounce of hilarity to be gleaned from them, and then in a sudden turn confronting racism and white supremacy head-on",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Director Kenny Leon smoothly operates the levers to maximize the impact of both—no easy thing tonally",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Purlie remains a determined idealist, and this play is a radical text of another time—proposing that joy and laughter are as vital acts of resistance as placards and protest",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The reviewer consistently praises the performances, direction, and production values while engaging deeply with the play's complex themes, presenting it as both theatrically successful and culturally important without significant reservations.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the performances, direction, and design throughout, calling the cast 'wonderful' and highlighting specific strong performances. While acknowledging the play's complexity and historical context, the review is clearly appreciative of this production's execution and artistic merit. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and the play's ability to balance humor and serious themes. The critic highlights the play's importance and relevance, making it a recommended experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:54:29.847Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4866,
-    "outputTokens": 400,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:56.702Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  },
   "rescoreReason": "low-conf: prompt=3.0.0, delta=23, upgrading to V5 + 3 models",
   "previousLlmScore": 77,
   "rescoreCompletedAt": "2026-02-01T15:54:29.847Z",

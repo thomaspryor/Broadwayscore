@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 79,
+  "assignedScore": 78,
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review dismisses concerns about the show being 'too British' and describes it as a 'crowd-pleaser' with impressive technical achievements and emotional depth, indicating a clear positive recommendation. | GPT-4o: The review describes the show as a 'zany, high-energy crowd-pleaser' with 'unexpected poignancy', suggesting a strong positive reaction. The language used indicates an enthusiastic recommendation, fitting the 'Rave' bucket. | Gemini: The review uses positive language like 'crowd-pleaser' and describes the show as 'high-energy' and 'zany,' indicating a positive recommendation. The mention of 'unexpected poignancy' further enhances the positive sentiment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic dismisses concerns and describes the show as a 'crowd-pleaser' with impressive performances and emotional impact. However, with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review describes the show as a 'crowd-pleaser' with 'unexpected poignancy' that leaves the audience 'in tears', suggesting a strong positive reaction. Despite the single excerpt warning, the language used is indicative of a rave review. | Gemini: The review describes the show as a \"crowd-pleaser\" and mentions its high energy and poignancy, indicating a positive experience. Given it's a single excerpt, I'm scoring it in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,15 +36,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:51:43.173Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:30:25.582Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

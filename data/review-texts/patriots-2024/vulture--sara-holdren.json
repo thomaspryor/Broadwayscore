@@ -9,71 +9,56 @@
   "showScoreExcerpt": "\"Morgan’s work is thinky, at times witty and always distanced from judgment.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/patriots-broadway",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 65,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 60,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 55
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Patriots' chief pleasures are intellectual. Morgan's work is thinky, at times witty and always distanced from judgment.",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "there's something cool at the center of Patriots that begins to chafe as the play nears its end",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "it's got zazz without having psychological or ethical impact",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic appreciates the intellectual content and performances (especially Keen's Putin) but finds the production emotionally distant and questions whether it achieves meaningful impact beyond being an interesting exercise.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic appreciates the intellectual merits and performances but criticizes the play's emotional detachment and questions whether it achieves meaningful impact beyond being an 'exercise' in personal interactions. | GPT-4o: The review acknowledges the intellectual and witty aspects of the play but criticizes its detachment and lack of psychological or ethical impact. The overall tone suggests that while there are interesting elements, the production does not fully succeed in engaging the audience on a deeper level. | Gemini: The review highlights intellectual pleasures and interesting aspects of the play, but also notes a 'cool' detachment and stylistic choices that don't fully serve the story's stakes. This suggests a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:52:22.102Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4708,
-    "outputTokens": 353,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:54.475Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 60,
-    "scoreDelta": 8,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "sources": [
     "show-score",

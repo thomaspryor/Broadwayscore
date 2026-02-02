@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -18,13 +18,13 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 85,
+    "confidence": "low",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 80,
+      "high": 90
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -32,53 +32,37 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Of course it's worth the wait. Of course anyone planning their own return to Broadway should buy a ticket.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It is one of the cleverest, wittiest, flashiest musicals in town",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "sets up home in New York after rave reviews wherever it has played",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic provides an unequivocal recommendation with explicit language to 'buy a ticket' and calls it 'one of the cleverest, wittiest, flashiest musicals in town' with strong superlatives throughout.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses explicit recommendation language ('buy a ticket') and superlative praise ('one of the cleverest, wittiest, flashiest musicals in town'), indicating strong enthusiasm for the production. | Gemini: The review explicitly states the show is \"worth the wait\" and that people \"should buy a ticket\", indicating a positive recommendation. The description of the show as \"one of the cleverest, wittiest, flashiest musicals in town\" further supports this classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:06:20.336Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2582,
-    "outputTokens": 359,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:39:09.213Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 95,
-    "scoreDelta": 7,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 92,

@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses highly enthusiastic language like 'wonderfully energetic aplomb,' 'dream ensemble,' and calls it 'a joyful trip to musical theater heaven,' indicating strong recommendation despite limited text. | GPT-4o: The review describes the production as 'a joyful trip to musical theater heaven,' indicating an enthusiastic and highly positive recommendation. | Gemini: The review uses very positive language like \"wonderfully energetic aplomb\", \"wittily choreographed\", \"expertly performed\", and concludes with \"a joyful trip to musical theater heaven\", indicating a strong positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses highly enthusiastic language including 'wonderfully energetic aplomb', 'dream ensemble', and calls it 'a joyful trip to musical theater heaven', indicating a strong positive recommendation despite being a single excerpt. | GPT-4o: The review excerpt praises the production's direction, choreography, and performances, culminating in a 'joyful trip to musical theater heaven,' indicating a strong recommendation. | Gemini: The review uses positive language such as \"wonderfully energetic aplomb\", \"wittily choreographed\", \"expertly performed\", and \"joyful trip to musical theater heaven\", indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:52:36.874Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:12:53.872Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 79,
+  "assignedScore": 77,
   "llmScore": {
-    "score": 79,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges some flaws ('bumpy waves') but concludes with clear positive recommendation language like 'well-worth the effort' and 'wholly justifies itself'. | GPT-4o: The review acknowledges some minor issues but ultimately praises the production for its entertainment value, suggesting it is worth seeing. | Gemini: The review states the production \"wholly justifies itself\" and provides \"a hearty dose of musical comedy fun,\" indicating a positive recommendation despite some reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging 'bumpy waves,' the critic clearly recommends the show with phrases like 'well-worth the effort' and 'wholly justifies itself,' indicating a positive verdict with minor reservations. | GPT-4o: The review acknowledges some flaws ('bumpy waves') but ultimately recommends the show as 'well-worth the effort' and praises it for providing 'musical comedy fun'. The positive elements outweigh the negatives, suggesting a positive verdict. | Gemini: The review indicates that despite some flaws, the show is \"well-worth the effort\" and provides \"a hearty dose of musical comedy fun,\" suggesting a positive, though not rave, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,15 +36,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:52:39.365Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:13:22.482Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "geminiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

@@ -9,71 +9,56 @@
   "bwwExcerpt": "It is also ingeniously devised to reflect the interior life of Imelda R. Marcos, a provincial teenage beauty queen, who in this show continues to treat life as one long pageant, with an emphasis on the evening gown and talent sections. During the heyday of her husband's protracted rule, from 1965 to 1986, she was also a disco queen, hitting the floors at gilded international night spots, which, thanks to her, included the roof of the palace she occupied in Manila. Mr. Byrne has said he thought t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HERE-LIES-LOVE-2023",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 68,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 82,
-      "performances": 78,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The infernally catchy songs by David Byrne and Fatboy Slim, performed by a tireless and inspired all-Filipino cast, will have you clapping whether you want to or not",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the real star of this show is the astonishing architectural transformation of the theater itself",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "they aim for a middle ground that doesn't exist, yet mostly hit it anyway",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises the music, performances, and production design extensively but expresses deep philosophical concerns about the show's moral ambiguity and treatment of historical figures, creating a thoughtful but conflicted recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges substantial praise for the production's technical achievements and performances but expresses deep moral concerns about celebrating the subject matter. The review is cut off, but the tone suggests appreciation for craft undermined by ethical reservations. | GPT-4o: The review acknowledges the impressive elements of the production, such as the set design and performances, but also questions the thematic implications and the nature of the applause. The tone is ambivalent, praising certain aspects while expressing reservations about the overall experience. | Gemini: The review highlights both praise-worthy aspects (music, cast, set design) and troubling elements (irony, meta-messaging). The critic questions the audience's applause, suggesting a moral ambiguity that prevents a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:38:31.205Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3037,
-    "outputTokens": 376,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:05.990Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 70,
-    "scoreDelta": 0,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

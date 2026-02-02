@@ -10,76 +10,59 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 75,
+      "low": 72,
       "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 75,
-      "performances": 80,
-      "direction": 72
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Version 2.0 is tighter, more confident, often rousing and downright entertaining",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "We can only rejoice that the creative team did not back down",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "while it did not magically morph into a great show",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Despite acknowledging the show didn't become 'great,' the critic clearly endorses this improved version as 'rousing and downright entertaining' and celebrates that the team persevered.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges significant improvements from the original production, calling it 'tighter, more confident, often rousing and downright entertaining' while noting ongoing structural issues but ultimately presenting it as worthwhile theater. | GPT-4o: The review acknowledges improvements from the previous version, highlighting the show's entertainment value and the excitement it captures, despite some remaining flaws. The overall tone is positive, recommending the show with some reservations. | Gemini: The review indicates a significant improvement from the initial production and describes the current version as \"often rousing and downright entertaining,\" leading to a positive classification. However, the critic also points out flaws like lack of depth and missed emotional impact, justifying a score in the upper-middle range of the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:15:41.496Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3419,
-    "outputTokens": 344,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:00.734Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 32,
-    "openaiScore": 25,
-    "scoreDelta": 7,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (29 → Down) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dateSource": "extracted-from-url",
   "rescoreReason": "fullText added after excerpt-based scoring",

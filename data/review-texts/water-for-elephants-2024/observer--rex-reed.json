@@ -8,7 +8,7 @@
   "bwwExcerpt": "After suffering through the new Broadway musical The Notebook, I thought I had seen the worst of what the 2024 season would bring. I was wrong. I had not seen Water for Elephants yet. Now I have. It can’t get any deadlier than this.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 13,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"Everything is so exaggerated and phony that itâs hard to believe\"",
@@ -46,60 +46,52 @@
   "archiveOrgTimestamp": "20250810164916",
   "archiveOrgUrl": "http://web.archive.org/web/20250810164916/https://observer.com/2024/03/water-for-elephants-theater-review-the-worst-broadway-show-ever/",
   "llmScore": {
-    "score": 13,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 5.5,
-      "high": 20.5
+      "low": 36,
+      "high": 46
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 13,
-      "music": 13,
-      "performances": 28,
-      "direction": 20
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I've never valued any show less or hated any show more",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "It can't get any deadlier than this",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Everything is so exaggerated and phony",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: This is an unqualified pan with extreme negative language throughout, concluding with the critic stating they have never hated a show more. | GPT-4o-mini: The review is overwhelmingly negative, highlighting severe flaws in the script, music, and overall execution, leading to a clear rejection of the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic describes the production as exaggerated and phony, which are clear negative assessments. However, given the truncated text and limited excerpt, the score reflects caution about the full verdict while acknowledging the negative tone. | GPT-4o: The review excerpt strongly criticizes the production for being exaggerated and phony, suggesting a very negative impression. The aggregator context supports this negative assessment. | Gemini: The quote indicates a negative assessment of the production's quality, suggesting it's not worth seeing.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:59.756Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:45.164Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 13,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 15,
-    "openaiScore": 10,
-    "scoreDelta": 5,
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "bwwThumb": "Down",
   "rescoreReason": "scored on brief excerpt, now has fullText",

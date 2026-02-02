@@ -7,7 +7,7 @@
   "publishDate": "2021-10-03",
   "bwwExcerpt": "ering yet another #MeToo story. Those theatrical commonplaces aside, \"Six\" is a needed antidote to \"Anastasia,\" \"Frozen,\" \"Jagged Little Pill,\" \"Wicked\" and other pompous shows of female empowerment. Ruth Kinane, Entertainment Weekly : Sitting in a theater packed with fellow fully-vaccinated, mask-wearing Broadway lovers brings a sense of solidarity and camaraderie to the atmosphere, a vibe mirrored on-stage by the cast s girl-group dynamic. Add to that the joy that s always been the DNA of this production, and Six truly is the top ticket to celebrate the return of the live stage show. Look, if a somber play is your idea of Broadway s best, then by all mean, enjoy! But if you re up for a euphoric celebration of the musical medium, Six is queen of the castle. Long may it reign. Johnny Oleksinski, The New York Post : \"Six\" is more of a concert than a traditional book musical, though, with nine numbers and a megamix crammed into a quick 80 minutes. The songs here, by Toby Marlow and Lucy",
   "originalScore": "A",
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SIX-Opens-on-Broadway-20211004",
@@ -23,18 +23,13 @@
   "dtliThumb": "Up",
   "showScoreExcerpt": "\"not what you might call a traditional musical, nor what formerly would have been considered a well-crafted one. But it has mass appeal, immediacy, enthusiasm, and an incredibly high sense of style; and it revels in what used to be called “girl power” but can now more properly be described as simply, or not-so-simply, power.\"",
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:06:30.151Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3573,
-    "outputTokens": 350,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:39:25.925Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
   "garbageReason": "/page not found/i",
@@ -93,59 +88,43 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 94,
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 95,
-      "performances": 92,
-      "direction": 88
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Six truly is the top ticket to celebrate the return of the live stage show",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "if you're up for a euphoric celebration of the musical medium, Six is queen of the castle. Long may it reign",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Grade: A",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The review awards an A grade and uses superlative language like 'top ticket,' 'euphoric celebration,' and 'queen of the castle' while praising virtually every element of the production with unqualified enthusiasm.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being truncated, the review gives an explicit A grade and calls Six 'the top ticket' and 'queen of the castle' with enthusiastic praise throughout for performances, music, and overall experience. | GPT-4o: The review is overwhelmingly positive, highlighting the show's energy, style, and unique approach to storytelling. The critic's original rating of 'A' and the enthusiastic language used throughout strongly support a 'Rave' classification. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, with the critic clearly enjoying the show and recommending it as a top ticket. The A grade further supports this classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 80,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreCompletedAt": "2026-02-01T16:06:30.151Z",
   "contentTier": "excerpt",

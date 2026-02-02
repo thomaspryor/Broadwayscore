@@ -9,15 +9,15 @@
   "bwwExcerpt": "Just For One Day is yet another jukebox musical, with all the boons and pitfalls such a work might imply. Its tracklist, studded with songs by everyone from Queen to Bryan Adams, is nearly as rousing as Live Aid itself, and Matthew Brind’s new arrangements lift the anthems of the 1980s to new heights. Indeed, the music of Just For One Day is close to flawless, impeccably sung by its rock-solid cast and impressively steered by musical director Patrick Hurley (even though Gareth Owen’s sound desig",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JUST-FOR-US-2023",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 35,
-    "confidence": "low",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 25,
-      "high": 45
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -27,19 +27,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "under-baked, over-simplified dance party",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Tiny bodies with swollen stomachs. Brittle limbs with rounded joints.",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The headline describes the show as 'under-baked' and 'over-simplified,' indicating clear criticism, but the excerpt is too brief to provide comprehensive analysis.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The headline and opening description clearly frame this as negative ('under-baked, over-simplified'), though the truncated text shows praise for the music, suggesting mixed elements within an overall disappointing assessment. | GPT-4o: The review describes the musical as 'under-baked' and 'over-simplified', suggesting significant flaws. However, it praises the music and performances, indicating some redeeming qualities. The verdict is mixed, with a slight lean towards positive aspects. | Gemini: The review opens with a negative assessment, calling the show \"under-baked\" and \"over-simplified.\" While praising the music, the overall tone suggests the show is not worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:22:16.477Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2396,
-    "outputTokens": 292,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:51.850Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 35,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
+    "claudeScore": 42,
+    "openaiScore": 58,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 76,

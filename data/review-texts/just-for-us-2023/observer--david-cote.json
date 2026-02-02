@@ -9,71 +9,56 @@
   "showScoreExcerpt": "“...the production, directed by the late Adam Brace, is exceptionally tight, the material tweaked and buffed to gleaming perfection, with the 34-year-old comedian bopping around the stage using a trio of stools to conjure up multiple locations and figures”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Get your ass—whatever its race and ethnicity—to Edelman's smart, funny, and surprisingly poignant solo",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the production, directed by the late Adam Brace, is exceptionally tight, the material tweaked and buffed to gleaming perfection",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Comedy cognoscenti know how damn good Just for Us is",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong positive review with explicit recommendation ('Get your ass...to Edelman's'), superlative praise ('gleaming perfection', 'damn good'), and detailed appreciation of the craft and content.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic gives a clear enthusiastic recommendation with an imperative 'Get your ass to' this show, praising it as 'smart, funny, and surprisingly poignant' and describing the material as 'tweaked and buffed to gleaming perfection.' | GPT-4o: The review is highly enthusiastic, praising the show as 'smart, funny, and surprisingly poignant' with 'gleaming perfection' and 'masterful, empathetic telling'. The critic's language indicates a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, using phrases like \"smart, funny, and surprisingly poignant\" and praising the production as \"exceptionally tight\" and the material as \"tweaked and buffed to gleaming perfection.\" The critic clearly recommends seeing the show.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:03:52.470Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3324,
-    "outputTokens": 366,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:48.110Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

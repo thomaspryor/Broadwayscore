@@ -8,15 +8,15 @@
   "bwwExcerpt": "When Gutenberg! The Musical! debuted Off Broadway 17 years ago, critics wondered whether it was ready for Broadway. Perhaps they should have asked whether Broadway was ready for Gutenberg! All these years later, the answer to both is yes. Not only has the musical been fine-tuned and shined-up, but a Shucked-era Broadway is clearly in the mood for some absurdly silly good fun.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -24,48 +24,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "fine-tuned and shined-up",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "absurdly silly good fun",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Broadway is clearly in the mood for",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review expresses clear positivity about the production improvements and audience reception, but the excerpt is too brief to determine the full extent of the critic's recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic notes improvements ('fine-tuned and shined-up') and positions the show as meeting Broadway's current appetite for entertaining fare, suggesting a positive recommendation despite limited excerpt text. | GPT-4o: The critic describes the musical as 'fine-tuned and shined-up' and suggests that it fits well with the current Broadway mood, indicating a positive reception. The tone is enthusiastic about the show's fun aspect, aligning with a positive recommendation. | Gemini: The review excerpt indicates that the musical has been improved and that it provides 'good fun,' suggesting a positive recommendation despite the limited text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:05:14.146Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:00.599Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Not only has the musical been fine-tuned and shined-up, but a Shucked-era Broadway is clearly in the mood for some absurdly silly good fun.",

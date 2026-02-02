@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 77,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges several specific flaws (broad acting, forced jokes, pacing issues) but concludes these don't significantly harm the 'joyous vibe,' and praises the lead performance as treasurable. | GPT-4o: Despite some minor criticisms about the cast's performance and pacing, the review highlights a 'joyous vibe' and praises Pierce's performance, suggesting a positive overall impression. | Gemini: Despite some flaws, the review indicates an overall positive experience, highlighting the joyous vibe and Pierce's performance as a treasure. The reservations are noted, but the overall tone suggests a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt acknowledges specific flaws (broad playing, hitting jokes too hard, length issues) but dismisses them as not dampening the 'joyous vibe' and praises Pierce as 'a treasure.' This indicates a positive recommendation with reservations. | GPT-4o: The review acknowledges some flaws in the production, such as overacting and pacing issues, but ultimately highlights the joyous atmosphere and praises Pierce's performance, suggesting a positive recommendation despite reservations. | Gemini: The review acknowledges some flaws but ultimately states that they don't significantly detract from the positive experience, and praises Pierce's performance, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:52:21.026Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:10:22.586Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "openaiScore": 76,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

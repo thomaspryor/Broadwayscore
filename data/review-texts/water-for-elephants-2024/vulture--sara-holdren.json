@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"...much of 'Water for Elephants' will delight on the basis of spectacle alone\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/water-for-elephants-broadway",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 68,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 45,
-      "music": 65,
-      "performances": 75,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the show's stagecraft outstrips its script by a mile",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "much of Water for Elephants will delight on the basis of spectacle alone — and that's okay",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the production also contains real flashes of astonishment and grace",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic praises the spectacular stagecraft, direction, and circus elements while criticizing the conventional framing device and weak book, resulting in a qualified recommendation based primarily on visual spectacle.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite criticizing the framing device and pacing issues, the critic ultimately finds much to enjoy in the stagecraft, performances, and spectacle, concluding with praise for 'real flashes of astonishment and grace.' | Gemini: The review highlights both strengths and weaknesses, ultimately leaning towards a positive recommendation due to the spectacle and performances, but acknowledging pacing and narrative issues. The critic states that much of the show will delight on the basis of spectacle alone.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:36:51.058Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4614,
-    "outputTokens": 345,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:59.810Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dtliExcerpt": "If, like me, you are highly susceptible to sawdust and tinsel, then much of Water for Elephants will delight on the basis of spectacle alone — and that’s okay.",
   "bwwExcerpt": "in the case of Water for Elephants, whenever we leave the sappy present behind, there’s suddenly a great deal to enjoy. As is so frequently the case, the show’s stagecraft outstrips its script by a mile. Under Jessica Stone’s exuberant direction, a huge ensemble of ridiculously talented acrobats ebbs and flows—and flips and flies—through the house, coalescing into gorgeous paintings in front of projection designer David Bengali’s lush, shifting cloudscape of a backdrop.",

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "At the Armory, I found “Illinoise” not only sentimental but downright whimsical. It was intriguing to see three singers walk out on stage wearing enormous fairy wings (costumes by Reid Bartelme and Harriet Jung). Only later did I realize that they were moth wings, because “Illinoise,” with its book by Justin Peck and Jackie Sibblies Drury, is a coming-of-age story.",
@@ -19,38 +19,22 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 68,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 75.5
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 65
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I found \"Illinoise\" not only sentimental but downright whimsical",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "It was intriguing to see three singers walk out on stage wearing enormous fairy wings",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "\"Illinoise\" could be called \"Metamorphosis\"",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The excerpt shows mild positive engagement with the production's whimsical concept and creative elements, but lacks clear recommendation language or strong evaluative statements. | GPT-4o-mini: The review expresses intrigue and a whimsical quality but does not provide strong enthusiasm or a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic uses consistently negative descriptors throughout ('sentimental', 'precious', 'simple-minded', 'mawkishness', 'strictly amateur') and criticizes multiple aspects including the story, choreography, and performances without any redeeming recommendations. | Gemini: The review is largely negative, criticizing the show's sentimentality, simplicity, and choreography. The critic uses phrases like \"mawkishness infects the whole enterprise\" and \"mime is strictly amateur,\" indicating a lack of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,20 +43,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:36:24.772Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:17:25.482Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 70,
-    "scoreDelta": 5,
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 68,

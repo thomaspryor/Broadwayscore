@@ -7,37 +7,26 @@
   "publishDate": "April 23, 2024",
   "fullText": "Peter Morgan's new play Patriots, now on Broadway, opens with an awareness of its audience. \"In the West you have no idea,\" Boris Berezovksy (an excellent Michael Stuhlbarg) says through a voiceover. \"You think of Russia as a cold, bleak place, full of hardship and cruelty.\" The stage is bare, and the oligarch, who played an instrumental role in Vladimir Putin's rise to power, speaks to us from a liminal space. He goes on to describe the beauty of his country, Russian music, the sounds of children laughing in the streets and the taste of ice cream on a cold day.\n\nWhen the stage comes into view (set design by Miriam Buether, lighting design by Jack Knowles), it's 1955. Berezovsky is a schoolboy gifted in mathematics. A teacher urges his parents — congenial and full of quips — to push their son. \"Anyone can be a doctor, Mrs. Berezovsky,\" says the teacher played by Jeff Biehl, as if pleading. \"Only the elite can be a mathematician. It's like entering the gates of heaven.\"",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 64,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 58,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 53,
-      "high": 63
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 70,
-      "direction": 50
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The ties among these three men anchor Patriots",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "can sometimes feel too unwieldy in its ambitions",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: This excerpt balances praise for the central relationships with criticism of the show's structural execution, suggesting a mixed experience without clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges strong elements like Stuhlbarg's 'excellent' performance and effective staging, but the concluding assessment describes the play as 'unwieldy in its ambitions,' suggesting structural problems that prevent a full recommendation. | GPT-4o: The review highlights strong performances and evocative set design but also notes that the play can feel unwieldy in its ambitions, suggesting a mixed but somewhat positive reception. | Gemini: The review highlights an excellent performance and anchors the play, but also notes that it can feel unwieldy, suggesting a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,20 +35,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:18.777Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:03.202Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "The ties among these three men anchor Patriots, which otherwise can sometimes feel too unwieldy in its ambitions.",
   "sources": [

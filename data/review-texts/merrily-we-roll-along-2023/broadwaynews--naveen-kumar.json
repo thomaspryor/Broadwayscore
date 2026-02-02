@@ -7,71 +7,56 @@
   "publishDate": "October 12, 2023",
   "fullText": "The first Broadway revival of Stephen Sondheim and George Furth’s notorious bomb explodes with heart and sophistication. Good evening, and welcome to Broadway News’ Broadway Review by Naveen Kumar (standing in for Brittani Samuel), which includes our overview of reactions, recommendations and information tied to the Broadway opening of “Merrily We Roll Along.” Growing older is about letting go of possibility: Every open door you choose means another slams shut. “Merrily We Roll Along,” which could easily be called “Midlife Crisis: The Musical,” has long been labeled a problem child. It’s no small wonder that this sensational revival manages to synthesize the famous flop’s unwieldy ambitions into a palpable hit. The show’s combination of rueful existentialism with wide-eyed wonder is signature Sondheim, who wrote the music and lyrics, though George Furth’s high-concept book is often considered uncrackable. Director Maria Friedman and a dynamite cast — led by Jonathan Groff, Lindsay Mendez and Daniel Radcliffe — make ingenious use of tart humor and eager heart to fuel this backward coming-of-age about three once-inseparable friends. Friedman smartly frames the action as a reverie: Groff’s Frank Shephard is tracing his shattered ideals (and disastrous personal life) back through how it all went wrong. (Surely, others can relate.) Structural problems remain, including a second act that loses momentum as characters retreat into naïveté. But the production’s clever sophistication and knock-out performances send the onetime dud soaring to rapturous heights.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 81,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 85,
-      "performances": 90,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this sensational revival manages to synthesize the famous flop's unwieldy ambitions into a palpable hit",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Director Maria Friedman and a dynamite cast — led by Jonathan Groff, Lindsay Mendez and Daniel Radcliffe — make ingenious use of tart humor and eager heart",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "explodes with heart and sophistication",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strongly positive review that transforms the show's notorious reputation into high praise, calling it a 'sensational revival' and 'palpable hit' with superlative language for performances and direction.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with context about the original's failure, the critic delivers strong praise, calling it a 'sensational revival' and 'palpable hit' with enthusiastic language about the cast and direction. | GPT-4o: The review uses highly positive language, describing the revival as 'sensational' and a 'palpable hit,' indicating a strong recommendation to see the show. | Gemini: The review explicitly states the revival is a \"palpable hit\" and praises the director and cast, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:35:13.250Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2565,
-    "outputTokens": 345,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:53.437Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 82,
     "openaiScore": 90,
-    "scoreDelta": 2,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dtliExcerpt": "It’s no small wonder that this sensational revival manages to synthesize the famous flop’s unwieldy ambitions into a palpable hit.",
   "sources": [

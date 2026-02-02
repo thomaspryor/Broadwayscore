@@ -10,37 +10,26 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 50,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 50,
-    "confidence": "low",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "thundering new musical",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Forget the world stage, what about Broadway?",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This appears to be an introductory paragraph or excerpt that provides context about the show's producers but contains no actual critical evaluation or recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Single excerpt appears to be introductory context about the show's subject and producers rather than evaluative content. Despite the 4/5 star rating suggesting positive reception, the available text provides no actual critical assessment to score reliably. | GPT-4o: The original rating of 4/5 stars suggests a positive review. The phrase 'a thundering new musical' indicates a strong, positive impression of the production. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The 4/5 star rating and the phrase \"thundering new musical\" suggest a positive review. However, the limited excerpt and single quote warrant a score in the lower-middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -49,20 +38,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:14:28.888Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2367,
-    "outputTokens": 269,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:11.872Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 19,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
   "archivePath": "data/archives/reviews/suffs-2024/the-times--nancy-durrant_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:17:21.072Z",
   "fetchMethod": "scrapingbee",

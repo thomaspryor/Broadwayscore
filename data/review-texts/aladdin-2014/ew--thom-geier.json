@@ -9,7 +9,7 @@
   "bwwExcerpt": "As in many a Disney stage production, the big showstopper isn't even human: During ''A Whole New World,'' a flying carpet carries our lovers aloft in a night-time ride, swooping and spinning with how'd-they-do-that wonder. (Jim Steinmeyer and Jeremy Chernick are credited with designing the onstage illusions and special effects.) It deserves its own curtain call.",
   "showScoreExcerpt": "\"This is one of the better Disney stage musicals, complete with several eye-popping production numbers.\"",
   "originalScore": "B",
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "textFetchedAt": "2026-01-25T13:40:02.152Z",
@@ -18,11 +18,11 @@
   "sourceMethod": "bww-roundup",
   "scoreSource": "extracted-grade",
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B rating and description as 'one of the better Disney stage musicals' with 'eye-popping production numbers' indicates a positive recommendation, though the limited excerpt prevents full confidence in the verdict. | GPT-4o: The critic's rating of 'B' and the positive language about the production numbers suggest a strong recommendation, though not without some reservations. | Gemini: The critic explicitly states it's \"one of the better Disney stage musicals\" and highlights \"eye-popping production numbers,\" indicating a positive, though not rave, recommendation. The original rating of B also supports this.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic's B grade and praise as 'one of the better Disney stage musicals' with 'eye-popping production numbers' indicates a solid positive recommendation. | GPT-4o: The critic's original rating of 'B' suggests a positive but not overwhelmingly enthusiastic recommendation. The key quote highlights the production's strengths, indicating it is worth seeing, aligning with a positive bucket. | Gemini: The critic states it is \"one of the better Disney stage musicals\" which indicates a positive recommendation. The B rating also supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:11:09.811Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:05:03.112Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

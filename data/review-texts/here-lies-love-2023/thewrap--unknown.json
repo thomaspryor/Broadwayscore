@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review explicitly states the show is 'worth seeing' despite being curated excerpts, with praise for direction and design elements, though the final comment about it being 'all about Alex Timbers' suggests some reservations about the overall production. | GPT-4o: The review highlights the inventive direction and impressive scenic and projection designs, indicating a positive recommendation. The phrase 'worth seeing' suggests a recommendation despite any potential reservations. | Gemini: The review explicitly states the musical is \"worth seeing\" due to the direction, placing it in the Positive bucket. The focus on direction and design, rather than a full-throated endorsement of the musical itself, suggests a score in the middle of the Positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly states the show is 'worth seeing' due to Timbers' direction and praises the expanded scenic design, but the single excerpt warning and lack of full context warrants a conservative score within the positive range. | GPT-4o: The review highlights the inventive direction and enhanced scenic design, recommending the show as worth seeing. However, the single excerpt and lack of a full review suggest a conservative score within the Positive range. | Gemini: The review explicitly states the musical is \"worth seeing\" due to the direction, but the final sentence suggests the focus is more on the director than the subject matter, indicating a reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,15 +36,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:47:48.134Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:23:46.777Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "claudeScore": 73,
+    "openaiScore": 79,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

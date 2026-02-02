@@ -14,64 +14,49 @@
     "score": 78,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 72,
-      "performances": 82,
-      "direction": 76
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This ripping yarn is a lot of fun and very clever to boot",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "'Operation Mincemeat' nevertheless comes off as a very fresh and intelligent Broadway idea, and it's performed at a high level",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "I wish that energy had been put into deepening the emotional force of a score that could and should go a lot further. Still. Minor quibbles.",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The critic clearly enjoys the show calling it 'fun and very clever' and 'a very fresh and intelligent Broadway idea' with only minor criticisms about the score's emotional depth and some pacing concerns.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly enjoys the show, calling it 'a lot of fun and very clever,' 'a very fresh and intelligent Broadway idea,' and praises the performances, despite noting some minor issues with length and emotional depth. | GPT-4o: The review highlights the show's cleverness, humor, and high-level performances, despite noting some derivative elements and a desire for more emotional depth. The overall tone is positive, recommending the show as a fresh and fun experience. | Gemini: The review is largely positive, highlighting the show's cleverness and fun. While it mentions some flaws and wishes for more emotional depth, the overall tone suggests a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:47:45.900Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3446,
-    "outputTokens": 375,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:10.440Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 80,
-    "scoreDelta": 4,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwExcerpt": "While it’s a retro wartime story, the overall sensibility here is both contemporary and self-aware, filled with sly critiques of the domination of wartime intelligence services by members of the British ruling class, exerting their sexist ways. For the most part, the show is composed of zany humor that bleeds into comic songs with witty internal rhymes (the songs of Tim Minchin are a helpful comparative).",
   "sourceMethod": "archive",

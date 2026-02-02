@@ -7,18 +7,18 @@
   "publishDate": "March 28, 2014",
   "showScoreExcerpt": "\"Disney's latest offering at the New Amsterdam Theatre, is simply . . . maaaahvelous! The costumes, the sets, the kitsch and comedic fun made me feel like a kid again.\"",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 77,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 79,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The exclamatory 'maaaahvelous' and mention of feeling 'like a kid again' suggests strong enjoyment, but limited excerpt prevents assessment of full critical evaluation. | GPT-4o: The review uses highly enthusiastic language, describing the show as 'maaaahvelous' and highlighting its ability to evoke a childlike sense of wonder, indicating a strong recommendation. | Gemini: The reviewer uses the word \"maaaahvelous!\" and states that the show made them feel like a kid again, indicating a positive experience and recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The enthusiastic language 'maaaahvelous' and positive comments about feeling 'like a kid again' indicate strong enjoyment, but with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The excerpt uses highly enthusiastic language, describing the show as 'maaaahvelous' and highlighting the enjoyment of costumes, sets, and comedic fun. Despite the single excerpt warning, the tone suggests a strong recommendation. | Gemini: The reviewer uses the word \"maaaahvelous!\" and describes the show as fun and nostalgic, indicating a positive experience. Given the single excerpt warning, I'm scoring in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:12:29.756Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:07:39.518Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

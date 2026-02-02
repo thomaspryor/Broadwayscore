@@ -16,64 +16,48 @@
     "score": 78,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 72,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the cast is a joy to watch, seamlessly blending righteous passion and practical laughs",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "That it remains so funny and stirring is a smaller, better kind of miracle",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the show makes him a little too opaque for Odom to land on one, the other, or a mix",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review is predominantly positive with strong praise for performances (especially Young and Odom) and the production's relevance and humor, but notes some character development issues with the lead role that prevent it from being a rave.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the cast as 'note-perfect' and 'a joy to watch' while calling the play 'funny and stirring,' but notes character development issues with the lead role that prevent it from being a stronger recommendation. | Gemini: The review is generally positive, highlighting the play's relevance, humor, and the cast's performance. However, it notes some issues with the character of Purlie and the play's overall focus, preventing it from being a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:54:40.121Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4050,
-    "outputTokens": 363,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:17.229Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 70,
-    "scoreDelta": 5,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwThumb": "Up",
   "dateUnknown": true,

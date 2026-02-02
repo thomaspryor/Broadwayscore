@@ -29,40 +29,24 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251231130110",
   "archiveOrgUrl": "http://web.archive.org/web/20251231130110/https://variety.com/2023/legit/reviews/once-upon-a-one-more-time-review-britney-spears-musical-1235649922/",
-  "assignedScore": 82,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 82,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 83
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "giddy, surprisingly caustic script and rapier-fast score",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "built for speed and social awareness",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "pop-musical course correction",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Strong positive language praising the script as 'giddy' and 'caustic', the score as 'rapier-fast', and positioning it as a successful 'course correction' with social awareness, though this appears to be an excerpt rather than a complete review.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses clearly positive language like 'giddy,' 'surprisingly caustic,' and 'rapier-fast' to describe the show's strengths, positioning it as an effective 'course correction' with social awareness and speed. | GPT-4o: The review highlights the show's engaging script and score, indicating a positive reception. However, the lack of explicit recommendation language and some ambiguity in tone suggest a score in the lower range of the Positive bucket. | Gemini: The review highlights positive aspects like the script and score, suggesting it's worth seeing despite any potential reservations implied by the opening sentence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -71,19 +55,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:09:02.145Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2448,
-    "outputTokens": 342,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:08.498Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (91 words)"
+  "contentTierReason": "Short text (91 words)",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

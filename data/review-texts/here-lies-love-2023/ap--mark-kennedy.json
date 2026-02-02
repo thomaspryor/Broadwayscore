@@ -21,8 +21,8 @@
     "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,21 +30,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "transforms the Broadway Theatre into a disco-political fever dream",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "demands audience participation while never losing sight of its dark historical truths",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review uses vivid, enthusiastic language about the production's immersive concept and praises its ability to balance entertainment with serious subject matter, indicating clear recommendation despite being a brief excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses positive language like 'transforms' and describes an engaging 'immersive' experience, though the tone suggests appreciation for the concept rather than unqualified enthusiasm. | GPT-4o: The review uses highly enthusiastic language, describing the show as an 'immersive musical' and a 'fever dream' that 'demands audience participation,' indicating a strong recommendation. | Gemini: The review describes the show as a \"disco-political fever dream\" and notes that it \"never loses sight of its dark historical truths,\" indicating a positive, albeit potentially complex, experience. The use of \"demands audience participation\" might be a reservation for some.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,19 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:58:39.922Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2339,
-    "outputTokens": 291,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:32.238Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

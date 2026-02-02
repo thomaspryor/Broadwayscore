@@ -9,7 +9,7 @@
   "bwwExcerpt": "The bare-bones staging keeps the focus squarely where it counts: on the cast of nearly 40, who are uniformly topflight and in sync when it comes to sparking emotional electricity. The simplicity of the production provides breathing room in a megamusical that often exhilarates, but also drains because of its tendency to always think bigger. Matthew Wexler, One-Minute Critic: Ragtime, one of the great musical theater scores of the late 20th century, steps up to bat on Broadway in its third major production. And if some of its design elements feel sparse in Lincoln Center Theater’s 1,050-seat Vivian Beaumont, its glorious cast of 34 and “the music of something beginning” land with a visceral impact that marks a uniquely American art form. Rob Weinert- Kendt, America Magazine: Still, the mantle of “relevance” is a heavy thing to lay on a Broadway musical. An earlier version of this same staging, also by director Lear deBessonet, ran at the Encores! series last November in the weeks before and after the U.S. presidential election, and depending on when audiences saw it, they felt either the show’s bursts of hope or its cries of despair with a fresh immediacy. Seen now, it plays less like a reflection of the breaking news outside the theater’s doors than like a dead-serious fable, speaking not so much to our precise present moment as to the perennial national questions this moment raises. Brian",
   "showScoreExcerpt": "\"The simplicity of the production provides breathing room in a megamusical that often exhilarates, but also drains because of its tendency to always think bigger.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "urlSource": "show-score",
@@ -21,67 +21,51 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 75,
-      "performances": 88,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "easy to heartily recommend",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "performances are uniformly tight and persuasive",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "steady procession of emphatic and declamatory numbers becomes a sort of sonic wallpaper that loses impact",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite acknowledging the show's tendency toward 'power-anthem overload' and pacing issues, the critic explicitly states it's 'easy to heartily recommend' and consistently praises the performances, direction, and production values.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite noting the show's tendency toward 'power-anthem overload' and some pacing issues, the critic explicitly states the show is 'easy to heartily recommend' and praises the performances as 'uniformly topflight.' | Gemini: The critic ultimately recommends the show, highlighting its strengths in score, cast, and relevance, despite noting some issues with length and repetitiveness. The final sentence explicitly states a recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:00:55.532Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3425,
-    "outputTokens": 343,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:12:00.360Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 88,
-    "scoreDelta": 6,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "designation": "Recommended",
   "sources": [

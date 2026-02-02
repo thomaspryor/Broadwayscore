@@ -8,45 +8,29 @@
   "dtliExcerpt": "“Patriots,” a gripping, juicy drama replete with a terrifying performance from Will Keen as a Richard III-like you-know-who, offers up a potted history of Russia from the 1990s, the era of bumbling Boris Yeltsin, to the present. Its central dramatic question? How did Putin happen?",
   "fullText": "As fans of \"The Crown\" know well, British writer Peter Morgan is singularly adept at explaining how the most basic human emotions — pride, pique, greed, sexual need, raging insecurity — impact magnitudinous global events. In \"Patriots,\" Morgan's newest Broadway play, he turns his attention to the Kremlin and the rise — with as yet no fall in sight — of the obscure deputy mayor who became one of the world's most ruthless despots: Vladimir Putin.\"Patriots,\" a gripping, juicy drama replete with a terrifying performance from Will Keen as a Richard III-like you-know-who, offers up a potted history of Russia from the 1990s era of bumbling Boris Yeltsin to the present. Its central dramatic question: How did Putin happen?\n\nThe answer, Morgan suggests, is inextricably linked to the rise of the so-called Russian oligarchs, who seized on the fall of communism for their own epic material gain, snapping up former state assets like utilities and television stations and spending the windfalls on megayachts cruising the Mediterranean with impunity.\n\nSuch was their power, \"Patriots\" implies, these hyper-wealthy Russians came to believe they also could control the Kremlin — especially if they installed one of their own to do their bidding like dumb old Vlad, a reliable apparatchik who could be trusted to do their bidding.\n\nAlas for businessmen like Boris Berezovsky (Michael Stuhlbarg), the storyteller here, puttering Putin went rogue.\n\nThe oligarchs failed to see the old Soviet ways were still in place, including the state apparatus of murder — both overt and covert.\n\nAll manner of hell rained down upon their heads. A few of the smart ones recalibrated with the new big dog: notably, here, Roman Abramovich (Luke Thallon), a name notoriously familiar to the British public, at least, because he once owned the Chelsea Football Club.\n\nThat's the triangular conflict of the play: Berezovsky, who died in Britain in suspicious circumstances in 2013, helps both Putin and Abramovich, only to be twice stabbed in the back. What's especially distinctive about this play, though, is that its most sympathetic figure, Berezovsky, is really not all that sympathetic. He is, after all, an oligarch and a mathematician who simply miscalculated. In so doing, he unleashed upon the world a murderous dictator who sent tanks rolling into Ukraine.\n\nStuhlbarg is a loquacious, slightly goofy actor who fits Morgan's conception of the character like a fur-lined glove as the thrill of money and power leads him to stray from his professorial mentor (played by Ronald Guttman). Morgan is clearly fascinated with the hows and whys of how such a smart man made one of the great misjudgments of the modern political era.\n\nMichael Stuhlbarg as Boris Berezovsky in 'Patriots' on Broadway. (Matthew Murphy)\n\nAudiences likely will share that interest, thanks to a lively production from Rupert Goold and a uniformly excellent ensemble cast that includes Stella Baker as Marina Litvinenko and Alex Hurt as her husband Alexander. The latter is the Russian dissident who coined the term \"Mafia state\" and was poisoned in London in 2006. On his deathbed, he blamed Putin.\n\n\"Patriots\" has the sweep of a Shakespearean history play, and many of the same points of conflict. But Goold, long fond of a certain trashy beauty in the theater, leavens those tendencies and adds Broadway pizzazz.\n\nMorgan's characters explain themselves at times like they are walking Wikipedia entries. As with \"The Crown,\" these histories always run the risk of making people think they are watching historical fact, not a dramatic rendition with imagined dialogue. But very few people know the Putin backstory; as such, \"Patriots\" is a helpful, cautionary tale of unintended consequence.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": "\"'Patriots,' a gripping, juicy drama replete with a terrifying performance\"",
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "gripping, juicy drama replete with a terrifying performance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "singularly adept at explaining how the most basic human emotions...impact magnitudinous global events",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "terrifying performance from Will Keen as a Richard III-like you-know-who",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong praise for the writing craft, plot engagement ('gripping, juicy'), and standout performance, with no significant criticisms in this excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses strong positive language like 'gripping' and 'juicy drama' and praises the lead performance as 'terrifying' in what appears to be an appreciative way, indicating clear recommendation despite the serious subject matter. | GPT-4o: The review describes the play as 'gripping' and 'juicy,' with a 'terrifying performance,' indicating strong praise and a clear recommendation to see the show. | Gemini: The review uses positive language such as \"gripping\" and \"juicy drama\" and highlights a \"terrifying performance.\" This indicates a positive recommendation, though not an enthusiastic one.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,27 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:51:07.974Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2465,
-    "outputTokens": 339,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:24.546Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/patriots-2024/nydailynews--chris-jones_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:33:49.097Z",

@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": 88,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 88,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "★★★★★ Toll the bell, Old Broadway. Times are changin', gone are the days, and hallelujah!",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The production is all that Davis, who died in 2005 at the age of 87, might have desired.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "make this production at the Music Box well worth a visit",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Five-star review with enthusiastic opening, consistent praise for performances (especially highlighting Kara Young and Leslie Odom Jr.), direction, and production values, concluding with clear recommendation that it's 'well worth a visit.'",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic awards 5/5 stars and uses language like 'hallelujah!', 'all that Davis might have desired', and 'well worth a visit' while praising every aspect of the production from performances to direction to design. | GPT-4o: The review is overwhelmingly positive, awarding the production 5/5 stars and praising the performances, direction, and overall execution. The critic emphasizes the production's success in honoring the original play's intentions and its relevance today, making it a must-see. | Gemini: The critic gives the production 5/5 stars and uses overwhelmingly positive language, calling it \"all that Davis...might have desired\" and \"well worth a visit.\"",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:54:57.524Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4039,
-    "outputTokens": 372,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:28.913Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 80,
-    "scoreDelta": 15,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 73,

@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The reviewer has significant criticisms about heart, character development, and missed opportunities, but acknowledges the show is fun, entertaining for its target audience, and has standout moments like the Genie's performance. | GPT-4o: The review acknowledges that the show is fun and the target audience will be entertained, but criticizes it for lacking heart and having missed opportunities. The critic highlights specific elements that work, like the Genie and certain songs, but overall conveys a sense of disappointment. | Gemini: Despite many criticisms, the reviewer ultimately states that audiences will enjoy the show. The positive aspects, like the Genie and some new songs, outweigh the negatives enough for a mild recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show is enjoyable and entertaining, but expresses significant disappointment with missed opportunities and lack of heart, resulting in a lukewarm recommendation. | GPT-4o: The review expresses several criticisms about the production, such as lacking heart and missed opportunities, but acknowledges that it is fun and entertaining for its target audience. The critic highlights specific positives like the performance of the Genie and the 'Friend Like Me' number, suggesting a mixed but somewhat enjoyable experience. | Gemini: The review is mixed, but ultimately leans positive. While the critic points out several flaws and missed opportunities, they also state that the audience will enjoy the show and that the Genie's performance is a reason to buy a ticket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,8 +43,8 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:10:43.803Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:04:17.710Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,

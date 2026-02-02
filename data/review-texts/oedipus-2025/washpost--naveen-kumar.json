@@ -9,42 +9,26 @@
   "showScoreExcerpt": "\"The ingenuity and precision he delivers with âOedipusâ promise more wild journeys ahead.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/oedipus-broadway",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 93,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
+    "score": 93,
     "confidence": "high",
     "range": {
       "low": 88,
-      "high": 95
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 95,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "rare and magnificent feat of adaptation",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "two of the most captivating performances on New York stages this year",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "combines the intrigue of a primal tragedy with a modern political thriller",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Unqualified praise with superlatives ('rare and magnificent feat', 'most captivating performances') and no reservations expressed.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review uses superlative language ('magnificent feat', 'most captivating performances on New York stages this year') and the additional context confirms high praise with 'ingenuity and precision', indicating a strong must-see recommendation. | GPT-4o: The review uses highly enthusiastic language, praising the adaptation as 'rare and magnificent' and highlighting 'captivating performances,' indicating a strong recommendation. | Gemini: The review uses extremely positive language like \"magnificent feat,\" \"captivating performances,\" and \"primal tragedy with a modern political thriller,\" indicating a very strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:43:39.272Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2418,
-    "outputTokens": 322,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:56:54.481Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "dtliExcerpt": "The taut spin on “Oedipus” now on Broadway after a West End run last fall is a rare and magnificent feat of adaptation: Writer and director Robert Icke draws Sophocles’ ancient play into the present while deepening its timeless explorations of power, desire and fate. As the doomed mother-son couple, Lesley Manville and Mark Strong deliver two of the most captivating performances on New York stages this year, in a production that combines the intrigue of a primal tragedy with a modern political thriller.",
   "sources": [

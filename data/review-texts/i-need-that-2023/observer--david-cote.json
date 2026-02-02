@@ -8,71 +8,56 @@
   "bwwExcerpt": "DeVito gets more mileage out of Sam than you’d expect from the page, performing with a loose, raffish panache. When Foster tells Sam he’s planning to move to Ohio to be with his son’s family, Sam reacts with visceral incredulity. “Cleveland?!” he repeats, elongating the first syllable with a gargling glottal stop slathered in phlegm and contempt. Funny pronunciation. Silly faces. Kooky obsessives behaving irrationally. It’s been the stuff of sitcoms for decades and popular for a reason. Still, w",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 58,
-    "confidence": "high",
+    "score": 65,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 62
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 65
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "goes down easy and leaves scant trace",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Its pleasures are mostly due to an endearing and frisky performance by DeVito",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "when you put TV-level product on the Broadway stage, don't be surprised if the audience talks back",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic acknowledges DeVito's strong performance and some entertaining moments but ultimately dismisses the play as lightweight 'TV-level product' that doesn't justify its Broadway placement.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show's pleasures, particularly DeVito's performance, but ultimately dismisses it as 'TV-level product' that's efficiently assembled but insubstantial and better suited for small screens than Broadway. | GPT-4o: The review describes the play as a 'middlebrow crowd-pleaser' with 'pleasures mostly due to an endearing and frisky performance by DeVito,' indicating some positive aspects, but overall it suggests the play is not particularly memorable or impactful. | Gemini: The review acknowledges the play's flaws, calling it \"TV-level product\" and \"middlebrow,\" but praises Danny DeVito's performance and the staging. This suggests a positive but not enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:38:48.127Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3554,
-    "outputTokens": 342,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:50:10.249Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
-    "scoreDelta": 5,
+    "claudeScore": 62,
+    "openaiScore": 67,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "showScoreExcerpt": "“DeVito gets more mileage out of Sam than you’d expect from the page, performing with a loose, raffish panache...Funny pronunciation. Silly faces. Kooky obsessives behaving irrationally. It’s been the stuff of sitcoms for decades and popular for a reason. Still, when you put TV-level product on the Broadway stage, don’t be surprised if the audience talks back.”",

@@ -8,20 +8,20 @@
   "fullText": "An astonishing, loopy and very true World War II story about Great Britain tricking Germany into believing false invasion plans has been the source material for non-fiction books and movies dramas.\n\nBut this ludicrous 1943 espionage plot involving a corpse, fake papers and amazing good fortune also lends itself to absurdity. That's the approach the Brit comedy collective SpitLip takes with \"Operation Mincemeat,\" the Olivier Award-winning, musical-comedy import from London.",
   "dtliExcerpt": "Think of it as Monty Python on speed, and then throw in some Ealing Studio wit and a bit of “Beyond the Fringe” slyness. Too British? Not if you want to laugh uproariously — and perhaps even unexpectedly shed a tear or two.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 80,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:55:07.285Z",
   "urlUpdated": "2026-01-23T05:27:32.789Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 72,
-    "confidence": "low",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 78
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -29,24 +29,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "astonishing, loopy and very true World War II story",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "also lends itself to absurdity",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "Olivier Award-winning, musical-comedy import from London",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "This appears to be an introductory excerpt describing the source material and premise rather than evaluating the production itself, making scoring highly speculative.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly enjoys the show, praising its humor, heart, and clever theatrical approach, though the recommendation seems somewhat targeted to audiences who appreciate British comedy styles. | Gemini: The review clearly recommends the show, highlighting its humor and heart. The critic uses phrases like \"laugh uproariously\" and emphasizes the show's ability to evoke emotion, indicating a positive experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,27 +39,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:48:57.765Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2411,
-    "outputTokens": 320,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:16.783Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwExcerpt": "Though the main characters are played for laughs, each one, amid all the comic chaos, also reveals their own dignity, heart, and humanity. The show also manages to teeter between patriotism and subversiveness: admiring the derring-do of the mission while poking at its shortcomings, too. Having the actors play any gender of any character without camp or winks is a theatrical approach that not only cleverly skirts the sexist and classist ick of that era but coolly comments on it, too.",
   "sourceMethod": "archive",
@@ -100,10 +84,9 @@
   "showScoreExcerpt": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 72,
-  "rescoreCompletedAt": "2026-02-01T15:48:57.765Z",
+  "rescoreCompletedAt": "2026-02-02T00:31:16.783Z",
   "contentTier": "complete",
   "wordCount": 910,
-  "needsRescore": true,
   "isFullReview": false,
   "textWordCount": 70,
   "textQuality": "truncated",

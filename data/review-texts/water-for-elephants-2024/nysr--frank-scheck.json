@@ -9,71 +9,56 @@
   "bwwExcerpt": "There’s a lot to take in at the new musical based on Sara Gruen’s best-selling novel (which has already inspired a 2011 film). The show features a melodramatic storyline set amidst a Depression-era traveling circus, puppetry, and numerous circus acts including aerial work, juggling, acrobatics, knife throwing, and even a clown routine. It would be nice to report that all of these elements have blended together to create a magical musical theater experience, but Water for Elephants feels more clu",
   "bwwRoundupUrl": null,
   "originalScore": "3/5 stars",
-  "assignedScore": 58,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 58,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 62
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
-      "music": 35,
-      "performances": 65,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Water for Elephants feels more clunky than transporting. There are many things about it to enjoy, but it falls far short of being the greatest show on earth.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It's not much of a storyline, with barely defined characters and a central love relationship that never develops any real chemistry.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "As it is, it's reasonably entertaining",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The 3/5 star rating and language like 'reasonably entertaining' indicate a mixed experience with more problems than strengths, making it hard to fully recommend despite some enjoyable elements.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic's 3/5 star rating and language like 'reasonably entertaining' but 'falls far short' indicates a mixed recommendation - neither strongly positive nor negative, but acknowledging both enjoyable elements and significant flaws. | GPT-4o: The review provides a balanced critique, noting both enjoyable elements and significant shortcomings. The critic's original 3/5 star rating aligns with a mixed assessment, highlighting some entertaining aspects but also pointing out the clunky execution and lack of chemistry. | Gemini: The review acknowledges several flaws, including a draggy book and underwhelming score, but ultimately finds the production \"reasonably entertaining\" due to the lively staging and circus elements. The 3/5 star rating also supports a positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:35:44.798Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3720,
-    "outputTokens": 368,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:57.931Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 40,
-    "openaiScore": 45,
-    "scoreDelta": 5,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",

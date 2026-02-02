@@ -10,67 +10,59 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 93,
-      "direction": 89
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "an outstanding one, with uniformly splendid performances by the entire cast",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the play itself remains sharp, funny, astute, and, unfortunately, utterly timely",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "under the discerning direction of Kenny Leon",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic uses strong positive language throughout ('outstanding', 'uniformly splendid', 'discerning direction') with praise for all major elements and no significant reservations. | GPT-4o-mini: The review expresses strong enthusiasm for the production and performances, indicating it is a must-see revival.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic calls it 'an outstanding' production with 'uniformly splendid performances' and praises the direction as 'discerning.' Despite concerns about timeliness of the subject matter, the assessment of this production is clearly positive. | GPT-4o: The review uses strong positive language, describing the production as 'outstanding' with 'splendid performances,' indicating a highly enthusiastic recommendation. | Gemini: The review uses positive language like \"outstanding\" and \"splendid performances\", indicating a positive recommendation. However, the provided text is truncated, so the confidence is medium.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:25.269Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:16.711Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 82,
     "openaiScore": 90,
-    "scoreDelta": 2,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,

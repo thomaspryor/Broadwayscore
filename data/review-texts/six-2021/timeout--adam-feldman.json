@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": "4/5",
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "originalScoreNormalized": 80,
@@ -25,12 +25,12 @@
   ],
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:06:47.048Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:41:52.023Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,
@@ -91,11 +91,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.820Z"
   },
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -106,7 +106,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging lack of depth, the critic clearly recommends the show as enjoyable entertainment, supported by the 4/5 rating and positive aggregator verdict. | GPT-4o: The review describes the show as fun and encourages the audience to enjoy it, despite noting its lack of depth. The original 4/5 rating and aggregator context support a positive classification. | Gemini: The critic explicitly states the show is 'fun' and encourages the reader to 'let yourself go and enjoy the finery.' While acknowledging its lack of depth, the overall tone is positive and recommends seeing it for entertainment value. The 4/5 rating also supports a positive classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly recommends enjoying the show despite acknowledging its lack of depth, and the 4/5 rating confirms a positive assessment of entertaining theater. | GPT-4o: The review acknowledges the show as light and fun, encouraging the audience to enjoy it, which aligns with a positive recommendation. The original rating of 4/5 supports this classification. | Gemini: The review acknowledges the show's lack of depth but ultimately recommends it as a fun and enjoyable experience. The 4/5 rating also indicates a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -115,13 +115,13 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 76,
     "openaiScore": 80,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

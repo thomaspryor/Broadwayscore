@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Directed by Kenny Leon, the beauty of the Black vernacular is embedded in the “Purlie Victorious” script. Specificities of Black American life are infused within the jokes as Odom and the cast deftly switch from comedy to drama on a dime.",
@@ -19,33 +19,22 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 50,
-    "confidence": "low",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 65
+      "low": 73,
+      "high": 83
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "uproarious",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The wave of shrieking laughs from the audience showcases just how topical Ossie Davis' 1961 play still is today",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "This appears to be a descriptive opening excerpt rather than an actual review, containing plot summary and scene description with minimal critical evaluation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the performances, direction, and relevance of the material, but notes that some jokes don't land with all audience members. The text appears truncated which limits confidence in the final assessment. | GPT-4o: The review highlights the play's topical humor and the cast's ability to switch between comedy and drama, suggesting a strong performance. However, the mention of some jokes going over the audience's heads indicates some reservations, leading to a positive but not rave classification. | Gemini: The review highlights the play's humor and the cast's performance, but also notes that some jokes may not land with all audience members, indicating a positive but not universally appealing experience. The truncated nature of the review makes it difficult to assess the overall recommendation fully.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,27 +43,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:56:10.125Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2560,
-    "outputTokens": 293,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:53.406Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,

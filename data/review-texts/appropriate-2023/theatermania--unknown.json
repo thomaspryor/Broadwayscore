@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 92,
+  "assignedScore": 89,
   "llmScore": {
-    "score": 92,
+    "score": 89,
     "confidence": "high",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The superlative language 'most electrifying' and 'easily' indicates the highest level of enthusiasm and recommendation, placing this firmly in rave territory. | GPT-4o: The phrase 'most electrifying Broadway play of 2023' strongly indicates a highly enthusiastic recommendation, suggesting it is a standout production of the year. | Gemini: The phrase \"most electrifying Broadway play of 2023\" indicates a very strong positive reaction and a must-see recommendation, placing it in the Rave bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The superlative language 'easily the most electrifying' and positioning as the best of the year indicates strong enthusiasm, but single excerpt warning requires conservative scoring within rave range. | GPT-4o: The excerpt uses strong, enthusiastic language, indicating a highly positive view. However, due to the single excerpt warning, the confidence is medium, and the score is placed conservatively in the middle of the 'Rave' range. | Gemini: The phrase \"most electrifying Broadway play\" indicates a very strong positive reaction, placing it firmly in the Rave bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:44:04.381Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:47:45.193Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "geminiScore": 90,
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 88,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 5,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

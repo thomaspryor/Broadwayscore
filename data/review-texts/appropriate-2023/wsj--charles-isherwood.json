@@ -9,42 +9,26 @@
   "showScoreExcerpt": "\"This being a drama firmly grounded in the hallowed miserable-American-family tradition, by the conclusion all the secrets have tumbled out, and the ugly bones of long-held resentments have been picked over. And over, and over—the play runs nearly three hours.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 59,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 44,
+    "score": 59,
     "confidence": "medium",
     "range": {
-      "low": 33,
-      "high": 55
+      "low": 54,
+      "high": 64
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the play runs nearly three hours",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "And over, and over—the play runs nearly three hours",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "ugly bones of long-held resentments have been picked over",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic emphasizes excessive length and repetitive exploration of family dysfunction, suggesting the play overstays its welcome and becomes tedious. | GPT-4o-mini: The review indicates a lengthy and potentially tedious experience without strong enthusiasm, leading to a mixed recommendation. | Note: Models differed by 12 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic uses dismissive language ('picked over. And over, and over') and emphasizes excessive length as a negative, suggesting the production is tedious and not recommended. | GPT-4o: The review excerpt suggests a repetitive and potentially tedious experience, but without a full verdict, it leans towards a mixed impression. The critique of the play's length and repetitive nature implies some dissatisfaction, but the lack of explicit negative language suggests it isn't entirely dismissive. | Gemini: The review excerpt suggests the play is long and repetitive, indicating a mixed or slightly negative sentiment. Given the single excerpt warning, I'm scoring conservatively within the Mixed bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:11:47.006Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:39.055Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 44,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 50,
-    "scoreDelta": 12,
+    "claudeScore": 42,
+    "openaiScore": 60,
+    "geminiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0

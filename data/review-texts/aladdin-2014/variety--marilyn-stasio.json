@@ -9,7 +9,7 @@
   "dtliExcerpt": "The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you’ll hear the tunes you loved in the 1992 movie. But the notion that “Disney Aladdin” somehow resurrects the spirit of the late Howard Ashman, who had the original inspiration for the movie and contributed most of its clever lyrics, is a joke. Restoring a person’s work without respecting his artistic sensibility is no tribute at all. If this super-costly Disney extravaganza doesn’t really represent Ashman’s artistic vision, whose vision does it reflect? Chad Beguelin (Elf, The Wedding Singer), who wrote the book and contributed new lyrics, obviously plays a significant role, as does Alan Menken, who scored the film and wrote new songs for the show. Even more so does helmer-choreographer Casey Nicholaw (The Book of Mormon), who stylistically turns the film’s romantic fairy-tale adventure into shtick comedy.",
   "showScoreExcerpt": "\"This super-costly extravaganza doesn't do justice to the movie, or to the spirit of the late Howard Ashman.\"",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 64,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:53:57.762Z",
@@ -17,11 +17,11 @@
   "dtliThumb": "Meh",
   "bwwExcerpt": "The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you'll hear the tunes you loved in the 1992 movie. But the notion that \"Disney Aladdin\" somehow resurrects the spirit of the late Howard Ashman, who had the original inspiration for the movie and contributed most of its cle...",
   "llmScore": {
-    "score": 60,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: While acknowledging some impressive technical elements and performances, the critic fundamentally argues the production fails its source material and replaces 'fairy-tale innocence with show-queen vulgarity,' calling key changes 'downright disastrous.' | GPT-4o: The review highlights some positive aspects such as the magical set pieces and performances but criticizes the production for not respecting the original artistic vision and making poor changes to the material. The truncated text suggests caution, but the overall tone leans towards mixed with some redeeming qualities. | Gemini: The review highlights both positive and negative aspects. While praising the sets, costumes, and some performances, it criticizes the lack of originality, cheap jokes, and changes to the original material. Given the truncated nature, it's hard to gauge the final verdict, but the overall tone suggests a mixed reaction.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Despite praising some technical elements and performances, the critic fundamentally finds the production a failure that disrespects its source material and replaces 'fairy-tale innocence with show-queen vulgarity.' | GPT-4o: The review highlights some impressive elements like the magic-carpet ride and the performance of James Monroe Iglehart, but criticizes the production for not respecting Howard Ashman's artistic vision and for certain character and plot changes. The text is truncated, so the final verdict may be missing, leading to a medium confidence level. | Gemini: The review highlights both positive and negative aspects of the production. While praising the sets, costumes, and some performances, it criticizes the changes to the original material and the overall tone. Given the truncated nature of the review, it's difficult to definitively gauge the final recommendation, but the mixed signals suggest a 'Mixed' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:13:14.105Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:08:48.375Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 47,
-    "previousVersion": "3.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 58,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "scoreDelta": 23,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

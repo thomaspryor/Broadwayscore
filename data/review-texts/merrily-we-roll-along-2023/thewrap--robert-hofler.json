@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "I’ve seen a few of those revivals, and while each has been an improvement on the original, this Broadway revival directed by Maria Friedman and based on her Mernier Chocolate Factory production in London, is the first that not only works completely but is downright wonderful — with just a very few caveats.",
@@ -19,67 +19,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 83,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 86
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 78,
-      "performances": 88,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this Broadway revival directed by Maria Friedman and based on her Mernier Chocolate Factory production in London, is the first that not only works completely but is downright wonderful",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "I recommend getting a ticket to see this wonderful \"Merrily\" revival and buy another the following week to enjoy it even more the second time",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Groff almost singlehandedly, and in a very quiet way, makes this revival drive forward while going backward on all eight cylinders",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic calls the production 'downright wonderful' and explicitly recommends seeing it twice, praising the direction, performances (especially Groff), and improvements over previous versions despite some minor reservations about song placement and book issues.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite opening with extensive criticism of the original production and some reservations about changes, the critic clearly recommends this revival as 'downright wonderful' and suggests buying tickets to see it twice. | Gemini: The review is overwhelmingly positive, calling the revival \"downright wonderful\" and recommending seeing it multiple times. While it mentions some caveats, the overall tone is enthusiastic and supportive.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:36:35.564Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4280,
-    "outputTokens": 402,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:18.087Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 83,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,

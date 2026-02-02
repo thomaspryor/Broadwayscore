@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Branden Jacobs-Jenkins’ “Appropriate,” now playing on Broadway, is a searing narrative about family ties, past hurts and unbridled pain. It’s a shocking play centering on legacy, race and the fragility of memory.",
@@ -21,60 +21,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 75,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 67,
+      "low": 73,
       "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "creates one of the most engaging family dynamics presented on stage",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "incredible performances from the entire cast, particularly Paulson and Stoll",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "with a runtime approaching three hours, even the humorous bits that slice through the heaviness of the material can't save some of the overlong sections and monologues",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The reviewer praises the engaging family dynamics, incredible performances, and thematic depth while acknowledging significant structural problems with pacing and runtime, resulting in a qualified positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and the engaging family dynamics, but notes some pacing issues and a lengthy runtime, leading to a positive but qualified recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite the heavy subject matter and some critiques about jarring transitions, the critic praises the performances as 'incredible,' commends the director and set design as 'highly effective,' and describes the family dynamics as 'one of the most engaging...presented on stage.' | GPT-4o: The review praises the play's narrative, performances, and direction, describing it as 'searing' and 'engaging,' which indicates a strong recommendation. | Gemini: The review highlights the play as a searing narrative with incredible performances and engaging family dynamics, indicating a positive recommendation despite some jarring effects.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:31:26.922Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:32.286Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 78,
-    "scoreDelta": 6,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 60,

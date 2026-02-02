@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sarsgaard gives a commanding performance as Boris Berezovsky, the oligarch who helped create Putin only to become his most dangerous enemy.",
   "originalScore": 80,
-  "assignedScore": 55,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,49 +18,53 @@
   "showScoreExcerpt": "Sarsgaard gives a commanding performance as Boris Berezovsky, the oligarch who helped create Putin only to become his most dangerous enemy.",
   "needsScoring": true,
   "llmScore": {
-    "score": 55,
-    "confidence": "low",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 65
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "commanding performance as Boris Berezovsky",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This excerpt only praises Sarsgaard's performance without any evaluation of the show itself or recommendation language, making it impossible to determine overall recommendation strength.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic's own 80 rating places this in positive territory, and 'commanding performance' is clearly evaluative praise, though the excerpt is very brief and may be truncated. | GPT-4o: The original rating of 80 from a major publication strongly suggests a positive review. The phrase 'commanding performance' indicates a strong endorsement of the lead actor's portrayal, aligning with the positive bucket. | Gemini: The critic's rating is 80, and the review highlights a strong performance, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:10:35.819Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2331,
-    "outputTokens": 239,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:18:59.384Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 55,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

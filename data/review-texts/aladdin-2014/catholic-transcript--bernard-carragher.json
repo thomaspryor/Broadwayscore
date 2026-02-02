@@ -8,17 +8,17 @@
   "fullText": null,
   "showScoreExcerpt": "\"Mainly, this Aladdin is F-U-N because it was so craftily assembled. Aladdin is a treat for the eye and ear.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "sourceMethod": "playwright",
   "scoreSource": null,
   "llmScore": {
-    "score": 78,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes fun and craft with positive descriptors like 'treat for the eye and ear,' though the excerpt is brief and may not capture the full verdict. | GPT-4o: The review highlights the production as 'F-U-N' and a 'treat for the eye and ear,' indicating a positive experience and recommendation. | Gemini: The review excerpt uses positive language like \"F-U-N\" and \"treat,\" indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes fun and entertainment value with positive descriptors like 'craftily assembled' and 'treat,' but with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review excerpt describes the production as fun and visually and aurally pleasing, indicating a positive experience. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt uses positive language like \"F-U-N\" and \"treat for the eye and ear,\" indicating a positive recommendation. Given that it's a single excerpt, the score is placed in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:10:52.650Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:04:29.368Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 78,
     "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 80,
-    "geminiScore": 78,
+    "openaiScore": 77,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

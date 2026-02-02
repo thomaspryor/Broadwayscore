@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 88,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,26 +33,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "A shattering, life-crushing series of events unfolds before us",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it is impossible to look away",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "restraint that jacks up one's sense of dread to nearly unbearable levels",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic uses intensely positive language about the theatrical experience ('shattering', 'impossible to look away') and praises the production's restraint and effectiveness in creating dramatic tension.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic describes the show as creating 'unbearable levels' of dread and being 'impossible to look away' from, indicating strong theatrical impact and engagement, though the single excerpt limits confidence in the overall verdict. | GPT-4o: The review excerpt uses highly positive language, describing the production as 'shattering' and 'impossible to look away,' suggesting a powerful and compelling experience. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review describes a compelling and intense experience, suggesting it is worth seeing despite the difficult subject matter. The phrase 'impossible to look away' implies a positive, albeit potentially unsettling, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -61,19 +45,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:07:50.994Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2353,
-    "outputTokens": 334,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:56:47.686Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

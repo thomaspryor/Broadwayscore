@@ -9,42 +9,26 @@
   "bwwExcerpt": "Flat-out hilarious and stacked with topflight performances led by Leslie Odom, Jr. and Kara Young, Purlie Victorious is also a triumph when it comes to timing. Suffice it to say the play speaks directly to today’s racial tumult. Average Rating: 88.4% { \"@context\":\"https://schema.org\", \"@type\":\"LiveBlogPosting\", \"@id\":\"/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927\", \"about\":{ \"@type\":\"Event\", \"startDate\":\"2023-09-27T10:05:12-05:00\",",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 94,
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 95,
-      "direction": 90
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Read our five-star review of Purlie Victorious",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Flat-out hilarious and stacked with topflight performances led by Leslie Odom, Jr. and Kara Young, Purlie Victorious is also a triumph when it comes to timing",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the staging by Kenny Leon boasts terrific work across the board",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Explicitly labeled as a five-star review with unqualified praise throughout, using superlatives like 'triumph,' 'flat-out hilarious,' and 'terrific work across the board' with no meaningful criticisms.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Five-star review with explicit praise calling it 'flat-out hilarious,' a 'triumph,' and praising 'terrific work across the board' with enthusiastic language throughout. | GPT-4o: The review is overwhelmingly positive, describing the production as 'flat-out hilarious,' 'a triumph,' and highlighting the 'terrific work across the board.' The critic's use of superlatives and the five-star rating indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the humor, performances, and relevance of the play. While not a rave, it strongly recommends seeing the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:55:12.622Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3258,
-    "outputTokens": 378,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:41.378Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Flat-out hilarious and stacked with topflight performances led by Leslie Odom, Jr. and Kara Young, Purlie Victorious is also a triumph when it comes to timing. Suffice it to say the play speaks directly to today’s racial tumult.",

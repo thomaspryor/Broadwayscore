@@ -7,15 +7,15 @@
   "publishDate": "April 27, 2024",
   "fullText": "Director-choreographer Justin Peck’s unique dance-theater-concert hybrid is a commendable, imaginative rendering of Sufjan Stevens’ concept album. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to the Broadway opening of “Illinoise.” The new Broadway production “Illinoise” draws inspiration from Sufjan Stevens’ near-eponymous 2005 concept album, “Illinois.” As that album blends genres, so here does director-choreographer and co-story author Justin Peck. “Illinoise” is a dance musical, a musical performance art piece, a theatrical indulgence. Though the work straddles two cities — Chicago and New York — and crackles with the sporty-casual aesthetic of the early aughts, Peck and his co-writer Jackie Sibblies Drury aren’t so much traversing specific settings as much as they are trying to evoke the higher-dimensional frequencies pulsing out of Stevens’ album.",
   "originalScore": null,
-  "assignedScore": 56,
+  "assignedScore": 67,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 56,
-    "confidence": "medium",
+    "score": 67,
+    "confidence": "low",
     "range": {
-      "low": 47,
-      "high": 65
+      "low": 62,
+      "high": 72
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -25,24 +25,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it did not move me",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "obvious delight sprinkled over \"Illionise\"",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "It made me want to be moved though, which in a way, is its own sort of illumination",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges the show's evident charm but admits it failed to emotionally connect, creating a mixed response that neither recommends nor discourages attendance. | GPT-4o-mini: The review expresses a desire for emotional impact but ultimately indicates a lack of movement, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The review praises the production as 'commendable' and 'imaginative' but concludes with the clear statement that it 'did not move me,' indicating a mixed reaction that neither fully recommends nor discourages. | Gemini: The review acknowledges the delight and imagination of the production, but the critic ultimately wasn't moved. This suggests a recommendation with reservations, placing it in the positive bucket with a lower score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,20 +35,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:34:07.931Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:14:06.445Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 56,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 60,
-    "scoreDelta": 8,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 72,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "dtliExcerpt": "Yet in all honesty, for all the obvious delight sprinkled over “Illionise,” it did not move me. It made me want to be moved though, which in a way, is its own sort of illumination.",
   "sources": [

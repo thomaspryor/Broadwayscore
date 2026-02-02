@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language ('stunning', 'gorgeous', 'masterful') and the original rating of 88 clearly falls in the Rave category range. | GPT-4o: The review uses highly positive language such as 'stunning', 'gorgeous', and 'masterful', indicating a strong recommendation. The original rating of 88 aligns with a rave classification. | Gemini: The review uses highly positive language like \"stunning\" and \"masterful,\" indicating a strong recommendation. The original rating of 88 also supports a Rave classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses highly positive language like 'stunning' and 'masterful' with no reservations, and the original rating of 88 confirms this is a rave review. | GPT-4o: The review uses highly positive language such as 'stunning', 'gorgeous melodies', and 'masterful performances', indicating a strong recommendation. The original rating of 88 aligns with a 'Rave' classification. | Gemini: The review uses extremely positive language like \"stunning\" and \"masterful\" and the critic's rating is very high, indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,20 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:31:39.824Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-01T23:59:02.121Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 88,
-    "geminiScore": 92,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

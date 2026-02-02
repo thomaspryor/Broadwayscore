@@ -17,64 +17,48 @@
     "score": 95,
     "confidence": "high",
     "range": {
-      "low": 92,
-      "high": 98
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 92,
-      "performances": 95,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Taub's masterwork—and her first musical to reach Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "provocative, mirthful, entertaining, and irrepressibly rousing",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Taub's talent, though, is extraordinary: as a performer, yes, but even moreso as a songwriter with a canny theatricality and an uncanny future",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Five-star review calling the show a 'masterwork' with 'extraordinary' talent, praising significant improvements from the previous production and describing it as 'irrepressibly rousing' with exceptional performances.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic gives 5/5 stars and calls it a 'masterwork' that comes 'to Broadway's rescue' with extraordinary talent. The review is overwhelmingly positive about performances, writing, and production values. | Gemini: The critic gives the show 5/5 stars and calls it a \"masterwork.\" He praises the talent involved and highlights the significant improvements made since its initial staging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:14:55.712Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3958,
-    "outputTokens": 371,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:04.062Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 94,
+    "openaiScore": null,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 89,

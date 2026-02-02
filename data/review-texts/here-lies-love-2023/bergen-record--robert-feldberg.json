@@ -10,42 +10,26 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HERE-LIES-LOVE-2023",
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 80,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 85,
+      "music": null,
       "performances": null,
-      "direction": 79
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "great songs",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the alluring title number might become permanently lodged in your brain",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "inventive choreography",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: This excerpt consistently praises multiple technical and creative elements (songs, choreography, costumes, lighting, set design) with strong positive descriptors, suggesting a solid positive recommendation despite being an incomplete review. | GPT-4o-mini: The review highlights strong music and choreography, indicating a positive recommendation despite not addressing the script or performances directly.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises multiple production elements (songs, choreography, costumes, lighting, staging) using positive descriptors like 'great,' 'inventive,' 'eye-catching,' and 'remarkable.' However, with only one curated excerpt available, I'm scoring conservatively in the lower positive range as this could be cherry-picked praise from a more mixed review. | GPT-4o: The review highlights several positive aspects of the production, including the music, choreography, costumes, lighting, and stage design. However, due to the single excerpt warning, the overall sentiment is assumed to be positive but not overwhelmingly so. | Gemini: The review excerpt highlights several positive aspects of the production, including the music, choreography, costumes, lighting, and stage design. While it's only one excerpt, the focus on these elements suggests a positive overall assessment, though the lack of a direct recommendation warrants a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:23.936Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:36.523Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 80,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",
