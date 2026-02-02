@@ -63,14 +63,14 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 160,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "isFullReview": false,
   "textWordCount": 160,
   "archivePath": "data/archives/reviews/operation-mincemeat-2025/wsj--charles-isherwood_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:17:35.153Z",
+  "textFetchedAt": "2026-02-02T23:26:48.115Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -89,5 +89,6 @@
   "textIssues": [
     "Word count too low: 182 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-02-02T03:36:13.094Z"
+  "rescoreCompletedAt": "2026-02-02T03:36:13.094Z",
+  "tierReason": "Short text (160 words)"
 }

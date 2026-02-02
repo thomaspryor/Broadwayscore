@@ -74,7 +74,7 @@
   "previousLlmScore": 79,
   "textWordCount": 86,
   "archivePath": "data/archives/reviews/suffs-2024/wsj--charles-isherwood_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T18:04:03.394Z",
+  "textFetchedAt": "2026-02-02T23:41:17.402Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -88,6 +88,12 @@
       "method": "playwright",
       "success": false,
       "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
     },
     {
       "tier": 2,
@@ -108,5 +114,7 @@
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 145 (min: 300)"
-  ]
+  ],
+  "wordCount": 86,
+  "tierReason": "Short text (86 words)"
 }

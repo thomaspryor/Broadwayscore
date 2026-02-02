@@ -5,13 +5,13 @@
   "criticName": "Peter Marks",
   "url": "http://journaltimes.com/entertainment/a-radical-retelling-of-wizard-of-oz/article_de42e691-cb2a-5d4b-90a4-36ae0171c1e3.html",
   "publishDate": "November 1, 2003",
-  "fullText": null,
+  "fullText": "In \"Wicked,\" the muddy $14 million spectacle that opened last night at the Gershwin Theatre, Chenoweth does what musical stars are expected to do in times of theatrical trouble: consult the book of spells, perform a bit of sorcery. This she accomplishes in spades as Glinda, the fabled good witch, promoted here from kitschy movie part to bravura stage lead. Whenever she opens her mouth - whether to demonstrate her supple coloratura or to detonate a verbal grenade or two - \"Wicked\" makes endearingly whimsical noises, the sounds of a bona fide crowd-pleaser. Get local news delivered to your inbox! Beginning of dialog window. Escape will cancel and close the window.",
   "showScoreExcerpt": "\"Wicked makes endearingly whimsical noises, the sounds of a bona fide crowd-pleaser. Much of the rest of the time, however, the magic fades as the show pursues its rather charmless agenda as a parable about the roots of political evil.\"",
   "originalScore": null,
   "assignedScore": 64,
   "source": "show-score",
   "needsFullText": true,
-  "sourceMethod": "scrapingbee",
+  "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -67,15 +67,15 @@
     "show-score",
     "web-search"
   ],
-  "contentTier": "needs-rescrape",
-  "wordCount": 26,
+  "contentTier": "truncated",
+  "wordCount": 111,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 57,
   "isFullReview": false,
-  "textWordCount": 0,
-  "archivePath": "data/archives/reviews/wicked-2003/washpost--peter-marks_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T15:12:43.497Z",
-  "fetchMethod": "scrapingbee",
+  "textWordCount": 111,
+  "archivePath": "data/archives/reviews/wicked-2003/washpost--peter-marks_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T23:34:42.674Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -86,28 +86,21 @@
     {
       "tier": 1,
       "method": "playwright",
-      "success": false,
-      "error": "Paywall detected - login may have failed"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
       "success": true
     }
   ],
-  "fetchTier": 2,
+  "fetchTier": 1,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "incomplete",
   "textIssues": [
-    "Word count too low: 146 (min: 300)",
-    "Show title not found in text"
+    "Word count too low: 111 (min: 300)"
   ],
-  "showNotMentioned": true,
   "rescoreCompletedAt": "2026-02-02T00:45:38.216Z",
   "garbageFullText": "Get local news delivered to your inbox!\n\nBeginning of dialog window. Escape will cancel and close the window.\n\nGet up-to-the-minute news sent straight to your device.\n\nBack\n \n\n \n ×\n \n Enjoy unlimited digital access to journaltimes.com!\n \n \n\n \n \n Sorry, an error occurred.\n\n*offer available for new customers only\n\n*offer available for new customers only\n\nAccount processing issue - the email address may already exist\n\nYour account has been registered, and you are now logged in.\n\nInvalid password or account does not exist\n\nSubmitting this form below will send a message to your email with a link to change your password.\n\nAn email message containing instructions on how to reset your password has been sent to the email address listed on your account.\n\nSecure transaction.\n Secure transaction. Cancel anytime.\n\nYour gift purchase was successful!\n Your purchase was successful, and you are now logged in.\n\nA receipt was sent to your email.",
   "garbageReason": "Journaltimes.com syndication paywall/dialog junk, not actual WaPo review text",
   "garbageFixedAt": "2026-02-02T20:04:22.716Z",
   "contentTierReason": "fullText was journaltimes.com paywall dialog, URL is syndication not WaPo",
-  "urlNote": "journaltimes.com syndication of WaPo review; need to find original washingtonpost.com URL"
+  "urlNote": "journaltimes.com syndication of WaPo review; need to find original washingtonpost.com URL",
+  "tierReason": "Short text (111 words)"
 }

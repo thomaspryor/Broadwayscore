@@ -64,7 +64,7 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 56,
   "archivePath": "data/archives/reviews/grey-house-2023/cititour--brian-scott-lipton_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T16:39:41.621Z",
+  "textFetchedAt": "2026-02-02T23:18:34.732Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -75,7 +75,7 @@
   ],
   "fetchTier": 1,
   "truncationSignals": [
-    "has_read_more_prompt"
+    "paywall_or_login_prompt"
   ],
   "sourceMethod": "playwright",
   "textIssues": [
@@ -85,9 +85,10 @@
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "truncated",
-  "wordCount": 170,
+  "wordCount": 154,
   "isFullReview": false,
   "textWordCount": 154,
   "textQuality": "truncated",
-  "textStatus": "truncated"
+  "textStatus": "truncated",
+  "tierReason": "Truncation detected: paywall_or_login_prompt"
 }
