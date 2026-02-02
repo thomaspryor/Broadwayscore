@@ -1,94 +1,102 @@
 {
-  "runDate": "2026-02-02T23:28:45.920Z",
+  "runDate": "2026-02-02T23:31:41.080Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "here-lies-love-2023",
+    "showFilter": "six-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 5,
+    "processed": 3,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 2,
-    "archive": 3
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 2,
-    "tier1_5Attempts": 2,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
+    "tier1_5Attempts": 4,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 1,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
+    "tier2Attempts": 5,
+    "tier2Success": 0,
+    "tier3Attempts": 4,
+    "tier3Success": 1,
     "tier4Attempts": 12,
-    "tier4Success": 4,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 32,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 2.7,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "tier4Success": 3,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 21,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 3,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "here-lies-love-2023/hollywood-reporter--angie-han.json",
-    "here-lies-love-2023/broadwaynews--brittani-samuel.json",
-    "here-lies-love-2023/theatermania--adam-feldman.json",
-    "here-lies-love-2023/wsj--charles-isherwood.json",
-    "here-lies-love-2023/ap--mark-kennedy.json"
+    "six-2021/deadline--greg-evans.json",
+    "six-2021/guardian--adrian-horton.json",
+    "six-2021/theatermania--jesse-green.json"
   ],
   "failed": [
-    "here-lies-love-2023/nytimes--jesse-green.json",
-    "here-lies-love-2023/deadline--greg-evans.json",
-    "here-lies-love-2023/guardian--adrian-horton.json",
-    "here-lies-love-2023/timeout--adam-feldman.json",
-    "here-lies-love-2023/bergen-record--robert-feldberg.json"
+    "six-2021/observer--david-cote.json",
+    "six-2021/timeout--adam-feldman.json",
+    "six-2021/wsj--charles-isherwood.json",
+    "six-2021/amny--matt-windman.json",
+    "six-2021/front-row-center--tulis-mccall.json",
+    "six-2021/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
-      "here-lies-love-2023/guardian--adrian-horton.json",
-      "here-lies-love-2023/ap--mark-kennedy.json"
+      "six-2021/guardian--adrian-horton.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "here-lies-love-2023/theatermania--adam-feldman.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
-      "here-lies-love-2023/nytimes--jesse-green.json",
-      "here-lies-love-2023/deadline--greg-evans.json"
+      "six-2021/theatermania--jesse-green.json"
     ],
     "archive": [
-      "here-lies-love-2023/hollywood-reporter--angie-han.json",
-      "here-lies-love-2023/broadwaynews--brittani-samuel.json",
-      "here-lies-love-2023/wsj--charles-isherwood.json"
+      "six-2021/deadline--greg-evans.json"
     ]
   },
   "failuresByOutlet": {
-    "The Record (Bergen)": {
+    "Observer": {
       "count": 1,
-      "domain": "northjersey.com",
+      "domain": "observer.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "amNewYork": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "here-lies-love-2023/guardian--adrian-horton.json",
-      "oldUrl": "https://www.theguardian.com/stage/2023/jul/21/here-lies-love-review-broadway-imelda-marcos",
-      "newUrl": "https://www.theguardian.com/stage/2023/jul/20/here-lies-love-review-imelda-marcos-broadway"
-    }
-  ]
+  "urlDiscoveries": []
 }
