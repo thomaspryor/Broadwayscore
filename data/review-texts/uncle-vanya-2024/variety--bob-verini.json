@@ -74,18 +74,12 @@
   "previousLlmScore": 78,
   "textWordCount": 914,
   "archivePath": "data/archives/reviews/uncle-vanya-2024/variety--bob-verini_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T08:10:04.934Z",
+  "textFetchedAt": "2026-02-02T15:05:35.850Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "404 - Page not found"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],

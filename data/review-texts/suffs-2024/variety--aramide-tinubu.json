@@ -74,24 +74,12 @@
   "previousLlmScore": 77,
   "textWordCount": 1022,
   "archivePath": "data/archives/reviews/suffs-2024/variety--aramide-tinubu_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T07:40:00.710Z",
+  "textFetchedAt": "2026-02-02T15:05:45.635Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],

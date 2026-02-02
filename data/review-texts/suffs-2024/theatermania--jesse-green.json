@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/suffs_90952.html",
   "publishDate": "April 19, 2024",
-  "fullText": "Taub's score is tuneful and her lyrics are clever, but the show feels more like a history lesson than a musical drama.",
-  "isFullReview": false,
+  "fullText": "The series will kick off on May 7.\n\nProducer Jeffrey Richards has announced a new series of streamed play readings with starry casts to benefit the Actors Fund.\n\nPatti LuPone and John Malkovich will headline a reading of David Mamet's comedy November, set to take place on Thursday, May 7 at 8pm ET. Dylan Baker, Ethan Phillips, and Michael Nichols will also star, with Mamet directing.\n\nOriginal Broadway cast members Gideon Glick, John Behlman, Sas Goldberg, Rebecca Naomi Jones, Lindsay Mendez, Luke Smith and Barbara Barrie will reunite for a reading of Joshua Harmon's Significant Other, set for May 14 at 8pm ET. Trip Cullman directs.\n\nBryan Cranston and Sally Field will lead A.R. Gurney's Love Letters, directed by Jerry Zaks, on May 21 at 8pm ET.\n\nAdditional titles are still to be announced. The one-night-only events will be live streamed each Thursday at 8pm ET/5pm PT on the Actors Fund's YouTube channel and the Broadway's Best Shows YouTube and Facebook channels. They are free, though donations are encouraged. Richards, Rebecca Gold, Broadway's Best Shows, Jim Glaub, and Jacob Soroken Porter serve as producers.\n\nReview: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Every Step Has Meaning in Anne Gridley’s Watch Me Walk \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Leopold Bloom for Rookies and Pros in a Hilarious Ulysses \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "Taub's score is tuneful and her lyrics are clever, but the show feels more like a history lesson than a musical drama.",
   "originalScore": null,
   "assignedScore": 60,
@@ -65,5 +65,49 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 60,
+  "textWordCount": 288,
+  "archivePath": "data/archives/reviews/suffs-2024/theatermania--jesse-green_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T15:07:51.321Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 288 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }

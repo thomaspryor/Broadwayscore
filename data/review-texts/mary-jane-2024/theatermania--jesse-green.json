@@ -68,5 +68,43 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
-  "rescoreCompletedAt": "2026-02-02T03:32:58.154Z"
+  "rescoreCompletedAt": "2026-02-02T03:32:58.154Z",
+  "textWordCount": 42,
+  "archivePath": "data/archives/reviews/mary-jane-2024/theatermania--jesse-green_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T15:08:49.536Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Insufficient text: 141 chars"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 42 (min: 300)",
+    "Show title not found in text"
+  ]
 }
