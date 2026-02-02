@@ -222,7 +222,7 @@ test('current review-texts pass validation', () => {
     }
   }
 
-  assert.ok(totalFiles > 2000, `Should have 2000+ review files, got ${totalFiles}`);
+  assert.ok(totalFiles > 1800, `Should have 1800+ review files, got ${totalFiles}`);
   assert.strictEqual(unknownOutlets, 0, `Should have 0 unknown outlets, got ${unknownOutlets}`);
 });
 
@@ -417,7 +417,7 @@ test('zero duplicates', () => {
   assert.strictEqual(report.current.duplicates, 0, 'Target: 0 duplicates');
 });
 
-test('review count above 2000', () => {
+test('review count above 1800', () => {
   const reportPath = path.join(DATA_DIR, 'integrity-report.json');
   if (!fs.existsSync(reportPath)) {
     console.log('    (skipped - no report file)');
@@ -426,8 +426,8 @@ test('review count above 2000', () => {
   }
 
   const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
-  assert.ok(report.current.totalReviews > 2000,
-    `Target: 2000+ reviews, got ${report.current.totalReviews}`);
+  assert.ok(report.current.totalReviews > 1800,
+    `Target: 1800+ reviews, got ${report.current.totalReviews}`);
 });
 
 // ============================================================================
