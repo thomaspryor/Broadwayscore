@@ -1,74 +1,82 @@
 {
-  "runDate": "2026-02-02T05:05:50.353Z",
+  "runDate": "2026-02-02T05:08:54.692Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "the-whos-tommy-2024",
+    "showFilter": "purlie-victorious-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 5,
+    "processed": 2,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "44.4%"
+    "successRate": "22.2%"
   },
   "tierBreakdown": {
-    "playwright": 3,
-    "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 2,
+    "playwright": 0,
+    "browserbase": 2,
+    "scrapingbee": 1,
+    "brightdata": 1,
     "archive": 0
   },
   "statistics": {
     "tier1Attempts": 7,
-    "tier1Success": 4,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 1,
+    "tier1Success": 1,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 4,
+    "tier2Success": 2,
     "tier3Attempts": 2,
     "tier3Success": 2,
-    "tier4Attempts": 3,
+    "tier4Attempts": 4,
     "tier4Success": 2,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 20,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 31,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-whos-tommy-2024/variety--charles-isherwood.json",
-    "the-whos-tommy-2024/deadline--greg-evans.json",
-    "the-whos-tommy-2024/exeunt-nyc--unknown.json",
-    "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
+    "purlie-victorious-2023/cititour--brian-scott-lipton.json",
+    "purlie-victorious-2023/talkinbroadway--howard-miller.json"
   ],
   "failed": [
-    "the-whos-tommy-2024/variety--trish-deitch.json",
-    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
-    "the-whos-tommy-2024/new-york-sun--elysa-gardner.json",
-    "the-whos-tommy-2024/timeout--adam-feldman.json",
-    "the-whos-tommy-2024/wsj--charles-isherwood.json"
+    "purlie-victorious-2023/variety--aramide-tinubu.json",
+    "purlie-victorious-2023/deadline--greg-evans.json",
+    "purlie-victorious-2023/timeout--adam-feldman.json",
+    "purlie-victorious-2023/wsj--unknown.json",
+    "purlie-victorious-2023/theater-pizzazz--ron-fassler.json",
+    "purlie-victorious-2023/thestage--lane-williamson.json",
+    "purlie-victorious-2023/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-whos-tommy-2024/deadline--greg-evans.json",
-      "the-whos-tommy-2024/exeunt-nyc--unknown.json",
-      "the-whos-tommy-2024/washpost--elisabeth-vincentelli.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/purlie-victorious-2023/variety--aramide-tinubu.json",
+      "purlie-victorious-2023/variety--aramide-tinubu.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "purlie-victorious-2023/cititour--brian-scott-lipton.json"
+    ],
     "brightdata": [
-      "the-whos-tommy-2024/variety--charles-isherwood.json",
-      "the-whos-tommy-2024/variety--trish-deitch.json"
+      "purlie-victorious-2023/talkinbroadway--howard-miller.json"
     ],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Theater Pizzazz": {
+      "count": 1,
+      "domain": "theaterpizzazz.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
