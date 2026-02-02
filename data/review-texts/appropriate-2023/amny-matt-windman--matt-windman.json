@@ -31,5 +31,52 @@
   "archiveOrgTimestamp": "20251017053024",
   "archiveOrgUrl": "http://web.archive.org/web/20251017053024/https://www.amny.com/entertainment/theater/chaos-erupts-in-dark-family-comedy-appropriate/",
   "wordCount": 404,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging the play's confusing and distasteful elements, the critic concludes it's 'genuinely compelling and satisfying theater' and praises the 'hell of a production' with strong performances. | GPT-4o: The review acknowledges some enigmatic and bizarre elements but ultimately praises the production as 'genuinely compelling and satisfying,' indicating a strong positive recommendation. | Gemini: The review acknowledges potentially off-putting elements but ultimately concludes the play is \"genuinely compelling and satisfying,\" indicating a positive recommendation with some reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T19:42:11.710Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }
