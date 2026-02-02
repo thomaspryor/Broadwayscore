@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/hadestown_88061.html",
   "publishDate": "April 18, 2019",
-  "fullText": "Anaïs Mitchell's folk opera about love, loss, and capitalism is a triumph of theatrical storytelling that manages to be both ancient and urgently contemporary.",
-  "isFullReview": false,
+  "fullText": "Joe Iconis and Joe Tracz’s musical is now officially open at Broadway’s Lyceum Theatre.\n\nBe More Chill officially opened last night, March 10, at Broadway's Lyceum Theatre. Check out some new footage from the Broadway production below.\n\nFeaturing a score by Joe Iconis and a book by Joe Tracz, Be More Chill comes to Broadway from a 2018 off-Broadway run at the Pershing Square Signature Center, as well as a 2015 world premiere at Two River Theater, in Red Bank, New Jersey.\n\nInspired by the novel by Ned Vizzini, Be More Chill is described as follows: \"Jeremy Heere is your average, nothing-special teenager at Middleborough High in nothing-special New Jersey…until the day he finds out about 'The Squip.' Thus begins a journey that pits Jeremy's desire to be popular against his struggle to remain true to his authentic self.\"\n\nThe Broadway cast features Will Roland as Jeremy, George Salazar as Michael, Gerard Canonico as Rich, Katlyn Carlson as Chloe, Stephanie Hsu as Christine, Tiffany Mann as Jenna, Lauren Marcus as Brooke, Britton Smith as Jake, Jason Tam as the Squip, and Jason SweetTooth Williams as Jeremy's Dad and Mr. Reyes. Off-Broadway understudies Cameron Bond, Troy Iwata, and Talia Suskauer are joined by Anthony Chatmon II, Morgan Siobhan Green, and Joel Waggoner for the Broadway run.\n\nBe More Chill is directed by Stephen Brackett with choreography by Chase Brock, scenic design by Beowulf Boritt, costume design by Bobby Frederick Tilley II, lighting design by Tyler Micoleau, sound design by Ryan Rumery, musical direction by Emily Marshall, and orchestrations by Charlie Rosen.\n\nReview: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Every Step Has Meaning in Anne Gridley’s Watch Me Walk \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Leopold Bloom for Rookies and Pros in a Hilarious Ulysses \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "Anaïs Mitchell's folk opera about love, loss, and capitalism is a triumph of theatrical storytelling that manages to be both ancient and urgently contemporary.",
   "originalScore": null,
   "assignedScore": 92,
@@ -65,5 +65,48 @@
     "modelAgreement": "All 3 models agree: Rave"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 92,
+  "textWordCount": 364,
+  "archivePath": "data/archives/reviews/hadestown-2019/theatermania--jesse-green_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T03:26:09.931Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }
