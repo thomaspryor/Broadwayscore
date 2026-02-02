@@ -291,27 +291,28 @@ export default function MethodologyPage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
               <div>
                 <div className="text-gray-500 mb-1">A Range</div>
-                <div className="text-gray-300">A+ = 100</div>
-                <div className="text-gray-300">A = 95</div>
+                <div className="text-gray-300">A+ = 97</div>
+                <div className="text-gray-300">A = 93</div>
                 <div className="text-gray-300">A- = 90</div>
               </div>
               <div>
                 <div className="text-gray-500 mb-1">B Range</div>
-                <div className="text-gray-300">B+ = 85</div>
-                <div className="text-gray-300">B = 80</div>
-                <div className="text-gray-300">B- = 75</div>
+                <div className="text-gray-300">B+ = 87</div>
+                <div className="text-gray-300">B = 83</div>
+                <div className="text-gray-300">B- = 78</div>
               </div>
               <div>
                 <div className="text-gray-500 mb-1">C Range</div>
-                <div className="text-gray-300">C+ = 70</div>
+                <div className="text-gray-300">C+ = 72</div>
                 <div className="text-gray-300">C = 65</div>
-                <div className="text-gray-300">C- = 60</div>
+                <div className="text-gray-300">C- = 58</div>
               </div>
               <div>
                 <div className="text-gray-500 mb-1">D/F Range</div>
-                <div className="text-gray-300">D+ = 55</div>
-                <div className="text-gray-300">D = 50</div>
-                <div className="text-gray-300">F = 30</div>
+                <div className="text-gray-300">D+ = 40</div>
+                <div className="text-gray-300">D = 35</div>
+                <div className="text-gray-300">D- = 30</div>
+                <div className="text-gray-300">F = 20</div>
               </div>
             </div>
           </div>

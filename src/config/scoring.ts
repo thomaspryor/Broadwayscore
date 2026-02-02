@@ -115,19 +115,19 @@ export const DESIGNATION_BUMPS: Record<string, number> = {
 
 // Letter grades → 0-100
 export const LETTER_GRADE_MAP: Record<string, number> = {
-  'A+': 100,
-  'A': 95,
+  'A+': 97,
+  'A': 93,
   'A-': 90,
-  'B+': 85,
-  'B': 80,
-  'B-': 75,
-  'C+': 70,
+  'B+': 87,
+  'B': 83,
+  'B-': 78,
+  'C+': 72,
   'C': 65,
-  'C-': 60,
-  'D+': 55,
-  'D': 50,
-  'D-': 45,
-  'F': 30,
+  'C-': 58,
+  'D+': 40,
+  'D': 35,
+  'D-': 30,
+  'F': 20,
 };
 
 // Sentiment bucket → 0-100

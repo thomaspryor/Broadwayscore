@@ -55,10 +55,10 @@ const THUMB_TO_SCORE = { 'Up': 80, 'Meh': 60, 'Flat': 60, 'Down': 35 };
 const BUCKET_TO_SCORE = { 'Rave': 90, 'Positive': 82, 'Mixed': 65, 'Negative': 48, 'Pan': 30 };
 const LETTER_TO_SCORE = {
   'A+': 97, 'A': 93, 'A-': 90,
-  'B+': 87, 'B': 83, 'B-': 80,
-  'C+': 77, 'C': 73, 'C-': 70,
-  'D+': 55, 'D': 50, 'D-': 45,
-  'F': 30
+  'B+': 87, 'B': 83, 'B-': 78,
+  'C+': 72, 'C': 65, 'C-': 58,
+  'D+': 40, 'D': 35, 'D-': 30,
+  'F': 20
 };
 
 /**
@@ -150,11 +150,11 @@ function extractLetterGradeFromText(text) {
       // Normalize en-dash/em-dash to ASCII minus for lookup
       const grade = match[1].toUpperCase().replace(/[–—]/g, '-');
       const gradeMap = {
-        'A+': 98, 'A': 95, 'A-': 92,
-        'B+': 88, 'B': 85, 'B-': 82,
-        'C+': 78, 'C': 75, 'C-': 72,
-        'D+': 68, 'D': 65, 'D-': 62,
-        'F': 50
+        'A+': 97, 'A': 93, 'A-': 90,
+        'B+': 87, 'B': 83, 'B-': 78,
+        'C+': 72, 'C': 65, 'C-': 58,
+        'D+': 40, 'D': 35, 'D-': 30,
+        'F': 20
       };
       if (gradeMap[grade]) {
         return {
