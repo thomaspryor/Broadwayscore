@@ -1,51 +1,41 @@
 {
   "processed": [
-    "patriots-2024/deadline--greg-evans.json",
-    "patriots-2024/deadline--pete-hammond.json",
-    "patriots-2024/theatermania--jesse-green.json"
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/observer--rex-reed.json"
   ],
   "failed": [
-    "patriots-2024/hollywood-reporter--lovia-gyarkye.json",
-    "patriots-2024/variety--frank-rizzo.json",
-    "patriots-2024/variety--jesse-green.json",
-    "patriots-2024/broadwaynews--brittani-samuel.json",
-    "patriots-2024/guardian--michael-billington.json",
-    "patriots-2024/new-york-sun--elysa-gardner.json",
-    "patriots-2024/timeout--raven-snook.json"
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/ew--lisa-schwarzbaum.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/frontmezzjunkies--unknown.json",
+    "wicked-2003/njcom-star-ledger--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "patriots-2024/deadline--greg-evans.json",
-      "patriots-2024/deadline--pete-hammond.json"
-    ],
+    "playwright": [],
     "browserbase": [
-      "data/review-texts/patriots-2024/hollywood-reporter--lovia-gyarkye.json",
-      "patriots-2024/hollywood-reporter--lovia-gyarkye.json"
+      "data/review-texts/wicked-2003/observer--rex-reed.json",
+      "wicked-2003/observer--rex-reed.json"
     ],
-    "scrapingbee": [
-      "patriots-2024/theatermania--jesse-green.json"
-    ],
-    "brightdata": [
-      "patriots-2024/variety--frank-rizzo.json",
-      "patriots-2024/variety--jesse-green.json"
-    ],
-    "archive": []
+    "scrapingbee": [],
+    "brightdata": [],
+    "archive": [
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "wicked-2003/ew--alice-king.json",
+      "wicked-2003/variety--charles-isherwood.json"
+    ]
   },
-  "startTime": "2026-02-02T04:57:07.175Z",
-  "lastProcessed": "patriots-2024/timeout--raven-snook.json",
+  "startTime": "2026-02-02T05:05:12.509Z",
+  "lastProcessed": "wicked-2003/njcom-star-ledger--michael-sommers.json",
   "log": [
     {
-      "t": "2026-02-02T05:00:21.429Z",
+      "t": "2026-02-02T05:09:37.507Z",
       "event": "bb-session",
-      "session": "15396905",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/patriots-review-michael-stuhlba"
-    },
-    {
-      "t": "2026-02-02T05:09:59.717Z",
-      "event": "bb-session",
-      "session": "ec22d3a3",
-      "url": "https://www.theatermania.com/broadway/reviews/patriots_92948.html"
+      "session": "781b78f8",
+      "url": "http://observer.com/2003/11/crowe-is-master-of-briny-boys-domain/"
     }
   ]
 }
