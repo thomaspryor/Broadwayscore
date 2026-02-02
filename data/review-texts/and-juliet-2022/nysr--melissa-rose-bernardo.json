@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and enthusiastic language like 'dynamite,' 'absolutely slays,' and 'wild and wonderful ways' indicate strong recommendation despite some reservations typical of jukebox musicals. | GPT-4o: The review is highly positive, with a 4/5 star rating and enthusiastic language describing the show as a 'candy-colored glitter bomb' and highlighting the strong performances and unique concept. | Gemini: The critic gives the show 4 out of 5 stars and describes it as 'wild and wonderful,' indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and overwhelmingly positive language throughout the review clearly indicate a recommendation, with only minor quibbles about length and confetti that don't diminish the overall enthusiasm. | GPT-4o: The review is overwhelmingly positive, praising the show's unique style, performances, and successful integration of songs. The critic's 4/5 star rating supports a strong positive classification. | Gemini: The critic gives the show 4 out of 5 stars and highlights many positive aspects, including the seamless integration of songs, the humor, and the performances. The few quibbles (length and confetti) are minor in comparison to the overall positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:46.491Z",
+    "scoredAt": "2026-02-02T03:22:19.076Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 81,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 80,
@@ -76,8 +76,7 @@
   "scoreExtractedFrom": "fullText",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 83,
-  "rescoreCompletedAt": "2026-01-28T23:29:53.306Z",
+  "rescoreCompletedAt": "2026-02-02T03:22:19.076Z",
   "contentTier": "complete",
-  "wordCount": 803,
-  "needsRescore": true
+  "wordCount": 803
 }

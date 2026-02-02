@@ -7,15 +7,15 @@
   "publishDate": "March 18, 2024",
   "fullText": "At various points in \"An Enemy of the People,\" the Jeremy Strong-led production of Henrik Ibsen's classic, the greatest entertainment comes from watching the faces opposite you. That's not a critique of director Sam Gold's work. It's hard to think of a show that could put to better use the unique in-the-round structure of Circle in the Square Theatre than this one. In the story, society closes in on and consumes an innocent man; in the staging, we the audience are society.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly states the production 'has much to recommend it' and praises Strong's performance, but notes some limitations in the ending's impact, indicating a positive but not enthusiastic recommendation. | GPT-4o: The review praises the production's use of the theater's unique structure and highlights strong performances, particularly by Jeremy Strong, indicating a positive recommendation despite some reservations about the thematic execution. | Gemini: The review explicitly states that the production has \"much to recommend it\" and praises Jeremy Strong's performance, indicating a positive overall assessment despite some reservations about the audience's self-reflection.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly states the production 'has much to recommend it' and praises Strong's performance, but expresses some reservations about the overall impact and staging choices. | GPT-4o: The review praises the production's use of the theater's unique structure and highlights strong performances, particularly by Jeremy Strong. While there is a note of reservation regarding the audience's experience, the overall tone is positive. | Gemini: The review states the production has 'much to recommend it' and praises Jeremy Strong's performance, indicating a positive recommendation despite some reservations about the audience's self-reflection.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,21 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:39:43.659Z",
+    "scoredAt": "2026-02-02T03:22:02.037Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 77,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 78,
-    "geminiScore": 78,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -67,7 +67,7 @@
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
-  "rescoreCompletedAt": "2026-02-02T00:39:43.659Z",
+  "rescoreCompletedAt": "2026-02-02T03:22:02.037Z",
   "contentTier": "complete",
   "wordCount": 1260,
   "isFullReview": false,
@@ -90,6 +90,5 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260101011754",
-  "archiveOrgUrl": "http://web.archive.org/web/20260101011754/https://variety.com/2024/legit/news/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/",
-  "needsRescore": true
+  "archiveOrgUrl": "http://web.archive.org/web/20260101011754/https://variety.com/2024/legit/news/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/"
 }

@@ -9,18 +9,18 @@
   "showScoreExcerpt": "\"Strong and Imperioli both bring a vigorous contemporary affect to the material.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 90,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 60,
-    "confidence": "high",
+    "score": 90,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 85,
+      "high": 95
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Rave",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a heavily truncated review with only a descriptive opening sentence about a staging element. No evaluative language or critical verdict is present to determine the critic's recommendation. | GPT-4o: The review text is truncated and lacks a clear evaluative statement about the production. The description of a bar being lowered suggests an unusual staging choice but does not provide enough context to determine the critic's overall opinion. | Gemini: The review text is truncated, making it difficult to determine the overall recommendation. The provided sentence doesn't offer a clear positive or negative assessment, suggesting a mixed or neutral stance.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is filled with admiring language about the production's innovations, praising the directors' vision, the performances, and the staging choices. The critic consistently uses positive descriptors and celebrates how the production revitalizes Ibsen's work. | GPT-4o: The review is filled with praise for the innovative direction, the performances, and the overall impact of the production. The critic highlights the profound and pleasurable nature of the adaptation, indicating a strong recommendation to see the show. | Gemini: The review is largely positive, praising the adaptation and performances, while noting the production's ability to make the play relevant and engaging. The critic highlights the strengths of the leads and the creative choices, indicating a recommendation despite any potential reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:39:47.599Z",
+    "scoredAt": "2026-02-02T03:22:05.806Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 59,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 59,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 1,
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sources": [
     "show-score",
@@ -69,9 +69,8 @@
   "bwwThumb": null,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 71,
-  "rescoreCompletedAt": "2026-01-28T23:28:53.562Z",
+  "rescoreCompletedAt": "2026-02-02T03:22:05.806Z",
   "textQualityOverride": "vulture-junk-strip-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 1686,
-  "needsRescore": true
+  "wordCount": 1686
 }

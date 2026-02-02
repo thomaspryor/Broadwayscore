@@ -9,18 +9,18 @@
   "dtliExcerpt": "Shakespeare’s Juliet singing Britney Spears’ “Oops…I Did It Again” is certainly a surprising and unexpected juxtaposition. While there is every reason to be skeptical of a Shakespearean jukebox musical, “& Juliet” makes it work remarkably well. It’s the most fun you’ll have in a Broadway theater right now.",
   "showScoreExcerpt": "\"What the show lacks in plotting, it more than makes up for musically. It is a jukebox, but itâs a smart one, using the songs in deft, humorous and unexpected ways.\"",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 80,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:57:21.504Z",
   "dtliThumb": "Up",
   "bwwExcerpt": "All this could have come across as a high school English class assignment, but Read manages to make it work. He clearly has respect for and knowledge of the source material but also isn't afraid to highlight just how ridiculous the play really is. (As we are reminded here, Romeo and Juliet only knew each other for four days.) Though he keeps the characters true to the original, there are slight tweaks for modern sensibility, as when Anne brings Juliet's age up from 13 (yikes) to her mid-20s.",
   "llmScore": {
-    "score": 81,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic enthusiastically praises the show as 'the most fun you'll have in a Broadway theater right now' and says it 'makes it work remarkably well' despite initial skepticism. While noting some plot weaknesses, the overall tone is very positive and recommending. | GPT-4o: The review is overwhelmingly positive, highlighting the show's fun and successful integration of pop music with Shakespearean themes. The critic praises the musical's clever use of songs and its engaging, humorous approach, making it a must-see production. | Gemini: The review is overwhelmingly positive, highlighting the fun and cleverness of the show. Despite some minor criticisms about the plot, the reviewer clearly recommends seeing it.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite noting some flaws in plotting and visual elements, the critic clearly recommends the show with enthusiasm, calling it 'exactly the show Broadway needs right now' and praising it as 'fun, exuberant, supremely joyful, hilarious, and excellently performed.' | GPT-4o: The review is overwhelmingly positive, praising the show's fun, joy, and excellent performances. Despite some minor criticisms, the overall tone is enthusiastic and recommends the show as a must-see, aligning with a 'Rave' classification. | Gemini: Despite some reservations about the plot and feminism, the review is overwhelmingly positive, calling it \"the most fun you’ll have in a Broadway theater right now\" and praising the performances and overall joyful experience. The truncated text doesn't detract from the clear positive sentiment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,21 +41,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:27.469Z",
+    "scoredAt": "2026-02-02T03:22:32.416Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 78,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -71,11 +71,10 @@
   "bwwThumb": null,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 84,
-  "rescoreCompletedAt": "2026-01-28T23:30:33.202Z",
+  "rescoreCompletedAt": "2026-02-02T03:22:32.416Z",
   "contentTier": "complete",
   "wordCount": 1134,
   "truncationSignals": [
     "no_ending_punctuation"
-  ],
-  "needsRescore": true
+  ]
 }

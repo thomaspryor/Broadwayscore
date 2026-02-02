@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the book unmagical despite magical source material and questions the cynical approach to introducing children to theater, indicating disappointment with the production. | GPT-4o: The review criticizes the show for lacking magic and suggests that its humor may not be suitable for children, indicating a negative impression. However, due to the single excerpt warning, the score is placed conservatively in the middle of the negative range. | Gemini: The review excerpt expresses disappointment with the book, stating it 'finds no magic' and questions the humor's suitability for children. This suggests a negative overall assessment of the show's writing and appeal.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic clearly states the show 'finds no magic whatsoever' and questions whether the cynical approach is appropriate for children's theater, indicating disappointment with the production. | GPT-4o: The review excerpt criticizes the lack of magic in a story that should be magical, and questions the appropriateness of the humor for children, suggesting a negative view of the production. | Gemini: The review excerpt expresses disappointment with the book and humor, suggesting a negative overall assessment of the production. The truncated nature and single excerpt warrant a score in the middle of the negative range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,12 +39,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:08:11.263Z",
+    "scoredAt": "2026-02-02T03:21:43.040Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 44,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -104,8 +104,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20200428214150",
   "archiveOrgUrl": "http://web.archive.org/web/20200428214150/https://www.thewrap.com/aladdin-theater-review-disney-animation-got-right-first-time-genie-courtney-reed-adam-jacobs/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.633Z",
+  "rescoreCompletedAt": "2026-02-02T03:21:43.040Z",
   "contentTier": "complete",
-  "wordCount": 481,
-  "needsRescore": true
+  "wordCount": 481
 }

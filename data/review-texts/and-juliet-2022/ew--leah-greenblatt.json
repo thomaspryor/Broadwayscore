@@ -6,7 +6,7 @@
   "url": "https://ew.com/theater/theater-reviews/and-juliet-broadway-review-max-martin-musical/?srsltid=AfmBOoo1fLd94KpF17fFAtRLHF-OrFNks8-MW9etauVJZiDVUAT86cPS",
   "publishDate": "2022-11-17",
   "originalScore": "B+",
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "As much as the show feels directed toward a strenuously young demographic - some of them possibly not even born yet when Backstreet were singing about their fire, or their one desire - the script makes several knowing nods, much like a Pixar movie, to the ancient grown-ups in the room. There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too: a violent delight, flipped for the TikTok era. Grade: B+",
@@ -17,12 +17,12 @@
   "scoreConfidence": "medium",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:20.098Z",
+    "scoredAt": "2026-02-02T03:22:15.002Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "dtliThumb": "Up",
   "dtliExcerpt": "There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too: a violent delight, flipped for the TikTok era.",
@@ -75,11 +75,11 @@
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -90,7 +90,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ rating and phrases like 'exuberant' and 'nakedly joyful' indicate a positive recommendation, though noting the show's 'relentless' quality and demographic targeting suggests some reservations. | GPT-4o: The review describes the show as 'nakedly joyful' and a 'violent delight,' indicating a strong positive impression. The original B+ rating further supports a high score within the Positive bucket. | Gemini: The critic gives the show a B+ and describes it as \"exuberant\" and \"nakedly joyful,\" indicating a positive experience despite noting its relentless eagerness to entertain. The B+ grade strongly suggests a positive, but not rave, classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ rating combined with phrases like 'nakedly joyful' and 'violent delight' indicate a positive recommendation, though the 'relentless' quality suggests some reservations. | GPT-4o: The original rating of B+ strongly suggests a positive review. The critic describes the show as 'nakedly joyful' and 'a violent delight,' indicating a strong recommendation despite some reservations about its eagerness to entertain. | Gemini: The critic gives the show a B+ and describes it as \"nakedly joyful,\" indicating a positive, though not rave, recommendation. The phrase \"relentless eagerness to entertain\" suggests a reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -101,7 +101,7 @@
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 82,
-    "geminiScore": 78,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
@@ -113,7 +113,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "rescoreCompletedAt": "2026-02-01T17:30:46.036Z",
+  "rescoreCompletedAt": "2026-02-02T03:22:15.002Z",
   "contentTier": "excerpt",
   "wordCount": 0,
   "previousUrl": "https://ew.com/theater/theater-reviews/and-juliet-broadway-musical-review/",
@@ -143,6 +143,5 @@
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "textStatus": "partial",
-  "needsRescore": true
+  "textStatus": "partial"
 }

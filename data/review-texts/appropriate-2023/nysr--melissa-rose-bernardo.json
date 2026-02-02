@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating clearly indicates a positive recommendation, and the review's language is appreciative, calling the playwright 'savvy' and 'gutsy' while praising the performances and comparing the work favorably to established masters like Tennessee Williams and O'Neill. | GPT-4o: The 4/5 star rating and the positive language about the direction and performances indicate a strong recommendation. The review highlights the play's intensity and the skillful direction, suggesting it is worth seeing. | Gemini: The critic gives the play 4 out of 5 stars and describes it as an \"epic, emotionally draining Broadway debut drama.\" This indicates a positive recommendation, placing it in the 'Positive' bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives 4/5 stars and uses enthusiastic language throughout, praising the performances ('deliciously vicious', 'smashing stage debut'), the staging ('magnificent'), and calling it an 'epic' drama with 'high-octane' energy, clearly recommending the production. | GPT-4o: The review provides a detailed and positive evaluation of the production, highlighting strong performances and direction. The 4/5 star rating indicates a strong recommendation, aligning with a high score in the Positive bucket. | Gemini: The critic gives the play 4 out of 5 stars, and while the review explores the play's themes and dysfunctional family dynamics, it ultimately frames the play as a worthwhile and thought-provoking experience, placing it in the positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:46:55.640Z",
+    "scoredAt": "2026-02-02T03:22:41.691Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
-    "previousVersion": "3.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 80,
@@ -83,9 +83,8 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.652Z",
+  "rescoreCompletedAt": "2026-02-02T03:22:41.691Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 622,
-  "needsRescore": true
+  "wordCount": 622
 }

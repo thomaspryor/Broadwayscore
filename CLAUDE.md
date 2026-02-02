@@ -483,6 +483,8 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
   "isFullReview": true/false,
   "dtliExcerpt", "bwwExcerpt", "showScoreExcerpt", "nycTheatreExcerpt",
   "assignedScore": 78,
+  "humanReviewScore": 48,
+  "humanReviewNote": "Explanation of why manual override was needed",
   "source": "dtli|bww-roundup|playbill-verdict|nyc-theatre|nysr|playwright-scraped|webfetch-scraped|manual",
   "dtliThumb": "Up/Down/Meh",
   "bwwThumb": "Up/Down/Meh"
@@ -526,6 +528,12 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 ### Scoring Issues
 
 **Explicit ratings auto-converted (FIXED Feb 2026):** `rebuild-all-reviews.js` extracts explicit ratings (stars, letter grades, X/5, "X out of Y") from review text and `originalScore` field, overriding LLM scores. Priority 0 in the scoring hierarchy. As of Feb 2026: 217 text-extracted + 110 originalScore-parsed = 327 reviews (16.3%) using explicit ratings. The `scoreSource` field in reviews.json tracks which method produced each score.
+
+**Scoring hierarchy in `rebuild-all-reviews.js`:** Priority 0 (explicit ratings from text/originalScore) → Priority 0.5 (`humanReviewScore` manual override) → Priority 0b (originalScore parsed) → Priority 1 (LLM high/medium confidence) → Priority 2 (aggregator thumb override for low-confidence LLM) → Priority 3 (LLM fallback). The `humanReviewScore` field (1-100) is set during manual audit of flagged reviews where LLM and aggregator thumbs disagree. It persists across rebuilds and takes precedence over all automated scoring except explicit ratings. Always paired with `humanReviewNote` explaining the rationale.
+
+**Excerpt-only confidence downgrade (FIXED Feb 2026):** Audit showed ~50% error rate when LLM scored excerpt-only reviews with high/medium confidence. `rebuild-all-reviews.js` now computes `effectiveConfidence` that downgrades to "low" when `fullText` is missing or <100 chars. This routes excerpt-only reviews through Priority 2 (thumb override) instead of trusting the LLM score directly.
+
+**garbageFullText recovery (FIXED Feb 2026):** Some reviews have valid text in `garbageFullText` (flagged as garbage only due to trailing junk like newsletters/copyright). `rebuild-all-reviews.js` now recovers this text by running `cleanText()` on `garbageFullText` when `fullText` is null, promoting it to `fullText` if the cleaned result is >200 chars.
 
 **LLM low-confidence as garbage detector (FIXED Feb 2026):** `detectGarbageFromReasoning()` in `content-quality.js` checks 17 patterns in LLM reasoning text (e.g., "plot summary without evaluation", "headline only", "not a review"). When confidence is "low" and a pattern matches, the review is auto-flagged `contentTier: "needs-rescrape"` with `garbageReasoningDetected` label. Integrated into the scoring pipeline (`llm-scoring/index.ts` post-scoring check) and backfilled on existing reviews (34 flagged).
 

@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly states the show is enjoyable but spends most of the review pointing out significant flaws in execution, subtlety, and book quality, landing in mixed territory with slight lean toward watchable. | GPT-4o: The review acknowledges the show's entertainment value and appeal to fans of the music, but criticizes its lack of subtlety and repetitive nature. The overall tone suggests a mixed experience with some positive elements. | Gemini: The review acknowledges flaws like bombast and repetition, but ultimately states the show is \"not unenjoyable\" and finds a \"sweet(ish) and smart(ish) tale\" within. This indicates a positive but not rave recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show is enjoyable but consistently criticizes its heavy-handed approach, describing it as bombastic, repetitive, and lacking subtlety. The aggregator excerpts confirm this mixed assessment with qualified positives. | GPT-4o: The review acknowledges some positive aspects, such as the show's diversity and musical appeal, but also criticizes its lack of subtlety and repetitive nature. The tone is neither fully positive nor negative, hence a mixed classification. | Gemini: The review states the show is not unenjoyable and that there is a sweet tale beneath the bombast. However, the review also points out flaws, so it's a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,12 +41,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:12.223Z",
+    "scoredAt": "2026-02-02T03:22:11.182Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -74,11 +74,10 @@
   "bwwThumb": null,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 62,
-  "rescoreCompletedAt": "2026-01-28T23:29:26.273Z",
+  "rescoreCompletedAt": "2026-02-02T03:22:11.182Z",
   "contentTier": "complete",
   "wordCount": 1502,
   "truncationSignals": [
     "has_footer_junk"
-  ],
-  "needsRescore": true
+  ]
 }
