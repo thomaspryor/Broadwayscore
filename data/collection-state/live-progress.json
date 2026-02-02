@@ -1,34 +1,45 @@
 {
-  "updatedAt": "2026-02-02T05:06:13.965Z",
-  "processed": 4,
-  "failed": 6,
-  "successRate": "40.0%",
+  "updatedAt": "2026-02-02T05:06:50.485Z",
+  "processed": 6,
+  "failed": 4,
+  "successRate": "60.0%",
   "tierBreakdown": {
     "playwright": 1,
-    "browserbase": 4,
+    "browserbase": 2,
     "scrapingbee": 1,
     "brightdata": 1,
-    "archive": 0
+    "archive": 3
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-02-02T05:03:15.430Z",
+      "t": "2026-02-02T05:01:24.310Z",
       "event": "bb-session",
-      "session": "63fb7035",
-      "url": "https://nypost.com/2024/03/21/entertainment/water-for-elephants-review-acrobats-"
+      "session": "54f9d7d7",
+      "url": "https://www.vulture.com/article/the-roommate-review-broadway-patti-lupone-mia-fa"
     },
     {
-      "t": "2026-02-02T05:03:36.461Z",
-      "event": "bb-session",
-      "session": "42131719",
-      "url": "https://observer.com/2024/03/water-for-elephants-theater-review-the-worst-broadw"
+      "t": "2026-02-02T05:01:26.254Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-02T05:03:48.814Z",
+      "t": "2026-02-02T05:05:34.014Z",
       "event": "bb-session",
-      "session": "a5464997",
-      "url": "https://www.theatermania.com/broadway/reviews/water-for-elephants_93847.html"
+      "session": "65b641f9",
+      "url": "https://nypost.com/2024/09/13/entertainment/the-roommate-review-margo-martindale"
+    },
+    {
+      "t": "2026-02-02T05:06:05.190Z",
+      "event": "bb-session",
+      "session": "b06f264b",
+      "url": "https://observer.com/2024/09/theater-review-mia-farrow-patti-lupone-the-roommate"
+    },
+    {
+      "t": "2026-02-02T05:06:18.019Z",
+      "event": "bb-session",
+      "session": "57f5d7bd",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-roommate-booth-th"
     }
   ]
 }
