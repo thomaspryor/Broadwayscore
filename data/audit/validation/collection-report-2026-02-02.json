@@ -1,73 +1,104 @@
 {
-  "runDate": "2026-02-02T05:01:49.785Z",
+  "runDate": "2026-02-02T05:04:59.881Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "the-cottage-2023",
+    "showFilter": "moulin-rouge-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 4,
+    "processed": 4,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "42.9%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 2,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 1
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 1,
-    "tier1_5Attempts": 2,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
+    "tier1_5Attempts": 8,
     "tier1_5Success": 1,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier4Attempts": 4,
+    "tier2Attempts": 7,
+    "tier2Success": 0,
+    "tier3Attempts": 4,
+    "tier3Success": 3,
+    "tier4Attempts": 8,
     "tier4Success": 3,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.5,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 13,
+    "browserbaseSessionsUsed": 8,
+    "browserbaseMinutesUsed": 4.6,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-cottage-2023/new-york-sun--elysa-gardner.json",
-    "the-cottage-2023/observer--rex-reed.json",
-    "the-cottage-2023/amny--unknown.json"
+    "moulin-rouge-2019/nytimes--unknown.json",
+    "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
+    "moulin-rouge-2019/observer--david-cote.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json"
   ],
   "failed": [
-    "the-cottage-2023/variety--naveen-kumar.json",
-    "the-cottage-2023/timeout--adam-feldman.json",
-    "the-cottage-2023/wsj--charles-isherwood.json",
-    "the-cottage-2023/theater-pizzazz--carole-di-tosti.json"
+    "moulin-rouge-2019/vulture--jesse-green.json",
+    "moulin-rouge-2019/observer--rex-reed.json",
+    "moulin-rouge-2019/thewrap--robert-hofler.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json",
+    "moulin-rouge-2019/amny--matt-windman.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-cottage-2023/new-york-sun--elysa-gardner.json"
-    ],
+    "playwright": [],
     "browserbase": [
-      "data/review-texts/the-cottage-2023/observer--rex-reed.json",
-      "the-cottage-2023/observer--rex-reed.json"
+      "data/review-texts/moulin-rouge-2019/observer--david-cote.json",
+      "moulin-rouge-2019/observer--david-cote.json"
     ],
-    "scrapingbee": [
-      "the-cottage-2023/variety--naveen-kumar.json"
+    "scrapingbee": [],
+    "brightdata": [
+      "moulin-rouge-2019/theatermania--jesse-green.json"
     ],
-    "brightdata": [],
     "archive": [
-      "the-cottage-2023/amny--unknown.json"
+      "moulin-rouge-2019/nytimes--unknown.json",
+      "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json"
     ]
   },
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "Vulture": {
+      "count": 1,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "TheWrap": {
+      "count": 1,
+      "domain": "thewrap.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "amNewYork": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
+      "oldUrl": "https://www.nydailynews.com/2019/07/25/moulin-rouge-broadway-review/",
+      "newUrl": "https://www.nydailynews.com/2019/07/25/review-broadways-moulin-rouge-the-musical-is-dazzling-decadent-live-translation-of-2001-movie/"
+    }
+  ]
 }
