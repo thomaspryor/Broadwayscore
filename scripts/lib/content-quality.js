@@ -656,9 +656,10 @@ function isGarbageContent(text) {
     return { isGarbage: true, reason: `Legal/privacy page: "${legalPage.match}"` };
   }
 
-  // Check for newsletter form
+  // Check for newsletter form - but only flag short text as garbage
+  // Long reviews (2000+ chars) with a footer newsletter signup are NOT garbage
   const newsletter = detectNewsletter(text);
-  if (newsletter.detected) {
+  if (newsletter.detected && trimmed.length < 2000) {
     return { isGarbage: true, reason: `Newsletter form: "${newsletter.match}"` };
   }
 
