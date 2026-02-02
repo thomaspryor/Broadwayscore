@@ -1,149 +1,71 @@
 {
-  "runDate": "2026-02-02T16:41:59.924Z",
+  "runDate": "2026-02-02T17:35:33.957Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hadestown-2019",
+    "showFilter": "chess-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 8,
+    "processed": 1,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 4
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 4,
-    "tier1_5Attempts": 7,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 8,
+    "tier2Attempts": 2,
     "tier2Success": 1,
-    "tier3Attempts": 3,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier4Attempts": 30,
-    "tier4Success": 7,
-    "totalFailed": 8,
-    "scrapingBeeCreditsUsed": 38,
-    "browserbaseSessionsUsed": 7,
-    "browserbaseMinutesUsed": 4.5,
-    "urlDiscoveryAttempts": 8,
-    "urlDiscoverySuccess": 7,
+    "tier4Attempts": 4,
+    "tier4Success": 1,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 10,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-2019/ew--jessica-derschowitz.json",
-    "hadestown-2019/ew--kristen-baldwin.json",
-    "hadestown-2019/guardian--jesse-green.json",
-    "hadestown-2019/nypost--johnny-oleksinski.json",
-    "hadestown-2019/theatermania--jesse-green.json",
-    "hadestown-2019/theatermania--zachary-stewart.json",
-    "hadestown-2019/thewrap--thom-geier.json",
-    "hadestown-2019/rollingstone--peter-travers.json"
+    "chess-2025/nytimes--elisabeth-vincentelli.json"
   ],
   "failed": [
-    "hadestown-2019/vulture--jesse-green.json",
-    "hadestown-2019/observer--david-cote.json",
-    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
-    "hadestown-2019/timeout--adam-feldman.json",
-    "hadestown-2019/wsj--terry-teachout.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/medium--christian-lewis.json",
-    "hadestown-2019/vox--constance-grady.json"
+    "chess-2025/timeout--adam-feldman.json",
+    "chess-2025/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "hadestown-2019/ew--jessica-derschowitz.json",
-      "hadestown-2019/ew--kristen-baldwin.json",
-      "hadestown-2019/guardian--jesse-green.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [
-      "hadestown-2019/theatermania--jesse-green.json"
+      "chess-2025/nytimes--elisabeth-vincentelli.json"
     ],
-    "archive": [
-      "hadestown-2019/nypost--johnny-oleksinski.json",
-      "hadestown-2019/theatermania--zachary-stewart.json",
-      "hadestown-2019/thewrap--thom-geier.json",
-      "hadestown-2019/rollingstone--peter-travers.json"
-    ]
+    "brightdata": [],
+    "archive": []
   },
   "failuresByOutlet": {
-    "Vulture": {
-      "count": 1,
-      "domain": "vulture.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Theater Reviews from My Seat": {
-      "count": 1,
-      "domain": "theaterreviewsfrommyseat.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "The Wall Street Journal": {
       "count": 1,
       "domain": "wsj.com",
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": true
-    },
-    "The Daily Beast": {
-      "count": 1,
-      "domain": "thedailybeast.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "hadestown-2019/ew--jessica-derschowitz.json",
-      "oldUrl": "https://ew.com/hadestown-broadway-review/",
-      "newUrl": "https://ew.com/theater-reviews/2019/04/17/hadestown-review/?srsltid=AfmBOopX8I0GUBm3dfh69r-ykQfvqMSzKzTc62DMgsAAtPg8RxF60LNg"
-    },
-    {
-      "reviewId": "hadestown-2019/ew--kristen-baldwin.json",
-      "oldUrl": "https://ew.com/theater/2019/04/18/hadestown-broadway-review/",
-      "newUrl": "https://ew.com/theater-reviews/2019/04/17/hadestown-review/?srsltid=AfmBOoplwi0_hrl0iF6g18yZfPpoXMm7-f7uqhgsoZucAb9rGCzodPVh"
-    },
-    {
-      "reviewId": "hadestown-2019/guardian--jesse-green.json",
-      "oldUrl": "https://www.theguardian.com/stage/2019/apr/18/hadestown-review-broadway-musical-anais-mitchell",
-      "newUrl": "https://www.theguardian.com/stage/2018/nov/14/hadestown-review-musical-rachel-chavkin-anais-mitchell-olivier-london"
-    },
-    {
-      "reviewId": "hadestown-2019/nypost--johnny-oleksinski.json",
-      "oldUrl": "https://nypost.com/2019/04/17/hadestown-broadway-review/",
-      "newUrl": "https://nypost.com/2019/04/17/hadestown-review-broadway-douses-the-fires-of-hell-with-folk-music/"
-    },
-    {
-      "reviewId": "hadestown-2019/observer--david-cote.json",
-      "oldUrl": "https://observer.com/2019/04/hadestown-broadway-review/",
-      "newUrl": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-on-broadway-review/"
-    },
-    {
-      "reviewId": "hadestown-2019/thewrap--thom-geier.json",
-      "oldUrl": "https://www.thewrap.com/hadestown-broadway-review/",
-      "newUrl": "https://www.thewrap.com/hadestown-broadway-review-anais-mitchell-musical-orpheus-eurydice-trump/"
-    },
-    {
-      "reviewId": "hadestown-2019/rollingstone--peter-travers.json",
-      "oldUrl": "https://www.rollingstone.com/culture/culture-theater/hadestown-broadway-review-822863/",
-      "newUrl": "https://www.rollingstone.com/culture/culture-features/hadestown-broadway-anais-mitchell-musical-review-822688/"
-    }
-  ]
+  "urlDiscoveries": []
 }
