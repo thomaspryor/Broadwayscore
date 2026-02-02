@@ -1,54 +1,94 @@
 {
   "processed": [
-    "book-of-mormon-2011/variety--marilyn-stasio.json",
-    "book-of-mormon-2011/newsday--linda-winer.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/backstage--david-sheward.json",
-    "book-of-mormon-2011/talkinbroadway--matthew-murray.json"
+    "moulin-rouge-2019/nytimes--unknown.json",
+    "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
+    "moulin-rouge-2019/observer--david-cote.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json"
   ],
   "failed": [
-    "book-of-mormon-2011/timeout--david-cote.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "book-of-mormon-2011/ny-1--roma-torre.json",
-    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json"
+    "moulin-rouge-2019/vulture--jesse-green.json",
+    "moulin-rouge-2019/observer--rex-reed.json",
+    "moulin-rouge-2019/thewrap--robert-hofler.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json",
+    "moulin-rouge-2019/amny--matt-windman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "book-of-mormon-2011/variety--marilyn-stasio.json",
-      "book-of-mormon-2011/ap--mark-kennedy.json",
-      "book-of-mormon-2011/backstage--david-sheward.json"
-    ],
+    "playwright": [],
     "browserbase": [
-      "data/review-texts/book-of-mormon-2011/newsday--linda-winer.json",
-      "book-of-mormon-2011/newsday--linda-winer.json"
+      "data/review-texts/moulin-rouge-2019/observer--david-cote.json",
+      "moulin-rouge-2019/observer--david-cote.json"
     ],
     "scrapingbee": [],
     "brightdata": [
-      "book-of-mormon-2011/talkinbroadway--matthew-murray.json"
+      "moulin-rouge-2019/theatermania--jesse-green.json"
     ],
-    "archive": []
+    "archive": [
+      "moulin-rouge-2019/nytimes--unknown.json",
+      "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json"
+    ]
   },
-  "startTime": "2026-02-02T04:57:42.665Z",
-  "lastProcessed": "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
+  "startTime": "2026-02-02T04:59:11.905Z",
+  "lastProcessed": "moulin-rouge-2019/amny--matt-windman.json",
   "log": [
     {
-      "t": "2026-02-02T04:57:54.037Z",
+      "t": "2026-02-02T05:00:30.974Z",
       "event": "bb-session",
-      "session": "2db092cd",
-      "url": "https://www.newsday.com/news/new-york/theater-review-the-book-of-mormon-4-stars-"
+      "session": "73db7eaf",
+      "url": "https://www.vulture.com/2019/07/moulin-rouge-the-musical-broadway-review.html"
     },
     {
-      "t": "2026-02-02T04:58:15.152Z",
-      "event": "bb-session",
-      "session": "56da6a30",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+      "t": "2026-02-02T05:00:34.666Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-02T04:58:43.565Z",
+      "t": "2026-02-02T05:01:04.656Z",
+      "event": "bb-session",
+      "session": "9a050f5b",
+      "url": "https://www.nydailynews.com/2019/07/25/moulin-rouge-broadway-review/"
+    },
+    {
+      "t": "2026-02-02T05:01:42.527Z",
+      "event": "bb-session",
+      "session": "f21bd6d7",
+      "url": "https://observer.com/2019/08/moulin-rouge-the-musical-kitsch-glitz-review-broadw"
+    },
+    {
+      "t": "2026-02-02T05:01:56.300Z",
+      "event": "bb-session",
+      "session": "b3fde828",
+      "url": "https://observer.com/2019/07/moulin-rouge-broadway-review/"
+    },
+    {
+      "t": "2026-02-02T05:02:25.612Z",
+      "event": "bb-session",
+      "session": "f804c0f3",
+      "url": "https://www.theatermania.com/broadway/reviews/moulin-rouge-the-musical_88234.htm"
+    },
+    {
+      "t": "2026-02-02T05:03:03.641Z",
+      "event": "bb-session",
+      "session": "40cbffef",
+      "url": "https://www.thewrap.com/moulin-rouge-broadway-review-2019/"
+    },
+    {
+      "t": "2026-02-02T05:03:35.738Z",
+      "event": "bb-session",
+      "session": "faf7eda2",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-02-02T05:04:03.542Z",
       "event": "bb-login-uncertain",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-02T05:04:30.997Z",
+      "event": "bb-session",
+      "session": "e7d8e97d",
+      "url": "https://www.amny.com/entertainment/moulin-rouge-broadway-review/"
     }
   ]
 }
