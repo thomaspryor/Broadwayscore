@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-02T23:19:06.038Z",
+  "runDate": "2026-02-02T23:21:06.906Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "days-of-wine-and-roses-2024",
+    "showFilter": "and-juliet-2022",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,45 +12,43 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 5,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "16.7%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
     "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 6,
+    "tier2Success": 2,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 4,
     "tier4Success": 2,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 2,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 20,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 2.4,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "days-of-wine-and-roses-2024/theatermania--david-gordon.json"
+    "and-juliet-2022/thewrap--robert-hofler.json"
   ],
   "failed": [
-    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
-    "days-of-wine-and-roses-2024/deadline--greg-evans.json",
-    "days-of-wine-and-roses-2024/new-york-sun--elysa-gardner.json",
-    "days-of-wine-and-roses-2024/timeout--adam-feldman.json",
-    "days-of-wine-and-roses-2024/wsj--unknown.json"
+    "and-juliet-2022/theatermania--jesse-green.json",
+    "and-juliet-2022/timeout--adam-feldman.json",
+    "and-juliet-2022/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -58,17 +56,9 @@
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "days-of-wine-and-roses-2024/theatermania--david-gordon.json"
+      "and-juliet-2022/thewrap--robert-hofler.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Hollywood Reporter": {
-      "count": 1,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
