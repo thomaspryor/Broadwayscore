@@ -336,7 +336,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
                 style={{ color: audienceGrade.color }}
                 title={audienceGrade.tooltip}
               >
-                {audienceGrade.tooltip}
+                {audienceGrade.label}
               </span>
               <div
                 className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold"

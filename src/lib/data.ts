@@ -694,21 +694,22 @@ export function getShowsByAudienceBuzz(limit = 10): Array<{ showId: string; data
  */
 export function getAudienceGrade(score: number): {
   grade: string;
+  label: string;
   color: string;
   textColor: string;
   tooltip: string;
 } {
-  if (score >= 93) return { grade: 'A+', color: '#22c55e', textColor: '#ffffff', tooltip: 'Audiences love it' };
-  if (score >= 88) return { grade: 'A', color: '#16a34a', textColor: '#ffffff', tooltip: 'Audiences love it' };
-  if (score >= 83) return { grade: 'A-', color: '#14b8a6', textColor: '#ffffff', tooltip: 'Strong audience reception' };
-  if (score >= 78) return { grade: 'B+', color: '#0ea5e9', textColor: '#ffffff', tooltip: 'Solid audience reception' };
-  if (score >= 73) return { grade: 'B', color: '#f59e0b', textColor: '#1a1a1a', tooltip: 'Mixed-positive reception' };
-  if (score >= 68) return { grade: 'B-', color: '#f97316', textColor: '#1a1a1a', tooltip: 'Mixed audience reception' };
-  if (score >= 63) return { grade: 'C+', color: '#ef4444', textColor: '#ffffff', tooltip: 'Below-average reception' };
-  if (score >= 58) return { grade: 'C', color: '#dc2626', textColor: '#ffffff', tooltip: 'Weak audience reception' };
-  if (score >= 53) return { grade: 'C-', color: '#b91c1c', textColor: '#ffffff', tooltip: 'Poor audience reception' };
-  if (score >= 48) return { grade: 'D', color: '#991b1b', textColor: '#ffffff', tooltip: 'Very poor reception' };
-  return { grade: 'F', color: '#6b7280', textColor: '#ffffff', tooltip: 'Audiences dislike it' };
+  if (score >= 93) return { grade: 'A+', label: 'Loving It', color: '#22c55e', textColor: '#ffffff', tooltip: 'Audiences love it' };
+  if (score >= 88) return { grade: 'A', label: 'Loving It', color: '#16a34a', textColor: '#ffffff', tooltip: 'Audiences love it' };
+  if (score >= 83) return { grade: 'A-', label: 'Liking It', color: '#14b8a6', textColor: '#ffffff', tooltip: 'Strong audience reception' };
+  if (score >= 78) return { grade: 'B+', label: 'Liking It', color: '#0ea5e9', textColor: '#ffffff', tooltip: 'Solid audience reception' };
+  if (score >= 73) return { grade: 'B', label: 'Shrugging', color: '#f59e0b', textColor: '#1a1a1a', tooltip: 'Mixed-positive reception' };
+  if (score >= 68) return { grade: 'B-', label: 'Shrugging', color: '#f97316', textColor: '#1a1a1a', tooltip: 'Mixed audience reception' };
+  if (score >= 63) return { grade: 'C+', label: 'Loathing It', color: '#ef4444', textColor: '#ffffff', tooltip: 'Below-average reception' };
+  if (score >= 58) return { grade: 'C', label: 'Loathing It', color: '#dc2626', textColor: '#ffffff', tooltip: 'Weak audience reception' };
+  if (score >= 53) return { grade: 'C-', label: 'Loathing It', color: '#b91c1c', textColor: '#ffffff', tooltip: 'Poor audience reception' };
+  if (score >= 48) return { grade: 'D', label: 'Loathing It', color: '#991b1b', textColor: '#ffffff', tooltip: 'Very poor reception' };
+  return { grade: 'F', label: 'Loathing It', color: '#6b7280', textColor: '#ffffff', tooltip: 'Audiences dislike it' };
 }
 
 /**
