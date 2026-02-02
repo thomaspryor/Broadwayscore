@@ -1,82 +1,116 @@
 {
-  "runDate": "2026-02-02T17:40:30.771Z",
+  "runDate": "2026-02-02T17:43:44.820Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "lempicka-2024",
+    "showFilter": "aladdin-2014",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 6,
+    "processed": 6,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "14.3%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 9,
+    "tier1Success": 4,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier2Attempts": 6,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 8,
+    "tier4Attempts": 20,
     "tier4Success": 5,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 11,
+    "totalFailed": 9,
+    "scrapingBeeCreditsUsed": 33,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 3,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "lempicka-2024/broadwaynews--brittani-samuel.json"
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "aladdin-2014/ew--thom-geier.json",
+    "aladdin-2014/newsday--linda-winer.json",
+    "aladdin-2014/uinterview--danny-graugnard.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
   ],
   "failed": [
-    "lempicka-2024/deadline--greg-evans.json",
-    "lempicka-2024/new-york-sun--elysa-gardner.json",
-    "lempicka-2024/nydailynews--chris-jones.json",
-    "lempicka-2024/observer--rex-reed.json",
-    "lempicka-2024/timeout--adam-feldman.json",
-    "lempicka-2024/wsj--charles-isherwood.json"
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/nypost--elisabeth-vincentelli.json",
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "aladdin-2014/timeout--adam-feldman.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "aladdin-2014/broadway-voice--kristen-balzano.json",
+    "aladdin-2014/catholic-transcript--bernard-carragher.json",
+    "aladdin-2014/theater-pizzazz--sandi-durell.json",
+    "aladdin-2014/thestage--mark-shenton.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "aladdin-2014/uinterview--danny-graugnard.json",
+      "aladdin-2014/ap--mark-kennedy.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "lempicka-2024/broadwaynews--brittani-samuel.json"
+      "aladdin-2014/hollywood-reporter--david-rooney.json",
+      "aladdin-2014/ew--thom-geier.json",
+      "aladdin-2014/newsday--linda-winer.json",
+      "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
     ]
   },
   "failuresByOutlet": {
-    "New York Daily News": {
+    "New Jersey Newsroom": {
       "count": 1,
-      "domain": "nydailynews.com",
+      "domain": "newjerseynewsroom.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "New York Post": {
+      "count": 1,
+      "domain": "nypost.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Broadway Voice": {
+      "count": 1,
+      "domain": "bwayvoice.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "lempicka-2024/observer--rex-reed.json",
-      "oldUrl": "https://observer.com/2024/05/lempicka-broadway-review-eden-espinosa/",
-      "newUrl": "https://observer.com/2025/04/exhibition-review-tamara-de-lempicka-at-the-museum-of-fine-arts-houston/"
+      "reviewId": "aladdin-2014/thestage--mark-shenton.json",
+      "oldUrl": "http://www.thestage.co.uk/opinion/shenton/2014/04/live-broadway-disneys-20-year-run-encore-happy-fella/",
+      "newUrl": "https://www.thestage.co.uk/reviews/aladdin"
     }
-  },
-  "urlDiscoveries": []
+  ]
 }
