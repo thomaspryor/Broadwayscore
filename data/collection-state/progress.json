@@ -1,54 +1,52 @@
 {
   "processed": [
-    "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/backstage--david-sheward.json",
-    "book-of-mormon-2011/chicagotribune--.json",
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "book-of-mormon-2011/ny-1--roma-torre.json"
+    "an-enemy-of-the-people-2024/variety--daniel-daddario.json",
+    "an-enemy-of-the-people-2024/deadline--greg-evans.json",
+    "an-enemy-of-the-people-2024/washpost--naveen-kumar.json"
   ],
   "failed": [
-    "book-of-mormon-2011/newsday--linda-winer.json",
-    "book-of-mormon-2011/timeout--david-cote.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
-    "book-of-mormon-2011/the-village-voice--michael-musto.json"
+    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
+    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
+    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
+    "an-enemy-of-the-people-2024/wsj--unknown.json",
+    "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "book-of-mormon-2011/ap--mark-kennedy.json"
+      "an-enemy-of-the-people-2024/washpost--naveen-kumar.json"
     ],
     "browserbase": [
-      "data/review-texts/book-of-mormon-2011/newsday--linda-winer.json"
+      "data/review-texts/an-enemy-of-the-people-2024/nydailynews--chris-jones.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "book-of-mormon-2011/backstage--david-sheward.json",
-      "book-of-mormon-2011/chicagotribune--.json",
-      "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-      "book-of-mormon-2011/ny-1--roma-torre.json"
+      "an-enemy-of-the-people-2024/variety--daniel-daddario.json",
+      "an-enemy-of-the-people-2024/deadline--greg-evans.json"
     ]
   },
-  "startTime": "2026-02-02T23:11:40.379Z",
-  "lastProcessed": "book-of-mormon-2011/the-village-voice--michael-musto.json",
+  "startTime": "2026-02-02T23:11:31.865Z",
+  "lastProcessed": "an-enemy-of-the-people-2024/washpost--peter-marks.json",
   "log": [
     {
-      "t": "2026-02-02T23:11:47.589Z",
+      "t": "2026-02-02T23:11:52.109Z",
       "event": "bb-session",
-      "session": "c4474ec4",
-      "url": "https://www.newsday.com/news/new-york/theater-review-the-book-of-mormon-4-stars-"
+      "session": "2b40aa69",
+      "url": "https://www.nydailynews.com/2024/03/18/broadway-review-enemy-of-the-people-is-li"
     },
     {
-      "t": "2026-02-02T23:12:10.799Z",
+      "t": "2026-02-02T23:14:49.198Z",
       "event": "bb-session",
-      "session": "9d822b55",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+      "session": "e490e3b3",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
     },
     {
-      "t": "2026-02-02T23:12:57.451Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-02T23:14:51.179Z",
+      "event": "bb-login-uncertain",
+      "domain": "washingtonpost.com"
     }
   ]
 }
