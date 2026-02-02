@@ -226,6 +226,43 @@ const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 // decodeHtmlEntities imported from ./lib/text-cleaning
 
 /**
+ * Fix mojibake: UTF-8 bytes misinterpreted as Latin-1/CP1252.
+ * Common in scraped text where encoding was mangled.
+ */
+function fixMojibake(text) {
+  if (!text) return text;
+  // Three-byte UTF-8 sequences stored as raw bytes (â + two control chars)
+  return text
+    // Smart quotes
+    .replace(/\u00e2\u0080\u0099/g, '\u2019')   // ' right single quote
+    .replace(/\u00e2\u0080\u0098/g, '\u2018')   // ' left single quote
+    .replace(/\u00e2\u0080\u009c/g, '\u201c')   // " left double quote
+    .replace(/\u00e2\u0080\u009d/g, '\u201d')   // " right double quote
+    // Dashes and ellipsis
+    .replace(/\u00e2\u0080\u0094/g, '\u2014')   // — em dash
+    .replace(/\u00e2\u0080\u0093/g, '\u2013')   // – en dash
+    .replace(/\u00e2\u0080\u00a6/g, '\u2026')   // … ellipsis
+    // Also handle the text-rendered versions (â€™, â€", etc.)
+    .replace(/â€™/g, '\u2019')
+    .replace(/â€˜/g, '\u2018')
+    .replace(/â€œ/g, '\u201c')
+    .replace(/â€\u009d/g, '\u201d')
+    .replace(/â€"/g, '\u2014')
+    .replace(/â€"/g, '\u2013')
+    .replace(/â€¦/g, '\u2026')
+    // Two-byte Latin characters
+    .replace(/Ã©/g, 'é')
+    .replace(/Ã¨/g, 'è')
+    .replace(/Ã¯/g, 'ï')
+    .replace(/Ã¼/g, 'ü')
+    .replace(/Ã¶/g, 'ö')
+    .replace(/Ã´/g, 'ô')
+    .replace(/Ã®/g, 'î')
+    .replace(/Ã¢/g, 'â')
+    .replace(/Ã /g, 'à');
+}
+
+/**
  * Detect if text looks like website navigation/junk rather than review content
  */
 function isJunkExcerpt(text) {
@@ -245,6 +282,11 @@ function isJunkExcerpt(text) {
     /Matthew Murphy\s+[A-Z]/,                           // Photo credit pattern
     /\bdefineSlot\b|\bsetTargeting\b|\bgoogletag\b/i,  // Ad code
     /blogherads/i,                                      // Ad code
+    /^NYC Events,?\s+Restaurants/i,                     // Cititour site navigation
+    /Cititour\.com\s*Review/i,                          // Cititour site branding
+    /^(Facebook|Twitter|Pinterest|Threads)\s+(Twitter|Facebook|Pinterest|X\b)/i,  // Social sharing buttons
+    /^Visit the Site/i,                                 // Cititour show info metadata
+    /^Tickets from \$/i,                                // Ticket pricing metadata
   ];
 
   for (const pattern of junkPatterns) {
@@ -266,7 +308,7 @@ function isJunkExcerpt(text) {
 function cleanExcerpt(text, aggressive = false) {
   if (!text) return null;
 
-  let cleaned = decodeHtmlEntities(text);
+  let cleaned = fixMojibake(decodeHtmlEntities(text));
 
   // Reject URLs masquerading as excerpts
   if (/^https?:\/\//i.test(cleaned.trim())) return null;
@@ -338,7 +380,7 @@ function cleanExcerpt(text, aggressive = false) {
 function extractExcerptFromFullText(fullText, showTitle) {
   if (!fullText || fullText.length < 200) return null;
 
-  let text = decodeHtmlEntities(fullText);
+  let text = fixMojibake(decodeHtmlEntities(fullText));
 
   // Strip leading star ratings (★★★★☆, ⭐⭐⭐, etc.)
   text = text.replace(/^[\s★☆⭐✩✪❤]+/, '');
@@ -368,6 +410,8 @@ function extractExcerptFromFullText(fullText, showTitle) {
     if (/\|\s*Photo\s*:/i.test(line)) { startIdx = i + 1; continue; }
     // Skip URL-only lines
     if (/^https?:\/\//i.test(line) && line.length < 200) { startIdx = i + 1; continue; }
+    // Skip site navigation/branding (Cititour, etc.)
+    if (/^NYC Events|Cititour\.com|^(Facebook|Twitter)\s+(Twitter|Facebook)/i.test(line)) { startIdx = i + 1; continue; }
     break;
   }
   text = lines.slice(startIdx).join(' ');
@@ -377,6 +421,11 @@ function extractExcerptFromFullText(fullText, showTitle) {
   text = text.replace(/^[^.!?]*\bPhoto\s+(by|credit|courtesy)\b[^.]*\.\s*/i, '');
   // Strip URLs at start of text
   text = text.replace(/^https?:\/\/\S+\s*/i, '');
+  // Strip Cititour site navigation preamble
+  text = text.replace(/^NYC Events,?\s+Restaurants,?\s+Music,?\s+&\s+Nightlife\s+/i, '');
+  text = text.replace(/^(Facebook\s+)?Twitter\s+X\s+Pinterest\s+Threads\s+Snapchat\s+WhatsApp\s+Message\s+Email\s+/i, '');
+  text = text.replace(/^Tickets from \$\d+\s+Buy Tickets\s+/i, '');
+  text = text.replace(/^Cititour\.com\s+Review\s+/i, '');
 
   // Strip concatenated page title + metadata blobs (common on One-Minute Critic, CultureSauce, etc.)
   // Pattern: "Reviews 'Title' <headline> <Author> <Date> <number> <Cast> in "Title"." Photo by X. Share this: By Author <actual review>"
@@ -537,6 +586,21 @@ function selectBestExcerpt(data) {
   }
 
   return null;
+}
+
+/**
+ * Strip wrapping quotation marks from excerpt so frontend can add them consistently.
+ * Handles straight quotes, curly quotes, and mixed pairs.
+ */
+function normalizeQuoteWrapping(text) {
+  if (!text) return text;
+  let result = text.trim();
+  // Strip matching outer quotes (straight, curly, or mixed)
+  if ((result.startsWith('"') || result.startsWith('\u201c')) &&
+      (result.endsWith('"') || result.endsWith('\u201d'))) {
+    result = result.slice(1, -1).trim();
+  }
+  return result;
 }
 
 // Stats tracking
@@ -1056,7 +1120,7 @@ showDirs.forEach(showId => {
         url: data.url || null,
         publishDate: data.publishDate || null,
         originalRating: data.originalScore || null,
-        pullQuote: selectBestExcerpt(data),
+        pullQuote: normalizeQuoteWrapping(selectBestExcerpt(data)),
         dtliThumb: data.dtliThumb || null,
         bwwThumb: data.bwwThumb || null,
         contentTier: data.contentTier || 'none'
