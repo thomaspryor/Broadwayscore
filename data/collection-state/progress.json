@@ -12,7 +12,9 @@
     "just-for-us-2023/vulture--helen-shaw.json",
     "lempicka-2024/variety--frank-rizzo.json",
     "maybe-happy-ending-2024/vulture--jackson-mchenry.json",
-    "merrily-we-roll-along-2023/vulture--helen-shaw.json"
+    "merrily-we-roll-along-2023/vulture--helen-shaw.json",
+    "mj-2022/variety--peter-marks.json",
+    "oh-mary-2024/nytimes--jesse-green.json"
   ],
   "failed": [
     "chess-2025/wsj--charles-isherwood.json",
@@ -64,7 +66,15 @@
     "marjorie-prime-2025/nytimes--elisabeth-vincentelli.json",
     "mary-jane-2024/hollywood-reporter--david-rooney.json",
     "mary-jane-2024/variety--aramide-tinubu.json",
-    "merrily-we-roll-along-2023/variety--trish-deitch.json"
+    "merrily-we-roll-along-2023/variety--trish-deitch.json",
+    "mj-2022/hollywood-reporter--david-rooney.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/variety--naveen-kumar.json",
+    "mother-play-2024/nytimes--jesse-green.json",
+    "mother-play-2024/variety--aramide-tinubu.json",
+    "moulin-rouge-2019/vulture--jesse-green.json",
+    "oh-mary-2024/hollywood-reporter--angie-han.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -74,7 +84,10 @@
       "harry-potter-2021/variety--marilyn-stasio.json",
       "heart-of-rock-and-roll-2024/nytg--gillian-russo.json",
       "just-in-time-2025/variety--christian-lewis.json",
-      "lempicka-2024/variety--frank-rizzo.json"
+      "lempicka-2024/variety--frank-rizzo.json",
+      "mj-2022/hollywood-reporter--david-rooney.json",
+      "mj-2022/variety--peter-marks.json",
+      "oh-mary-2024/hollywood-reporter--angie-han.json"
     ],
     "browserbase": [
       "data/review-texts/appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
@@ -116,11 +129,15 @@
       "mary-jane-2024/hollywood-reporter--david-rooney.json",
       "mary-jane-2024/variety--aramide-tinubu.json",
       "merrily-we-roll-along-2023/variety--trish-deitch.json",
-      "merrily-we-roll-along-2023/vulture--helen-shaw.json"
+      "merrily-we-roll-along-2023/vulture--helen-shaw.json",
+      "mj-2022/variety--naveen-kumar.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mother-play-2024/variety--aramide-tinubu.json",
+      "oh-mary-2024/nytimes--jesse-green.json"
     ]
   },
   "startTime": "2026-02-02T03:48:14.615Z",
-  "lastProcessed": "merrily-we-roll-along-2023/vulture--helen-shaw.json",
+  "lastProcessed": "oh-mary-2024/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-02-02T03:49:40.892Z",
@@ -198,6 +215,17 @@
     },
     {
       "t": "2026-02-02T06:23:28.787Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-02T06:39:28.077Z",
+      "event": "bb-session",
+      "session": "3d2ac9e2",
+      "url": "https://www.vulture.com/2019/07/moulin-rouge-the-musical-broadway-review.html"
+    },
+    {
+      "t": "2026-02-02T06:39:30.231Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
     }
