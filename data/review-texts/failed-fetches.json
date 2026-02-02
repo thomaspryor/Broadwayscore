@@ -4120,18 +4120,6 @@
     "timestamp": "2026-02-01T15:44:43.266Z"
   },
   {
-    "reviewId": "aladdin-2014/timeout--adam-feldman.json",
-    "showId": "aladdin-2014",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "http://www.timeout.com/newyork/theater/aladdin-1",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 4427,
-    "timestamp": "2026-02-01T15:47:03.110Z"
-  },
-  {
     "reviewId": "an-enemy-of-the-people/deadline--unknown.json",
     "showId": "an-enemy-of-the-people",
     "outlet": "Deadline",
@@ -6556,18 +6544,6 @@
     "timestamp": "2026-02-02T03:08:31.095Z"
   },
   {
-    "reviewId": "aladdin-2014/theatermania--charles-isherwood.json",
-    "showId": "aladdin-2014",
-    "outlet": "TheaterMania",
-    "critic": "Charles Isherwood",
-    "url": "https://www.theatermania.com/new-york-city-theater/reviews/aladdin_70661.html",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 9313,
-    "timestamp": "2026-02-02T03:10:54.195Z"
-  },
-  {
     "reviewId": "appropriate-2023/observer--unknown.json",
     "showId": "appropriate-2023",
     "outlet": "Observer",
@@ -6806,5 +6782,29 @@
     "garbageReason": "Multiple article boundaries detected (3)",
     "textLength": 5720,
     "timestamp": "2026-02-02T08:08:40.132Z"
+  },
+  {
+    "reviewId": "aladdin-2014/theatermania--charles-isherwood.json",
+    "showId": "aladdin-2014",
+    "outlet": "TheaterMania",
+    "critic": "Charles Isherwood",
+    "url": "https://www.theatermania.com/new-york-city-theater/reviews/aladdin_70661.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 9290,
+    "timestamp": "2026-02-02T08:17:23.440Z"
+  },
+  {
+    "reviewId": "aladdin-2014/timeout--adam-feldman.json",
+    "showId": "aladdin-2014",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "http://www.timeout.com/newyork/theater/aladdin-1",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 5906,
+    "timestamp": "2026-02-02T08:17:26.843Z"
   }
 ]
