@@ -1,75 +1,87 @@
 {
-  "runDate": "2026-02-02T17:45:52.829Z",
+  "runDate": "2026-02-02T17:49:13.988Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "redwood-2025",
+    "showFilter": "patriots-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 5,
+    "processed": 6,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "28.6%"
+    "successRate": "46.2%"
   },
   "tierBreakdown": {
     "playwright": 2,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 2
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 5,
+    "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 4,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier4Attempts": 6,
+    "tier4Attempts": 17,
     "tier4Success": 6,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 0,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 21,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "redwood-2025/broadwaynews--brittani-samuel.json",
-    "redwood-2025/washpost--naveen-kumar.json"
+    "patriots-2024/variety--jesse-green.json",
+    "patriots-2024/broadwaynews--brittani-samuel.json",
+    "patriots-2024/deadline--pete-hammond.json",
+    "patriots-2024/new-york-sun--elysa-gardner.json",
+    "patriots-2024/theatermania--jesse-green.json",
+    "patriots-2024/washpost--peter-marks.json"
   ],
   "failed": [
-    "redwood-2025/deadline--greg-evans.json",
-    "redwood-2025/new-york-sun--elysa-gardner.json",
-    "redwood-2025/observer--david-cote.json",
-    "redwood-2025/timeout--adam-feldman.json",
-    "redwood-2025/wsj--charles-isherwood.json"
+    "patriots-2024/deadline--greg-evans.json",
+    "patriots-2024/guardian--michael-billington.json",
+    "patriots-2024/timeout--raven-snook.json",
+    "patriots-2024/wsj--charles-isherwood.json",
+    "patriots-2024/wsj--terry-teachout.json",
+    "patriots-2024/nysr--frank-scheck.json",
+    "patriots-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "patriots-2024/deadline--pete-hammond.json",
+      "patriots-2024/washpost--peter-marks.json"
+    ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "patriots-2024/theatermania--jesse-green.json"
+    ],
     "brightdata": [],
     "archive": [
-      "redwood-2025/broadwaynews--brittani-samuel.json",
-      "redwood-2025/washpost--naveen-kumar.json"
+      "patriots-2024/variety--jesse-green.json",
+      "patriots-2024/broadwaynews--brittani-samuel.json",
+      "patriots-2024/new-york-sun--elysa-gardner.json"
     ]
   },
   "failuresByOutlet": {
-    "New York Daily News": {
+    "The Guardian": {
       "count": 1,
-      "domain": "nydailynews.com",
+      "domain": "theguardian.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     },
     "The Wall Street Journal": {
       "count": 1,
@@ -78,19 +90,20 @@
       "isPaywalled": true,
       "isKnownBlocked": true
     },
+    "New York Stage Review": {
+      "count": 1,
+      "domain": "didtheylikeit.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "Talkin' Broadway": {
       "count": 1,
-      "domain": "thewrap.com",
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "oldUrl": "https://nypost.com/2024/11/13/entertainment/maybe-happy-ending-review-charming-musical-about-robot-romance/",
-      "newUrl": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
-    }
-  ]
+  "urlDiscoveries": []
 }
