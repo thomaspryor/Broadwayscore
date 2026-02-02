@@ -4408,18 +4408,6 @@
     "timestamp": "2026-02-01T18:51:25.725Z"
   },
   {
-    "reviewId": "bug-2026/timeout--adam-feldman.json",
-    "showId": "bug-2026",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/bug-broadway-review-carrie-coon-namir-smallwood-tracy-letts-paranoia",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 7551,
-    "timestamp": "2026-02-01T18:51:30.199Z"
-  },
-  {
     "reviewId": "bug-2026/wsj--charles-isherwood.json",
     "showId": "bug-2026",
     "outlet": "The Wall Street Journal",
@@ -6602,5 +6590,17 @@
     "garbageReason": "Legal/privacy page: \"©2024 Dow Jones & Company, Inc. All Rights Reserved\"",
     "textLength": 766,
     "timestamp": "2026-02-02T00:39:13.597Z"
+  },
+  {
+    "reviewId": "bug-2026/timeout--adam-feldman.json",
+    "showId": "bug-2026",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/bug-broadway-review-carrie-coon-namir-smallwood-tracy-letts-paranoia",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 7443,
+    "timestamp": "2026-02-02T00:43:56.885Z"
   }
 ]
