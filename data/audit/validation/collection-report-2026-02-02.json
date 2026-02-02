@@ -1,73 +1,73 @@
 {
-  "runDate": "2026-02-02T05:05:13.656Z",
+  "runDate": "2026-02-02T05:07:17.394Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "once-upon-a-one-more-time-2023",
+    "showFilter": "the-notebook-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 5,
+    "processed": 3,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "30.0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 3,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 5,
+    "tier1Success": 1,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 4,
     "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier3Attempts": 2,
     "tier3Success": 1,
-    "tier4Attempts": 6,
-    "tier4Success": 4,
-    "totalFailed": 5,
+    "tier4Attempts": 9,
+    "tier4Success": 5,
+    "totalFailed": 6,
     "scrapingBeeCreditsUsed": 22,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.7,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 1.8,
     "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
-    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+    "the-notebook-2024/nytimes--unknown.json",
+    "the-notebook-2024/broadwaynews--brittani-samuel.json",
+    "the-notebook-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
-    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
-    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
+    "the-notebook-2024/hollywood-reporter--david-rooney.json",
+    "the-notebook-2024/variety--frank-rizzo.json",
+    "the-notebook-2024/vulture--helen-shaw.json",
+    "the-notebook-2024/deadline--greg-evans.json",
+    "the-notebook-2024/nydailynews--chris-jones.json",
+    "the-notebook-2024/timeout--adam-feldman.json",
+    "the-notebook-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
-      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-      "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+      "the-notebook-2024/broadwaynews--brittani-samuel.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-notebook-2024/theatermania--jesse-green.json"
+    ],
     "brightdata": [],
     "archive": [
-      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
+      "the-notebook-2024/nytimes--unknown.json",
+      "the-notebook-2024/variety--frank-rizzo.json"
     ]
   },
   "failuresByOutlet": {
@@ -77,13 +77,20 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "New York Daily News": {
+      "count": 1,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-      "oldUrl": "https://www.nytimes.com/2023/06/14/theater/once-upon-a-one-more-time-review.html",
-      "newUrl": "https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html"
+      "reviewId": "the-notebook-2024/vulture--helen-shaw.json",
+      "oldUrl": "https://www.vulture.com/article/the-notebook-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html"
     }
   ]
 }
