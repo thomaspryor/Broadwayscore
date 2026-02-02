@@ -257,6 +257,7 @@ data/
 - `scripts/scrape-playbill-verdict.js` - Playbill Verdict review URL discovery
 - `scripts/scrape-nyc-theatre-roundups.js` - NYC Theatre excerpt extraction (2023+ shows)
 - `scripts/lib/show-matching.js` - Shared title→show matching utility
+- `scripts/audit-content-quality.js` - Deep content audit: fabricated URLs, wrong-production content, critic mismatches, domain mismatches, cross-show duplicate URLs, excerpt-as-fullText, generic URLs. Run manually after bulk data changes.
 
 **Tests:**
 - `tests/unit/` - Unit tests (parse-grosses, commercial filtering, source-validator, etc.)
@@ -591,7 +592,23 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→3,644 reviews). **
 
 **Byline extraction false positives (FIXED Feb 2026):** `extractByline()` in `content-quality.js` now accepts `options.excludeNames` to skip cast/creative team names that appear in review text (e.g., "Written by David Yazbek" is the songwriter, not the reviewer). Pattern 3 ("Written by X") removed since it always means playwright in theater reviews. Non-name word blocklist (Prize, Weekly, Crown, Theatre, etc.) rejects extracted "names" that are actually proper nouns. Callers (`backfill-review-flags.js`, `collect-review-texts.js`) pass show cast+creative names from shows.json.
 
-**Quality classification in `gather-reviews.js` (FIXED Feb 2026):** `gather-reviews.js` now runs `classifyContentTier()` on every review before writing (line 1194). All 3,644 review files have contentTier assigned. Distribution: 2,138 complete, 774 excerpt, 484 truncated, 154 stub, 66 needs-rescrape, 28 other.
+**Quality classification in `gather-reviews.js` (FIXED Feb 2026):** `gather-reviews.js` now runs `classifyContentTier()` on every review before writing (line 1194). All review files have contentTier assigned.
+
+**Web-search bulk import garbage patterns (FIXED Feb 2026):** An earlier bulk import using `source: "web-search"` introduced three types of garbage fullText:
+- **Excerpt copies (63 fixed):** Aggregator excerpt (avg 27 words) copied verbatim into fullText. Top outlets: talkinbroadway (15), wsj (11), hollywood-reporter (5), observer (5).
+- **404 error pages (9 fixed):** TheaterMania returned "It seems we can't find what you're looking for" which was saved as fullText.
+- **Paywall stubs (5 fixed):** WSJ URLs produced only the article URL + photo caption (6-49 words).
+- **Excerpt copies from other sources (2 fixed):** Non-web-search reviews (dtli, etc.) where fullText was identical to an excerpt.
+All 79 files fixed by nulling fullText, preserving excerpts in proper fields, and setting appropriate contentTier for nightly collector pickup. Detection: `scripts/audit-content-quality.js` "fullText Matches Excerpt" check.
+
+**BroadwayNews cross-contamination (FIXED Feb 2026):** Three reviews at EW and Deadline had BroadwayNews content ("Broadway News' Broadway Review by Brittani Samuel") scraped into their fullText. Root cause: scraping Deadline/EW URLs returned embedded or redirected BroadwayNews content. Fixed by nulling fullText and adding `garbageReason`. Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
+
+**Critic name misattributions (FIXED Feb 2026):** 8 reviews where the file's criticName didn't match the byline in fullText. Four patterns found:
+- Same person, different name (Danny/Daniel Graugnard) — updated criticName
+- Wrong critic's text at same outlet (Matthew Murray file had Howard Miller text) — nulled fullText
+- Wrong outlet content scraped (BroadwayNews at EW/Deadline URLs) — nulled fullText
+- Aggregator misattributed critic (Fierberg→Samuel, Feldman→Gleason, Marks→Kumar) — renamed files via `git mv`, added `criticNameNote`
+Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
 
 ### Scoring Issues
 
@@ -635,10 +652,21 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→3,644 reviews). **
 
 ### Remaining Data Quality Work (Feb 2026)
 
-**704 reviews need re-scraping (Feb 2026):** 568 on free (non-paywalled) sites, 136 paywalled. Breakdown: 484 truncated, 154 stub, 66 needs-rescrape. Highest-count free outlets: timeout (52), deadline (40), new-york-sun (34), observer (26), nydailynews (24), thestage (18). Many URLs may be dead/404. The nightly `collect-review-texts.yml` cron (2 AM UTC) processes up to 100 reviews per run with Browserbase enabled. Paywalled sites use subscription credentials from GitHub Secrets (NYT, Vulture, WSJ, WaPo).
+**Re-scraping queue:** ~188 free-site reviews and ~136 paywalled reviews still need fullText. Bulk collection runs dispatched for all 58 affected shows (free sites). The nightly `collect-review-texts.yml` cron (2 AM UTC) processes up to 100 reviews per run with Browserbase enabled. Paywalled sites use subscription credentials from GitHub Secrets (NYT, Vulture, WSJ, WaPo).
 
-**2 reviews in human review queue:** `data/audit/needs-human-review.json` — down from 23 after full audit in Feb 2026. Most were resolved by `humanReviewScore` overrides (120 source files) or fixed by the P2 direction comparison fix.
+**Generic/placeholder URLs (24 issues from audit):**
+- **Lighting & Sound America:** 18 reviews all point to `lightingandsoundamerica.com/news/story.asp` (generic, not show-specific). Need proper review URLs or URL discovery.
+- **TalkingBroadway:** 2 reviews point to `talkinbroadway.com/page.php` (generic). Need show-specific URLs.
+- **Deadline roundup:** 8 shows share one roundup URL (`deadline.com/feature/broadway-show-reviews-spring-2024-1235866317`). These are legitimate (multi-show roundup article by Greg Evans) and already flagged `isRoundupArticle: true`.
 
-**27 cross-outlet duplicate-text reviews:** Files with `duplicateTextOf` field where the same fullText appears at a different outlet (e.g., Chris Jones at both Chicago Tribune and NY Daily News). These are legitimate — the same freelance critic published in multiple outlets. Same-outlet duplicates and wrong-critic attributions have been cleaned up.
+**Chris Jones cross-outlet URLs (5 domain mismatches):** 3 reviews attributed to nydailynews have chicagotribune.com URLs. This is correct behavior — Chris Jones is a freelancer who publishes in both. The nydailynews attribution comes from aggregator data. Not a bug, but the audit flags it.
+
+**Wrong-production URL candidates (13):** Reviews where URL year differs >3 years from show opening. Many are legitimate (later reviews of long-running shows like Wicked, Lion King). Requires manual verification case-by-case.
+
+**2 reviews in human review queue:** `data/audit/needs-human-review.json` — down from 23 after full audit in Feb 2026.
+
+**27 cross-outlet duplicate-text reviews:** Files with `duplicateTextOf` field where the same fullText appears at a different outlet (e.g., Chris Jones at both Chicago Tribune and NY Daily News). These are legitimate — the same freelance critic published in multiple outlets.
+
+**Content quality audit:** Run `node scripts/audit-content-quality.js` after any bulk data changes. Current baseline: 24 issues (13 URL year mismatches, 5 domain mismatches, 3 cross-show duplicate URLs, 2 fullText≈excerpt, 1 null URL). Zero critic name mismatches.
 
 **Test infrastructure (ALL GREEN Feb 2026):** CI fully passing. Both `ensemble.test.mjs` and `trade-press-scraper.test.mjs` use Node test runner with `createRequire` for CJS module loading. Text quality audit uses `contentTier` fallback. Review-text validator treats unknown outlets and garbage critic names as warnings (not errors). Symlink double-counting fixed in all validation scripts.
