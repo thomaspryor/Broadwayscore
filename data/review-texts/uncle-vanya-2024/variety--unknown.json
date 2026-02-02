@@ -59,5 +59,35 @@
     "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "stub",
-  "contentTierReason": "No text content"
+  "contentTierReason": "No text content",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 89,
+  "fullText": "Director Lila Neugebauer sets Lincoln Center Theater's starry, breathtaking new Broadway production of Anton Chekhov's \"Uncle Vanya\" in current-day America rather than Russia around 1898, the year the play was written. There's a baseball cap and a backpack with dayglow tape; pills are in plastic bottles with childproof caps; when someone runs out of ink while paying bills, they look for a new pen. What a difference 126 years can make!\n\nAnd yet, judging by the state of the world and the human psyche depicted in Chekhov's play, nothing at all has changed — man was destroying the planet then and still is, women were fighting for equal rights and still are, the artist class couldn't afford to live in the city and still can't, and when thoughtful older folks look back, they still feel deep regret for having wasted their precious lives with meaningless work and convictions full of sound and fury signifying nothing. Their bitterness is so relentless it makes the approaching end seem like a mercy.",
+  "isFullReview": false,
+  "textWordCount": 169,
+  "archivePath": "data/archives/reviews/uncle-vanya-2024/variety--unknown_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:03:18.178Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20251121123235",
+  "archiveOrgUrl": "http://web.archive.org/web/20251121123235/https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/",
+  "duplicateTextOf": "variety--trish-deitch.json"
 }
