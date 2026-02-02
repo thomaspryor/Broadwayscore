@@ -1014,8 +1014,19 @@ async function browserbaseLogin(bbPage, domain, email, password) {
       console.log(`    → No submit button found, pressing Enter on password field...`);
       await passInput.press('Enter');
     }
-    await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-    await bbPage.waitForTimeout(5000);
+    // Wait for redirect away from SSO domain (hostname-based, not URL path)
+    // The SSO URL always contains /login-page and #/signin-password, so path checks always fail
+    let leftSsoDomain = false;
+    try {
+      await bbPage.waitForFunction(() => {
+        const host = window.location.hostname;
+        return !host.includes('accounts.dowjones.com') && !host.includes('accounts.wsj.com');
+      }, { timeout: 30000 });
+      leftSsoDomain = true;
+      console.log(`    → WSJ redirect completed (left SSO domain)`);
+    } catch (e) {
+      console.log(`    → WSJ still on SSO domain after 30s, checking page state...`);
+    }
 
     // Full post-login diagnostic dump
     const postUrl = bbPage.url();
@@ -1029,22 +1040,34 @@ async function browserbaseLogin(bbPage, domain, email, password) {
       // Get all visible text (first 500 chars) to detect OTP prompts, errors, etc.
       const bodyText = document.body?.innerText?.substring(0, 500) || '';
       const hasOtpPrompt = bodyText.includes('passcode') || bodyText.includes('verification') || bodyText.includes('one-time');
-      const errorEls = document.querySelectorAll('[class*="error" i], [class*="alert" i], [role="alert"], [class*="message" i]');
+      const errorEls = document.querySelectorAll('.error-message, [class*="error-text"], [role="alert"][class*="error"], .message--error');
       const errors = Array.from(errorEls).map(e => e.textContent?.trim().substring(0, 100)).filter(t => t && t.length > 2);
       return { title: document.title, inputs, buttons, bodyText, hasOtpPrompt, errors };
     });
     console.log(`    → Post-login URL: ${postUrl.substring(0, 100)}`);
     console.log(`    → Post-login title: "${postLoginInfo.title}"`);
-    console.log(`    → Post-login inputs: ${JSON.stringify(postLoginInfo.inputs)}`);
-    console.log(`    → Post-login buttons: ${JSON.stringify(postLoginInfo.buttons)}`);
-    if (postLoginInfo.hasOtpPrompt) console.log(`    → ⚠ OTP/verification prompt detected!`);
     if (postLoginInfo.errors.length) console.log(`    → Post-login errors: ${JSON.stringify(postLoginInfo.errors)}`);
-    console.log(`    → Page text (first 300): ${postLoginInfo.bodyText.substring(0, 300).replace(/\n+/g, ' | ')}`);
 
-    const loginOk = !postUrl.includes('/login') && !postUrl.includes('/signin');
-    if (loginOk) console.log(`    ✓ WSJ login succeeded`);
-    else console.log(`    ✗ WSJ login failed`);
-    return loginOk;
+    // Check for OTP prompt (unrecoverable - need user interaction)
+    if (postLoginInfo.hasOtpPrompt) {
+      console.log(`    ✗ WSJ login requires OTP/verification - cannot proceed automatically`);
+      return false;
+    }
+
+    if (leftSsoDomain) {
+      console.log(`    ✓ WSJ login succeeded`);
+      return true;
+    }
+
+    // Still on SSO but no errors or OTP - may have succeeded (session cookie set)
+    // Let the article fetch determine real success
+    if (!postLoginInfo.errors.length) {
+      console.log(`    ⚠ WSJ login uncertain (still on SSO domain) - continuing`);
+      return true;
+    }
+
+    console.log(`    ✗ WSJ login failed (errors on SSO page)`);
+    return false;
   }
 
   if (domain === 'nytimes.com') {
