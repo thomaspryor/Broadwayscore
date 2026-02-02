@@ -1,15 +1,22 @@
 {
-  "updatedAt": "2026-02-02T02:42:08.288Z",
-  "processed": 1,
+  "updatedAt": "2026-02-02T02:42:11.317Z",
+  "processed": 4,
   "failed": 1,
-  "successRate": "50.0%",
+  "successRate": "80.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "brightdata": 1,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-02T02:41:47.160Z",
+      "event": "bb-session",
+      "session": "f654b952",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/spamalot-broadway-st-"
+    }
+  ]
 }
