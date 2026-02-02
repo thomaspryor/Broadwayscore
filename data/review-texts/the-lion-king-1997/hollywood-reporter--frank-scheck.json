@@ -5,13 +5,13 @@
   "criticName": "Frank Scheck",
   "url": "http://www.jasonraize.net/pr_tlk_spt112197.html",
   "publishDate": "November 21, 1997",
-  "fullText": null,
+  "fullText": "Read More About: Eva Noblezada, Jeremy Jordan, The Great Gatsby Jump to Comments ‘The Great Gatsby’ Review: Broadway Musical Has Glamour but Little Grit Broadway Theatre; 1761 seat; $268 top. Opened April 25, 2024. Reviewed April 20. Running time: 2 hours, 30 minutes. Production: A presentation by Chunsoo Shin, OD Company, The Nederlander Organization, The Shubert Organization, Joe Quenqua, Candy Spelling, Mark Shacket in association with Paper Mill Playhouse of a musical in 2 acts with book by Kait Kerrigan, music by Jason Howland, and lyrics by Nathan Tysen. Crew: Directed by Marc Bruni. Choreographed by Dominique Kelley. Sets and projections, Paul Tate dePoo III; costumes, Linda Cho; lights, Cory Pattak; sound, Brian Ronan; hair, Charles G LaPointe and Rachel Geier; makeup, Ashley Ryan; orchestrations, Jason Howland and Kim Scharnberg; production stage manager, Brian Bogin. Cast: Jeremy Jordan, Eva Noblezada, Noah J. Ricketts, Samantha Pauly, Sara Chase, John Zdrojeski, Paul Whitty, Eric Anderson, Raymond Edward Baynard, Austin Colby, Curtis Holland, Traci Elaine Lee, Dariana Mullen, Ryah Nixon, Pascal Pastrana, Kayla Pecchioni, Mariah Resheg Reives, Dan Rosales, Dave Schoonover, Derek Jordan Taylor, Tanairi Sade Vazquez, Katie Webber, Kurt Csolak, Carissa Gaughran, Samantha Pollino, Alex Prakken, Jake Trammel, and Jasmine Pearl Villaroel.",
   "showScoreExcerpt": "\"The Lion King is a spectacular rendition of the animated film, a brilliant theatrical adaptation that stands on its own...Taymor has risen to the challenge, translating the physically complex tale to the stage with an endlessly clever, visually stunning use of masks, puppetry, costumes and scenic effects; the stage show has the delighted audience firmly in its grip.\"",
   "originalScore": null,
   "assignedScore": 89,
   "source": "reviews-json-stub",
   "needsFullText": true,
-  "sourceMethod": "stub",
+  "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -71,5 +71,29 @@
     }
   ],
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 89,
+  "isFullReview": false,
+  "textWordCount": 200,
+  "archivePath": "data/archives/reviews/the-lion-king-1997/hollywood-reporter--frank-scheck_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T07:47:01.978Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "textIssues": [
+    "Word count too low: 200 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }
