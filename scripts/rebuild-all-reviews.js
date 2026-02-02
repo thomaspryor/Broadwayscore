@@ -442,6 +442,7 @@ const stats = {
     'explicit-outOf': 0,
     'explicit-slash': 0,
     'explicit-letterGrade': 0,
+    'human-review': 0,
     'originalScore-priority0': 0,
     llmScore: 0,
     'thumb-override-llm': 0,  // Thumb used instead of low-conf/needs-review LLM
@@ -541,6 +542,12 @@ function getBestScore(data) {
       source: sourceType,
       explicitRaw: explicitRating.raw
     };
+  }
+
+  // Priority 0.5: Human-reviewed score (manual override from audit queue)
+  // These are set after reviewing flagged reviews where LLM and thumbs disagree
+  if (data.humanReviewScore && data.humanReviewScore >= 1 && data.humanReviewScore <= 100) {
+    return { score: data.humanReviewScore, source: 'human-review' };
   }
 
   // Priority 0b: Parse originalScore field BEFORE LLM
