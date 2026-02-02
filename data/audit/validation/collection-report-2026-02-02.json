@@ -1,41 +1,41 @@
 {
-  "runDate": "2026-02-02T17:52:08.708Z",
+  "runDate": "2026-02-02T17:55:25.254Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-shark-is-broken-2023",
+    "showFilter": "uncle-vanya-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 2,
+    "processed": 5,
+    "failed": 8,
     "skipped": 0,
-    "successRate": "75.0%"
+    "successRate": "38.5%"
   },
   "tierBreakdown": {
     "playwright": 2,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 5
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 6,
+    "tier1Success": 4,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
     "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier4Attempts": 9,
+    "tier4Attempts": 10,
     "tier4Success": 6,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 11,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 21,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 1,
@@ -43,38 +43,43 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-shark-is-broken-2023/variety--trish-deitch.json",
-    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json",
-    "the-shark-is-broken-2023/deadline--greg-evans.json",
-    "the-shark-is-broken-2023/theatermania--jesse-green.json",
-    "the-shark-is-broken-2023/wsj--charles-isherwood.json",
-    "the-shark-is-broken-2023/talkinbroadway--howard-miller.json"
+    "uncle-vanya-2024/variety--bob-verini.json",
+    "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
+    "uncle-vanya-2024/theatermania--jesse-green.json",
+    "uncle-vanya-2024/ap--mark-kennedy.json",
+    "uncle-vanya-2024/exeunt-nyc--cameron-kelsall.json"
   ],
   "failed": [
-    "the-shark-is-broken-2023/guardian--adrian-horton.json",
-    "the-shark-is-broken-2023/timeout--adam-feldman.json"
+    "uncle-vanya-2024/vulture--helen-shaw.json",
+    "uncle-vanya-2024/deadline--greg-evans.json",
+    "uncle-vanya-2024/new-york-sun--elysa-gardner.json",
+    "uncle-vanya-2024/observer--rex-reed.json",
+    "uncle-vanya-2024/thewrap--robert-hofler.json",
+    "uncle-vanya-2024/timeout--adam-feldman.json",
+    "uncle-vanya-2024/wsj--unknown.json",
+    "uncle-vanya-2024/thestage--nicole-serratore.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "uncle-vanya-2024/ap--mark-kennedy.json",
+      "uncle-vanya-2024/exeunt-nyc--cameron-kelsall.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "the-shark-is-broken-2023/theatermania--jesse-green.json"
+      "uncle-vanya-2024/theatermania--jesse-green.json"
     ],
     "archive": [
-      "the-shark-is-broken-2023/variety--trish-deitch.json",
-      "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json",
-      "the-shark-is-broken-2023/deadline--greg-evans.json",
-      "the-shark-is-broken-2023/wsj--charles-isherwood.json",
-      "the-shark-is-broken-2023/talkinbroadway--howard-miller.json"
+      "uncle-vanya-2024/variety--bob-verini.json",
+      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
     ]
   },
   "failuresByOutlet": {
-    "The Guardian": {
+    "Vulture": {
       "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
       "isKnownBlocked": false
     }
   },
