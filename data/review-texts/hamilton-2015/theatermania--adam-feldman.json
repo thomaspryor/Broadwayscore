@@ -5,8 +5,8 @@
   "criticName": "Adam Feldman",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/hamilton_72618.html",
   "publishDate": "August 6, 2015",
-  "fullText": "Hamilton is a musical that makes the impossible seem inevitable. Lin-Manuel Miranda has created a work that is both historically grounded and utterly contemporary, transforming the story of America's founding into something that feels urgently relevant to our current moment.",
-  "isFullReview": false,
+  "fullText": "”Fun Home” book writer and lyricist Lisa Kron will host the event, which honors extraordinary contributions made to the American Theater by women.\n\nThe Sixth Annual Lilly Awards ceremony will take place on June 1 at 5pm at Playwrights Horizons. The event, which honors the extraordinary contributions made to the American Theater by women, will be hosted by Fun Home book writer and lyricist Lisa Kron.\n\nThe $25,000 Stacey Mindich Prize, which funds a new work by a female playwright, and the Leah Ryan Prize, which awards an annual cash prize to an emerging woman playwright and produces a reading of the winning play in New York City, will also be announced at the ceremony. Guests and honorees will then attend a cocktail reception at the West Bank Cafe.\n\nOver 100 theater professionals were asked for their nominations for the 2016 honorees. The presenters and winners will be announced at a later date.\n\nThe Lilly Awards were started in spring 2010 as a way to honor the work of women in the American Theater. The founders of the Lillys are Julia Jordan, Marsha Norman, and Theresa Rebeck. The awards are named for pioneering American playwright Lillian Hellman.\n\nReview: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Every Step Has Meaning in Anne Gridley’s Watch Me Walk \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Leopold Bloom for Rookies and Pros in a Hilarious Ulysses \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "Hamilton is a musical that makes the impossible seem inevitable. Lin-Manuel Miranda has created a work that is both historically grounded and utterly contemporary, transforming the story of America's founding into something that feels urgently relevant to our current moment.",
   "originalScore": null,
   "assignedScore": 79,
@@ -65,5 +65,48 @@
     "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (40 words)"
+  "contentTierReason": "Short text (40 words)",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 79,
+  "textWordCount": 301,
+  "archivePath": "data/archives/reviews/hamilton-2015/theatermania--adam-feldman_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T03:27:18.226Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }

@@ -64,8 +64,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "archivePath": "data/archives/reviews/hamilton-2015/wsj--terry-teachout_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T02:52:51.907Z",
+  "archivePath": "data/archives/reviews/hamilton-2015/wsj--terry-teachout_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T03:27:28.589Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -88,5 +88,16 @@
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:22.848Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 95,
+  "fullText": "http://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-1438907400\n\nShareResizeWatch excerpts from several numbers of \"Hamilton,\" the Broadway show by Lin-Manuel Miranda about Alexander Hamilton and the making of America. Photo: Radical MediaNew York\n\nLin-Manuel Miranda’s “Hamilton,” the multiracial rap musical about Alexander Hamilton and the making of America that sold out the Public Theater this spring, has now moved to Broadway, just in time to profit from the ruckus over the possible removal of its namesake from the $10 bill. Not that the show needed any more publicity: It was already a plutonium-hot ticket, stoked by ecstatic reviews of the premiere and acres of near-lascivious advance coverage. No matter what the critics say this time around, “Hamilton” seems a safe bet to occupy the Richard Rodgers Theatre forevermore.",
+  "isFullReview": false,
+  "textWordCount": 121,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated"
 }
