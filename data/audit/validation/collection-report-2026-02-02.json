@@ -1,62 +1,78 @@
 {
-  "runDate": "2026-02-02T17:35:33.957Z",
+  "runDate": "2026-02-02T17:39:14.219Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "chess-2025",
+    "showFilter": "book-of-mormon-2011",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 2,
+    "processed": 5,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "41.7%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 0
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 6,
+    "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 3,
     "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 1,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 10,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 15,
+    "tier4Success": 5,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 22,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "chess-2025/nytimes--elisabeth-vincentelli.json"
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "book-of-mormon-2011/chicagotribune--.json",
+    "book-of-mormon-2011/ny-1--roma-torre.json",
+    "book-of-mormon-2011/talkinbroadway--matthew-murray.json"
   ],
   "failed": [
-    "chess-2025/timeout--adam-feldman.json",
-    "chess-2025/wsj--charles-isherwood.json"
+    "book-of-mormon-2011/variety--marilyn-stasio.json",
+    "book-of-mormon-2011/newsday--linda-winer.json",
+    "book-of-mormon-2011/timeout--david-cote.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
+    "book-of-mormon-2011/the-village-voice--michael-musto.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [
-      "chess-2025/nytimes--elisabeth-vincentelli.json"
+    "playwright": [
+      "book-of-mormon-2011/ap--mark-kennedy.json"
     ],
-    "brightdata": [],
-    "archive": []
+    "browserbase": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "book-of-mormon-2011/variety--marilyn-stasio.json"
+    ],
+    "archive": [
+      "book-of-mormon-2011/backstage--david-sheward.json",
+      "book-of-mormon-2011/chicagotribune--.json",
+      "book-of-mormon-2011/ny-1--roma-torre.json",
+      "book-of-mormon-2011/talkinbroadway--matthew-murray.json"
+    ]
   },
   "failuresByOutlet": {
     "The Wall Street Journal": {
@@ -65,6 +81,20 @@
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": true
+    },
+    "The Philadelphia Inquirer": {
+      "count": 1,
+      "domain": "philly.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Village Voice": {
+      "count": 1,
+      "domain": "villagevoice.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
