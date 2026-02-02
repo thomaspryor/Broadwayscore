@@ -4,22 +4,22 @@
     "lastUpdated": "2026-02-02",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 1715,
+      "totalReviews": 1714,
       "skippedNoScore": 32,
       "skippedDuplicate": 3,
       "skippedDuplicateUrl": 53,
-      "skippedWrongProduction": 35,
-      "recoveredFromGarbage": 101,
+      "skippedWrongProduction": 36,
+      "recoveredFromGarbage": 100,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 2,
         "explicit-slash": 3,
         "explicit-letterGrade": 1,
         "human-review": 60,
-        "originalScore-priority0": 244,
-        "llmScore": 1168,
+        "originalScore-priority0": 245,
+        "llmScore": 1169,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 228,
+        "llmScore-lowconf": 225,
         "llmScore-review": 3,
         "assignedScore": 0,
         "originalScore": 0,
@@ -18724,23 +18724,6 @@
     },
     {
       "showId": "our-town-2024",
-      "outletId": "washpost",
-      "outlet": "The Washington Post",
-      "assignedScore": 64,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Peter Marks",
-      "url": "https://www.washingtonpost.com/theater-dance/2024/10/11/our-town-broadway-review/",
-      "publishDate": "October 11, 2024",
-      "originalRating": null,
-      "pullQuote": "The production, directed by Kenny Leon, brings a contemporary sensibility to Wilder's meditation on life and death, with Jim Parsons delivering a thoughtful performance as the Stage Manager.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "needs-rescrape"
-    },
-    {
-      "showId": "our-town-2024",
       "outletId": "theatrely",
       "outlet": "Theatrely",
       "assignedScore": 79,
@@ -18771,7 +18754,7 @@
       "pullQuote": "Leon’s inclusive approach to casting means the play better reflects life as we know it.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "our-town-2024",
@@ -18863,7 +18846,7 @@
       "outletId": "deadline",
       "outlet": "Deadline",
       "assignedScore": 60,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Greg Evans",
@@ -20389,7 +20372,7 @@
       "pullQuote": "Broadway is the wrong medium for this story. Musicalizing the story does little to ground the audience in Jackie’s world and instead pulls and stretches the tale, when the themes alone could speak for themselves. The narrative would actually soar if it were given feature-film treatment.",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "contentTier": "needs-rescrape"
+      "contentTier": "complete"
     },
     {
       "showId": "queen-versailles-2025",
@@ -21078,7 +21061,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Kimberly Ramirez",
@@ -21088,7 +21071,7 @@
       "pullQuote": "The show pulses with a distinctly chingona spirit–it is bold and defiantly optimistic despite relentlessly biased",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "needs-rescrape"
+      "contentTier": "complete"
     },
     {
       "showId": "real-women-have-curves-2025",
@@ -27577,14 +27560,14 @@
       "showId": "two-strangers-bway-2025",
       "outletId": "ew",
       "outlet": "Entertainment Weekly",
-      "assignedScore": 78,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
+      "assignedScore": 87,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Dalton Ross",
       "url": "https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800",
       "publishDate": "2025-11-20",
-      "originalRating": null,
+      "originalRating": "B+",
       "pullQuote": "Unfortunately, all that momentum is eventually stymied due to the inevitable conflict that by law must arrive between any couple in a romantic comedy.",
       "dtliThumb": "Up",
       "bwwThumb": null,
@@ -27673,7 +27656,7 @@
       "pullQuote": "But no matter. This is a show so charming, so adorable, that you can easily overlook its flaws. A little bit like falling in love.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "two-strangers-bway-2025",

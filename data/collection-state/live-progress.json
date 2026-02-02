@@ -1,28 +1,51 @@
 {
-  "updatedAt": "2026-02-02T23:32:44.224Z",
-  "processed": 5,
+  "updatedAt": "2026-02-02T23:31:40.614Z",
+  "processed": 6,
   "failed": 5,
   "successRate": "50.0%",
   "tierBreakdown": {
     "playwright": 1,
-    "browserbase": 0,
-    "scrapingbee": 3,
-    "brightdata": 0,
-    "archive": 3
+    "browserbase": 3,
+    "scrapingbee": 0,
+    "brightdata": 3,
+    "archive": 2
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-02-02T23:23:39.570Z",
+      "t": "2026-02-02T23:28:43.727Z",
       "event": "bb-session",
-      "session": "0fe2104c",
-      "url": "https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html"
+      "session": "38ac513c",
+      "url": "https://www.nydailynews.com/2024/10/10/broadway-review-revival-of-thornton-wilde"
     },
     {
-      "t": "2026-02-02T23:24:26.963Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074633466\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA31GDP8xQu3cANCKmrw==&cid=bqsbw0s9DEVkp6WMMXm3iHPO~PmGp2HaPlRWDqWLbwKb6kDfNauqJQE12wG2cu3yxlKd6UlyRM4BBrAgrJKswVX60VADvjJaJ7wZMyAwIJXivXPET8SwxfEaAz9ha61E&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074633466\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074633466\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA31GDP8xQu3cANCKmrw==&cid=bqsbw0s9DEVkp6WMMXm3iHPO~PmGp2HaPlRWDqWLbwKb6kDfNauqJQE12wG2cu3yxlKd6UlyRM4BBrAgrJKswVX60VADvjJaJ7wZMyAwIJXivXPET8SwxfEaAz9ha61E&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074633466\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074633466\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMA31GDP8xQu3cANCKmrw==&cid=bqsbw0s9DEVkp6WMMXm3iHPO~PmGp2HaPlRWDqWLbwKb6kDfNauqJQE12wG2cu3yxlKd6UlyRM4BBrAgrJKswVX60VADvjJaJ7wZMyAwIJXivXPET8SwxfEaAz9ha61E&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074633466\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+      "t": "2026-02-02T23:29:08.775Z",
+      "event": "bb-session",
+      "session": "91b241cc",
+      "url": "https://nypost.com/2024/10/10/entertainment/our-town-review-revival-starring-jim"
+    },
+    {
+      "t": "2026-02-02T23:29:32.938Z",
+      "event": "bb-session",
+      "session": "35db2302",
+      "url": "https://www.theatermania.com/broadway/reviews/our-town-broadway-revival-kenny-le"
+    },
+    {
+      "t": "2026-02-02T23:29:58.353Z",
+      "event": "bb-session",
+      "session": "f75a092a",
+      "url": "https://www.thewrap.com/our-town-broadway-review-jim-parsons-katie-holmes/"
+    },
+    {
+      "t": "2026-02-02T23:31:10.636Z",
+      "event": "bb-session",
+      "session": "dbce92a0",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/10/11/our-town-broadway-review"
+    },
+    {
+      "t": "2026-02-02T23:31:13.593Z",
+      "event": "bb-login-uncertain",
+      "domain": "washingtonpost.com"
     }
   ]
 }
