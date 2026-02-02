@@ -6,15 +6,12 @@
   "url": "https://apnews.com/article/aladdin-broadway-review-2014",
   "publishDate": "2014-03-20",
   "originalScore": null,
-  "assignedScore": 79,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "It's spritely directed and choreographed by Casey Nicholaw, well sung by a huge 35-person cast wearing an alarming number of harem pants, and hits that sweet spot Disney Theatrical Productions do so well, a saccharine fairy tale for the kids cut by some sly, vinegary quips for their parents......",
   "sourceMethod": "playwright",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 707,
-  "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 79,
   "isFullReview": true,
   "archivePath": "data/archives/reviews/aladdin-2014/ap--mark-kennedy_2026-02-02.html",
   "textFetchedAt": "2026-02-02T23:16:53.238Z",
@@ -33,7 +30,6 @@
     }
   ],
   "fetchTier": 1,
-  "rescoreCompletedAt": "2026-02-02T14:21:31.642Z",
   "_invalidatedFullText": "Pakistan says it has killed 145 ‘Indian-backed terrorists’ in Balochistan after deadly attacks 16 mins ago A luge love story: These Olympics have a lot of meaning for Emily and Dominik Fischnaller 37 mins ago Patrick Reed loses in a playoff as Freddy Schott wins Bahrain Championship 23 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Nigerian army said it killed a Boko Haram commander and 10 militants 59 mins ago Stefan Ortega leaves Man City to join Nottingham Forest until end of season 1 hour ago Jude Bellingham leaves Real Madrid game early with apparent hamstring issue 1 hour ago Sudan’s war-torn capital sees second commercial flight land since conflict began 1 hour ago Swiss Alpine bar fire claims 41st victim, an 18-year-old Swiss national 1 hour ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Demond Wilson, who played Lamont on ‘Sanford and Son,’ dies at 79 1 hour ago Collar cams offer a bear’s eye view into the lives of grizzlies on Alaska’s desolate North Slope 2 hours ago Trump’s failed bid to elevate an Arab American ally shows cracks in his political coalition 2 hours ago What a swing House district in Colorado shows about Republicans’ immigration fallout in the midterms 2 hours ago The ranks of US rabbis grow more diverse, with rising numbers of women and LGBTQ people 2 hours ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Werder Bremen fires Horst Steffen as coach after 10 games without a win in the Bundesliga 2 hours ago Von Allmen hands Crans-Montana 2nd Swiss victory in 2 days in last World Cup race before Olympics 1 hour ago Novak Djokovic in Grand Slam finals 2 hours ago Novak Djokovic’s record at Australian Open 2 hours ago Australian Open men’s champions 3 hours ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Men’s career Grand Slam 3 hours ago Further Russia-Ukraine talks scheduled for next week, says Zelenskyy 2 mins ago Freeskier Eileen Gu takes another wild ride to the Olympics, invites the world to tag along 4 hours ago Idaho State visits Kensie and Portland State 5 hours ago Incarnate Word visits Texas A&M-CC after Pyke’s 33-point outing 5 hours ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Coppin State hosts Harris and Howard 5 hours ago Lee and Lamar host SE Louisiana 5 hours ago Charleston Southern faces Gardner-Webb after Sumler’s 26-point showing 5 hours ago Boston University visits Holy Cross after Gladden’s 34-point performance 5 hours ago Cotton leads UT Rio Grande Valley against Houston Christian after 21-point showing 5 hours ago Lancaster leads Alcorn State against Grambling after 22-point game 5 hours ago Saine leads Weber State against Sacramento State after 28-point game 5 hours ago Load More freestar.config.enabled_slots.push({ placementName: \"apnews_story_rail_sticky\", slotId: \"apnews_story_rail_sticky\" });",
   "_invalidatedFullTextReason": "AP news feed (Pakistan/sports headlines) instead of review",
   "_invalidatedFullTextAt": "2026-02-02T14:20:41.221Z",
@@ -78,57 +74,9 @@
     "modelAgreement": "Both models agree: Positive",
     "invalidatedAt": "2026-02-02T14:20:41.221Z"
   },
-  "contentTierReason": "AP news feed (Pakistan/sports headlines) instead of review",
-  "llmScore": {
-    "score": 79,
-    "confidence": "medium",
-    "range": {
-      "low": 74,
-      "high": 84
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses positive language like 'spritely directed' and acknowledges the show succeeds at Disney's formula, but the single excerpt limits confidence in the overall verdict. | GPT-4o: The review praises the direction, choreography, and cast performance, noting the production's appeal to both children and adults, which suggests a strong positive recommendation. | Gemini: The review highlights positive aspects like direction, choreography, and singing, but the 'saccharine fairy tale' comment suggests it might not appeal to everyone, indicating a recommendation with reservations.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:36:35.668Z",
-    "promptVersion": "5.1.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 75,
-    "previousVersion": "5.1.0"
-  },
-  "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 6,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
-  },
+  "contentTierReason": "Cross-show duplicate text detected - scraped wrong page content",
   "needsRescore": true,
-  "fullText": "British soccer union wants fewer headers for pros, and none for kids, to protect players’ brains 5 mins ago Attorney says Gabbard is holding up a complaint about her actions, which her office denies 16 mins ago Mariners in the process of acquiring All-Star Brendan Donovan from Cardinals, AP source says 21 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Hornets fight back from 22 down to beat Pelicans 102-95 for 7th straight victory 26 mins ago More magic from Muriqi as Mallorca maul Sevilla in La Liga 28 mins ago Musk joins his rocket and AI businesses into a single company before an expected IPO this year 11 mins ago Wallabies to open the 2027 Rugby World Cup against Hong Kong in Perth 20 mins ago NFL says it will look into Giants co-owner Steve Tisch’s association with Jeffrey Epstein 44 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); At least one LSU athlete among those investigated for potential non-reporting of NIL deals 46 mins ago Bolivia kicks off school year with ban on cellphones 49 mins ago Goalie Ter Stegen injures hamstring in his second match with Girona 50 mins ago Diarra gets Sunderland off on the right foot in drubbing of Burnley 57 mins ago SnoCountry Mountain Reports 57 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Trump says he won’t tear down the Kennedy Center arts venue but it needs to be closed for repairs 18 mins ago VCU fires winningest women’s hoops coach Beth O’Boyle amid disappointing season 51 mins ago Atletico Madrid signs 20-year-old Mexico midfielder Vargas from Seattle Sounders 40 mins ago Virginia man in ‘au pair affair’ case convicted of murdering wife and another man in elaborate ruse 34 mins ago Gas explosion in New Hampshire sparks a fire at a mental health facility 6 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Michigan Girls High School Basketball Poll 1 hour ago Michigan Boys High School Basketball Poll 1 hour ago Trump administration cuts number of sites for testing the 2030 census, focusing on the South 37 mins ago Deflected free kick steers Udinese to win over Roma in Serie A 1 hour ago Benzema joins Al-Hilal to present threat to Ronaldo’s title hopes 1 hour ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Every Homeland Security officer in Minneapolis is now being issued a body-worn camera, Noem says 57 mins ago Couples at the Westminster show bond over dogs, and each other 1 hour ago 3 fraternity members arrested in death of Northern Arizona student following rush event 1 hour ago Ed Martin removed as head of Justice Department’s ‘Weaponization Working Group’ 1 hour ago Recreational marijuana and 21 other citizen initiatives fail to qualify for Florida’s 2026 ballot 1 hour ago MLB to produce local broadcasts for 6 more teams with fate of FanDuel Sports Network uncertain 1 hour ago How major US stock indexes fared Monday, 2/2/2026 1 hour ago Load More",
+  "fullText": null,
   "textWordCount": 707,
   "textQuality": "truncated",
   "truncationSignals": [
@@ -139,5 +87,7 @@
     "Show title not found in text"
   ],
   "tierReason": "Full review text",
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "garbageFullText": "British soccer union wants fewer headers for pros, and none for kids, to protect players’ brains 5 mins ago Attorney says Gabbard is holding up a complaint about her actions, which her office denies 16 mins ago Mariners in the process of acquiring All-Star Brendan Donovan from Cardinals, AP source says 21 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Hornets fight back from 22 down to beat Pelicans 102-95 for 7th straight victory 26 mins ago More magic from Muriqi as Mallorca maul Sevilla in La Liga 28 mins ago Musk joins his rocket and AI businesses into a single company before an expected IPO this year 11 mins ago Wallabies to open the 2027 Rugby World Cup against Hong Kong in Perth 20 mins ago NFL says it will look into Giants co-owner Steve Tisch’s association with Jeffrey Epstein 44 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); At least one LSU athlete among those investigated for potential non-reporting of NIL deals 46 mins ago Bolivia kicks off school year with ban on cellphones 49 mins ago Goalie Ter Stegen injures hamstring in his second match with Girona 50 mins ago Diarra gets Sunderland off on the right foot in drubbing of Burnley 57 mins ago SnoCountry Mountain Reports 57 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Trump says he won’t tear down the Kennedy Center arts venue but it needs to be closed for repairs 18 mins ago VCU fires winningest women’s hoops coach Beth O’Boyle amid disappointing season 51 mins ago Atletico Madrid signs 20-year-old Mexico midfielder Vargas from Seattle Sounders 40 mins ago Virginia man in ‘au pair affair’ case convicted of murdering wife and another man in elaborate ruse 34 mins ago Gas explosion in New Hampshire sparks a fire at a mental health facility 6 mins ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Michigan Girls High School Basketball Poll 1 hour ago Michigan Boys High School Basketball Poll 1 hour ago Trump administration cuts number of sites for testing the 2030 census, focusing on the South 37 mins ago Deflected free kick steers Udinese to win over Roma in Serie A 1 hour ago Benzema joins Al-Hilal to present threat to Ronaldo’s title hopes 1 hour ago freestar.queue.push(function () { window.fsAdCount = window.fsAdCount + 1 || 0; let customChannel = '/dynamic_' + fsAdCount; let adList = document.querySelectorAll(\".fs-feed-ad\") let thisAd = adList[fsAdCount]; let randId = Math.random().toString(36).slice(2); thisAd.id = randId; let thisPlacement = fsAdCount == 0 ? \"apnews_hub_mobile\" : \"apnews_hub_mobile_dynamic\"; freestar.newAdSlots({ placementName: thisPlacement, slotId: randId }, customChannel); }); Every Homeland Security officer in Minneapolis is now being issued a body-worn camera, Noem says 57 mins ago Couples at the Westminster show bond over dogs, and each other 1 hour ago 3 fraternity members arrested in death of Northern Arizona student following rush event 1 hour ago Ed Martin removed as head of Justice Department’s ‘Weaponization Working Group’ 1 hour ago Recreational marijuana and 21 other citizen initiatives fail to qualify for Florida’s 2026 ballot 1 hour ago MLB to produce local broadcasts for 6 more teams with fate of FanDuel Sports Network uncertain 1 hour ago How major US stock indexes fared Monday, 2/2/2026 1 hour ago Load More",
+  "garbageFullTextNote": "Cross-show duplicate: fullText belongs to a different show"
 }
