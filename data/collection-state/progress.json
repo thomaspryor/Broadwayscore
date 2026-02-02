@@ -1,52 +1,40 @@
 {
   "processed": [
-    "an-enemy-of-the-people-2024/variety--daniel-daddario.json",
-    "an-enemy-of-the-people-2024/deadline--greg-evans.json",
-    "an-enemy-of-the-people-2024/washpost--naveen-kumar.json"
+    "illinoise-2024/hollywood-reporter--david-rooney.json",
+    "illinoise-2024/broadwaynews--brittani-samuel.json",
+    "illinoise-2024/theatermania--david-gordon.json",
+    "illinoise-2024/usatoday--david-rooney.json"
   ],
   "failed": [
-    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
-    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
-    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
-    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
-    "an-enemy-of-the-people-2024/wsj--unknown.json",
-    "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
-    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
+    "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "illinoise-2024/deadline--greg-evans.json",
+    "illinoise-2024/guardian--adrian-horton.json",
+    "illinoise-2024/observer--rex-reed.json",
+    "illinoise-2024/timeout--adam-feldman.json",
+    "illinoise-2024/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "an-enemy-of-the-people-2024/washpost--naveen-kumar.json"
+    "playwright": [],
+    "browserbase": [],
+    "scrapingbee": [
+      "illinoise-2024/usatoday--david-rooney.json"
     ],
-    "browserbase": [
-      "data/review-texts/an-enemy-of-the-people-2024/nydailynews--chris-jones.json"
-    ],
-    "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "an-enemy-of-the-people-2024/variety--daniel-daddario.json",
-      "an-enemy-of-the-people-2024/deadline--greg-evans.json"
+      "illinoise-2024/hollywood-reporter--david-rooney.json",
+      "illinoise-2024/broadwaynews--brittani-samuel.json",
+      "illinoise-2024/theatermania--david-gordon.json"
     ]
   },
-  "startTime": "2026-02-02T23:11:31.865Z",
-  "lastProcessed": "an-enemy-of-the-people-2024/washpost--peter-marks.json",
+  "startTime": "2026-02-02T23:11:48.426Z",
+  "lastProcessed": "illinoise-2024/usatoday--david-rooney.json",
   "log": [
     {
-      "t": "2026-02-02T23:11:52.109Z",
+      "t": "2026-02-02T23:12:28.444Z",
       "event": "bb-session",
-      "session": "2b40aa69",
-      "url": "https://www.nydailynews.com/2024/03/18/broadway-review-enemy-of-the-people-is-li"
-    },
-    {
-      "t": "2026-02-02T23:14:49.198Z",
-      "event": "bb-session",
-      "session": "e490e3b3",
-      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
-    },
-    {
-      "t": "2026-02-02T23:14:51.179Z",
-      "event": "bb-login-uncertain",
-      "domain": "washingtonpost.com"
+      "session": "5816fb85",
+      "url": "https://observer.com/2024/04/illinoise-broadway-review-sufjan-stevens/"
     }
   ]
 }
