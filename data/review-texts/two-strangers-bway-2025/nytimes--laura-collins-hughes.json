@@ -5,7 +5,7 @@
   "criticName": "Laura Collins-Hughes",
   "url": "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html",
   "publishDate": "November 20, 2025",
-  "fullText": "The effervescent new musical comedy “Two Strangers (Carry a Cake Across New York),” which opened on Thursday at the Longacre Theater, is the most charmingly simple show on Broadway right now — a stellar debut for its authors, Jim Barne and Kit Buchan, and the actor Sam Tutty, who plays the irrepressible Dougal. Transferred from London’s West End by way of Cambridge, Mass., this twinkly two-hander delivers lavishly on the promise of a rom-com: laughter, escape and fantasy.",
+  "fullText": "You have a preview view of this article while we are checking your access. When we have confirmed access, the full article content will load.Critic’s Pick\n\nThe effervescent musical, a new London import, delivers lavishly on the promise of a rom-com: laughter, escape and fantasy.\n\nListen to this article · 4:51 min Learn moreShare full article27By Laura Collins-Hughes\n\nDougal Todd doesn’t exactly scream rom-com hero. He isn’t rich and lonesome, or arrogant but tamable, or devastatingly handsome yet stubbornly unattached. At 25, he’s a goofball British tourist and first-time visitor to New York — cheerfully broke, entirely unworldly and steeped in jumbled cinematic notions of the city from the far too many movies he’s watched.\n\nFalling in love, in any case, is not on Dougal’s agenda. When he gets off the plane at Kennedy International Airport, the person he yearns to see is his father, Mark. The man ditched him and his mother before Dougal was born, made a fortune across the Atlantic and never bothered to meet his son, but Dougal holds no grudge. Mark is getting married this weekend, and Dougal is invited: His big chance has arrived at long last.\n\n“I just wondered — is he here?” Dougal asks Robin Rainey, the no-nonsense New Yorker sent to collect him at J.F.K., and the tender hope in his question is enough to crack a heart. Not Robin’s, mind you — hers is very well defended — but audience members’ for sure. Though because she is beautiful and single, this is a rom-com and Dougal is in fact its hero, probably hers as well, eventually. He has two whole days to try.\n\nThe effervescent new musical comedy “Two Strangers (Carry a Cake Across New York),” which opened on Thursday at the Longacre Theater, is the most charmingly simple show on Broadway right now — a stellar debut for its authors, Jim Barne and Kit Buchan, and the actor Sam Tutty, who plays the irrepressible Dougal. Transferred from London’s West End by way of Cambridge, Mass., this twinkly two-hander delivers lavishly on the promise of a rom-com: laughter, escape and fantasy.\n\nDirected by Tim Jackson, this well-honed production also taps into our brains theatrically, with its clever pop score and a cityscape that is more suggested than realized. While Soutra Gilmour’s ingenious set opens up like a jewelry box to reveal bits and pieces of scenery — a coffee shop counter here, a hotel room bed there — it is mostly a landscape built of luggage. Or, to take a hint from the sign hanging overhead as Dougal and Robin first meet, baggage. These two are toting some serious emotional baggage, his soft-sided, hers hard-shelled.\n\nSammy Tutty, left, plays the irrepressible Dougal opposite Christiani Pitts as the no-nonsense Robin in “Two Strangers Carry a Cake Across New York” at the Longacre Theater in Manhattan.Credit...Sara Krulwich/The New York TimesWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "dtliExcerpt": "The effervescent new musical comedy “Two Strangers (Carry a Cake Across New York),” which opened on Thursday at the Longacre Theater, is the most charmingly simple show on Broadway right now — a stellar debut for its authors, Jim Barne and Kit Buchan, and the actor Sam Tutty, who plays the irrepressible Dougal. Transferred from London’s West End by way of Cambridge, Mass., this twinkly two-hander delivers lavishly on the promise of a rom-com: laughter, escape and fantasy.",
   "showScoreExcerpt": "Critic’s Pick: \"The effervescent new musical comedy...is the most charmingly simple show on Broadway right now — a stellar debut for its authors... and the actor Sam Tutty.\"",
   "originalScore": null,
@@ -69,10 +69,46 @@
     "needsReview": false,
     "needsReviewReasons": []
   },
-  "textIssue": "too_short",
-  "sourceMethod": "dtli",
+  "sourceMethod": "brightdata",
   "bwwExcerpt": null,
   "bwwThumb": null,
   "contentTier": "truncated",
-  "wordCount": 78
+  "wordCount": 78,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 87,
+  "isFullReview": true,
+  "textWordCount": 501,
+  "archivePath": "data/archives/reviews/two-strangers-bway-2025/nytimes--laura-collins-hughes_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T23:59:49.304Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial"
 }
