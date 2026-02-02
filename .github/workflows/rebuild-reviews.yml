@@ -26,7 +26,7 @@ jobs:
   rebuild:
     name: Rebuild reviews.json
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
