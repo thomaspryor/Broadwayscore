@@ -982,28 +982,68 @@ async function browserbaseLogin(bbPage, domain, email, password) {
     await passInput.type(password, { delay: 30 });
     await bbPage.waitForTimeout(500);
 
-    const signInBtn = await bbPage.$('button:has-text("Continue"), button:has-text("Sign In"), button:has-text("Log In"), button[type="submit"]');
+    // Dump pre-submit state to diagnose button targeting
+    const preSubmitInfo = await bbPage.evaluate(() => {
+      const inputs = Array.from(document.querySelectorAll('input:not([type="hidden"])')).map(i => ({
+        type: i.type, name: i.name, visible: i.offsetParent !== null,
+      }));
+      const buttons = Array.from(document.querySelectorAll('button')).map(b => ({
+        text: b.textContent?.trim().substring(0, 40),
+        visible: b.offsetParent !== null, type: b.type,
+      }));
+      return { inputs, buttons };
+    });
+    console.log(`    → Pre-submit buttons: ${JSON.stringify(preSubmitInfo.buttons)}`);
+
+    // Use password field's closest form to find the right submit button
+    // Avoid re-clicking the email "Continue" — prefer "Sign In"/"Log In" first
+    let signInBtn = await bbPage.$('button:has-text("Sign In"), button:has-text("Log In")');
+    if (!signInBtn) {
+      // Fall back to submit button near the password field
+      signInBtn = await bbPage.$('input[type="password"] ~ button, input[type="password"] + div button, button[type="submit"]');
+    }
+    if (!signInBtn) {
+      // Last resort: any Continue button
+      signInBtn = await bbPage.$('button:has-text("Continue")');
+    }
     if (signInBtn) {
-      console.log(`    → Clicking sign-in button...`);
+      const btnText = await signInBtn.evaluate(el => el.textContent?.trim());
+      console.log(`    → Clicking button: "${btnText}"...`);
       await signInBtn.click();
     } else {
-      await bbPage.keyboard.press('Enter');
+      console.log(`    → No submit button found, pressing Enter on password field...`);
+      await passInput.press('Enter');
     }
     await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-    await bbPage.waitForTimeout(3000);
+    await bbPage.waitForTimeout(5000);
 
+    // Full post-login diagnostic dump
     const postUrl = bbPage.url();
+    const postLoginInfo = await bbPage.evaluate(() => {
+      const inputs = Array.from(document.querySelectorAll('input:not([type="hidden"])')).map(i => ({
+        type: i.type, name: i.name, id: i.id, visible: i.offsetParent !== null,
+      }));
+      const buttons = Array.from(document.querySelectorAll('button')).map(b => ({
+        text: b.textContent?.trim().substring(0, 40), visible: b.offsetParent !== null,
+      }));
+      // Get all visible text (first 500 chars) to detect OTP prompts, errors, etc.
+      const bodyText = document.body?.innerText?.substring(0, 500) || '';
+      const hasOtpPrompt = bodyText.includes('passcode') || bodyText.includes('verification') || bodyText.includes('one-time');
+      const errorEls = document.querySelectorAll('[class*="error" i], [class*="alert" i], [role="alert"], [class*="message" i]');
+      const errors = Array.from(errorEls).map(e => e.textContent?.trim().substring(0, 100)).filter(t => t && t.length > 2);
+      return { title: document.title, inputs, buttons, bodyText, hasOtpPrompt, errors };
+    });
+    console.log(`    → Post-login URL: ${postUrl.substring(0, 100)}`);
+    console.log(`    → Post-login title: "${postLoginInfo.title}"`);
+    console.log(`    → Post-login inputs: ${JSON.stringify(postLoginInfo.inputs)}`);
+    console.log(`    → Post-login buttons: ${JSON.stringify(postLoginInfo.buttons)}`);
+    if (postLoginInfo.hasOtpPrompt) console.log(`    → ⚠ OTP/verification prompt detected!`);
+    if (postLoginInfo.errors.length) console.log(`    → Post-login errors: ${JSON.stringify(postLoginInfo.errors)}`);
+    console.log(`    → Page text (first 300): ${postLoginInfo.bodyText.substring(0, 300).replace(/\n+/g, ' | ')}`);
+
     const loginOk = !postUrl.includes('/login') && !postUrl.includes('/signin');
-    if (loginOk) console.log(`    ✓ WSJ login succeeded (redirected to: ${postUrl.substring(0, 60)})`);
-    else {
-      // Check for error messages on the page
-      const loginError = await bbPage.evaluate(() => {
-        const err = document.querySelector('[class*="error"], [class*="alert"], [role="alert"]');
-        return err?.textContent?.trim();
-      });
-      console.log(`    ✗ WSJ login failed (still on: ${postUrl.substring(0, 80)})`);
-      if (loginError) console.log(`    → Login error message: "${loginError}"`);
-    }
+    if (loginOk) console.log(`    ✓ WSJ login succeeded`);
+    else console.log(`    ✗ WSJ login failed`);
     return loginOk;
   }
 
