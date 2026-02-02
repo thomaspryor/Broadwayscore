@@ -1,92 +1,70 @@
 {
-  "runDate": "2026-02-02T23:32:44.934Z",
+  "runDate": "2026-02-02T23:35:07.099Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "once-upon-a-one-more-time-2023",
+    "showFilter": "the-cottage-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 5,
+    "processed": 3,
+    "failed": 3,
     "skipped": 0,
     "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 0,
-    "scrapingbee": 3,
+    "playwright": 0,
+    "browserbase": 2,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 2,
     "tier1Success": 1,
     "tier1_5Attempts": 1,
-    "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 4,
+    "tier1_5Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 8,
+    "tier4Attempts": 5,
     "tier4Success": 4,
     "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 41,
+    "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 2.1,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
-    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+    "the-cottage-2023/observer--rex-reed.json",
+    "the-cottage-2023/wsj--charles-isherwood.json",
+    "the-cottage-2023/amny--unknown.json"
   ],
   "failed": [
-    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
-    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
-    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
+    "the-cottage-2023/new-york-sun--elysa-gardner.json",
+    "the-cottage-2023/timeout--adam-feldman.json",
+    "the-cottage-2023/theater-pizzazz--carole-di-tosti.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/the-cottage-2023/observer--rex-reed.json",
+      "the-cottage-2023/observer--rex-reed.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [
-      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-      "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-      "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-      "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
+      "the-cottage-2023/wsj--charles-isherwood.json",
+      "the-cottage-2023/amny--unknown.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Hollywood Reporter": {
-      "count": 1,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "our-town-2024/washpost--peter-marks.json",
-      "oldUrl": "https://www.washingtonpost.com/theater-dance/2024/10/11/our-town-broadway-review/",
-      "newUrl": "https://www.washingtonpost.com/entertainment/theater_dance/theater-review-our-town-at-fords-theatre/2013/01/31/3f0ad3cc-6be4-11e2-8f4f-2abd96162ba8_story.html"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
