@@ -1,84 +1,115 @@
 {
-  "runDate": "2026-02-02T17:53:54.986Z",
+  "runDate": "2026-02-02T17:55:57.975Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "water-for-elephants-2024",
+    "showFilter": "stereophonic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 4,
+    "processed": 8,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "42.9%"
+    "successRate": "53.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 2
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 0,
+    "tier1Attempts": 6,
+    "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 3,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier4Attempts": 6,
-    "tier4Success": 3,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 30,
+    "tier2Attempts": 7,
+    "tier2Success": 2,
+    "tier3Attempts": 4,
+    "tier3Success": 1,
+    "tier4Attempts": 18,
+    "tier4Success": 6,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 21,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "water-for-elephants-2024/broadwaynews--brittani-samuel.json",
-    "water-for-elephants-2024/theatermania--david-gordon.json",
-    "water-for-elephants-2024/wsj--charles-isherwood.json"
+    "stereophonic-2024/hollywood-reporter--david-rooney.json",
+    "stereophonic-2024/nytg--allison-considine.json",
+    "stereophonic-2024/vulture--helen-shaw.json",
+    "stereophonic-2024/broadwaynews--brittani-samuel.json",
+    "stereophonic-2024/guardian--adrian-horton.json",
+    "stereophonic-2024/theatermania--jesse-green.json",
+    "stereophonic-2024/ap--mark-kennedy.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json"
   ],
   "failed": [
-    "water-for-elephants-2024/observer--rex-reed.json",
-    "water-for-elephants-2024/timeout--adam-feldman.json",
-    "water-for-elephants-2024/theatrely--olivia-clement.json",
-    "water-for-elephants-2024/thestage--lane-williamson.json"
+    "stereophonic-2024/variety--aramide-tinubu.json",
+    "stereophonic-2024/deadline--greg-evans.json",
+    "stereophonic-2024/observer--jesse-green.json",
+    "stereophonic-2024/timeout--adam-feldman.json",
+    "stereophonic-2024/wsj--charles-isherwood.json",
+    "stereophonic-2024/theatrely--juan-a-ramirez.json",
+    "stereophonic-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "stereophonic-2024/guardian--adrian-horton.json",
+      "stereophonic-2024/ap--mark-kennedy.json"
+    ],
     "browserbase": [],
     "scrapingbee": [
-      "water-for-elephants-2024/theatermania--david-gordon.json"
+      "stereophonic-2024/variety--aramide-tinubu.json",
+      "stereophonic-2024/theatermania--jesse-green.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "stereophonic-2024/usatoday--charles-isherwood.json"
+    ],
     "archive": [
-      "water-for-elephants-2024/broadwaynews--brittani-samuel.json",
-      "water-for-elephants-2024/wsj--charles-isherwood.json"
+      "stereophonic-2024/hollywood-reporter--david-rooney.json",
+      "stereophonic-2024/nytg--allison-considine.json",
+      "stereophonic-2024/vulture--helen-shaw.json",
+      "stereophonic-2024/broadwaynews--brittani-samuel.json"
     ]
   },
   "failuresByOutlet": {
+    "Observer": {
+      "count": 1,
+      "domain": "observer.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
     "Theatrely": {
       "count": 1,
       "domain": "theatrely.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "the-notebook-2024/vulture--helen-shaw.json",
-      "oldUrl": "https://www.vulture.com/article/the-notebook-broadway-review.html",
-      "newUrl": "https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html"
-    }
-  ]
+  "urlDiscoveries": []
 }
