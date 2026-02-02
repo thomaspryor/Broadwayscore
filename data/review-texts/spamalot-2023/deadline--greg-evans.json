@@ -79,20 +79,32 @@
   "isFullReview": false,
   "textWordCount": 142,
   "archivePath": "data/archives/reviews/spamalot-2023/deadline--greg-evans_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T02:49:14.020Z",
-  "fetchMethod": "archive",
+  "textFetchedAt": "2026-02-02T03:29:01.723Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "archive",
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20240306015514",
   "archiveOrgUrl": "http://web.archive.org/web/20240306015514/https://deadline.com/2023/11/spamalot-broadway-review-1235612888/"
 }

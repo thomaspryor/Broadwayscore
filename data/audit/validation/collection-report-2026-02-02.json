@@ -1,60 +1,78 @@
 {
-  "runDate": "2026-02-02T03:15:24.799Z",
+  "runDate": "2026-02-02T03:29:01.303Z",
   "config": {
-    "batchSize": 1,
-    "maxReviews": 1,
+    "batchSize": 5,
+    "maxReviews": 5,
     "priority": "all",
-    "showFilter": "chess-2025",
+    "showFilter": "spamalot-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 2,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 3,
     "tier1Success": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 2,
     "tier3Success": 1,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 0,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 1,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.7,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "chess-2025/nytimes--elisabeth-vincentelli.json"
+    "spamalot-2023/theatermania--jesse-green.json",
+    "spamalot-2023/timeout--adam-feldman.json"
   ],
-  "failed": [],
+  "failed": [
+    "spamalot-2023/variety--charles-isherwood.json",
+    "spamalot-2023/variety--naveen-kumar.json",
+    "spamalot-2023/deadline--greg-evans.json"
+  ],
   "tierDetails": {
     "playwright": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/spamalot-2023/variety--naveen-kumar.json",
+      "spamalot-2023/variety--naveen-kumar.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
-      "chess-2025/nytimes--elisabeth-vincentelli.json"
+      "spamalot-2023/theatermania--jesse-green.json"
     ],
-    "archive": []
+    "archive": [
+      "spamalot-2023/timeout--adam-feldman.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Variety": {
+      "count": 1,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
