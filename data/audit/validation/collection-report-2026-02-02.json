@@ -1,70 +1,113 @@
 {
-  "runDate": "2026-02-02T23:33:31.211Z",
+  "runDate": "2026-02-02T23:36:57.365Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "real-women-have-curves-2025",
+    "showFilter": "oh-mary-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 5,
+    "processed": 4,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "28.6%"
+    "successRate": "30.8%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 2
+    "brightdata": 2,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 6,
     "tier1Success": 2,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 5,
     "tier1_5Success": 1,
-    "tier2Attempts": 0,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 7,
-    "tier4Success": 4,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
+    "tier4Attempts": 18,
+    "tier4Success": 6,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 15,
+    "browserbaseSessionsUsed": 5,
+    "browserbaseMinutesUsed": 2.3,
+    "urlDiscoveryAttempts": 5,
+    "urlDiscoverySuccess": 3,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "real-women-have-curves-2025/nytg--kyle-turner.json",
-    "real-women-have-curves-2025/talkinbroadway--kimberly-ramirez.json"
+    "oh-mary-2024/nytimes--jesse-green.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "oh-mary-2024/deadline--greg-evans.json",
+    "oh-mary-2024/theatermania--adam-feldman.json"
   ],
   "failed": [
-    "real-women-have-curves-2025/deadline--greg-evans.json",
-    "real-women-have-curves-2025/new-york-sun--elysa-gardner.json",
-    "real-women-have-curves-2025/thewrap--robert-hofler.json",
-    "real-women-have-curves-2025/timeout--adam-feldman.json",
-    "real-women-have-curves-2025/washpost--naveen-kumar.json"
+    "oh-mary-2024/hollywood-reporter--angie-han.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/variety--aramide-tinubu.json",
+    "oh-mary-2024/vulture--helen-shaw.json",
+    "oh-mary-2024/guardian--adrian-horton.json",
+    "oh-mary-2024/nydailynews--chris-jones.json",
+    "oh-mary-2024/observer--david-cote.json",
+    "oh-mary-2024/timeout--adam-feldman.json",
+    "oh-mary-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "oh-mary-2024/hollywood-reporter--angie-han.json"
+    ],
     "browserbase": [
-      "data/review-texts/real-women-have-curves-2025/thewrap--robert-hofler.json"
+      "data/review-texts/oh-mary-2024/nydailynews--chris-jones.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "oh-mary-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/theatermania--adam-feldman.json"
+    ],
     "archive": [
-      "real-women-have-curves-2025/nytg--kyle-turner.json",
-      "real-women-have-curves-2025/talkinbroadway--kimberly-ramirez.json"
+      "oh-mary-2024/nytimes--jesse-green.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "oh-mary-2024/deadline--greg-evans.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "Variety": {
+      "count": 1,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Observer": {
+      "count": 1,
+      "domain": "observer.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "oh-mary-2024/vulture--helen-shaw.json",
+      "oldUrl": "https://www.vulture.com/article/oh-mary-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html"
+    },
+    {
+      "reviewId": "oh-mary-2024/guardian--adrian-horton.json",
+      "oldUrl": "https://www.theguardian.com/stage/2024/jul/11/oh-mary-broadway-review",
+      "newUrl": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway"
+    },
+    {
+      "reviewId": "oh-mary-2024/nydailynews--chris-jones.json",
+      "oldUrl": "https://www.nydailynews.com/2024/07/11/oh-mary-broadway-review/",
+      "newUrl": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/"
+    }
+  ]
 }
