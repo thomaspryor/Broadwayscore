@@ -74,24 +74,12 @@
   "previousLlmScore": 77,
   "textWordCount": 806,
   "archivePath": "data/archives/reviews/mary-jane-2024/hollywood-reporter--david-rooney_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T06:18:46.639Z",
+  "textFetchedAt": "2026-02-02T15:06:03.200Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "page.waitForTimeout: Target page, context or browser has been closed"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
