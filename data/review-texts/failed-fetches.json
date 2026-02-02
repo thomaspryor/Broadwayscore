@@ -5248,30 +5248,6 @@
     "timestamp": "2026-02-01T23:50:30.835Z"
   },
   {
-    "reviewId": "ragtime-2025/timeout--adam-feldman.json",
-    "showId": "ragtime-2025",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/ragtime-broadway-revival-review-lincoln-center-doctorow-joshua-henry",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 11333,
-    "timestamp": "2026-02-01T23:50:59.886Z"
-  },
-  {
-    "reviewId": "ragtime-2025/wsj--charles-isherwood.json",
-    "showId": "ragtime-2025",
-    "outlet": "The Wall Street Journal",
-    "critic": "Charles Isherwood",
-    "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broadway-7fc41113",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2026 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 970,
-    "timestamp": "2026-02-01T23:51:03.315Z"
-  },
-  {
     "reviewId": "real-women-have-curves-2025/deadline--greg-evans.json",
     "showId": "real-women-have-curves-2025",
     "outlet": "Deadline",
@@ -6782,5 +6758,41 @@
     "garbageReason": "Ad blocker message: \"turn off your ad block\"",
     "textLength": 7146,
     "timestamp": "2026-02-02T04:46:44.924Z"
+  },
+  {
+    "reviewId": "ragtime-2025/timeout--adam-feldman.json",
+    "showId": "ragtime-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/ragtime-broadway-revival-review-lincoln-center-doctorow-joshua-henry",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 11513,
+    "timestamp": "2026-02-02T05:00:07.387Z"
+  },
+  {
+    "reviewId": "ragtime-2025/wsj--charles-isherwood.json",
+    "showId": "ragtime-2025",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broadway-7fc41113",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2026 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 951,
+    "timestamp": "2026-02-02T05:00:10.641Z"
+  },
+  {
+    "reviewId": "ragtime-2025/deadline--greg-evans.json",
+    "showId": "ragtime-2025",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2025/10/ragtime-broadway-review-1236583715/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
+    "textLength": 10037,
+    "timestamp": "2026-02-02T05:00:28.426Z"
   }
 ]
