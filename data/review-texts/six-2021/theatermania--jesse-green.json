@@ -5,7 +5,7 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/six-broadway_91234",
   "publishDate": "October 4, 2021",
-  "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The six wives of Henry VIII get their moment to shine in this energetic pop concert disguised as a musical, though the historical revisionism feels more like fan fiction than feminist empowerment.",
   "originalScore": null,
@@ -65,9 +65,9 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)",
-  "textWordCount": 42,
+  "contentTier": "needs-rescrape",
+  "contentTierReason": "fullText was 404 error page",
+  "textWordCount": 0,
   "archivePath": "data/archives/reviews/six-2021/theatermania--jesse-green_2026-02-02.html",
   "textFetchedAt": "2026-02-02T16:34:23.525Z",
   "fetchMethod": "brightdata",
@@ -112,5 +112,8 @@
     "Show title not found in text"
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
-  "rescoreCompletedAt": "2026-02-02T03:39:07.531Z"
+  "rescoreCompletedAt": "2026-02-02T03:39:07.531Z",
+  "garbageFullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
+  "garbageReason": "TheaterMania 404 page, not a review",
+  "garbageFixedAt": "2026-02-02T19:53:54.639Z"
 }

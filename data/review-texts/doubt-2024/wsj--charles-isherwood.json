@@ -82,11 +82,11 @@
     "Word count too low: 85 (min: 300)"
   ],
   "rescoreCompletedAt": "2026-01-29T14:31:51.707Z",
-  "contentTier": "invalid",
+  "contentTier": "needs-rescrape",
   "wordCount": 9,
-  "fullText": "https://www.wsj.com/articles/doubt-review-broadway-revivial-roundabout-amy-ryan-liev-schreiber-zoe-kazan-quincy-tyler-bernstine-ae927a88\n\nAmy Ryan and Zoe Kazan Photo: Joan Marcus",
+  "fullText": null,
   "isFullReview": false,
-  "textWordCount": 9,
+  "textWordCount": 0,
   "textQuality": "truncated",
   "textStatus": "truncated",
   "_removedDesignation": {
@@ -97,5 +97,9 @@
     "dtliThumb": "Up",
     "bwwThumb": "Up"
   },
-  "tierReason": "Garbage content: Content is mostly URL"
+  "tierReason": "Garbage content: Content is mostly URL",
+  "garbageFullText": "https://www.wsj.com/articles/doubt-review-broadway-revivial-roundabout-amy-ryan-liev-schreiber-zoe-kazan-quincy-tyler-bernstine-ae927a88\n\nAmy Ryan and Zoe Kazan Photo: Joan Marcus",
+  "garbageReason": "WSJ paywall stub: URL + photo caption only",
+  "garbageFixedAt": "2026-02-02T19:53:54.559Z",
+  "contentTierReason": "fullText was WSJ paywall stub"
 }

@@ -5,7 +5,7 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/gutenberg-the-musical_96847.html",
   "publishDate": "October 13, 2023",
-  "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The show is a loving parody of terrible musicals, but it's also genuinely touching in its portrayal of two dreamers who refuse to give up on their vision.",
   "originalScore": null,
@@ -64,9 +64,9 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)",
-  "textWordCount": 42,
+  "contentTier": "needs-rescrape",
+  "contentTierReason": "fullText was 404 error page",
+  "textWordCount": 0,
   "archivePath": "data/archives/reviews/gutenberg-2023/theatermania--jesse-green_2026-02-02.html",
   "textFetchedAt": "2026-02-02T16:33:51.598Z",
   "fetchMethod": "brightdata",
@@ -111,5 +111,8 @@
     "Show title not found in text"
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
-  "rescoreCompletedAt": "2026-02-02T03:26:42.770Z"
+  "rescoreCompletedAt": "2026-02-02T03:26:42.770Z",
+  "garbageFullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
+  "garbageReason": "TheaterMania 404 page, not a review",
+  "garbageFixedAt": "2026-02-02T19:53:54.562Z"
 }

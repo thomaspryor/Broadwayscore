@@ -58,11 +58,11 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "invalid",
-  "contentTierReason": "No text content",
-  "fullText": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadway-michael-imperioli-sam-gold-ibsen-amy-herzog-6b1bb53e\n\nJeremy Strong Photo: Emilio Madrid",
+  "contentTier": "needs-rescrape",
+  "contentTierReason": "fullText was WSJ paywall stub",
+  "fullText": null,
   "isFullReview": false,
-  "textWordCount": 6,
+  "textWordCount": 0,
   "archivePath": "data/archives/reviews/an-enemy-of-the-people-2024/wsj--unknown_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:19:09.665Z",
   "fetchMethod": "archive",
@@ -91,5 +91,8 @@
     "bwwThumb": "none"
   },
   "wordCount": 6,
-  "tierReason": "Garbage content: Content is mostly URL"
+  "tierReason": "Garbage content: Content is mostly URL",
+  "garbageFullText": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadway-michael-imperioli-sam-gold-ibsen-amy-herzog-6b1bb53e\n\nJeremy Strong Photo: Emilio Madrid",
+  "garbageReason": "WSJ paywall stub: URL + photo caption only",
+  "garbageFixedAt": "2026-02-02T19:53:54.531Z"
 }

@@ -79,15 +79,16 @@
   "textIssues": [
     "Word count too low: 71 (min: 300)"
   ],
-  "garbageFullText": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c\n\nAndrew Rannells and Josh Gad Matthew MurphyNew York\n\nThe two exclamation points in the title are a super-spoiler for “Gutenberg! The Musical!,” a ticklishly funny but, well, paper-thin show about two theater-smitten fellows determined to put on a big Broadway show about the inventor of the printing press.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n‘The Queen of Versailles’ Review: Kristin Chenoweth’s Musical of Gilded Dreams",
-  "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
-  "garbageFixedAt": "2026-01-29T22:45:22.810Z",
-  "contentTier": "truncated",
+  "garbageFullText": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c\n\nAndrew Rannells and Josh Gad Matthew MurphyNew York\n\nThe two exclamation points in the title are a super-spoiler for “Gutenberg! The Musical!,” a ticklishly funny but, well, paper-thin show about two theater-smitten fellows determined to put on a big Broadway show about the inventor of the printing press.",
+  "garbageReason": "WSJ paywall stub: URL + photo caption only",
+  "garbageFixedAt": "2026-02-02T19:53:54.564Z",
+  "contentTier": "needs-rescrape",
   "wordCount": 49,
-  "fullText": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannells-josh-gad-420d906c\n\nAndrew Rannells and Josh Gad Matthew MurphyNew York\n\nThe two exclamation points in the title are a super-spoiler for “Gutenberg! The Musical!,” a ticklishly funny but, well, paper-thin show about two theater-smitten fellows determined to put on a big Broadway show about the inventor of the printing press.",
+  "fullText": null,
   "isFullReview": false,
-  "textWordCount": 49,
+  "textWordCount": 0,
   "textQuality": "truncated",
   "textStatus": "truncated",
-  "tierReason": "Short text (49 words)"
+  "tierReason": "Short text (49 words)",
+  "contentTierReason": "fullText was WSJ paywall stub"
 }

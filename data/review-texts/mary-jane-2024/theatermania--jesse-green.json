@@ -5,7 +5,7 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/mary-jane-broadway_96847.html",
   "publishDate": "May 1, 2024",
-  "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a performance of such deep authenticity and emotional precision that she makes Amy Herzog's sometimes schematic play feel like lived experience.",
   "originalScore": null,
@@ -50,8 +50,8 @@
     "previousScore": 58,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)",
+  "contentTier": "needs-rescrape",
+  "contentTierReason": "fullText was 404 error page",
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 60,
@@ -69,7 +69,7 @@
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "rescoreCompletedAt": "2026-02-02T03:32:58.154Z",
-  "textWordCount": 42,
+  "textWordCount": 0,
   "archivePath": "data/archives/reviews/mary-jane-2024/theatermania--jesse-green_2026-02-02.html",
   "textFetchedAt": "2026-02-02T19:07:00.732Z",
   "fetchMethod": "brightdata",
@@ -108,5 +108,8 @@
     "Show title not found in text"
   ],
   "wordCount": 42,
-  "tierReason": "Short text (42 words)"
+  "tierReason": "Short text (42 words)",
+  "garbageFullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
+  "garbageReason": "TheaterMania 404 page, not a review",
+  "garbageFixedAt": "2026-02-02T19:53:54.601Z"
 }

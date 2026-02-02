@@ -56,11 +56,11 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Negative"
   },
-  "contentTier": "invalid",
+  "contentTier": "needs-rescrape",
   "wordCount": 16,
-  "fullText": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the-ai-future-fb508e75\n\nJune Squibb and Cynthia Nixon Joan MarcusNew York\n\n“I sound like whoever I talk to.”",
+  "fullText": null,
   "isFullReview": false,
-  "textWordCount": 16,
+  "textWordCount": 0,
   "archivePath": "data/archives/reviews/marjorie-prime-2025/wsj--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T02:57:21.737Z",
   "fetchMethod": "archive",
@@ -80,5 +80,9 @@
   "textIssues": [
     "Word count too low: 71 (min: 300)"
   ],
-  "tierReason": "Garbage content: Content is mostly URL"
+  "tierReason": "Garbage content: Content is mostly URL",
+  "garbageFullText": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the-ai-future-fb508e75\n\nJune Squibb and Cynthia Nixon Joan MarcusNew York\n\n“I sound like whoever I talk to.”",
+  "garbageReason": "WSJ paywall stub: URL + photo caption only",
+  "garbageFixedAt": "2026-02-02T19:53:54.600Z",
+  "contentTierReason": "fullText was WSJ paywall stub"
 }
