@@ -1,82 +1,106 @@
 {
-  "runDate": "2026-02-02T16:38:02.322Z",
+  "runDate": "2026-02-02T16:40:06.141Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "once-upon-a-one-more-time-2023",
+    "showFilter": "hells-kitchen-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 4,
+    "processed": 3,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "60.0%"
+    "successRate": "30.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 5
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 6,
     "tier1Success": 1,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 4,
     "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier4Attempts": 8,
-    "tier4Success": 6,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 11,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "tier4Attempts": 14,
+    "tier4Success": 3,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 13,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 4.4,
+    "urlDiscoveryAttempts": 3,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
-    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+    "hells-kitchen-2024/nytimes--jesse-green.json",
+    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json"
   ],
   "failed": [
-    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
-    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
-    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
+    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
+    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+    "hells-kitchen-2024/deadline--pete-hammond.json",
+    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+    "hells-kitchen-2024/timeout--adam-feldman.json",
+    "hells-kitchen-2024/wsj--charles-isherwood.json",
+    "hells-kitchen-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
-      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+      "hells-kitchen-2024/ap--mark-kennedy.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [
-      "gutenberg-2023/theatermania--jesse-green.json"
+    "scrapingbee": [
+      "hells-kitchen-2024/nytimes--jesse-green.json"
     ],
+    "brightdata": [],
     "archive": [
-      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-      "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-      "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
+      "hells-kitchen-2024/broadwaynews--brittani-samuel.json"
     ]
   },
   "failuresByOutlet": {
     "The Hollywood Reporter": {
       "count": 1,
       "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Deadline": {
+      "count": 1,
+      "domain": "deadline.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The New York Sun": {
+      "count": 1,
+      "domain": "nysun.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
