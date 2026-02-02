@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses strongly positive language like 'extremely funny,' 'zanily vivacious,' and 'rhapsodically absorbed,' indicating clear enthusiasm for the production and performances. | GPT-4o: The review describes the production as 'extremely funny' and 'zanily vivacious,' with the cast 'rhapsodically absorbed,' indicating a highly positive reception. | Gemini: The review describes the production as \"extremely funny\" and notes that everyone involved seems \"rhapsodically absorbed,\" indicating a positive experience and recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses enthusiastic language like 'extremely funny,' 'zanily vivacious,' and 'rhapsodically absorbed,' indicating a clear positive recommendation for this Broadway revival. | GPT-4o: The review describes the production as 'extremely funny' and 'zanily vivacious,' with the cast 'rhapsodically absorbed,' indicating a strong, enthusiastic recommendation. | Gemini: The review describes the production as \"extremely funny\" and highlights the cast's enjoyment, suggesting a positive experience overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,17 +42,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:54:11.244Z",
+    "scoredAt": "2026-02-02T18:56:00.664Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 78,
+    "openaiScore": 87,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

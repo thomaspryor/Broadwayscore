@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic calls the show 'disappointing,' 'intellectually empty,' and 'surprisingly heartless,' with clear language indicating they do not recommend it despite acknowledging Chenoweth's strong performance. | GPT-4o: The review is overwhelmingly negative, highlighting the show's lack of substance, poor execution, and failure to engage the audience. The critic describes it as disappointing and suggests there is no good reason to watch it. | Gemini: The review is overwhelmingly negative, criticizing the show's lack of focus and heart. Despite praising some performances, the overall assessment is that the show is disappointing and doesn't give audiences a reason to watch it.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic calls the show 'disappointing,' 'intellectually empty and surprisingly heartless,' and questions why audiences should watch it, clearly not recommending it despite acknowledging Chenoweth's strong performance. | GPT-4o: The review is overwhelmingly negative, criticizing the show for being overstuffed, empty, and heartless. It lacks a clear point of view and fails to give theatergoers a reason to watch it, making it a strong recommendation to avoid. | Gemini: The review is largely negative, criticizing the show's lack of focus and heart. While Chenoweth's performance is praised, the overall assessment is that the show is disappointing and doesn't give audiences a reason to watch.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,12 +37,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:10.980Z",
+    "scoredAt": "2026-02-02T18:56:12.589Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,

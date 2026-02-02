@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 75,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows appreciation for Kenny Leon's direction and the production's ability to reinvigorate the source material, indicating a positive assessment, though the truncated nature requires conservative scoring. | GPT-4o: The review highlights the production's ability to reinvigorate the play's comedic elements, suggesting a positive reception. However, due to the single excerpt and lack of full context, the score is placed conservatively in the middle of the Positive range. | Gemini: The review highlights the play's continued relevance and praises the production's direction, suggesting a positive experience despite the limited context.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the production as 'reinvigorating' the play's comedic elements and speaks positively of Kenny Leon's direction. The word 'More important' signals the critic is emphasizing the production's strengths. | GPT-4o: The excerpt praises the production's ability to reinvigorate the play, suggesting a strong recommendation. However, the single excerpt warning and lack of full context slightly lower confidence. | Gemini: The review excerpt indicates that the production \"reinvigorates\" the play, suggesting a positive assessment. Given that it's a single excerpt, I'm placing it at the lower end of the upper range of the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,23 +46,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:49.622Z",
+    "scoredAt": "2026-02-02T18:56:04.559Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 76,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

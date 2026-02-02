@@ -9,18 +9,18 @@
   "bwwExcerpt": "Happily, I have no need to keep my mouth shut about Purlie Victorious. (Conveniently, too, since my job is to run it constantly.) Fast, fierce, and big-hearted, the show crackles with the verve of its central performances, and the play, at 62 years old, feels wittier, braver, less careful, and more caring than much contemporary writing. Both unflinching and generous, it’s just about as sharp as satire gets.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 89,
   "humanReviewScore": 90,
   "humanReviewNote": "Unambiguous rave; 'just about as sharp as satire gets', 'Fast, fierce, and big-hearted'; override to 80 was wrong",
   "source": "dtli",
   "dtliThumb": "Up",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 86,
-    "confidence": "low",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 81,
-      "high": 91
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic delivers unqualified praise throughout, calling it 'just about as sharp as satire gets' with performances that are 'revelations' and an ensemble that is 'aces.' The review is filled with superlatives and enthusiasm for every aspect of the production. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and the play itself. The critic explicitly states they have \"no need to keep my mouth shut about Purlie Victorious\" and uses strong positive language throughout.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic delivers enthusiastic praise throughout, calling it sharp satire with revelatory performances, particularly highlighting Kara Young's work as something 'young actors should study' and describing the entire ensemble as 'aces.' | GPT-4o: The review is filled with enthusiastic praise for the production, highlighting the strong performances, particularly of Kara Young and Leslie Odom Jr., and the sharpness of the satire. The critic expresses no reservations and describes the show as a standout in contemporary theater. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and the play itself. The critic uses strong language like \"fast, fierce, and big-hearted\" and highlights the show's wit and relevance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,26 +41,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:54:07.744Z",
+    "scoredAt": "2026-02-02T18:55:57.497Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 86,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
-    "openaiScore": null,
+    "claudeScore": 88,
+    "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dtliExcerpt": "Fast, fierce, and big-hearted, the show crackles with the verve of its central performances, and the play, at 62 years old, feels wittier, braver, less careful, and more caring than much contemporary writing. Both unflinching and generous, it’s just about as sharp as satire gets.",
   "sources": [
