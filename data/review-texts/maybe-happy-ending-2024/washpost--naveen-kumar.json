@@ -5,7 +5,7 @@
   "criticName": "Naveen Kumar",
   "url": "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
   "publishDate": "November 12, 2024",
-  "fullText": "Democracy Dies in DarknessDarren Criss and Helen J. Shen in “Maybe Happy Ending.” (Matthew Murphy and Evan Zimmerman) Review by Naveen KumarNovember 12, 2024 at 2:00 p.m. ESTNEW YORK — Art about artificial intelligence tends to warn us about the dangers of playing God and creating monsters. So there is an immediate element of surprise and delight to “Maybe Happy Ending,” a swoony and only-slightly-dystopian rom-com between robots.\n\nThe musical by Will Aronson and Hue Park, like most science fiction, still reflects on human experience, but with an eye toward exploring our best impulses rather than our worst. It’s a darling gem of a show with a big heart and a captivating sideways sensibility. And in a Broadway assembly line churning with revivals and remakes, it’s a refreshing model of innovation.",
+  "fullText": "Broadway’s “Maybe Happy Ending,” starring Criss and Helen J. Shen, is a refreshingly original exploration of love and loneliness NEW YORK — Art about artificial intelligence tends to warn us about the dangers of playing God and creating monsters. So there is an immediate element of surprise and delight to “Maybe Happy Ending,” a swoony and only-slightly-dystopian rom-com between robots. The musical by Will Aronson and Hue Park, like most science fiction, still reflects on human experience, but with an eye toward exploring our best impulses rather than our worst. It’s a darling gem of a show with a big heart and a captivating sideways sensibility. And in a Broadway assembly line churning with revivals and remakes, it’s a refreshing model of innovation. The so-called Helperbots in question, like Siri or Alexa taken to extremes, are nearly indistinguishable from humans. The two we meet are among those put out to pasture. Having been replaced by newer iterations, they’re holed up in a retirement high-rise turned cheerful mausoleum on the outskirts of Seoul, for tech too lifelike to be thrown in the trash. Their single-occupancy apartments are the vision of urban loneliness. Flashbacks to the cozy but bleak self-sufficiency of solo pandemic-era isolation are inevitable for some of us when Darren Criss, who plays a model No. 3 named Oliver, sings an ode to the world within his room. (I’m not saying I also sang to my favorite plant, but I’m not saying I didn’t.) Part toy box and part hypermodern studio, Oliver’s is a space for maintenance and introspection. Claire, a more-advanced model No. 5 played by Helen J. Shen, comes knocking because her charger is busted and she needs some juice. (Newer models have advantages, but Oliver is quick to point out sacrifices in durability.) Oliver, who inherited his owner’s appreciation for Duke Ellington and Bill Evans, moves like a graceful marionette; Claire carries herself like a regular girl next door. There’s an offbeat ease to their chemistry, and Criss and Shen are both lovely singers with an unshowy confidence that’s become all-too rare. The plight of discarded robots turns out to be an insightful window into our own. Like young adults stripped of their programmed intentions, they’re searching for belonging. Assembled from parts that have been discontinued, they’re facing mortality like we all do. What’s left but to fall in love? What such a thing could mean for Oliver and Claire, who are built for function not feeling, is the heart of the most affecting musical numbers. Park and Aronson’s score dissects love’s component parts — “how to be not alone,” as Claire puts it — with a mellow, jazzy sound that blends old-fashioned crooning with contemporary-style hooks. The results are delicately dazzling, like the fireflies that Oliver refers to as “little forest robots.” The sleek staging, by director Michael Arden, tapers in and out on their living quarters with panels of gliding black, which open onto a broader world when the pair embarks on a road trip to Jeju Island. (The set is by Dane Laffrey and the anime-meets-watercolor video by Laffrey and George Reeve.) Claire wants to catch firefly season; Oliver naively hopes to reverse his abandonment. A dapper vocalist played by Dez Duron accompanies the action with Sinatra-esque standards — a device whose randomness is easy to forgive for setting an elegant mood. The odd and simple premise of “Maybe Happy Ending” accomplishes something profound, in examining the nature of connection. Hologram-like scenes from their memory drives hint at how Oliver’s and Claire’s users shaped their understandings of emotion. But those backstories prove less impactful to their fates than what the two wind up teaching each other, a uniquely modern metaphor for adulthood. A Korean-language version of the show premiered in Seoul in 2016, followed by an English production in Atlanta before theaters closed in 2020. The Broadway debut benefits from the swells of self-reflection many of us have waded through in the meantime — about what makes us who we are, why we want to be with each other and how long any of this is really going to last. Whether anyone’s ending turns out happily or not, at least we have the choice to be together. Maybe Happy Ending, ongoing at the Belasco Theatre in New York. 1 hour, 40 minutes with no intermission. maybehappyending.com.",
   "dtliExcerpt": "It’s a darling gem of a show with a big heart and a captivating sideways sensibility. And in a Broadway assembly line churning with revivals and remakes, it’s a refreshing model of innovation.",
   "showScoreExcerpt": "\"The odd and simple premise of “Maybe Happy Ending” accomplishes something profound, in examining the nature of connection.\"",
   "originalScore": null,
@@ -60,24 +60,26 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "textIssue": "too_short",
-  "sourceMethod": "archive",
+  "sourceMethod": "playwright",
   "archivePath": "data/archives/reviews/maybe-happy-ending-2024/washpost--naveen-kumar_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T16:38:06.625Z",
-  "fetchMethod": "archive",
+  "textFetchedAt": "2026-02-02T17:46:11.083Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 1,
   "archiveOrgTimestamp": "20241113063825",
   "archiveOrgUrl": "http://web.archive.org/web/20241113063825/https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
-  "textIssues": [
-    "Word count too low: 131 (min: 300)"
-  ],
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
@@ -85,9 +87,9 @@
   "rescoreCompletedAt": "2026-02-01T15:34:50.043Z",
   "contentTier": "truncated",
   "wordCount": 131,
-  "isFullReview": false,
-  "textWordCount": 131,
-  "textQuality": "partial",
+  "isFullReview": true,
+  "textWordCount": 722,
+  "textQuality": "full",
   "truncationSignals": [],
-  "textStatus": "incomplete"
+  "textStatus": "complete"
 }
