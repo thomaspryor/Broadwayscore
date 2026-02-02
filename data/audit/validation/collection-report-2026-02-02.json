@@ -1,100 +1,92 @@
 {
-  "runDate": "2026-02-02T23:21:42.552Z",
+  "runDate": "2026-02-02T23:25:22.975Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "maybe-happy-ending-2024",
+    "showFilter": "the-great-gatsby-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
+    "processed": 1,
     "failed": 7,
     "skipped": 0,
-    "successRate": "22.2%"
+    "successRate": "12.5%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
-    "tier1_5Attempts": 3,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
+    "tier1_5Attempts": 4,
     "tier1_5Success": 1,
     "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 11,
-    "tier4Success": 5,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 1,
-    "browserbaseSessionsUsed": 3,
+    "tier4Attempts": 8,
+    "tier4Success": 2,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 3,
+    "browserbaseSessionsUsed": 4,
     "browserbaseMinutesUsed": 3.1,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-    "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
-    "maybe-happy-ending-2024/washpost--naveen-kumar.json"
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
-    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
-    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-    "maybe-happy-ending-2024/timeout--adam-feldman.json",
-    "maybe-happy-ending-2024/wsj--charles-isherwood.json",
-    "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json"
+    "the-great-gatsby-2024/guardian--adrian-horton.json",
+    "the-great-gatsby-2024/guardian--gloria-oladipo.json",
+    "the-great-gatsby-2024/nydailynews--chris-jones.json",
+    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
+    "the-great-gatsby-2024/observer--david-cote.json",
+    "the-great-gatsby-2024/timeout--adam-feldman.json",
+    "the-great-gatsby-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [
-      "data/review-texts/maybe-happy-ending-2024/nydailynews--chris-jones.json"
+      "data/review-texts/the-great-gatsby-2024/nydailynews--chris-jones.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-      "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
-      "maybe-happy-ending-2024/washpost--naveen-kumar.json"
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
     ]
   },
   "failuresByOutlet": {
-    "Theater Reviews from My Seat": {
+    "New York Post": {
       "count": 1,
-      "domain": "theaterreviewsfrommyseat.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Daily Beast": {
-      "count": 1,
-      "domain": "thedailybeast.com",
+      "domain": "nypost.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "Talkin' Broadway": {
+    "Observer": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "observer.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": false
+      "isKnownBlocked": true
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "oldUrl": "https://nypost.com/2024/11/13/entertainment/maybe-happy-ending-review-charming-musical-about-robot-romance/",
-      "newUrl": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
-    }
-  ]
+  "urlDiscoveries": []
 }
