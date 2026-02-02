@@ -2697,8 +2697,9 @@ function findReviewsToProcess() {
 
         // Skip if already has good text (unless retrying failed)
         const textLen = data.fullText ? data.fullText.length : 0;
-        const isTruncated = data.textQuality === 'truncated' || data.textStatus === 'truncated';
-        // Always re-try truncated reviews - they have text but it's incomplete
+        const isTruncated = data.textQuality === 'truncated' || data.textStatus === 'truncated'
+          || data.contentTier === 'truncated' || data.contentTier === 'needs-rescrape';
+        // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
         if (!isTruncated && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
           continue;
         }
