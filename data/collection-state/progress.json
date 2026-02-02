@@ -1,40 +1,59 @@
 {
   "processed": [
-    "illinoise-2024/hollywood-reporter--david-rooney.json",
-    "illinoise-2024/broadwaynews--brittani-samuel.json",
-    "illinoise-2024/theatermania--david-gordon.json",
-    "illinoise-2024/usatoday--david-rooney.json"
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nypost--elisabeth-vincentelli.json",
+    "hamilton-2015/observer--david-cote.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "hamilton-2015/ny1--roma-torre.json",
+    "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
   ],
   "failed": [
-    "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "illinoise-2024/deadline--greg-evans.json",
-    "illinoise-2024/guardian--adrian-horton.json",
-    "illinoise-2024/observer--rex-reed.json",
-    "illinoise-2024/timeout--adam-feldman.json",
-    "illinoise-2024/talkinbroadway--matthew-murray.json"
+    "hamilton-2015/variety--charles-isherwood.json",
+    "hamilton-2015/timeout--david-cote.json",
+    "hamilton-2015/the-clyde-fitch-report--david-finkle.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [
-      "illinoise-2024/usatoday--david-rooney.json"
+    "browserbase": [
+      "data/review-texts/hamilton-2015/observer--david-cote.json",
+      "hamilton-2015/observer--david-cote.json"
     ],
-    "brightdata": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "hamilton-2015/theatermania--adam-feldman.json"
+    ],
     "archive": [
-      "illinoise-2024/hollywood-reporter--david-rooney.json",
-      "illinoise-2024/broadwaynews--brittani-samuel.json",
-      "illinoise-2024/theatermania--david-gordon.json"
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/newsday--linda-winer.json",
+      "hamilton-2015/nypost--elisabeth-vincentelli.json",
+      "hamilton-2015/wsj--terry-teachout.json",
+      "hamilton-2015/ny1--roma-torre.json",
+      "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
     ]
   },
-  "startTime": "2026-02-02T23:11:48.426Z",
-  "lastProcessed": "illinoise-2024/usatoday--david-rooney.json",
+  "startTime": "2026-02-02T23:15:47.593Z",
+  "lastProcessed": "hamilton-2015/thisbroadsway--sandra-mcfarland.json",
   "log": [
     {
-      "t": "2026-02-02T23:12:28.444Z",
+      "t": "2026-02-02T23:16:55.726Z",
       "event": "bb-session",
-      "session": "5816fb85",
-      "url": "https://observer.com/2024/04/illinoise-broadway-review-sufjan-stevens/"
+      "session": "ae00744a",
+      "url": "https://observer.com/2015/08/hamilton-broadway-review/"
+    },
+    {
+      "t": "2026-02-02T23:17:28.518Z",
+      "event": "bb-session",
+      "session": "fa3bfa2a",
+      "url": "https://observer.com/2020/07/hamilton-disney-plus-review-streaming/"
+    },
+    {
+      "t": "2026-02-02T23:17:43.222Z",
+      "event": "bb-session",
+      "session": "3968c2b1",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/hamilton_72618.html"
     }
   ]
 }
