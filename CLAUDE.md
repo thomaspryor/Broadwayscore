@@ -535,8 +535,8 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 
 ### Remaining Data Quality Work (Feb 2026)
 
-**257 truncated reviews need re-scrape:** Reviews with `contentTier: "truncated"` have partial text (paywall cutoff, "read more" truncation). Running `collect-review-texts.js` with `--force` on these could upgrade them to complete text, improving LLM scoring accuracy.
+**Truncated reviews re-scrape (IN PROGRESS Feb 2026):** 314 reviews across 67 shows with `contentTier: "truncated"` or `"needs-rescrape"` are being re-scraped via 3 parallel `collect-review-texts.js` batches. The `contentTier` gap in `collect-review-texts.js` was fixed — it now checks `contentTier` in addition to `textQuality`/`textStatus` when deciding what to re-scrape.
 
 **27 cross-outlet duplicate-text reviews:** Files with `duplicateTextOf` field where the same fullText appears at a different outlet (e.g., Chris Jones at both Chicago Tribune and NY Daily News). These are legitimate — the same freelance critic published in multiple outlets. Same-outlet duplicates and wrong-critic attributions have been cleaned up.
 
-**Test infrastructure issues:** `tests/unit/trade-press-scraper.test.mjs` — ESM `export` syntax fails under CJS test runner (needs test harness fix, not code fix). The ensemble test was converted to Node test runner (Feb 2026) and passes. The CI text quality audit was fixed to use `contentTier` fallback and skip symlinks (Feb 2026).
+**Test infrastructure (ALL GREEN Feb 2026):** CI fully passing. Both `ensemble.test.mjs` and `trade-press-scraper.test.mjs` use Node test runner with `createRequire` for CJS module loading. Text quality audit uses `contentTier` fallback. Review-text validator treats unknown outlets and garbage critic names as warnings (not errors). Symlink double-counting fixed in all validation scripts.
