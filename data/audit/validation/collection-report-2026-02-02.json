@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-02T05:05:42.680Z",
+  "runDate": "2026-02-02T05:07:55.996Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "how-to-dance-in-ohio-2023",
+    "showFilter": "spamalot-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,59 +12,60 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 4,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "16.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "scrapingbee": 1,
-    "brightdata": 0,
+    "brightdata": 2,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 4,
     "tier1Success": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 1,
-    "tier2Attempts": 3,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 0,
+    "tier2Attempts": 5,
     "tier2Success": 1,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 3,
+    "tier3Attempts": 4,
+    "tier3Success": 3,
+    "tier4Attempts": 4,
     "tier4Success": 1,
     "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 20,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 2.2,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "scrapingBeeCreditsUsed": 41,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 1.5,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "how-to-dance-in-ohio-2023/theatermania--david-finkle.json"
+    "spamalot-2023/theatermania--jesse-green.json"
   ],
   "failed": [
-    "how-to-dance-in-ohio-2023/variety--aramide-tinubu.json",
-    "how-to-dance-in-ohio-2023/deadline--greg-evans.json",
-    "how-to-dance-in-ohio-2023/timeout--adam-feldman.json",
-    "how-to-dance-in-ohio-2023/wsj--unknown.json"
+    "spamalot-2023/variety--charles-isherwood.json",
+    "spamalot-2023/variety--naveen-kumar.json",
+    "spamalot-2023/deadline--greg-evans.json",
+    "spamalot-2023/timeout--adam-feldman.json",
+    "spamalot-2023/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [],
-    "browserbase": [
-      "data/review-texts/how-to-dance-in-ohio-2023/variety--aramide-tinubu.json",
-      "how-to-dance-in-ohio-2023/variety--aramide-tinubu.json"
-    ],
+    "browserbase": [],
     "scrapingbee": [
-      "how-to-dance-in-ohio-2023/theatermania--david-finkle.json"
+      "spamalot-2023/theatermania--jesse-green.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "spamalot-2023/variety--charles-isherwood.json",
+      "spamalot-2023/variety--naveen-kumar.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {
-    "wsj": {
+    "The Wall Street Journal": {
       "count": 1,
       "domain": "wsj.com",
       "hasCredentials": true,
@@ -72,34 +73,11 @@
       "isKnownBlocked": true
     }
   },
-  "failuresByOutlet": {
-    "Vulture": {
-      "count": 1,
-      "domain": "vulture.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "TheWrap": {
-      "count": 1,
-      "domain": "thewrap.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "amNewYork": {
-      "count": 1,
-      "domain": "amny.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
   "urlDiscoveries": [
     {
-      "reviewId": "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
-      "oldUrl": "https://www.nydailynews.com/2019/07/25/moulin-rouge-broadway-review/",
-      "newUrl": "https://www.nydailynews.com/2019/07/25/review-broadways-moulin-rouge-the-musical-is-dazzling-decadent-live-translation-of-2001-movie/"
+      "reviewId": "spamalot-2023/variety--charles-isherwood.json",
+      "oldUrl": "https://variety.com/2023/legit/reviews/spamalot-review-broadway-revival-1235812345/",
+      "newUrl": "https://variety.com/2023/legit/reviews/spamalot-review-broadway-2023-1235792687/"
     }
   ]
 }
