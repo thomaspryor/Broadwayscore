@@ -68,7 +68,7 @@
   "contentTierReason": "Short text (28 words)",
   "textWordCount": 42,
   "archivePath": "data/archives/reviews/gutenberg-2023/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T15:59:50.908Z",
+  "textFetchedAt": "2026-02-02T16:33:51.598Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -82,6 +82,12 @@
       "method": "playwright",
       "success": false,
       "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 75 chars"
     },
     {
       "tier": 2,
