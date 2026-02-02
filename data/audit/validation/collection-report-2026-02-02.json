@@ -1,77 +1,82 @@
 {
-  "runDate": "2026-02-02T00:58:42.788Z",
+  "runDate": "2026-02-02T01:02:17.789Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 20,
     "priority": "all",
-    "showFilter": "operation-mincemeat-2025",
+    "showFilter": "chess-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 2,
+    "processed": 2,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 4
+    "brightdata": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 0,
-    "tier1_5Attempts": 0,
+    "tier1Attempts": 5,
+    "tier1Success": 3,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier4Attempts": 7,
-    "tier4Success": 4,
-    "totalFailed": 1,
+    "tier3Attempts": 2,
+    "tier3Success": 0,
+    "tier4Attempts": 5,
+    "tier4Success": 1,
+    "totalFailed": 3,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 2.3,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "operation-mincemeat-2025/timeout--adam-feldman.json",
-    "operation-mincemeat-2025/timeout--adam.json",
-    "operation-mincemeat-2025/wsj--charles-isherwood.json",
-    "operation-mincemeat-2025/wsj--charles.json"
+    "chess-2025/theatermania--unknown.json",
+    "chess-2025/timeout--adam-feldman.json"
   ],
   "failed": [
-    "operation-mincemeat-2025/variety--frank-rizzo.json",
-    "operation-mincemeat-2025/observer--david-cote.json"
+    "chess-2025/nytg--unknown.json",
+    "chess-2025/variety--christian-lewis.json",
+    "chess-2025/wsj--charles-isherwood.json",
+    "chess-2025/wsj--christopher-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "chess-2025/variety--christian-lewis.json",
+      "chess-2025/theatermania--unknown.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "operation-mincemeat-2025/variety--frank-rizzo.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "operation-mincemeat-2025/timeout--adam-feldman.json",
-      "operation-mincemeat-2025/timeout--adam.json",
-      "operation-mincemeat-2025/wsj--charles-isherwood.json",
-      "operation-mincemeat-2025/wsj--charles.json"
+      "chess-2025/timeout--adam-feldman.json"
     ]
   },
   "failuresByOutlet": {
-    "Observer": {
+    "The Wall Street Journal": {
       "count": 1,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
       "isKnownBlocked": true
     }
   },
