@@ -1,80 +1,89 @@
 {
-  "runDate": "2026-02-02T23:20:41.928Z",
+  "runDate": "2026-02-02T23:21:43.192Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "grey-house-2023",
+    "showFilter": "mary-jane-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 5,
+    "processed": 2,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "37.5%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 2,
+    "tier1Attempts": 3,
+    "tier1Success": 0,
     "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 2,
-    "tier3Attempts": 2,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier4Attempts": 7,
+    "tier4Attempts": 8,
     "tier4Success": 2,
     "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 20,
+    "scrapingBeeCreditsUsed": 13,
     "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 2.5,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseMinutesUsed": 0.6,
+    "urlDiscoveryAttempts": 3,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "grey-house-2023/cititour--brian-scott-lipton.json",
-    "grey-house-2023/talkinbroadway--matthew-murray.json"
+    "mary-jane-2024/broadwaynews--brittani-samuel.json",
+    "mary-jane-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "grey-house-2023/deadline--greg-evans.json",
-    "grey-house-2023/new-york-sun--elysa-gardner.json",
-    "grey-house-2023/nydailynews--chris-jones.json",
-    "grey-house-2023/timeout--adam-feldman.json",
-    "grey-house-2023/wsj--charles-isherwood.json"
+    "mary-jane-2024/hollywood-reporter--david-rooney.json",
+    "mary-jane-2024/ew--kristen-baldwin.json",
+    "mary-jane-2024/timeout--adam-feldman.json",
+    "mary-jane-2024/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "grey-house-2023/cititour--brian-scott-lipton.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "grey-house-2023/newyorker--dan-stahl.json",
-      "grey-house-2023/deadline--greg-evans.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
-      "grey-house-2023/talkinbroadway--matthew-murray.json"
+      "mary-jane-2024/theatermania--jesse-green.json"
     ],
-    "archive": []
+    "archive": [
+      "mary-jane-2024/broadwaynews--brittani-samuel.json"
+    ]
   },
   "failuresByOutlet": {
-    "The Wall Street Journal": {
+    "The Hollywood Reporter": {
       "count": 1,
-      "domain": "wsj.com",
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Entertainment Weekly": {
+      "count": 1,
+      "domain": "ew.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Washington Post": {
+      "count": 1,
+      "domain": "washingtonpost.com",
       "hasCredentials": true,
       "isPaywalled": true,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
