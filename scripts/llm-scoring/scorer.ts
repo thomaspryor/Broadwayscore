@@ -316,6 +316,9 @@ export class ReviewScorer {
   async scoreReviewV5(reviewText: string, context: string = ''): Promise<{
     success: boolean;
     result?: SimplifiedLLMResult;
+    rejected?: boolean;
+    rejection?: string;
+    rejectionReasoning?: string;
     error?: string;
     inputTokens: number;
     outputTokens: number;
@@ -352,6 +355,19 @@ export class ReviewScorer {
         if (!textContent || textContent.type !== 'text') {
           lastError = 'No text content in response';
           continue;
+        }
+
+        // Check for scoreability rejection (v5.2+)
+        const rejection = this.parseRejection(textContent.text);
+        if (rejection) {
+          return {
+            success: true,
+            rejected: true,
+            rejection: rejection.rejection,
+            rejectionReasoning: rejection.reasoning,
+            inputTokens,
+            outputTokens
+          };
         }
 
         const result = this.parseV5Response(textContent.text);
@@ -484,6 +500,40 @@ export class ReviewScorer {
       };
     }
 
+    return null;
+  }
+
+  /**
+   * Check if the response is a scoreability rejection (v5.2+)
+   */
+  private parseRejection(responseText: string): { rejection: string; reasoning: string } | null {
+    let cleaned = responseText.trim();
+    if (cleaned.startsWith('```json')) cleaned = cleaned.slice(7);
+    else if (cleaned.startsWith('```')) cleaned = cleaned.slice(3);
+    if (cleaned.endsWith('```')) cleaned = cleaned.slice(0, -3);
+    cleaned = cleaned.trim();
+
+    try {
+      const parsed = JSON.parse(cleaned);
+      if (parsed.scoreable === false) {
+        return {
+          rejection: String(parsed.rejection || 'unknown'),
+          reasoning: String(parsed.reasoning || '')
+        };
+      }
+    } catch {
+      // Try regex fallback for malformed rejection responses
+      if (responseText.includes('"scoreable"') && responseText.includes('false')) {
+        const rejMatch = responseText.match(/"rejection"\s*:\s*"([^"]+)"/);
+        const resMatch = responseText.match(/"reasoning"\s*:\s*"([^"]+)"/);
+        if (rejMatch) {
+          return {
+            rejection: rejMatch[1],
+            reasoning: resMatch ? resMatch[1] : ''
+          };
+        }
+      }
+    }
     return null;
   }
 
