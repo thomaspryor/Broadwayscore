@@ -1,47 +1,59 @@
 {
   "processed": [
-    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
-    "mj-2022/variety--peter-marks.json",
-    "mj-2022/guardian--adrian-horton.json",
-    "mj-2022/ap--mark-kennedy.json",
-    "mj-2022/usatoday--david-rooney.json"
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nypost--elisabeth-vincentelli.json",
+    "hamilton-2015/observer--david-cote.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "hamilton-2015/ny1--roma-torre.json",
+    "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
   ],
   "failed": [
-    "mj-2022/hollywood-reporter--david-rooney.json",
-    "mj-2022/ew--kristen-baldwin.json",
-    "mj-2022/timeout--adam-feldman.json",
-    "mj-2022/wsj--charles-isherwood.json",
-    "mj-2022/talkinbroadway--matthew-murray.json"
+    "hamilton-2015/variety--charles-isherwood.json",
+    "hamilton-2015/timeout--david-cote.json",
+    "hamilton-2015/the-clyde-fitch-report--david-finkle.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "mj-2022/guardian--adrian-horton.json",
-      "mj-2022/ap--mark-kennedy.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/hamilton-2015/observer--david-cote.json",
+      "hamilton-2015/observer--david-cote.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [
-      "mj-2022/usatoday--david-rooney.json"
+    "scrapingbee": [],
+    "brightdata": [
+      "hamilton-2015/theatermania--adam-feldman.json"
     ],
-    "brightdata": [],
     "archive": [
-      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
-      "mj-2022/variety--peter-marks.json"
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/newsday--linda-winer.json",
+      "hamilton-2015/nypost--elisabeth-vincentelli.json",
+      "hamilton-2015/wsj--terry-teachout.json",
+      "hamilton-2015/ny1--roma-torre.json",
+      "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
     ]
   },
-  "startTime": "2026-02-02T23:11:29.086Z",
-  "lastProcessed": "mj-2022/usatoday--david-rooney.json",
+  "startTime": "2026-02-02T23:15:47.593Z",
+  "lastProcessed": "hamilton-2015/thisbroadsway--sandra-mcfarland.json",
   "log": [
     {
-      "t": "2026-02-02T23:14:59.435Z",
+      "t": "2026-02-02T23:16:55.726Z",
       "event": "bb-session",
-      "session": "c0070fb2",
-      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+      "session": "ae00744a",
+      "url": "https://observer.com/2015/08/hamilton-broadway-review/"
     },
     {
-      "t": "2026-02-02T23:15:46.562Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-02T23:17:28.518Z",
+      "event": "bb-session",
+      "session": "fa3bfa2a",
+      "url": "https://observer.com/2020/07/hamilton-disney-plus-review-streaming/"
+    },
+    {
+      "t": "2026-02-02T23:17:43.222Z",
+      "event": "bb-session",
+      "session": "3968c2b1",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/hamilton_72618.html"
     }
   ]
 }
