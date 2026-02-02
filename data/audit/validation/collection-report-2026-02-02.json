@@ -17,7 +17,7 @@
     "successRate": "20.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -71,5 +71,11 @@
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "suffs-2024/washpost--peter-marks.json",
+      "oldUrl": "https://www.washingtonpost.com/theater-dance/2024/04/19/suffs-broadway-review/",
+      "newUrl": "https://www.washingtonpost.com/entertainment/theater/2024/04/18/suffs-broadway-review/"
+    }
+  ]
 }
