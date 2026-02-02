@@ -64,7 +64,7 @@
   "previousLlmScore": 44,
   "textWordCount": 1131,
   "archivePath": "data/archives/reviews/the-notebook-2024/nytimes--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T15:06:45.475Z",
+  "textFetchedAt": "2026-02-02T23:33:06.609Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -76,13 +76,15 @@
   "fetchTier": 4,
   "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251007094143",
   "archiveOrgUrl": "http://web.archive.org/web/20251007094143/https://www.nytimes.com/2024/03/14/theater/the-notebook-review-broadway-musical.html",
   "duplicateTextOf": "nytimes--unknown.json",
-  "rescoreCompletedAt": "2026-02-02T19:19:16.152Z"
+  "rescoreCompletedAt": "2026-02-02T19:19:16.152Z",
+  "contentTier": "complete",
+  "wordCount": 1131,
+  "tierReason": "Full review text"
 }

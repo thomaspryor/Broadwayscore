@@ -1,15 +1,39 @@
 {
-  "updatedAt": "2026-02-02T23:22:54.745Z",
-  "processed": 12,
-  "failed": 9,
-  "successRate": "57.1%",
+  "updatedAt": "2026-02-02T23:44:08.203Z",
+  "processed": 4,
+  "failed": 8,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 2,
-    "brightdata": 0,
-    "archive": 3
+    "brightdata": 1,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-02T23:38:55.505Z",
+      "event": "bb-session",
+      "session": "76fadeb8",
+      "url": "https://observer.com/2024/04/suffs-broadway-review-shaina-taub/"
+    },
+    {
+      "t": "2026-02-02T23:39:20.998Z",
+      "event": "bb-session",
+      "session": "4ad9af69",
+      "url": "https://www.theatermania.com/broadway/reviews/suffs_90952.html"
+    },
+    {
+      "t": "2026-02-02T23:40:09.437Z",
+      "event": "bb-session",
+      "session": "b008bcc5",
+      "url": "https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-tau"
+    },
+    {
+      "t": "2026-02-02T23:40:52.471Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }

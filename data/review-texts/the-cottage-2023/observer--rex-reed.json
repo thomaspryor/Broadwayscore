@@ -67,9 +67,15 @@
   "isFullReview": true,
   "textWordCount": 562,
   "archivePath": "data/archives/reviews/the-cottage-2023/observer--rex-reed_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T05:00:36.403Z",
+  "textFetchedAt": "2026-02-02T23:34:46.169Z",
   "fetchMethod": "browserbase",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
@@ -87,5 +93,6 @@
   "textStatus": "complete",
   "sourceMethod": "browserbase",
   "rescoreCompletedAt": "2026-02-02T14:25:32.422Z",
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "truncationSignals": []
 }

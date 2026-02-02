@@ -4528,18 +4528,6 @@
     "timestamp": "2026-02-01T23:43:08.741Z"
   },
   {
-    "reviewId": "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
-    "showId": "once-upon-a-one-more-time-2023",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/once-upon-a-one-more-time-broadway-musical-review-britney-spears",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6225,
-    "timestamp": "2026-02-01T23:43:20.051Z"
-  },
-  {
     "reviewId": "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
     "showId": "once-upon-a-one-more-time-2023",
     "outlet": "Wall Street Journal",
@@ -4550,30 +4538,6 @@
     "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
     "textLength": 1845,
     "timestamp": "2026-02-01T23:43:23.757Z"
-  },
-  {
-    "reviewId": "operation-mincemeat-2025/timeout--adam-feldman.json",
-    "showId": "operation-mincemeat-2025",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review#google_vignette",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 9412,
-    "timestamp": "2026-02-01T23:43:48.650Z"
-  },
-  {
-    "reviewId": "operation-mincemeat-2025/timeout--adam.json",
-    "showId": "operation-mincemeat-2025",
-    "outlet": "Time Out New York",
-    "critic": "Adam",
-    "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 9724,
-    "timestamp": "2026-02-01T23:43:52.132Z"
   },
   {
     "reviewId": "operation-mincemeat-2025/wsj--charles-isherwood.json",
@@ -7924,18 +7888,6 @@
     "timestamp": "2026-02-02T18:30:14.997Z"
   },
   {
-    "reviewId": "uncle-vanya-2024/thestage--nicole-serratore.json",
-    "showId": "uncle-vanya-2024",
-    "outlet": "The Stage",
-    "critic": "Nicole Serratore",
-    "url": "https://www.thestage.co.uk/reviews/uncle-vanya-review-vivian-beaumont-theater-steve-carell-alfred-molina",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"create a free account to\"",
-    "textLength": 835,
-    "timestamp": "2026-02-02T18:31:32.104Z"
-  },
-  {
     "reviewId": "water-for-elephants/thestage--lane-williamson.json",
     "showId": "water-for-elephants",
     "outlet": "The Stage",
@@ -7970,18 +7922,6 @@
     "garbageReason": "Multiple shows mentioned (8): the great gatsby, hamilton, aladdin, hadestown, & juliet...",
     "textLength": 11416,
     "timestamp": "2026-02-02T18:34:53.249Z"
-  },
-  {
-    "reviewId": "wicked-2003/frontmezzjunkies--unknown.json",
-    "showId": "wicked-2003",
-    "outlet": "frontmezzjunkies",
-    "critic": "Unknown",
-    "url": "https://frontmezzjunkies.com/2017/09/20/wicked/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): the great gatsby, hamilton, aladdin, hadestown, & juliet...",
-    "textLength": 11416,
-    "timestamp": "2026-02-02T18:36:28.284Z"
   },
   {
     "reviewId": "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
@@ -8102,5 +8042,89 @@
     "garbageReason": "Newsletter form: \"Join our mailing list\"",
     "textLength": 3675,
     "timestamp": "2026-02-02T23:17:42.985Z"
+  },
+  {
+    "reviewId": "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
+    "showId": "once-upon-a-one-more-time-2023",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/once-upon-a-one-more-time-broadway-musical-review-britney-spears",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6225,
+    "timestamp": "2026-02-02T23:26:04.683Z"
+  },
+  {
+    "reviewId": "operation-mincemeat-2025/timeout--adam-feldman.json",
+    "showId": "operation-mincemeat-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review#google_vignette",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 9724,
+    "timestamp": "2026-02-02T23:26:33.700Z"
+  },
+  {
+    "reviewId": "operation-mincemeat-2025/timeout--adam.json",
+    "showId": "operation-mincemeat-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam",
+    "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 9219,
+    "timestamp": "2026-02-02T23:26:44.947Z"
+  },
+  {
+    "reviewId": "uncle-vanya-2024/thestage--nicole-serratore.json",
+    "showId": "uncle-vanya-2024",
+    "outlet": "The Stage",
+    "critic": "Nicole Serratore",
+    "url": "https://www.thestage.co.uk/reviews/uncle-vanya-review-vivian-beaumont-theater-steve-carell-alfred-molina",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"create a free account to\"",
+    "textLength": 835,
+    "timestamp": "2026-02-02T23:30:37.474Z"
+  },
+  {
+    "reviewId": "wicked-2003/frontmezzjunkies--unknown.json",
+    "showId": "wicked-2003",
+    "outlet": "frontmezzjunkies",
+    "critic": "Unknown",
+    "url": "https://frontmezzjunkies.com/2017/09/20/wicked/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): the great gatsby, hamilton, aladdin, hadestown, & juliet...",
+    "textLength": 11416,
+    "timestamp": "2026-02-02T23:34:13.440Z"
+  },
+  {
+    "reviewId": "oh-mary-2024/timeout--adam-feldman.json",
+    "showId": "oh-mary-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6183,
+    "timestamp": "2026-02-02T23:36:52.603Z"
+  },
+  {
+    "reviewId": "oh-mary-2024/wsj--charles-isherwood.json",
+    "showId": "oh-mary-2024",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2026 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 819,
+    "timestamp": "2026-02-02T23:36:56.071Z"
   }
 ]

@@ -42,8 +42,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic's own 60 rating and the phrase 'delivers exactly what you'd expect' suggests a middling assessment - neither enthusiastic nor dismissive, just meeting basic expectations. | GPT-4o: The critic's original rating of 60 aligns with the 'Mixed' bucket. The quote suggests that the show meets expectations but does not exceed them, indicating a balanced view without strong enthusiasm or disappointment. | Gemini: The review excerpt suggests a show that meets expectations but doesn't exceed them. Given the critic's rating of 60, 'Mixed' seems appropriate.",
+    "keyPhrases": [
+      {
+        "quote": "Disney's Aladdin is a lavish, colorful spectacle that delivers exactly what you'd expect from a Broadway adaptation of the beloved animated film.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating indicates mixed reception. The phrase 'delivers exactly what you'd expect' suggests competent but unsurprising execution. However, confidence is low due to truncated text - the full verdict may contain stronger positive or negative elements. | GPT-4o: The review describes the show as a spectacle that meets expectations, suggesting it neither exceeds nor falls short of what is anticipated. The original rating of 60 supports a mixed classification, indicating a neutral stance. | Gemini: The review excerpt states that the show delivers what is expected, which is neither a strong endorsement nor a condemnation. Given the critic's rating of 60, this suggests a mixed or neutral assessment. | Kimi: The excerpt praises the production values but the phrase 'exactly what you'd expect' implies the show merely meets expectations rather than exceeding them, consistent with the provided 60/100 rating indicating a middle-of-the-road assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,9 +58,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:21:46.016Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:41:25.469Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 61,
@@ -64,16 +70,18 @@
     "claudeScore": 60,
     "openaiScore": 60,
     "geminiScore": 62,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "bwwExcerpt": ": Aside from the tonic of Iglehart's djinn, however, Aladdin is short on magic. Director Casey Nicholaw fills the stage with activity, and Jonathan Freeman and Don Darryl Rivera offer ripe turns as a villainous vizier and his squawking sidekick. But the plotting drifts into weightless silliness, with a surfeit of generic padding and glitz. There's the rub: The musical is called Aladdin, but seems content to be Prince Ali.-Theater review by Adam Feldman",
   "dtliExcerpt": "Disney's Aladdin is a lavish, colorful spectacle that delivers exactly what you'd expect from a Broadway adaptation of the beloved animated film.",

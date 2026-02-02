@@ -61,7 +61,7 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
   },
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 101,
   "isFullReview": false,
   "textWordCount": 101,
@@ -89,5 +89,10 @@
     "Show title not found in text"
   ],
   "showNotMentioned": true,
-  "tierReason": "Short text (101 words)"
+  "tierReason": "Short text (101 words)",
+  "rejectedAt": "2026-02-02T23:29:30.487Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The main text is promotional e-commerce content about coupons and website maintenance, not a theater review; openai: The text provided is promotional content unrelated to a Broadway review.; gemini: The text is a mix of promotional material for Banggood and a brief, incomplete review. The review portion is too short and lacks a clear verdict.",
+  "promptVersion": "5.2.0"
 }

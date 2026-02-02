@@ -123,16 +123,22 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreCompletedAt": "2026-02-02T14:24:17.673Z",
-  "contentTier": "needs-rescrape",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 92,
   "previousLlmScore": 60,
-  "fullText": null,
+  "fullText": "Get our Breaking News Alerts and Keep your inbox happy. Comments On Deadline Hollywood are monitored. So don't go off topic, don't impersonate anyone, and don't get your facts wrong. Δdocument.getElementById( \"ak_js_1\" ).setAttribute( \"value\", ( new Date() ).getTime() ); Signup for Breaking News Alerts & Newsletters By providing your information, you agree to our Terms of Use and our Privacy Policy. We use vendors that may also process your information to help provide our services. This site is protected by reCAPTCHA Enterprise and the Google Privacy Policy and Terms of Service apply.",
   "isFullReview": false,
-  "textWordCount": 155,
+  "textWordCount": 92,
   "archivePath": "data/archives/reviews/patriots-2024/deadline--greg-evans_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T05:09:23.870Z",
+  "textFetchedAt": "2026-02-02T23:31:36.851Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
@@ -141,11 +147,16 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
-  "truncationSignals": [],
+  "truncationSignals": [
+    "has_footer_junk"
+  ],
   "textStatus": "incomplete",
   "sourceMethod": "playwright",
   "textIssues": [
-    "Word count too low: 167 (min: 300)"
+    "Word count too low: 92 (min: 300)",
+    "Show title not found in text"
   ],
-  "duplicateTextOf": "broadwaynews--brittani-samuel.json"
+  "duplicateTextOf": "deadline--pete-hammond.json",
+  "showNotMentioned": true,
+  "tierReason": "Short text (92 words)"
 }

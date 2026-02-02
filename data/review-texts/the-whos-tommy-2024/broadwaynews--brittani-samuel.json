@@ -68,8 +68,8 @@
   "rescoreReason": "low-conf: prompt=3.0.0, delta=25, upgrading to V5 + 3 models",
   "previousLlmScore": 58,
   "rescoreCompletedAt": "2026-02-01T16:28:04.975Z",
-  "archivePath": "data/archives/reviews/the-whos-tommy-2024/broadwaynews--brittani-samuel_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T03:30:10.978Z",
+  "archivePath": "data/archives/reviews/the-whos-tommy-2024/broadwaynews--brittani-samuel_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T23:35:16.079Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -88,5 +88,10 @@
   "contentTier": "truncated",
   "wordCount": 268,
   "showNotMentioned": true,
-  "isFullReview": false
+  "isFullReview": true,
+  "textWordCount": 268,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "tierReason": "Short text (268 words)"
 }

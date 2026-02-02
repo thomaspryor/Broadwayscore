@@ -1,92 +1,108 @@
 {
-  "runDate": "2026-02-02T23:21:06.137Z",
+  "runDate": "2026-02-02T23:44:09.409Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hadestown-2019",
+    "showFilter": "suffs-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 7,
+    "processed": 4,
+    "failed": 8,
     "skipped": 0,
-    "successRate": "22.2%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 1,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
-    "tier1_5Attempts": 4,
+    "tier1Attempts": 6,
+    "tier1Success": 2,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 0,
     "tier2Attempts": 5,
-    "tier2Success": 1,
+    "tier2Success": 2,
     "tier3Attempts": 2,
     "tier3Success": 1,
-    "tier4Attempts": 11,
-    "tier4Success": 4,
+    "tier4Attempts": 13,
+    "tier4Success": 3,
     "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 22,
-    "browserbaseSessionsUsed": 4,
-    "browserbaseMinutesUsed": 3.1,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "scrapingBeeCreditsUsed": 23,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 2.8,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-2019/theatermania--jesse-green.json",
-    "hadestown-2019/wsj--terry-teachout.json"
+    "suffs-2024/nytimes--jesse-green.json",
+    "suffs-2024/theatermania--jesse-green.json",
+    "suffs-2024/wsj--charles-isherwood.json",
+    "suffs-2024/the-times--nancy-durrant.json"
   ],
   "failed": [
-    "hadestown-2019/guardian--jesse-green.json",
-    "hadestown-2019/observer--david-cote.json",
-    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
-    "hadestown-2019/timeout--adam-feldman.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/medium--christian-lewis.json",
-    "hadestown-2019/vox--constance-grady.json"
+    "suffs-2024/chelsea-community-news--michael-musto.json",
+    "suffs-2024/deadline--greg-evans.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/observer--rex-reed.json",
+    "suffs-2024/timeout--adam-feldman.json",
+    "suffs-2024/timeout--regina-robbins.json",
+    "suffs-2024/talkinbroadway--matthew-murray.json",
+    "suffs-2024/usatoday--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "suffs-2024/the-times--nancy-durrant.json"
+    ],
     "browserbase": [],
     "scrapingbee": [
-      "hadestown-2019/theatermania--jesse-green.json"
+      "suffs-2024/deadline--greg-evans.json",
+      "suffs-2024/theatermania--jesse-green.json"
     ],
     "brightdata": [
-      "hadestown-2019/wsj--terry-teachout.json"
+      "suffs-2024/wsj--charles-isherwood.json"
     ],
-    "archive": []
+    "archive": [
+      "suffs-2024/nytimes--jesse-green.json"
+    ]
   },
   "failuresByOutlet": {
-    "Theater Reviews from My Seat": {
+    "The Guardian": {
       "count": 1,
-      "domain": "theaterreviewsfrommyseat.com",
+      "domain": "theguardian.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Daily Beast": {
+    "Observer": {
       "count": 1,
-      "domain": "thedailybeast.com",
+      "domain": "observer.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "USA Today": {
+      "count": 1,
+      "domain": "usatoday.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "hadestown-2019/observer--david-cote.json",
-      "oldUrl": "https://observer.com/2019/04/hadestown-broadway-review/",
-      "newUrl": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-on-broadway-review/"
-    }
-  ]
+  "urlDiscoveries": []
 }
