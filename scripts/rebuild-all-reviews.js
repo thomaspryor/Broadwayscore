@@ -829,14 +829,24 @@ function parseLetterGrade(rating) {
   return null;
 }
 
-function parseOriginalScore(rating) {
+// Outlets that use letter grade scoring (from src/config/scoring.ts scoreFormat: 'letter').
+// Letter grades from other outlets are rejected to prevent cross-contamination.
+const LETTER_GRADE_OUTLETS = new Set(['ew']);
+
+function parseOriginalScore(rating, outletId) {
   if (!rating) return null;
 
   const starScore = parseStarRating(rating);
   if (starScore !== null) return starScore;
 
   const letterScore = parseLetterGrade(rating);
-  if (letterScore !== null) return letterScore;
+  if (letterScore !== null) {
+    // Only accept letter grades from outlets that actually use them
+    if (outletId && !LETTER_GRADE_OUTLETS.has(outletId)) {
+      return null;
+    }
+    return letterScore;
+  }
 
   const numMatch = rating.toString().match(/^(\d+)\s*(?:\/\s*100)?$/);
   if (numMatch) {
@@ -865,7 +875,7 @@ function getBestScore(data) {
   // and are more reliable than regex extraction from fullText, which can match
   // garbage sidebar content or unrelated embedded articles.
   if (data.originalScore) {
-    const parsed = parseOriginalScore(data.originalScore);
+    const parsed = parseOriginalScore(data.originalScore, data.outletId);
     if (parsed !== null) {
       return { score: parsed, source: 'originalScore-priority0' };
     }
@@ -1404,7 +1414,7 @@ const consistencyIssues = [];
 for (const r of allReviews) {
   // Check 1: Original rating vs assigned score mismatch
   if (r.originalRating && typeof r.originalRating === 'string') {
-    const parsed = parseOriginalScore(r.originalRating);
+    const parsed = parseOriginalScore(r.originalRating, r.outletId);
     if (parsed !== null && Math.abs(r.assignedScore - parsed) > 20) {
       consistencyIssues.push({
         type: 'rating-score-mismatch',
