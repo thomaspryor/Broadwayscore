@@ -1818,9 +1818,11 @@ async function fetchReviewText(review) {
       attempts.push({ tier: 1, method: 'playwright', success: false, error: error.message });
       console.log(`    ✗ Failed: ${error.message}`);
 
-      // If 404, only try Archive.org then bail - don't waste API credits on dead URLs
-      // (URL discovery is handled by processReview after this function throws)
-      if (error.message.includes('404')) {
+      // If 404, try Archive.org then bail - don't waste API credits on dead URLs
+      // EXCEPTION: For paywalled sites with credentials, a 404 may be a paywall redirect
+      // (e.g., WSJ returns 404 for non-logged-in users). Let those fall through to Browserbase.
+      const hasPaywallCreds = getPaywallCredentials(url)?.email;
+      if (error.message.includes('404') && !hasPaywallCreds) {
         console.log('  [Tier 4] Archive.org (404 detected - skipping other tiers)...');
         try {
           const result = await fetchFromArchive(url);
@@ -1836,6 +1838,8 @@ async function fetchReviewText(review) {
         }
         // URL is definitely dead - don't waste ScrapingBee/BrightData credits
         throw new Error(`URL returned 404 (archive also failed): ${JSON.stringify(attempts)}`);
+      } else if (error.message.includes('404') && hasPaywallCreds) {
+        console.log('    → 404 on paywalled site with credentials - will try Browserbase login...');
       }
     }
   } else {
@@ -1856,6 +1860,11 @@ async function fetchReviewText(review) {
     isKnownBlocked || playwrightHitCaptcha ||
     (hasLoginCreds && (playwrightHitPaywall || playwrightFailed))
   );
+
+  // Diagnostic: log Browserbase routing decision for paywalled sites
+  if (hasLoginCreds) {
+    console.log(`  [Browserbase routing] enabled=${CONFIG.browserbaseEnabled} isBlocked=${isKnownBlocked} captcha=${playwrightHitCaptcha} paywall=${playwrightHitPaywall} creds=${!!hasLoginCreds} pwFailed=${playwrightFailed} → shouldTry=${shouldTryBrowserbase} canUse=${shouldTryBrowserbase ? canUseBrowserbase() : 'n/a'}`);
+  }
 
   if (shouldTryBrowserbase && canUseBrowserbase()) {
     console.log('  [Tier 1.5] Browserbase (managed browser + CAPTCHA solving)...');
