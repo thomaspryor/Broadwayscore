@@ -113,7 +113,7 @@ jobs:
             }
 
       - name: Send Discord alert on failure
-        if: failure()
+        if: failure() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: |
@@ -205,7 +205,7 @@ jobs:
             }
 
       - name: Send Discord alert on failure
-        if: failure()
+        if: failure() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: |
