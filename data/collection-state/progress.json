@@ -29,7 +29,11 @@
     "bug-2026/wsj--charles-isherwood.json",
     "cabaret-2024/broadwaynews--brittani-samuel.json",
     "cabaret-2024/timeout--adam-feldman.json",
-    "cabaret-2024/wsj--charles-isherwood.json"
+    "cabaret-2024/wsj--charles-isherwood.json",
+    "chess-2025/timeout--adam-feldman.json",
+    "gutenberg-2023/theatermania--jesse-green.json",
+    "gutenberg-2023/timeout--adam-feldman.json",
+    "gutenberg-2023/wsj--charles-isherwood.json"
   ],
   "failed": [
     "and-juliet-2022/variety--peter-marks.json",
@@ -61,12 +65,19 @@
     "cabaret-2024/deadline--greg-evans.json",
     "cabaret-2024/ew--amelia-merrill.json",
     "cabaret-2024/observer--rex-reed.json",
-    "cabaret-2024/wsj--charles.json"
+    "cabaret-2024/wsj--charles.json",
+    "chess-2025/theatermania--unknown.json",
+    "chess-2025/wsj--charles-isherwood.json",
+    "chess-2025/wsj--christopher-isherwood.json",
+    "gutenberg-2023/deadline--greg-evans.json",
+    "gutenberg-2023/new-york-sun--elysa-gardner.json",
+    "gutenberg-2023/nypost--johnny-oleksinski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "cabaret-2024/timeout--adam-feldman.json"
+      "cabaret-2024/timeout--adam-feldman.json",
+      "chess-2025/timeout--adam-feldman.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
@@ -75,7 +86,9 @@
       "chess-2025/nytimes--elisabeth-vincentelli.json",
       "marjorie-prime-2025/nytimes--elisabeth-vincentelli.json",
       "six-2021/variety--frank-rizzo.json",
-      "cabaret-2024/wsj--charles-isherwood.json"
+      "cabaret-2024/wsj--charles-isherwood.json",
+      "gutenberg-2023/deadline--greg-evans.json",
+      "gutenberg-2023/theatermania--jesse-green.json"
     ],
     "archive": [
       "cabaret-2024/variety--naveen-kumar.json",
@@ -102,9 +115,11 @@
       "back-to-the-future-2023/wsj--charles-isherwood.json",
       "bug-2026/timeout--adam-feldman.json",
       "bug-2026/wsj--charles-isherwood.json",
-      "cabaret-2024/broadwaynews--brittani-samuel.json"
+      "cabaret-2024/broadwaynews--brittani-samuel.json",
+      "gutenberg-2023/timeout--adam-feldman.json",
+      "gutenberg-2023/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-02-02T02:17:06.202Z",
-  "lastProcessed": "cabaret-2024/wsj--charles.json"
+  "lastProcessed": "gutenberg-2023/wsj--charles-isherwood.json"
 }
