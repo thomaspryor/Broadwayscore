@@ -1,72 +1,105 @@
 {
-  "runDate": "2026-02-02T23:28:35.860Z",
+  "runDate": "2026-02-02T23:30:35.900Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "mother-play-2024",
+    "showFilter": "moulin-rouge-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
+    "processed": 6,
     "failed": 5,
     "skipped": 0,
-    "successRate": "44.4%"
+    "successRate": "54.5%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 4
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 2,
-    "tier1_5Attempts": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 1,
+    "tier1_5Attempts": 5,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 7,
-    "tier4Success": 6,
+    "tier2Attempts": 7,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 14,
+    "tier4Success": 5,
     "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "scrapingBeeCreditsUsed": 33,
+    "browserbaseSessionsUsed": 5,
+    "browserbaseMinutesUsed": 3.5,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "mother-play-2024/nytimes--jesse-green.json",
-    "mother-play-2024/variety--aramide-tinubu.json",
-    "mother-play-2024/broadwaynews--brittani-samuel.json",
-    "mother-play-2024/theatermania--rachel-graham.json"
+    "moulin-rouge-2019/vulture--jesse-green.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json",
+    "moulin-rouge-2019/nysr--jesse-oxfeld.json",
+    "moulin-rouge-2019/telegraph--diane-snyder.json",
+    "moulin-rouge-2019/washpost--peter-marks.json"
   ],
   "failed": [
-    "mother-play-2024/new-york-sun--elysa-gardner.json",
-    "mother-play-2024/timeout--adam-feldman.json",
-    "mother-play-2024/wsj--charles-isherwood.json",
-    "mother-play-2024/queerty--matthew-wexler.json",
-    "mother-play-2024/thestage--nicole-serratore.json"
+    "moulin-rouge-2019/observer--david-cote.json",
+    "moulin-rouge-2019/observer--rex-reed.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "moulin-rouge-2019/amny--matt-windman.json",
+    "moulin-rouge-2019/dailybeast--tim-teeman.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "moulin-rouge-2019/nysr--jesse-oxfeld.json"
+    ],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "moulin-rouge-2019/theatermania--jesse-green.json",
+      "moulin-rouge-2019/telegraph--diane-snyder.json"
+    ],
+    "brightdata": [
+      "moulin-rouge-2019/wsj--terry-teachout.json"
+    ],
     "archive": [
-      "mother-play-2024/nytimes--jesse-green.json",
-      "mother-play-2024/variety--aramide-tinubu.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json",
-      "mother-play-2024/theatermania--rachel-graham.json"
+      "moulin-rouge-2019/vulture--jesse-green.json",
+      "moulin-rouge-2019/washpost--peter-marks.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "amNewYork": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Daily Beast": {
+      "count": 1,
+      "domain": "thedailybeast.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "moulin-rouge-2019/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2019/07/moulin-rouge-broadway-review/",
+      "newUrl": "https://observer.com/2019/08/moulin-rouge-the-musical-kitsch-glitz-review-broadway/"
+    },
+    {
+      "reviewId": "moulin-rouge-2019/washpost--peter-marks.json",
+      "oldUrl": "https://www.washingtonpost.com/entertainment/theater_dance/moulin-rouge-the-musical-is-a-feast-for-the-senses-but-leaves-you-hungry-for-more/2019/07/26/8b5a5a5c-af8a-11e9-bc5c-e73b603e7f38_story.html",
+      "newUrl": "https://www.washingtonpost.com/entertainment/theater/2023/08/17/moulin-rouge-review-kennedy-center/"
+    }
+  ]
 }
