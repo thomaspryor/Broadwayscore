@@ -1,22 +1,34 @@
 {
-  "updatedAt": "2026-02-02T05:05:57.320Z",
+  "updatedAt": "2026-02-02T05:06:13.965Z",
   "processed": 4,
   "failed": 6,
   "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 2,
-    "browserbase": 0,
+    "playwright": 1,
+    "browserbase": 4,
     "scrapingbee": 1,
     "brightdata": 1,
-    "archive": 1
+    "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-02-02T05:05:15.042Z",
+      "t": "2026-02-02T05:03:15.430Z",
       "event": "bb-session",
-      "session": "245432b2",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-outsiders_93847.h"
+      "session": "63fb7035",
+      "url": "https://nypost.com/2024/03/21/entertainment/water-for-elephants-review-acrobats-"
+    },
+    {
+      "t": "2026-02-02T05:03:36.461Z",
+      "event": "bb-session",
+      "session": "42131719",
+      "url": "https://observer.com/2024/03/water-for-elephants-theater-review-the-worst-broadw"
+    },
+    {
+      "t": "2026-02-02T05:03:48.814Z",
+      "event": "bb-session",
+      "session": "a5464997",
+      "url": "https://www.theatermania.com/broadway/reviews/water-for-elephants_93847.html"
     }
   ]
 }
