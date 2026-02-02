@@ -5,7 +5,7 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/mary-jane-broadway_96847.html",
   "publishDate": "May 1, 2024",
-  "fullText": null,
+  "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a performance of such deep authenticity and emotional precision that she makes Amy Herzog's sometimes schematic play feel like lived experience.",
   "originalScore": null,
@@ -50,7 +50,7 @@
     "previousScore": 58,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "needs-rescrape",
+  "contentTier": "truncated",
   "contentTierReason": "fullText was 404 error page",
   "ensembleData": {
     "claudeScore": 60,
@@ -69,11 +69,17 @@
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "rescoreCompletedAt": "2026-02-02T03:32:58.154Z",
-  "textWordCount": 0,
+  "textWordCount": 42,
   "archivePath": "data/archives/reviews/mary-jane-2024/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T19:07:00.732Z",
+  "textFetchedAt": "2026-02-02T23:20:49.891Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
