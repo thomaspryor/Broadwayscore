@@ -1,41 +1,72 @@
 {
   "processed": [
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/observer--rex-reed.json"
+    "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
+    "uncle-vanya-2024/observer--rex-reed.json",
+    "uncle-vanya-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "wicked-2003/variety--charles-isherwood.json",
-    "wicked-2003/ew--lisa-schwarzbaum.json",
-    "wicked-2003/timeout--david-cote.json",
-    "wicked-2003/wsj--terry-teachout.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/frontmezzjunkies--unknown.json",
-    "wicked-2003/njcom-star-ledger--michael-sommers.json"
+    "uncle-vanya-2024/variety--bob-verini.json",
+    "uncle-vanya-2024/vulture--helen-shaw.json",
+    "uncle-vanya-2024/deadline--greg-evans.json",
+    "uncle-vanya-2024/new-york-sun--elysa-gardner.json",
+    "uncle-vanya-2024/thewrap--robert-hofler.json",
+    "uncle-vanya-2024/timeout--adam-feldman.json",
+    "uncle-vanya-2024/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
+    ],
     "browserbase": [
-      "data/review-texts/wicked-2003/observer--rex-reed.json",
-      "wicked-2003/observer--rex-reed.json"
+      "data/review-texts/uncle-vanya-2024/observer--rex-reed.json",
+      "uncle-vanya-2024/observer--rex-reed.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "uncle-vanya-2024/theatermania--jesse-green.json"
+    ],
     "archive": [
-      "wicked-2003/nytimes--charles-isherwood.json",
-      "wicked-2003/ew--alice-king.json",
-      "wicked-2003/variety--charles-isherwood.json"
+      "uncle-vanya-2024/variety--bob-verini.json"
     ]
   },
-  "startTime": "2026-02-02T05:05:12.509Z",
-  "lastProcessed": "wicked-2003/njcom-star-ledger--michael-sommers.json",
+  "startTime": "2026-02-02T05:05:37.538Z",
+  "lastProcessed": "uncle-vanya-2024/wsj--unknown.json",
   "log": [
     {
-      "t": "2026-02-02T05:09:37.507Z",
+      "t": "2026-02-02T05:09:00.359Z",
       "event": "bb-session",
-      "session": "781b78f8",
-      "url": "http://observer.com/2003/11/crowe-is-master-of-briny-boys-domain/"
+      "session": "8b16c939",
+      "url": "https://www.vulture.com/article/uncle-vanya-broadway-review.html"
+    },
+    {
+      "t": "2026-02-02T05:09:02.658Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-02T05:13:14.543Z",
+      "event": "bb-session",
+      "session": "29fe4106",
+      "url": "https://observer.com/2024/01/uncle-vanya-broadway-review-steve-carell-lincoln-ce"
+    },
+    {
+      "t": "2026-02-02T05:13:38.783Z",
+      "event": "bb-session",
+      "session": "1b305a94",
+      "url": "https://observer.com/2024/04/review-steve-carell-is-a-lovable-loser-in-a-fragmen"
+    },
+    {
+      "t": "2026-02-02T05:13:52.503Z",
+      "event": "bb-session",
+      "session": "1e5f95c3",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/uncle-vanya-broadway-"
+    },
+    {
+      "t": "2026-02-02T05:14:18.763Z",
+      "event": "bb-session",
+      "session": "35f4e7c1",
+      "url": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/"
     }
   ]
 }

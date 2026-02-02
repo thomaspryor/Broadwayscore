@@ -1,22 +1,51 @@
 {
-  "updatedAt": "2026-02-02T05:11:22.214Z",
+  "updatedAt": "2026-02-02T05:15:14.723Z",
   "processed": 3,
   "failed": 7,
   "successRate": "30.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 3
+    "brightdata": 1,
+    "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-02T05:09:37.507Z",
+      "t": "2026-02-02T05:09:00.359Z",
       "event": "bb-session",
-      "session": "781b78f8",
-      "url": "http://observer.com/2003/11/crowe-is-master-of-briny-boys-domain/"
+      "session": "8b16c939",
+      "url": "https://www.vulture.com/article/uncle-vanya-broadway-review.html"
+    },
+    {
+      "t": "2026-02-02T05:09:02.658Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-02T05:13:14.543Z",
+      "event": "bb-session",
+      "session": "29fe4106",
+      "url": "https://observer.com/2024/01/uncle-vanya-broadway-review-steve-carell-lincoln-ce"
+    },
+    {
+      "t": "2026-02-02T05:13:38.783Z",
+      "event": "bb-session",
+      "session": "1b305a94",
+      "url": "https://observer.com/2024/04/review-steve-carell-is-a-lovable-loser-in-a-fragmen"
+    },
+    {
+      "t": "2026-02-02T05:13:52.503Z",
+      "event": "bb-session",
+      "session": "1e5f95c3",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/uncle-vanya-broadway-"
+    },
+    {
+      "t": "2026-02-02T05:14:18.763Z",
+      "event": "bb-session",
+      "session": "35f4e7c1",
+      "url": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/"
     }
   ]
 }
