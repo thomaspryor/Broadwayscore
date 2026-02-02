@@ -8,18 +8,18 @@
   "fullText": "This is no time for bogus expressions of sophistication. So, let's just say: Hooray! With \"Harry Potter and the Cursed Child,\" the Boy Who Lived has finally come to Broadway, bringing enchantment to a world that could really use a little magic right now.\n\nThe show's savvy producers have done a wonderful job refurbishing the vintage Lyric Theater (circa 1903), both inside and out. The sculpture of a giant black raven's wing hangs over the theater marquee, and the iconic image of a boy crouched in a winged nest can be seen perched on the roof. They should also have spread new pavement out front, because there's going to be a lot of foot traffic on 43rd Street over the next few years.\n\nInside, the walls are painted \"raven plume,\" while a midnight-blue carpet is emblazoned with the Hogwarts crest. How about ravens? You want ravens? Just look up. Ravens! (And how about buying stuff? You want to buy stuff? Check out the lobby.)",
   "bwwExcerpt": "Once you get past the sensory (and commercial) blandishments and the show begins, it's clear that director John Tiffany and his wizard designers have answered the big question: What can the theater do for the story of Harry Potter that the books and movie treatments haven't done? In a word, the theater has brought its own brand of wizardry to the material. Visually and aurally, the show presents a panorama of dazzling effects that draw audible gasps from the audience.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 76,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 73.5,
+      "high": 90.5
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,45 +27,53 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": null
+      "direction": 85
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the production's ability to bring unique theatrical value to the Harry Potter story, highlighting impressive direction and design work that creates audience-gasping effects, though the single excerpt warning requires conservative scoring within the positive range. | GPT-4o: The review praises the production's unique contributions to the Harry Potter story, highlighting its dazzling effects and audience impact, suggesting a strong recommendation. | Gemini: The review highlights the show's theatrical wizardry and dazzling effects, indicating a positive experience. However, the initial mention of \"sensory (and commercial) blandishments\" suggests some reservations, placing it in the lower end of the Positive bucket.",
+    "keyPhrases": [
+      {
+        "quote": "the theater has brought its own brand of wizardry to the material",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "presents a panorama of dazzling effects that draw audible gasps from the audience",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Once you get past the sensory (and commercial) blandishments",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The critic praises the theatrical wizardry and dazzling effects while noting the production successfully answers what theater can uniquely bring to Harry Potter, indicating a positive recommendation despite some initial reservation about commercial aspects. | GPT-4o-mini: The review highlights the impressive visual and auditory elements of the production, indicating a strong recommendation despite some initial reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:06:35.951Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-26T05:29:21.836Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "3.0.0"
+    "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 87,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "claudeScore": 78,
+    "openaiScore": 85,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "needsReviewReasons": []
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
-  "archivePath": "data/archives/reviews/harry-potter-2021/variety--marilyn-stasio_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T02:32:51.872Z",
+  "archivePath": "data/archives/reviews/harry-potter-2021/variety--marilyn-stasio_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:18:25.363Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {

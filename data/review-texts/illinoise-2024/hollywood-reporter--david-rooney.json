@@ -9,26 +9,42 @@
   "bwwExcerpt": "Without a word of spoken dialogue, the show pulls us into late adolescence, a time when love, anguish and everything in between are felt perhaps with the greatest intensity. The book co-written by director-choreographer Peck and Drury (who won the 2019 Pulitzer Prize for Drama with her brilliant meta-theatrical race inquiry, Fairview) is skillfully shaped yet invisible in the best sense of undiluted physical, sensorial and elemental storytelling.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 84,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 91,
-    "confidence": "medium",
+    "score": 84,
+    "confidence": "high",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 77.5,
+      "high": 90.5
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
+      "book": 85,
       "music": null,
       "performances": null,
-      "direction": null
+      "direction": 84
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses highly enthusiastic language like 'thrilling,' 'emotionally supercharged,' and 'rhapsodic and shattering' with no negative qualifiers, indicating strong recommendation. | GPT-4o: The review uses highly enthusiastic language, describing the show as 'thrilling,' 'rhapsodic,' and 'shattering,' indicating a strong recommendation. The critic praises the storytelling as 'undiluted' and 'elemental,' suggesting a high level of artistic achievement. | Gemini: The review uses positive language such as \"thrilling\" and describes the show as \"rhapsodic and shattering\", indicating a positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "skillfully shaped yet invisible in the best sense",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "undiluted physical, sensorial and elemental storytelling",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "pulls us into late adolescence",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The review offers consistent praise for the book's craftsmanship and the production's emotional impact, using sophisticated positive language like 'skillfully shaped' and 'undiluted storytelling' without any negative caveats. | GPT-4o-mini: The review highlights the skillful storytelling and emotional depth of the production, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +53,20 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:14:46.546Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-27T22:35:10.945Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 84,
-    "previousVersion": "3.0.0"
+    "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 89,
-    "openaiScore": 92,
-    "geminiScore": 80,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "needsReviewReasons": []
   },
   "dtliExcerpt": "Without a word of spoken dialogue, the show pulls us into late adolescence, a time when love, anguish and everything in between are felt perhaps with the greatest intensity. The book co-written by director-choreographer Peck and Drury (who won the 2019 Pulitzer Prize for Drama with her brilliant meta-theatrical race inquiry, Fairview) is skillfully shaped yet invisible in the best sense of undiluted physical, sensorial and elemental storytelling.",
   "sources": [
@@ -77,8 +85,8 @@
   "wordCount": 1414,
   "isFullReview": false,
   "textWordCount": 154,
-  "archivePath": "data/archives/reviews/illinoise-2024/hollywood-reporter--david-rooney_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T02:35:21.466Z",
+  "archivePath": "data/archives/reviews/illinoise-2024/hollywood-reporter--david-rooney_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:18:56.909Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -92,5 +100,6 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250826075828",
-  "archiveOrgUrl": "http://web.archive.org/web/20250826075828/https://www.hollywoodreporter.com/lifestyle/arts/illinoise-review-sufjan-stevens-justin-peck-broadway-theater-1235882171/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250826075828/https://www.hollywoodreporter.com/lifestyle/arts/illinoise-review-sufjan-stevens-justin-peck-broadway-theater-1235882171/",
+  "duplicateTextOf": "hollywood-reporter--unknown.json"
 }

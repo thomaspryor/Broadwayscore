@@ -7,7 +7,7 @@
   "publishDate": "April 7, 2025",
   "fullText": "Following on the high heels of the 2023 hit film \"Barbie,\" \"Boop! The Musical\" likewise aims to remake and rebrand another dated pop character for contemporary times and audiences.\n\nUnlike Barbie, who has had a ubiquitous cultural presence for decades, Betty Boop is a Depression-era cartoon character of a jazz-age flapper, and in looks, attitude and style, she is of her time — not to say dimension.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 38,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "The alternating worlds are meant to be playful, but Toontown especially gets exhausting quickly, with characters mugging, clowning and amplifying every limp punchline. But the real world is not much subtler, limiting the emotional weight the show might have.",
@@ -15,99 +15,87 @@
   "bwwExcerpt": "“Boop!” shows that cartoon makeovers may be an enticing novelty, but to really succeed it first needs to be well drawn.",
   "bwwThumb": "Meh",
   "llmScore": {
-    "score": 61,
+    "score": 38,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 30.5,
+      "high": 45.5
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": null,
+      "book": 33,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 30,
+      "direction": 38
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges some positives (Rogers is 'delightful') but criticizes the execution as 'exhausting' and 'limiting emotional weight,' concluding that cartoon makeovers need better development to succeed. | GPT-4o: The review acknowledges a strong performance by Rogers but criticizes the overall execution, stating that the show gets exhausting and lacks emotional weight. The conclusion suggests the show has potential but is not fully realized. | Gemini: The review highlights both positive and negative aspects of the show. While praising Rogers' performance, it criticizes the exhausting nature of Toontown and the lack of emotional weight, ultimately suggesting the show needs improvement to truly succeed.",
+    "keyPhrases": [
+      {
+        "quote": "gets exhausting quickly, with characters mugging, clowning and amplifying every limp punchline",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "the real world is not much subtler, limiting the emotional weight the show might have",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The alternating worlds are meant to be playful",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "Claude: The review criticizes both the comedic elements as exhausting and the dramatic elements as lacking emotional weight, with no redeeming qualities mentioned. | GPT-4o-mini: The review expresses significant dissatisfaction with the show's execution and humor, indicating a clear negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
+      "focusedOnPerformances": true,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:18:40.425Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T06:38:07.079Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "3.0.0"
+    "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 58,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 4,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "claudeScore": 40,
+    "openaiScore": 35,
+    "scoreDelta": 5,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (38 → Down) conflicts with aggregator thumbs (Flat)"
+    ]
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 38,
   "archivePath": "data/archives/reviews/boop-2025/variety--frank-rizzo_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T21:30:40.070Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-01T21:17:34.412Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 1.5,
-      "method": "browserbase",
-      "success": false,
-      "error": "Paywall detected"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
-  "sourceMethod": "brightdata",
+  "fetchTier": 4,
+  "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251105102026",
   "archiveOrgUrl": "http://web.archive.org/web/20251105102026/https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
-  "rescoreCompletedAt": "2026-02-02T00:18:40.425Z",
+  "rescoreCompletedAt": "2026-01-29T14:31:51.672Z",
   "contentTier": "complete",
   "wordCount": 892,
+  "needsRescore": true,
   "isFullReview": false,
   "textWordCount": 67,
   "textQuality": "excerpt",
   "truncationSignals": [],
-  "textStatus": "partial"
+  "textStatus": "partial",
+  "duplicateTextOf": "variety--youtube-frank-rizzo.json"
 }

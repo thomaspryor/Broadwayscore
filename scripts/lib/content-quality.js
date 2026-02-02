@@ -13,15 +13,14 @@
  * @type {RegExp[]}
  */
 const AD_BLOCKER_PATTERNS = [
-  // Require full ad-blocker message context, not just the word "adblock"
-  // The bare /ad\s*block(er)?/i was causing false positives on reviews
+  /ad\s*block(er)?/i,
+  /we\s+(noticed|detected|see)\s+(you('re|r)?|that\s+you('re|r)?)\s+(using|have)/i,
   /turn\s+off\s+(your\s+)?ad\s*block/i,
   /whitelist\s+(this\s+)?(site|domain|our)/i,
   /disable\s+(your\s+)?ad\s*block/i,
   /advertising\s+revenue\s+helps/i,
   /please\s+(consider\s+)?disabling\s+(your\s+)?ad/i,
   /adblock\s+(plus\s+)?button/i,
-  /we\s+(noticed|detected|see)\s+(you('re|r)?|that\s+you('re|r)?)\s+(using|have)\s+an?\s+ad/i,
 ];
 
 /**
@@ -177,18 +176,8 @@ function detectPaywall(text) {
  * @returns {{ detected: boolean, match: string | null }}
  */
 function detectLegalPage(text) {
-  // For texts over 500 chars, only flag if the legal pattern appears in the
-  // first 200 chars (indicating it's the primary content, not a footer/copyright notice).
-  // Short texts are always checked anywhere.
-  const isLongText = text.length > 500;
-  const checkRegion = isLongText ? text.substring(0, 200) : text;
-
   for (const pattern of LEGAL_PAGE_PATTERNS) {
-    // "All Rights Reserved" at the END of text is almost always a footer, not garbage
-    if (isLongText && pattern.source.includes('all\\s+rights\\s+reserved')) {
-      continue; // Skip this pattern for long texts — it's always a footer
-    }
-    const match = checkRegion.match(pattern);
+    const match = text.match(pattern);
     if (match) {
       return { detected: true, match: match[0] };
     }
@@ -202,14 +191,8 @@ function detectLegalPage(text) {
  * @returns {{ detected: boolean, match: string | null }}
  */
 function detectErrorPage(text) {
-  // For texts over 500 chars, only check the first 300 chars.
-  // A legitimate review might mention "has been removed" in theatrical context,
-  // but a real 404 page is short and leads with the error message.
-  const isLongText = text.length > 500;
-  const checkRegion = isLongText ? text.substring(0, 300) : text;
-
   for (const pattern of ERROR_PAGE_PATTERNS) {
-    const match = checkRegion.match(pattern);
+    const match = text.match(pattern);
     if (match) {
       return { detected: true, match: match[0] };
     }
@@ -656,10 +639,9 @@ function isGarbageContent(text) {
     return { isGarbage: true, reason: `Legal/privacy page: "${legalPage.match}"` };
   }
 
-  // Check for newsletter form - but only flag short text as garbage
-  // Long reviews (2000+ chars) with a footer newsletter signup are NOT garbage
+  // Check for newsletter form
   const newsletter = detectNewsletter(text);
-  if (newsletter.detected && trimmed.length < 2000) {
+  if (newsletter.detected) {
     return { isGarbage: true, reason: `Newsletter form: "${newsletter.match}"` };
   }
 
@@ -1082,19 +1064,20 @@ const BYLINE_PATTERNS = [
   /^(?:By|BY)\s+([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:-[A-Z][a-z]+)?)/m,
   // "— Name" or "– Name" (em dash attribution)
   /(?:—|–|--)\s*([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:-[A-Z][a-z]+)?)\s*$/m,
-  // "Reviewed by Name" or "Reported by Name" (NOT "Written by" — always means playwright in theater reviews)
+  // "Reviewed by Name" or "Reported by Name" (NOT "Written by" — always means playwright)
   /(?:Reviewed|Report(?:ed)?)\s+by\s+([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+(?:-[A-Z][a-z]+)?)/i,
 ];
 
-// Words that indicate a byline match is not actually a person's name
+// Words that appear in false-positive byline matches (not person names)
 const NON_NAME_WORDS = new Set([
   'prize', 'weekly', 'crown', 'theatre', 'theater', 'broadway',
   'award', 'playwright', 'starring', 'actual', 'norwegian',
-  'american', 'entertainment', 'daily', 'musical', 'production',
+  'american', 'entertainment', 'daily', 'musical', 'production'
 ]);
 
 /**
- * Check if a matched "name" contains a non-name word (e.g., "Pulitzer Prize", "Entertainment Weekly")
+ * Check if an extracted name is likely not a person name.
+ * Rejects names where any word is a known non-name word.
  */
 function isNonNameWord(name) {
   const parts = name.toLowerCase().split(/\s+/);
@@ -1102,27 +1085,39 @@ function isNonNameWord(name) {
 }
 
 /**
- * Check if a matched name is in the exclusion list (cast/creative team members).
- * Uses full last-name match + 3-char first-name prefix matching.
+ * Check if an extracted byline name matches a known show person (cast/creative).
+ * Uses full last-name + 3-char first-name prefix matching.
+ *
+ * @param {string} matchedName - Name extracted from text
+ * @param {string[]} excludeNames - Names to exclude (cast + creative team)
+ * @returns {boolean}
  */
 function isExcludedName(matchedName, excludeNames) {
   if (!excludeNames || excludeNames.length === 0) return false;
   const matched = normalizeName(matchedName);
   if (!matched) return false;
   const mParts = matched.split(' ').filter(p => p.length > 0);
+
   return excludeNames.some(name => {
     const excluded = normalizeName(name);
     if (!excluded) return false;
+
+    // Exact match
     if (matched === excluded) return true;
+
     const eParts = excluded.split(' ').filter(p => p.length > 0);
     if (mParts.length < 2 || eParts.length < 2) return false;
+
+    // Same last name + first name prefix (3+ chars) match
     const mLast = mParts[mParts.length - 1];
     const eLast = eParts[eParts.length - 1];
     if (mLast !== eLast) return false;
+
     const mFirst = mParts[0];
     const eFirst = eParts[0];
     const minLen = Math.min(mFirst.length, eFirst.length);
     if (minLen >= 3 && mFirst.substring(0, 3) === eFirst.substring(0, 3)) return true;
+
     return false;
   });
 }
@@ -1132,6 +1127,8 @@ function isExcludedName(matchedName, excludeNames) {
  * Searches first 500 chars and last 200 chars for common byline patterns.
  *
  * @param {string} text - Review text
+ * @param {Object} [options] - Options
+ * @param {string[]} [options.excludeNames] - Names to exclude (cast/creative team)
  * @returns {{ found: boolean, name: string | null, position: 'start' | 'end' | null }}
  */
 function extractByline(text, options = {}) {
@@ -1139,7 +1136,6 @@ function extractByline(text, options = {}) {
     return { found: false, name: null, position: null };
   }
 
-  const { excludeNames } = options;
   const startChunk = text.substring(0, 500);
   const endChunk = text.length > 200 ? text.substring(text.length - 200) : text;
 
@@ -1149,7 +1145,7 @@ function extractByline(text, options = {}) {
     if (match && match[1]) {
       const name = match[1].trim();
       if (isNonNameWord(name)) continue;
-      if (isExcludedName(name, excludeNames)) continue;
+      if (isExcludedName(name, options.excludeNames)) continue;
       return { found: true, name, position: 'start' };
     }
   }
@@ -1160,7 +1156,7 @@ function extractByline(text, options = {}) {
     if (match && match[1]) {
       const name = match[1].trim();
       if (isNonNameWord(name)) continue;
-      if (isExcludedName(name, excludeNames)) continue;
+      if (isExcludedName(name, options.excludeNames)) continue;
       return { found: true, name, position: 'end' };
     }
   }
@@ -1268,42 +1264,6 @@ function computeContentFingerprint(text, length = 500) {
   return Math.abs(hash).toString(16).padStart(8, '0');
 }
 
-/**
- * Detect if LLM scoring reasoning indicates the text was garbage
- * (not an actual review). Only meaningful when confidence is "low".
- *
- * Returns { isGarbage: boolean, matchedPattern: string|null }
- */
-const GARBAGE_REASONING_PATTERNS = [
-  { pattern: /caption|photo description/i, label: 'photo-caption' },
-  { pattern: /plot summary.*without.*(?:evaluat|critical|recommendation)/i, label: 'plot-summary-only' },
-  { pattern: /appears to be.*(?:landing page|navigation|website|homepage)/i, label: 'navigation-page' },
-  { pattern: /headline.*(?:only|byline)/i, label: 'headline-only' },
-  { pattern: /not.*(?:actual|genuine) review/i, label: 'not-a-review' },
-  { pattern: /insufficient.*(?:text|context|content)/i, label: 'insufficient-text' },
-  { pattern: /no.*(?:critical|evaluative).*(?:language|assessment|content)/i, label: 'no-evaluative-content' },
-  { pattern: /general commentary.*rather than.*(?:specific|actual).*review/i, label: 'commentary-not-review' },
-  { pattern: /(?:cookie|privacy|subscription|paywall).*(?:notice|prompt|text)/i, label: 'paywall-text' },
-  { pattern: /appears to be.*(?:stub|fragment|metadata|introduction|headline|cast announcement)/i, label: 'stub-or-fragment' },
-  { pattern: /no.*review.*content/i, label: 'no-review-content' },
-  { pattern: /background information without.*evaluat/i, label: 'background-only' },
-  { pattern: /impossible to determine.*(?:overall|actual|critic)/i, label: 'undeterminable' },
-  { pattern: /industry analysis.*rather than.*(?:actual|theater|review)/i, label: 'industry-analysis' },
-  { pattern: /thematic overview.*(?:limited|without).*evaluative/i, label: 'thematic-overview' },
-  { pattern: /factual.*(?:description|announcement).*rather than.*(?:actual|review)/i, label: 'factual-description' },
-  { pattern: /rather than.*(?:substantive|actual|complete) review/i, label: 'not-substantive-review' },
-];
-
-function detectGarbageFromReasoning(reasoning, confidence) {
-  if (!reasoning || confidence !== 'low') return { isGarbage: false, matchedPattern: null };
-  for (const { pattern, label } of GARBAGE_REASONING_PATTERNS) {
-    if (pattern.test(reasoning)) {
-      return { isGarbage: true, matchedPattern: label };
-    }
-  }
-  return { isGarbage: false, matchedPattern: null };
-}
-
 module.exports = {
   isGarbageContent,
   hasReviewContent,
@@ -1331,9 +1291,6 @@ module.exports = {
   detectNavigationJunk,
   detectWrongArticle,
   detectHorrorFilmContent,
-  // LLM reasoning garbage detector
-  detectGarbageFromReasoning,
-  GARBAGE_REASONING_PATTERNS,
   // Export constants for reference
   THEATER_KEYWORDS,
   CURRENT_BROADWAY_SHOWS,

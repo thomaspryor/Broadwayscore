@@ -15,8 +15,8 @@
   "sourceMethod": "archive",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
-  "archivePath": "data/archives/reviews/cabaret-2024/variety--naveen-kumar_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T02:22:27.879Z",
+  "archivePath": "data/archives/reviews/cabaret-2024/variety--naveen-kumar_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:17:50.016Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -30,7 +30,7 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251028201520/https://variety.com/2024/legit/reviews/cabaret-review-broadway-eddie-redmayne-1235977702/",
   "llmScore": {
     "score": 78,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 73,
       "high": 83
@@ -40,41 +40,51 @@
     "components": {
       "book": null,
       "music": null,
-      "performances": null,
-      "direction": null
+      "performances": 84,
+      "direction": 83
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the production as 'bracing, high-style' and 'ravishing' with 'grounded, gut-punching' storytelling, though notes reservations about Redmayne's performance being too mannered and remote. | GPT-4o: The review describes the production as 'ravishing and mercilessly introspective' and highlights the transformation of the theater into a 'house of pleasure,' indicating a strong recommendation. Despite noting some reservations about Redmayne's performance, the overall tone is highly positive. | Gemini: The review describes the production as \"ravishing and mercilessly introspective\" and a \"hot-ticket escape.\" While it notes reservations about Redmayne's performance, the overall assessment leans positive.",
+    "keyPhrases": [
+      {
+        "quote": "Rebecca Frecknall's ravishing and mercilessly introspective production",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "a grounded, gut-punching take on a disturbingly timely story",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Redmayne's remoteness drains some of the force from what is otherwise a grounded, gut-punching take",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Claude: The critic praises the production design, direction, and most performances with strong language while noting one significant flaw in Redmayne's performance, resulting in a clear positive recommendation. | GPT-4o-mini: The review highlights strong performances and direction, particularly praising the emotional depth of the actors, while noting some flaws in the narrative and one performance that detracts from the overall impact.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:35:32.412Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T01:42:55.088Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "3.0.0"
+    "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "openaiScore": 78,
+    "scoreDelta": 0,
+    "thumbsMatch": false,
+    "expectedThumb": "Flat",
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Score (78 → Up) conflicts with aggregator thumbs (Flat)"
+    ]
   },
   "bwwThumb": "Meh",
   "rescoreReason": "scored on brief excerpt, now has fullText",

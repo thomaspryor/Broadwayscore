@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This profane, scatological and bitingly satirical musical from the creators of 'South Park' is also sweet, generous and touching in all the right places.",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": null,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,59 +17,9 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This profane, scatological and bitingly satirical musical from the creators of 'South Park' is also sweet, generous and touching in all the right places.",
   "needsScoring": true,
-  "llmScore": {
-    "score": 43,
-    "confidence": "medium",
-    "range": {
-      "low": 38,
-      "high": 48
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review acknowledges impressive visual and technical elements but criticizes fundamental storytelling weaknesses. The additional context about South Park creators suggests this may be truncated text from a different review entirely. | GPT-4o: The review criticizes the plot as threadbare and repetitive, suggesting that the visual elements are wasted on it. The overall tone indicates disappointment, with little redeeming value mentioned for the production. | Gemini: The review clearly states that the visual elements are wasted on a poor plotline and criticizes the acting and script. The overall tone is negative, indicating a lack of recommendation.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:23:26.233Z",
-    "promptVersion": "5.1.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "5.1.0"
-  },
-  "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 40,
-    "geminiScore": 45,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 18,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
-  },
-  "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 77,
   "textWordCount": 196,
-  "archivePath": "data/archives/reviews/book-of-mormon-2011/variety--marilyn-stasio_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T02:28:16.968Z",
+  "archivePath": "data/archives/reviews/book-of-mormon-2011/variety--marilyn-stasio_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:17:27.767Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -105,8 +55,5 @@
     "Word count too low: 196 (min: 300)",
     "Show title not found in text"
   ],
-  "showNotMentioned": true,
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (196 words)",
-  "rescoreCompletedAt": "2026-02-02T03:23:26.233Z"
+  "showNotMentioned": true
 }

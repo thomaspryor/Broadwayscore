@@ -9,56 +9,71 @@
   "bwwExcerpt": "Peck’s choreography is as marvelous as it is moving. Several dance motifs repeat, a nod to the theme of memory and haunting. Often these are tied to characters, like Carl and Henry’s balance-beam swaggering and swaying, or the side-by-side swing-inspired dance and handshake of Henry, Carl, and Shelby. Peck’s choreography is decidedly modern, but his ballet background informs the work, with long-line leg extensions at classic angles and a flurry of precisely-spotted spins and turns.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
+    "score": 85,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 80,
+      "high": 90
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": null,
+      "music": 80,
       "performances": null,
-      "direction": null
+      "direction": 85
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls this 'one of the most singular productions in recent Broadway history' and describes the choreography as 'marvelous' and 'moving', indicating strong enthusiasm despite acknowledging the source material's challenges. | GPT-4o: The review describes the production as 'one of the most singular productions in recent Broadway history' and praises the choreography as 'marvelous' and 'moving,' indicating a strong, enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, calling the production \"one of the most singular productions in recent Broadway history.\" The critic praises the choreography as \"marvelous\" and \"moving.\"",
+    "keyPhrases": [
+      {
+        "quote": "will indelibly be remembered as one of the most singular productions in recent Broadway history",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "often stirring and fascinating to listen to",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "not an inherently logical choice for a narrative work of art",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Despite acknowledging the source material's narrative challenges, the critic declares this production will be 'indelibly remembered as one of the most singular productions in recent Broadway history,' which signals strong admiration and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:43.730Z",
-    "promptVersion": "5.1.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-01T15:20:15.539Z",
+    "promptVersion": "5.0.0",
+    "inputTokens": 2464,
+    "outputTokens": 338,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 95,
-    "geminiScore": 92,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 7,
+    "openaiScore": 85,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "needsReviewReasons": []
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "This multifaceted mix, often stirring and fascinating to listen to, is not an inherently logical choice for a narrative work of art — and yet, Justin Peck has devised, directed, and choreographed a 90-minute dance theater piece based on it, one that will indelibly be remembered as one of the most singular productions in recent Broadway history.",
@@ -71,11 +86,10 @@
   "rescoreCompletedAt": "2026-02-01T15:20:15.539Z",
   "contentTier": "complete",
   "wordCount": 1639,
-  "showNotMentioned": true,
   "isFullReview": false,
   "textWordCount": 102,
-  "archivePath": "data/archives/reviews/illinoise-2024/variety--christian-lewis_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T02:35:28.316Z",
+  "archivePath": "data/archives/reviews/illinoise-2024/variety--christian-lewis_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:18:59.445Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -92,5 +106,7 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260105015527",
-  "archiveOrgUrl": "http://web.archive.org/web/20260105015527/https://variety.com/2024/legit/reviews/illinoise-review-broadway-sufjan-stevens-1235983600/"
+  "archiveOrgUrl": "http://web.archive.org/web/20260105015527/https://variety.com/2024/legit/reviews/illinoise-review-broadway-sufjan-stevens-1235983600/",
+  "showNotMentioned": true,
+  "duplicateTextOf": "variety--maya-phillips.json"
 }

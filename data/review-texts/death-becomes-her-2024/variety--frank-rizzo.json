@@ -9,63 +9,71 @@
   "dtliExcerpt": "The show’s potential shelf-life looks long for New York as well as for the road, ever hungry for a hit.",
   "showScoreExcerpt": "âThe storyline is cleaner, the characters are clearer, and the pace and the laughs are now non-stop.â",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 85,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:00:12.591Z",
   "urlUpdated": "2026-01-23T05:27:32.767Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 79,
+    "score": 85,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 77,
+      "high": 93
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
+      "book": 88,
+      "music": 84,
+      "performances": 89,
+      "direction": 85
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic clearly recommends the show, praising the transformation from a 'so-so' movie into a stunning Broadway production with non-stop laughs and predicting a long shelf-life. | GPT-4o: The review praises the musical for its stunning makeover, nonstop pace, and fantastic production elements, indicating a strong recommendation. | Gemini: The review indicates that the musical is a significant improvement over the original movie, with a cleaner storyline, clearer characters, and non-stop laughs. The reviewer highlights the show's potential for a long run and praises various aspects of the production, indicating a positive overall assessment.",
+    "keyPhrases": [
+      {
+        "quote": "The transformative difference between the two is that the just-skin-deep characters are now free to be much more extravagant in a musical-comedy way",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Hilty and Simard are perfectly paired, with the former going hysterically broad as Simard offers a contrasting approach",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The show's potential shelf-life looks long for New York as well as for the road, ever hungry for a hit",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Claude: The critic clearly recommends this show with consistent praise for performances, direction, music, and production values, noting it's a major improvement over the source material with strong commercial prospects. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's humor, performances, and overall production quality, indicating a clear recommendation to see it.",
     "flags": {
-      "hasExplicitRecommendation": false,
+      "hasExplicitRecommendation": true,
       "focusedOnPerformances": false,
-      "comparesToPrevious": false,
+      "comparesToPrevious": true,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:25:42.859Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
+    "scoredAt": "2026-01-29T01:47:41.553Z",
+    "promptVersion": "3.0.0",
     "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.1.0"
+    "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 80,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "needsReviewReasons": []
   },
   "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/death-becomes-her-2024/variety--frank-rizzo_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T02:26:18.534Z",
+  "archivePath": "data/archives/reviews/death-becomes-her-2024/variety--frank-rizzo_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T21:18:02.206Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -80,10 +88,11 @@
   "bwwExcerpt": "Everything in the musical is fantastically bigger and bolder, from Derek McLane’s goth-meets-Hollywood-excess design to Paul Tazewell’s fabulous costumes to Doug Besterman’s lush orchestrations. Charles LaPointe’s wigs are terrific, too. The tuneful score and witty lyrics are by Julia Mattison and",
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 79,
-  "rescoreCompletedAt": "2026-02-02T03:25:42.859Z",
+  "previousLlmScore": 85,
+  "rescoreCompletedAt": "2026-01-29T01:47:41.553Z",
   "contentTier": "complete",
   "wordCount": 866,
+  "needsRescore": true,
   "isFullReview": false,
   "textWordCount": 82,
   "textQuality": "partial",
