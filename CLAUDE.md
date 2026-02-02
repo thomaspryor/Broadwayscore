@@ -101,6 +101,9 @@ A website aggregating Broadway show reviews into composite scores (independent B
 - **Tier 3** (blogs, smaller sites): weight 0.40
 - Each review: `assignedScore` (0-100), `originalRating` (e.g., "B+", "4 stars")
 - Designation bumps: Critics_Pick +3, Critics_Choice +2, Recommended +2
+- **Unified letter grade → score mapping** (used across all three code locations):
+  A+=97, A=93, A-=90, B+=87, B=83, B-=78, C+=72, C=65, C-=58, D+=40, D=35, D-=30, F=20
+  Source of truth: `src/config/scoring.ts` LETTER_GRADE_MAP (also duplicated in `scripts/rebuild-all-reviews.js`)
 
 **V2 planned:** Audience Score 35%, Buzz Score 15%, confidence badges.
 
@@ -169,8 +172,9 @@ data/
 {
   shows: {
     [showId]: {
-      designation: "Loving" | "Liking" | "Shrugging" | "Loathing",
-      // Thresholds: Loving 88+, Liking 78-87, Shrugging 68-77, Loathing 0-67
+      designation: "Loving" | "Liking" | "Shrugging" | "Loathing",  // Legacy field, still in data file
+      // UI displays letter grades (A+ through F) computed from combinedScore via getAudienceGrade()
+      // Labels: A+/A = "Loving It", A-/B+ = "Liking It", B/B- = "Shrugging", C+ and below = "Loathing It"
       combinedScore: number,
       sources: {
         showScore?: { score, reviewCount },
