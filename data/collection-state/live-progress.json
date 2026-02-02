@@ -1,15 +1,39 @@
 {
-  "updatedAt": "2026-02-02T23:34:42.686Z",
-  "processed": 6,
-  "failed": 8,
-  "successRate": "42.9%",
+  "updatedAt": "2026-02-02T23:36:49.852Z",
+  "processed": 5,
+  "failed": 6,
+  "successRate": "45.5%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archive": 4
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-02-02T23:30:45.042Z",
+      "event": "bb-session",
+      "session": "141396f4",
+      "url": "https://observer.com/2024/04/stereophonic-broadway-review/"
+    },
+    {
+      "t": "2026-02-02T23:31:11.358Z",
+      "event": "bb-session",
+      "session": "8c655a51",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/stereophonic-playwrig"
+    },
+    {
+      "t": "2026-02-02T23:32:38.593Z",
+      "event": "bb-session",
+      "session": "f447e32d",
+      "url": "https://www.wsj.com/articles/stereophonic-review-david-adjmi-will-butler-broadwa"
+    },
+    {
+      "t": "2026-02-02T23:33:24.020Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
