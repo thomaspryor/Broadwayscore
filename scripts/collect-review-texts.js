@@ -338,6 +338,7 @@ let state = {
   },
   startTime: new Date().toISOString(),
   lastProcessed: null,
+  log: [],  // Recent activity log for real-time monitoring
 };
 
 // Browserbase usage tracking (persisted to disk)
@@ -1157,6 +1158,7 @@ async function fetchWithBrowserbase(url, review) {
     const connectUrl = `wss://connect.browserbase.com?apiKey=${CONFIG.browserbaseApiKey}&sessionId=${sessionId}`;
 
     console.log(`    → Browserbase session created: ${sessionId.substring(0, 8)}...`);
+    state.log.push({ t: new Date().toISOString(), event: 'bb-session', session: sessionId.substring(0, 8), url: url.substring(0, 80) });
 
     // Connect via Playwright CDP
     bbBrowser = await bbChromium.connectOverCDP(connectUrl);
@@ -1173,11 +1175,14 @@ async function fetchWithBrowserbase(url, review) {
         const loginOk = await browserbaseLogin(bbPage, paywallCreds.domain, paywallCreds.email, paywallCreds.password);
         if (loginOk) {
           console.log(`    ✓ Browserbase login to ${paywallCreds.domain} succeeded`);
+          state.log.push({ t: new Date().toISOString(), event: 'bb-login-ok', domain: paywallCreds.domain });
         } else {
           console.log(`    ⚠ Browserbase login to ${paywallCreds.domain} uncertain - continuing`);
+          state.log.push({ t: new Date().toISOString(), event: 'bb-login-uncertain', domain: paywallCreds.domain });
         }
       } catch (loginErr) {
         console.log(`    ⚠ Browserbase login failed: ${loginErr.message} - continuing without login`);
+        state.log.push({ t: new Date().toISOString(), event: 'bb-login-fail', domain: paywallCreds.domain, error: loginErr.message });
       }
     }
 
@@ -2529,6 +2534,30 @@ function saveState() {
     path.join(CONFIG.stateDir, 'progress.json'),
     JSON.stringify(state, null, 2)
   );
+
+  // Write a human-readable progress log for real-time monitoring
+  // (committed with each checkpoint so progress is visible via git log)
+  const log = {
+    updatedAt: new Date().toISOString(),
+    processed: state.processed?.length || 0,
+    failed: state.failed?.length || 0,
+    successRate: state.processed?.length
+      ? `${((state.processed.length / (state.processed.length + (state.failed?.length || 0))) * 100).toFixed(1)}%`
+      : '0%',
+    tierBreakdown: {
+      playwright: state.tierBreakdown?.playwright?.length || 0,
+      browserbase: state.tierBreakdown?.browserbase?.length || 0,
+      scrapingbee: state.tierBreakdown?.scrapingbee?.length || 0,
+      brightdata: state.tierBreakdown?.brightdata?.length || 0,
+      archive: state.tierBreakdown?.archive?.length || 0,
+    },
+    browserbaseSessions: stats.browserbaseSessionsUsed || 0,
+    recentActivity: (state.log || []).slice(-20),
+  };
+  fs.writeFileSync(
+    path.join(CONFIG.stateDir, 'live-progress.json'),
+    JSON.stringify(log, null, 2)
+  );
 }
 
 /**
@@ -2565,8 +2594,18 @@ function commitChanges(processed) {
         // Already configured
       }
 
-      // Commit
-      execSync(`git commit -m "chore: Checkpoint - collected ${processed} review texts"`, {
+      // Build descriptive commit message with tier stats
+      const bbUsed = stats.browserbaseSessionsUsed || 0;
+      const failCount = state.failed?.length || 0;
+      const tierInfo = [];
+      if ((state.tierBreakdown?.playwright?.length || 0) > 0) tierInfo.push(`PW:${state.tierBreakdown.playwright.length}`);
+      if (bbUsed > 0) tierInfo.push(`BB:${bbUsed}`);
+      if ((state.tierBreakdown?.brightdata?.length || 0) > 0) tierInfo.push(`BD:${state.tierBreakdown.brightdata.length}`);
+      if ((state.tierBreakdown?.archive?.length || 0) > 0) tierInfo.push(`Ar:${state.tierBreakdown.archive.length}`);
+      const tierStr = tierInfo.length ? ` [${tierInfo.join(',')}]` : '';
+      const failStr = failCount > 0 ? ` (${failCount} failed)` : '';
+
+      execSync(`git commit -m "chore: Checkpoint - collected ${processed} review texts${tierStr}${failStr}"`, {
         stdio: 'pipe'
       });
 
