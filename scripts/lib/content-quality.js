@@ -918,6 +918,41 @@ function countWords(text) {
 }
 
 /**
+ * Detect opinion/evaluative language in text.
+ * Unlike hasReviewContent() which checks topic keywords (Broadway, production),
+ * this checks for critical assessment language that distinguishes a review from
+ * a press release, listing, or plot summary.
+ *
+ * @param {string} text
+ * @returns {boolean} true if at least 2 opinion markers found
+ */
+function hasOpinionLanguage(text) {
+  if (!text) return false;
+  const lower = text.toLowerCase();
+  // Evaluative/opinion words common in theater criticism
+  const opinionMarkers = [
+    /\b(brilliant|stunning|captivating|riveting|extraordinary|superb|magnificent)\b/,
+    /\b(disappointing|lackluster|mediocre|uninspired|tedious|overwrought|clunky)\b/,
+    /\b(succeeds|fails|struggles|excels|shines|falters|stumbles|soars|triumphs)\b/,
+    /\b(unfortunately|thankfully|surprisingly|remarkably|impressively|sadly)\b/,
+    /\b(best|worst|better|worse|strongest|weakest|finest|most\s+compelling)\b/,
+    /\b(heartfelt|moving|powerful|gripping|dull|flat|lifeless|electrifying)\b/,
+    /\b(recommended|must-see|skip|worth\s+(seeing|watching|the\s+trip))\b/,
+    /\b(gives?\s+a?\s*(great|terrific|wonderful|solid|fine|nuanced|layered)\s+performance)\b/,
+    /\b(direction\s+is|score\s+is|choreography\s+is|book\s+is|script\s+is)\b/,
+    /\b(outshines|overshadows|steals\s+the\s+show|carries\s+the\s+show)\b/,
+  ];
+  let matches = 0;
+  for (const pattern of opinionMarkers) {
+    if (pattern.test(lower)) {
+      matches++;
+      if (matches >= 2) return true;
+    }
+  }
+  return false;
+}
+
+/**
  * Classify a review into one of five content tiers
  *
  * @param {Object} review - Review object with fullText, excerpts, etc.
@@ -1010,6 +1045,25 @@ function classifyContentTier(review) {
         tierReason: 'Full review text'
       };
     }
+  }
+
+  // Path 3: Short but structurally complete reviews (capsule reviews, Time Out, etc.)
+  // Stricter structural requirements compensate for lower word count:
+  // - ZERO truncation signals (not even moderate — no ellipsis, no missing punctuation)
+  // - Must contain opinion/evaluative language (not just topic keywords)
+  // - Must end with proper punctuation
+  // - Must be longer than aggregator excerpts (relaxed 1.1x multiplier)
+  const looseExcerptCheck = !hasExcerpt || charCount >= longestExcerptLen * 1.1;
+  if (wordCount >= 150 && hasProperEnding &&
+      truncation.severeCount === 0 && truncation.moderateCount === 0 &&
+      truncation.signals.length === 0 &&
+      looseExcerptCheck && hasOpinionLanguage(fullText)) {
+    return {
+      contentTier: 'complete',
+      wordCount,
+      truncationSignals: [],
+      tierReason: 'Short but structurally complete review'
+    };
   }
 
   // T2: TRUNCATED - Has text but known/likely incomplete
