@@ -9,7 +9,7 @@
   "dtliExcerpt": "The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you’ll hear the tunes you loved in the 1992 movie. But the notion that “Disney Aladdin” somehow resurrects the spirit of the late Howard Ashman, who had the original inspiration for the movie and contributed most of its clever lyrics, is a joke. Restoring a person’s work without respecting his artistic sensibility is no tribute at all. If this super-costly Disney extravaganza doesn’t really represent Ashman’s artistic vision, whose vision does it reflect? Chad Beguelin (Elf, The Wedding Singer), who wrote the book and contributed new lyrics, obviously plays a significant role, as does Alan Menken, who scored the film and wrote new songs for the show. Even more so does helmer-choreographer Casey Nicholaw (The Book of Mormon), who stylistically turns the film’s romantic fairy-tale adventure into shtick comedy.",
   "showScoreExcerpt": "\"This super-costly extravaganza doesn't do justice to the movie, or to the spirit of the late Howard Ashman.\"",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 61,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:53:57.762Z",
@@ -17,11 +17,11 @@
   "dtliThumb": "Meh",
   "bwwExcerpt": "The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you'll hear the tunes you loved in the 1992 movie. But the notion that \"Disney Aladdin\" somehow resurrects the spirit of the late Howard Ashman, who had the original inspiration for the movie and contributed most of its cle...",
   "llmScore": {
-    "score": 64,
+    "score": 61,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Despite praising some technical elements and performances, the critic fundamentally finds the production a failure that disrespects its source material and replaces 'fairy-tale innocence with show-queen vulgarity.' | GPT-4o: The review highlights some impressive elements like the magic-carpet ride and the performance of James Monroe Iglehart, but criticizes the production for not respecting Howard Ashman's artistic vision and for certain character and plot changes. The text is truncated, so the final verdict may be missing, leading to a medium confidence level. | Gemini: The review highlights both positive and negative aspects of the production. While praising the sets, costumes, and some performances, it criticizes the changes to the original material and the overall tone. Given the truncated nature of the review, it's difficult to definitively gauge the final recommendation, but the mixed signals suggest a 'Mixed' classification.",
+    "keyPhrases": [
+      {
+        "quote": "This super-costly extravaganza doesn't do justice to the movie, or to the spirit of the late Howard Ashman.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges spectacular production values (sets, costumes) and strong performances (Iglehart particularly), but finds fundamental flaws in the adaptation that betray the source material's spirit, with 'show-queen vulgarity' replacing 'fairy-tale innocence' and 'disastrous' character changes. | GPT-4o: The review highlights both positive elements like the 'magical' magic-carpet ride and 'wonderful' Cave of Wonders, but criticizes the show for not respecting Ashman's artistic vision and for having unsuccessful updates. The truncated text warning suggests caution, but the overall tone is mixed with both praise and significant criticism. | Gemini: The review highlights both positive and negative aspects. While praising the sets, costumes, and some performances, it criticizes the book, lyrics, and overall artistic vision, resulting in a mixed assessment. | Kimi: While the critic praises James Monroe Iglehart's show-stopping performance and impressive design elements like the magic carpet sequence, they find the adaptation turns the fairy tale into vulgar 'shtick comedy' and makes 'disastrous' changes to the original material. Given the truncated text warning, the final verdict may be missing, but the visible content shows significant reservations outweighing the isolated highlights.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:08:48.375Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:44:17.841Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 65,
+    "claudeScore": 45,
+    "openaiScore": 60,
     "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 23,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "textFetchedAt": "2026-01-25T13:45:31.425Z",
   "textFetchMethod": "playwright",

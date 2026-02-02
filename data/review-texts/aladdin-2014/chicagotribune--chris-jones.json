@@ -13,7 +13,7 @@
   "fetchedAt": "2026-01-23T05:23:00.882Z",
   "llmScore": {
     "score": 64,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 59,
       "high": 69
@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic praises James Monroe Iglehart's performance as the Genie as 'the show's greatest asset' and highlights technical spectacle like the magic carpet, but criticizes flat storytelling, lack of emotional stakes, and problems with the non-Genie scenes. The review acknowledges entertainment value for families while pointing out significant structural flaws. | GPT-4o: The review highlights significant strengths, particularly the performance of James Monroe Iglehart as the Genie, but also points out major weaknesses in the plot and other performances. The text is truncated, so the final verdict may be missing, but the mixed tone suggests a score in the middle of the range. | Gemini: The review highlights both positive and negative aspects, but the overall tone suggests a recommendation with reservations. The critic praises the Genie and the magic carpet ride but criticizes the plot and lack of emotional stakes. The truncated text makes it difficult to ascertain the final verdict with complete certainty.",
+    "keyPhrases": [
+      {
+        "quote": "Apply the wonder of the carpet and the heart of the Genie, and make Aladdin and Jasmine understand that things could go wrong for them, until they don't, and there would be much more of a cave of wonders here.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises Iglehart's Genie performance as the show's 'greatest asset' and acknowledges Disney's spectacle, but finds major flaws in the book, character development, and overall cohesion. The review suggests potential that isn't fully realized - classic mixed territory. | GPT-4o: The review praises the performance of James Monroe Iglehart as the Genie and some visual elements but criticizes the lack of emotional stakes and flatness of the main plot. The text is truncated, so the final verdict is missing, leading to a low confidence score. | Gemini: The review praises the Genie and the magic carpet ride but criticizes the book and the lack of emotional stakes. The overall tone is mixed, with both positive and negative aspects highlighted. | Kimi: The review praises James Monroe Iglehart's Genie and the magic carpet as genuine highlights but finds the main plot flat, the romantic leads lacking chemistry, and the book tonally uncertain. With significant reservations about the show's emotional stakes and the text appearing truncated, the overall assessment is genuinely mixed.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:36:51.736Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:21:00.592Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 65,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "bwwExcerpt": "You might argue that nobody cares about such veracity in a show based on a cartoon and now expanded into a family musical full of color and exuberance - if still wanting for an overarching theatrical reason for being. But if the director Casey Nicholaw, the book writer Chad Beguelin and their cast a...",
   "textFetchedAt": "2026-01-30T16:15:12.293Z",

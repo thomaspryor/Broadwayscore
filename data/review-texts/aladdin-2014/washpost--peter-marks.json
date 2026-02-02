@@ -19,7 +19,7 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 62,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 57,
       "high": 67
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises Iglehart's performance as the standout but criticizes the material's rough patches, vapid leads, and formulaic extension from film to stage. The final assessment clearly divides the recommendation by audience - positive for children, wanting for adults. | GPT-4o: The review praises James Monroe Iglehart's performance as the Genie but criticizes the overall production for exposing the material's rough patches and lacking enchantment for adults. It suggests the show is more suitable for children, indicating a mixed reception. | Gemini: The review highlights the energetic performance of the Genie and some enjoyable moments, but also points out the show's rough patches and lack of richer enchantments for adults. It's a qualified recommendation, leaning towards positive due to the enjoyable aspects.",
+    "keyPhrases": [
+      {
+        "quote": "This version of 'Aladdin' will doubtless keep your kiddies happy; for adults, one would like to press Iglehart in the cause of conjuring a desert kingdom of richer enchantments.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show works for children but finds it lacking for adults, praising Iglehart's performance while criticizing the book, pacing, and overall execution. Neither a recommendation nor a dismissal. | Gemini: The review praises Iglehart's performance as the Genie but finds the rest of the production unremarkable and vapid, suggesting it's more suitable for children than adults, resulting in a mixed assessment. | Kimi: The review praises James Monroe Iglehart's performance as the production's undeniable highlight but criticizes the vapid leads, uneven book, and unremarkable staging, suggesting the show primarily satisfies children.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:10.951Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:46:12.746Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
-    "geminiScore": 75,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 17,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/aladdin-2014/the-washington-post--peter-marks_2026-01-26.html",
   "textFetchedAt": "2026-01-26T19:51:43.185Z",

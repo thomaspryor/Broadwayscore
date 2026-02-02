@@ -7,7 +7,7 @@
   "publishDate": "March 20, 2014",
   "showScoreExcerpt": "\"You're going to have a great time at Aladdin, despite its conflict-starved filler of a book. But are you really going for the dramaturgy? No, you're going to see sexy actors sing and dance.\"",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textFetchedAt": "2026-01-30T16:09:07.333Z",
@@ -17,11 +17,11 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 76,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly recommends the show despite acknowledging significant story problems, emphasizing that audiences will 'have a great time' and praising the spectacular production values and performances. | Gemini: The review acknowledges flaws in the story and book, but ultimately concludes that the spectacle, performances, and magic tricks make it an enjoyable experience. The critic explicitly states that you're going to have a great time, indicating a positive recommendation despite reservations.",
+    "keyPhrases": [
+      {
+        "quote": "You're going to have a great time at Aladdin, despite its conflict-starved filler of a book.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation despite criticizing the book and some performances. Praises the spectacle, magic, and entertainment value while acknowledging significant flaws. | GPT-4o: The review praises the spectacle, performances, and stagecraft, while noting issues with the book and some character portrayals. The overall tone suggests a positive experience, recommending the show for its entertainment value despite narrative flaws. | Gemini: The review acknowledges flaws in the book but emphasizes the spectacular elements and enjoyable experience, leading to a positive but not rave recommendation. | Kimi: While criticizing the clunky book, inept villain, and lack of romantic chemistry, the reviewer ultimately praises the breathtaking spectacle, show-stopping performances (particularly Iglehart's Genie), and magical stagecraft, clearly recommending the show as an entertaining experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,27 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:07:53.818Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:38:23.842Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 77,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,

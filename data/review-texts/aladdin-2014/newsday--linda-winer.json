@@ -16,7 +16,7 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 79,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 74,
       "high": 84
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses consistently positive language ('awesome', 'enjoyable') and frames the production favorably as a 'big, cheerful production' and 'throwback to old-time musical comedy', indicating clear recommendation. | GPT-4o: The review uses enthusiastic language such as 'awesome' and 'enjoyable throwback,' indicating a strong positive recommendation. The tone is clearly appreciative of the production's charm and execution. | Gemini: The review uses positive language like \"awesome\" and \"enjoyable\", indicating a recommendation, although it is not a rave.",
+    "keyPhrases": [
+      {
+        "quote": "The carpet flies, kids, and it's awesome.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('awesome', 'enjoyable') with enthusiastic tone, but limited excerpt makes full verdict uncertain. Aggregator context confirms positive reception. | GPT-4o: The review praises the production as 'big, cheerful' and 'enjoyable', highlighting its appeal and successful execution of a beloved story. The tone is positive, though not overwhelmingly enthusiastic, fitting a solid recommendation. | Gemini: The review uses positive language like \"awesome\", \"enjoyable\", and \"cheerful production\", indicating a positive recommendation. The excerpt suggests a solid, if not ecstatic, endorsement. | Kimi: The excerpt uses enthusiastic language ('awesome', 'enjoyable') and clearly recommends the show as a successful throwback to classic musical comedy, despite being only curated excerpts.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:21:26.122Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:30:19.115Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
+    "claudeScore": 77,
+    "openaiScore": 80,
     "geminiScore": 78,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "dtliThumb": "Up",
   "dtliExcerpt": "The carpet flies, kids, and it's awesome. Aladdin, an urchin from the streets, and Princess Jasmine float far away into the extremely twinkly sky. Such awesomeness, of course, is to be expected from Aladdin, Disney's latest Broadway translation of a beloved animated fantasy. But what's a whole new world, as the song promises, is the almost modest, down-to-earth human scale of director-choreographer Casey Nicholaw's big, cheerful production — an enjoyable throwback to old-time musical comedy.",

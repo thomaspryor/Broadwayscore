@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"It's not nearly as good as the movie, but it does have a terrific star, super-duper sets and sensational special effects.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 63,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 64,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly places the show as mediocre ('falls roughly halfway') and states it's inferior to the source material, while acknowledging some positive technical elements. This is classic mixed territory - neither recommended nor discouraged. | GPT-4o: The review acknowledges the show has strong elements like a terrific star and impressive sets, but it also notes that it doesn't match the quality of the movie, indicating a mixed reception. | Gemini: The review states the show is not as good as the movie, but highlights positive aspects like the star, sets, and special effects, indicating a recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "It's not nearly as good as the movie, but it does have a terrific star, super-duper sets and sensational special effects.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges strong individual elements (star performance, production values) but explicitly states it's 'not nearly as good as the movie' and places it as mediocre among Disney's Broadway output. This suggests qualified interest rather than a clear recommendation. | GPT-4o: The review acknowledges strong elements like the star and production design but ultimately suggests the show is not as good as the original movie, placing it between Disney's best and worst efforts. | Gemini: The review states that the show is not as good as the movie but has good elements, placing it in the mixed category. | Kimi: While the critic notes the show falls short of the film's artistic quality and lands in middle ground between Disney's best and worst, the enthusiastic praise for the lead performance, sets, and effects constitutes a recommendation to see it for its entertainment value.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,9 +43,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:21:51.259Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:46:51.142Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
@@ -48,17 +54,19 @@
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 62,
+    "kimiScore": 74,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "bwwExcerpt": "Billing notwithstanding, the real star of \"Aladdin\" is James",
   "contentTier": "truncated",

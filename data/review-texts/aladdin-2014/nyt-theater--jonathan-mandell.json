@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges flaws (Disney product limitations, weak book, bland leads) but emphasizes the entertainment value, spectacular staging, and standout performance by Iglehart. The overall tone is positive despite reservations. | Gemini: The review is mostly positive, highlighting the entertainment value and strong performances, especially by James Monroe Iglehart. However, it also points out some flaws in the book and lyrics, indicating a recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "This is a show that is massively fun to look at.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the entertainment value, spectacular production elements, and standout performance by Iglehart, while noting some flaws in the book and dialogue. The overall tone is positive with clear recommendation despite reservations. | GPT-4o: The review praises the entertainment value and spectacle provided by the production, especially highlighting James Monroe Iglehart's performance. However, it also notes some issues with the book and character development, indicating a positive but not unqualified recommendation. | Gemini: The review is mostly positive, with reservations about the book and some of the lyrics, but ultimately recommends seeing it, especially for Iglehart's performance as the Genie. | Kimi: The reviewer praises James Monroe Iglehart's show-stopping performance and the spectacular visual design while criticizing the dumb dialogue, bland leads, and weak book, ultimately recommending the show as entertaining but flawed.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:07:10.388Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:33:56.178Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 74,

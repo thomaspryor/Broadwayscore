@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls it an 'uneven production' and criticizes the first half for questionable design choices and stiff acting, while praising specific elements like the town meeting sequence and the performances of Strong and Imperioli. | GPT-4o: The review describes the production as uneven with some questionable choices, but also highlights moments where it works well, such as the town meeting sequence. The overall tone suggests a mixed experience with notable highs and lows. | Gemini: The review highlights both strengths (the town meeting sequence, parallels to modern issues) and weaknesses (questionable design choices, stiff acting). The overall assessment is that the production is 'uneven,' suggesting a mixed experience.",
+    "keyPhrases": [
+      {
+        "quote": "This uneven production of a timely work",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic calls it 'uneven' and notes 'questionable design choices' and 'stiff acting' in the first half, but praises the town meeting sequence as working 'truly best' and making for 'great environmental theater.' The mixed assessment with no clear recommendation places it in Mixed territory. | GPT-4o: The review describes the production as uneven with some questionable choices, but highlights a standout sequence that works well. The overall tone suggests a mixed experience with both positive and negative elements. | Gemini: The review highlights both strengths (Strong's performance, the town meeting scene) and weaknesses (design choices, stiff acting). The overall assessment is mixed, leaning slightly positive due to the immersive town meeting scene. | Kimi: While the critic praises Strong's performance and the immersive town meeting sequence, they criticize the design choices, dim lighting, and stiff acting in much of the production, explicitly calling it 'uneven' without issuing a clear recommendation to see it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:36:21.303Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:48:38.406Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 63,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 65,
+    "kimiScore": 63,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "dtliExcerpt": "I wish I had been there (alas, I attended the following night), as it would have been an exciting addition to this uneven production of a timely work.",
   "sources": [

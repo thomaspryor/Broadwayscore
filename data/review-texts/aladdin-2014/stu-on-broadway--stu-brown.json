@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly recommends the show for families and calls it 'solidly good, sometimes great' and 'enjoyable' for general audiences, though notes it lacks the enchantment of Disney's best theatrical productions. | GPT-4o: The review provides a generally positive assessment of the show, highlighting its entertainment value and strong performances, especially for families. However, it notes that the show lacks the depth and enchantment of other Disney productions, which suggests some reservations. | Gemini: The review is generally positive, calling the show \"enjoyable and energetically fine.\" While it doesn't reach the heights of Lion King or Beauty and the Beast, it's still a recommended experience, especially for families.",
+    "keyPhrases": [
+      {
+        "quote": "Aladdin is solidly good, sometimes great but, overall, enjoyable and energetically fine are apt descriptors.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic gives two perspectives and while noting it ranks below Disney's best Broadway shows, clearly recommends it as 'solidly good' and 'enjoyable' with praise for performances and production values, despite some repetitive choreography concerns. | GPT-4o: The review provides a generally positive assessment, noting the show's charm and entertainment value, especially for families. However, it also mentions that it lacks the depth and enchantment of other Disney productions, indicating some reservations. | Gemini: The review is generally positive, calling the show \"enjoyable and energetically fine.\" While it doesn't reach the heights of Lion King or Beauty and the Beast, it's still a recommended experience, especially for families. | Kimi: The critic offers a dual perspective: an enthusiastic recommendation for families with children, and a qualified positive assessment for general audiences, praising the cast performances (particularly James Monroe Iglehart as the Genie) and spectacle while noting it ranks below Disney's best productions and suffers from repetitive choreography in the second act.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:07:31.859Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:36:10.176Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 76,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "claudeScore": 75,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/aladdin-2014/stu-on-broadway--stu-brown_2026-01-26.html",
   "textFetchedAt": "2026-01-26T19:47:27.407Z",

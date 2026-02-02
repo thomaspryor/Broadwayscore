@@ -82,6 +82,11 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20210620183001",
   "archiveOrgUrl": "http://web.archive.org/web/20210620183001/https://www.classicalite.com/articles/6910/20140325/review-disneys-aladdin-broadway-musical-is-better-than-frozen-will-be.htm",
-  "contentTier": "complete",
-  "wordCount": 578
+  "contentTier": "invalid",
+  "wordCount": 578,
+  "rejectedAt": "2026-02-02T23:22:50.206Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a news article summarizing what other critics said about Aladdin, not Patricia Reaney's own review of the show; openai: The text is a compilation of various critics' opinions rather than a single evaluative review by Patricia Reaney. It lacks a coherent evaluative stance from the critic.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Disney musical is a colorful, energetic show that should please families, even if it doesn't quite capture the magic of the animated film.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The new Disney musical is a colorful, energetic show that should please families, even if it doesn't quite capture the magic of the animated film.",
   "needsScoring": true,
   "llmScore": {
-    "score": 74,
+    "score": 73,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 68,
+      "high": 78
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear recommendation ('should please families') but with noted limitations about not matching the source material's magic, indicating a positive but reserved endorsement. | GPT-4o: The review describes the show as colorful and energetic, suggesting it is enjoyable and worth seeing, especially for families, despite not fully capturing the magic of the original film. | Gemini: The review indicates that the show is pleasing and energetic, which suggests a positive experience, but it also acknowledges that it doesn't fully capture the magic of the film, indicating a reservation.",
+    "keyPhrases": [
+      {
+        "quote": "The new Disney musical is a colorful, energetic show that should please families, even if it doesn't quite capture the magic of the animated film.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation for target audience (families) but with significant caveat about not matching source material. Single excerpt warning requires caution - this reads as qualified positive. | GPT-4o: The excerpt suggests a positive recommendation for families due to its colorful and energetic nature, but notes it falls short of the animated film's magic. With only one excerpt available, confidence is low. | Gemini: The review is positive, stating it should please families, but notes that it doesn't quite capture the magic of the film. Given the single excerpt, confidence is low. | Kimi: The critic offers qualified recommendation noting the production is colorful and energetic with appeal for families, but the significant reservation about failing to match the film's magic and soft 'should please' language place this at the lower end of the Positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:57:22.654Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:38:00.696Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 74,
+    "claudeScore": 73,
+    "openaiScore": 72,
     "geminiScore": 75,
+    "kimiScore": 72,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "contentTierReason": "fullText was copy of excerpt from web-search import",

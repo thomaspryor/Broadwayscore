@@ -7,18 +7,18 @@
   "publishDate": "March 28, 2014",
   "showScoreExcerpt": "\"Disney's latest offering at the New Amsterdam Theatre, is simply . . . maaaahvelous! The costumes, the sets, the kitsch and comedic fun made me feel like a kid again.\"",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 82,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 77,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The enthusiastic language 'maaaahvelous' and positive comments about feeling 'like a kid again' indicate strong enjoyment, but with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The excerpt uses highly enthusiastic language, describing the show as 'maaaahvelous' and highlighting the enjoyment of costumes, sets, and comedic fun. Despite the single excerpt warning, the tone suggests a strong recommendation. | Gemini: The reviewer uses the word \"maaaahvelous!\" and describes the show as fun and nostalgic, indicating a positive experience. Given the single excerpt warning, I'm scoring in the middle of the positive range.",
+    "keyPhrases": [
+      {
+        "quote": "Disney's latest offering at the New Amsterdam Theatre, is simply . . . maaaahvelous!",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear enthusiastic praise with exclamation and emphasis ('maaaahvelous!'), highlighting multiple positive elements (costumes, sets, fun) and emotional impact ('made me feel like a kid again'). Single excerpt warning applied - using upper Positive range. | GPT-4o: The excerpt uses strong positive language ('maaaahvelous') and describes the show as fun and nostalgic, indicating a highly positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses enthusiastic language like \"maaaahvelous!\" and describes feeling like a kid again, indicating a positive experience. Given it's a single excerpt, I'm scoring it on the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise ('maaaahvelous') for the production design and comedic tone, describing a joyful emotional response that indicates a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:07:39.518Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:37:39.795Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 82,
     "openaiScore": 90,
-    "geminiScore": 75,
+    "geminiScore": 82,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/aladdin-2014/theater-pizzazz--sandi-durell_2026-01-26.html",
   "textFetchedAt": "2026-01-26T19:53:25.188Z",

@@ -7,17 +7,17 @@
   "publishDate": "March 20, 2014",
   "showScoreExcerpt": "\"While it doesn't rival the imagination or innovation of \"The Lion King,\" the show's ebullient comic spirit should make it a popular hit. It's not the most sophisticated entertainment, but the target demographic won't mind at all.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "dtli",
   "needsFullText": false,
   "urlUpdated": "2026-01-23T05:30:05.962Z",
   "fetchedAt": "2026-01-23T05:23:06.420Z",
   "llmScore": {
-    "score": 78,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging it's not sophisticated entertainment, the critic clearly recommends the show as 'sweet, silly fun' that will be a 'popular hit' and 'family-friendly hit.' The review praises performances, staging, and entertainment value while noting limitations. | GPT-4o: The review acknowledges that 'Aladdin' may not be the most sophisticated entertainment, but highlights its appeal as a family-friendly hit with 'sweet, silly fun.' The critic notes the show's strengths in its comic spirit and production numbers, suggesting a positive recommendation despite some reservations about its lack of sophistication and emotional depth. | Gemini: Despite some reservations about sentimentality and character depth, the review suggests the show is enjoyable and a family-friendly hit, indicating a positive recommendation. The aggregator excerpts also point towards a positive reception.",
+    "keyPhrases": [
+      {
+        "quote": "But that shouldn't deter audiences from making this splashy Arabian Nights wish-fulfillment fantasy into a family-friendly hit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging it's not sophisticated and has flaws (weak romance, juvenile appeal), the critic clearly recommends it as 'sweet, silly fun' that 'should make it a popular hit' for its target demographic. | GPT-4o: The review highlights the show's fun and family-friendly appeal despite noting it lacks sophistication and some emotional depth. The truncated nature of the text and the positive aggregator context suggest a positive recommendation with some reservations. | Gemini: The review is generally positive, describing the show as \"sweet, silly fun\" and a \"family-friendly hit.\" While it notes some shortcomings, the overall tone suggests a recommendation, especially for the target demographic. | Kimi: While noting the show lacks sophistication and romantic depth, the critic praises the energetic performances (particularly Iglehart's Genie) and direction, calling it 'sweet, silly fun' and predicting it will be a popular family hit.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:37:15.605Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:26:59.933Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 78,
-    "geminiScore": 79,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwExcerpt": "Its exotic Middle Eastern setting and multiethnic cast aside, Aladdin offers less \"A Whole New World\" - to quote its signature song - than a traditional Disney fairy-tale realm; it's perhaps the most old-school of the company's screen-to-stage adaptations since Beauty and the Beast. But that shouldn't deter audiences from making this splashy Arabian Nights wish-fulfillment fantasy into a family-friendly hit.",
   "textFetchedAt": "2026-02-02T19:51:17.943Z",

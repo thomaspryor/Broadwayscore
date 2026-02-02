@@ -10,59 +10,69 @@
   "bwwExcerpt": null,
   "showScoreExcerpt": "If you know what to expect, the show is sufficiently entertaining [but it is] not ambitious theater, nor is it even really about ambition. Although some of Simon Rich's individual stories are inherently theatrical, the selection overall feels random.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 69,
   "bucket": "Tepid",
   "thumb": "Flat",
   "source": "playwright-scraped",
   "dtliThumb": null,
   "scoringNotes": "Mixed review - 'sufficiently entertaining' at lottery prices but 'not ambitious theater', 'selection feels random', 'grab-bag'. Faint praise with significant reservations.",
   "llmScore": {
-    "score": 74,
-    "confidence": "medium",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 64,
+      "high": 74
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite extensive criticism of marketing and pricing, the critic clearly states the show is 'sufficiently entertaining' and worth the time/expense when expectations are properly set and tickets are affordable. | GPT-4o: The review acknowledges the criticisms regarding marketing and pricing but finds the show entertaining at a lower price point. The verdict is mixed, noting the show's lack of ambition but also its entertainment value if expectations are managed. | Gemini: Despite the initial setup discussing negative perceptions and marketing issues, the critic ultimately finds the show entertaining and worth the time and expense, especially at a lower ticket price. This indicates a positive, but not rave, recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "If you know what to expect, the show is sufficiently entertaining to feel worth the (80 minute) time and ($45) expense",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The critic finds the show entertaining at a lower price point but criticizes the misleading marketing, high ticket prices, and lack of ambition. The recommendation is conditional on expectations and pricing rather than an enthusiastic endorsement. | GPT-4o: The review acknowledges significant criticisms regarding the show's marketing and pricing but finds it enjoyable at a lower price point. The critic provides a balanced view, noting both the entertainment value and the shortcomings, leading to a mixed verdict. | Gemini: The review acknowledges flaws and marketing issues, but ultimately finds the show entertaining enough for the lottery price. The recommendation is qualified, but positive overall. | Kimi: The critic delivers a qualified recommendation, concluding the show is entertaining and worth the time/money if obtained at a lower price point, despite criticisms of the marketing, high top-tier prices, and lack of theatrical ambition. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T01:00:15.471Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:47:59.366Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 74,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "geminiScore": 72,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
   },
   "sources": [
     "playwright-scraped",

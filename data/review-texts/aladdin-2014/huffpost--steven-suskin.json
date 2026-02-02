@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly calls it 'a considerable win for Disney' and predicts success, praising standout performances and production numbers while acknowledging it's not perfect. Clear positive recommendation despite reservations. | GPT-4o: The review acknowledges flaws such as the padded score and some restrained elements, but overall it praises the production, especially James Monroe Iglehart's performance and the 'Friend Like Me' number. The critic concludes that Aladdin is a considerable win for Disney, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting strong performances and production elements, but also noting some weaknesses in the book and score. The critic ultimately recommends the show as a 'considerable win' for Disney.",
+    "keyPhrases": [
+      {
+        "quote": "Score Aladdin a considerable win for Disney, likely to fill the New Amsterdam with happy crowds for seasons to come.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic explicitly declares Aladdin 'a considerable win' and predicts it will fill theaters with 'happy crowds for seasons to come.' Despite noting flaws (padded score, sitcom-easy jokes, restrained first act), the overall assessment is positive with particular praise for Iglehart's performance and several production numbers. | GPT-4o: The review praises James Monroe Iglehart's performance and highlights several standout moments, despite noting some flaws in the first act and the score. The overall tone is positive, recommending the show as a success for Disney. | Gemini: The review is generally positive, highlighting Iglehart's performance and the \"Friend Like Me\" number. While it notes some shortcomings, the overall assessment is a recommendation. | Kimi: The critic offers strong praise for James Monroe Iglehart's performance and specific production numbers while noting the uneven first act and padded score, ultimately calling it a 'considerable win' though 'not exactly a knockout.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:05:43.342Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:27:31.601Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 80,
-    "geminiScore": 78,
+    "claudeScore": 77,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "sources": [
     "bww-roundup"

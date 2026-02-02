@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong positive language throughout with phrases like 'sure-to-be megahit,' 'jaw-dropping,' 'worth the cost of your entire ticket,' and 'absolutely worth seeing.' The critic clearly recommends the show despite minor reservations. | GPT-4o: The review is filled with enthusiastic praise for the production, highlighting the director's skill, standout performances, and the show's entertainment value. The critic emphasizes that the show is a must-see, especially in a disappointing season, making it a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the show-stopping moments and enjoyable aspects. The critic explicitly states that certain scenes are worth the ticket price, indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "In a Broadway musical season that has so far been a bit disappointing, it's a bonus to finally see a show that has as much magic as Aladdin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive recommendation with enthusiastic praise for specific numbers, performances, and overall entertainment value. Calls it a 'sure-to-be megahit' and says it 'will absolutely lift your spirits' despite minor reservations about it not being 'completely out of this world.' | GPT-4o: The review praises the production numbers, performances, and overall entertainment value. It describes the show as 'highly entertaining' and 'worth the cost of your entire ticket,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the show-stopping moments, inventive production numbers, and overall entertainment value. The critic clearly recommends seeing the show, calling it a \"bonus\" in a disappointing season. | Kimi: The critic delivers unqualified praise for the production numbers, performances, and direction, declaring the show a 'sure-to-be megahit' with specific moments worth the entire ticket price, concluding it 'will absolutely lift your spirits.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:36:55.669Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:21:20.202Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 90,
+    "openaiScore": 82,
     "geminiScore": 81,
+    "kimiScore": 94,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 9,
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 86,

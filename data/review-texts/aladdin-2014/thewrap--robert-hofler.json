@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 44,
+    "score": 43,
     "confidence": "high",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 38,
+      "high": 48
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic clearly states the show 'finds no magic whatsoever' and questions whether the cynical approach is appropriate for children's theater, indicating disappointment with the production. | GPT-4o: The review excerpt criticizes the lack of magic in a story that should be magical, and questions the appropriateness of the humor for children, suggesting a negative view of the production. | Gemini: The review excerpt expresses disappointment with the book and humor, suggesting a negative overall assessment of the production. The truncated nature and single excerpt warrant a score in the middle of the negative range.",
+    "keyPhrases": [
+      {
+        "quote": "finds no magic whatsoever in a story rife with magic lanterns, carpets, genies and sultry Arabian nights",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds the book lacks magic and questions cynical approach to children's theater. However, this is only one excerpt so confidence is low. | GPT-4o: The excerpt criticizes the book for lacking magic and questions the approach to humor, suggesting a negative view. However, the single excerpt may not fully represent the review's sentiment, leading to low confidence. | Gemini: The review excerpt is negative, criticizing the book for lacking magic and questioning the humor's suitability for children. Given the single excerpt and negative tone, I've classified it as negative with low confidence. | Kimi: The excerpt contains a clear non-recommendation ('finds no magic whatsoever') and criticizes the show's cynical tone, despite acknowledging some clever wordplay. With only one excerpt available, confidence is low, but the sentiment is clearly negative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:21:43.040Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:40:04.755Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 44,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 45,
+    "claudeScore": 45,
+    "openaiScore": 40,
     "geminiScore": 45,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 3,
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "sources": [
     "bww-roundup"

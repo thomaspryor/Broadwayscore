@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening concerns about Disney crowding Broadway, the critic concludes with clear positive language calling it 'unsurprisingly pretty good' and recommending it for both kids and adults, including Disney skeptics. | GPT-4o: The review acknowledges Disney's ability to create enjoyable Broadway experiences and praises the production value and entertainment of 'Aladdin'. Despite some reservations about Disney's commercial approach, the critic ultimately finds the show enjoyable for both kids and adults. | Gemini: Despite the truncated text, the review indicates a positive experience, especially for families. The phrase \"pretty good\" and the comment about adults who dislike Disney enjoying it suggest a recommendation, albeit not a rave.",
+    "keyPhrases": [
+      {
+        "quote": "A fun treat for the kids for sure, and even the adults who loathe Disney's theatrical presence will find themselves enjoying the show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is positive overall, calling it 'fantastic,' 'unsurprisingly pretty good,' and recommending it for both kids and Disney skeptics. However, it acknowledges typical Disney formula limitations and the text appears truncated, so medium confidence is warranted. | Gemini: The review is generally positive, calling it a \"fun treat\" and \"pretty good.\" Although truncated, the overall tone suggests a recommendation, albeit with some reservations typical of Disney productions. | Kimi: Despite noting the show follows a typical Disney formula and calling the Genie merely 'acceptable,' the critic praises the 'fantastic' direction, production value, and 'undeniably fun' experience, recommending it for both children and skeptical adults.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +48,22 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:08:28.925Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:42:21.594Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 76,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": null,
     "geminiScore": 75,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,

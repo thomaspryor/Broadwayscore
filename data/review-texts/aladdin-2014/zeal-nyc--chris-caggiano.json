@@ -19,7 +19,7 @@
   "scoreConfidence": "low",
   "llmScore": {
     "score": 59,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 54,
       "high": 64
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show is 'diverting' and 'pleasant' but consistently criticizes it as 'uninspired,' 'sluggish,' 'pedestrian,' and 'forgettable,' concluding it falls short of its potential despite some positives like the magic carpet. | GPT-4o: The review describes the production as 'diverting, to be sure, but ultimately uninspired' and concludes with 'pleasant but forgettable,' indicating a mixed reception with some positive elements but overall lacking strong recommendation. | Gemini: The review highlights both positive and negative aspects of the show. While it acknowledges some enjoyable elements like the magic carpet and James Monroe Iglehart's performance, it ultimately finds the production uninspired and forgettable, placing it in the 'Mixed' category.",
+    "keyPhrases": [
+      {
+        "quote": "From where I sat, Aladdin was diverting, to be sure, but ultimately uninspired.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds the show 'pleasant but forgettable' with some bright spots (magic carpet, occasional show-stopper) but significant flaws in direction, pacing, and new material. The tone is neither recommendatory nor dismissive. | GPT-4o: The review describes the show as 'pleasant but forgettable' and 'ultimately uninspired,' indicating a lack of strong recommendation. While there are some positive elements, such as the magic carpet, the overall tone is mixed with significant criticisms of the direction, pacing, and new songs. | Gemini: The review acknowledges some positive aspects (lush look, magic carpet) but ultimately finds the production uninspired and ordinary, with pacing issues and forgettable new songs, leading to a mixed assessment. | Kimi: The critic finds the production sluggish and pedestrian despite lavish design, calling it ultimately uninspired and forgettable, with only the magic carpet earning unqualified praise.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:21:55.453Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:47:27.648Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
+    "previousScore": 59,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,
     "openaiScore": 58,
     "geminiScore": 62,
+    "kimiScore": 48,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 57,

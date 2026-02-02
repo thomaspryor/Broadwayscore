@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"So why is Aladdin a bit of a chore? Even the best of what the writers offer doesn’t seem to stick very long; if it weren’t for Nicholaw’s merciless flogging, you feel the story would simply evaporate in the desert heat.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
-  "assignedScore": 67,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 67,
-    "confidence": "low",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 62,
-      "high": 72
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: Green acknowledges Disney's technical prowess and craft while repeatedly calling the show a 'chore' and criticizing its lack of emotional substance. He neither recommends nor discourages attendance, focusing on competent execution of hollow material. | Gemini: The review acknowledges flaws and a lack of depth, but ultimately suggests it's an enjoyable, well-executed production. The critic highlights the strengths of the production while also pointing out its shortcomings, leading to a positive but not rave recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "So why is Aladdin a bit of a chore?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Green acknowledges Disney's technical mastery and production values while finding the show emotionally empty and overly sanitized. He praises specific elements like performances and staging but concludes it's a 'chore' despite its professionalism. | Gemini: The review acknowledges the show's strengths (music, choreography) but criticizes its lack of depth and over-reliance on formula. It's a qualified endorsement, leaning towards mixed. | Kimi: While praising individual performances and production elements, the critic finds the show emotionally empty, tonally shallow, and ultimately tedious, describing it as a 'meaningless fling' that prevents the audience from taking anything seriously.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:02.713Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:45:11.816Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "5.0.0"
+    "previousScore": 67,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
+    "claudeScore": 62,
     "openaiScore": null,
-    "geminiScore": 74,
+    "geminiScore": 62,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dtliExcerpt": "The show is gorgeous to look at, but it's also exhausting — like being trapped in a very expensive, very loud toy store.",
   "sources": [

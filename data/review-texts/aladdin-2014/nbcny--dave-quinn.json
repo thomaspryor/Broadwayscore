@@ -104,7 +104,7 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "rescoreCompletedAt": "2026-01-31T18:11:36.329Z",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 685,
   "_removedDesignation": {
     "designation": "Recommended",
@@ -116,5 +116,10 @@
   },
   "isFullReview": false,
   "showScoreExcerpt": null,
-  "bwwThumb": null
+  "bwwThumb": null,
+  "rejectedAt": "2026-02-02T23:28:24.716Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be website navigation content, news briefs, and legal disclaimers rather than a theater review; openai: This text is a collection of unrelated news snippets and promotional content, not a review.; gemini: This is a collection of news blurbs and promotional content, not a review of a specific theatrical production.; kimi: This text is a collection of entertainment news briefs, interview teasers, and promotional content for NBC New York segments. It does not contain a review of any Broadway production.",
+  "promptVersion": "5.2.0"
 }
