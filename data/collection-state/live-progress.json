@@ -1,34 +1,51 @@
 {
-  "updatedAt": "2026-02-02T23:28:45.143Z",
-  "processed": 5,
+  "updatedAt": "2026-02-02T23:30:34.330Z",
+  "processed": 6,
   "failed": 5,
-  "successRate": "50.0%",
+  "successRate": "54.5%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 2,
-    "archive": 3
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archive": 2
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-02T23:19:33.487Z",
+      "t": "2026-02-02T23:25:19.014Z",
       "event": "bb-session",
-      "session": "5e414556",
-      "url": "https://www.nytimes.com/2023/07/20/theater/here-lies-love-review-david-byrne.htm"
+      "session": "19d1a1b4",
+      "url": "https://observer.com/2019/07/moulin-rouge-broadway-review/"
     },
     {
-      "t": "2026-02-02T23:20:22.456Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074388936\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAdTAGyjAHPAcANA1qtA==&cid=0CY3ZhYJX1nWnkRGdUpkhkmABRQSNgbstgZn_korWoqT12C6r41Q0BkmM4xd3L3Gp48nzp7yBE8qZqkE5SF4m0PTHCRohx_c7nO3hf4MClNStKB2mik51EZNJdp0m~Jk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074388936\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074388936\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAdTAGyjAHPAcANA1qtA==&cid=0CY3ZhYJX1nWnkRGdUpkhkmABRQSNgbstgZn_korWoqT12C6r41Q0BkmM4xd3L3Gp48nzp7yBE8qZqkE5SF4m0PTHCRohx_c7nO3hf4MClNStKB2mik51EZNJdp0m~Jk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074388936\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074388936\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAdTAGyjAHPAcANA1qtA==&cid=0CY3ZhYJX1nWnkRGdUpkhkmABRQSNgbstgZn_korWoqT12C6r41Q0BkmM4xd3L3Gp48nzp7yBE8qZqkE5SF4m0PTHCRohx_c7nO3hf4MClNStKB2mik51EZNJdp0m~Jk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074388936\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n"
+      "t": "2026-02-02T23:25:43.300Z",
+      "event": "bb-session",
+      "session": "b0632603",
+      "url": "https://www.theatermania.com/broadway/reviews/moulin-rouge-the-musical_88234.htm"
     },
     {
-      "t": "2026-02-02T23:27:44.451Z",
+      "t": "2026-02-02T23:26:14.417Z",
       "event": "bb-session",
-      "session": "737e8881",
-      "url": "https://www.theatermania.com/broadway/reviews/here-lies-love_93847.html"
+      "session": "2ad10235",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-02-02T23:26:58.762Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-02T23:27:23.924Z",
+      "event": "bb-session",
+      "session": "3336349c",
+      "url": "https://www.amny.com/entertainment/moulin-rouge-broadway-review/"
+    },
+    {
+      "t": "2026-02-02T23:27:49.569Z",
+      "event": "bb-session",
+      "session": "1ae4907f",
+      "url": "https://www.thedailybeast.com/moulin-rouge-broadway-review/"
     }
   ]
 }
