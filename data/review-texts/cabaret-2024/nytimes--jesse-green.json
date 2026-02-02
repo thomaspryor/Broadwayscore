@@ -66,7 +66,6 @@
   "previousLlmScore": 77,
   "archivePath": "data/archives/reviews/cabaret-2024/nytimes--jesse-green_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:41:17.771Z",
-  "designation": "Critics_Pick",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -81,5 +80,12 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251103131417/https://www.nytimes.com/2024/04/21/theater/cabaret-review-eddie-redmayne.html",
   "rescoreCompletedAt": "2026-01-29T14:31:51.686Z",
   "contentTier": "complete",
-  "wordCount": 445
+  "wordCount": 445,
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:07.943Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

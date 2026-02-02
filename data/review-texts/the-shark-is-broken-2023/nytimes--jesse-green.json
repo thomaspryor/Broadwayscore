@@ -65,7 +65,6 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "archivePath": "data/archives/reviews/the-shark-is-broken-2023/nytimes--jesse-green_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:37:10.978Z",
-  "designation": "Critics_Pick",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -86,5 +85,12 @@
   "wordCount": 412,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 57,
-  "rescoreCompletedAt": "2026-02-01T16:27:00.155Z"
+  "rescoreCompletedAt": "2026-02-01T16:27:00.155Z",
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:08.172Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

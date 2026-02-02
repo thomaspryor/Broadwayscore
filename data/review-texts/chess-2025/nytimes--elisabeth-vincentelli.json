@@ -71,7 +71,6 @@
   "textWordCount": 388,
   "archivePath": "data/archives/reviews/chess-2025/nytimes--elisabeth-vincentelli_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:50:45.454Z",
-  "designation": "Critics_Pick",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -108,5 +107,12 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "rescoreCompletedAt": "2026-02-01T19:58:00.564Z"
+  "rescoreCompletedAt": "2026-02-01T19:58:00.564Z",
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:07.947Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

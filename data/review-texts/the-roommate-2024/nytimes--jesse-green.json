@@ -62,7 +62,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "designation": "Critics_Pick",
   "archivePath": "data/archives/reviews/the-roommate-2024/nytimes--jesse-green_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:30:47.462Z",
   "fetchMethod": "archive",
@@ -81,5 +80,12 @@
   "wordCount": 1020,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 64,
-  "rescoreCompletedAt": "2026-02-01T16:25:03.012Z"
+  "rescoreCompletedAt": "2026-02-01T16:25:03.012Z",
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:08.167Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

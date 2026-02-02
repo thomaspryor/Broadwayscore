@@ -67,7 +67,6 @@
   "previousLlmScore": 52,
   "archivePath": "data/archives/reviews/lempicka-2024/nytimes--jesse-green_2026-01-31.html",
   "textFetchedAt": "2026-01-31T22:32:33.257Z",
-  "designation": "Critics_Pick",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -92,5 +91,12 @@
   ],
   "humanReviewScore": 50,
   "humanReviewPreviousScore": 35,
-  "humanReviewAt": "2026-02-01T19:59:47.220Z"
+  "humanReviewAt": "2026-02-01T19:59:47.220Z",
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:08.042Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

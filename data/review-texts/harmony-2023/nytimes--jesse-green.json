@@ -73,7 +73,6 @@
   ],
   "archivePath": "data/archives/reviews/harmony-2023/nytimes--jesse-green_2026-02-01.html",
   "textFetchedAt": "2026-02-01T03:12:58.969Z",
-  "designation": "Critics_Pick",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -90,5 +89,12 @@
   "wordCount": 1179,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 46,
-  "rescoreCompletedAt": "2026-02-01T15:04:58.685Z"
+  "rescoreCompletedAt": "2026-02-01T15:04:58.685Z",
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:07.993Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Down",
+    "bwwThumb": "Meh"
+  }
 }

@@ -14,7 +14,6 @@
   "textWordCount": 441,
   "archivePath": "data/archives/reviews/schmigadoon-2026/nytimes--margaret-lyons_2026-02-01.html",
   "textFetchedAt": "2026-02-01T19:08:25.031Z",
-  "designation": "Critics_Pick",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -79,5 +78,12 @@
     "needsReviewReasons": [],
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
+  },
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:08.120Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "none",
+    "bwwThumb": "none"
   }
 }

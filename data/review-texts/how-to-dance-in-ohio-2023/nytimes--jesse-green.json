@@ -70,7 +70,6 @@
   },
   "archivePath": "data/archives/reviews/how-to-dance-in-ohio-2023/nytimes--jesse-green_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:36:27.299Z",
-  "designation": "Critics_Pick",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -84,5 +83,12 @@
   "archiveOrgTimestamp": "20251208200831",
   "archiveOrgUrl": "http://web.archive.org/web/20251208200831/https://www.nytimes.com/2023/12/10/theater/how-to-dance-in-ohio-review.html",
   "contentTier": "complete",
-  "wordCount": 394
+  "wordCount": 394,
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:08.018Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

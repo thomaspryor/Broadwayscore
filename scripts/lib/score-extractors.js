@@ -435,63 +435,65 @@ function extractScore(html, text, outletId) {
 
 /**
  * Extract NYT Critics' Pick designation
+ * ONLY check HTML for structural indicators — never search review text,
+ * because phrases like "critics pick up on" cause false positives.
  */
-function extractNYTCriticsPick(html, text) {
-  const patterns = [
-    /critic'?s?\s*pick/i,
-    /NYT\s*Pick/i,
-    /Times\s*Pick/i,
-    /"criticsPick"\s*:\s*true/i
-  ];
+function extractNYTCriticsPick(html, _text) {
+  if (!html) return null;
 
-  for (const pattern of patterns) {
-    if (pattern.test(html) || pattern.test(text)) {
-      return 'Critics_Pick';
-    }
-  }
+  // Structured data: {"criticsPick": true} in JSON-LD
+  if (/"criticsPick"\s*:\s*true/i.test(html)) return 'Critics_Pick';
+
+  // NYT HTML markup: the Critics' Pick badge has specific class/element patterns
+  if (/class="[^"]*critics?-?pick[^"]*"/i.test(html)) return 'Critics_Pick';
+  if (/data-testid="[^"]*critics?-?pick[^"]*"/i.test(html)) return 'Critics_Pick';
+
+  // The actual badge text as a standalone label (not in a sentence)
+  // Requires apostrophe to avoid matching "critics pick up on..."
+  if (/>\s*Critic['']s\s+Pick\s*</i.test(html)) return 'Critics_Pick';
+
   return null;
 }
 
 /**
  * Extract TheaterMania "Must See" designation
+ * Only check HTML for structural indicators, not review text.
  */
-function extractTheaterManiaMustSee(html, text) {
-  const patterns = [
-    /must\s*see/i,
-    /class="[^"]*must-see[^"]*"/i,
-    /recommended/i
-  ];
+function extractTheaterManiaMustSee(html, _text) {
+  if (!html) return null;
 
-  for (const pattern of patterns) {
-    if (pattern.test(html) || pattern.test(text)) {
-      return 'Must_See';
-    }
-  }
+  // CSS class pattern
+  if (/class="[^"]*must-see[^"]*"/i.test(html)) return 'Must_See';
+
+  // Badge/label markup (standalone, not in sentence)
+  if (/>\s*Must\s+See\s*</i.test(html)) return 'Must_See';
+
   return null;
 }
 
 /**
  * Extract designation (Critics_Pick, Must_See, Recommended, etc.)
+ * Designations are ONLY extracted from HTML structure, never from review text.
+ * Review text contains false positives like "critics pick up on" or "recommended reading".
  */
 function extractDesignation(html, text, outletId) {
   outletId = (outletId || '').toLowerCase();
 
-  // NYT Critics' Pick
+  // NYT Critics' Pick — HTML only
   if (['nytimes', 'nyt', 'new-york-times'].includes(outletId)) {
     const pick = extractNYTCriticsPick(html, text);
     if (pick) return pick;
   }
 
-  // TheaterMania Must See
+  // TheaterMania Must See — HTML only
   if (['theatermania', 'theater-mania'].includes(outletId)) {
     const mustSee = extractTheaterManiaMustSee(html, text);
     if (mustSee) return mustSee;
   }
 
-  // Generic "Recommended" designation
-  if (/\bRecommended\b/i.test(html) || /\bRecommended\b/i.test(text)) {
-    return 'Recommended';
-  }
+  // No generic "Recommended" extraction — too many false positives.
+  // Recommended designations should come from aggregator data (DTLI/BWW thumbs),
+  // not from matching the word "recommended" in review text.
 
   return null;
 }

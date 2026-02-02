@@ -11,7 +11,6 @@
   "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "Meh",
-  "designation": "Critics_Pick",
   "llmScore": {
     "score": 69,
     "confidence": "low",
@@ -101,5 +100,12 @@
   "wordCount": 1030,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:08.140Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

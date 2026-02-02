@@ -64,7 +64,6 @@
   },
   "archivePath": "data/archives/reviews/patriots-2024/nytimes--jesse-green_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:29:29.938Z",
-  "designation": "Critics_Pick",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -85,5 +84,12 @@
   "sources": [
     "dtli",
     "web-search"
-  ]
+  ],
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:08.092Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

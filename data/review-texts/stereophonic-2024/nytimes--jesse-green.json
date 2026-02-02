@@ -59,7 +59,6 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
-  "designation": "Critics_Pick",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 91,
   "archivePath": "data/archives/reviews/stereophonic-2024/nytimes--jesse-green_2026-02-01.html",
@@ -81,5 +80,12 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251010005347/https://www.nytimes.com/2023/10/29/theater/stereophonic-review-david-adjmi-will-butler.html",
   "rescoreCompletedAt": "2026-02-01T16:11:57.040Z",
   "contentTier": "complete",
-  "wordCount": 1241
+  "wordCount": 1241,
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:08.134Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

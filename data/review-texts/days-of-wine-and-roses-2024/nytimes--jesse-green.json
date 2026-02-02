@@ -72,7 +72,6 @@
   "textWordCount": 360,
   "archivePath": "data/archives/reviews/days-of-wine-and-roses-2024/nytimes--jesse-green_2026-02-01.html",
   "textFetchedAt": "2026-02-01T18:47:06.527Z",
-  "designation": "Critics_Pick",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -90,5 +89,12 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250724233526/https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html",
   "rescoreCompletedAt": "2026-02-01T19:58:32.833Z",
   "contentTier": "complete",
-  "contentTierReason": "Full review text"
+  "contentTierReason": "Full review text",
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:07.953Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

@@ -67,7 +67,6 @@
     "web-search"
   ],
   "bwwThumb": null,
-  "designation": "Critics_Pick",
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 39,
   "rescoreCompletedAt": "2026-01-29T01:47:04.826Z",
@@ -75,5 +74,12 @@
     "no_ending_punctuation"
   ],
   "contentTier": "complete",
-  "wordCount": 1146
+  "wordCount": 1146,
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:07.957Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

@@ -59,7 +59,6 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Mixed"
   },
-  "designation": "Critics_Pick",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 48,
   "archivePath": "data/archives/reviews/the-great-gatsby-2024/nytimes--maya-phillips_2026-01-29.html",
@@ -81,5 +80,12 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250328100110/https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
   "contentTier": "complete",
   "wordCount": 982,
-  "rescoreCompletedAt": "2026-02-01T16:18:18.476Z"
+  "rescoreCompletedAt": "2026-02-01T16:18:18.476Z",
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:08.152Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "none",
+    "bwwThumb": "none"
+  }
 }

@@ -66,7 +66,6 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "archivePath": "data/archives/reviews/gutenberg-2023/nytimes--jesse-green_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:37:55.180Z",
-  "designation": "Critics_Pick",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -87,5 +86,12 @@
   "sources": [
     "dtli",
     "web-search"
-  ]
+  ],
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:07.973Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }

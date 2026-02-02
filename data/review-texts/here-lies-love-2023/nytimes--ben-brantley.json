@@ -72,7 +72,6 @@
   "textWordCount": 391,
   "archivePath": "data/archives/reviews/here-lies-love-2023/nytimes--ben-brantley_2026-02-01.html",
   "textFetchedAt": "2026-02-01T20:18:13.274Z",
-  "designation": "Critics_Pick",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -106,5 +105,12 @@
   "sourceMethod": "brightdata",
   "rescoreCompletedAt": "2026-02-01T17:38:31.205Z",
   "archiveOrgTimestamp": "20251012042425",
-  "archiveOrgUrl": "http://web.archive.org/web/20251012042425/https://www.nytimes.com/2023/07/20/theater/here-lies-love-review-david-byrne.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251012042425/https://www.nytimes.com/2023/07/20/theater/here-lies-love-review-david-byrne.html",
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:08.014Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Meh",
+    "bwwThumb": "none"
+  }
 }

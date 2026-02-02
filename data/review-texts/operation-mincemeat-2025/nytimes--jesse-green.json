@@ -62,7 +62,6 @@
     "modelAgreement": "Both models agree: Mixed"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
-  "designation": "Critics_Pick",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 54,
   "archivePath": "data/archives/reviews/operation-mincemeat-2025/nytimes--jesse-green_2026-01-29.html",
@@ -81,5 +80,12 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250611085308/https://www.nytimes.com/2025/03/20/theater/operation-mincemeat-review-broadway.html",
   "contentTier": "complete",
   "wordCount": 1320,
-  "rescoreCompletedAt": "2026-02-01T15:48:26.301Z"
+  "rescoreCompletedAt": "2026-02-01T15:48:26.301Z",
+  "_removedDesignation": {
+    "designation": "Critics_Pick",
+    "removedAt": "2026-02-02T04:06:08.085Z",
+    "reason": "False positive from overly-broad regex in extractNYTCriticsPick. No aggregator thumb corroborates Critics Pick.",
+    "dtliThumb": "Meh",
+    "bwwThumb": "Meh"
+  }
 }
