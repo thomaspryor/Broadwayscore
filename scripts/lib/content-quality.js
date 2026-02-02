@@ -1264,10 +1264,56 @@ function computeContentFingerprint(text, length = 500) {
   return Math.abs(hash).toString(16).padStart(8, '0');
 }
 
+/**
+ * Detect garbage from LLM reasoning text.
+ * When LLM confidence is "low" and reasoning matches known patterns indicating
+ * the text is not a real review, flag it for re-scraping.
+ *
+ * @param {string} reasoning - The LLM reasoning text
+ * @param {string} confidence - The LLM confidence level
+ * @returns {{ isGarbage: boolean, matchedPattern: string|null }}
+ */
+function detectGarbageFromReasoning(reasoning, confidence) {
+  if (!reasoning || confidence !== 'low') {
+    return { isGarbage: false, matchedPattern: null };
+  }
+
+  const lowerReasoning = reasoning.toLowerCase();
+
+  const GARBAGE_PATTERNS = [
+    { pattern: 'not a review', label: 'not-a-review' },
+    { pattern: 'not a theater review', label: 'not-a-theater-review' },
+    { pattern: 'not a broadway review', label: 'not-a-broadway-review' },
+    { pattern: 'plot summary without evaluation', label: 'plot-summary-only' },
+    { pattern: 'headline only', label: 'headline-only' },
+    { pattern: 'appears to be an advertisement', label: 'advertisement' },
+    { pattern: 'paid placement', label: 'paid-placement' },
+    { pattern: 'press release', label: 'press-release' },
+    { pattern: 'not related to', label: 'unrelated-content' },
+    { pattern: 'completely unrelated', label: 'unrelated-content' },
+    { pattern: 'wrong article', label: 'wrong-article' },
+    { pattern: 'different show', label: 'different-show' },
+    { pattern: 'news feed', label: 'news-feed' },
+    { pattern: 'news article', label: 'news-article' },
+    { pattern: 'health article', label: 'health-article' },
+    { pattern: 'drug disposal', label: 'wrong-content' },
+    { pattern: 'no review content', label: 'no-review-content' }
+  ];
+
+  for (const { pattern, label } of GARBAGE_PATTERNS) {
+    if (lowerReasoning.includes(pattern)) {
+      return { isGarbage: true, matchedPattern: label };
+    }
+  }
+
+  return { isGarbage: false, matchedPattern: null };
+}
+
 module.exports = {
   isGarbageContent,
   hasReviewContent,
   assessTextQuality,
+  detectGarbageFromReasoning,
   // New enhanced validation functions
   validateShowMentioned,
   detectMultiShowContent,
