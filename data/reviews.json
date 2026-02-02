@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-02",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 1715,
+      "totalReviews": 1713,
       "skippedNoScore": 32,
       "skippedDuplicate": 3,
       "skippedDuplicateUrl": 53,
-      "skippedWrongProduction": 35,
-      "recoveredFromGarbage": 101,
+      "skippedWrongProduction": 37,
+      "recoveredFromGarbage": 98,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 2,
@@ -17,9 +17,9 @@
         "explicit-letterGrade": 1,
         "human-review": 60,
         "originalScore-priority0": 245,
-        "llmScore": 1167,
+        "llmScore": 1171,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 228,
+        "llmScore-lowconf": 222,
         "llmScore-review": 3,
         "assignedScore": 0,
         "originalScore": 0,
@@ -18724,23 +18724,6 @@
     },
     {
       "showId": "our-town-2024",
-      "outletId": "washpost",
-      "outlet": "The Washington Post",
-      "assignedScore": 64,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Peter Marks",
-      "url": "https://www.washingtonpost.com/theater-dance/2024/10/11/our-town-broadway-review/",
-      "publishDate": "October 11, 2024",
-      "originalRating": null,
-      "pullQuote": "The production, directed by Kenny Leon, brings a contemporary sensibility to Wilder's meditation on life and death, with Jim Parsons delivering a thoughtful performance as the Stage Manager.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "needs-rescrape"
-    },
-    {
-      "showId": "our-town-2024",
       "outletId": "theatrely",
       "outlet": "Theatrely",
       "assignedScore": 79,
@@ -18771,7 +18754,7 @@
       "pullQuote": "Leon’s inclusive approach to casting means the play better reflects life as we know it.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "our-town-2024",
@@ -18863,7 +18846,7 @@
       "outletId": "deadline",
       "outlet": "Deadline",
       "assignedScore": 60,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Greg Evans",
@@ -19656,7 +19639,7 @@
       "pullQuote": "Long before Slave Play, decades before Ain’t No Mo, there was Purlie Victorious, the Ossie Davis comedy masterwork that, like those descendant plays, fused broad comedy, satirical minstrelsy, racial satire and still-relevant social commentary to create a play that is so encompassing in its views of history and legacy, so generous in its humanity...",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "purlie-victorious-2023",
@@ -21078,7 +21061,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Kimberly Ramirez",
@@ -21088,7 +21071,7 @@
       "pullQuote": "The show pulses with a distinctly chingona spirit–it is bold and defiantly optimistic despite relentlessly biased",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "needs-rescrape"
+      "contentTier": "complete"
     },
     {
       "showId": "real-women-have-curves-2025",
@@ -26381,7 +26364,7 @@
       "pullQuote": "Beyond its good will and nostalgic conjuring, ’The Shark Is Broken’ is too slender a tale, too gentle, to provide thrills or even, truth be told, much drama.",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-shark-is-broken-2023",
@@ -26626,7 +26609,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 77,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -28991,7 +28974,7 @@
       "outletId": "the-journal-news-lohud",
       "outlet": "The Journal News (LoHud)",
       "assignedScore": 89,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Jacques Le Sourd",
@@ -29001,7 +28984,7 @@
       "pullQuote": "\"To begin with, it looks like a million dollars - or, to be more precise, like every dime of the $14 million that has been spent on it. Dare we say it? Here's a Broadway show where the ticket price doesn't seem inflated. You will actually feel that you got $100 worth of entertainment - and then some...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "needs-rescrape"
+      "contentTier": "complete"
     },
     {
       "showId": "wicked-2003",
@@ -29017,23 +29000,6 @@
       "originalRating": null,
       "pullQuote": "There are indeed wonders to behold in 'Wicked,' the new musical that opened last night at the Gershwin Theater. There are also enough saggy stretches, moral miscalculations and awkward plot convolutions to kill a lesser species of musical entertainment.",
       "dtliThumb": "Down",
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "wicked-2003",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 78,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Charles Isherwood",
-      "url": "http://www.nytimes.com/2014/08/22/theater/a-decade-later-wicked-continues-to-be-catnip-for-tweens.html?_r=1",
-      "publishDate": "August 21, 2014",
-      "originalRating": null,
-      "pullQuote": "In retrospect, Wicked seems an early sign of the cultural clout which is to say buying power of a generation of girls (and now women) whose desire to see, read, and sing along with stories about female empowerment has become a snowballing trend.",
-      "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -29093,7 +29059,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 64,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Peter Marks",
