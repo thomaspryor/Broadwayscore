@@ -5,7 +5,7 @@
   "criticName": "Greg Evans",
   "url": "https://deadline.com/2023/06/alex-edelman-broadway-review-just-for-us-deadline-1235424565/",
   "publishDate": "June 26, 2023",
-  "fullText": null,
+  "fullText": "Alex Edelman has built quite the reputation over the last few years, with sold-out comedy shows and knock-’em-dead late-night performances, honing material for a Broadway debut that does his reputation proud.\n\nJust For Us, opening tonight at Broadway’s Hudson Theatre and running through Aug. 19, might seem as unlikely as the WTF story that forms the basis of Edelman’s performance. A stand-up comedy routine without the usual visual and special-effects embellishments that accompany trips to Broadway, Just For Us lands on the theatrical stage with no need for anything but sheer story-telling bravado, energetic direction (by the late Adam Brace, with Alex Timbers credited as creative consultant) and a terrific yarn.",
   "showScoreExcerpt": "\"Among the teachings of his Jewish upbringing is empathy, and even sitting outnumbered in that racist, antisemitic gathering he struggles to remain true to those values. That struggle provides Edelman with a mighty intellectual conundrum, a worthy and funny debate of the heart and a show that can stand proud on Broadway.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
@@ -61,5 +61,43 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "isFullReview": false,
+  "textWordCount": 111,
+  "archivePath": "data/archives/reviews/just-for-us-2023/deadline--greg-evans_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:55:26.541Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata"
 }

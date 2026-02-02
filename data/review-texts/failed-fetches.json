@@ -5860,30 +5860,6 @@
     "timestamp": "2026-02-02T00:12:39.022Z"
   },
   {
-    "reviewId": "lempicka-2024/deadline--greg-evans.json",
-    "showId": "lempicka-2024",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
-    "textLength": 48624,
-    "timestamp": "2026-02-02T00:12:47.062Z"
-  },
-  {
-    "reviewId": "lempicka-2024/new-york-sun--elysa-gardner.json",
-    "showId": "lempicka-2024",
-    "outlet": "The New York Sun",
-    "critic": "Elysa Gardner",
-    "url": "https://www.nysun.com/article/a-new-broadway-musical-lempicka-offers-opportunity-to-get-to-know-an-art-deco-icon",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
-    "textLength": 614,
-    "timestamp": "2026-02-02T00:13:24.613Z"
-  },
-  {
     "reviewId": "just-for-us-2023/next-magazine--michael-hollett.json",
     "showId": "just-for-us-2023",
     "outlet": "Next Magazine",
@@ -6662,5 +6638,41 @@
     "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
     "textLength": 657,
     "timestamp": "2026-02-02T02:49:13.033Z"
+  },
+  {
+    "reviewId": "lempicka-2024/deadline--greg-evans.json",
+    "showId": "lempicka-2024",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
+    "textLength": 48624,
+    "timestamp": "2026-02-02T02:55:34.873Z"
+  },
+  {
+    "reviewId": "lempicka-2024/new-york-sun--elysa-gardner.json",
+    "showId": "lempicka-2024",
+    "outlet": "The New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/a-new-broadway-musical-lempicka-offers-opportunity-to-get-to-know-an-art-deco-icon",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
+    "textLength": 614,
+    "timestamp": "2026-02-02T02:56:12.397Z"
+  },
+  {
+    "reviewId": "lempicka-2024/observer--rex-reed.json",
+    "showId": "lempicka-2024",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2024/05/lempicka-broadway-review-eden-espinosa/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"turn off your ad block\"",
+    "textLength": 582,
+    "timestamp": "2026-02-02T02:56:39.405Z"
   }
 ]
