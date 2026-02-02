@@ -134,13 +134,14 @@ function extractLetterGradeFromText(text) {
   if (!text) return null;
 
   // Letter grades need context to avoid false positives
-  // Look for: "grade: B+", "gives it a B+", "A- rating", etc.
+  // Look for: "grade: B+", "Grade: A-", etc.
   // Note: [+\-–—] matches ASCII plus/minus AND en-dash/em-dash (EW uses en-dash for minus)
   // Use (?!\w) instead of \b at end — \b fails after en-dash since it's not a word boundary
+  // Only "grade" and "rating" keywords — NOT "score" (too ambiguous in theater: "score a ticket", "score: a joyful combination")
+  // "grade" requires colon — "Grade B" without colon is an idiom meaning "mediocre", not a letter grade
+  // Removed "gives a X" pattern (captured article "a" as grade "A") and "X grade/rating" pattern (same false positive)
   const patterns = [
-    /\b(?:grade|rating|score)[:\s]+([A-D][+\-–—]?|F)(?!\w)/i,
-    /\bgives?\s+(?:it\s+)?(?:a\s+)?([A-D][+\-–—]?)(?!\w)/i,
-    /\b([A-D][+\-–—]?)\s+(?:grade|rating)\b/i
+    /\b(?:grade:\s*|rating[:\s]+)([A-D][+\-–—]?|F)(?!\w)/i,
   ];
 
   for (const pattern of patterns) {
