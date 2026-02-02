@@ -736,6 +736,14 @@ function normalizeOutletId(outlet) {
 console.log('=== REBUILDING ALL REVIEWS ===\n');
 console.log('NOTE: Reviews without valid scores are EXCLUDED (no default of 50)\n');
 
+// Load show dates for production-date guard
+const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+const showDateMap = {};
+for (const s of showsData.shows) {
+  const earliest = s.previewsStartDate || s.openingDate;
+  if (earliest) showDateMap[s.id] = new Date(earliest);
+}
+
 // Get all show directories
 const showDirs = fs.readdirSync(reviewTextsDir)
   .filter(f => {
@@ -796,6 +804,34 @@ showDirs.forEach(showId => {
       if (data.wrongAttribution === true) {
         stats.skippedWrongAttribution = (stats.skippedWrongAttribution || 0) + 1;
         return;
+      }
+
+      // Auto-detect reviews from wrong production based on publish date
+      // If review was published >60 days before show's earliest date, it's likely
+      // from a prior production (off-Broadway, West End, TV show, etc.)
+      // Reviews with allowEarlyDate: true bypass this check (e.g., re-reviews of long-running shows)
+      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
+        try {
+          const pubDate = new Date(data.publishDate);
+          if (!isNaN(pubDate.getTime())) {
+            const earliest = showDateMap[showId];
+            const daysBefore = (earliest - pubDate) / (1000 * 60 * 60 * 24);
+            if (daysBefore > 60) {
+              if (!stats.suspectedWrongProduction) stats.suspectedWrongProduction = [];
+              stats.suspectedWrongProduction.push({
+                showId,
+                file: f,
+                outlet: data.outletId || data.outlet,
+                critic: data.criticName,
+                publishDate: data.publishDate,
+                daysBefore: Math.round(daysBefore),
+                score: data.assignedScore
+              });
+              stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
+              return; // Exclude from reviews.json
+            }
+          }
+        } catch (e) {}
       }
 
       // Create deduplication key
@@ -1215,6 +1251,16 @@ if (stats.unscoredWithText.length > 0) {
   } else {
     console.log(`\nHUMAN REVIEW QUEUE: 0 reviews flagged (all clear)`);
   }
+}
+
+// Report auto-detected wrong production reviews
+if (stats.suspectedWrongProduction && stats.suspectedWrongProduction.length > 0) {
+  console.log(`\nAUTO-EXCLUDED ${stats.suspectedWrongProduction.length} review(s) published >60 days before show previews:`);
+  for (const r of stats.suspectedWrongProduction) {
+    console.log(`  ${r.showId}: ${r.outlet}/${r.critic} (${r.daysBefore} days before, score=${r.score})`);
+  }
+  console.log('  These are likely from off-Broadway, West End, or TV productions.');
+  console.log('  To include a review despite early date, add "allowEarlyDate": true to the review file.');
 }
 
 console.log('\n=== DONE ===');
