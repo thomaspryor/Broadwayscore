@@ -1,22 +1,27 @@
 {
-  "updatedAt": "2026-02-02T23:16:22.461Z",
-  "processed": 4,
-  "failed": 6,
-  "successRate": "40.0%",
+  "updatedAt": "2026-02-02T23:19:04.317Z",
+  "processed": 5,
+  "failed": 5,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 3
+    "archive": 2
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-02-02T23:12:28.444Z",
+      "t": "2026-02-02T23:14:59.435Z",
       "event": "bb-session",
-      "session": "5816fb85",
-      "url": "https://observer.com/2024/04/illinoise-broadway-review-sufjan-stevens/"
+      "session": "c0070fb2",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+    },
+    {
+      "t": "2026-02-02T23:15:46.562Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     }
   ]
 }
