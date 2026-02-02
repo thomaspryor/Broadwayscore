@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This single curated excerpt describes emotional themes but provides no clear recommendation about the production's quality or whether to see it. Given the single excerpt warning and lack of evaluative language about the show itself, scoring conservatively in mixed range. | GPT-4o: The excerpt suggests an emotional impact but lacks clear evaluative language about the production itself. The single quote and lack of explicit recommendation lead to a conservative mixed classification. | Gemini: The excerpt suggests an emotional impact, leaning towards a positive experience, but the limited text makes it difficult to gauge the overall recommendation strength. The aggregator context is unavailable, so a conservative score is appropriate.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Single excerpt describes emotional themes/subject matter rather than evaluating the production quality. Without clear recommendation language, cannot determine if this is positive or negative assessment of the show itself. | GPT-4o: The excerpt suggests a mix of emotional impact ('heartbreaking') but lacks clear positive or negative recommendation. The single quote and warning about curated text limit confidence in the overall sentiment. | Gemini: The excerpt suggests an emotional impact, but it's a general statement about the subject matter rather than a direct endorsement of the production's quality. Given the single excerpt and lack of specific praise, a low positive score is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,21 +46,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:25:52.945Z",
+    "scoredAt": "2026-02-02T19:19:19.310Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 61,
+    "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 62,
+    "claudeScore": 60,
+    "openaiScore": 65,
     "geminiScore": 72,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -68,13 +68,13 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
   },
-  "contentTier": "complete",
+  "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 1131,
   "archivePath": "data/archives/reviews/the-notebook-2024/nytimes--unknown_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:50:15.694Z",
+  "textFetchedAt": "2026-02-02T15:06:47.602Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -86,14 +86,13 @@
   "fetchTier": 4,
   "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation"
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251007094143",
   "archiveOrgUrl": "http://web.archive.org/web/20251007094143/https://www.nytimes.com/2024/03/14/theater/the-notebook-review-broadway-musical.html",
   "rescoreCompletedAt": "2026-02-02T14:25:52.945Z",
-  "duplicateTextOf": "nytimes--jesse-green.json",
-  "wordCount": 1131,
-  "tierReason": "Full review text"
+  "duplicateTextOf": "nytimes--jesse-green.json"
 }

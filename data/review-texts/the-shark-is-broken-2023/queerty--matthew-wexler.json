@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review acknowledges strong performances and powerful moments (especially Shaw's Indianapolis monologue) but criticizes the script for being shallow and the overall action for feeling flat. The truncated text prevents seeing the final verdict, but the tone suggests qualified appreciation rather than clear recommendation. | Gemini: The review highlights both positive and negative aspects of the play. While praising the performances and scenic design, it criticizes the script for not digging deep enough and the action feeling flat. Given the truncated nature of the text, it's difficult to ascertain the final verdict, but the overall tone suggests a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges strong performances and production design but repeatedly criticizes the script for being flat and failing to dig beyond surface-level material. The critic finds the dramatic stakes theoretically high but execution lacking. | GPT-4o: The review highlights some positive aspects like the scenic design and Ian Shaw's performance, but criticizes the script for not delving deeper than existing documentaries and describes the action as flat. The truncated text suggests caution, but the overall tone leans towards mixed. | Gemini: The review highlights both positive aspects (performances, scenic design) and negative ones (script fails to dig deep, action feels flat). The truncated nature makes it difficult to determine a final recommendation, but the overall tone suggests a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:27.090Z",
+    "scoredAt": "2026-02-02T19:24:29.301Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 52,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 58,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 60,

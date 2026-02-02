@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 89,
+    "score": 88,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 83,
+      "high": 93
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic explicitly states they are 'in love with this show' and praises both the production and its message, indicating strong enthusiasm and recommendation. | GPT-4o: The critic expresses strong affection for the show and its message, indicating a highly positive recommendation. | Gemini: The reviewer expresses strong positive feelings for the show, its message, and its relevance, indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic explicitly states they are 'in love with this show' and emphasizes its powerful message and contemporary relevance, indicating strong enthusiasm and recommendation. | GPT-4o: The critic expresses strong enthusiasm and love for the show and its message, indicating a highly positive recommendation. | Gemini: The reviewer states they are \"in love with this show\" and its message, indicating a strong positive recommendation. Given the single excerpt warning, the upper end of the positive bucket is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,7 +45,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:35:11.789Z",
+    "scoredAt": "2026-02-02T19:33:29.317Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -54,12 +54,12 @@
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
+    "openaiScore": 87,
     "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

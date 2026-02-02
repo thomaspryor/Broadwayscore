@@ -47,7 +47,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic expresses strong enthusiasm throughout, praising the production as 'thrillingly visceral' with 'extraordinary music' and 'superb' performances. The final line about being able to 'eat it up over and over' confirms a strong positive recommendation. | GPT-4o: The review is overwhelmingly positive, praising the production's direction, performances, and music. The critic expresses a strong personal enthusiasm for the show, likening it to a perfect combination of elements, which indicates a rave recommendation. | Gemini: The review is overwhelmingly positive, highlighting the thrilling and visceral production, superb cast, and remarkable score. The critic explicitly states they could 'eat it up over and over,' indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite acknowledging some plot confusion issues, the critic delivers strong praise for performances, staging, and music, ending with a clear enthusiastic personal endorsement. | GPT-4o: The review is overwhelmingly positive, praising the production's direction, cast, and music. The critic expresses a strong personal enjoyment and recommends the show highly, comparing it to a perfect combination like a Reese’s Peanut Butter Cup. | Gemini: The review is overwhelmingly positive, praising the direction, cast, score, and choreography. The reviewer states they could \"eat it up over and over,\" indicating a strong recommendation despite some caveats about the plot's complexity for newcomers.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,21 +57,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:42:42.326Z",
+    "scoredAt": "2026-02-02T19:25:12.473Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 92,
-    "geminiScore": 80,
+    "claudeScore": 81,
+    "openaiScore": 95,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

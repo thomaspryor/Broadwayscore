@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review acknowledges significant flaws (bumpy start, inconsistent visuals, disparate choreography) but ultimately recommends the show, praising the performances, particularly the lead actors, and concluding that it 'stands tall' despite issues. | Gemini: The review notes both positive and negative aspects of the show, but the opening statement and the fact that it \"stands tall in the crowd\" suggests a positive, albeit qualified, recommendation. The truncated nature of the text makes it difficult to be more confident.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting various production issues (bumpy start, inconsistent visuals, disparate elements), the critic concludes positively that the show 'stands tall' and praises the performances, particularly Lewis as Dorothy and the supporting cast's chemistry. | GPT-4o: The review acknowledges some issues with pacing and visual elements but overall suggests that the production is enjoyable, especially highlighting strong performances and the fresh take on the material. The truncated text suggests caution, but the provided excerpts and context indicate a generally positive reception. | Gemini: The review acknowledges some issues with the visual elements and choreography, but praises the performances, especially Nichelle Lewis as Dorothy. The opening line indicates a generally positive, but not flawless, experience. The truncated text makes it difficult to be more confident.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:44:34.002Z",
+    "scoredAt": "2026-02-02T19:27:24.530Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,

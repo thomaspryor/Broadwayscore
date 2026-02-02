@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The reviewer clearly enjoys the show, particularly praising the spectacular circus elements and calling various aspects pleasurable. However, the review notes that the Broadway-style ballads are less distinctive and mentions some weaknesses in the lyrics, suggesting a positive but not unqualified recommendation. | Gemini: The review highlights several positive aspects of the show, particularly the circus artistry, but also notes some weaknesses in the score and story, suggesting a recommendation with reservations. The aggregator excerpt also indicates a positive reception.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights many positive elements (awe-inspiring acrobatics, pleasurable score, fine performances) but notes inconsistencies in the score and story. The BWW excerpt confirms this as an 'Up' verdict, and the overall tone is appreciative despite some reservations. | GPT-4o: The review praises the circus artistry as awe-inspiring and highlights several positive aspects of the production, such as the score and performances. However, it also notes some limitations, like the less distinctive Broadway-style ballads and the use of clichés. The truncated text suggests the final verdict might be more positive, but based on the available content, it leans towards a solid recommendation with some reservations. | Gemini: The review highlights several positive aspects of the show, but emphasizes the circus artistry as the standout element, suggesting a recommendation with some reservations about other aspects being less impressive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:26.727Z",
+    "scoredAt": "2026-02-02T19:32:00.356Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
+    "openaiScore": 78,
     "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",

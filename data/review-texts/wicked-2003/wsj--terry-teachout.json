@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with minor criticism, the critic explicitly stops 'niggling' and delivers strong praise ('funny and touching and full of beans') followed by the clear imperative 'Go.' - a direct recommendation to see the show. | GPT-4o: The critic highlights the show's humor, emotional impact, and broad appeal, concluding with an enthusiastic 'Go,' indicating a strong recommendation. | Gemini: The review ends with a strong, positive recommendation to 'Go,' and describes the show as 'funny and touching,' indicating a positive experience despite any earlier reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with minor criticisms, the critic explicitly stops 'niggling' and delivers strong praise with multiple positive attributes, ending with a clear imperative recommendation. | GPT-4o: The review excerpt ends with a strong recommendation to 'Go,' indicating a clear positive verdict. The critic praises the humor, emotional impact, and potential of the show, suggesting an enthusiastic recommendation. | Gemini: The review ends with a strong recommendation to \"Go\" see the show, despite some initial reservations. The description of the show as \"funny and touching\" further supports a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:36:28.417Z",
+    "scoredAt": "2026-02-02T19:34:42.049Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 83,
     "openaiScore": 82,
-    "geminiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

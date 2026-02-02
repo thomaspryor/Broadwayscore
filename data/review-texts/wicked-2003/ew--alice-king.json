@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"'Wicked's' at its cleverest with the girl stuff; the streamlining of Maguire’s story – reducing a totalitarian allegory to an animal-rights flap – weakens the narrative logic. Catchy Stephen Schwartz songs compensate for a dreary opening number, but it’s the 'Wicked' witches who really make magic.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/wicked",
   "originalScore": "B",
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B rating and overall positive tone recommend the show despite noted flaws in narrative logic and a weak opening number. The critic praises the performances, design, and key songs while acknowledging structural weaknesses. | GPT-4o: The review acknowledges some weaknesses in narrative logic but praises the performances and songs, indicating a positive recommendation overall. The original rating of 'B' aligns with a solid positive score. | Gemini: The critic gives the show a B rating and states that the witches \"really make magic,\" indicating a positive, but not rave, review. The critic also mentions that the streamlining of the story weakens the narrative logic, suggesting reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B rating and positive concluding statement about the leads making magic indicates a solid recommendation, though with noted flaws in narrative logic and pacing that prevent higher enthusiasm. | GPT-4o: The review highlights strong performances and catchy songs, despite noting some narrative weaknesses. The original rating of 'B' and the positive remarks about the performances and music suggest a solid recommendation with some reservations. | Gemini: The critic gives the show a B rating and states that the witches make magic, indicating a positive but not rave review. The review also mentions some weaknesses in the narrative logic.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:35:01.822Z",
+    "scoredAt": "2026-02-02T19:33:13.555Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 79,
+    "openaiScore": 78,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -63,7 +63,7 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 71,
   "archivePath": "data/archives/reviews/wicked-2003/ew--alice-king_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T18:29:10.596Z",
+  "textFetchedAt": "2026-02-02T05:09:23.011Z",
   "originalScoreNormalized": 85,
   "scoreSource": "letter-grade",
   "fetchMethod": "archive",
@@ -71,6 +71,18 @@
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
       "success": true
     }
   ],

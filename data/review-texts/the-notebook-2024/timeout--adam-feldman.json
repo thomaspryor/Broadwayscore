@@ -24,12 +24,12 @@
   ],
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:47:44.713Z",
+    "scoredAt": "2026-02-02T19:19:44.991Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 62,
@@ -105,7 +105,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 3/5 rating and quote showing both criticism ('rolled my eyes') and emotional impact ('welled up') indicates a mixed response that acknowledges flaws while admitting the show had affecting moments. | GPT-4o: The critic expresses a mixed reaction, acknowledging emotional moments despite initial skepticism. The original 3/5 rating suggests a middle-ground verdict. | Gemini: The critic admits to being emotionally affected despite rolling their eyes, suggesting a mixed experience. The 3/5 rating also indicates a middle-ground assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic expresses simultaneous eye-rolling and emotional response, indicating a conflicted experience. The 3/5 rating supports a mixed assessment rather than positive or negative. | GPT-4o: The critic expresses skepticism but acknowledges emotional impact, suggesting a mixed response. The original 3/5 rating supports a middle-ground classification. | Gemini: The critic admits to being moved despite initial reservations, suggesting a mixed experience. The 3/5 rating also points to a 'Mixed' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,

@@ -9,15 +9,15 @@
   "bwwExcerpt": "Circus sagas so easily lend themselves to bathos: “Ridi, pagliaccio” and all that. Director Jessica Stone’s stage rendition of Water for Elephants – adapted by book writer Rick Elice from the best-selling novel (2006) and film (2011) – captures all the drama, but it’s clean-cut and concise, propulsive with passion and action. Unlike some other literary adaptations in the works or already on the boards, this production stands on its own merits as theatre. You could walk in with no prior knowledge",
   "bwwRoundupUrl": null,
   "originalScore": "4/5 stars",
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 80,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating and overwhelmingly positive language throughout indicate a strong recommendation. The critic praises the direction, performances, staging, and overall theatrical effectiveness with phrases like 'unshowily stellar,' 'awe-inspiring feats,' and 'stands on its own merits as theatre.' | Gemini: The critic gives the show 4 out of 5 stars and uses positive language throughout the review, highlighting the drama, passion, and action. The critic also praises the performances and the overall production quality, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating combined with praise like 'transported,' 'awe-inspiring feats,' and commendation of the entire company indicates strong enthusiasm with minor reservations. | GPT-4o: The review is filled with praise for the production, noting its ability to stand on its own merits and transport the audience. The critic's original rating of 4/5 stars aligns with a strong positive recommendation. | Gemini: The critic gives the show 4 out of 5 stars and praises many aspects of the production, including the direction, adaptation, performances, and circus design. The review indicates a strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:12.280Z",
+    "scoredAt": "2026-02-02T19:31:53.525Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",

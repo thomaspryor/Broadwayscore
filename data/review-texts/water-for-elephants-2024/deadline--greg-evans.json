@@ -9,7 +9,7 @@
   "bwwExcerpt": "That’s faint praise, to be sure, but credit where it’s due: Despite source material whose hold on at least some segment of the popular imagination remains inscrutable to the rest of us, the new musical is never less than diverting, with its gorgeous aerial acrobatics, solid work from director Jessica Stone (Kimberly Akimbo) and a plucky pastiche of a score that hints, to my ears, at ’30s-era novelty songs, old timey banjo music, Tin Pan Alley, Black gospel, Jesus Christ Superstar-era Andrew Lloy",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "showScoreExcerpt": "\"Water For Elephants is a pleasant, visually beguiling show\"",
@@ -47,11 +47,11 @@
   "archiveOrgTimestamp": "20250724215955",
   "archiveOrgUrl": "http://web.archive.org/web/20250724215955/https://deadline.com/2024/03/water-for-elephants-broadway-review-1235863179/",
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 94,
+    "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -62,7 +62,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic delivers an overwhelmingly positive review calling it 'the best new musical on Broadway' and 'the frontrunner for the Tony Award,' with praise for every aspect of the production and calling it a 'theatrical full package.' | Gemini: The review is overwhelmingly positive, praising the integration of circus acts with the story, the music, and the performances. The critic explicitly calls it the \"best new musical on Broadway\" and a \"bold assertion\" of the art form's potential, indicating a Rave recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic delivers unqualified praise throughout, calling it 'the best new musical on Broadway' and predicting Tony Award success. The enthusiastic tone and superlative language indicate this is a rave review. | GPT-4o: The review is overwhelmingly positive, praising the production's integration of circus acts with storytelling, the music, direction, and performances. The critic describes it as the best new musical on Broadway and a frontrunner for the Tony Award, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the integration of circus acts with the story, the quality of the music, and the overall direction and design. The critic calls it the 'best new musical on Broadway' and a Tony frontrunner, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -72,26 +72,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:10.011Z",
+    "scoredAt": "2026-02-02T19:31:27.788Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": null,
-    "geminiScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 0,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "sources": [

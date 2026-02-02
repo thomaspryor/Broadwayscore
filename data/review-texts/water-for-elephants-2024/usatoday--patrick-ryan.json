@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 52,
-    "confidence": "low",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 47,
-      "high": 57
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: Despite acknowledging some spectacular moments with the ensemble and circus elements, the critic finds the production 'earthbound,' calls proceedings 'interminable,' and concludes that audiences may wish they'd stayed home - a clear recommendation against seeing it. | Gemini: The review highlights both impressive and disappointing aspects of the show, ultimately suggesting a mixed experience with fleeting moments of magic. The final sentence indicates a lack of strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite acknowledging some strong circus elements and performances, the critic finds the production 'earthbound,' calls proceedings 'interminable,' and ends with the clear recommendation that audiences would be better off staying home. | GPT-4o: The review highlights some positive elements, such as the aerial silk ballet and the ensemble's athleticism, but overall criticizes the production for its lack of intrigue, awkward design, and dreary storytelling. The concluding sentiment suggests the show is not worth attending. | Gemini: The review highlights both positive and negative aspects of the show, ultimately leaning towards a mixed recommendation. While praising certain performances and acrobatic sequences, it criticizes the overall production and emotional depth.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:41.823Z",
+    "scoredAt": "2026-02-02T19:32:45.529Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 52,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 48,
     "geminiScore": 62,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
     "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 66,

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives 4/5 stars and explicitly states the show is 'so charming' that flaws can be overlooked. Despite noting some pacing issues and runtime concerns, the overall recommendation is positive with clear enthusiasm for the performances and the production as a 'sleeper hit.' | Gemini: Despite some acknowledged flaws, the review is overwhelmingly positive, highlighting the charm, performances, and fun of the show. The critic explicitly states that the flaws are easily overlooked.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and closing verdict clearly recommend the show despite acknowledged flaws like pacing and length issues. The critic calls it charming and adorable, praising the performances while noting specific weaknesses. | GPT-4o: The review is overwhelmingly positive, highlighting the show's charm, the strong performances, and the fun it provides. Despite noting some flaws, the critic's tone is enthusiastic and recommends the show highly. | Gemini: Despite some reservations about pacing and plotting, the review is overwhelmingly positive, praising the performances, music, and humor. The critic explicitly states the show is 'so charming, so adorable, that you can easily overlook its flaws.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:41:10.455Z",
+    "scoredAt": "2026-02-02T19:28:46.586Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sourceMethod": "playwright",
   "dtliExcerpt": "But that doesn’t begin to describe how much sheer fun the evening provides, thanks to the terrific, stylistically varied musical score, witty lyrics, and hilarious book. But even more thanks to the lead performers, who invest their portrayals with such sharp comic timing and emotional depths that you find yourself rooting for this unlikely couple to get together.",

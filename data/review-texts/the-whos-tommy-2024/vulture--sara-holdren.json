@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"There’s something exhilarating and also a little bizarre about Tommy\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 77,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic expresses clear enjoyment and entertainment value throughout, praising the lead performance and staging while acknowledging some dated elements and second act issues. The overall tone is positive recommendation. | Gemini: The review acknowledges datedness and some awkwardness, but ultimately concludes that the show is entertaining and features exciting performances, leading to a positive but not rave recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic expresses clear enjoyment and entertainment value despite acknowledging flaws and dated elements. The review concludes with genuine curiosity about future productions, indicating a positive overall experience worth seeing. | GPT-4o: The review acknowledges some dated elements and narrative issues but ultimately finds the production entertaining and intriguing. The critic expresses a good time was had, indicating a positive recommendation despite some reservations. | Gemini: The review is mostly positive, noting the show's entertainment value and the lead actor's performance, but also points out some issues with the second act and staging choices, leading to a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:23:00.662Z",
+    "scoredAt": "2026-02-02T19:26:21.509Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "show-score",

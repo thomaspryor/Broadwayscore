@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The excerpt indicates fundamental problems with the production's execution, but with only one cherry-picked quote available, I'm scoring conservatively within the negative range. | GPT-4o: The excerpt indicates issues with both the cast and staging, suggesting a lack of coherence in the production. This points to a negative assessment, though the single excerpt limits the ability to gauge the full sentiment. | Gemini: The single excerpt indicates a negative assessment of the production's key elements, suggesting a lack of overall quality and coherence. Given the limited information, a score in the middle of the negative range is appropriate.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The excerpt directly criticizes fundamental production elements - cast and staging - for failing to work together cohesively, indicating a negative assessment despite limited text available. | GPT-4o: The excerpt suggests significant issues with the production, indicating a lack of coherence in both cast and staging. This points to a negative assessment, though the single excerpt limits the ability to gauge the full sentiment. | Gemini: The review excerpt indicates a lack of cohesion in key elements of the production, suggesting a negative overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,11 +46,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:02:34.259Z",
+    "scoredAt": "2026-02-02T19:31:16.265Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 45,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 45,

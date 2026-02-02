@@ -9,7 +9,7 @@
   "sources": [
     "playbill-verdict"
   ],
-  "contentTier": "truncated",
+  "contentTier": "stub",
   "contentTierReason": "No text content",
   "fullText": "NYC Events, Restaurants, Music, & Nightlife\n\nReview: Titanique Floats a Fun-lover’s Boat\n June 23, 2022, 11:48.20 pm ET\n\nTwitter\nX\nPinterest\nThreads\nSnapchat\nWhatsApp\nMessage\nEmail\n\n \n Photo: Emilio Madrid\n\nBy Brian Scott LiptonWith so much of today’s theater forcing us to reflect on our current-day society and its moral problems, no one can blame audiences for seeking a pure escape – perhaps just like the millionaires of 1912 who went aboard the maiden voyage of the Titanic.Fortunately, we can now hop aboard “Titanique,” the alternately clever and kooky-send up of both James Cameron’s 1997 blockbuster film “Titanic” and the French-Canadian superstar Celine Dion, who sang the movie’s Oscar-winning theme song “My Heart Will Go On.” It’s the perfect vehicle in which to pass 90 minutes in the basement of a Gristedes (aka The Asylum Theater in Chelsea) and forget about the outside world. Continue Reading\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.",
   "isFullReview": false,
@@ -33,7 +33,7 @@
   "fetchTier": 2,
   "textQuality": "truncated",
   "truncationSignals": [
-    "paywall_or_login_prompt"
+    "has_read_more_prompt"
   ],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
@@ -43,13 +43,13 @@
   "misattributedFullText": true,
   "extractedByline": "Brian Scott",
   "expectedCritic": "Brian Scott Lipton",
-  "assignedScore": 75,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 75,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -60,7 +60,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review frames the show positively as 'alternately clever and kooky' and 'the perfect vehicle' for escapist entertainment, though the truncated text prevents seeing the full assessment. | GPT-4o: The review describes the show as a 'clever and kooky send-up' and a 'perfect vehicle' for escapism, suggesting a positive experience. However, due to the truncated text, the final verdict may be missing, leading to medium confidence. | Gemini: The review describes the show as \"alternately clever and kooky\" and \"the perfect vehicle\" for escapism. While truncated, the overall tone suggests a positive recommendation for those seeking light entertainment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite the truncated text warning, the reviewer calls it 'alternately clever and kooky' and 'the perfect vehicle' for escapist entertainment, indicating a positive recommendation for audiences seeking fun theater. | GPT-4o: The review describes the show as a fun escape from reality, suggesting a positive experience. However, due to the truncated text, the final verdict may be missing, leading to medium confidence. | Gemini: The review describes the show as \"alternately clever and kooky\" and a \"perfect vehicle\" for escapism. While not a rave, it's a positive recommendation, though the truncated text makes it hard to be more confident.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -70,14 +70,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T02:29:28.988Z",
+    "scoredAt": "2026-02-02T19:28:08.631Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 76,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
@@ -89,7 +91,5 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  },
-  "wordCount": 181,
-  "tierReason": "Truncation detected: paywall_or_login_prompt"
+  }
 }

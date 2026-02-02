@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite some praise for acrobats and one standout number, the critic finds the show plagued by pacing issues, weak leads with no chemistry, and compares it unfavorably to superior Broadway productions throughout. | GPT-4o: The review highlights numerous flaws in the production, including a lackluster score, poor pacing, and weak chemistry between leads. Despite some redeeming acrobatics, the overall tone is negative, suggesting the show falls short of expectations. | Gemini: The review highlights some positive aspects like the acrobats and one standout song, but criticizes the overall pacing, the lack of chemistry between the leads, and the uninspired music and book. This indicates a mixed experience with redeeming qualities.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically dismantles the show despite praising individual acrobats, calling it 'total banality,' 'hokey,' and comparing the pacing to a 'pachyderm,' clearly not recommending it. | GPT-4o: The review highlights numerous flaws in the production, including a lackluster score, poor pacing, and weak chemistry between leads. While there are some redeeming elements like the acrobats, the overall tone is negative, suggesting the show is not worth seeing. | Gemini: The review highlights both positive and negative aspects. While criticizing the score, book, and leads' chemistry, it praises the acrobats and some individual moments, resulting in a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,11 +38,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:43:36.338Z",
+    "scoredAt": "2026-02-02T19:31:42.925Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 61,
+    "previousScore": 46,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
@@ -63,8 +63,8 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "dtliExcerpt": "“Water” has more exuberance than wit; more catchphrases than character.",
-  "contentTier": "complete",
-  "wordCount": 737,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "isFullReview": true,
@@ -81,6 +81,7 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250725162627",
@@ -93,6 +94,5 @@
     "hadPositiveThumb": false,
     "dtliThumb": "Meh",
     "bwwThumb": "none"
-  },
-  "tierReason": "Full review text"
+  }
 }

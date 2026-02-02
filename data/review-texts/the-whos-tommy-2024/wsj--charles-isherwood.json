@@ -7,18 +7,18 @@
   "publishDate": "March 28, 2024",
   "dtliExcerpt": "A big blast of boomer pleasure has arrived on Broadway at the Nederlander Theatre, where the thunderous and thoroughly intoxicating revival of “The Who’s Tommy” has opened, giving a seismic jolt to the mostly lusterless musical season.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 78,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": "\"...brings an intoxicating energy to the story of a boy who survives trauma\"",
   "bwwExcerpt": "The term “rock opera” is amorphous, but perhaps no other show comes as near to defining it precisely as this one. Mr. Townshend’s songs are authentic rock dating from the heyday of one of the genre’s revered bands, not the watery pap that often passes for rock in contemporary musicals. And even the most outlandish plots of Verdi are no more sensationally dramatic than the story of “Tommy,” with its beleaguered but triumphant hero, its rogue’s gallery of foes and its frankly bizarre story.",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The phrase 'intoxicating energy' is clearly positive language from a major critic, and aggregator context confirms positive verdict, but extremely limited text makes full assessment difficult. | Gemini: The phrase \"intoxicating energy\" suggests a positive experience, and the aggregator context confirms a positive overall reception.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'intoxicating energy' is clearly positive praise for the production, and aggregator context confirms positive verdict, but limited excerpt makes full assessment difficult. | GPT-4o: The phrase 'brings an intoxicating energy' suggests a strong, positive reaction to the production. The use of 'intoxicating' implies a captivating and engaging experience, indicating a solid recommendation. | Gemini: The phrase \"intoxicating energy\" suggests a positive experience, and the aggregator verdicts are also positive. However, without the full review, it's hard to assess the strength of the recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:23:23.258Z",
+    "scoredAt": "2026-02-02T19:26:29.566Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
+    "openaiScore": 82,
     "geminiScore": 75,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/wsj--charles-isherwood_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:34:27.607Z",

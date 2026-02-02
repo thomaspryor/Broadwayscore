@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the performers are 'fun to watch' and finds some comedy successful, but is troubled by the play's moral equivocation and shallow treatment of serious themes, ultimately questioning 'what exactly we were clapping for.' | GPT-4o: The review acknowledges the enjoyable performances and humor but criticizes the play's lack of depth and moral ambiguity, leading to a mixed verdict. | Gemini: The review highlights enjoyable aspects like the performances and some funny lines, but also criticizes the play's shaky grip, moral equivocation, and superficial engagement. It neither strongly recommends nor discourages seeing it.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds the performances enjoyable (especially Farrow) and acknowledges some funny moments, but concludes the play is 'willfully underexamined' with moral equivocation that leaves audiences questioning what they witnessed. The review's conclusion suggests neither recommendation nor strong discouragement. | GPT-4o: The review acknowledges the entertainment value and chemistry of the lead actors but criticizes the play's lack of depth and moral ambiguity. The critic appreciates the performances but finds the play's thematic execution lacking, resulting in a mixed recommendation. | Gemini: The review highlights enjoyable performances and funny moments but criticizes the play's shaky grip on its themes and moral equivocations, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,11 +43,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:26:08.225Z",
+    "scoredAt": "2026-02-02T19:23:24.781Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
@@ -65,7 +65,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "contentTier": "complete",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
   "previousUrl": "https://www.vulture.com/article/the-roommate-review-broadway-patti-lupone-mia-farrow.html",
   "urlDiscoveredAt": "2026-02-02T05:01:54.512Z",
@@ -85,12 +85,11 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250114012912",
   "archiveOrgUrl": "http://web.archive.org/web/20250114012912/https://www.vulture.com/article/theater-review-roommate-lupone-farrow-silverman.html",
   "duplicateTextOf": "vulture--sara-holdren.json",
-  "rescoreCompletedAt": "2026-02-02T14:26:08.225Z",
-  "wordCount": 1440,
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T14:26:08.225Z"
 }

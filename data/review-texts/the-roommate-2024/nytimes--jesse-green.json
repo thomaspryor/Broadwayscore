@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic identifies a fundamental structural problem where good performances cannot overcome the play's weaknesses, suggesting neither recommendation nor strong discouragement. | GPT-4o: The review highlights strong performances but suggests they do not overcome issues with the play itself, leading to a mixed impression. | Gemini: The review highlights strong performances but ultimately suggests the play itself is lacking, leading to a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges 'very satisfying performances' but states they 'cancel out the play,' suggesting the production has merit but fundamental issues prevent a recommendation. | GPT-4o: The review acknowledges strong performances but suggests they do not overcome the play's issues, indicating a mixed reception. The lack of a strong positive or negative verdict and the flat aggregator context support a mixed classification. | Gemini: The review highlights strong performances but ultimately suggests the play itself is lacking, resulting in a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:14:07.077Z",
+    "scoredAt": "2026-02-02T19:22:43.552Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,

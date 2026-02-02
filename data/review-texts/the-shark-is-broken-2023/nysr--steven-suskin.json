@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 81,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 81,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and consistently positive language throughout, praising the performances as 'exceptionally diverting caricatures' and calling the whole show 'mighty funny,' clearly indicates a positive recommendation despite some gentle reservations about accessibility for unfamiliar audiences. | GPT-4o: The review provides a positive assessment of the performances and production, highlighting the humor and entertainment value of the play. The original 4/5 star rating strongly supports a positive classification. | Gemini: The critic gives the show 4 out of 5 stars and states that the show is funny. The reservation is that those unfamiliar with the movie 'Jaws' may be lost.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and consistently positive language throughout praising the performances as 'exceptionally diverting caricatures' and calling the show 'mighty funny' clearly indicates a solid recommendation despite being a relatively simple production. | GPT-4o: The review is highly positive, highlighting the humor and performances as exceptionally diverting. The critic's 4/5 star rating strongly supports a positive classification, indicating a solid recommendation with enthusiasm. | Gemini: The critic gives the show 4 out of 5 stars and states that the 95 minutes are full of laughter. The reservation is that those unfamiliar with Jaws may be at sea.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:52:43.786Z",
+    "scoredAt": "2026-02-02T19:24:09.908Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
+    "claudeScore": 78,
     "openaiScore": 82,
     "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

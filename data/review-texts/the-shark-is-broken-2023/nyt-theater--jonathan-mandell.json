@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 60,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The single excerpt describes the show as 'modest' and suggests it relies on 'reflected cinematic glory' rather than standalone merit, indicating lukewarm assessment. However, with only one truncated excerpt available, scoring conservatively within mixed range. | GPT-4o: The review suggests that while the play may have some appeal, it relies heavily on the audience's familiarity with its cinematic references, indicating a mixed reception. The lack of strong positive or negative language leads to a middle-ground classification. | Gemini: The review suggests the play is only appreciable if you know nothing about the subject matter, implying it's not great on its own. The phrase \"Beckett-light pop play\" suggests it has some merit, but it's not a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt describes it as 'modest' and suggests it relies on 'reflected cinematic glory' rather than standalone merit. The truncated text and single excerpt warning make full assessment difficult, but the tone suggests qualified entertainment value. | GPT-4o: The review suggests that the play might be appreciated for its concept but does not strongly recommend it. The tone is neutral, indicating a mixed reception, and the single excerpt does not provide a clear positive or negative verdict. | Gemini: The review suggests the play is only appreciable if you know nothing about the subject matter, implying it's not great on its own. The description as \"Beckett-light pop play\" and the phrase \"waiting for something to happen\" suggest a mixed or lukewarm experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:52:51.444Z",
+    "scoredAt": "2026-02-02T19:24:13.110Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 62,
+    "claudeScore": 62,
+    "openaiScore": 55,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -8,18 +8,18 @@
   "dtliExcerpt": "I first caught it in Chicago, when the production remained a bit of a mess, and can report that the Broadway version reflects a lot of good new work.",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": "\"The Wiz is all about feeling...in complex times, its simple message rings loud and clear\"",
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 75,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic emphasizes the show's emotional impact and relevance, suggesting it effectively delivers its message, which indicates a positive recommendation despite limited text available. | GPT-4o: The excerpt suggests a positive reception, highlighting the show's emotional impact and clear message. However, without the full review, the confidence is medium. | Gemini: The quote suggests a positive experience, highlighting the show's emotional impact and relevant message. The aggregator verdict also indicates a positive reception.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The quote emphasizes the show's emotional resonance and suggests the critic finds its message effectively delivered, indicating a positive recommendation despite limited text available. | GPT-4o: The quote suggests a positive reception, emphasizing the show's emotional impact and clear message. The aggregator context supports a positive verdict, but the lack of detailed critique in the excerpt leads to a medium confidence level. | Gemini: The quote suggests a positive experience, highlighting the show's emotional impact and relevance. The aggregator verdict also indicates a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:43:35.361Z",
+    "scoredAt": "2026-02-02T19:26:57.276Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 71,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 75,
+    "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges significant flaws (too long, lumbering, lacks cohesion, tonal inconsistencies) but ultimately finds the show 'stimulating' and memorable, with 'many pleasures' - a classic mixed review that neither fully recommends nor discourages. | GPT-4o: The review acknowledges the show's flaws, such as its lack of cohesion and length, but ultimately praises its ambition, cleverness, and emotional impact, recommending it for its stimulating qualities. | Gemini: The review is mostly positive, highlighting the show's ambition and lasting impact, despite acknowledging its flaws like length and unevenness. The final statement tips it into a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic finds the show 'oddly compelling' and praises individual performances and clever elements, but consistently notes major flaws like tonal inconsistency, pacing issues, and lack of cohesion. The final verdict emphasizes both pleasures and lasting impact despite acknowledging it's not a 'smooth, cohesive show.' | GPT-4o: The review acknowledges the show's flaws, such as its lack of cohesion and length, but ultimately finds it stimulating and full of pleasures. The critic's final assessment leans towards a positive recommendation despite the reservations. | Gemini: The review is generally positive, highlighting the show's ambition and lasting impact, but acknowledges its flaws like length and unevenness. The final sentiment leans towards recommending the show despite its issues.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,11 +40,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:34:49.243Z",
+    "scoredAt": "2026-02-02T19:33:02.775Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 70,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

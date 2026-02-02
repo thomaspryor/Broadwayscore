@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"The new Broadway revival is charming, but at the cost of a broader artistic vision\"",
@@ -18,11 +18,11 @@
     "show-score"
   ],
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges charm but criticizes the lack of broader artistic vision, suggesting a production that works on surface level but fails to achieve deeper impact. | GPT-4o: The review acknowledges the production's charm but criticizes it for lacking a broader artistic vision, suggesting a mixed reception. The aggregator's 'flat' verdict supports this interpretation. | Gemini: The review uses the word 'charming' which is positive, but the second half of the sentence indicates a reservation, suggesting a positive but not rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review finds positive qualities ('charming') but identifies a significant artistic limitation, suggesting neither strong recommendation nor discouragement. The aggregator context supports a lukewarm assessment. | GPT-4o: The review acknowledges the charm of the revival, suggesting some positive elements, but notes a significant shortcoming in artistic vision, indicating a mixed assessment. | Gemini: The review acknowledges the show's charm but suggests it comes at the expense of a more substantial artistic vision, indicating a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,27 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:45:45.965Z",
+    "scoredAt": "2026-02-02T19:28:04.765Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
-    "previousVersion": "3.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 74,
+    "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,

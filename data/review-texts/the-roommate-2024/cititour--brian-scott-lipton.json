@@ -9,15 +9,15 @@
   "bwwExcerpt": "Directed with his usual finesse by Jack O’ Brien and beautifully designed by Bob Crowley (who has created a spacious, airy Midwest farmhouse) and lit gorgeously by Natasha Katz, the play serves mostly as a showcase for the spectacular Mia Farrow (in a long-awaited return to the stage) and her real-life bestie, Patti LuPone, each of whom do their considerable best to both illuminate and overcome Silverman’s often facile writing. Average Rating: 60.0% { \"@context\":\"https://schema.org\",",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the performances as 'spectacular' and finds the experience 'delightful,' but criticizes the 'facile writing' and overlong ending, indicating a positive recommendation with clear reservations. | GPT-4o: The review highlights strong performances by Mia Farrow and Patti LuPone, and describes the play as 'crowd-pleasing' and 'delightful' despite some criticisms of the writing and pacing. The overall tone suggests a recommendation, albeit with some reservations about the script. | Gemini: The review praises the performances of Farrow and LuPone and the design elements, while acknowledging weaknesses in the writing. The overall tone suggests a positive experience despite the play's flaws, leading to a 'Positive' classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the performances, especially Farrow's, and notes delightful moments, but criticizes the writing as 'facile' and finds the ending problematic with unnecessary resolution, creating a balanced but ultimately lukewarm assessment. | GPT-4o: The review highlights strong performances by Mia Farrow and Patti LuPone and describes the play as 'crowd-pleasing' and 'delightful,' despite some criticisms of the writing and pacing. The overall tone suggests a positive recommendation with some reservations. | Gemini: The review praises the direction, design, and especially the performances of Farrow and LuPone, but notes the writing is 'facile.' The overall tone is positive, highlighting the delightful aspects of the performances despite reservations about the script.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:42:20.219Z",
+    "scoredAt": "2026-02-02T19:22:04.563Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 61,
+    "previousScore": 74,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 74,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeScore": 62,
+    "openaiScore": 75,
+    "geminiScore": 77,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",

@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"The Notebookâs songs at times barely make lyrical sense.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-notebook-broadway",
   "originalScore": null,
-  "assignedScore": 54,
+  "assignedScore": 45,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-notebook-2024/new-york-magazine-vulture--sara-holdren_2026-01-27.html",
@@ -30,11 +30,11 @@
   "archiveOrgTimestamp": "20241216051536",
   "archiveOrgUrl": "http://web.archive.org/web/20241216051536/https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html",
   "llmScore": {
-    "score": 54,
-    "confidence": "low",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 49,
-      "high": 59
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -45,7 +45,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Negative | Claude: The review heavily criticizes The Notebook as generic, forgettable, and disappointing, but then enthusiastically recommends The Effect as a superior alternative, creating a mixed overall assessment with clear guidance toward one show over the other. | Gemini: The review is overwhelmingly negative, criticizing the direction, music, lyrics, set design, and changes made to the story. The critic uses phrases like \"aggressively generic\" and \"heavy sanding block\" to describe the show's shortcomings, indicating a lack of recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic finds The Notebook generic, forgettable, and disappointing, describing it as having a 'damp kind of fizzle' and disappearing 'from memory almost moment to moment,' while strongly praising The Effect as a superior alternative. | GPT-4o: The review criticizes the production for its lack of emotional impact, generic aesthetic, and questionable creative choices, suggesting it falls short of expectations and is not worth seeing. | Gemini: The review is overwhelmingly negative, citing issues with direction, music, set design, and adaptation choices. The critic clearly does not recommend seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,26 +55,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:02.676Z",
+    "scoredAt": "2026-02-02T19:19:56.583Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 32,
-    "previousVersion": "5.0.0"
+    "previousScore": 54,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": null,
+    "claudeScore": 58,
+    "openaiScore": 45,
     "geminiScore": 45,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 17,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "bwwExcerpt": "If I had to take bets on how many actual tears The Notebook The Musical manages to jerk — well, I wouldn’t advise anyone to bring a bucket. With prosaic direction and a strangely heavy and sterile aesthetic sense that feels, despite Schele Williams’s presence as a co-director, all too similar to Michael Greif’s other productions this season, as well as a surprisingly beige slate of songs by the folk-pop artist Ingrid Michaelson, the show disappears from memory almost moment to moment. It’s almost enough to make one want to reference the half of the story’s plot that deals with dementia.",
   "bwwThumb": "Meh",

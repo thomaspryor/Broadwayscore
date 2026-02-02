@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes multiple elements (direction, costumes, choreography, performances) as 'unimaginative,' 'mundane,' or 'mawkish,' but finds redeeming qualities in the projections ('Some tableaux are breathtaking') and lead performance, resulting in a mixed assessment without a clear recommendation. | GPT-4o: The review highlights both positive aspects, like the performance of Ali Louis Bourzgui and some breathtaking visuals, and negative aspects, such as unimaginative costumes and a lack of irreverence compared to the original film. The overall tone suggests a mixed experience with some redeeming qualities. | Gemini: The review is mixed, praising some aspects like the lead actor and projections, but criticizing the direction, costumes, and choreography. It doesn't outright recommend or discourage seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds strong elements (breathtaking visuals, Ali Louis Bourzgui's performance) but significant flaws (pedestrian choreography, mawkish performances). The review neither recommends nor discourages attendance, focusing on uneven execution. | GPT-4o: The review highlights both positive and negative aspects of the production, with criticism of the direction, costumes, and choreography, but acknowledges some visual elements and performances as redeeming features. | Gemini: The review has both positive and negative elements. The critic praises Ali Louis Bourzgui's performance but criticizes the costumes, choreography, and direction in parts, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,12 +44,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:22:16.733Z",
+    "scoredAt": "2026-02-02T19:26:05.104Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 48,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,

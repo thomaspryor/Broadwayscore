@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic clearly does not recommend the show, describing it as clichéd and contrived, warning that only the existing fanbase might boost box office while other theatergoers need 'more than clichés, tropes and triggers.' | GPT-4o: The review criticizes the production for being overly sentimental and filled with clichés. The staging is described as contrived and unsurprising, suggesting the critic does not recommend the show. | Gemini: The review points out flaws like sentimentality and clichés, but also acknowledges the potential appeal to fans and some intriguing staging choices. It doesn't outright recommend or discourage seeing it.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically dismantles the musical as a 'Hallmark movie of a musical' with thin characters, banal dialogue, repetitive songs, and contrived staging, concluding it's 'leaden' and insubstantial. | GPT-4o: The review criticizes the musical for its lack of depth, charm, and complexity, describing it as sentimental and clichéd. The final verdict suggests the production is not worth seeing due to its uninspired execution. | Gemini: The review highlights several shortcomings, including a lack of depth in the characters and songs, and contrived staging. However, it also acknowledges some positive aspects like the performances of Plunkett and Harewood, resulting in a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:47:48.382Z",
+    "scoredAt": "2026-02-02T19:19:49.257Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,

@@ -27,13 +27,13 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "assignedScore": 69,
+  "assignedScore": 64,
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -44,7 +44,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic acknowledges the production has merit and good performances but identifies significant structural problems with pacing and translation choices, describing it as requiring patience and existing in an unsatisfying 'Theaterland' neither fully modern nor period-appropriate. | Gemini: The review acknowledges issues with the production but ultimately suggests it's rewarding for patient viewers, placing it in the 'Positive' bucket. The truncated nature of the text and the mixed signals about the translation contribute to a 'medium' confidence level.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges the production's strengths (strong performances, humor) but notes it 'doesn't completely solve the central difficulties' and feels detached from its cultural context. The truncated text prevents certainty about the final verdict. | GPT-4o: The review acknowledges the production's challenges and detachment from Chekhov's original context but also highlights moments of humor and strong performances. The overall tone suggests a mixed experience with some rewarding elements for patient viewers. | Gemini: The review acknowledges issues with the production but ultimately suggests it's worth seeing for patient viewers, due to the performances. The truncated text makes it hard to be more confident.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,27 +54,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:50:12.965Z",
+    "scoredAt": "2026-02-02T19:30:20.956Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text",
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   }
 }

@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises individual performances (especially Harper and Carell) and notes many elements work well, but clearly states the production fails to cohere as a whole, with comedy working better than pathos. | GPT-4o: The review highlights strong individual performances but criticizes the production for not fully capturing the emotional depth of the play, leading to a mixed overall impression. | Gemini: The review highlights both positive and negative aspects of the production. While praising individual performances and comedic elements, it criticizes the overall cohesion and emotional depth, resulting in a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises individual performances (especially Harper and Carell) and notes strong comedic elements, but identifies fundamental problems with the production's emotional depth and overall cohesion, concluding it doesn't successfully integrate its parts. | GPT-4o: The review acknowledges strong individual performances and moments of humor but criticizes the production for failing to cohesively blend its comedic and dramatic elements, leading to an overall mixed impression. | Gemini: The review highlights both strengths and weaknesses, praising individual performances but noting that the production as a whole doesn't fully coalesce. This indicates a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:40.350Z",
+    "scoredAt": "2026-02-02T19:30:07.704Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,

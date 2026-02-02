@@ -16,7 +16,7 @@
   "bwwThumb": "Meh",
   "llmScore": {
     "score": 75,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 70,
       "high": 80
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic gives 3/5 stars and clearly recommends seeing it for the performances of Farrow and LuPone, despite noting the predictable plot and sluggish staging. The review concludes by advising readers to 'take advantage of the unique opportunity' to see these stars together. | GPT-4o: The review acknowledges the strong performances of the leads and the enjoyable aspects of the play, but also notes its predictability and sluggish staging. The original rating of 3/5 stars aligns with a mixed assessment. | Gemini: The review is generally positive, highlighting the performances of Farrow and LuPone as the main draw. While the plot is described as \"wispier-than-gossamer\" and \"predictable,\" the critic still recommends seeing the play to witness the actors' performances. The 3/5 star rating also supports a positive, but not rave, classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 3/5 star rating and language like 'primary reasons to see' and 'no reason not to take advantage of the unique opportunity' clearly indicate a recommendation, though tempered by criticisms of predictability and sluggish staging. | GPT-4o: The review highlights the strong performances of Farrow and LuPone as the main draw, despite the play's predictable plot and sluggish staging. The critic's 3/5 star rating suggests a positive but not enthusiastic recommendation. | Gemini: The review is generally positive, highlighting the enjoyable performances of the leads as the primary reason to see the play, despite a predictable plot and sluggish staging. The critic's 3/5 star rating supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:37.138Z",
+    "scoredAt": "2026-02-02T19:22:28.942Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "geminiScore": 78,
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/the-roommate-2024/nysr--frank-scheck_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:40:08.971Z",

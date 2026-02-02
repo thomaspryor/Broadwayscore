@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Despite acknowledging some positive elements like the lead performances and chemistry, the critic uses consistently negative metaphors (failed bread recipe, half-baked plot) and explicitly recommends skipping the show in favor of getting cake elsewhere, indicating a clear negative recommendation. | GPT-4o: The review offers both positive and negative elements, praising the performances and comedic timing but criticizing the score and plot. The suggestion to 'consider, instead, seeking out one of the best cake slices' implies a lukewarm recommendation. | Gemini: The review highlights both positive and negative aspects, such as endearing performances but a repetitive score and half-baked plot. The truncated ending makes it difficult to determine the final verdict, but the overall tone suggests a mixed reaction.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Despite praise for the lead performances, the critic calls it 'half-baked' with a 'forgettable pop score' and explicitly recommends skipping the show for cake instead. The truncation warning adds some uncertainty, but the final recommendation is clearly negative. | GPT-4o: The review highlights some positive elements such as the chemistry between the leads and comedic moments, but criticizes the score and plot as underwhelming. The truncated text suggests caution, but the overall tone is mixed with both positive and negative aspects. | Gemini: The review praises the performances and humor but criticizes the score and plot. The truncated ending makes it difficult to determine the final recommendation, but the overall tone suggests a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,11 +37,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:43:12.845Z",
+    "scoredAt": "2026-02-02T19:29:01.384Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 43,
+    "previousScore": 60,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

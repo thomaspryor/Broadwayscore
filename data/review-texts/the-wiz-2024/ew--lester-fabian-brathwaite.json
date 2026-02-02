@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges talent and some effective elements but criticizes the production's frenzied energy, budget constraints, and removal of iconic elements, suggesting a flawed but not entirely unsuccessful show. | GPT-4o: The review highlights both positive aspects, such as the talent and some successful elements of the score, and significant criticisms, including missing iconic elements and a sense of desperation in performances. The truncated nature of the text and positive aggregator excerpts suggest a mixed overall impression with some redeeming qualities. | Gemini: Despite some reservations about the direction and changes to the original, the review acknowledges the talent and enjoyable aspects of the production, leading to a positive but not rave recommendation. The aggregator excerpts also suggest a positive reception.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges obvious talent in the cast and some strong score elements, but criticizes the unmodulated fervor, budget constraints affecting sets, and various changes that remove iconic elements, resulting in a lukewarm assessment. | GPT-4o: The review acknowledges the talent of the cast and some successful elements of the production, but criticizes the lack of iconic elements and the frantic energy of the performance. The truncated text and positive aggregator excerpts suggest some positive aspects might be missing, leading to a mixed verdict. | Gemini: Despite some reservations about the frenzied energy and changes to the original, the review acknowledges the talent and the enduring quality of the score, suggesting it's worth seeing but not without flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:42:56.785Z",
+    "scoredAt": "2026-02-02T19:26:50.366Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,
     "openaiScore": 65,
-    "geminiScore": 78,
+    "geminiScore": 79,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 20,
+    "scoreDelta": 21,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

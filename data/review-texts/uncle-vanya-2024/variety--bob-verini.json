@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses effusive praise throughout, calling it 'starry, breathtaking,' 'gorgeous,' 'flawless,' and describes how 'art is still able to lift us up.' Despite acknowledging the dark subject matter, the review emphasizes the production's beauty and brilliance. | GPT-4o: The review is overwhelmingly positive, highlighting the direction, cast, and production elements as exceptional. The critic describes the play as both entertaining and profound, with a flawless ensemble, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, cast, and translation. While acknowledging the play's dark themes, the critic emphasizes the production's ability to uplift and move the audience, making it a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'starry, breathtaking,' praising the 'flawless, fully engaged ensemble cast,' and concluding with appreciation for the production's 'brilliance.' Despite acknowledging the dark subject matter, the review emphasizes how the production transcends it with beauty and hope. | GPT-4o: The review is overwhelmingly positive, praising the direction, cast, translation, and production design. It describes the play as both entertaining and profound, with a flawless ensemble cast, making it a must-see experience. | Gemini: The review is overwhelmingly positive, praising the direction, cast, translation, and set design. The critic highlights the entertainment value and relatability of the production, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,11 +43,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:26:25.945Z",
+    "scoredAt": "2026-02-02T19:31:02.373Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
@@ -65,7 +65,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "contentTier": "complete",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
   "previousUrl": "https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carell-william-jackson-harper-1236207309/",
   "urlDiscoveredAt": "2026-02-02T05:08:51.892Z",
@@ -74,7 +74,7 @@
   "previousLlmScore": 78,
   "textWordCount": 914,
   "archivePath": "data/archives/reviews/uncle-vanya-2024/variety--bob-verini_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T18:00:01.624Z",
+  "textFetchedAt": "2026-02-02T15:05:35.850Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -85,12 +85,11 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251121123235",
   "archiveOrgUrl": "http://web.archive.org/web/20251121123235/https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/",
   "duplicateTextOf": "variety--trish-deitch.json",
-  "rescoreCompletedAt": "2026-02-02T14:26:25.945Z",
-  "wordCount": 914,
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T14:26:25.945Z"
 }

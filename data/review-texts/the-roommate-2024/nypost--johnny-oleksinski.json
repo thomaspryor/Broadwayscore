@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses clearly positive language - 'perfect odd couple' and 'fascinating' - creating an appealing, warm recommendation that suggests an enjoyable theater experience. | GPT-4o: The review uses positive language to describe the performances and the intimate nature of the show, suggesting a recommendation to see it. | Gemini: The review is positive, highlighting the performances and describing the experience as enjoyable. The phrase 'perfect odd couple' indicates a positive assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is brief but uses positive language ('perfect odd couple', 'fascinating') and creates an appealing, intimate image, though lacks deeper critical analysis or strong recommendation language. | GPT-4o: The review highlights the strong performances of the lead actors and describes the show as an engaging experience, suggesting a strong recommendation. | Gemini: The review is positive, highlighting the performances and the overall feeling of the play. The phrase 'perfect odd couple' indicates a positive experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,16 +43,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:01:30.112Z",
+    "scoredAt": "2026-02-02T19:22:24.926Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "geminiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

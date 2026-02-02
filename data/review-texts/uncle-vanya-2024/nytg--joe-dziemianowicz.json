@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Steve Carell brings his comic chops to a dramatic classic\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/uncle-vanya-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "show-score",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 62,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Despite positive elements like committed actors and eye-catching design, the critic ultimately finds the revival lacking cohesion and fails to deliver the expected emotional impact, describing it as 'at best, a curiosity' that 'left me wanting.' | GPT-4o: The review highlights some positive elements such as the performances and design, but ultimately suggests the production is lacking in cohesion and emotional impact. The phrase 'left me wanting' indicates a mixed reception, and the truncated nature of the text suggests caution in assuming a more negative verdict. | Gemini: The review notes committed actors and eye-catching design, but ultimately finds the revival lacking cohesion and persuasiveness. The critic states the play 'left me wanting', indicating a mixed to slightly negative experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds positive elements (committed cast, eye-catching design) but clearly states disappointment with the overall experience, wishing it 'added up to a more cohesive and persuasive experience' and being 'left wanting' by the production. | GPT-4o: The review highlights some positive elements, such as Steve Carell's performance and the scenic design, but ultimately suggests the production is lacking in cohesion and emotional impact. The truncated text warns against assuming a negative verdict, but the provided excerpts and overall tone suggest a mixed reception. | Gemini: The review highlights both positive and negative aspects, such as committed actors and eye-catching design but ultimately states the revival \"left me wanting.\" The truncated text makes it difficult to determine a final verdict, but the overall tone suggests a mixed reaction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,7 +38,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:43:16.485Z",
+    "scoredAt": "2026-02-02T19:30:24.625Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -46,13 +46,13 @@
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
+    "claudeScore": 62,
+    "openaiScore": 68,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

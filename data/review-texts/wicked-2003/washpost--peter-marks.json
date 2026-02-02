@@ -5,13 +5,13 @@
   "criticName": "Peter Marks",
   "url": "http://journaltimes.com/entertainment/a-radical-retelling-of-wizard-of-oz/article_de42e691-cb2a-5d4b-90a4-36ae0171c1e3.html",
   "publishDate": "November 1, 2003",
-  "fullText": "In \"Wicked,\" the muddy $14 million spectacle that opened last night at the Gershwin Theatre, Chenoweth does what musical stars are expected to do in times of theatrical trouble: consult the book of spells, perform a bit of sorcery. This she accomplishes in spades as Glinda, the fabled good witch, promoted here from kitschy movie part to bravura stage lead. Whenever she opens her mouth - whether to demonstrate her supple coloratura or to detonate a verbal grenade or two - \"Wicked\" makes endearingly whimsical noises, the sounds of a bona fide crowd-pleaser. Get local news delivered to your inbox! Beginning of dialog window. Escape will cancel and close the window.",
+  "fullText": "Get local news delivered to your inbox!\n\nBeginning of dialog window. Escape will cancel and close the window.\n\nGet up-to-the-minute news sent straight to your device.\n\nBack\n \n\n \n ×\n \n Enjoy unlimited digital access to journaltimes.com!\n \n \n\n \n \n Sorry, an error occurred.\n\n*offer available for new customers only\n\n*offer available for new customers only\n\nAccount processing issue - the email address may already exist\n\nYour account has been registered, and you are now logged in.\n\nInvalid password or account does not exist\n\nSubmitting this form below will send a message to your email with a link to change your password.\n\nAn email message containing instructions on how to reset your password has been sent to the email address listed on your account.\n\nSecure transaction.\n Secure transaction. Cancel anytime.\n\nYour gift purchase was successful!\n Your purchase was successful, and you are now logged in.\n\nA receipt was sent to your email.",
   "showScoreExcerpt": "\"Wicked makes endearingly whimsical noises, the sounds of a bona fide crowd-pleaser. Much of the rest of the time, however, the magic fades as the show pursues its rather charmless agenda as a parable about the roots of political evil.\"",
   "originalScore": null,
   "assignedScore": 64,
   "source": "show-score",
   "needsFullText": true,
-  "sourceMethod": "playwright",
+  "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges crowd-pleasing moments and praises Menzel's performance, but criticizes the show's 'charmless agenda' and notes that 'magic fades' much of the time, suggesting mixed feelings overall. | GPT-4o: The review acknowledges the show's appeal as a crowd-pleaser but criticizes its lack of charm in its storytelling. However, Idina Menzel's performance is highlighted as a redeeming factor, indicating a mixed but somewhat positive view. | Gemini: The review acknowledges flaws but ultimately suggests the show is worth seeing due to Idina Menzel's performance.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges crowd-pleasing elements and praises Menzel's performance as saving the show, but criticizes the show's 'charmless agenda' and notes that 'the magic fades' much of the time, indicating a qualified, lukewarm assessment. | GPT-4o: The review acknowledges the show's appeal as a crowd-pleaser but criticizes its lack of charm and agenda. The standout performance by Idina Menzel is highlighted as a saving grace, indicating a mixed but somewhat positive view. | Gemini: Despite the critic's reservations about the show's plot, they acknowledge that Idina Menzel's performance elevates it, suggesting it is still worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,7 +40,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:36:24.636Z",
+    "scoredAt": "2026-02-02T19:34:38.905Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -72,10 +72,10 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 57,
   "isFullReview": false,
-  "textWordCount": 111,
-  "archivePath": "data/archives/reviews/wicked-2003/washpost--peter-marks_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T18:36:47.152Z",
-  "fetchMethod": "playwright",
+  "textWordCount": 146,
+  "archivePath": "data/archives/reviews/wicked-2003/washpost--peter-marks_2026-02-01.html",
+  "textFetchedAt": "2026-02-01T15:12:43.497Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -86,15 +86,23 @@
     {
       "tier": 1,
       "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
       "success": true
     }
   ],
-  "fetchTier": 1,
+  "fetchTier": 2,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "incomplete",
   "textIssues": [
-    "Word count too low: 111 (min: 300)"
+    "Word count too low: 146 (min: 300)",
+    "Show title not found in text"
   ],
+  "showNotMentioned": true,
   "rescoreCompletedAt": "2026-02-02T00:45:38.216Z"
 }

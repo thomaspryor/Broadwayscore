@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Ultimately, it’s a privilege just to spend a spell with icons like Farrow and LuPone, even if like their characters, they seem somewhat mismatched. When you’ve got two certified greats, it’s hard not to wish for something more than just fine.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 64,
+    "score": 65,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic calls it 'decent' and 'slight but sturdy' while praising Farrow but criticizing LuPone's performance and the overall production as merely 'fine' when it could have been more. | GPT-4o: The review praises Mia Farrow's performance but notes that the play is 'slight' and LuPone's role is 'underwritten'. The direction and set design are described as serviceable, leading to a mixed impression overall. | Gemini: The review is generally positive, highlighting Farrow's performance as enchanting. While it notes LuPone's performance is lacking and the play itself has flaws, the overall sentiment leans towards recommending the show, especially for the opportunity to see the two leads.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises Farrow's performance as 'sensational' and 'enchanting' but finds significant flaws in LuPone's performance and the production overall, concluding it's merely 'fine' when it could be much more with such talent. | GPT-4o: The review praises Mia Farrow's performance but criticizes Patti LuPone's fit for her role and the overall production quality. The critic appreciates the presence of the stars but finds the play itself lacking, leading to a mixed recommendation. | Gemini: The review praises Farrow's performance and finds the play 'decent'. While LuPone's performance and the set design are criticized, the overall tone suggests the show is worth seeing, especially for the leads, but with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,16 +44,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:15:04.740Z",
+    "scoredAt": "2026-02-02T19:23:11.850Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": 68,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",

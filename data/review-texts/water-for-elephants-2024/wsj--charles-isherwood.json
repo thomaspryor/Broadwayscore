@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic states the adaptation 'loses much' of what made the source material compelling, indicating disappointment with the production. However, with only an excerpt available, confidence is medium as the full verdict may contain additional context. | GPT-4o: The critic notes that the adaptation loses important qualities of the source material, suggesting a negative view. The aggregator context supports this interpretation. | Gemini: The review excerpt indicates a negative assessment, stating that the musical adaptation loses key qualities of the source material. This suggests a disappointing experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic directly states the adaptation fails to capture the essential qualities of its source material, indicating disappointment. However, with only one excerpt available, confidence is limited. | GPT-4o: The excerpt indicates a loss of key qualities from the source material, suggesting the adaptation fails to capture the essence and impact of the original, leading to a negative impression. | Gemini: The review excerpt states that the musical adaptation loses much of its source's quality, indicating a negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,12 +39,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:17.435Z",
+    "scoredAt": "2026-02-02T19:32:59.019Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 42,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -61,8 +61,8 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Negative"
   },
-  "archivePath": "data/archives/reviews/water-for-elephants-2024/wsj--charles-isherwood_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T18:28:15.182Z",
+  "archivePath": "data/archives/reviews/water-for-elephants-2024/wsj--charles-isherwood_2026-01-29.html",
+  "textFetchedAt": "2026-01-29T02:34:31.049Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -81,9 +81,9 @@
   "garbageFullText": "https://www.wsj.com/articles/water-for-elephants-review-broadway-musical-pigpen-jessica-stone-sara-gruen-5eaefa7c\n\nThe cast of ‘Water for Elephants’ Photo: Matthew MurphyNew York\n\nTime was, when a dreamy kid felt oppressed, the allure of running away to join the circus would fire the imagination. An American myth, or sentimental lore, probably. But in the new musical “Water for Elephants,” ostensibly set in a seedy, second-rate circus, running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nBuy Side from WSJExpert recommendations on products and services, independent from The Wall Street Journal newsroom.\n\n34 Things Every Student Needs to Pack for College\n\nDoes Turning Off Your A/C When You’re Not Home Actually Save Money?\n\nThe Best Compression Socks, According to Doctors, Physical Therapists, and Travel Pros\n\nThese Savings Accounts Pay 5% and Still Let You Write Checks\n\nWhy Do Lenders Keep Inviting Me to Check My Credit?\n\nThe 22 Best Deals to Shop Online Right Now\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.488Z",
-  "contentTier": "truncated",
-  "wordCount": 178,
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "contentTier": "excerpt",
+  "wordCount": 0,
+  "rescoreReason": "tiny-excerpt: only 90 chars, try re-fetching",
   "rescoreCompletedAt": "2026-02-01T16:37:01.639Z",
   "sources": [
     "dtli",
@@ -97,15 +97,6 @@
     "dtliThumb": "Meh",
     "bwwThumb": "Down"
   },
-  "fullText": "https://www.wsj.com/articles/water-for-elephants-review-broadway-musical-pigpen-jessica-stone-sara-gruen-5eaefa7c\n\nThe cast of ‘Water for Elephants’ Photo: Matthew MurphyNew York\n\nTime was, when a dreamy kid felt oppressed, the allure of running away to join the circus would fire the imagination. An American myth, or sentimental lore, probably. But in the new musical “Water for Elephants,” ostensibly set in a seedy, second-rate circus, running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nBuy Side from WSJExpert recommendations on products and services, independent from The Wall Street Journal newsroom.\n\n34 Things Every Student Needs to Pack for College\n\nDoes Turning Off Your A/C When You’re Not Home Actually Save Money?\n\nThe Best Compression Socks, According to Doctors, Physical Therapists, and Travel Pros\n\nThese Savings Accounts Pay 5% and Still Let You Write Checks\n\nWhy Do Lenders Keep Inviting Me to Check My Credit?\n\nThe 22 Best Deals to Shop Online Right Now\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc.",
-  "isFullReview": false,
-  "needsRescore": true,
-  "previousLlmScore": 42,
-  "textWordCount": 178,
-  "textQuality": "partial",
-  "truncationSignals": [
-    "has_footer_junk"
-  ],
-  "textStatus": "incomplete",
-  "tierReason": "Short text (178 words)"
+  "fullText": null,
+  "isFullReview": false
 }

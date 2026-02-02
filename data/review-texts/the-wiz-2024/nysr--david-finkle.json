@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": "3/5 stars",
-  "assignedScore": 63,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-wiz-2024/nysr--david-finkle_2026-01-29.html",
@@ -33,11 +33,11 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -48,7 +48,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 3/5 star rating and mixed content confirm this placement. While the critic praises the performances, singing, and production values extensively, they are clearly disappointed with the 50% story revision, calling it 'not entirely fine' and lacking the 'delightfully timeless horror' audiences expect. | GPT-4o: The review praises the performances, particularly Nichelle Lewis, and the production elements like choreography and set design. However, it criticizes the revised book and the overall storytelling, suggesting it doesn't fully succeed. The 3/5 star rating aligns with a mixed assessment. | Gemini: The review praises the performances and technical aspects but criticizes the revised book, especially the second act. The critic's rating of 3/5 stars also suggests a mixed assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and review structure clearly indicate mixed feelings - praising performances, music, and production values while significantly criticizing the book revisions, particularly the second act changes that 'pack nowhere near the delightfully timeless horror that audiences have long known and still love.' | GPT-4o: The review praises the performances, particularly Nichelle Lewis, and the production elements like choreography and set design. However, it criticizes the revised book and the overall storytelling, suggesting that the show does not fully deliver beyond its spectacle. | Gemini: The critic praises the performances, singing, and dancing, stating the audience gets their money's worth. However, they criticize the revised book, particularly the second act, indicating a mixed but overall positive experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,27 +58,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:44:05.416Z",
+    "scoredAt": "2026-02-02T19:27:09.590Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "2/5 stars",

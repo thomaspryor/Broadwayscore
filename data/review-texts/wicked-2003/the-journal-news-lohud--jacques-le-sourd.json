@@ -7,20 +7,14 @@
   "publishDate": "October 31, 2003",
   "showScoreExcerpt": "\"To begin with, it looks like a million dollars - or, to be more precise, like every dime of the $14 million that has been spent on it. Dare we say it? Here's a Broadway show where the ticket price doesn't seem inflated. You will actually feel that you got $100 worth of entertainment - and then some... The show and its many parts do coalesce to create a believable, and extremely thought-provoking, alternate universe, with music, sets, costumes and performances that simply take your breath away.\"",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 89,
   "source": "show-score",
   "needsFullText": true,
   "sourceMethod": "playwright",
-  "archivePath": "data/archives/reviews/wicked-2003/the-journal-news-lohud--jacques-le-sourd_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T18:29:53.777Z",
+  "archivePath": "data/archives/reviews/wicked-2003/journal-news--jacques-le-sourd_2026-01-27.html",
+  "textFetchedAt": "2026-01-27T05:36:06.899Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
     {
       "tier": 1,
       "method": "playwright",
@@ -28,11 +22,11 @@
     }
   ],
   "fetchTier": 1,
-  "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 83,
+  "rescoreReason": "LLM score invalidated (scored from garbage/wrong-show text): LoHud weather/fire news article instead of review",
+  "previousLlmScore": 89,
   "rescoreCompletedAt": "2026-02-02T14:26:56.404Z",
-  "contentTier": "complete",
-  "wordCount": 1093,
+  "contentTier": "needs-rescrape",
+  "wordCount": 0,
   "_invalidatedFullText": "Winter storm dumps snow in Hudson Valley. Latest on road conditionsSee snowfall totals for Lower Hudson Valley, NYC-metro area Jan. 25-26Fire erupts at Putnam County nursing home after snow storm. See photos10 new restaurants shaping Westchester’s 2026 dining sceneWatch Now0:05/0:30Keep WatchingMore StoriesWestchester restaurant wins trendsetter award. Get the detailsBench in downtown White Plains uses solar power to charge cell phonesWhiteout conditions lead to chain-reaction crash, man pinned between carsHow the Lower Hudson Valley fostered USA's journey to independenceDark chocolate bark for a delicious boost to brain wellness Company has plans to build hotel on the moonNewsFraunces Tavern in NYC helped shape and feed a new nationHochul demands Kristi Noem's removal after agents kill another citizenHow International Holocaust Remembrance Day is honored in White PlainsSportsTuohy, Holt fail to medal at Sander track, but Chery, Santee earn goldVote for Ice Hockey Player of Week, presented by White Plains HospitalState dual meet highlights Jan. 26 week wrestling scoreboard, scheduleFoodThe Dutch Crown voted this area's hidden gem: Find out whyFrom dumplings to loco fries, see what's newly opened in RocklandSee New York chefs, restaurants on 2026 James Beard semi-final listLife 10 new restaurants shaping Westchester’s 2026 dining scene Look what's cooking at these new Westchester restaurants Westchester restaurant wins trendsetter award. Get the details OpinionHow Albany must wrangle New York's spiraling energy crisis Liz Krueger and Shelley Mayer As global risks rise, we must invest in our soldiers Tomer Malchi This secret training tool powers the next generation of CEOs Tremain Davis Trending Who is Greg Bovino? Top Trump immigration enforcer to leave Minneapolis Shaun White snowboards in Central Park, jumps over Shane Gillis Watch as Buddhist monks continue peace walk in the cold and snow Shopping Parents love Mylicon Nighttime Gummies—save 20% at Amazon How I transformed my daily routine with these easy smart home upgrades The Sihoo Doro C300 is now an extra 10% off with this exclusive deal Featured GalleryExtra, ExtraENTER NOW Vote Each Week! Winners Announced! More in ContestsCalifornia PrivacySeniors Born 1939-1969 Receive 11 Benefits This Month If They AskSuper Saving Online | AdAdUndoInstall the free Bing Wallpaper appFind your inspiration with beautiful new images every day as your Windows background.Microsoft | AdAdInstall NowUndoCount on seeing even more with ADTWhen you And every system is backed by a 24/7 monitoring system to help keep you safe.ADT | AdAdShop NowUndoFind Results For Patient Assistance Programs For Copays (Read More)Copay-Saving Programs You Can’t Afford To Overlook (See Top Picks)Yahoo Search | Patient Assistance Programs | AdAdUndoSearch for business vehicle tracking softwareResearch business vehicle tracking software on Yahoo. View top results now.Yahoo Search | Business vehicle | AdAdLearn MoreUndoSearch for ae high yield savings accountSearch for ae high yield savings account on Yahoo. View top results now.Yahoo Search | ae high yield savings account | AdAdLearn MoreUndoSearch for reverse mortgage risks age 65Research reverse mortgage risks age 65 on Yahoo. View top results now.Yahoo Search | Reverse mortgage risks | AdAdLearn MoreUndoSearch for top rated reverse mortgageResearch top rated reverse mortgage on Yahoo. View top results now.Yahoo Search | Reverse mortgage | AdAdLearn MoreUndoExperts think this could be like buying Nvidia at $0.16Will This Make the World's First Trillionaire?The Motley Fool | AdAdUndoЅhе Added One Thing to Gеlаtіn - Νоw Ѕhе Саn't Ѕtор Lоѕіng WеіghtJell-o Trick | AdAdUndoby Taboolaby TaboolaClick here for more information- | AdAdUndoSnow blowers pollute NY's air. Lawmakers must go electric Blair Horner and David Masur These NYC landmarks saw early U.S. history in action. Take our tour NY Lottery Win 4, Take 5, Numbers winning numbers for Monday, Jan. 26 What's planned as Haverstraw's poised for an affordable housing boom. Look back at Peekskill's 2012 Lincoln Day celebration. See photosAD CONTENTBest High-Limit Credit Cards Of 2025Intuit Credit Karma | AdAdLearn MoreUndo",
   "_invalidatedFullTextReason": "LoHud weather/fire news article instead of review",
   "_invalidatedFullTextAt": "2026-02-02T14:20:41.221Z",
@@ -79,15 +73,15 @@
     "invalidatedAt": "2026-02-02T14:20:41.221Z"
   },
   "contentTierReason": "LoHud weather/fire news article instead of review",
-  "isFullReview": true,
+  "isFullReview": false,
   "llmScore": {
-    "score": 83,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 88
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -96,7 +90,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong positive language praising production values, explicit statement about ticket value justification, and phrases like 'take your breath away' indicate enthusiastic recommendation despite being a single excerpt. | GPT-4o: The review excerpt is overwhelmingly positive, emphasizing the high production value and the immersive experience provided by the show. The critic's language suggests a strong recommendation, indicating a 'must-see' status. | Gemini: The review excerpt is overwhelmingly positive, praising the production value, entertainment value, and overall impact of the show. The phrase 'take your breath away' suggests a very strong positive reaction.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language like 'take your breath away' and explicitly states the show exceeds its high ticket price value, indicating strong enthusiasm and recommendation. | GPT-4o: The review uses highly enthusiastic language, praising the production's value, coherence, and breathtaking elements, indicating a strong recommendation. | Gemini: The review excerpt is overwhelmingly positive, praising the production value and overall entertainment. The phrase \"take your breath away\" indicates a strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -106,39 +100,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:35:50.942Z",
+    "scoredAt": "2026-02-02T19:34:09.409Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
+    "previousScore": 83,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 92,
+    "claudeScore": 88,
+    "openaiScore": 90,
     "geminiScore": 82,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
-  },
-  "needsRescore": true,
-  "fullText": "Two removed from Mike Lawler town hall amid ICE, Trump questionsDid Westchester's Cluxatawney Henrietta predict an early spring?Did Punxsutawney Phil see his shadow? Here’s his Groundhog Day predictionIn a first for DeCicco & Sons, they'll open a market with a new nameWatch Now0:07/0:30Keep WatchingMore Stories Escape from New York to these foodie-approved travel destinationsWrestlers Vincenzo and Marcarlo Mannello push each other to successHow the Westchester Dept. of Consumer Protection inspects supermarketsGiants address WR, CB needs in latest Matt Miller mock draftHelping the brain find a way back New Rochelle receives $1.5M from NY senators for stormwater upgradesNewsWhen is Groundhog Day 2026? Date, traditions and fun factsLawler lauded for saving massive funds for healthcare providersWill Rockland restrict ICE cooperation? What to know about proposalSportsNew Rochelle relay golden at Millrose Games; Ursuline's Hickey secondSectionals, qualifiers, seeds all this week in lohud wrestlingClarkstown South not bringing baseball coach Mike Amendola backFoodUnderstated Westchester restaurant lands on USA TODAY 'best' listApplebee's Date Night pass is back! See how to get one.The best destinations for culinary travelers, in photos Life In a first for DeCicco & Sons, they'll open a market with a new name Escape from New York to these foodie-approved travel destinations The best destinations for culinary travelers, in photos OpinionSnow blowers pollute NY's air. Lawmakers must go electric Blair Horner and David Masur End the poverty crisis holding back New York's care providers Michelle Yanche and Melanie Hartzog As global risks rise, we must invest in our soldiers Tomer Malchi Trending Trump Kennedy Center will close for two years, Trump says SiriusXM agrees to pay $28M settlement. See if you qualify. 5-year-old boy detained by ICE released, back in MN after judge's order Shopping Save up to 40% off during the Princess Cruises Come Aboard Sale 10 heart-shaped jewelry gifts for Valentine's Day 💍 Which Super Bowl team should you support? Let the team gear decide Featured GalleryExtra, ExtraENTER TODAY ENTER NOW Vote Each Week! More in Contests7 Wealth Tips Once Your Portfolio Reaches $1MFisher Investments | SponsoredSponsoredLearn MoreUndoWho Charges The Least For Auto Insurance In New York? (Check Zip Code)OTTO Insurance | AdAdLearn MoreUndoSeniors Above 55 Years of Age Can Now Fly Business Class For The Price of Economy Using ThisSmart Travel Tips | AdAdLearn MoreUndoWho Charges The Least For Car Insurance In New York? (Check Zip Codes)OTTO Insurance | AdAdLearn MoreUndoTemu Clearance SaleTEMU | AdAdShop NowUndoModern Back Pain Option: Not TENS PT RecommendNueroMD | AdAdLearn MoreUndoResearch 1031 Exchange SolutionsSearchPad | 1031 Exchange | AdAdSearch NowUndoAmazon Worst Nightmare: New York Shoppers Are Canceling Prime for This Clever HackOnline Shopping Tools | AdAdLearn MoreUndoNew Development In Miami Is Changing The Landscape For Buyers In 2026The Equity Deal | AdAdLearn MoreUndoThe most relaxing Farm Game. No InstallTaonga: The Island Farm | AdAdPlay NowUndoCustomer Data Platforms Secure & SimplifiedSearchPad | AdAdUndoby Taboolaby TaboolaBrought to you by- | AdAdUndoDeal of the DayStock Up On All Your Super Bowl Party Needs With A Sam's Club Membership For $25USA TODAY NETWORKUndoEnds Today: Unlimited Talk + Text Plans At Tello For $10 Per MonthUSA TODAY NETWORKUndoRecommendations are independently chosen by our editors. Purchases you make through our links may earn us a commission.RecommendedDozens of vehicles involved in massive crash on NY ThruwaynewsUndoby Taboolaby TaboolaThis may be of interest to you!- | AdAdUndoThe \"Tesla\" of Hearing Aids Is Here (And Under $100)Soundbright Magazine | AdAdUndoRetirees Are Ditching $600 Prescriptions for These $39 German-Engineered GlassesGekkoGifts | AdAdLearn MoreUndoMore Local StoriesNew details in deadly Taconic crash involving off-duty NYPD sergeantnewsUndoLawrence Jones gives update on 'Fox & Friends' absenceentertainmentUndo2026 NFL draft: Should Giants target WR Carnell Tate?sportsUndoMan found unconscious in Mount Kisco laundromat diesnewsUndo12 Dumbest Things Middle-Class Americans Waste Money OnGreensprout | AdAdLearn MoreUndoExperts think this could be like buying Nvidia at $0.16The Motley Fool | AdAdUndoby Taboolaby TaboolaWould you like to know more?- | AdAdUndoHigh blood sugar? This morning habit might interest youGlycoHealth | AdAdLearn MoreUndo7 Wealth Tips Once Your Portfolio Reaches $1 MillionFisher Investments | AdAdLearn MoreUndoMore Local StoriesSee Spring Valley house where baby’s death revealed code violationsnewsUndo'Vile and putrid' sewage floods East Coast river after pipe breaknewsUndoClaire Danes films new Hulu show in WestchesterentertainmentUndoThese upstate NY cities are among the best places to retire. See the listnewsUndoThis New Miami Development Is Changing The Game For Investors In 2026The Equity Deal | AdAdLearn MoreUndoBeachfront hotels with All Inclusive 24/7 serviceRIU Hotels | AdAdLearn MoreUndoIf You're Collecting Under $3950 in SS a Month: You're Eligible for These 10 DiscountsHealthyWallet | AdAdLearn MoreUndoLooking for an Indestructible Toy for Your Fur BabyFANYIL | AdAdUndoMonday: IRS Forgives Millions In Tax Debt Before JanuaryFresh Start Information | AdAdLearn MoreUndoA Plastic Surgeon Asked Who Did Her Face. Then Went QuietOlavita | AdAdUndoMore Local StoriesWhat to know about Stewart Airport's recent service expansion, parkingtravelUndoGiants co-owner Steve Tisch reportedly named in Epstein files: Intense reactionsportsUndoIs Lindsey Vonn out of Olympics? What she says after crash and injurysportsUndoOrangeburg hotel damaged by fire Jan. 28. What we knownewsUndoRecommendedYonkers man insists he's no rapist. Judge imposes 45-year sentencenewsUndoAttempted rape of a minor alleged in Town of WallkillnewsUndoby Taboolaby TaboolaClick here for more information- | AdAdUndoWhy Is This The Most Talked About Bottle Of 2026?Vianys | AdAdRead MoreUndoAudiologists: This is The Top Rated Hearing Aid for 2026Amplihear | AdAdLearn MoreUndoMore Local StoriesSee firefighters respond to nursing home fire in Putnam County NYnewsUndoCloudbound children's play space to open in Westchester NYmoneyUndoWhen do SSI recipients get their February checks? See payment schedulemoneyUndo$31K reward to find poacher who killed wolf from famous Yellowstone packnewsUndoCostco Shoppers Say This Knee Pain Relief Device Is \"Actually Worth It\"healthadvicetoday | AdAdLearn MoreUndoUnlock Capital to Grow Your Business FasterKearny Bank | AdAdLearn MoreUndoby Taboolaby TaboolaThis might be relevant for you- | AdAdUndoMore freezing temps, chance of snow in Lower Hudson Valley forecast These New York cities rank among the best places to retire These are the boys basketball rivalry games with the most heat Girls Basketball Player of Week, presented by White Plains Hospital The day the 1993 World Trade Center Bombing rocked New York CityAD CONTENTTirzepatide Beats Ozempic For Weight Loss - Only $179 MonthSunnyside | AdAdUndo(function() { var iasScriptUrl, hiddenFrame, hiddenDoc, where, domain; iasScriptUrl = '//pixel.adsafeprotected.com/jload?anId=922805&campId=300x600&pubId=4763756135&chanId=adx/ny-westchester-C1084/poster_scroll_front/homepage_0&placementId=5157995707&pubCreative=138285626504&pubOrder=2571470618&cb=1770056987852'; hiddenFrame = document.createElement('iframe'); (hiddenFrame.frameElement || hiddenFrame).style.cssText = \"width: 0; height: 0; border: 0; display: none;\"; hiddenFrame.src = 'javascript:false'; where = document.getElementById('ad-slot-7103-ny-westchester-C1084-poster_scroll_front-homepage-8-ac1'); where.parentNode.insertBefore(hiddenFrame, where); try { hiddenDoc = hiddenFrame.contentDocument || (hiddenFrame.contentWindow && hiddenFrame.contentWindow.document); } catch (e) { domain = document.domain; hiddenFrame.src = \"javascript:var d=document.open();d.domain='\" + domain + \"';void(0);\"; hiddenDoc = hiddenFrame.contentDocument || (hiddenFrame.contentWindow && hiddenFrame.contentWindow.document); } if (hiddenDoc) { hiddenDoc.open().write(\"<body onload=\\\"window.__IntegralASUseFIF = true; window.__IntegralASAdRefreshThreshold = 30; var js = document.createElement('script'); js.src = '//pixel.adsafeprotected.com/jload?anId=922805&campId=300x600&pubId=4763756135&chanId=adx/ny-westchester-C1084/poster_scroll_front/homepage_0&placementId=5157995707&pubCreative=138285626504&pubOrder=2571470618&cb=1770056987852'; document.body.appendChild(js);\\\"></body>\"); hiddenDoc.close(); } })();",
-  "textWordCount": 1093,
-  "textQuality": "partial",
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
-  "textStatus": "incomplete",
-  "textIssues": [
-    "Show title not found in text"
-  ],
-  "showNotMentioned": true,
-  "tierReason": "Full review text"
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

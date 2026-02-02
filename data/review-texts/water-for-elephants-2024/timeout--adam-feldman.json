@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "originalScoreNormalized": 80,
@@ -23,11 +23,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 80,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -38,7 +38,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and phrase 'dang fine show' indicate clear recommendation, though the modest tone ('not the greatest') and emphasis on appeal through 'modesty, not glitz' suggests solid positive rather than rave territory. | GPT-4o: The critic describes the show as 'a dang fine show nonetheless' despite not being 'the greatest show on Broadway', indicating a strong positive recommendation. The original rating of 4/5 supports this positive assessment. | Gemini: The critic states it's not the greatest but still a 'dang fine show', and the 4/5 rating confirms a positive but not rave review. The phrase 'thrilling spectacle' also indicates a positive experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives a 4/5 rating and uses positive language like 'dang fine show' and 'so appealing', clearly recommending it despite modest expectations. The self-aware tone about not being 'the greatest' actually reinforces the positive assessment. | GPT-4o: The critic's original rating of 4/5 and the positive tone in the excerpts suggest a strong recommendation. The phrase 'a dang fine show nonetheless' indicates a positive verdict despite some reservations. | Gemini: The critic states it's not the greatest show, but a 'dang fine show' and 'appealing', indicating a positive but not rave review. The 4/5 rating also supports a positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,21 +48,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:24.533Z",
+    "scoredAt": "2026-02-02T19:32:41.789Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 80,
+    "openaiScore": 81,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

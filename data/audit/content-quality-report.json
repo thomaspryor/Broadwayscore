@@ -1,0 +1,712 @@
+{
+  "scannedAt": "2026-02-02T19:34:10.630Z",
+  "totalFiles": 1860,
+  "totalIssues": 160,
+  "findings": {
+    "fabricatedUrls": [],
+    "wrongProduction": [
+      {
+        "file": "aladdin-2014/classicalite--patricia-reaney.json",
+        "reason": "URL year (6910) differs from show opening year (2014) by 4896 years",
+        "url": "http://www.classicalite.com/articles/6910/20140325/review-disneys-aladdin-broadway-musical-is-better-than-frozen-will-be.htm"
+      },
+      {
+        "file": "book-of-mormon-2011/vulture--jesse-green.json",
+        "reason": "URL year (2019) differs from show opening year (2011) by 8 years",
+        "url": "https://www.vulture.com/2019/12/re-reviewing-the-book-of-mormon-and-hamilton-in-2019.html"
+      },
+      {
+        "file": "chicago-1996/ap--michael-kuchwara.json",
+        "reason": "URL year (2002) differs from show opening year (1996) by 6 years",
+        "url": "http://www.apnewsarchive.com/2002/Ever-Youthful-Chicago-Still-a-Hit/id-8658ae5816f322d4cc0f6989ffb8af5e"
+      },
+      {
+        "file": "chicago-1996/nydailynews--howard-kissel.json",
+        "reason": "URL year (2015) differs from show opening year (1996) by 19 years",
+        "url": "https://www.nydailynews.com/2015/11/13/chicago-revival-is-a-class-act-1996-review/"
+      },
+      {
+        "file": "days-of-wine-and-roses-2024/variety--aramide-tinubu.json",
+        "reason": "URL year (2005) differs from show opening year (2024) by 19 years",
+        "url": "https://variety.com/2005/legit/reviews/days-of-wine-and-roses-2-1200527616/"
+      },
+      {
+        "file": "mary-jane-2024/deadline--pete-hammond.json",
+        "reason": "URL year (2017) differs from show opening year (2024) by 7 years",
+        "url": "https://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/"
+      },
+      {
+        "file": "schmigadoon-2026/variety--unknown.json",
+        "reason": "URL year (2021) differs from show opening year (2026) by 5 years",
+        "url": "https://variety.com/2021/tv/reviews/schmigadoon-apple-tv-plus-1235003459/"
+      },
+      {
+        "file": "the-lion-king-1997/nysr--jesse-oxfeld.json",
+        "reason": "URL year (2018) differs from show opening year (1997) by 21 years",
+        "url": "http://nystagereview.com/2018/09/17/the-lion-king-another-ride-on-the-circle-of-life/"
+      },
+      {
+        "file": "the-lion-king-1997/nysr--steven-suskin.json",
+        "reason": "URL year (2018) differs from show opening year (1997) by 21 years",
+        "url": "http://nystagereview.com/2018/09/17/the-lion-king-disneys-pride-still-rules-the-savanna/"
+      },
+      {
+        "file": "wicked-2003/dailybeast--kevin-fallon.json",
+        "reason": "URL year (2013) differs from show opening year (2003) by 10 years",
+        "url": "http://www.thedailybeast.com/articles/2013/10/30/a-wicked-decade-how-a-critically-trashed-musical-became-a-long-running-smash.html"
+      },
+      {
+        "file": "wicked-2003/front-row-center--stanford-friedman.json",
+        "reason": "URL year (2015) differs from show opening year (2003) by 12 years",
+        "url": "http://thefrontrowcenter.com/2015/09/wicked/"
+      },
+      {
+        "file": "wicked-2003/nyt-theater--jonathan-mandell.json",
+        "reason": "URL year (2025) differs from show opening year (2003) by 22 years",
+        "url": "https://newyorktheater.me/2025/09/12/wicked-broadway-review/"
+      },
+      {
+        "file": "wicked-2003/nytimes--charles-isherwood.json",
+        "reason": "URL year (2014) differs from show opening year (2003) by 11 years",
+        "url": "http://www.nytimes.com/2014/08/22/theater/a-decade-later-wicked-continues-to-be-catnip-for-tweens.html?_r=1"
+      }
+    ],
+    "criticMismatch": [
+      {
+        "file": "aladdin-2014/uinterview--danny-graugnard.json",
+        "reason": "File says \"Danny Graugnard\" but text says \"by Daniel Graugnard\""
+      },
+      {
+        "file": "grey-house-2023/talkinbroadway--matthew-murray.json",
+        "reason": "File says \"Matthew Murray\" but text says \"by Howard Miller\""
+      },
+      {
+        "file": "gutenberg-2023/broadwaynews--ruthie-fierberg.json",
+        "reason": "File says \"Ruthie Fierberg\" but text says \"by Brittani Samuel\""
+      },
+      {
+        "file": "i-need-that-2023/timeout--adam-feldman.json",
+        "reason": "File says \"Adam Feldman\" but text says \"by Will Gleason\""
+      },
+      {
+        "file": "mary-jane-2024/ew--kristen-baldwin.json",
+        "reason": "File says \"Kristen Baldwin\" but text says \"by Brittani Samuel\""
+      },
+      {
+        "file": "patriots-2024/deadline--greg-evans.json",
+        "reason": "File says \"Greg Evans\" but text says \"by Brittani Samuel\""
+      },
+      {
+        "file": "prayer-for-the-french-republic-2024/washpost--peter-marks.json",
+        "reason": "File says \"Peter Marks\" but text says \"by Naveen Kumar\""
+      },
+      {
+        "file": "the-whos-tommy-2024/deadline--greg-evans.json",
+        "reason": "File says \"Greg Evans\" but text says \"by Brittani Samuel\""
+      }
+    ],
+    "domainMismatch": [
+      {
+        "file": "grey-house-2023/nydailynews--chris-jones.json",
+        "reason": "outletId=\"nydailynews\" but URL domain is chicagotribune.com",
+        "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-review-grey-house-red-"
+      },
+      {
+        "file": "gutenberg-2023/nydailynews--chris-jones.json",
+        "reason": "outletId=\"nydailynews\" but URL domain is chicagotribune.com",
+        "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-gutenberg-musical-broadway-revie"
+      },
+      {
+        "file": "merrily-we-roll-along-2023/nydailynews--chris-jones.json",
+        "reason": "outletId=\"nydailynews\" but URL domain is chicagotribune.com",
+        "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-merrily-we-roll-along-broadway-"
+      },
+      {
+        "file": "the-lion-king-1997/hollywood-reporter--frank-scheck.json",
+        "reason": "outletId=\"hollywood-reporter\" but URL domain is jasonraize.net",
+        "url": "http://www.jasonraize.net/pr_tlk_spt112197.html"
+      },
+      {
+        "file": "wicked-2003/washpost--peter-marks.json",
+        "reason": "outletId=\"washpost\" but URL domain is journaltimes.com",
+        "url": "http://journaltimes.com/entertainment/a-radical-retelling-of-wizard-of-oz/article_de42e691-cb2a-5d4b"
+      }
+    ],
+    "crossShowDuplicateUrls": [
+      {
+        "url": "talkinbroadway.com/page.php",
+        "files": [
+          "appropriate-2023/talkinbroadway--matthew-murray.json",
+          "suffs-2024/talkinbroadway--matthew-murray.json"
+        ],
+        "showCount": 2
+      },
+      {
+        "url": "www.lightingandsoundamerica.com/news/story.asp",
+        "files": [
+          "boop-2025/lighting-and-sound-america--david-barbour.json",
+          "bug-2026/lighting-and-sound-america--david-barbour.json",
+          "chess-2025/lighting-and-sound-america--david-barbour.json",
+          "harry-potter-2021/lighting-and-sound-america--david-barbour.json",
+          "heart-of-rock-and-roll-2024/lighting-and-sound-america--david-barbour.json",
+          "just-in-time-2025/lighting-and-sound-america--david-barbour.json",
+          "liberation-2025/lighting-and-sound-america--david-barbour.json",
+          "mary-jane-2024/lighting-and-sound-america--david-barbour.json",
+          "mj-2022/lighting-and-sound-america--david-barbour.json",
+          "oedipus-2025/lighting-and-sound-america--david-barbour.json",
+          "prayer-for-the-french-republic-2024/lighting-and-sound-america--david-barbour.json",
+          "queen-versailles-2025/lighting-and-sound-america--david-barbour.json",
+          "ragtime-2025/lighting-and-sound-america--david-barbour.json",
+          "redwood-2025/lighting-and-sound-america--david-barbour.json",
+          "six-2021/lighting-and-sound-america--david-barbour.json",
+          "the-roommate-2024/lighting-and-sound-america--david-barbour.json",
+          "two-strangers-bway-2025/lighting-and-sound-america--david-barbour.json",
+          "water-for-elephants-2024/lighting-and-sound-america--david-barbour.json"
+        ],
+        "showCount": 18
+      },
+      {
+        "url": "deadline.com/feature/broadway-show-reviews-spring-2024-1235866317",
+        "files": [
+          "cabaret-2024/deadline--greg-evans.json",
+          "illinoise-2024/deadline--greg-evans.json",
+          "lempicka-2024/deadline--greg-evans.json",
+          "patriots-2024/deadline--greg-evans.json",
+          "stereophonic-2024/deadline--greg-evans.json",
+          "suffs-2024/deadline--unknown.json",
+          "the-outsiders-2024/deadline--greg-evans.json",
+          "uncle-vanya-2024/deadline--greg-evans.json"
+        ],
+        "showCount": 8
+      }
+    ],
+    "textMatchesExcerpt": [
+      {
+        "file": "aladdin-2014/nypost--elisabeth-vincentelli.json",
+        "reason": "fullText (127 chars) essentially matches excerpt (127 chars) - no real scrape"
+      },
+      {
+        "file": "aladdin-2014/theatermania--charles-isherwood.json",
+        "reason": "fullText (146 chars) essentially matches excerpt (146 chars) - no real scrape"
+      },
+      {
+        "file": "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (186 chars) essentially matches excerpt (186 chars) - no real scrape"
+      },
+      {
+        "file": "an-enemy-of-the-people-2024/washpost--peter-marks.json",
+        "reason": "fullText (164 chars) essentially matches excerpt (164 chars) - no real scrape"
+      },
+      {
+        "file": "and-juliet-2022/theatermania--jesse-green.json",
+        "reason": "fullText (204 chars) essentially matches excerpt (204 chars) - no real scrape"
+      },
+      {
+        "file": "and-juliet-2022/wsj--charles-isherwood.json",
+        "reason": "fullText (141 chars) essentially matches excerpt (141 chars) - no real scrape"
+      },
+      {
+        "file": "appropriate-2023/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (228 chars) essentially matches excerpt (228 chars) - no real scrape"
+      },
+      {
+        "file": "appropriate-2023/washpost--peter-marks.json",
+        "reason": "fullText (193 chars) essentially matches excerpt (193 chars) - no real scrape"
+      },
+      {
+        "file": "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+        "reason": "fullText (203 chars) essentially matches excerpt (203 chars) - no real scrape"
+      },
+      {
+        "file": "grey-house-2023/wsj--charles-isherwood.json",
+        "reason": "fullText (165 chars) essentially matches excerpt (165 chars) - no real scrape"
+      },
+      {
+        "file": "gutenberg-2023/wsj--terry-teachout.json",
+        "reason": "fullText (143 chars) essentially matches excerpt (143 chars) - no real scrape"
+      },
+      {
+        "file": "hamilton-2015/variety--charles-isherwood.json",
+        "reason": "fullText (235 chars) essentially matches excerpt (235 chars) - no real scrape"
+      },
+      {
+        "file": "harmony-2023/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (128 chars) essentially matches excerpt (128 chars) - no real scrape"
+      },
+      {
+        "file": "harmony-2023/theatrely--juan-a-ramirez.json",
+        "reason": "fullText (177 chars) essentially matches excerpt (177 chars) - no real scrape"
+      },
+      {
+        "file": "harmony-2023/wsj--charles-isherwood.json",
+        "reason": "fullText (166 chars) essentially matches excerpt (166 chars) - no real scrape"
+      },
+      {
+        "file": "hells-kitchen-2024/deadline--pete-hammond.json",
+        "reason": "fullText (187 chars) essentially matches excerpt (187 chars) - no real scrape"
+      },
+      {
+        "file": "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
+        "reason": "fullText (155 chars) essentially matches excerpt (155 chars) - no real scrape"
+      },
+      {
+        "file": "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (204 chars) essentially matches excerpt (204 chars) - no real scrape"
+      },
+      {
+        "file": "hells-kitchen-2024/wsj--charles-isherwood.json",
+        "reason": "fullText (168 chars) essentially matches excerpt (168 chars) - no real scrape"
+      },
+      {
+        "file": "here-lies-love-2023/guardian--adrian-horton.json",
+        "reason": "fullText (202 chars) essentially matches excerpt (202 chars) - no real scrape"
+      },
+      {
+        "file": "illinoise-2024/guardian--adrian-horton.json",
+        "reason": "fullText (213 chars) essentially matches excerpt (213 chars) - no real scrape"
+      },
+      {
+        "file": "illinoise-2024/observer--rex-reed.json",
+        "reason": "fullText (132 chars) essentially matches excerpt (132 chars) - no real scrape"
+      },
+      {
+        "file": "illinoise-2024/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (133 chars) essentially matches excerpt (133 chars) - no real scrape"
+      },
+      {
+        "file": "illinoise-2024/timeout--adam-feldman.json",
+        "reason": "fullText (179 chars) essentially matches excerpt (179 chars) - no real scrape"
+      },
+      {
+        "file": "lempicka-2024/observer--rex-reed.json",
+        "reason": "fullText (191 chars) essentially matches excerpt (191 chars) - no real scrape"
+      },
+      {
+        "file": "mary-jane-2024/washpost--peter-marks.json",
+        "reason": "fullText (156 chars) essentially matches excerpt (156 chars) - no real scrape"
+      },
+      {
+        "file": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+        "reason": "fullText (138 chars) essentially matches excerpt (138 chars) - no real scrape"
+      },
+      {
+        "file": "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (189 chars) essentially matches excerpt (189 chars) - no real scrape"
+      },
+      {
+        "file": "maybe-happy-ending-2024/wsj--charles-isherwood.json",
+        "reason": "fullText (179 chars) essentially matches excerpt (179 chars) - no real scrape"
+      },
+      {
+        "file": "mj-2022/ew--kristen-baldwin.json",
+        "reason": "fullText (113 chars) essentially matches excerpt (113 chars) - no real scrape"
+      },
+      {
+        "file": "mj-2022/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (166 chars) essentially matches excerpt (166 chars) - no real scrape"
+      },
+      {
+        "file": "mj-2022/wsj--charles-isherwood.json",
+        "reason": "fullText (171 chars) essentially matches excerpt (171 chars) - no real scrape"
+      },
+      {
+        "file": "moulin-rouge-2019/observer--rex-reed.json",
+        "reason": "fullText (219 chars) essentially matches excerpt (219 chars) - no real scrape"
+      },
+      {
+        "file": "oh-mary-2024/vulture--helen-shaw.json",
+        "reason": "fullText (160 chars) essentially matches excerpt (160 chars) - no real scrape"
+      },
+      {
+        "file": "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
+        "reason": "fullText (106 chars) essentially matches excerpt (106 chars) - no real scrape"
+      },
+      {
+        "file": "our-town-2024/hollywood-reporter--angie-han.json",
+        "reason": "fullText (172 chars) essentially matches excerpt (172 chars) - no real scrape"
+      },
+      {
+        "file": "patriots-2024/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (145 chars) essentially matches excerpt (145 chars) - no real scrape"
+      },
+      {
+        "file": "patriots-2024/wsj--terry-teachout.json",
+        "reason": "fullText (182 chars) essentially matches excerpt (182 chars) - no real scrape"
+      },
+      {
+        "file": "prayer-for-the-french-republic-2024/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (224 chars) essentially matches excerpt (224 chars) - no real scrape"
+      },
+      {
+        "file": "purlie-victorious-2023/deadline--greg-evans.json",
+        "reason": "fullText (557 chars) essentially matches excerpt (499 chars) - no real scrape"
+      },
+      {
+        "file": "six-2021/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (179 chars) essentially matches excerpt (179 chars) - no real scrape"
+      },
+      {
+        "file": "six-2021/wsj--charles-isherwood.json",
+        "reason": "fullText (219 chars) essentially matches excerpt (219 chars) - no real scrape"
+      },
+      {
+        "file": "stereophonic-2024/observer--jesse-green.json",
+        "reason": "fullText (144 chars) essentially matches excerpt (144 chars) - no real scrape"
+      },
+      {
+        "file": "stereophonic-2024/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (191 chars) essentially matches excerpt (191 chars) - no real scrape"
+      },
+      {
+        "file": "stereophonic-2024/theatrely--juan-a-ramirez.json",
+        "reason": "fullText (165 chars) essentially matches excerpt (165 chars) - no real scrape"
+      },
+      {
+        "file": "stereophonic-2024/wsj--charles-isherwood.json",
+        "reason": "fullText (186 chars) essentially matches excerpt (186 chars) - no real scrape"
+      },
+      {
+        "file": "suffs-2024/guardian--adrian-horton.json",
+        "reason": "fullText (165 chars) essentially matches excerpt (165 chars) - no real scrape"
+      },
+      {
+        "file": "suffs-2024/observer--rex-reed.json",
+        "reason": "fullText (165 chars) essentially matches excerpt (165 chars) - no real scrape"
+      },
+      {
+        "file": "suffs-2024/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (128 chars) essentially matches excerpt (128 chars) - no real scrape"
+      },
+      {
+        "file": "suffs-2024/timeout--adam-feldman.json",
+        "reason": "fullText (182 chars) essentially matches excerpt (182 chars) - no real scrape"
+      },
+      {
+        "file": "suffs-2024/usatoday--charles-isherwood.json",
+        "reason": "fullText (179 chars) essentially matches excerpt (179 chars) - no real scrape"
+      },
+      {
+        "file": "the-great-gatsby-2024/wsj--charles-isherwood.json",
+        "reason": "fullText (176 chars) essentially matches excerpt (176 chars) - no real scrape"
+      },
+      {
+        "file": "the-lion-king-1997/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (131 chars) essentially matches excerpt (131 chars) - no real scrape"
+      },
+      {
+        "file": "the-notebook-2024/rollingstone--brittany-spanos.json",
+        "reason": "fullText (252 chars) essentially matches excerpt (252 chars) - no real scrape"
+      },
+      {
+        "file": "the-notebook-2024/vulture--helen-shaw.json",
+        "reason": "fullText (143 chars) essentially matches excerpt (143 chars) - no real scrape"
+      },
+      {
+        "file": "the-outsiders-2024/hollywood-reporter--angie-han.json",
+        "reason": "fullText (180 chars) essentially matches excerpt (180 chars) - no real scrape"
+      },
+      {
+        "file": "the-outsiders-2024/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (208 chars) essentially matches excerpt (208 chars) - no real scrape"
+      },
+      {
+        "file": "the-outsiders-2024/timeout--adam-feldman.json",
+        "reason": "fullText (140 chars) essentially matches excerpt (140 chars) - no real scrape"
+      },
+      {
+        "file": "the-roommate-2024/nydailynews--chris-jones.json",
+        "reason": "fullText (595 chars) essentially matches excerpt (500 chars) - no real scrape"
+      },
+      {
+        "file": "the-roommate-2024/nypost--johnny-oleksinski.json",
+        "reason": "fullText (150 chars) essentially matches excerpt (150 chars) - no real scrape"
+      },
+      {
+        "file": "the-roommate-2024/talkinbroadway--matthew-murray.json",
+        "reason": "fullText (165 chars) essentially matches excerpt (165 chars) - no real scrape"
+      },
+      {
+        "file": "the-shark-is-broken-2023/guardian--adrian-horton.json",
+        "reason": "fullText (130 chars) essentially matches excerpt (130 chars) - no real scrape"
+      },
+      {
+        "file": "uncle-vanya-2024/ap--mark-kennedy.json",
+        "reason": "fullText (143 chars) essentially matches excerpt (143 chars) - no real scrape"
+      },
+      {
+        "file": "uncle-vanya-2024/thewrap--robert-hofler.json",
+        "reason": "fullText (202 chars) essentially matches excerpt (202 chars) - no real scrape"
+      },
+      {
+        "file": "uncle-vanya-2024/vulture--helen-shaw.json",
+        "reason": "fullText (168 chars) essentially matches excerpt (168 chars) - no real scrape"
+      },
+      {
+        "file": "water-for-elephants-2024/theatrely--olivia-clement.json",
+        "reason": "fullText (236 chars) essentially matches excerpt (236 chars) - no real scrape"
+      },
+      {
+        "file": "wicked-2003/ew--lisa-schwarzbaum.json",
+        "reason": "fullText (141 chars) essentially matches excerpt (141 chars) - no real scrape"
+      }
+    ],
+    "suspiciousWebSearch": [
+      {
+        "file": "aladdin-2014/nypost--elisabeth-vincentelli.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "aladdin-2014/theatermania--charles-isherwood.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "an-enemy-of-the-people-2024/washpost--peter-marks.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "and-juliet-2022/theatermania--jesse-green.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "and-juliet-2022/wsj--charles-isherwood.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "appropriate-2023/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "appropriate-2023/washpost--peter-marks.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "grey-house-2023/wsj--charles-isherwood.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "gutenberg-2023/wsj--terry-teachout.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "hamilton-2015/variety--charles-isherwood.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "harmony-2023/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "harmony-2023/theatrely--juan-a-ramirez.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "harmony-2023/wsj--charles-isherwood.json",
+        "reason": "web-search source: fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "hells-kitchen-2024/deadline--pete-hammond.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "hells-kitchen-2024/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "hells-kitchen-2024/wsj--charles-isherwood.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "here-lies-love-2023/guardian--adrian-horton.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "illinoise-2024/guardian--adrian-horton.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "illinoise-2024/observer--rex-reed.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "illinoise-2024/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "illinoise-2024/timeout--adam-feldman.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "lempicka-2024/observer--rex-reed.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "mary-jane-2024/washpost--peter-marks.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "maybe-happy-ending-2024/wsj--charles-isherwood.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "mj-2022/ew--kristen-baldwin.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "mj-2022/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "mj-2022/wsj--charles-isherwood.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "moulin-rouge-2019/observer--rex-reed.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "oh-mary-2024/vulture--helen-shaw.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "our-town-2024/hollywood-reporter--angie-han.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "patriots-2024/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "patriots-2024/wsj--terry-teachout.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "prayer-for-the-french-republic-2024/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "six-2021/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "six-2021/wsj--charles-isherwood.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "stereophonic-2024/observer--jesse-green.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "stereophonic-2024/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "stereophonic-2024/theatrely--juan-a-ramirez.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "stereophonic-2024/wsj--charles-isherwood.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "suffs-2024/guardian--adrian-horton.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "suffs-2024/observer--rex-reed.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "suffs-2024/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "suffs-2024/timeout--adam-feldman.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "suffs-2024/usatoday--charles-isherwood.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "the-great-gatsby-2024/wsj--charles-isherwood.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "the-lion-king-1997/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "the-lion-king-1997/washpost--lloyd-rose.json",
+        "reason": "web-search source: null URL"
+      },
+      {
+        "file": "the-notebook-2024/rollingstone--brittany-spanos.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "the-notebook-2024/vulture--helen-shaw.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "the-outsiders-2024/hollywood-reporter--angie-han.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "the-outsiders-2024/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "the-roommate-2024/nypost--johnny-oleksinski.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "the-roommate-2024/talkinbroadway--matthew-murray.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "the-shark-is-broken-2023/guardian--adrian-horton.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "uncle-vanya-2024/ap--mark-kennedy.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "uncle-vanya-2024/vulture--helen-shaw.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "water-for-elephants-2024/theatrely--olivia-clement.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      },
+      {
+        "file": "wicked-2003/ew--lisa-schwarzbaum.json",
+        "reason": "web-search source: fullText identical to dtliExcerpt, fullText identical to showScoreExcerpt"
+      }
+    ]
+  }
+}

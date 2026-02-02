@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Meh",
   "originalScore": "3/5",
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "originalScoreNormalized": 60,
@@ -22,11 +22,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -37,7 +37,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The 3/5 rating and language like 'mostly avoids' weaknesses combined with praise for the ending suggest a mixed assessment where strong moments don't elevate the overall experience. | Gemini: The review praises the ending scene but suggests the preceding scenes are less impressive, indicating a mixed assessment. The 3/5 rating also points to a 'Mixed' bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 3/5 rating and language suggesting the ending is significantly better than what precedes it indicates an uneven show with highlights but overall mediocrity. | GPT-4o: The review suggests that while the play has some strong elements, particularly the ending, it does not consistently maintain that level of quality throughout. The original rating of 3/5 and the aggregator context of 'Flat' further support a mixed classification. | Gemini: The review praises the ending scene but suggests the rest of the play is less impressive. The critic's rating of 3/5 also indicates a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,26 +47,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:52.112Z",
+    "scoredAt": "2026-02-02T19:24:47.506Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 66,
-    "previousVersion": "3.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 66,

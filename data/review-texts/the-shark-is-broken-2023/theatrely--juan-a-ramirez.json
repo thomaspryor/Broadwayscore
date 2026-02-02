@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges good performances and moments of depth but ultimately finds the play fundamentally flawed, comparing it to 'an SNL skit waiting for its punchline' and saying its essential functions don't work. | GPT-4o: The review acknowledges strong performances and direction but criticizes the play for not working effectively overall, suggesting it has moments but is ultimately flawed. | Gemini: The review praises the performances, direction, and set design, but ultimately finds the play lacking in substance and feeling like an SNL skit. This suggests a mixed experience with some redeeming qualities, but not a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges good performances and moments where 'the play finds its bite' but ultimately concludes the play's essential functions don't work and it feels like 'an SNL skit waiting for its punchline.' | GPT-4o: The review acknowledges strong performances and compelling direction, but criticizes the play for feeling like an exercise in cinematic foreplay and lacking essential functions. The positive aspects are overshadowed by the critique of its slavish recreations and lack of punchline. | Gemini: The review praises the performances and direction but ultimately finds the play lacking substance, comparing it to an SNL skit. It has moments of brilliance but is ultimately uneven.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,12 +36,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:33.874Z",
+    "scoredAt": "2026-02-02T19:24:40.263Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,

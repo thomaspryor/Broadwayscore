@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error message or navigation page rather than an actual review, making it impossible to determine the critic's assessment of the show. | GPT-4o: The review text is missing, providing no evaluative content or verdict. The score reflects the absence of information. | Gemini: The review text is a placeholder indicating the review is missing. Without the actual review, it's impossible to determine a recommendation, so I'm defaulting to a low 'Mixed' score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be an error page or search result rather than an actual review, providing no critical assessment of any show. | GPT-4o: The review text provided is not an actual review but rather a placeholder or error message. Without evaluative content, it's impossible to determine a clear recommendation. A 'Mixed' classification is assigned due to the lack of information. | Gemini: The review text is missing, making it impossible to determine the critic's opinion. I'm assuming a mixed score due to the lack of content.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,11 +43,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:43:23.514Z",
+    "scoredAt": "2026-02-02T19:30:44.733Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 59,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
@@ -69,7 +69,7 @@
   "contentTierReason": "Short text (13 words)",
   "textWordCount": 42,
   "archivePath": "data/archives/reviews/uncle-vanya-2024/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T18:24:39.385Z",
+  "textFetchedAt": "2026-02-02T15:07:34.659Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {

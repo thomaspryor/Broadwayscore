@@ -9,18 +9,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 44,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The review criticizes key production elements (undersized puppet, lifeless eyes) and concludes there's little thrill, indicating disappointment. However, this is only one excerpt so scoring conservatively within negative range. | GPT-4o: The review criticizes the production's key element, the puppetry, as underwhelming and lacking excitement, leading to a negative recommendation. | Gemini: The review excerpt expresses disappointment with a key element of the show, the elephant puppet, and states that the production lacks the thrill of both circus and theatre. This suggests a negative overall assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic clearly expresses disappointment with the production's key element (the elephant puppet) and concludes there's little theatrical excitement, indicating they do not recommend it. | GPT-4o: The review excerpt highlights a lack of excitement and disappointment with the production's puppetry, suggesting it falls short of expectations. The tone is clearly negative. | Gemini: The review excerpt is clearly negative, criticizing the puppetry and overall lack of excitement. The aggregator verdict also indicates a negative reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,21 +41,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:06.215Z",
+    "scoredAt": "2026-02-02T19:32:34.844Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 39,
-    "previousVersion": "3.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 45,
+    "openaiScore": 40,
     "geminiScore": 45,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Now, though, the world has spun forward enough times to meet “Tommy” where it always lived, meaning its psychologically oriented story of delayed self-actualization due to childhood trauma, and its withering parody of abusive authority figures and celebrity worship.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 84,
-    "confidence": "low",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 79,
-      "high": 89
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The review is filled with superlative language including 'sock you right in the gut,' 'eye-popping premiere,' 'some of the best virtual images I've ever seen,' and 'courageous stunner of a supporting performance.' The critic clearly loves this production and recommends it strongly. | Gemini: The review is largely positive, highlighting the production's impact and the effective use of digital projections. While acknowledging potential disconnect for some viewers, the reviewer ultimately recommends it, especially for those who connect with the source material.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Jones delivers strong praise throughout, calling it gut-punching with compelling performances and stunning visuals. Despite some contextual setup about generational themes, he clearly recommends the production with enthusiasm. | GPT-4o: The review is filled with praise for the production, highlighting its powerful impact, innovative use of digital projections, and strong performances. The critic's enthusiasm and personal connection to the material further emphasize the show's significance and quality. | Gemini: The review is generally positive, highlighting the production's impact and the strength of the performances and technical elements, but acknowledges that it may not resonate with everyone. The phrase 'many a replay can be expected' suggests a recommendation, but the caveat indicates some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,26 +44,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:19:29.280Z",
+    "scoredAt": "2026-02-02T19:25:08.330Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "5.0.0"
+    "previousScore": 84,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": null,
-    "geminiScore": 80,
-    "claudeBucket": "Rave",
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 63,

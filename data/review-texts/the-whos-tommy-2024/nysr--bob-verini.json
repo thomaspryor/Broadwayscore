@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": 94,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/nysr--bob-verini_2026-01-29.html",
@@ -30,11 +30,11 @@
   "archiveOrgTimestamp": "20250722160838",
   "archiveOrgUrl": "http://web.archive.org/web/20250722160838/https://nystagereview.com/2024/03/28/the-whos-tommy-a-rock-classic-is-triumphantly-reborn/",
   "llmScore": {
-    "score": 94,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -45,7 +45,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic gives 5/5 stars and uses superlative language throughout, calling it a 'smash' and describing 'transcendent enjoyment' with praise for every production element. The comparison to Rent's premiere buzz indicates this is seen as a truly exceptional theatrical experience. | Gemini: The critic gives the show 5/5 stars and uses overwhelmingly positive language, calling it a 'smash' and praising its emotional impact and storytelling. The review concludes with a powerful statement about the show's ability to connect with the audience on a deep, personal level.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars and uses superlative language throughout, calling it a 'smash' and praising it as creating 'transcendent enjoyment' with unprecedented audience buzz since Rent's premiere. | GPT-4o: The review is overwhelmingly positive, describing the production as a 'smash' and highlighting its emotional impact, innovative design, and exceptional performances. The critic's 5/5 star rating further supports a Rave classification. | Gemini: The critic gives the show a 5/5 stars and uses extremely positive language, calling it a 'smash' and praising its emotional impact and storytelling. The review is overwhelmingly positive with no significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,26 +55,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:41.355Z",
+    "scoredAt": "2026-02-02T19:25:36.164Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 95,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": null,
+    "claudeScore": 95,
+    "openaiScore": 95,
     "geminiScore": 95,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "4/5 stars",

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Notebook is a musical that knows exactly what it is: a big, swoony, unabashedly romantic spectacle that trades in the currency of feelings.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The Notebook is a musical that knows exactly what it is: a big, swoony, unabashedly romantic spectacle that trades in the currency of feelings.",
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes the show positively as knowing what it is and being an effective romantic spectacle, though the brief excerpt limits confidence in the full assessment. | GPT-4o: The review describes the musical as a 'big, swoony, unabashedly romantic spectacle,' which suggests a positive and enthusiastic recommendation. The tone is clear and unambiguous in its appreciation of the show's romantic spectacle. | Gemini: The review describes the musical in positive terms, indicating a recommendation, though not an overwhelmingly enthusiastic one.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes the show positively as knowing what it is and delivering effectively on its romantic premise, though the brief excerpt limits confidence in the full assessment. | GPT-4o: The review describes the musical as knowing exactly what it is and highlights its romantic spectacle, indicating a strong positive tone. | Gemini: The review describes the musical as a spectacle and romantic, which suggests a positive experience, but not overwhelmingly so.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,15 +43,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:01:27.226Z",
+    "scoredAt": "2026-02-02T19:19:52.855Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 82,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",

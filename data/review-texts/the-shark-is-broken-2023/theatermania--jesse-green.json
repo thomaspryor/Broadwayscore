@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The three actors are perfectly cast and deliver performances that feel both authentic and theatrical, capturing the claustrophobia and mounting tension of being stuck on a malfunctioning mechanical shark.",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 57,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The three actors are perfectly cast and deliver performances that feel both authentic and theatrical, capturing the claustrophobia and mounting tension of being stuck on a malfunctioning mechanical shark.",
   "needsScoring": true,
   "llmScore": {
-    "score": 59,
-    "confidence": "medium",
+    "score": 57,
+    "confidence": "high",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 52,
+      "high": 62
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error page or search results rather than an actual review text, making it impossible to determine any critical assessment or recommendation. | GPT-4o: The text provided does not contain any evaluative content about a Broadway show, making it impossible to determine a clear recommendation. The score reflects the lack of information. | Gemini: The review text is a placeholder indicating the review is missing, so it's impossible to determine a recommendation. I'm placing it in the Mixed bucket as a neutral stance.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error message rather than an actual review, making it impossible to determine the critic's recommendation. | GPT-4o: The text provided does not contain any evaluative content about the show, making it impossible to determine the critic's recommendation. The score reflects the lack of information. | Gemini: The review text is missing, suggesting the review could not be found. Without the review, it's impossible to determine a clear recommendation, so I'm defaulting to a low-end mixed score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:42:38.412Z",
+    "scoredAt": "2026-02-02T19:24:36.621Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 59,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 62,
+    "openaiScore": 55,
     "geminiScore": 55,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -69,20 +69,20 @@
   "contentTierReason": "Short text (29 words)",
   "textWordCount": 42,
   "archivePath": "data/archives/reviews/the-shark-is-broken-2023/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T18:18:45.916Z",
+  "textFetchedAt": "2026-02-02T05:04:27.289Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
       "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 75 chars"
     },
     {
       "tier": 2,

@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"This update on Vanya doesn’t alter the story in any revolutionary terms\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/uncle-vanya-broadway",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 74,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises individual performances, particularly highlighting Carell's charisma and Harper's scene-stealing turn, while noting some flattening of characters and loss of nuance. Overall tone is appreciative of the production's strengths despite identified weaknesses. | Gemini: The review highlights strong performances, particularly from Carell and Harper, but notes some flattening of characters and missing inner turmoil. Overall, it leans towards a positive assessment, acknowledging both strengths and weaknesses.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the performances, particularly Harper as 'scene-stealing' and Carell's 'distinct charisma,' while noting the production streamlines the material effectively, though with some flattening of characters. | GPT-4o: The review highlights strong performances, particularly by Steve Carell and William Jackson Harper, and praises the contemporary translation, despite noting some loss of nuance. The overall tone suggests a solid recommendation with some reservations about the production's depth. | Gemini: The review highlights strong performances, particularly from Carell and Harper, and notes the play's relatability. However, it also points out that some characters are flattened and that Carell's portrayal lacks inner turmoil until a later pivotal moment, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:23.917Z",
+    "scoredAt": "2026-02-02T19:29:48.143Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Though the bitterness boiling beneath the piece may catch them off guard, Neugebauer and Schreck have crafted an especially accessible adaptation, for better or worse.",
   "sources": [

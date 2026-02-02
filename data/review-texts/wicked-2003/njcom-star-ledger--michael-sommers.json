@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses superlative language ('marvel', 'lusciously', 'beautifully') and explicitly states the show justifies premium ticket prices, indicating strong enthusiasm despite being a single excerpt. | GPT-4o: The review uses highly positive language, describing the show as a 'marvel' and 'beautifully staged', and justifies the high ticket price, indicating a strong recommendation. | Gemini: The review excerpt uses very positive language and explicitly states the show is worth the ticket price, indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses superlative language ('marvel', 'lusciously', 'beautifully') and explicitly states the show justifies premium ticket prices, indicating strong enthusiasm and a must-see recommendation. | GPT-4o: The review uses highly enthusiastic language, praising the show as a 'marvel' and 'beautifully staged'. It strongly justifies the high ticket price, indicating a must-see recommendation. | Gemini: The review excerpt is overwhelmingly positive, praising the show's composition, writing, and staging, and explicitly stating it justifies the ticket price. This indicates a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,11 +40,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:35:18.761Z",
+    "scoredAt": "2026-02-02T19:33:37.121Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 84,
+    "previousScore": 91,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

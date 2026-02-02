@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic ends with a clear recommendation ('don't let yourself stay an outsider. This show is worth coming into a theater!') and calls it a 'sure-to-be-hit,' despite noting some issues like being 'ballad-heavy' and having 'perhaps a bit too much' time for feelings. | GPT-4o: The review praises the musical adaptation as satisfying and highlights its strong elements, including the score and performances. The critic suggests it could be a contender for a Tony Award and concludes with a clear recommendation to see the show. | Gemini: The review is overall positive, highlighting many strong elements of the production, including performances, staging, and score, while noting some minor issues with pacing and ballad-heavy songs. The final statement explicitly recommends seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review concludes with a clear recommendation despite noting some flaws like being 'a tad ballad-heavy' and having 'perhaps a bit too much' time for feelings songs. The critic praises multiple elements and explicitly tells readers not to stay outsiders from seeing it. | GPT-4o: The review praises the musical adaptation as 'very satisfying' and highlights several strong elements, including performances and staging. The critic suggests it could be a contender for a Tony Award and concludes with a strong recommendation to see the show. | Gemini: The review concludes with a strong recommendation, highlighting the show's strengths and deeming it \"worth seeing.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,17 +40,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:07:55.438Z",
+    "scoredAt": "2026-02-02T19:20:12.047Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 82,
-    "geminiScore": 80,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

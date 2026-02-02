@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review identifies significant structural and scoring problems while praising specific performances and staging moments. The critic finds the show has appeal but is undermined by weak characterization and overly simplistic writing. | GPT-4o: The review highlights issues with the score and characterization, noting that the production never transcends its clichés. However, it also praises certain performances and staging choices, suggesting some redeeming qualities. The overall tone is mixed, acknowledging both strengths and weaknesses. | Gemini: The review highlights several flaws, especially in the score and book, but praises the performances of some actors, particularly Joy Woods. The reviewer acknowledges improvements over the source material but ultimately finds the production somewhat lacking, suggesting a qualified recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review offers balanced criticism, praising specific performances (especially Joy Woods) and some directorial choices while identifying significant structural problems with the score and characterization that prevent a recommendation. | GPT-4o: The review acknowledges some positive aspects, such as standout performances and certain directorial choices, but it also highlights significant shortcomings in the score and storytelling. The overall tone suggests a mixed reception, with some redeeming qualities but notable flaws. | Gemini: The review acknowledges flaws in the score and source material but ultimately suggests the adaptation improves upon them, with standout performances. It's a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:42:06.643Z",
+    "scoredAt": "2026-02-02T19:19:26.984Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 76,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 94,
   "humanReviewScore": 90,
   "humanReviewNote": "Explicit 4-star rave; 'jaw on the floor', 'exhilarating', 'star-making performance'; override to 80 was wrong",
   "source": "bww-roundup",
@@ -36,11 +36,11 @@
   "archiveOrgTimestamp": "20250829165623",
   "archiveOrgUrl": "http://web.archive.org/web/20250829165623/https://nypost.com/2024/03/28/entertainment/the-whos-tommy-broadway-review-4-stars-for-a-rock-revival/",
   "llmScore": {
-    "score": 87,
-    "confidence": "low",
+    "score": 94,
+    "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -51,7 +51,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses rapturous language throughout, calling it 'exhilarating,' praising 'knockout singing' and 'star-making performance,' and uses vivid metaphors like jaw-dropping amazement to convey overwhelming enthusiasm. | Gemini: The review is overwhelmingly positive, praising the singing, stagecraft, and especially the lead performance. The critic uses strong language like \"exhilarating\" and predicts a bright future for the lead actor, indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses rapturous language throughout, calling it 'exhilarating,' praising 'knockout singing' and 'superbly inventive stagecraft,' and describing a 'star-making performance.' The vivid metaphor about his jaw dropping to the floor and predictions of greatness for the lead actor signal an unqualified rave. | GPT-4o: The review is filled with enthusiastic praise for the production, highlighting its exhilarating nature, inventive stagecraft, and standout performances. The critic uses strong language to convey a sense of excitement and urgency in recommending the show, indicating a must-see status. | Gemini: The review is overwhelmingly positive, praising the singing, stagecraft, and especially the lead performance. The critic uses strong language like \"exhilarating\" and predicts a bright future for the lead actor, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -61,26 +61,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:23.819Z",
+    "scoredAt": "2026-02-02T19:25:32.194Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 87,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": null,
+    "openaiScore": 95,
     "geminiScore": 82,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "complete",
   "wordCount": 829,

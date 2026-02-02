@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Steve Carell's transition from comedy to drama is nothing short of remarkable, bringing a quiet devastation to Chekhov's melancholy masterpiece that left me genuinely moved.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Steve Carell's transition from comedy to drama is nothing short of remarkable, bringing a quiet devastation to Chekhov's melancholy masterpiece that left me genuinely moved.",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows strong praise for Carell's performance and emotional impact, but as a single curated quote, it may not represent the full review's verdict, warranting a conservative score within the positive range. | GPT-4o: The review excerpt uses strong positive language such as 'remarkable' and 'genuinely moved,' suggesting a high level of praise for the performance and production. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Rave range. | Gemini: The review excerpt praises Carell's performance and indicates the reviewer was 'genuinely moved,' suggesting a positive experience, but without the full review, it's difficult to determine the extent of the recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The language is strongly positive with 'nothing short of remarkable' and 'genuinely moved' indicating an enthusiastic recommendation despite being a single excerpt. | GPT-4o: The critic describes Steve Carell's performance as 'remarkable' and the production as a 'melancholy masterpiece' that left them 'genuinely moved,' indicating a strong, enthusiastic recommendation. | Gemini: The review excerpt uses very positive language, praising Carell's performance as 'remarkable' and stating that it 'left me genuinely moved,' indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:26:21.990Z",
+    "scoredAt": "2026-02-02T19:30:34.839Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 90,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 82,
     "openaiScore": 90,
-    "geminiScore": 78,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -65,7 +65,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "complete",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
   "previousUrl": "https://observer.com/2024/01/uncle-vanya-broadway-review-steve-carell-lincoln-center/",
   "urlDiscoveredAt": "2026-02-02T05:13:50.190Z",
@@ -92,12 +92,11 @@
   "fetchTier": 1.5,
   "textQuality": "full",
   "truncationSignals": [
-    "no_ending_punctuation"
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
   ],
   "textStatus": "complete",
   "sourceMethod": "browserbase",
   "duplicateTextOf": "observer--david-cote.json",
-  "rescoreCompletedAt": "2026-02-02T14:26:21.990Z",
-  "wordCount": 931,
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T14:26:21.990Z"
 }

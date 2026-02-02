@@ -20,12 +20,12 @@
   "dtliThumb": "Meh",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:08:13.553Z",
+    "scoredAt": "2026-02-02T19:20:22.742Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "showScoreExcerpt": null,
   "bwwThumb": null,
@@ -102,7 +102,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The B grade and phrase 'heart of gold still remains firmly intact' indicate a positive assessment despite acknowledged flaws like 'sanitization' and superficiality. | GPT-4o: The critic acknowledges issues with the adaptation, describing it as 'superficial' and having 'squabbles,' but also notes that its 'heart of gold still remains firmly intact.' The original B rating suggests a mixed but somewhat positive view, aligning with a 'mixed' classification. | Gemini: The critic gives the show a B rating and states that the \"heart of gold still remains firmly intact,\" indicating a positive but not rave review. The mention of \"squabbles\" suggests reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The B grade and phrase about 'heart of gold remaining intact' suggest a positive but qualified recommendation, though concerns about sanitization and superficiality prevent stronger enthusiasm. | GPT-4o: The review acknowledges issues with the musical's depth and emotional landscape but also notes that the core appeal of the story is preserved. The original 'B' rating suggests a mixed but somewhat favorable view. | Gemini: The critic gives the show a 'B' and states that the 'heart of gold still remains firmly intact,' indicating a positive, but not rave, review. The phrase 'may have its squabbles' suggests reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -111,13 +111,13 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
+    "claudeScore": 73,
+    "openaiScore": 68,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -125,8 +125,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "complete",
-  "wordCount": 969,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "previousUrl": "https://ew.com/the-outsiders-broadway-review/",
   "urlDiscoveredAt": "2026-02-01T14:09:34.883Z",
   "urlDiscoveryMethod": "google-serp",
@@ -155,6 +155,5 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "rescoreCompletedAt": "2026-02-01T16:22:00.761Z",
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-01T16:22:00.761Z"
 }

@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'the best new musical of this decade,' 'brilliant,' 'stunning,' and 'revelatory new work...sure to be talked about for generations to come.' This is clearly an enthusiastic must-see recommendation. | GPT-4o: The review is overwhelmingly positive, praising the direction, performances, and musical score. The critic describes the show as 'perhaps the best new musical of this decade' and a 'revelatory new work,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"best new musical of this decade\" and praising various aspects of the production, including direction, score, and choreography. The critic clearly recommends seeing the show, placing it firmly in the Rave category.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'the best new musical of this decade', 'brilliant', 'stunning', and 'revelatory', with enthusiastic praise for all creative elements and a clear recommendation that it 'must be witnessed in person'. | GPT-4o: The review is overwhelmingly positive, praising the direction, performances, score, and production elements, and describes the show as potentially the best new musical of the decade. The critic's enthusiasm and strong recommendation place it firmly in the Rave bucket. | Gemini: The review is overwhelmingly positive, using phrases like \"best new musical of this decade\" and praising various aspects of the production, including direction, score, and choreography. The critic clearly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,12 +39,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:10:44.295Z",
+    "scoredAt": "2026-02-02T19:21:23.456Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,

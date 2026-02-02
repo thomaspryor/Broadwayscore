@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises exceptional performances and describes the experience as 'genuine pleasure,' indicating a positive recommendation, though the excerpt is brief and may not capture the full assessment. | GPT-4o: The review highlights exceptional performances by the leads and describes the experience of watching them as a genuine pleasure, indicating a strong positive recommendation. | Gemini: The review highlights exceptional performances from the leads and the pleasure of watching them, indicating a positive experience despite the lack of broader commentary.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises both lead performances as 'exceptional' and describes watching them as a 'genuine pleasure,' indicating a clear positive recommendation based on the star power and their chemistry. | GPT-4o: The critic praises the performances of Margo Martindale and Patti LuPone as exceptional and describes watching them as a genuine pleasure, indicating a strong positive recommendation. | Gemini: The review highlights exceptional performances and the pleasure of watching the leads, indicating a positive experience and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,11 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:01:37.966Z",
+    "scoredAt": "2026-02-02T19:22:51.125Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,

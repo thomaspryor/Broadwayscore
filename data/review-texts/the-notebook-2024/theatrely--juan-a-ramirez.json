@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges the show's familiar nature but praises the performances, direction, and emotional effectiveness, concluding with a positive assessment of its execution despite not breaking new ground. | GPT-4o: The review highlights strong performances and effective direction, while noting some pacing issues. The overall tone is positive, recommending the show despite acknowledging it doesn't break new ground. | Gemini: The review acknowledges flaws (rushed second act) but ultimately concludes that the show is earnest and precise, suggesting a positive, though not rave, recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises multiple elements including performances, design, and direction, while acknowledging the show doesn't break new ground. The critic finds it emotionally effective and well-executed despite familiar material. | GPT-4o: The review highlights the musical's emotional impact and strong performances, despite noting some rushed elements. The overall tone suggests a positive experience, recommending the show for its earnest execution. | Gemini: The review is generally positive, highlighting the performances, direction, and design. While it acknowledges some shortcomings, it concludes that the show is worth seeing, even if it's not groundbreaking.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,17 +42,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:47:37.503Z",
+    "scoredAt": "2026-02-02T19:19:38.483Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 78,
-    "geminiScore": 78,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

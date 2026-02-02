@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic's 3/5 star rating and language like 'reasonably entertaining' but 'falls far short' indicates a mixed recommendation - neither strongly positive nor negative, but acknowledging both enjoyable elements and significant flaws. | GPT-4o: The review provides a balanced critique, noting both enjoyable elements and significant shortcomings. The critic's original 3/5 star rating aligns with a mixed assessment, highlighting some entertaining aspects but also pointing out the clunky execution and lack of chemistry. | Gemini: The review acknowledges several flaws, including a draggy book and underwhelming score, but ultimately finds the production \"reasonably entertaining\" due to the lively staging and circus elements. The 3/5 star rating also supports a positive classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic's 3/5 star rating and balanced assessment - acknowledging entertainment value while citing significant flaws in storytelling, pacing, and character development - clearly places this in mixed territory. | GPT-4o: The review acknowledges some entertaining aspects and moments of artistry, but overall it describes the production as clunky and underwhelming, with significant criticisms of the storyline and character development. The original 3/5 star rating aligns with a mixed assessment. | Gemini: The critic gives it 3/5 stars and states there are \"many things about it to enjoy.\" However, they also point out flaws, such as the draggy book and underwhelming score, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:57.931Z",
+    "scoredAt": "2026-02-02T19:31:50.280Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,

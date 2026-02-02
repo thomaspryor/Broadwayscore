@@ -7,7 +7,7 @@
   "publishDate": "April 24, 2024",
   "fullText": "Lila Neugebauer directs a very punchy revival of “Uncle Vanya,” which opened Wednesday at LCT’s Vivian Beaumont Theatre. Anton Chekhov’s characters suffer from ennui, but not so much in this production.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "Lila Neugebauer directs a very punchy revival of “Uncle Vanya,” which opened Wednesday at LCT’s Vivian Beaumont Theatre. Anton Chekhov’s characters suffer from ennui, but not so much in this production.",
@@ -15,11 +15,11 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 75,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses positive language like 'very punchy' and notes the production avoids the typical sluggishness of Chekhov, but the brief excerpt provides limited detail for a stronger assessment. | GPT-4o: The review highlights the director's successful approach to making the production engaging, suggesting a positive recommendation despite potential reservations about the source material's typical tone. | Gemini: The review describes the production as \"punchy,\" suggesting a positive experience. While brief, the tone implies a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses positive language like 'very punchy revival' and notes the production avoids the typical problem of ennui in Chekhov, but the brief excerpt limits confidence in the full assessment. | GPT-4o: The review highlights the director's effective approach, suggesting a lively and engaging production. The mention of the characters suffering less from ennui in this version indicates a positive take on the production's energy and engagement. | Gemini: The review describes the revival as \"punchy,\" indicating a positive assessment, and implies it's a worthwhile production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:50:36.914Z",
+    "scoredAt": "2026-02-02T19:30:51.411Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 76,
     "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

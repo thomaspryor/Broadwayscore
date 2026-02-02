@@ -9,17 +9,17 @@
   "bwwExcerpt": "Between the two of them, you can’t really fail to enjoy an evening of theater, bumpy as the road may be at points. Farrow, especially, shines in a brisk yet moving conclusion that underscores the power of fleeting relationships to alter the trajectory or our lives. The Roommate, as with a real, solid house-sharing arrangement, is neither disastrous nor perfect. It entails moments of awkwardness and adjustment, some settling in and some compromises, to find the best of it.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 78,
   "humanReviewScore": 60,
   "humanReviewNote": "Both thumbs Meh; 'neither disastrous nor perfect'; LLM 76 overemphasized star power",
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 76,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends seeing the show primarily for LuPone and Farrow's performances, acknowledging the script's unevenness but emphasizing the enjoyable theatrical experience they provide together. | GPT-4o: The review highlights the strong performances of LuPone and Farrow as the main reason to see the play, despite its uneven pacing and script. The critic ultimately suggests that the performances make the play worth seeing. | Gemini: The review acknowledges the play's unevenness but ultimately suggests it's worth seeing for the performances of LuPone and Farrow. The phrase 'you can't really fail to enjoy an evening of theater' indicates a positive, though not rave, recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges the play is 'uneven' and 'just-fine' but ultimately recommends it based on the compelling performances of LuPone and Farrow, describing an enjoyable theater experience despite structural flaws. | GPT-4o: The review acknowledges the play's uneven pacing and some awkwardness but ultimately highlights the strong performances of LuPone and Farrow as reasons to see the show. The critic notes that the play becomes enjoyable and funny in its middle section, leading to a positive recommendation despite some reservations. | Gemini: The review acknowledges the play's unevenness but ultimately suggests it's worth seeing for the performances of LuPone and Farrow. The phrase 'can't really fail to enjoy' indicates a positive, but not rave, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:09.049Z",
+    "scoredAt": "2026-02-02T19:22:11.847Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 76,
     "openaiScore": 78,
-    "geminiScore": 78,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -70,8 +70,8 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "contentTier": "complete",
-  "wordCount": 1085,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,
   "isFullReview": true,
@@ -94,6 +94,7 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T16:24:26.538Z",
@@ -104,6 +105,5 @@
     "hadPositiveThumb": false,
     "dtliThumb": "Meh",
     "bwwThumb": "Meh"
-  },
-  "tierReason": "Full review text"
+  }
 }

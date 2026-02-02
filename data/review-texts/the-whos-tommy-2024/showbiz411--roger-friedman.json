@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/showbiz411--roger-friedman_2026-02-01.html",
@@ -31,11 +31,11 @@
   "archiveOrgTimestamp": "20251110045842",
   "archiveOrgUrl": "http://web.archive.org/web/20251110045842/https://www.showbiz411.com/2024/03/28/broadway-can-you-hear-me-the-whos-tommy-returns-vibrant-as-ever-after-30-years",
   "llmScore": {
-    "score": 76,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -46,7 +46,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses clearly positive language ('pop', 'tight', 'brims with fun') and explicitly prefers this show over other musicals, indicating a recommendation despite being only a single excerpt. | GPT-4o: The review highlights positive aspects like the sets, choreography, and overall fun of the production, indicating a recommendation. However, the nostalgia comment suggests it may appeal more to a specific audience, which tempers the enthusiasm slightly. | Gemini: The review is generally positive, highlighting the sets, choreography, and fun factor. The phrase \"I'll take this over a lot of musicals\" indicates a recommendation, though not an enthusiastic one.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses clearly positive language ('sets pop', 'brims with fun') and explicitly states preference for this show over many other musicals, indicating a solid recommendation despite the single excerpt limitation. | GPT-4o: The review excerpt is clearly positive, highlighting the engaging set design, choreography, and overall enjoyment of the show. The critic expresses a preference for this musical over others, indicating a strong recommendation. | Gemini: The review highlights positive aspects like the sets and choreography, and explicitly states it's preferable to many other musicals. However, the \"maybe it's a little nostalgic\" suggests some reservations, so it's a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,21 +56,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:21:36.444Z",
+    "scoredAt": "2026-02-02T19:25:53.330Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

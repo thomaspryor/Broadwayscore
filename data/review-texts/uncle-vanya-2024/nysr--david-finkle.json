@@ -13,13 +13,13 @@
     "playbill-verdict"
   ],
   "originalScore": "2/5 stars",
-  "assignedScore": 45,
+  "assignedScore": 46,
   "llmScore": {
-    "score": 45,
+    "score": 46,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 41,
+      "high": 51
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic's 2/5 star rating and explicit criticism that the production is 'flat' and 'boring' clearly indicate a negative assessment, despite acknowledging it's 'not outrightly deficient.' | Gemini: The review states that the production is \"somehow flat more often\" and that elements that should give the play electricity are not met. While not a complete pan, the overall assessment is negative, and the critic's rating of 2/5 stars supports this classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic's 2/5 star rating and consistent criticism of the production as 'flat' and 'boring' clearly indicate a negative recommendation, despite acknowledging it's not 'outrightly deficient.' | GPT-4o: The review highlights several shortcomings in the production, including a lack of energy and connection among the cast, leading to a flat experience. The original rating of 2/5 stars supports a negative classification, though the truncated text suggests caution. | Gemini: The review states the production is 'somehow flat more often' and that some performances connect while others don't. The critic's rating of 2/5 stars also suggests a mixed to negative assessment, but the truncated text makes it difficult to determine the final verdict with certainty.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:54.755Z",
+    "scoredAt": "2026-02-02T19:30:12.154Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 44,
-    "previousVersion": "5.0.0"
+    "previousScore": 45,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
-    "geminiScore": 48,
+    "openaiScore": 50,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 6,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "playbillVerdictUrl": "https://nystagereview.com/2024/04/24/uncle-vanya-disoriented-scenes-from-a-country-life/",
   "contentTier": "complete",

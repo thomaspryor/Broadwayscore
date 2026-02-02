@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"...full of funk, R&B, gospel, and more, will still thrill and delight you.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-wiz-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic praises the cast's vocal abilities and musical performances but consistently criticizes the production values, staging, and technical elements, concluding that the show repeatedly falls short of its potential. | Gemini: The review praises the music and performances but criticizes the staging, set design, and book updates. It acknowledges enjoyable moments but ultimately finds the production lacking in overall impact.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises the cast's vocal performances and musical elements enthusiastically but is consistently critical of the production design, staging, and technical execution, concluding with disappointment about missing great moments due to poor execution. | GPT-4o: The review highlights strong musical performances and a talented cast, but criticizes the production's staging, set design, and sound issues. While the music is praised, the overall execution is seen as lacking, leading to a mixed recommendation. | Gemini: The review praises the music and performances but criticizes the staging, costumes, and overall production quality. It acknowledges the show's strengths while highlighting significant flaws, resulting in a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:45:41.437Z",
+    "scoredAt": "2026-02-02T19:28:01.530Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "sources": [
     "show-score",

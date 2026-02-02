@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/nysr--david-finkle_2026-01-29.html",
@@ -30,11 +30,11 @@
   "archiveOrgTimestamp": "20250724130218",
   "archiveOrgUrl": "http://web.archive.org/web/20250724130218/https://nystagereview.com/2024/03/28/the-whos-tommy-the-ground-breaking-rock-opera-seen-heard-felt-in-sizzling-revival/",
   "llmScore": {
-    "score": 81,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -45,7 +45,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives 4/5 stars and describes the production as 'just about perfect' with 'flawless direction' and praises virtually every creative element. The enthusiastic tone throughout supports a strong positive recommendation. | Gemini: The critic gives the show 4 out of 5 stars and calls the production 'just about perfect'. The review is overwhelmingly positive, praising the direction, design, choreography, and performances.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 4/5 star rating combined with superlative language like 'just about perfect,' 'flawless direction,' and 'marvel of brilliant action' indicates strong enthusiasm. The critic praises virtually every aspect of the production while acknowledging minor plot looseness doesn't detract from the overall achievement. | GPT-4o: The review is overwhelmingly positive, highlighting the production's technical achievements and strong performances. The critic's 4/5 star rating and the use of phrases like 'just about perfect' and 'thrilling-often-chilling-date' indicate a strong recommendation. | Gemini: The critic gives the show 4 out of 5 stars and calls it \"just about perfect.\" The review is overwhelmingly positive, praising the direction, design, choreography, and performances.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,26 +55,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:55.722Z",
+    "scoredAt": "2026-02-02T19:25:39.795Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": null,
+    "claudeScore": 82,
+    "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "5/5 stars",

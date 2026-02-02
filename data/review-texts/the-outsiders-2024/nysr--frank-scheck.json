@@ -12,16 +12,16 @@
     "nysr-api"
   ],
   "originalScore": "3/5 stars",
-  "assignedScore": 64,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 64,
+    "score": 74,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic gives 3/5 stars and describes it as 'perfectly respectable' with 'many laudable elements' but questions its necessity and finds it derivative, indicating a lukewarm middle-ground assessment. | GPT-4o: The review acknowledges several positive elements such as the score, performances, and choreography, but ultimately suggests that the production lacks originality and a compelling reason for being. The original 3/5 star rating aligns with a mixed verdict. | Gemini: The review acknowledges the show's derivative nature but praises the score, performances, and choreography. The critic's 3/5 star rating also indicates a positive but not rave review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic gives 3/5 stars and acknowledges many positive elements (terrific songs, charismatic performances, dynamic ensemble) but questions the show's reason for existing and finds it derivative. This aligns with a barely-positive recommendation with substantial caveats. | GPT-4o: The review acknowledges the show's respectable effort and some laudable elements, but criticizes its lack of originality and purpose. The original rating of 3/5 stars and the mixed tone suggest a balanced view with both positive and negative aspects. | Gemini: The review acknowledges the show's derivative nature but praises the score, performances, and choreography, ultimately suggesting it's worth seeing despite its flaws. The 3/5 star rating supports a positive but not rave classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +39,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:03.784Z",
+    "scoredAt": "2026-02-02T19:20:47.446Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text",
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 72,
     "openaiScore": 65,
     "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Positive"
   }
 }

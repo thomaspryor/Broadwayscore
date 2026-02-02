@@ -9,15 +9,15 @@
   "dtliExcerpt": "But once the two are no longer strangers, the score, which most pointedly recalls Adam Gwon’s similarly small-scale tunes for Ordinary Days, loses its precision since there’s only so many positions available for Robin and Dougal to assume—frenemies, confidantes, will-they-won’t-theys—before the story starts to spin its wheels. Instead, there are too many novelty numbers about Christmas carols and Tinder swiping not really grounded in who these people are, plus wispy soliloquies that can only credibly inch each character forward. Two Strangers, spanning two days of personal growth in two hours and 20 minutes (including intermission), is both far too long for the audience’s attention and far too short for Dougal and Robin’s transformations.",
   "showScoreExcerpt": "\"Two Strangers, spanning two days of personal growth in two hours and 20 minutes (including intermission), is both far too long for the audience’s attention and far too short for Dougal and Robin’s transformations.\"",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 60,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges strong performances and moments of luminosity but finds the show structurally flawed, overlong, and emotionally underwhelming, ultimately describing it as neither inspiring strong positive nor negative reactions. | Gemini: The review highlights strong performances and direction but criticizes the length, pacing, and lack of emotional depth in the latter half. It neither strongly recommends nor discourages seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges strong performances and appealing elements but fundamentally critiques the show's structure as flawed and emotionally unsatisfying. The critic finds it 'jovially bland' and notes that 'it's hard to feel much of anything in return.' | GPT-4o: The review acknowledges some strengths, particularly in the performances and direction, but criticizes the show for lacking emotional depth and having a structure that limits character development. The overall tone suggests a mixed experience with notable highlights. | Gemini: The review highlights strong performances but criticizes the writing and pacing, ultimately landing in mixed territory. The show has moments of brilliance but doesn't fully deliver.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:06.935Z",
+    "scoredAt": "2026-02-02T19:29:08.433Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": null,
+    "openaiScore": 66,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "sourceMethod": "dtli",
   "bwwExcerpt": null,

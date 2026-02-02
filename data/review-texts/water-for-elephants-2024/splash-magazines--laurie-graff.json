@@ -9,15 +9,15 @@
   "bwwExcerpt": "They fly through the air with the greatest of ease… literally. Right in front of your eyes is the show within the show – the circus. The most astonishing artistry included acrobatics, hand-balancing, tossing partners, aerials, gymnastics, trapeze, clowning, juggling and pole dancing. All interwoven into a big bang of a Broadway book with music and choreography. It was stunning to see the exquisite work, to hold your breath as the kinkers performed their magic moves. And the puppets. The menageri",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear admiration for the performances and spectacle with words like 'stunning', 'astonishing artistry', and 'exquisite work'. However, given this is only one curated excerpt and the text cuts off mid-sentence, I'm scoring conservatively in the lower positive range. | GPT-4o: The review excerpt describes the show as 'stunning' and highlights the 'exquisite work' of the performers, indicating a strong positive reaction. Despite the single excerpt warning, the language suggests a highly enthusiastic recommendation. | Gemini: The review excerpt is overwhelmingly positive, highlighting the stunning artistry and exquisite work. While it's only a single excerpt, the enthusiastic tone suggests a recommendation, albeit with some reservations due to the limited context.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear enthusiasm with words like 'stunning', 'exquisite', 'astonishing artistry', and 'big bang of a Broadway book', indicating strong praise for the production despite being truncated. | GPT-4o: The review excerpt is filled with superlatives and vivid descriptions of the performances, indicating a highly enthusiastic recommendation. The use of words like 'stunning' and 'exquisite' suggests a strong positive reaction to the show. | Gemini: The review excerpt is overwhelmingly positive, using words like \"stunning\" and describing the artistry as \"exquisite.\" Given the single excerpt warning and the positive tone, the upper end of the Positive bucket is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:49.089Z",
+    "scoredAt": "2026-02-02T19:32:17.346Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 82,
     "openaiScore": 88,
-    "geminiScore": 75,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 16,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses clearly positive language like 'sweeping spectacle,' 'succeeds,' and 'theatrical magic' with no reservations expressed, indicating a solid recommendation. | GPT-4o: The review uses strong positive language such as 'sweeping spectacle', 'theatrical magic', and 'stunning puppetry', indicating a highly enthusiastic recommendation. | Gemini: The review uses positive language like \"sweeping spectacle\" and \"theatrical magic\", indicating a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses clearly positive language like 'sweeping spectacle,' 'succeeds,' and 'theatrical magic' with praise for both technical elements and performances, indicating a solid recommendation. | GPT-4o: The review uses strong positive language, describing the show as a 'sweeping spectacle' and 'theatrical magic,' indicating a highly enthusiastic recommendation. | Gemini: The review uses positive language such as \"sweeping spectacle\" and \"theatrical magic\" indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,12 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:02.240Z",
+    "scoredAt": "2026-02-02T19:32:31.749Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",

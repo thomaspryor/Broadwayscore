@@ -46,7 +46,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show despite acknowledging it's not high art, praising the cast's Broadway-grade talent and infectious enthusiasm while advising audiences to embrace the campy fun. | GPT-4o: The review describes the show as a joyful, fun experience with strong performances and an infectious enthusiasm. The critic clearly recommends seeing it for a good time, despite it not being 'high art.' | Gemini: The review explicitly states that audiences will have a \"boatload of fun\" and recommends grabbing friends and drinks to \"get on board.\" While acknowledging the campy nature and potential limitations, the overall tone is positive and encouraging.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review clearly recommends the show with explicit phrases like 'just get on board' and 'you'll have a boatload of fun,' while acknowledging it's not high art but praising the cast's talent and infectious enthusiasm. | GPT-4o: The review describes the show as a joyful, fun experience with strong performances and infectious enthusiasm. The critic clearly recommends seeing it for its entertainment value, despite it not being 'high art'. | Gemini: The review is generally positive, recommending the show for its campy fun and enthusiastic cast, while also acknowledging it's not high art and may not appeal to all audiences. The phrase \"boatload of fun\" indicates a strong positive sentiment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,12 +56,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T01:00:23.639Z",
+    "scoredAt": "2026-02-02T19:28:12.715Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text",

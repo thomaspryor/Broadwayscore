@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Barnes gives 2.5 stars and delivers mixed signals throughout - praising the spectacular design and strong performances while criticizing the 'oppressive' and 'bland, generic' music and 'foolish' book. His lukewarm conclusion suggests modest entertainment value rather than a clear recommendation. | GPT-4o: The review acknowledges the spectacle and strong performances but criticizes the music and lyrics as oppressive and banal. The overall tone suggests a mixed reception, highlighting both strengths and weaknesses. | Gemini: The review praises the acting, spectacle, and design elements, while criticizing the music and book. The critic ultimately suggests that the show is enjoyable, particularly for children, indicating a positive but not overwhelmingly enthusiastic recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Barnes gives mixed signals throughout - praising the spectacle, performances, and technical elements while criticizing the music as 'bland, generic' and 'oppressive' and the book as 'complex, if foolish.' The lukewarm conclusion suggests moderate entertainment value rather than a clear recommendation. | GPT-4o: The review highlights impressive spectacle and strong performances but criticizes the music and lyrics as bland and banal. The overall tone suggests a mixed reception with notable strengths in acting and visual elements. | Gemini: The review praises the acting, spectacle, and technical aspects, while criticizing the music and book. The overall tone suggests a qualified recommendation, particularly for children and those interested in the visual elements.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,11 +40,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:35:26.953Z",
+    "scoredAt": "2026-02-02T19:33:44.903Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 65,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

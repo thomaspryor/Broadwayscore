@@ -38,7 +38,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and positive aggregator verdicts strongly indicate a positive recommendation, though the limited excerpt doesn't provide the full critical assessment. | GPT-4o: The original rating of 4/5 suggests a positive review, and the phrase 'full of surprises' implies an engaging production. However, due to the text quality warning and limited excerpts, the confidence is medium. | Gemini: The critic's rating of 4/5 stars suggests a positive recommendation. The selected quote implies a generally positive experience, though the limited text makes it difficult to assess the strength of the recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating strongly indicates a positive recommendation, and the opening suggests pleasant surprise and engagement with the premise, though the excerpt is too brief for full context. | GPT-4o: The original rating of 4/5 suggests a positive review. The excerpt indicates a theme of unexpectedness, which implies an engaging production. The lack of full text and the medium-tier outlet suggest some reservations, but the overall tone is positive. | Gemini: The 4/5 rating and the aggregator context (Up) strongly suggest a positive recommendation. The excerpt hints at an enjoyable surprise, but without more text, it's a moderate positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,12 +48,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:14:53.459Z",
+    "scoredAt": "2026-02-02T19:23:07.791Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 80,

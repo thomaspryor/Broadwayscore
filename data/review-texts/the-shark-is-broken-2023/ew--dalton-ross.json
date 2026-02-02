@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives a B+ grade and explicitly calls it 'a wild ride worth taking' with praise for performances and production values, despite some minor criticisms about easy jokes. | GPT-4o: The review concludes with a positive note, describing the show as a 'wild ride worth taking,' and the original rating of B+ supports a strong positive classification. Despite some criticisms of the script, the performances and production elements are praised. | Gemini: The critic gives the show a B+ and states that it's \"definitely a wild ride worth taking.\" While the review mentions some flaws, the overall tone is positive and recommends seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting some script weaknesses like 'cheap' jokes and forced moments, the critic concludes with a clear positive recommendation calling it 'a wild ride worth taking' and awards a B+ grade, indicating solid approval. | GPT-4o: Despite some criticisms of the script's low-hanging jokes, the review highlights strong performances and an engaging experience, ultimately recommending the show as a 'wild ride worth taking.' The original B+ rating supports a strong positive classification. | Gemini: The critic gives the show a B+ and states it is a 'wild ride worth taking'. While some jokes are cheap, the performances and set design are praised, leading to a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:51:47.338Z",
+    "scoredAt": "2026-02-02T19:23:48.826Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,

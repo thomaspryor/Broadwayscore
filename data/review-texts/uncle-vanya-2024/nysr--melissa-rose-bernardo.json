@@ -12,16 +12,16 @@
     "nysr-api"
   ],
   "originalScore": "2/5 stars",
-  "assignedScore": 60,
+  "assignedScore": 43,
   "llmScore": {
-    "score": 60,
+    "score": 43,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 38,
+      "high": 48
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic's 2/5 star rating combined with criticism of the production feeling 'unmoored' and actors 'struggling to connect,' balanced by praise for individual performances like Harper and some positive notes about Carell, places this in mixed territory on the lower end. | GPT-4o: The review highlights several issues with the production, such as the lack of connection between actors and the disorientation of the setting. Despite some positive notes about individual performances, the overall tone suggests that the production falls short, aligning with the critic's 2/5 star rating. | Gemini: The review is mixed, praising some performances (Carell, Pill, Harper) while criticizing others (Rose, Molina) and the overall direction. The 2/5 star rating suggests a negative leaning, but the truncated text makes it difficult to determine the final verdict with certainty.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The 2/5 star rating and consistently critical tone throughout—describing the production as 'unmoored,' actors 'struggling to connect,' and noting 'disorientation that permeates this entire production'—clearly indicate a negative assessment despite some individual performance praise. | GPT-4o: The review highlights several issues with the production, such as the lack of connection among actors and the disorientation of the setting. The critic's original 2/5 star rating suggests a negative impression, though the text is truncated, which could mean a more positive conclusion is missing. | Gemini: The review is mixed, praising some performances (Carell, Harper, Pill, Katigbak) while criticizing others (Rose, Molina) and the overall direction. The truncated text and the critic's 2/5 star rating suggest a less-than-positive experience, but not a complete failure.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:58.622Z",
+    "scoredAt": "2026-02-02T19:30:15.762Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 43,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 50,
+    "claudeScore": 45,
+    "openaiScore": 40,
     "geminiScore": 62,
-    "claudeBucket": "Mixed",
+    "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 12,
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text"

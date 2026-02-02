@@ -9,7 +9,7 @@
   "bwwExcerpt": "n and Jonathan Clay and Zach Chance (better known as the band Jamestown Revival) proves a perfectly respectable effort with many laudable elements. What it mostly seems to lack is a reason for being. Elisabeth Vincentelli, The Washington Post: And therein lies the problem: The show overexplains everything, all the time. Hinton knew exactly how much to say and when — the paperback edition of “The Outsiders” is just 180 concise, evocative pages that let us discover things along with Ponyboy. Here, both the book and the songs tend to underestimate the audience’s intelligence. (This is surprising coming from Rapp, who is usually not afraid of ambiguity.) Matt Windman, amNY: At its best, “The Outsiders”(which is directed by Danya Taymor, “Pass Over”) is fresh and rambunctious, with an attractive period country-pop score by Jamestown Revival (Jonathan Clay and Zach Chance) and Justine Levine (with plainspoken lyrics and pulsating music reminiscent of Jason Robert Brown), well-executed choreo",
   "showScoreExcerpt": "\"...has great visual touches but falters when the characters open their mouths\"",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
@@ -19,11 +19,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises the visual and staging elements extensively but consistently criticizes the book and score for overexplaining and lacking dramatic weight, creating a balanced mixed assessment. | GPT-4o: The review praises the visual elements and choreography but criticizes the over-explanatory book and lackluster score. The overall tone suggests the production has strengths but significant weaknesses, leading to a mixed recommendation. | Gemini: The review praises the visual aspects and staging but criticizes the book and songs for overexplaining and lacking dramatic weight. This indicates a mixed experience, with strong elements offset by significant weaknesses.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic praises the visual and staging elements extensively but criticizes the book and score as overexplanatory and dramatically weak. The review acknowledges strengths but identifies fundamental flaws that prevent a recommendation. | GPT-4o: The review praises the visual aspects and impactful moments of the production, but criticizes the over-explanatory nature of the book and the lack of dramatic weight in the score. The overall tone suggests a mixed reception, with notable strengths and significant weaknesses. | Gemini: The review praises the visual aspects and staging but criticizes the book and score, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,7 +44,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:42:12.684Z",
+    "scoredAt": "2026-02-02T19:21:53.968Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -54,17 +54,17 @@
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 54,

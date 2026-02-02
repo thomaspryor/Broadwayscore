@@ -8,7 +8,7 @@
   "fullText": null,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
   "contentTier": "excerpt",
   "wordCount": 0,
   "llmScore": {
-    "score": 76,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The metaphor of 'prestidigitation' (magic/sleight of hand) paired with praise for creating 'entertainment and real emotional engagement' suggests admiration for the show's craft, but the single excerpt warning requires conservative scoring within the positive range. | GPT-4o: The quote suggests a positive experience with both entertainment and emotional engagement, indicating a recommendation. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The phrase \"Entertainment and real emotional engagement are pulled out of thin air\" suggests a positive experience, but the single excerpt and lack of full context warrant a score in the middle of the positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses 'prestidigitation' (magic/skillful performance) positively, praising the show's ability to create both entertainment and emotional engagement. This suggests strong recommendation despite limited text. | GPT-4o: The excerpt uses highly positive language, describing the show as both entertaining and emotionally engaging, which suggests a strong recommendation. The single excerpt warning advises using the upper end of the bucket for clearly positive quotes. | Gemini: The phrase \"Entertainment and real emotional engagement are pulled out of thin air\" indicates a strong positive sentiment, suggesting the show is highly entertaining and emotionally resonant. Given that this is the only excerpt, I'm placing it in the upper range of 'Positive'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,21 +46,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:18.619Z",
+    "scoredAt": "2026-02-02T19:28:31.247Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 77,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

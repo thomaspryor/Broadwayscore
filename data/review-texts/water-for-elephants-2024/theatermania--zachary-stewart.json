@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic declares it the Tony frontrunner and 'best new musical on Broadway' while praising it as artistically significant. Despite the single excerpt warning, this is clearly strong praise. | GPT-4o: The review strongly praises the show as a frontrunner for a major award and highlights its innovation, indicating a highly enthusiastic recommendation. | Gemini: The review explicitly states that it is the 'best new musical on Broadway,' which is a strong recommendation, placing it in the positive bucket. The 'not the greatest show on Earth' indicates a slight reservation, but the overall tone is positive.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic calls it the Tony frontrunner and 'best new musical on Broadway' while praising it as a 'bold assertion' of the artform's potential - this is strong rave territory despite the single excerpt warning. | GPT-4o: The review excerpt is highly positive, suggesting the show is a frontrunner for a major award and praising its innovation. This indicates a strong recommendation. | Gemini: The review excerpt strongly praises the musical, calling it the \"best new musical on Broadway,\" indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:26:55.972Z",
+    "scoredAt": "2026-02-02T19:32:25.211Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 89,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

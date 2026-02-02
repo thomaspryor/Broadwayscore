@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds the production technically accomplished but dramatically thin, calling it a 'pleasant diversion' that lacks substantial dramatic interest despite some intriguing meta-theatrical elements. | GPT-4o: The review describes the play as having accurate details and a meta-story that adds some interest, but overall it is portrayed as lacking dramatic interest and being a 'pleasant diversion'. This suggests a mixed reception with some positive elements but not a strong recommendation. | Gemini: The review suggests the play is a 'pleasant diversion' without the meta-story, implying it's not particularly compelling on its own. The meta-story adds some 'bite,' but the overall tone is lukewarm, placing it in the Mixed category.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges some interesting elements (meta-story, production values) but ultimately finds it dramatically uninteresting and lacking bite, describing it as a 'pleasant diversion' at best. | GPT-4o: The review suggests that while the play has some interesting elements, particularly the meta-story involving Robert Shaw's son, it lacks dramatic interest overall. The tone is neither fully positive nor negative, indicating a mixed reception. | Gemini: The review suggests the play is a \"pleasant diversion\" without the meta-story, but the meta-story adds some depth. It doesn't strongly recommend or discourage seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:09.038Z",
+    "scoredAt": "2026-02-02T19:24:21.364Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 48,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,

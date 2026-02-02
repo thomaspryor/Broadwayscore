@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite noting some 'clunky and cheap' jokes and minor flaws, the critic calls it 'a sensational night at the theater' and praises the performances, character development, and overall execution throughout the review. | Gemini: The review is largely positive, highlighting the strong performances and engaging story, especially for fans of Jaws. While it notes some flaws like cheap jokes, the overall assessment is that it's a 'sensational night at the theater.'",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting some flaws like 'cheap jokes' and moments that 'wobble,' the critic concludes it's 'a sensational night at the theater' and praises the performances, character development, and overall execution. | GPT-4o: The review praises the play's performances, character-building, and meta-reflection, while noting minor flaws. The overall tone is enthusiastic, highlighting it as a sensational experience, particularly for Jaws fans. | Gemini: The review is overall positive, calling the play a \"sensational night at the theater\" but also notes some flaws like \"cheap jokes.\" This indicates a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:52:01.736Z",
+    "scoredAt": "2026-02-02T19:23:55.079Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 72,

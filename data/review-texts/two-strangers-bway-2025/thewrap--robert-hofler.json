@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review starts with promise but clearly turns negative, criticizing the central relationship dynamic and noting the show becomes 'very problematic' with an 'Unfortunately, no' conclusion about the romantic pairing working. | GPT-4o: The review describes the production as having initial promise but ultimately failing to deliver, with the main characters being incompatible and the story becoming problematic. The tone suggests disappointment and a lack of recommendation. | Gemini: The review acknowledges initial promise but ultimately suggests the leads lack chemistry and the story becomes problematic. It doesn't outright recommend against seeing it, but it doesn't strongly endorse it either.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic finds the central romantic chemistry lacking and notes that the promising setup deteriorates significantly, with the 'Unfortunately, no' ending suggesting disappointment with the show's execution. | GPT-4o: The review highlights initial promise but ultimately concludes that the chemistry between the leads fails, leading to a disappointing experience. The negative tone and lack of recommendation are clear. | Gemini: The review starts positively, but quickly turns to the problematic nature of the relationship between the characters. The critic notes the initial promise but ultimately suggests the characters are not well-suited, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:14.307Z",
+    "scoredAt": "2026-02-02T19:29:17.083Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 41,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 40,
-    "geminiScore": 60,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

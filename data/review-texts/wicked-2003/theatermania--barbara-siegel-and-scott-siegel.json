@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critics passionately defend Wicked against negative reviews, calling it ambitious with a beautiful score, Tony Award-worthy stars, and praising virtually every element from performances to direction to themes. | GPT-4o: The review is overwhelmingly positive about 'Wicked,' praising the performances, score, and production elements. The critic strongly disagrees with negative reviews and highlights the show's strengths, indicating a must-see recommendation. | Gemini: The review is overwhelmingly positive, praising the music, book, performances, and direction. The critics strongly disagree with other negative reviews, indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critics passionately defend Wicked against other negative reviews, praising every aspect from performances to score to book, calling it ambitious with Tony Award-worthy stars who 'carry the show to glory.' | GPT-4o: The review is overwhelmingly positive, praising the show's complexity, score, performances, and production. The critics express strong disagreement with negative reviews from others, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the music, book, performances, and overall production. The critics explicitly state their disagreement with other negative reviews, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,15 +40,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:35:54.912Z",
+    "scoredAt": "2026-02-02T19:34:12.885Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 89,
     "openaiScore": 95,
     "geminiScore": 81,
     "claudeBucket": "Rave",

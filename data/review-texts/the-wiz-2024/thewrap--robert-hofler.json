@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "But the secret sauce here is Amber Ruffin, who’s credited with “additional material for this production.” No way did William F. Brown’s book for the original 1974 Broadway production of “The Wiz” offer this many inspired one-liners.",
@@ -39,11 +39,11 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -54,7 +54,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear praise for performances and direction with explicit 'not to be missed' language, though truncation limits full assessment of the verdict. | GPT-4o: The review highlights the exceptional performances of the cast and the effective direction, indicating a strong positive recommendation. The phrase 'not to be missed' suggests a must-see production. | Gemini: The review excerpt highlights the strong performances and direction, suggesting a positive overall experience. The phrase \"not to be missed\" indicates a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for performances and ensemble work with explicit 'not to be missed' recommendation language, though text is truncated limiting full assessment. | GPT-4o: The review highlights the strong performances of the cast and the effective direction, with a clear recommendation not to miss the show. The tone is enthusiastic and positive. | Gemini: The review excerpt praises the actors and director, highlighting the performances as a must-see. The positive tone and enthusiastic language suggest a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -64,27 +64,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:45:09.365Z",
+    "scoredAt": "2026-02-02T19:27:45.336Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 88,
-    "geminiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "showScoreExcerpt": "\"The Wiz is all about feeling...in complex times, its simple message rings loud and clear\"",
   "contentTier": "complete",

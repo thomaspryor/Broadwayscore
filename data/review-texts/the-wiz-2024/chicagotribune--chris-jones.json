@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-wiz-2024/chicagotribune--chris-jones_2026-01-29.html",
@@ -31,11 +31,11 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 74,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -46,7 +46,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges flaws but emphasizes improvements from the touring version and praises the heart of the revival, particularly the supporting cast, indicating a recommendation despite reservations. | Gemini: The review indicates improvements from the pre-Broadway tour and praises several performances, but also notes some shortcomings, such as Dorothy's performance and the abrupt ending. Overall, it leans towards a positive but not rave recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges flaws but emphasizes improvements from the touring version, praises the supporting cast as 'delightful,' and celebrates the show's ability to energize audiences, indicating a solid recommendation with reservations. | GPT-4o: The review acknowledges flaws and some underutilized talent but highlights improvements since the Chicago version and praises the performances and updates, indicating a positive recommendation despite some reservations. | Gemini: The review notes improvements from the Chicago tryout and praises several performances, particularly the Tinman, Scarecrow and Lion. While noting flaws like the ending and Dorothy's performance, the overall tone suggests a worthwhile experience, especially for fans.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,26 +56,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:43:09.229Z",
+    "scoredAt": "2026-02-02T19:26:40.302Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",

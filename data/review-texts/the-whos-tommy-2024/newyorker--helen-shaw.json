@@ -9,18 +9,18 @@
   "showScoreExcerpt": "\"The 1993 musical's already bizarre story...even less clear in Des McAnuff's reanimation\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 64,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 52,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 47,
-      "high": 57
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic systematically dismantles the production, criticizing everything from the storytelling logic to the over-reliance on nostalgia, concluding that the creative team has 'lost the rock opera's original grip on metaphor' and created something that 'refuses to create sense.' | Gemini: The review highlights both positive and negative aspects of the production. While praising certain elements like the energy and lighting, it criticizes the storytelling and overall sense of the show, resulting in a mixed recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Shaw systematically critiques the production's reliance on nostalgia over creativity, confusing storytelling, and failure to make coherent theatrical sense, concluding that the creative team has 'lost the rock opera's original grip on metaphor.' | GPT-4o: The review highlights both positive elements, such as the energy and stagecraft, and significant criticisms, particularly regarding the production's reliance on nostalgia and lack of clarity. The tone suggests a mixed experience with notable flaws, but not a complete dismissal. | Gemini: The review highlights both positive and negative aspects, ultimately suggesting the production has moments of energy but suffers from a lack of clarity and fresh creativity, resulting in a mixed experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:20:09.447Z",
+    "scoredAt": "2026-02-02T19:25:27.455Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 52,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "scoreDelta": 23,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 32,

@@ -15,11 +15,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Outsiders succeeds in translating S.E. Hinton's beloved novel into a musical that feels both faithful to the source material and genuinely theatrical.",
-  "contentTier": "complete",
-  "wordCount": 1591,
+  "contentTier": "truncated",
+  "wordCount": 23,
   "llmScore": {
     "score": 79,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 74,
       "high": 84
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises multiple elements including the score, performances (especially Joshua Boone), choreography, and staging while acknowledging some clichés. The overall assessment is clearly positive with specific recommendations for standout elements. | Gemini: The review acknowledges some cliches but ultimately praises the music, staging, and performances, indicating a positive recommendation with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges clichés but emphasizes the show's strengths in music, staging, and performances. Praises the choreography as 'exhilarating' and calls the violence ballet 'spectacular,' while noting strong individual performances throughout. | GPT-4o: The review is filled with praise for the performances, staging, and music, highlighting the show's emotional depth and strong execution. The critic emphasizes the show's potential as a standout in the current Broadway season, indicating a strong recommendation. | Gemini: The review acknowledges some cliches but ultimately praises the music, staging, and performances, indicating a positive recommendation with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,26 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:11:55.442Z",
+    "scoredAt": "2026-02-02T19:21:46.820Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
+    "openaiScore": 90,
     "geminiScore": 80,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "previousUrl": "https://www.vulture.com/article/the-outsiders-broadway-review.html",
   "urlDiscoveredAt": "2026-02-01T14:09:13.682Z",
@@ -72,7 +73,7 @@
   "isFullReview": true,
   "textWordCount": 1591,
   "archivePath": "data/archives/reviews/the-outsiders-2024/vulture--jackson-mchenry_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:50:52.279Z",
+  "textFetchedAt": "2026-02-02T15:07:13.081Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -83,11 +84,10 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250114073625",
   "archiveOrgUrl": "http://web.archive.org/web/20250114073625/https://www.vulture.com/article/theater-review-the-outsiders-broadway-musical.html",
-  "rescoreCompletedAt": "2026-02-01T16:23:50.055Z",
-  "duplicateTextOf": "vulture--sara-holdren.json",
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-01T16:23:50.055Z"
 }

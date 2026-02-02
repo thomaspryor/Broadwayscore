@@ -9,21 +9,21 @@
   "bwwExcerpt": "If nothing else, we never wonder how Jacob is swept away by the circus. The romance may fall short, and the songs lack a certain luster, but the magic of the circus is winning. Grade: B–",
   "bwwRoundupUrl": null,
   "originalScore": "B",
-  "assignedScore": 74,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "scoreSource": "letter-grade",
   "scoreConfidence": "medium",
   "extractedGrade": "B",
   "llmScore": {
-    "score": 74,
+    "score": 65,
     "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 60,
+      "high": 70
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The B- grade and positive conclusion about the circus magic being 'winning' indicates a recommendation despite acknowledged flaws in romance and songs. | GPT-4o: The review acknowledges shortcomings in the romance and songs but highlights the winning magic of the circus. The original B- rating and the mixed aggregator context suggest a balanced view with both positive and negative elements. | Gemini: The critic gives the show a B- grade, indicating a positive but not rave review. While noting shortcomings in the romance and songs, they ultimately find the \"magic of the circus\" to be \"winning,\" suggesting a recommendation with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The B- grade and mixed language ('falls short', 'lack luster' but 'magic is winning') indicates a show with notable flaws but redeeming qualities, fitting squarely in the Mixed category. | GPT-4o: The review acknowledges shortcomings in the romance and songs but highlights the winning magic of the circus. The original rating of B– suggests a mixed assessment with some positive elements. | Gemini: The critic gives the show a B and states that the magic of the circus is winning, despite some shortcomings in the romance and songs. This suggests a positive, but not rave, review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,27 +41,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:43:30.451Z",
+    "scoredAt": "2026-02-02T19:31:31.295Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 74,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
+    "claudeScore": 62,
+    "openaiScore": 68,
     "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "If nothing else, we never wonder how Jacob is swept away by the circus. The romance may fall short, and the songs lack a certain luster, but the magic of the circus is winning.",

@@ -9,17 +9,17 @@
   "dtliExcerpt": "When the show’s creators zero in on those feelings, something a lot more specific and wistful than a love story between two strangers, the piece comes alive. If only it stayed there.",
   "showScoreExcerpt": "\"This cake isn’t fully baked...For its staging at the Longacre, with an unnecessary intermission that slams the brakes on the action, the director Tim Jackson has slathered the thing in the icing of sentiment and popped his cork\"",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20250109",
   "needsFullText": false,
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the show's promising premise and magical moments, particularly praising individual performances and the second act, but identifies significant flaws in execution, writing, and staging that prevent it from fully succeeding. | Gemini: The review praises the premise and some moments, particularly in the second act, but criticizes the score, lyrical imprecision, and character writing for Robin. The overall assessment is lukewarm, suggesting it has potential but falls short in execution.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds genuine moments of beauty and magic in the show but criticizes the writing, staging choices, and execution as flawed. Neither recommends nor discourages attendance. | GPT-4o: The review highlights both strengths and weaknesses of the production. While there are moments of magic and potential, the execution is criticized for lacking distinctiveness and being uneven, particularly in its writing and staging. The critic acknowledges the show's charm but also points out significant flaws. | Gemini: The review is mixed, pointing out flaws in the score and character development, but ultimately suggests the show has redeeming qualities and moments of magic, leading to a positive but reserved recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:32.892Z",
+    "scoredAt": "2026-02-02T19:29:20.699Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 76,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/two-strangers-bway-2025/vulture--jackson-mchenry_2026-01-27.html",

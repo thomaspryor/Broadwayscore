@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite truncation warning, the opening contains strong praise calling it 'genuinely great American musical' that 'sparkles' with songs that are 'organic engines' with 'real heft' - clearly enthusiastic language indicating a rave review. | GPT-4o: Despite the truncation warning, the review uses highly positive language, describing the musical as 'genuinely great' and highlighting the organic integration of music and story. The absence of any negative or mixed signals suggests a strong recommendation. | Gemini: Despite the truncated text, the review praises the musical as a \"genuinely great American musical\" and highlights the quality of the songs and their integration into the story. This suggests a positive recommendation, though the lack of a definitive conclusion warrants a score in the lower end of the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite truncation warning, the opening clearly establishes this as a rave review calling it 'genuinely great' and praising multiple elements with strong positive language like 'sparkles' and 'real heft.' | GPT-4o: The review praises the adaptation as a 'genuinely great American musical' with songs that are 'organic engines' and a 'country-inflected energy.' Despite the truncation, the language used is strongly positive, indicating a rave review. | Gemini: Despite the truncated text, the review uses very positive language like \"sparkles\" and \"genuinely great American musical,\" indicating a strong recommendation. The description of the songs as \"organic engines\" also suggests high praise.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:08:00.219Z",
+    "scoredAt": "2026-02-02T19:20:15.809Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
-    "previousVersion": "2.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 81,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -68,7 +68,7 @@
   "isFullReview": false,
   "textWordCount": 202,
   "archivePath": "data/archives/reviews/the-outsiders-2024/culturesauce--thom-geier_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T18:09:19.223Z",
+  "textFetchedAt": "2026-02-02T15:08:14.624Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {

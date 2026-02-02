@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review concludes with a clear recommendation to see the show, praising the innovative staging and direction while acknowledging flaws in the formulaic story and uneven score. The final line is an explicit endorsement. | GPT-4o: The review praises the innovative staging, engaging narrative, and strong performances, indicating a positive experience. Despite noting some formulaic elements, the overall tone suggests a strong recommendation, especially for those interested in a fun theatrical experience. | Gemini: Despite noting the formulaic story and variable lyrics, the review praises the innovative staging, direction, and performances, ultimately calling it a continuously engaging evening and suggesting it's a good choice for those who've ever wanted to run away with the circus.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review concludes with a clear recommendation despite criticizing the formulaic story and inconsistent score. The critic praises the innovative staging, direction, and performances, ending with an encouraging call to action for audiences. | GPT-4o: Despite the truncated text warning, the review is filled with praise for the innovative staging, engaging narrative, and strong performances. The critic highlights the show's ability to captivate and entertain, suggesting a strong recommendation. | Gemini: Despite some reservations about the score and book, the review praises the innovative staging, direction, and performances, ultimately recommending the show as a fun and engaging experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,19 +46,19 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:26:29.690Z",
+    "scoredAt": "2026-02-02T19:31:35.928Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
+  "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 82,
-    "geminiScore": 79,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
@@ -86,11 +86,10 @@
   "fetchTier": 1,
   "textQuality": "full",
   "truncationSignals": [
-    "no_ending_punctuation"
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
   ],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-02T14:26:29.690Z",
-  "wordCount": 1278,
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T14:26:29.690Z"
 }

@@ -16,7 +16,7 @@
   "dtliThumb": "Up",
   "llmScore": {
     "score": 82,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 77,
       "high": 87
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives an 'A' rating and uses clear recommendation language like 'must-see' debut and 'You've just gotta see him,' praising the lead performance as extraordinary while acknowledging the show's limitations. | Gemini: Despite some reservations about the music and the predictability of the plot, the critic gives an enthusiastic recommendation due to Sam Tutty's performance, calling it a 'must-see NYC debut.' The critic also explicitly states that the audience will be buzzing about Tutty's performance.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic gives an 'A' rating and declares Tutty's performance a 'must-see,' praising the show as 'a great Christmas' with strong lead performances and chemistry, despite noting some weaknesses in the score. | GPT-4o: The review is highly enthusiastic about Sam Tutty's performance, describing it as a 'must-see NYC debut' and emphasizing his extraordinary talent. Despite some minor reservations about the musical itself, the overall tone is overwhelmingly positive, aligning with the original 'A' rating. | Gemini: The review is overwhelmingly positive, highlighting Sam Tutty's performance as a 'must-see' and praising the chemistry between the leads. Despite some reservations about the score, the critic clearly recommends seeing the show, driven by Tutty's performance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:40:48.878Z",
+    "scoredAt": "2026-02-02T19:28:38.912Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 82,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": null,
+    "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "designation": "Must_See",
   "bwwExcerpt": "it explodes with an old-fashioned song-and-dance number (“American Express”), the pair dressed to the nines, sweeping Fred-and-Gingerishly through the city for one night of expense and extravagance. Johnny Oleksinki, The New York Post: The musical comes dangerously close to cloying sentimentality at times, but Dougal’s dry sense of humor and Tutty’s first-class delivery prevents the story from ever getting too soupy. Chris Jones, The New York Daily News: Stories with odd couples on the edge of Eros, so to speak, can be very effective (see the movie “Lost in Translation” or the musical “The Band’s Visit“) but if writers choose to have their couple get naked and hit the sheets, in this case at the Plaza Hotel, since we’re all about New York aspiration here, they struggle to know where to go. So while this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence. 90 minutes and out would have been a better plan. Robert Hofler, The Wrap: Jim Barne and Ki",

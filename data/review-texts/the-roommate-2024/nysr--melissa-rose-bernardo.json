@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and balanced critique with significant reservations about plot credibility and the ending place this firmly in mixed territory, appreciating elements while identifying clear flaws. | GPT-4o: The review provides a balanced view, highlighting both the strengths of the performances and the play's unique focus, while also pointing out issues with the plot's plausibility, particularly the ending. The original 3/5 star rating aligns with a mixed recommendation. | Gemini: The critic gives the show 3/5 stars, and while noting some implausibility in the ending, generally speaks positively about the play's themes and the performances of the two leads. The review highlights the play's exploration of mature women's experiences, suggesting a worthwhile theatrical experience despite some flaws.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and balanced review structure indicate mixed reception. While the critic appreciates the performances and premise, she explicitly criticizes the ending as implausible and notes the play moves from realistic to far-fetched territory. | GPT-4o: The review provides a balanced view, noting strong performances and an interesting premise, but also highlights issues with the plot's plausibility, particularly the ending. The original 3/5 star rating aligns with a mixed assessment. | Gemini: The review is generally positive, highlighting the play's exploration of mature women's lives and the strong performances. However, it notes some far-fetched elements and an implausible ending, indicating reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,12 +39,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:46.286Z",
+    "scoredAt": "2026-02-02T19:22:32.555Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,

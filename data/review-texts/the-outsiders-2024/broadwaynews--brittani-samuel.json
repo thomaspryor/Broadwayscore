@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges positive elements like 'picture-perfect staging and a passionate cast' but concludes the show 'coasts' and calls it a 'tame rendering,' suggesting it doesn't fully succeed despite its strengths. | GPT-4o: The review acknowledges the strengths in staging and casting but criticizes the adaptation for being tame and not comprehensive. The overall tone suggests mixed feelings, with positive elements overshadowed by significant reservations. | Gemini: The review highlights positive aspects like staging and cast performance but ultimately suggests the show relies too heavily on familiar tropes without offering substantial depth, indicating a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges positives like 'picture-perfect staging and passionate cast' but concludes that the show 'coasts' and calls it 'tame' and 'aimless,' indicating it doesn't fully succeed despite its merits. | GPT-4o: The review acknowledges the strengths in staging and cast but criticizes the show for lacking depth and relying on traditional elements, suggesting a mixed reception. | Gemini: The review acknowledges positive aspects like staging and cast, but ultimately suggests the show relies too heavily on traditional appeals and lacks depth, indicating a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,12 +37,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:07:46.986Z",
+    "scoredAt": "2026-02-02T19:20:07.903Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 48,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -60,7 +60,7 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/the-outsiders-2024/broadwaynews--brittani-samuel_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T18:11:46.117Z",
+  "textFetchedAt": "2026-02-02T15:07:19.358Z",
   "sourceMethod": "archive",
   "sources": [
     "dtli"
@@ -84,16 +84,16 @@
     }
   ],
   "fetchTier": 4,
+  "truncationSignals": [],
   "archiveOrgTimestamp": "20251113150113",
   "archiveOrgUrl": "http://web.archive.org/web/20251113150113/https://www.broadwaynews.com/the-broadway-review-the-outsiders-a-rival-gang-story-void-of-any-risk/",
   "textIssues": [
     "Word count too low: 269 (min: 300)"
   ],
-  "contentTier": "complete",
-  "wordCount": 263,
+  "contentTier": "truncated",
+  "wordCount": 269,
   "isFullReview": true,
   "textWordCount": 263,
   "textQuality": "partial",
-  "textStatus": "incomplete",
-  "tierReason": "Short but structurally complete review"
+  "textStatus": "incomplete"
 }

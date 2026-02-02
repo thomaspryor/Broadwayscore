@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 59,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds merit in the performances and some laughs but concludes the show is forgettable, drags in the final act, and never rises above shallow sitcom-level material. | GPT-4o: The review highlights some positive elements like the actors' performances and comedic moments but ultimately criticizes the play for its lack of ambition and lasting impact, suggesting it is not a strong recommendation. | Gemini: The review highlights both positive and negative aspects. While praising the actors and some moments, it ultimately finds the play lacking depth and dragging towards the end, indicating a mixed recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges decent performances and some laughs but clearly states the show 'sinks from memory' and 'drag[s]' in the final act, with criticism outweighing praise. | GPT-4o: The review highlights some positive aspects such as the actors' performances and comedic moments, but overall criticizes the play for its lack of ambition and memorable impact, suggesting a mixed experience. | Gemini: The review highlights both positive and negative aspects. While praising the actors' performances and some moments, it ultimately finds the play lacking depth and dragging in the later part, indicating a mixed overall experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:12.758Z",
+    "scoredAt": "2026-02-02T19:24:25.655Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
-    "previousVersion": "5.0.0"
+    "previousScore": 59,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 58,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -63,8 +63,8 @@
   },
   "dateUnknown": true,
   "dateSource": "historical-review",
-  "contentTier": "complete",
-  "wordCount": 750,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 43,
   "isFullReview": true,
@@ -81,6 +81,7 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T16:27:11.868Z",
@@ -91,6 +92,5 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "Down"
-  },
-  "tierReason": "Full review text"
+  }
 }

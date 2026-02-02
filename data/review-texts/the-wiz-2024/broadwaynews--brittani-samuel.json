@@ -7,15 +7,15 @@
   "publishDate": "April 18, 2024",
   "fullText": "Schele Williams beckons the Black theater staple back to Broadway for a directorially untethered but reliably good time.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “The Wiz.”\n\nWhile the original Broadway production of “The Wiz” was a landmark achievement and hit with audiences, subsequent productions garnered mixed reviews — with the first major revival fizzling out in less than a month and Sidney Lumet’s 1978 film currently rotting around 44 percent on Rotten Tomatoes’ critics scale. But “The Wiz” never longed for approval from anyone but the people it glorifies. And in Black homes, the musical is canon. In this second major Broadway revival, the show’s extravagant display of Black magical realism and its persistent humor blaze over the technical challenges. The script — updated by comedian and Tony Award-nominated scribe Amber Ruffin — maintains its timeless charm even as it lurches (rather than eases) us through Dorothy’s fantastical journey. Major happenings — landing in Oz, meeting the Scarecrow (Avery Wilson), Tinman (Phillip Johnson Richardson) and Lion (Kyle Ramar Freeman), arriving at Emerald City — sweep in at tornado pace, jerking us from one scene to the next.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 77,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges directorial and pacing issues but ultimately concludes it's a 'certifiable, soulful great time' and celebrates its return to Broadway, indicating clear recommendation despite reservations. | Gemini: Despite mentioning some issues with pacing and script updates, the reviewer ultimately states that the show is a \"certifiable, soulful great time\" and that it's \"back home,\" indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges directorial and pacing issues but ultimately concludes with strong positive language about it being a 'certifiable, soulful great time' and celebrates its return to Broadway. | GPT-4o: Despite acknowledging some technical challenges and pacing issues, the review strongly emphasizes the show's enjoyable and soulful nature, making it a clear recommendation. | Gemini: Despite mentioning some technical challenges and pacing issues, the review clearly states that \"The Wiz\" is a \"certifiable, soulful great time\" and that its \"simple message rings loud and clear.\" This indicates a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,26 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:54.884Z",
+    "scoredAt": "2026-02-02T19:26:36.657Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
+    "openaiScore": 81,
     "geminiScore": 78,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Still, these missteps can’t smudge out a defining truth: “The Wiz” is a certifiable, soulful great time. And thankfully, it’s back home.",
   "sources": [
@@ -67,7 +68,7 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,
   "archivePath": "data/archives/reviews/the-wiz-2024/broadwaynews--brittani-samuel_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T18:21:20.839Z",
+  "textFetchedAt": "2026-02-02T00:32:20.156Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {

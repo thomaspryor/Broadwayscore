@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley finds genuine merit in the production beyond initial expectations, praising the ensemble performances, direction, and the play's ability to capture post-9/11 anxieties, though he notes some issues with the ending and character balance. | GPT-4o: The review praises the play's ability to blend tragedy and humor, its strong performances, and its insightful commentary on post-9/11 life, indicating a strong recommendation. | Gemini: The review is largely positive, highlighting the play's vitality and the cast's performances. While it notes some flaws, it ultimately recommends seeing the show for its unique and thought-provoking experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley finds the production surprisingly compelling despite initial skepticism, praising the performances, direction, and the play's ability to capture post-9/11 anxiety. He notes some minor issues in the final 10 minutes but overall recommends it as remarkably close to everyday life. | GPT-4o: The review praises the play's vitality, its ability to mix tones effectively, and the strong performances, suggesting a compelling production. The critic's positive tone and the highlighted quote indicate a strong recommendation. | Gemini: The review is generally positive, highlighting the play's vitality and ability to creep under the skin. While noting some flaws, such as the tidy ending and the character of Khalid, the reviewer ultimately finds the play remarkably close to everyday life and praises its mix of tragedy and triviality.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:35:34.611Z",
+    "scoredAt": "2026-02-02T19:33:53.897Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 81,
+    "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

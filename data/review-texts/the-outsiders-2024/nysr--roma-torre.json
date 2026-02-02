@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite opening concerns about the source material, the critic delivers strong praise throughout, calling it 'terrific,' 'deeply engaging,' and 'emotionally and viscerally satisfying.' The 4/5 star rating confirms strong recommendation. | Gemini: The critic expresses pleasant surprise and highlights numerous positive aspects of the production, including originality, dynamic direction, gifted cast, and engaging character development. The truncated text ends on a positive note, suggesting a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives 4/5 stars and delivers strong praise throughout, calling it a 'terrific collaboration' that 'jumps to the head of the class' with 'much to savor.' The enthusiastic tone and explicit recommendation overcome initial reservations about the source material. | GPT-4o: Despite the truncated text warning, the review is filled with praise for the production's originality, dynamic staging, and strong performances. The critic's 4/5 star rating and the enthusiastic language used throughout suggest a strong positive recommendation. | Gemini: Despite some initial reservations, the critic is overwhelmingly positive, praising the originality, direction, cast, and score. The 4/5 star rating further supports a strong positive assessment, even with the truncated text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:18.206Z",
+    "scoredAt": "2026-02-02T19:20:51.780Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": null,
+    "openaiScore": 82,
     "geminiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text"

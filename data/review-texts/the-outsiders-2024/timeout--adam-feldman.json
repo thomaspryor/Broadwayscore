@@ -7,7 +7,7 @@
   "publishDate": "April 11, 2024",
   "fullText": "I suspect that a lot of people will like The Outsiders more than I did. But to me, its approach misses the central thrust of Hinton’s story.",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 60,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "I suspect that a lot of people will like The Outsiders more than I did. But to me, its approach misses the central thrust of Hinton’s story.",
@@ -15,14 +15,14 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 43,
+    "score": 60,
     "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 48
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic explicitly states the production fundamentally fails to capture the essence of the source material, while acknowledging others may disagree - this is a clear negative assessment. | GPT-4o: The critic expresses a personal disappointment with the production, suggesting that it fails to capture the essence of the source material, indicating a negative recommendation. | Gemini: The critic explicitly states that others will like it more than they did, indicating a mixed reaction. The phrase \"misses the central thrust\" suggests a significant flaw, but not a complete dismissal.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges others may enjoy it while expressing personal disappointment with the adaptation's approach, suggesting a qualified mixed response rather than outright negative. | GPT-4o: The critic expresses a personal disappointment with the production, indicating it misses the essence of the source material, suggesting a negative recommendation. | Gemini: The reviewer acknowledges that many people will enjoy the show, but personally found it lacking. This suggests a mixed reaction, with potential appeal for certain audiences.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:11:16.432Z",
+    "scoredAt": "2026-02-02T19:21:34.569Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 43,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 40,
-    "geminiScore": 60,
-    "claudeBucket": "Negative",
+    "claudeScore": 58,
+    "openaiScore": 50,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "truncated",
   "wordCount": 27,

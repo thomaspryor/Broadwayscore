@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The available text appears to be mostly promotional copy and credits rather than actual critical evaluation. With only one excerpt available and no clear evaluative language from the critic, scoring must be conservative. | GPT-4o: The excerpt describes the musical as 'thrilling' and highlights its dynamic score and themes of friendship and belonging, suggesting a positive reception. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The excerpt describes the musical as \"thrilling\" and highlights its exploration of self-discovery, suggesting a positive overall impression. However, due to the limited text and single excerpt warning, the score is placed conservatively within the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt appears to be primarily promotional text and cast/crew listings rather than critical evaluation, making it impossible to determine the critic's actual recommendation. | GPT-4o: The excerpt describes the musical as 'thrilling' and highlights its dynamic score and thematic depth, suggesting a positive impression. However, due to the single excerpt warning and lack of explicit strong recommendation, the score is on the lower end of the Positive range. | Gemini: The review excerpt describes the musical as \"thrilling\" and highlights its themes of self-discovery and belonging, suggesting a positive experience. However, without the full review, it's difficult to gauge the extent of the enthusiasm, so a score in the lower-middle of the 'Positive' range seems appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,16 +41,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:08:34.001Z",
+    "scoredAt": "2026-02-02T19:20:36.672Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 75,
+    "openaiScore": 74,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",

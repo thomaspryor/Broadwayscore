@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic finds multiple fundamental flaws with the production - weak plotting, over-the-top performances, and direction that fails to mitigate the problems. While acknowledging some technical merits (video design), the overall assessment is clearly negative. | GPT-4o: The review is overwhelmingly negative, criticizing the production as 'tone-deaf' and describing performances as 'grating'. The critic suggests the only interesting aspect is the video projection, implying the rest of the production is a failure. | Gemini: The review is largely negative, criticizing the writing, acting, and direction. While it praises the video projections, the overall assessment is that the play is disappointing and doesn't effectively capture the behind-the-scenes drama of 'Jaws'.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review consistently criticizes core elements of the production - the performances are described as 'grating' and 'over-the-top acting exercises', the writing has logical problems, and the direction 'does nothing to mitigate' the issues. While acknowledging good video projections, the overall assessment is clearly negative. | GPT-4o: The review is overwhelmingly negative, criticizing the play's execution, acting, and direction. The critic describes the performances as grating and the direction as blunt, with no redeeming qualities mentioned beyond the video projections. | Gemini: The review is largely negative, criticizing the writing, acting, and direction. While the video projections are praised, the overall assessment is that the play is disappointing and doesn't effectively capture the behind-the-scenes drama of \"Jaws.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,12 +44,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:37.816Z",
+    "scoredAt": "2026-02-02T19:24:43.962Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,

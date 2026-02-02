@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ grade and enthusiastic language like 'deliciously delirious,' 'radical, one-of-a-kind adventure,' and the direct recommendation 'See it, feel it' clearly indicate a positive recommendation, though the B+ suggests it's not quite rave territory. | GPT-4o: The critic's language is highly positive, emphasizing the unique and unforgettable nature of the production. The original B+ rating aligns with a strong positive recommendation. | Gemini: The critic gives the show a B+ and says it \"has to be seen to be believed\" and that \"you won't forget it,\" indicating a strong positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ rating and explicit recommendation 'See it' with emphatic language about it being unforgettable indicates a solid positive recommendation, though not quite rave territory. | GPT-4o: The critic's use of phrases like 'truly has to be seen to be believed' and 'you won't forget it' indicates a strong recommendation. The original rating of B+ supports a high score within the Positive bucket. | Gemini: The review uses enthusiastic language like \"deliciously delirious\" and \"one-of-a-kind adventure\" and explicitly states that it \"has to be seen to be believed.\" The B+ grade further supports a positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:19:47.616Z",
+    "scoredAt": "2026-02-02T19:25:19.707Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,

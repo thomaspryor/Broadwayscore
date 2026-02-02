@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic systematically dismantles nearly every aspect of the production, calling it 'muddled,' 'unfocused,' and criticizing the direction, book, score, and performances. Despite praise for the visual design, the overall verdict is clearly negative. | GPT-4o: The review criticizes the lack of a singular vision, poor direction, forgettable score, and underwhelming performances, suggesting that the production fails to deliver a compelling experience. | Gemini: The review is overwhelmingly negative, criticizing the direction, book, score, and performances. While praising the visual aspects, the overall assessment is that the show is a \"muddled, unfocused enterprise\" and a \"whitewashed example\" of a musical failing to pander.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic systematically dismantles nearly every aspect of the production - direction, book, score, performances - calling it 'muddled,' 'unfocused,' and 'negligible.' While acknowledging some visual spectacle, the overall assessment is clearly negative with no recommendation to see it. | GPT-4o: The review is overwhelmingly critical of the production, highlighting issues with direction, performances, and music. The critic describes the show as 'muddled' and 'unfocused', with a lack of memorable songs or compelling performances, leading to a negative recommendation. | Gemini: The review is overwhelmingly negative, criticizing the direction, book, score, and performances. While praising the visual aspects, the overall assessment is that the show is a \"muddled, unfocused enterprise\" and a \"whitewashed example\" of a musical failing to pander.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,7 +40,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:35:47.276Z",
+    "scoredAt": "2026-02-02T19:34:06.109Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,

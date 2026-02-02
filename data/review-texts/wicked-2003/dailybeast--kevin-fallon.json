@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges Wicked's flaws but ultimately celebrates its success and cultural impact, concluding that it represents a positive 'future of musical theatre that the public at large actually gets to be a part of.' | GPT-4o: The review acknowledges the initial critical reception was mixed but highlights the show's enduring popularity and cultural impact. It praises the performances and the cleverness of the source material, suggesting a positive view despite some reservations about the score and tone. | Gemini: The review acknowledges the show's flaws (meandering score, problematic tone) but also recognizes its strengths (chemistry of leads, resonant characters) and its undeniable popularity and impact. It's a celebration of the show's success despite critical reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: While the critic acknowledges Wicked's flaws (meandering score, problematic tone), the review ultimately celebrates the show's success and populist appeal, positioning it as something worth appreciating despite critical reservations. | GPT-4o: The review acknowledges initial critical reservations but ultimately celebrates Wicked's enduring popularity and cultural impact, suggesting it's worth seeing despite its flaws. The tone is positive, focusing on the show's success and appeal. | Gemini: The review acknowledges Wicked's flaws (meandering score, problematic tone) but also recognizes its enduring appeal and impact. It doesn't outright recommend or discourage seeing it, landing it in the Mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,11 +40,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:34:57.593Z",
+    "scoredAt": "2026-02-02T19:33:10.057Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

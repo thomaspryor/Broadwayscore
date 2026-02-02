@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating aligns with positive territory, and the review consistently praises the performances, direction, and overall experience while acknowledging this as an entertaining theatrical concept that succeeds in its execution. | Gemini: The critic gives the show 4 out of 5 stars and uses overwhelmingly positive language, including calling it a \"most enjoyable 95 minutes\" and comparing it favorably to \"diving into a boatload of outtakes from a beloved classic.\"",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating combined with enthusiastic praise for all performances, direction, and design elements, plus the explicit statement that it's 'most enjoyable' and comparing it positively to beloved source material indicates strong recommendation. | GPT-4o: The review is filled with praise for the performances, direction, and production elements, and the critic clearly enjoyed the experience, describing it as 'most enjoyable.' The original 4/5 star rating further supports a strong positive recommendation. | Gemini: The critic gives the show 4 out of 5 stars and praises the performances, direction, and set design. The review is overwhelmingly positive, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:52:35.790Z",
+    "scoredAt": "2026-02-02T19:24:05.990Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": null,
-    "geminiScore": 82,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,

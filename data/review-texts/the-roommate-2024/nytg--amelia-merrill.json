@@ -9,7 +9,7 @@
   "bwwExcerpt": "Although director Jack O’Brien’s production features too many prolonged scene transitions and the end of Silverman’s script is a tad self-indulgent, Farrow’s quietly captivating performance makes The Roommate worth the stay.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "showScoreExcerpt": "“LuPone knows she can get a laugh from just the quirk of an eyebrow or her delivery of any line, even somber ones. She is engaged with the audience, but not deeply with the character”",
@@ -30,11 +30,11 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -45,7 +45,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticisms of LuPone's performance, direction, and script, the review explicitly concludes that the show is 'worth the stay' due to Farrow's captivating performance, making it a clear but reserved recommendation. | GPT-4o: The review highlights Mia Farrow's standout performance as a reason to see the show, despite some criticisms of LuPone's performance and the production's pacing. The overall tone suggests a positive recommendation with some reservations. | Gemini: The review highlights flaws in the direction and script but ultimately concludes that Farrow's performance makes the show \"worth the stay,\" indicating a positive recommendation with reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticisms of LuPone's performance, direction, and script issues, the review explicitly states the show is 'worth the stay' due to Farrow's compelling performance, indicating a qualified recommendation. | GPT-4o: The review highlights Mia Farrow's standout performance as a key reason to see the play, despite noting some issues with scene transitions and script indulgence. The overall tone suggests a positive recommendation with some reservations. | Gemini: The review ultimately recommends seeing the show due to Farrow's performance, despite issues with the direction and script. The phrase \"worth the stay\" indicates a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,21 +55,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:14:00.259Z",
+    "scoredAt": "2026-02-02T19:22:39.859Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 78,
-    "geminiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

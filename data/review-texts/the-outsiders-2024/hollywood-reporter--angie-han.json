@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges positive elements (captures emotion and energy) but immediately qualifies with significant reservations about execution, indicating a mixed assessment without clear recommendation. | GPT-4o: The review acknowledges the musical's ability to capture the novel's emotion and energy, indicating a positive experience, but also notes struggles with ambition, suggesting some reservations. | Gemini: The review is generally positive, highlighting the capture of emotion and energy, but notes struggles with ambition, indicating a recommendation with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges positive elements (raw emotion, youthful energy) but immediately qualifies this with significant reservations about the show struggling with its ambitions, indicating a balanced but lukewarm assessment. | GPT-4o: The review acknowledges the musical's ability to capture emotion and energy, indicating a positive reception, but also notes struggles with ambition, suggesting some reservations. | Gemini: The review acknowledges the show's strengths in capturing emotion and energy, but also points out its struggles, indicating a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,16 +43,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:08:29.973Z",
+    "scoredAt": "2026-02-02T19:20:31.375Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 75,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 74,
+    "openaiScore": 75,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",

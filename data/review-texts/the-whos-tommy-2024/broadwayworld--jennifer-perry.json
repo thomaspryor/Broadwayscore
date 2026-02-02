@@ -9,15 +9,15 @@
   "bwwExcerpt": "Under the meticulous direction of Josh Rhodes, the cast belts out Pete Townshend's (Music and Lyrics) tunes with intense energy, backed by Music Director Lynne Shankel's equally committed onstage eight-piece orchestra. The music, Josh Rhodes' choreography, Paul DePoo's scenic and projection elements, and Jake DeGroot's bright lighting design also make it very easy to be drawn into the moment and overall experience, despite the deficiencies in the book (at least as presented here, it's simply uni",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-WHOS-TOMMY-2024",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises multiple production elements and says it's 'very easy to be drawn into the moment and overall experience,' indicating a positive viewing experience despite acknowledged book problems. However, the text is clearly truncated and this is only one excerpt, requiring conservative scoring. | GPT-4o: The review highlights strong elements such as direction, music, and design, suggesting an engaging production. However, it notes deficiencies in the book, indicating some reservations. | Gemini: The review praises many aspects of the production (direction, cast, music, choreography, design) but notes deficiencies in the book, suggesting a positive but not rave recommendation. The single excerpt and truncated text warning suggest caution.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows praise for direction, performances, and technical elements while acknowledging book problems. Text cuts off mid-sentence making full assessment difficult. | GPT-4o: The review excerpt praises several aspects of the production, including direction, music, choreography, and design, indicating a positive experience overall. However, it notes deficiencies in the book, suggesting some reservations. | Gemini: The review praises the direction, cast, music, choreography, scenic design, and lighting, but notes deficiencies in the book, suggesting a positive but not rave recommendation. Given the single excerpt, the score is in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:19:14.957Z",
+    "scoredAt": "2026-02-02T19:25:04.808Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 70,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 74,
-    "geminiScore": 75,
+    "openaiScore": 80,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -62,8 +62,7 @@
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",
-  "contentTier": "invalid",
+  "contentTier": "excerpt",
   "wordCount": 0,
-  "wrongProduction": true,
-  "tierReason": "Wrong production"
+  "wrongProduction": true
 }

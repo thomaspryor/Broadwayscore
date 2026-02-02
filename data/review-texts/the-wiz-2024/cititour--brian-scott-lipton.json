@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 46,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-wiz-2024/cititour--brian-scott-lipton_2026-01-29.html",
@@ -38,14 +38,14 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 60,
+    "score": 46,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 41,
+      "high": 51
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -53,7 +53,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly calls it a 'middling' production and 'sadly missed opportunity,' but acknowledges it 'remains a crowd-pleaser' with strong individual performances, particularly praising Nichelle Lewis as Dorothy. | GPT-4o: The review highlights significant issues with the production, such as muddled sound design, uninspired sets and costumes, and a lackluster performance from Wayne Brady. While there are some positive notes about the cast, the overall tone is one of disappointment. | Gemini: The review acknowledges some positive aspects like the songs and Dorothy's performance, but ultimately finds the production middling and disappointing, especially compared to its potential. The sound issues further detract from the experience, pushing it into the mixed category.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic explicitly states disappointment multiple times, calls it a 'sadly missed opportunity,' and concludes 'Brady turns out to be no big deal – nor does The Wiz.' Despite acknowledging some positives, the overall assessment is clearly negative. | GPT-4o: The review expresses disappointment with the production, citing issues with sound design, set, and costumes. While there are some positive notes about performances, the overall tone is negative, suggesting the production falls short of expectations. | Gemini: The review acknowledges some positive aspects like the songs and Dorothy's performance, but ultimately finds the production middling and disappointing, especially compared to what Broadway audiences deserve. The sound issues also detract from the experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -63,27 +63,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:42:51.141Z",
+    "scoredAt": "2026-02-02T19:26:43.568Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
+    "previousScore": 60,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 45,
+    "claudeScore": 42,
+    "openaiScore": 50,
     "geminiScore": 62,
-    "claudeBucket": "Mixed",
+    "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 17,
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

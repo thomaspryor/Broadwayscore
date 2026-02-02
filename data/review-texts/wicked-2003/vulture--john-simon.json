@@ -9,17 +9,17 @@
   "showScoreExcerpt": "\"Two of the producers of the musical Wicked bear the name Platt, which (in German) means flat, and one the name Stone, which (in English) means heavy. Why not also one called Long, although it is too much to ask for one called Boring, all of which apply to the show.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/wicked",
   "originalScore": null,
-  "assignedScore": 40,
+  "assignedScore": 18,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 40,
+    "score": 18,
     "confidence": "medium",
     "range": {
-      "low": 35,
-      "high": 45
+      "low": 13,
+      "high": 23
     },
-    "bucket": "Negative",
+    "bucket": "Pan",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic delivers a scathing review calling Wicked flat, heavy, long, and boring, criticizing nearly every aspect from the score to direction while offering no genuine praise for the production. | GPT-4o: The review is overwhelmingly negative, criticizing the music, lyrics, direction, and performances, with only minor praise for the set design. The critic suggests the show is not worth seeing. | Gemini: The review is overwhelmingly negative, criticizing the score, lyrics, book, direction, and choreography. While praising some performances and the set design, the overall assessment is that the show is a failure.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: Simon delivers a scathing review calling the show flat, heavy, long, and boring, with only harsh criticism for every element from score to direction. The review is unrelentingly negative with no redeeming qualities mentioned. | GPT-4o: The review is overwhelmingly negative, criticizing the music, lyrics, direction, and performances, with no redeeming qualities mentioned. The critic uses strong language to convey disappointment, indicating a strong recommendation to avoid the show. | Gemini: The review is overwhelmingly negative, criticizing the score, lyrics, book, direction, and choreography. While praising some performers, the overall assessment is that the show is a failure.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:36:21.270Z",
+    "scoredAt": "2026-02-02T19:34:35.631Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 35,
+    "previousScore": 40,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 20,
-    "openaiScore": 40,
+    "claudeScore": 15,
+    "openaiScore": 20,
     "geminiScore": 40,
     "claudeBucket": "Pan",
-    "openaiBucket": "Negative",
+    "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 20,
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "modelAgreement": "2/3 models agree: Pan"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 13,

@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the older actors' performances as genuinely moving but criticizes the younger performers, confusing structure, lack of context, and middling score. The critic finds merit in parts but significant flaws overall. | GPT-4o: The review criticizes the production's casting choices, lack of context, and the score, indicating that it fails to capture the essence of the original story. The negative tone and specific criticisms suggest a recommendation to skip the show. | Gemini: The review praises the older actors but criticizes the younger cast and the overall direction, leading to a mixed assessment. The positive aspects are not strong enough for a full recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review finds the older couple's storyline compelling but criticizes the younger performers, casting confusion, lack of historical context, and describes the score as merely 'pleasant' rather than what the show needs to be. | GPT-4o: The review criticizes the musical's execution, particularly the casting and storytelling choices, and suggests it fails to capture the romance and emotional depth needed. The positive mention of the older actors' performances is overshadowed by the overall negative assessment of the production. | Gemini: The review praises the older actors but criticizes the younger cast and other aspects of the production, resulting in a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,21 +46,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:47:41.538Z",
+    "scoredAt": "2026-02-02T19:19:41.936Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 48,
+    "openaiScore": 45,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 14,
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

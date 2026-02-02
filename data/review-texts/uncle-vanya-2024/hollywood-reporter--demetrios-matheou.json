@@ -5,13 +5,13 @@
   "criticName": "Demetrios Matheou",
   "bwwExcerpt": "Arguably the most difficult aspect of presenting Chekhov is finding the tonal balance in his tragicomedy. The characters' navel-gazing self-pity can be so demanding that sometimes you have to resist the urge to jump on stage and give them a good slap. There is no such issue in Conor McPherson's brilliant, buoyantly accessible adaptation of",
   "source": "bww-roundup",
-  "assignedScore": 75,
+  "assignedScore": 82,
   "llmScore": {
-    "score": 75,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -22,7 +22,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The text calls the adaptation 'brilliant' and 'buoyantly accessible' while noting it avoids typical Chekhov pitfalls, suggesting a positive assessment. However, with only one truncated excerpt available, the full verdict remains unclear. | GPT-4o: The excerpt praises the adaptation as 'brilliant' and 'buoyantly accessible', indicating a strong positive reaction. Despite the single excerpt warning, the language suggests a high level of enthusiasm. | Gemini: The review excerpt praises the adaptation as 'brilliant' and 'buoyantly accessible,' suggesting a positive overall assessment despite the initial setup about the challenges of Chekhov.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic explicitly calls the adaptation 'brilliant' and 'buoyantly accessible' while noting it successfully solves common problems with Chekhov productions. Despite truncated text, the strong praise suggests clear recommendation. | GPT-4o: The excerpt praises the adaptation as 'brilliant' and 'buoyantly accessible,' indicating a strong recommendation. The use of 'brilliant' suggests a high level of enthusiasm, placing it in the Rave category. | Gemini: The review excerpt uses the phrase \"brilliant, buoyantly accessible adaptation,\" which is strongly positive and indicates a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -32,21 +32,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:32.204Z",
+    "scoredAt": "2026-02-02T19:29:59.210Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 82,
     "openaiScore": 88,
-    "geminiScore": 78,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 16,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -54,8 +54,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "invalid",
+  "contentTier": "excerpt",
   "wordCount": 0,
-  "wrongProduction": true,
-  "tierReason": "Wrong production"
+  "wrongProduction": true
 }

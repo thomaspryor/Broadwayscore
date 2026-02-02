@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "But what they don’t know is that Jaws will go on to become the cultural totem we know it as today—and it is in the humorous and profound gap of past and present, known and unknown, and ignorance and wisdom that The Shark Is Broken wittily excels not just as a clever time capsule, but as an examination of male bonding and competitiveness, ego, frailty, fame, and film-making. Which is to say: you don’t miss the shark for one second.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 81,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is consistently positive throughout, praising the performances, writing, and direction. The critic calls it 'excellent,' describes performances as 'terrific' and 'impressive,' and concludes that it 'wittily excels' as both entertainment and examination of deeper themes. | GPT-4o: The review is overwhelmingly positive, praising the writing, performances, and direction. It highlights the play's cleverness, humor, and depth, and concludes with a strong endorsement, indicating it is a must-see. | Gemini: The review is overwhelmingly positive, praising the writing, performances, and overall concept. While not a rave, it clearly recommends seeing the play, especially for fans of the film.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses consistently positive language throughout, calling it 'excellent', praising the performances as 'terrific' and 'impressive', and concluding it 'wittily excels' as both entertainment and deeper examination. The enthusiastic tone and lack of significant reservations indicate strong recommendation. | GPT-4o: The review praises the play for its clever writing, excellent performances, and insightful examination of its themes. The critic highlights the play's ability to entertain and engage, making it a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the writing, performances, and overall concept. The final line, \"You don’t miss the shark for one second,\" seals the recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,27 +44,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:42:35.287Z",
+    "scoredAt": "2026-02-02T19:23:40.945Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 84,

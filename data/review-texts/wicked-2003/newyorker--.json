@@ -9,15 +9,15 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 87,
   "dtliThumb": "Down",
   "source": "dtli",
   "llmScore": {
-    "score": 88,
+    "score": 87,
     "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 82,
+      "high": 92
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic explicitly calls this a 'superb revival' and provides deep, engaged analysis of the work's literary merit, indicating strong appreciation for both the play and this production. | GPT-4o: The excerpt describes the revival as 'superb,' suggesting a strong positive recommendation. Despite the limited context, the language used indicates a high level of praise for the production. | Gemini: Despite the negative aggregator verdict, the review excerpt uses the phrase \"superb revival\" which indicates a strong positive recommendation. The rest of the excerpt provides context for the play itself, not a direct critique of the current production.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic explicitly calls this a 'superb revival' and discusses the play as Williams's 'masterpiece,' indicating strong praise for the current production despite the biographical context about Williams's struggles. | GPT-4o: The excerpt describes the current production as a 'superb revival,' indicating a strong recommendation. Despite the context of Williams's struggles, the focus on the quality of the revival suggests a highly positive assessment. | Gemini: The review calls the revival \"superb\" and the play a \"masterpiece.\" Despite the negative aggregator verdict, the excerpt focuses on the play's quality and the production's excellence, indicating a strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,7 +38,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:35:14.909Z",
+    "scoredAt": "2026-02-02T19:33:32.529Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -47,20 +47,17 @@
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 87,
-    "geminiScore": 81,
+    "openaiScore": 85,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
-  },
-  "contentTier": "excerpt",
-  "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  }
 }

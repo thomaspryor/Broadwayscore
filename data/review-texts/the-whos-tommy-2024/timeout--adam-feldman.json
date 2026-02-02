@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 77,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "originalScoreNormalized": 80,
@@ -23,11 +23,11 @@
     "show-score"
   ],
   "llmScore": {
-    "score": 77,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -38,7 +38,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and phrase 'often sensational' indicate a positive recommendation, though the qualifier about being 'limited as musical theater' suggests some reservations. | GPT-4o: The critic acknowledges limitations but ultimately describes the show as 'sensational' on its own terms. The original rating of 4/5 and positive aggregator verdicts support a positive classification. | Gemini: The critic acknowledges limitations but ultimately finds the show sensational on its own terms, suggesting a positive recommendation with reservations. The 4/5 rating also indicates a positive assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic's 4/5 rating combined with calling it 'often sensational' indicates a clear positive recommendation, despite acknowledging limitations in the musical theater format. | GPT-4o: The critic's original rating of 4/5 suggests a strong positive recommendation. The quote 'On its own terms, it’s often sensational' indicates a solid endorsement of the production, despite acknowledging some limitations. | Gemini: The critic acknowledges limitations but ultimately finds the show sensational, indicating a positive but not rave review. The 4/5 rating also supports a positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,21 +48,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:22:24.362Z",
+    "scoredAt": "2026-02-02T19:26:09.051Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 59,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

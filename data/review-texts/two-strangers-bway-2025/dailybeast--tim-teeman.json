@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds the show funny and occasionally moving with strong performances, but repeatedly notes it feels forced and has significant flaws in storytelling and staging design that prevent a recommendation. | GPT-4o: The review highlights both strengths and weaknesses of the show, noting its humor and occasional emotional impact but also its awkwardness and lack of cohesion. The critic appreciates the performances but finds the production's flaws significant enough to temper enthusiasm. | Gemini: The review highlights flaws but ultimately praises the performances and chemistry, suggesting it's worth seeing despite its shortcomings. The critic points out that the show is \"funny in places, occasionally moving in others\" but also \"a little off-feeling throughout.\"",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic identifies both strengths (performances, some funny moments, beautiful dance number) and significant flaws (inadequate set design, confected romance, underwritten elements) without making a clear recommendation either way. | GPT-4o: The review highlights both the strengths and weaknesses of the show, noting its humor and occasional emotional impact but also its overall unevenness and forced charm. The performances are praised, but the production's visual and narrative elements are critiqued, leading to a mixed recommendation. | Gemini: The review acknowledges flaws but praises the performances and chemistry of the leads, ultimately suggesting the show is worth seeing despite its shortcomings. The critic highlights both strengths and weaknesses, indicating a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:39:54.250Z",
+    "scoredAt": "2026-02-02T19:28:20.632Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 67,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 76,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
