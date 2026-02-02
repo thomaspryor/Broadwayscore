@@ -1804,14 +1804,17 @@ async function fetchReviewText(review) {
   }
 
   // TIER 1.5: Browserbase (managed browser cloud with CAPTCHA solving + login)
-  // Use when: (a) known-blocked site, (b) Playwright hit CAPTCHA, or
-  // (c) paywall detected AND we have login credentials for this site
+  // Use when: (a) known-blocked site, (b) Playwright hit CAPTCHA,
+  // (c) paywall detected AND we have login credentials, or
+  // (d) paywalled domain where Playwright failed for any reason (login failed, 0 text, etc.)
   const lastAttempt = attempts[attempts.length - 1];
   const playwrightHitCaptcha = lastAttempt?.error?.includes('CAPTCHA') || lastAttempt?.error?.includes('blocked');
   const playwrightHitPaywall = lastAttempt?.error?.includes('Paywall');
   const hasLoginCreds = getPaywallCredentials(url)?.email;
+  const playwrightFailed = lastAttempt?.success === false;
   const shouldTryBrowserbase = CONFIG.browserbaseEnabled && (
-    isKnownBlocked || playwrightHitCaptcha || (playwrightHitPaywall && hasLoginCreds)
+    isKnownBlocked || playwrightHitCaptcha ||
+    (hasLoginCreds && (playwrightHitPaywall || playwrightFailed))
   );
 
   if (shouldTryBrowserbase && canUseBrowserbase()) {
