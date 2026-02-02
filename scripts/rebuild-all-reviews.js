@@ -1164,6 +1164,12 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip reviews where the show title was never mentioned in scraped content
+      if (data.showNotMentioned === true) {
+        stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
+        return;
+      }
+
       // Auto-detect reviews from wrong production based on publish date
       // If review was published >60 days before show's earliest date, it's likely
       // from a prior production (off-Broadway, West End, TV show, etc.)
@@ -1524,6 +1530,7 @@ console.log(`  Skipped (no valid score): ${stats.skippedNoScore}`);
 console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
+console.log(`  Skipped (show not mentioned): ${stats.skippedShowNotMentioned || 0}`);
 if (stats.recoveredFromGarbage > 0) {
   console.log(`  Recovered from garbageFullText: ${stats.recoveredFromGarbage}`);
 }
