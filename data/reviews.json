@@ -4,11 +4,11 @@
     "lastUpdated": "2026-02-02",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 1714,
+      "totalReviews": 1713,
       "skippedNoScore": 32,
       "skippedDuplicate": 3,
       "skippedDuplicateUrl": 53,
-      "skippedWrongProduction": 36,
+      "skippedWrongProduction": 37,
       "recoveredFromGarbage": 100,
       "scoreSources": {
         "explicit-stars": 4,
@@ -19,7 +19,7 @@
         "originalScore-priority0": 245,
         "llmScore": 1169,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 225,
+        "llmScore-lowconf": 224,
         "llmScore-review": 3,
         "assignedScore": 0,
         "originalScore": 0,
@@ -28974,7 +28974,7 @@
       "outletId": "the-journal-news-lohud",
       "outlet": "The Journal News (LoHud)",
       "assignedScore": 89,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Jacques Le Sourd",
@@ -28984,7 +28984,7 @@
       "pullQuote": "\"To begin with, it looks like a million dollars - or, to be more precise, like every dime of the $14 million that has been spent on it. Dare we say it? Here's a Broadway show where the ticket price doesn't seem inflated. You will actually feel that you got $100 worth of entertainment - and then some...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "needs-rescrape"
+      "contentTier": "complete"
     },
     {
       "showId": "wicked-2003",
@@ -29000,23 +29000,6 @@
       "originalRating": null,
       "pullQuote": "There are indeed wonders to behold in 'Wicked,' the new musical that opened last night at the Gershwin Theater. There are also enough saggy stretches, moral miscalculations and awkward plot convolutions to kill a lesser species of musical entertainment.",
       "dtliThumb": "Down",
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "wicked-2003",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 78,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Charles Isherwood",
-      "url": "http://www.nytimes.com/2014/08/22/theater/a-decade-later-wicked-continues-to-be-catnip-for-tweens.html?_r=1",
-      "publishDate": "August 21, 2014",
-      "originalRating": null,
-      "pullQuote": "In retrospect, Wicked seems an early sign of the cultural clout which is to say buying power of a generation of girls (and now women) whose desire to see, read, and sing along with stories about female empowerment has become a snowballing trend.",
-      "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
     },
