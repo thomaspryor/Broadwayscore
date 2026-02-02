@@ -60,7 +60,7 @@
     "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/maybe-happy-ending-2024/broadwaynews--brittani-samuel_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T16:33:04.154Z",
+  "textFetchedAt": "2026-02-02T18:48:08.216Z",
   "sourceMethod": "playwright",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
@@ -75,12 +75,6 @@
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
       "tier": 1,
       "method": "playwright",
       "success": true
@@ -94,10 +88,11 @@
     "Word count too low: 264 (min: 300)"
   ],
   "contentTier": "truncated",
-  "wordCount": 258,
+  "wordCount": 252,
   "isFullReview": true,
   "textWordCount": 252,
   "textQuality": "partial",
   "textStatus": "incomplete",
-  "duplicateTextOf": "deadline--greg-evans.json"
+  "duplicateTextOf": "deadline--greg-evans.json",
+  "tierReason": "Short text (252 words)"
 }
