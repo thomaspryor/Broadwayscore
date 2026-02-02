@@ -8,14 +8,90 @@ on:
         description: 'Comma-separated list of show slugs to gather reviews for'
         required: true
         type: string
+      parallel_jobs:
+        description: 'Number of parallel jobs to split shows across (1=sequential, 2-10=parallel)'
+        required: false
+        default: '1'
+        type: string
 
 permissions:
   contents: write
   issues: write
 
 jobs:
-  gather-reviews:
+  # Step 1: Split shows into batches for parallel processing
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.split.outputs.matrix }}
+      job_count: ${{ steps.split.outputs.job_count }}
+    steps:
+      - name: Split shows into parallel batches
+        id: split
+        run: |
+          SHOWS="${{ inputs.shows }}"
+          JOBS=${{ inputs.parallel_jobs }}
+
+          # Validate parallel_jobs is 1-10
+          if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then
+            JOBS=1
+          fi
+
+          # Split comma-separated shows into array
+          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          TOTAL=${#SHOW_ARRAY[@]}
+
+          # Don't use more jobs than shows
+          if [ "$JOBS" -gt "$TOTAL" ]; then
+            JOBS=$TOTAL
+          fi
+
+          echo "Total shows: $TOTAL, parallel jobs: $JOBS"
+
+          # Distribute shows across jobs round-robin
+          declare -a BATCHES
+          for i in $(seq 0 $((JOBS - 1))); do
+            BATCHES[$i]=""
+          done
+
+          for i in "${!SHOW_ARRAY[@]}"; do
+            BATCH_IDX=$((i % JOBS))
+            SHOW=$(echo "${SHOW_ARRAY[$i]}" | xargs)  # trim whitespace
+            if [ -n "${BATCHES[$BATCH_IDX]}" ]; then
+              BATCHES[$BATCH_IDX]="${BATCHES[$BATCH_IDX]},$SHOW"
+            else
+              BATCHES[$BATCH_IDX]="$SHOW"
+            fi
+          done
+
+          # Build JSON matrix
+          MATRIX='{"include":['
+          FIRST=true
+          for i in $(seq 0 $((JOBS - 1))); do
+            if [ -n "${BATCHES[$i]}" ]; then
+              if [ "$FIRST" = true ]; then
+                FIRST=false
+              else
+                MATRIX="$MATRIX,"
+              fi
+              # Stagger start: 30s between each job to avoid rate limiting aggregators
+              DELAY=$((i * 30))
+              MATRIX="$MATRIX{\"batch_id\":$i,\"shows\":\"${BATCHES[$i]}\",\"delay\":$DELAY}"
+            fi
+          done
+          MATRIX="$MATRIX]}"
+
+          echo "Matrix: $MATRIX"
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+          echo "job_count=$JOBS" >> $GITHUB_OUTPUT
+
+  # Step 2: Gather reviews in parallel batches
+  gather-reviews:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false  # Don't cancel other batches if one fails
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,9 +109,15 @@ jobs:
       - name: Install Playwright
         run: npx playwright install chromium
 
+      - name: Stagger start to avoid rate limiting
+        if: matrix.delay > 0
+        run: |
+          echo "Waiting ${{ matrix.delay }}s before starting (batch ${{ matrix.batch_id }})"
+          sleep ${{ matrix.delay }}
+
       - name: Display shows to process
         run: |
-          echo "Gathering review data for shows: ${{ inputs.shows }}"
+          echo "Batch ${{ matrix.batch_id }}: Gathering review data for shows: ${{ matrix.shows }}"
 
       - name: Gather reviews
         id: gather
@@ -44,7 +126,7 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: |
-          SHOWS="${{ inputs.shows }}"
+          SHOWS="${{ matrix.shows }}"
 
           echo "Processing shows: $SHOWS"
           echo "ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:+SET}"
@@ -89,7 +171,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "feat: Add review data for ${{ inputs.shows }}"
+          git commit -m "feat: Add review data for ${{ matrix.shows }}"
 
           # Retry loop for push with rebase (handles parallel workflow conflicts)
           MAX_RETRIES=5
@@ -128,33 +210,60 @@ jobs:
           echo "Failed to push after $MAX_RETRIES attempts"
           exit 1
 
+  # Step 3: Rebuild reviews.json after all batches complete
+  rebuild:
+    needs: [prepare, gather-reviews]
+    if: always() && needs.gather-reviews.result != 'cancelled'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (latest, after all batches pushed)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Rebuild reviews.json
-        if: steps.git-check.outputs.changes == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/rebuild-all-reviews.js
-        continue-on-error: true
 
       - name: Commit rebuilt reviews.json
-        if: steps.git-check.outputs.changes == 'true'
         run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
           git add data/reviews.json data/critic-registry.json data/audit/
           if git diff --staged --quiet; then
             echo "No changes to reviews.json"
           else
-            git commit -m "data: Auto-rebuild reviews.json"
+            git commit -m "data: Auto-rebuild reviews.json after gather (${{ inputs.shows }})"
             for i in 1 2 3 4 5; do
-              git pull --rebase origin main && git push && break || {
-                echo "Retry $i: Waiting before retry..."
-                sleep $((RANDOM % 10 + 5))
-                git rebase --abort 2>/dev/null || true
-                git pull --no-rebase -X ours origin main
-              }
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Retry $i: Waiting before retry..."
+              sleep $((RANDOM % 10 + 5))
+              git checkout -- . 2>/dev/null || true
+              git clean -fd 2>/dev/null || true
+              git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; git pull --no-rebase -X ours origin main; }
             done
           fi
 
+  # Step 4: Update related issues
+  update-issues:
+    needs: [gather-reviews]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
       - name: Update issue (if exists)
-        if: always()
         uses: actions/github-script@v7
         with:
           script: |
