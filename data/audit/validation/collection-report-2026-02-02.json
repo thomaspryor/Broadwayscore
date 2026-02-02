@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-02T23:20:41.928Z",
+  "runDate": "2026-02-02T23:21:42.552Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "grey-house-2023",
+    "showFilter": "maybe-happy-ending-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -18,55 +18,54 @@
   },
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 2,
-    "brightdata": 1,
-    "archive": 0
+    "browserbase": 1,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 2,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 2,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 1,
+    "tier2Attempts": 3,
+    "tier2Success": 0,
     "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 7,
-    "tier4Success": 2,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 20,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 2.5,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 11,
+    "tier4Success": 5,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 1,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 3.1,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "grey-house-2023/newyorker--dan-stahl.json",
-    "grey-house-2023/cititour--brian-scott-lipton.json",
-    "grey-house-2023/talkinbroadway--matthew-murray.json"
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
+    "maybe-happy-ending-2024/washpost--naveen-kumar.json"
   ],
   "failed": [
-    "grey-house-2023/deadline--greg-evans.json",
-    "grey-house-2023/new-york-sun--elysa-gardner.json",
-    "grey-house-2023/nydailynews--chris-jones.json",
-    "grey-house-2023/timeout--adam-feldman.json",
-    "grey-house-2023/wsj--charles-isherwood.json"
+    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
+    "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+    "maybe-happy-ending-2024/timeout--adam-feldman.json",
+    "maybe-happy-ending-2024/wsj--charles-isherwood.json",
+    "maybe-happy-ending-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "grey-house-2023/cititour--brian-scott-lipton.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/maybe-happy-ending-2024/nydailynews--chris-jones.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [
-      "grey-house-2023/newyorker--dan-stahl.json",
-      "grey-house-2023/deadline--greg-evans.json"
-    ],
-    "brightdata": [
-      "grey-house-2023/talkinbroadway--matthew-murray.json"
-    ],
-    "archive": []
+    "scrapingbee": [],
+    "brightdata": [],
+    "archive": [
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
+      "maybe-happy-ending-2024/washpost--naveen-kumar.json"
+    ]
   },
   "failuresByOutlet": {
     "The Wall Street Journal": {
@@ -75,7 +74,20 @@
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": true
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "oldUrl": "https://nypost.com/2024/11/13/entertainment/maybe-happy-ending-review-charming-musical-about-robot-romance/",
+      "newUrl": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
+    }
+  ]
 }
