@@ -49,12 +49,13 @@ export function convertRatingToScore(rating: string): number | null {
   }
 
   // Letter grade format: A+, A, A-, B+, B, B-, etc.
+  // Aligned with canonical LETTER_GRADE_MAP in src/config/scoring.ts
   const gradeMap: Record<string, number> = {
-    'a+': 98, 'a': 95, 'a-': 92,
-    'b+': 88, 'b': 85, 'b-': 82,
-    'c+': 78, 'c': 75, 'c-': 72,
-    'd+': 68, 'd': 65, 'd-': 62,
-    'f': 50
+    'a+': 97, 'a': 93, 'a-': 90,
+    'b+': 87, 'b': 83, 'b-': 78,
+    'c+': 72, 'c': 65, 'c-': 58,
+    'd+': 40, 'd': 35, 'd-': 30,
+    'f': 20
   };
 
   if (gradeMap[normalized]) {

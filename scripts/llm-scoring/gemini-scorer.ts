@@ -25,6 +25,9 @@ interface GeminiScoringOptions {
 interface GeminiScoringOutcome {
   success: boolean;
   result?: SimplifiedLLMResult;
+  rejected?: boolean;
+  rejection?: string;
+  rejectionReasoning?: string;
   error?: string;
   inputTokens: number;
   outputTokens: number;
@@ -90,6 +93,19 @@ export class GeminiScorer {
         if (!text) {
           lastError = 'Empty response from Gemini';
           continue;
+        }
+
+        // Check for scoreability rejection (v5.2+)
+        const rejection = this.parseRejection(text);
+        if (rejection) {
+          return {
+            success: true,
+            rejected: true,
+            rejection: rejection.rejection,
+            rejectionReasoning: rejection.reasoning,
+            inputTokens,
+            outputTokens
+          };
         }
 
         const parsed = this.parseResponse(text);
@@ -235,6 +251,39 @@ export class GeminiScorer {
       };
     }
 
+    return null;
+  }
+
+  /**
+   * Check if the response is a scoreability rejection (v5.2+)
+   */
+  private parseRejection(responseText: string): { rejection: string; reasoning: string } | null {
+    let cleaned = responseText.trim();
+    if (cleaned.startsWith('```json')) cleaned = cleaned.slice(7);
+    else if (cleaned.startsWith('```')) cleaned = cleaned.slice(3);
+    if (cleaned.endsWith('```')) cleaned = cleaned.slice(0, -3);
+    cleaned = cleaned.trim();
+
+    try {
+      const parsed = JSON.parse(cleaned);
+      if (parsed.scoreable === false) {
+        return {
+          rejection: String(parsed.rejection || 'unknown'),
+          reasoning: String(parsed.reasoning || '')
+        };
+      }
+    } catch {
+      if (responseText.includes('"scoreable"') && responseText.includes('false')) {
+        const rejMatch = responseText.match(/"rejection"\s*:\s*"([^"]+)"/);
+        const resMatch = responseText.match(/"reasoning"\s*:\s*"([^"]+)"/);
+        if (rejMatch) {
+          return {
+            rejection: rejMatch[1],
+            reasoning: resMatch ? resMatch[1] : ''
+          };
+        }
+      }
+    }
     return null;
   }
 
