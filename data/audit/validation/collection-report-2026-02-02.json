@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-02T23:15:16.191Z",
+  "runDate": "2026-02-02T23:18:06.255Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "an-enemy-of-the-people-2024",
+    "showFilter": "appropriate-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,62 +12,58 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 7,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "30.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
-    "browserbase": 1,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archive": 2
   },
   "statistics": {
     "tier1Attempts": 4,
-    "tier1Success": 2,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 1,
-    "tier2Attempts": 2,
+    "tier1Success": 1,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 0,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier4Attempts": 11,
-    "tier4Success": 5,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 1,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.7,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 6,
+    "tier4Success": 2,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 11,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
     "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "an-enemy-of-the-people-2024/variety--daniel-daddario.json",
-    "an-enemy-of-the-people-2024/deadline--greg-evans.json",
-    "an-enemy-of-the-people-2024/washpost--naveen-kumar.json"
+    "appropriate-2023/deadline--greg-evans.json",
+    "appropriate-2023/wsj--charles-isherwood.json",
+    "appropriate-2023/theater-pizzazz--stuart-miller.json"
   ],
   "failed": [
-    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
-    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
-    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
-    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
-    "an-enemy-of-the-people-2024/wsj--unknown.json",
-    "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
-    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
+    "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+    "appropriate-2023/talkinbroadway--matthew-murray.json",
+    "appropriate-2023/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
-      "an-enemy-of-the-people-2024/washpost--naveen-kumar.json"
+      "appropriate-2023/theater-pizzazz--stuart-miller.json"
     ],
-    "browserbase": [
-      "data/review-texts/an-enemy-of-the-people-2024/nydailynews--chris-jones.json"
-    ],
+    "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "appropriate-2023/hollywood-reporter--lovia-gyarkye.json"
+    ],
     "archive": [
-      "an-enemy-of-the-people-2024/variety--daniel-daddario.json",
-      "an-enemy-of-the-people-2024/deadline--greg-evans.json"
+      "appropriate-2023/deadline--greg-evans.json",
+      "appropriate-2023/wsj--charles-isherwood.json"
     ]
   },
   "failuresByOutlet": {
