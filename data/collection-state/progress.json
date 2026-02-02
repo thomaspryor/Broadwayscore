@@ -1,43 +1,51 @@
 {
   "processed": [
-    "and-juliet-2022/variety--peter-marks.json",
-    "and-juliet-2022/thewrap--robert-hofler.json"
+    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+    "an-enemy-of-the-people-2024/vulture--jesse-green.json",
+    "an-enemy-of-the-people-2024/deadline--greg-evans.json"
   ],
   "failed": [
-    "and-juliet-2022/theatermania--jesse-green.json",
-    "and-juliet-2022/timeout--adam-feldman.json",
-    "and-juliet-2022/wsj--charles-isherwood.json"
+    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
+    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
+    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
+    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
+    "an-enemy-of-the-people-2024/wsj--unknown.json",
+    "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
+    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/an-enemy-of-the-people-2024/nydailynews--chris-jones.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "and-juliet-2022/variety--peter-marks.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+      "an-enemy-of-the-people-2024/vulture--jesse-green.json",
+      "an-enemy-of-the-people-2024/deadline--greg-evans.json"
     ]
   },
-  "startTime": "2026-02-02T16:32:33.338Z",
-  "lastProcessed": "and-juliet-2022/wsj--charles-isherwood.json",
+  "startTime": "2026-02-02T16:33:38.381Z",
+  "lastProcessed": "an-enemy-of-the-people-2024/washpost--peter-marks.json",
   "log": [
     {
-      "t": "2026-02-02T16:32:45.064Z",
+      "t": "2026-02-02T16:34:06.601Z",
       "event": "bb-session",
-      "session": "f47b2ab7",
-      "url": "https://www.theatermania.com/broadway/reviews/juliet-broadway-review_92586.html"
+      "session": "a22e2911",
+      "url": "https://www.nydailynews.com/2024/03/18/broadway-review-enemy-of-the-people-is-li"
     },
     {
-      "t": "2026-02-02T16:33:27.199Z",
+      "t": "2026-02-02T16:36:59.038Z",
       "event": "bb-session",
-      "session": "c3f0b891",
-      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+      "session": "21a86339",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
     },
     {
-      "t": "2026-02-02T16:34:08.610Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-02T16:37:00.678Z",
+      "event": "bb-login-uncertain",
+      "domain": "washingtonpost.com"
     }
   ]
 }
