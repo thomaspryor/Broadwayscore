@@ -5,11 +5,10 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/mary-jane-broadway_96847.html",
   "publishDate": "May 1, 2024",
-  "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a performance of such deep authenticity and emotional precision that she makes Amy Herzog's sometimes schematic play feel like lived experience.",
   "originalScore": null,
-  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,58 +16,8 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Rachel McAdams gives a performance of such deep authenticity and emotional precision that she makes Amy Herzog's sometimes schematic play feel like lived experience.",
   "needsScoring": true,
-  "llmScore": {
-    "score": 58,
-    "confidence": "high",
-    "range": {
-      "low": 53,
-      "high": 63
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error message or search result page rather than an actual review, making it impossible to assess the critic's recommendation. | GPT-4o: The text provided does not contain any evaluative content about a Broadway show, making it impossible to determine a recommendation. The confidence is low due to the absence of review content. | Gemini: The review text is missing, so it's impossible to determine the critic's opinion. I'm assigning a mixed score as a default due to the lack of content.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:34:45.020Z",
-    "promptVersion": "5.1.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.1.0"
-  },
-  "contentTier": "truncated",
-  "contentTierReason": "fullText was 404 error page",
-  "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 55,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 5,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
-  },
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
-  "rescoreCompletedAt": "2026-02-02T03:32:58.154Z",
+  "contentTier": "needs-rescrape",
+  "contentTierReason": "Wrong content detected - cleared for re-scrape and re-score",
   "textWordCount": 42,
   "archivePath": "data/archives/reviews/mary-jane-2024/theatermania--jesse-green_2026-02-02.html",
   "textFetchedAt": "2026-02-02T23:20:49.891Z",

@@ -4528,18 +4528,6 @@
     "timestamp": "2026-02-01T23:43:08.741Z"
   },
   {
-    "reviewId": "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
-    "showId": "once-upon-a-one-more-time-2023",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/once-upon-a-one-more-time-broadway-musical-review-britney-spears",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6225,
-    "timestamp": "2026-02-01T23:43:20.051Z"
-  },
-  {
     "reviewId": "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
     "showId": "once-upon-a-one-more-time-2023",
     "outlet": "Wall Street Journal",
@@ -4550,30 +4538,6 @@
     "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
     "textLength": 1845,
     "timestamp": "2026-02-01T23:43:23.757Z"
-  },
-  {
-    "reviewId": "operation-mincemeat-2025/timeout--adam-feldman.json",
-    "showId": "operation-mincemeat-2025",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review#google_vignette",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 9412,
-    "timestamp": "2026-02-01T23:43:48.650Z"
-  },
-  {
-    "reviewId": "operation-mincemeat-2025/timeout--adam.json",
-    "showId": "operation-mincemeat-2025",
-    "outlet": "Time Out New York",
-    "critic": "Adam",
-    "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 9724,
-    "timestamp": "2026-02-01T23:43:52.132Z"
   },
   {
     "reviewId": "operation-mincemeat-2025/wsj--charles-isherwood.json",
@@ -8102,5 +8066,41 @@
     "garbageReason": "Newsletter form: \"Join our mailing list\"",
     "textLength": 3675,
     "timestamp": "2026-02-02T23:17:42.985Z"
+  },
+  {
+    "reviewId": "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
+    "showId": "once-upon-a-one-more-time-2023",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/once-upon-a-one-more-time-broadway-musical-review-britney-spears",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6225,
+    "timestamp": "2026-02-02T23:26:04.683Z"
+  },
+  {
+    "reviewId": "operation-mincemeat-2025/timeout--adam-feldman.json",
+    "showId": "operation-mincemeat-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review#google_vignette",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 9724,
+    "timestamp": "2026-02-02T23:26:33.700Z"
+  },
+  {
+    "reviewId": "operation-mincemeat-2025/timeout--adam.json",
+    "showId": "operation-mincemeat-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam",
+    "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 9219,
+    "timestamp": "2026-02-02T23:26:44.947Z"
   }
 ]
