@@ -3,10 +3,10 @@
   "outletId": "observer",
   "outlet": "Observer",
   "criticName": "Rex Reed",
-  "url": "https://observer.com/2024/05/mary-jane-broadway-review/",
+  "url": "https://observer.com/2024/04/mary-jane-theater-review-rachel-mcadams-is-great-when-you-can-hear-her/",
   "publishDate": "May 1, 2024",
-  "fullText": "Rachel McAdams gives a performance of such raw emotional power and authenticity that she transforms what could have been a depressing evening into something transcendent.",
-  "isFullReview": false,
+  "fullText": "Broadway is in trouble, but now that it is limping to the close of what I arguably consider one of the worst theater seasons in recent memory, two lovely female presences have arrived at the last minute to help lift the stage out of the doldrums. Movie star Rachel McAdams is making her Broadway debut invigorating a dreary play called Mary Jane by Amy Herzog, and veteran two-time Oscar winner Jessica Lange is lighting up Mother Play, a new offering by Paula Vogel, who won the Pulitzer Prize for writing How I Learned to Drive. Welcome, ladies. I wish you’d hang around more often. By clicking submit, you agree to our <a href=\"http://observermedia.com/terms\">terms of service</a> and acknowledge we may use your information to send you emails, product samples, and promotions on this website and other properties. You can opt out anytime. First presented off-Broadway in 2017, Mary Jane is the depressing, downbeat study of a single mother named Mary Jane who devotes her life to caring for her two-year-old son who is dying of cerebral palsy and, the eight women who drop in from scene to scene to help her, played by four double-cast actors as a home nurse and her daughter, a doctor, two additional mothers of disabled children, a music therapist, and two supporting hospital workers, none of whom contribute anything but a lot of verbal anesthesia and precious little insight to pad out the running time. The elliptical writing by Amy Herzog and Anne Kauffman’s paralyzed direction mark the passage of time with ordinary tasks such as changing diapers, timing and administering medications, and desperately passing time between crying sessions and panic attacks. Mary Jane struggles valiantly to keep smiling without running out of hope, even though the audience does early on, and Rachel McAdams is always forgiving God and her personal community of caregivers for everything, even though the audience doesn’t. It’s a play about long, mumbling monologues. In one of the most incomprehensible of them all, she sits with a goldfish bowl on her lap, chatting about her constant migraines with a bald Buddhist nun with a cell phone. Either the acoustics in the Samuel J. Friedman Theatre are the worst in New York, or there was something wrong with the sound system on the day I saw this production, but you have to strain so hard to hear that by the end of this scene, you can consider yourself lucky if you don’t have a migraine yourself. The only reason I got through this astoundingly over-praised travesty is Rachel McAdams. She’s beautiful, and she can act, but her projection is weak, muted and pitched too low to enhance clarity. Her voice is perfectly modulated for the movie screen but not for the stage. Whole scenes dragged by, and I couldn’t figure out what she was talking about. It’s one of those rare and completely dismaying examples of a good actress who cannot be understood beyond the third row. How do you write about a play you cannot hear?",
+  "isFullReview": true,
   "dtliExcerpt": "Rachel McAdams gives a performance of such raw emotional power and authenticity that she transforms what could have been a depressing evening into something transcendent.",
   "originalScore": null,
   "assignedScore": 82,
@@ -50,7 +50,7 @@
     "previousScore": 81,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "ensembleData": {
     "claudeScore": 82,
@@ -66,5 +66,35 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
-  }
+  },
+  "previousUrl": "https://observer.com/2024/05/mary-jane-broadway-review/",
+  "urlDiscoveredAt": "2026-02-02T18:54:42.243Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "textWordCount": 504,
+  "archivePath": "data/archives/reviews/mary-jane-2024/observer--rex-reed_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T18:54:42.246Z",
+  "fetchMethod": "browserbase",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": true
+    }
+  ],
+  "fetchTier": 1.5,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "browserbase",
+  "wordCount": 504,
+  "tierReason": "Full review text"
 }
