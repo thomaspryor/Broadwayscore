@@ -61,31 +61,13 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Negative"
   },
-  "archivePath": "data/archives/reviews/back-to-the-future-2023/wsj--charles-isherwood_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T05:45:46.406Z",
+  "archivePath": "data/archives/reviews/back-to-the-future-2023/wsj--charles-isherwood_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:42:37.511Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (500): Request failed with status code 500"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -107,5 +89,13 @@
   "sources": [
     "show-score",
     "web-search"
-  ]
+  ],
+  "fullText": "https://www.wsj.com/articles/back-to-the-future-the-musical-review-docs-delorean-on-broadway-silvestri-roger-bart-f9a2349d\n\nRoger Bart and Casey Likes Matthew Murphy and Evan ZimmermanNew York\n\nIn the unlikely event that I find myself inside a plutonium-fueled DeLorean—I suppose today it would be a Tesla—capable of transporting me to the past, and thus enabling me to alter my future, fairly high on the list of life changes I’d consider would be somehow avoiding having to view the sluggish slog that is the stage adaptation of “Back to the Future.”",
+  "isFullReview": false,
+  "textWordCount": 75,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete"
 }

@@ -6,7 +6,7 @@
   "url": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neuwirth-broadway-revival-7905c413?st=wikrnywktjrlnl7&amp;mod=googlenewsfeed",
   "publishDate": "April 21, 2024",
   "dtliExcerpt": "Even the most decadent denizens of Berlin in the Weimar era—such as a sinewy androgyne presiding as the Emcee at a nightclub where anything goes, sexually speaking—prove to be susceptible to the poisonous seductions of the ascendant Nazis in the theatrically sizzling if emotionally tepid Broadway revival of “Cabaret.”",
-  "fullText": null,
+  "fullText": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neuwirth-broadway-revival-7905c413\n\nEddie Redmayne in ‘Cabaret’ on Broadway. Marc BrennerNew York\n\nEven the most decadent denizens of Berlin in the Weimar era—such as a sinewy androgyne presiding as the Emcee at a nightclub where anything goes, sexually speaking—prove to be susceptible to the poisonous seductions of the ascendant Nazis in the theatrically sizzling if emotionally tepid Broadway revival of “Cabaret.”",
   "originalScore": null,
   "assignedScore": 63,
   "dtliThumb": "Meh",
@@ -63,5 +63,47 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "isFullReview": false,
+  "textWordCount": 59,
+  "archivePath": "data/archives/reviews/cabaret-2024/wsj--charles-isherwood_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:43:48.981Z",
+  "designation": "Recommended",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 70 (min: 300)"
+  ]
 }
