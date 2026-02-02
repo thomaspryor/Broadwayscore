@@ -65,7 +65,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "previousUrl": "https://observer.com/2024/01/uncle-vanya-broadway-review-steve-carell-lincoln-center/",
   "urlDiscoveredAt": "2026-02-02T05:13:50.190Z",
@@ -74,9 +74,15 @@
   "previousLlmScore": 90,
   "textWordCount": 931,
   "archivePath": "data/archives/reviews/uncle-vanya-2024/observer--rex-reed_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T05:13:50.195Z",
+  "textFetchedAt": "2026-02-02T23:28:21.503Z",
   "fetchMethod": "browserbase",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
@@ -92,11 +98,12 @@
   "fetchTier": 1.5,
   "textQuality": "full",
   "truncationSignals": [
-    "no_ending_punctuation",
-    "possible_mid_word_cutoff"
+    "no_ending_punctuation"
   ],
   "textStatus": "complete",
   "sourceMethod": "browserbase",
   "duplicateTextOf": "observer--david-cote.json",
-  "rescoreCompletedAt": "2026-02-02T14:26:21.990Z"
+  "rescoreCompletedAt": "2026-02-02T14:26:21.990Z",
+  "wordCount": 931,
+  "tierReason": "Full review text"
 }
