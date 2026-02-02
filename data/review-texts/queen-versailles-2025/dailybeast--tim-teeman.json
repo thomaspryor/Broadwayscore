@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 39,
+  "assignedScore": 18,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "But The Queen of Versailles isn’t camp. It’s cheap tat, queasy spectacle, grubby glitz. It doesn’t burrow beneath its surface wealth to ask anything of substance.",
@@ -19,13 +19,13 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 39,
-    "confidence": "high",
+    "score": 18,
+    "confidence": "medium",
     "range": {
-      "low": 34,
-      "high": 44
+      "low": 13,
+      "high": 23
     },
-    "bucket": "Negative",
+    "bucket": "Pan",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic delivers a scathing review calling the show 'grimly ugly,' 'cheap tat,' and 'queasy spectacle' with overwhelmingly negative language throughout and no recommendation to see it. | Gemini: The review is overwhelmingly negative, describing the show as \"grimly ugly musical theater,\" \"cheap tat,\" and \"queasy spectacle.\" The critic clearly does not recommend seeing it.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: The critic delivers a scathing review calling it 'grimly ugly musical theater' and 'cheap tat, queasy spectacle, grubby glitz' with overwhelming negative language throughout and no recommendation to see it. | GPT-4o: The review is overwhelmingly negative, criticizing the show for being tone-deaf, shallow, and failing to deliver any meaningful satire or analysis. The critic describes the production as cheap and lacking substance, with no redeeming qualities in the performances or music. | Gemini: The review is overwhelmingly negative, describing the show as \"grimly ugly musical theater,\" \"cheap tat,\" and \"queasy spectacle.\" The critic finds the characters unlikeable and the music uninspired, leading to a clear recommendation against seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,26 +44,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:29.074Z",
+    "scoredAt": "2026-02-02T18:56:20.015Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 39,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": null,
-    "geminiScore": 40,
-    "claudeBucket": "Negative",
+    "claudeScore": 25,
+    "openaiScore": 10,
+    "geminiScore": 45,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 2,
+    "scoreDelta": 35,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Pan"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 20,

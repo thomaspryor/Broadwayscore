@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": "1/5",
-  "assignedScore": 23,
+  "assignedScore": 18,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -18,11 +18,11 @@
     "playwright-scraped"
   ],
   "llmScore": {
-    "score": 23,
+    "score": 18,
     "confidence": "medium",
     "range": {
-      "low": 18,
-      "high": 28
+      "low": 13,
+      "high": 23
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: The critic's 1/5 rating and language like 'tone-deaf', 'trudge of a show', 'hollowness that's inescapable' clearly indicate strong disapproval and no recommendation to see it. | GPT-4o: The review is overwhelmingly negative, highlighting the show's failure to deliver a coherent message or engaging characters. The critic's 1/5 rating strongly supports a 'Pan' classification. | Gemini: The review is largely negative, criticizing the show's tone, book, and overall message. The critic questions why anyone should care about the subject matter and finds the production hollow and unsatisfying, indicating a negative recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: The critic gives 1/5 stars and uses harsh language throughout including 'tone-deaf,' 'ill-timed trudge,' calls it hollow with an 'inescapable' emptiness, and questions why anyone should care about the characters in 2025 America. | GPT-4o: The review is overwhelmingly negative, criticizing the show's inability to resolve its themes, the weak book, and the hollow production. The critic's original rating of 1/5 further supports a strong negative classification. | Gemini: The critic gives the show a 1/5 rating and uses negative language throughout the review, such as \"tone-deaf celebration\", \"unmemorable tunes\", and \"hollowness to this enterprise\". The review clearly does not recommend seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:27:14.776Z",
+    "scoredAt": "2026-02-02T18:56:16.534Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 35,
-    "previousVersion": "5.0.0"
+    "previousScore": 23,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 25,
-    "openaiScore": 20,
-    "geminiScore": 45,
+    "openaiScore": 10,
+    "geminiScore": 40,
     "claudeBucket": "Pan",
     "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 25,
+    "scoreDelta": 30,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
