@@ -1,70 +1,82 @@
 {
-  "runDate": "2026-02-02T17:49:07.777Z",
+  "runDate": "2026-02-02T17:52:08.708Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-cottage-2023",
+    "showFilter": "the-shark-is-broken-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 6,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "75.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 1
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archive": 5
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 2,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 1,
-    "tier3Attempts": 3,
-    "tier3Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 4,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 9,
+    "tier4Success": 6,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 11,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-cottage-2023/wsj--charles-isherwood.json"
+    "the-shark-is-broken-2023/variety--trish-deitch.json",
+    "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json",
+    "the-shark-is-broken-2023/deadline--greg-evans.json",
+    "the-shark-is-broken-2023/theatermania--jesse-green.json",
+    "the-shark-is-broken-2023/wsj--charles-isherwood.json",
+    "the-shark-is-broken-2023/talkinbroadway--howard-miller.json"
   ],
   "failed": [
-    "the-cottage-2023/new-york-sun--elysa-gardner.json",
-    "the-cottage-2023/observer--rex-reed.json",
-    "the-cottage-2023/timeout--adam-feldman.json",
-    "the-cottage-2023/theater-pizzazz--carole-di-tosti.json"
+    "the-shark-is-broken-2023/guardian--adrian-horton.json",
+    "the-shark-is-broken-2023/timeout--adam-feldman.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "patriots-2024/deadline--pete-hammond.json",
-      "patriots-2024/washpost--peter-marks.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "patriots-2024/theatermania--jesse-green.json"
+    "scrapingbee": [],
+    "brightdata": [
+      "the-shark-is-broken-2023/theatermania--jesse-green.json"
     ],
-    "brightdata": [],
     "archive": [
-      "the-cottage-2023/wsj--charles-isherwood.json"
+      "the-shark-is-broken-2023/variety--trish-deitch.json",
+      "the-shark-is-broken-2023/broadwaynews--naveen-kumar.json",
+      "the-shark-is-broken-2023/deadline--greg-evans.json",
+      "the-shark-is-broken-2023/wsj--charles-isherwood.json",
+      "the-shark-is-broken-2023/talkinbroadway--howard-miller.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
