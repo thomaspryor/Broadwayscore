@@ -1695,11 +1695,16 @@ async function fetchReviewText(review) {
     attempts.push({ tier: 1, method: 'playwright', success: false, error: 'Skipped - known blocked site' });
   }
 
-  // TIER 1.5: Browserbase (managed browser cloud with CAPTCHA solving)
-  // Only use for known-blocked sites or when Playwright fails with CAPTCHA
+  // TIER 1.5: Browserbase (managed browser cloud with CAPTCHA solving + login)
+  // Use when: (a) known-blocked site, (b) Playwright hit CAPTCHA, or
+  // (c) paywall detected AND we have login credentials for this site
   const lastAttempt = attempts[attempts.length - 1];
   const playwrightHitCaptcha = lastAttempt?.error?.includes('CAPTCHA') || lastAttempt?.error?.includes('blocked');
-  const shouldTryBrowserbase = CONFIG.browserbaseEnabled && (isKnownBlocked || playwrightHitCaptcha);
+  const playwrightHitPaywall = lastAttempt?.error?.includes('Paywall');
+  const hasLoginCreds = getPaywallCredentials(url)?.email;
+  const shouldTryBrowserbase = CONFIG.browserbaseEnabled && (
+    isKnownBlocked || playwrightHitCaptcha || (playwrightHitPaywall && hasLoginCreds)
+  );
 
   if (shouldTryBrowserbase && canUseBrowserbase()) {
     console.log('  [Tier 1.5] Browserbase (managed browser + CAPTCHA solving)...');
