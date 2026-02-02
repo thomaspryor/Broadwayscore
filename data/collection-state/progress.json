@@ -1,27 +1,35 @@
 {
   "processed": [
-    "redwood-2025/broadwaynews--brittani-samuel.json",
-    "redwood-2025/washpost--naveen-kumar.json"
+    "mary-jane-2024/hollywood-reporter--david-rooney.json",
+    "mary-jane-2024/broadwaynews--brittani-samuel.json",
+    "mary-jane-2024/guardian--adrian-horton.json",
+    "mary-jane-2024/nypost--johnny-oleksinski.json",
+    "mary-jane-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "redwood-2025/deadline--greg-evans.json",
-    "redwood-2025/new-york-sun--elysa-gardner.json",
-    "redwood-2025/observer--david-cote.json",
-    "redwood-2025/timeout--adam-feldman.json",
-    "redwood-2025/wsj--charles-isherwood.json"
+    "mary-jane-2024/deadline--pete-hammond.json",
+    "mary-jane-2024/ew--kristen-baldwin.json",
+    "mary-jane-2024/observer--rex-reed.json",
+    "mary-jane-2024/timeout--adam-feldman.json",
+    "mary-jane-2024/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "mary-jane-2024/broadwaynews--brittani-samuel.json",
+      "mary-jane-2024/guardian--adrian-horton.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "mary-jane-2024/theatermania--jesse-green.json"
+    ],
     "archive": [
-      "redwood-2025/broadwaynews--brittani-samuel.json",
-      "redwood-2025/washpost--naveen-kumar.json"
+      "mary-jane-2024/hollywood-reporter--david-rooney.json",
+      "mary-jane-2024/nypost--johnny-oleksinski.json"
     ]
   },
-  "startTime": "2026-02-02T15:05:32.570Z",
-  "lastProcessed": "redwood-2025/washpost--naveen-kumar.json",
+  "startTime": "2026-02-02T15:05:57.850Z",
+  "lastProcessed": "mary-jane-2024/washpost--peter-marks.json",
   "log": []
 }
