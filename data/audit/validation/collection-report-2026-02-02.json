@@ -1,81 +1,88 @@
 {
-  "runDate": "2026-02-02T16:39:43.923Z",
+  "runDate": "2026-02-02T16:42:18.828Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "harmony-2023",
+    "showFilter": "patriots-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 6,
+    "processed": 6,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "45.5%"
+    "successRate": "46.2%"
   },
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 2,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 4
+    "playwright": 2,
+    "browserbase": 0,
+    "scrapingbee": 1,
+    "brightdata": 0,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 1,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 1,
-    "tier2Attempts": 4,
-    "tier2Success": 0,
+    "tier1Attempts": 7,
+    "tier1Success": 3,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 0,
+    "tier2Attempts": 6,
+    "tier2Success": 1,
     "tier3Attempts": 4,
     "tier3Success": 1,
-    "tier4Attempts": 12,
-    "tier4Success": 5,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 2.6,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "tier4Attempts": 18,
+    "tier4Success": 4,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 22,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 4.7,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "harmony-2023/hollywood-reporter--david-rooney.json",
-    "harmony-2023/variety--aramide-tinubu.json",
-    "harmony-2023/broadwaynews--brittani-samuel.json",
-    "harmony-2023/deadline--greg-evans.json",
-    "harmony-2023/observer--david-cote.json"
+    "patriots-2024/variety--jesse-green.json",
+    "patriots-2024/broadwaynews--brittani-samuel.json",
+    "patriots-2024/deadline--pete-hammond.json",
+    "patriots-2024/new-york-sun--elysa-gardner.json",
+    "patriots-2024/theatermania--jesse-green.json",
+    "patriots-2024/washpost--peter-marks.json"
   ],
   "failed": [
-    "harmony-2023/vulture--jesse-green.json",
-    "harmony-2023/the-new-york-sun--elysa-gardner.json",
-    "harmony-2023/timeout--adam-feldman.json",
-    "harmony-2023/wsj--charles-isherwood.json",
-    "harmony-2023/theatrely--juan-a-ramirez.json",
-    "harmony-2023/talkinbroadway--matthew-murray.json"
+    "patriots-2024/deadline--greg-evans.json",
+    "patriots-2024/guardian--michael-billington.json",
+    "patriots-2024/timeout--raven-snook.json",
+    "patriots-2024/wsj--charles-isherwood.json",
+    "patriots-2024/wsj--terry-teachout.json",
+    "patriots-2024/nysr--frank-scheck.json",
+    "patriots-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [
-      "data/review-texts/harmony-2023/observer--david-cote.json",
-      "harmony-2023/observer--david-cote.json"
+    "playwright": [
+      "patriots-2024/broadwaynews--brittani-samuel.json",
+      "patriots-2024/deadline--pete-hammond.json"
     ],
-    "scrapingbee": [],
-    "brightdata": [
-      "harmony-2023/vulture--jesse-green.json"
+    "browserbase": [],
+    "scrapingbee": [
+      "patriots-2024/theatermania--jesse-green.json"
     ],
     "brightdata": [],
     "archive": [
-      "harmony-2023/hollywood-reporter--david-rooney.json",
-      "harmony-2023/variety--aramide-tinubu.json",
-      "harmony-2023/broadwaynews--brittani-samuel.json",
-      "harmony-2023/deadline--greg-evans.json"
+      "patriots-2024/variety--jesse-green.json",
+      "patriots-2024/new-york-sun--elysa-gardner.json",
+      "patriots-2024/washpost--peter-marks.json"
     ]
   },
   "failuresByOutlet": {
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "The Wall Street Journal": {
       "count": 1,
       "domain": "wsj.com",
@@ -83,9 +90,9 @@
       "isPaywalled": true,
       "isKnownBlocked": true
     },
-    "Theatrely": {
+    "New York Stage Review": {
       "count": 1,
-      "domain": "theatrely.com",
+      "domain": "didtheylikeit.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -100,9 +107,9 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "oldUrl": "https://nypost.com/2024/11/13/entertainment/maybe-happy-ending-review-charming-musical-about-robot-romance/",
-      "newUrl": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
+      "reviewId": "patriots-2024/washpost--peter-marks.json",
+      "oldUrl": "https://www.washingtonpost.com/theater-dance/2024/04/22/patriots-broadway-review/",
+      "newUrl": "https://www.washingtonpost.com/entertainment/theater/2024/04/22/patriots-broadway-review/"
     }
   ]
 }
