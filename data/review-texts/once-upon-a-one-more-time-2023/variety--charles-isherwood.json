@@ -54,20 +54,20 @@
   "previousLlmScore": 78,
   "textWordCount": 91,
   "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/variety--charles-isherwood_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T02:00:27.425Z",
+  "textFetchedAt": "2026-02-02T02:46:54.604Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 1.5,
-      "method": "browserbase",
-      "success": false,
-      "error": "timeout of 30000ms exceeded"
+      "error": "page.goto: Target page, context or browser has been closed\nCall log:\n  - navigating to \"https://variety.com/2023/legit/reviews/once-upon-a-one-more-time-review-1235645194/\", waiting until \"domcontentloaded\"\n"
     },
     {
       "tier": 2,
