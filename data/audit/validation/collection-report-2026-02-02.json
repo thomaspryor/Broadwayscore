@@ -1,70 +1,89 @@
 {
-  "runDate": "2026-02-02T15:24:25.995Z",
+  "runDate": "2026-02-02T16:35:58.864Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 5,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "maybe-happy-ending-2024",
+    "showFilter": "gutenberg-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
+    "processed": 7,
     "failed": 4,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "63.6%"
   },
   "tierBreakdown": {
     "playwright": 1,
-    "browserbase": 1,
+    "browserbase": 2,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 0
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 2,
     "tier1Success": 2,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 1,
     "tier2Attempts": 2,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 2,
     "tier3Success": 1,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 20,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.7,
+    "tier4Attempts": 10,
+    "tier4Success": 6,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 10,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 2.7,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "maybe-happy-ending-2024/deadline--greg-evans.json"
+    "gutenberg-2023/vulture--sara-holdren.json",
+    "gutenberg-2023/deadline--greg-evans.json",
+    "gutenberg-2023/nypost--johnny-oleksinski.json",
+    "gutenberg-2023/observer--david-cote.json",
+    "gutenberg-2023/theatermania--jesse-green.json",
+    "gutenberg-2023/theatermania--zachary-stewart.json",
+    "gutenberg-2023/theatrely--david-gordon.json"
   ],
   "failed": [
-    "maybe-happy-ending-2024/vulture--jackson-mchenry.json",
-    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-    "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
-    "maybe-happy-ending-2024/nydailynews--chris-jones.json"
+    "gutenberg-2023/new-york-sun--elysa-gardner.json",
+    "gutenberg-2023/timeout--adam-feldman.json",
+    "gutenberg-2023/wsj--charles-isherwood.json",
+    "gutenberg-2023/wsj--terry-teachout.json"
   ],
   "tierDetails": {
     "playwright": [
-      "maybe-happy-ending-2024/deadline--greg-evans.json"
+      "gutenberg-2023/theatrely--david-gordon.json"
     ],
     "browserbase": [
-      "data/review-texts/maybe-happy-ending-2024/nydailynews--chris-jones.json"
+      "data/review-texts/gutenberg-2023/observer--david-cote.json",
+      "gutenberg-2023/observer--david-cote.json"
     ],
-    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "maybe-happy-ending-2024/vulture--jackson-mchenry.json"
+      "gutenberg-2023/theatermania--jesse-green.json"
     ],
-    "archive": []
+    "archive": [
+      "gutenberg-2023/vulture--sara-holdren.json",
+      "gutenberg-2023/deadline--greg-evans.json",
+      "gutenberg-2023/nypost--johnny-oleksinski.json",
+      "gutenberg-2023/theatermania--zachary-stewart.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
