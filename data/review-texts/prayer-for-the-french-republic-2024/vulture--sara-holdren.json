@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“Though it’s surrounded by heavy clouds, Harmon’s play is plenty sharp and by no means gloomy...How much you respond to ‘Prayer’ may ultimately rest on your taste for such harangues. I admit to finding them hard to follow — not intellectually but emotionally. They leave me cold and a little suspicious.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/prayer-for-the-french-republic-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the play's intelligence and thematic relevance but finds it 'showy,' 'self-conscious,' and emotionally cold, with overwrought speeches that leave her 'suspicious.' Despite some strengths, the overall assessment is of a work that fails to fully engage. | Gemini: The review highlights both strengths and weaknesses. The critic points out the play's ambition and engagement with gnarly questions, but also finds it showy and emotionally cold. The historical scenes are described as rote, while the contemporary scenes are seen as verbose. Overall, the review doesn't strongly recommend or discourage seeing the play.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the play's intelligence and thematic relevance but criticizes it as self-conscious, award-bait writing that prioritizes rhetorical showiness over genuine emotional engagement, with weaker historical scenes that feel rote. | GPT-4o: The review acknowledges the play's ambition and moments of strength but criticizes its self-consciousness and showiness. The critic finds the play's engagement with its themes to be somewhat superficial and its structure to be formulaic, leading to a mixed recommendation. | Gemini: The review acknowledges flaws, particularly in the historical scenes and the reliance on lengthy tirades, but ultimately suggests the play is sharp and raises important questions, indicating a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:36:02.597Z",
+    "scoredAt": "2026-02-02T18:54:29.632Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwExcerpt": "As a three-hour-and-two-intermission multigenerational family epic that’s Serious But Also Funny — and full of prolonged opportunities for actors to shout — it’s essentially purpose-built to win awards, and it has. Off Broadway, it nabbed Outstanding Play and Outstanding New Off-Broadway Play from the Drama Desk and Outer Critics Circle, respectively. It has the shape of something profound and easily laudable, but inside that outline, though it doesn’t shy away from gnarly questions, it often fe",
   "bwwThumb": "Meh",

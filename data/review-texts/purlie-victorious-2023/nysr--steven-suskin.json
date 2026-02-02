@@ -15,7 +15,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 93,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 88,
       "high": 98
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic awards 5/5 stars and uses language like 'hallelujah!', 'all that Davis might have desired', and 'well worth a visit' while praising every aspect of the production from performances to direction to design. | GPT-4o: The review is overwhelmingly positive, awarding the production 5/5 stars and praising the performances, direction, and overall execution. The critic emphasizes the production's success in honoring the original play's intentions and its relevance today, making it a must-see. | Gemini: The critic gives the production 5/5 stars and uses overwhelmingly positive language, calling it \"all that Davis...might have desired\" and \"well worth a visit.\"",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives a perfect 5/5 stars and uses glowing language throughout, praising performances as 'excellent,' calling Young 'a star to be,' and concluding the production is 'well worth a visit' with clear enthusiasm for the revival. | GPT-4o: The review is overwhelmingly positive, awarding the show a perfect 5/5 stars and praising the performances, direction, and production quality. The critic describes it as a revival that honors the original intentions and stands as a significant theatrical achievement. | Gemini: The critic gives the production 5/5 stars and explicitly states it is \"well worth a visit\", indicating a strong positive recommendation. The review praises the performances, direction, and overall production quality.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:52:28.913Z",
+    "scoredAt": "2026-02-02T18:55:09.911Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 90,
     "openaiScore": 95,
-    "geminiScore": 92,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 73,

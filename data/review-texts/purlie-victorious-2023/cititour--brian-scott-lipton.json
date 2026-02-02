@@ -9,7 +9,7 @@
   "sources": [
     "playbill-verdict"
   ],
-  "contentTier": "truncated",
+  "contentTier": "stub",
   "contentTierReason": "No text content",
   "fullText": "NYC Events, Restaurants, Music, & Nightlife\n\nTwitter\nX\nPinterest\nThreads\nSnapchat\nWhatsApp\nMessage\nEmail\n\nTickets from $59\n Buy Tickets\n\nVisit the Sitehttp://purlievictorious.com/Open/Close DatesOpening 9/27/2023Closing 2/4/2024\nTheatre Info\nMusic Box Theatre239 West 45th StreetNew York, NY 10036 Map\n\nCititour.com is your guide to interesting places throughout New York City. Use our listings to locate restaurants, exciting clubs and nightlife, bars and pubs, shopping destinations, landmarks and parks; and shows, concerts, and other events too.",
   "isFullReview": false,
@@ -32,6 +32,7 @@
   ],
   "fetchTier": 2,
   "textQuality": "partial",
+  "truncationSignals": [],
   "textStatus": "incomplete",
   "sourceMethod": "scrapingbee",
   "textIssues": [
@@ -54,7 +55,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be website navigation text or promotional copy rather than an actual review with critical assessment of the show. | GPT-4o: The provided text does not contain any evaluative content or a clear verdict about the show. The score is a placeholder due to lack of information. | Gemini: This is just venue and scheduling information, not a review. Cannot determine a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be website navigation text and venue information rather than an actual theater review, making it impossible to determine the critic's recommendation. | GPT-4o: The provided text does not contain any evaluative content or a clear verdict about the show. The review appears to be truncated or missing, leading to a low confidence in the classification. | Gemini: The provided text is promotional material and does not contain any critical assessment of the show. Therefore, it's impossible to determine a recommendation level.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -64,10 +65,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T02:28:05.188Z",
+    "scoredAt": "2026-02-02T18:54:46.774Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
@@ -83,7 +86,5 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
-  },
-  "wordCount": 73,
-  "tierReason": "Short text (73 words)"
+  }
 }

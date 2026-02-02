@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": "MEH",
   "dtliExcerpt": "Playwright Joshua Harmon seems to be aiming for the reach of Tony Kushner, using maximalist technique to deliver ideas that sprawl forward.",
@@ -19,14 +19,14 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic acknowledges the ambitious scope but clearly states the play fails to deliver compelling or nuanced storytelling despite having the setup to succeed. The truncated text cuts off mid-sentence, but the negative assessment is clear. | GPT-4o: The review criticizes the play for failing to deliver its story in a compelling or nuanced way, indicating a negative assessment. The lack of compelling storytelling suggests the critic does not recommend the production. | Gemini: The review states that the play does not tell its story in a compelling or nuanced manner, indicating a negative assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic clearly states the playwright's ambitious goals but definitively concludes he fails to achieve them, describing the work as uncompelling, lacking nuance, and ultimately reductive despite its three-hour runtime. | GPT-4o: The review highlights both the play's ambition and its shortcomings, noting its timely themes but criticizing its execution and lack of nuance. The critic appreciates certain elements but ultimately finds the production lacking in depth and engagement. | Gemini: The review highlights flaws in character development, plot, and direction, ultimately concluding the play is not compelling or nuanced. However, it acknowledges some value in the second story and the timeliness of the debates, leading to a mixed classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,27 +44,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:35:44.532Z",
+    "scoredAt": "2026-02-02T18:54:17.983Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 42,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 23,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 41,

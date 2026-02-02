@@ -9,15 +9,15 @@
   "bwwExcerpt": "It is also one of few moments when this revival of Ossie Davis’ razor-sharp satire Purlie Victorious (A Non-Confederate Romp Through the Cotton Patch) fully comes to life. Back on Broadway for the first time since its historic 1961 premiere, Davis’ play has lost little of its bite. But under an ill-suited Kenny Leon’s direction, it has received an unevenly paced and tonally confused production that never finds the same delightful boldness as Young’s performance.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic praises Kara Young's performance and acknowledges the play's inherent quality, but criticizes the direction as 'ill-suited' and 'tonally confused,' finding the production 'unevenly paced' with only occasional moments of success. | Gemini: The review praises Kara Young's performance and the play's writing, but criticizes the direction and pacing, leading to an overall mixed assessment. It highlights moments of brilliance but notes inconsistencies in the production.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic praises individual performances (especially Kara Young) and the source material, but criticizes the direction as 'ill-suited' and 'tentative,' calling the overall production 'unevenly paced and tonally confused' with no clear recommendation to see it. | GPT-4o: The review highlights strong individual performances, particularly by Kara Young, but criticizes the overall direction and pacing, leading to an uneven and tonally confused production. The positive moments are overshadowed by these significant issues, resulting in a mixed recommendation. | Gemini: The review praises the play itself and Kara Young's performance, but criticizes the direction and pacing. It's a recommendation, but with significant reservations about the overall production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:34.980Z",
+    "scoredAt": "2026-02-02T18:55:40.792Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "Back on Broadway for the first time since its historic 1961 premiere, Davis’ play has lost little of its bite. But under an ill-suited Kenny Leon’s direction, it has received an unevenly paced and tonally confused production that never finds the same delightful boldness as Young’s performance.",

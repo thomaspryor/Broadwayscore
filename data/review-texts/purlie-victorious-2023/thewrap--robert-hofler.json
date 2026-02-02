@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "“Purlie Victorious” is the funniest show now performing on Broadway, and that includes “The Book of Mormon.”",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 91,
+    "score": 93,
     "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic delivers an unqualified rave, calling it the funniest show on Broadway and praising the 'joyous,' 'wild,' and 'dazzling' production with superlative language throughout. | GPT-4o: The review is overwhelmingly positive, highlighting the production as joyous, over-the-top, and the funniest show on Broadway. The critic praises the direction, performances, and the show's humor, suggesting a strong recommendation despite the truncated text warning. | Gemini: Despite the truncated text, the review is overwhelmingly positive, calling the production \"outrageous, rambunctious, over-the-top and, in the end, downright joyous.\" The critic also states it is the \"funniest show now performing on Broadway.\"",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic delivers an unqualified rave, calling it the funniest show on Broadway and praising the 'joyous,' 'wild' production with superlatives throughout. Despite being truncated, the overwhelmingly positive language and direct comparison to other hit shows clearly indicates a must-see recommendation. | GPT-4o: The review is overwhelmingly positive, praising the production's humor, performances, and direction. The critic compares it favorably to other renowned works and highlights its unique qualities, indicating a strong recommendation. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the direction, performances, and humor. The comparison to \"The Book of Mormon\" as the funniest show on Broadway indicates a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,21 +44,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:40.931Z",
+    "scoredAt": "2026-02-02T18:55:45.005Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 91,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 90,
-    "geminiScore": 82,
+    "claudeScore": 90,
+    "openaiScore": 95,
+    "geminiScore": 81,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

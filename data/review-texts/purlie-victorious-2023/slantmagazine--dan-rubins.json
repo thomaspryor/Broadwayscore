@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The review acknowledges strong individual performances and production elements but consistently notes the play's failure to fully cohere, describing it as never 'leaping out from the archives' despite 'entertaining efforts' - a classic mixed verdict that neither fully recommends nor discourages. | Gemini: The review acknowledges the entertaining performances and some strong moments, but ultimately suggests the play doesn't fully cohere or feel entirely fresh. It's a qualified recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges entertaining performances and strong individual elements but finds the play never fully succeeds in balancing its satirical and serious elements, with parts rising above the whole. | GPT-4o: The review acknowledges strong performances and a revitalizing production but critiques the play's inability to fully integrate its comedic and serious elements. The final moments are praised, suggesting some redeeming qualities, but overall it presents a mixed impression. | Gemini: The review acknowledges the play's historical significance and praises the performances, but ultimately finds the play itself somewhat lacking in its ability to fully cohere its ambitions. The reviewer finds the parts better than the whole, leading to a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:13.188Z",
+    "scoredAt": "2026-02-02T18:55:29.387Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "openaiScore": 66,
+    "geminiScore": 77,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "low-conf: prompt=3.0.0, delta=30, upgrading to V5 + 3 models",
   "previousLlmScore": 60,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Directed by Kenny Leon, the beauty of the Black vernacular is embedded in the “Purlie Victorious” script. Specificities of Black American life are infused within the jokes as Odom and the cast deftly switch from comedy to drama on a dime.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the performances, direction, and relevance of the material, but notes that some jokes don't land with all audience members. The text appears truncated which limits confidence in the final assessment. | GPT-4o: The review highlights the play's topical humor and the cast's ability to switch between comedy and drama, suggesting a strong performance. However, the mention of some jokes going over the audience's heads indicates some reservations, leading to a positive but not rave classification. | Gemini: The review highlights the play's humor and the cast's performance, but also notes that some jokes may not land with all audience members, indicating a positive but not universally appealing experience. The truncated nature of the review makes it difficult to assess the overall recommendation fully.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the performances as 'terrific' and 'electrifying,' calls Young's performance a 'gem,' and describes the production as presenting 'euphoric and revelatory experiences' with brilliant performers demonstrating clear enthusiasm for the revival. | GPT-4o: The review is overwhelmingly positive, highlighting the topical relevance, strong performances, and the play's ability to balance comedy with serious themes. The critic praises the cast, particularly Leslie Odom Jr. and Kara Young, and describes the production as euphoric and revelatory, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and the play's ability to balance comedy and serious themes. The critic highlights the strength of the cast and the play's continued relevance, leading to a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,49 +44,37 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:53.406Z",
+    "scoredAt": "2026-02-02T18:55:53.265Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/purlie-victorious-2023/variety--aramide-timubu_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T07:11:56.697Z",
+  "textFetchedAt": "2026-02-02T17:02:26.564Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -95,7 +83,7 @@
   "archiveOrgTimestamp": "20250609105220",
   "archiveOrgUrl": "http://web.archive.org/web/20250609105220/https://variety.com/2023/legit/reviews/purlie-victorious-review-broadway-1235734487/",
   "rescoreCompletedAt": "2026-02-01T15:56:10.125Z",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 836,
   "humanReviewScore": 85,
   "humanReviewPreviousScore": 50,
@@ -103,7 +91,7 @@
   "isFullReview": true,
   "textWordCount": 836,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
-  "showScoreExcerpt": null,
-  "tierReason": "Full review text"
+  "showScoreExcerpt": null
 }

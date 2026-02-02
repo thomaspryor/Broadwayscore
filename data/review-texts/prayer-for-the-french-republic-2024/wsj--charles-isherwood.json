@@ -8,15 +8,15 @@
   "bwwExcerpt": "“Prayer for the French Republic” addresses, with nuance, detail and understated passion, the tensions and the connections between history and current events. While it tells of a particular family, it illuminates the troubles of all people caught up in the turbulent tides of history—as everyone in a sense is—even if some face graver danger than others.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 93,
-    "confidence": "high",
+    "score": 94,
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic calls this 'inexpressibly moving' and 'easily the finest of the Broadway season so far' while praising the 'flawless cast' and 'beautifully realized staging.' This is clearly enthusiastic praise positioning it as must-see theater. | GPT-4o: The review describes the play as 'inexpressibly moving' and 'the finest of the Broadway season so far,' indicating a strong recommendation. The critic praises the production's immediacy and power, suggesting it is a must-see. | Gemini: The review is overwhelmingly positive, calling the play the finest of the season and praising the cast, director, and staging. The critic emphasizes the play's power and relevance, making it a must-see.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Critic declares it 'easily the finest of the Broadway season' and calls it 'inexpressibly moving' with 'flawless cast' - clear superlative language indicating a must-see recommendation. | GPT-4o: The review describes the play as 'easily the finest of the Broadway season so far' and praises its 'beautifully realized staging' and 'chilling immediacy,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the play the finest of the season and praising the cast and direction. While acknowledging the uncomfortable subject matter, the critic clearly recommends seeing the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +37,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:37:36.548Z",
+    "scoredAt": "2026-02-02T18:54:36.093Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 93,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
-    "geminiScore": 92,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“ 'Prayer for the French Republic' addresses, with nuance, detail and understated passion, the tensions and the connections between history and current events.\"",
@@ -65,7 +65,7 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/wsj--charles-isherwood_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:45:49.906Z",
+  "textFetchedAt": "2026-02-02T03:08:04.806Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -87,12 +87,13 @@
   "garbageFixedAt": "2026-01-29T22:45:23.113Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
-  "contentTier": "complete",
-  "wordCount": 212,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "fullText": "https://www.wsj.com/articles/prayer-for-the-french-republic-review-antisemitism-joshua-harmon-david-cromer-anthony-edwards-broadway-0732206e\n\nMolly Ranson, Francis Benhamou, Nael Nacer, Aria Shahghasemi, Betsy Aidem and Anthony Edwards Jeremy DanielIn Joshua Harmon’s “Prayer for the French Republic,” a Jewish family in France faces the wrenching decision of whether to abandon their established and accomplished lives to leave the country—and possibly save themselves from persecution, or worse.\n\nManhattan Theatre Club at the Samuel J. Friedman Theatre, 261 W. 47th St., New York, $79-$199, 212-239-6200, closes March 3\n\nYou might assume the play is set during World War II. But while Mr. Harmon’s inexpressibly moving drama does include scenes from the 1940s, the family in question is grappling with the question of exile, to Israel, in the 21st century.\n\nThe play, easily the finest of the Broadway season so far, was first produced two years ago by Manhattan Theatre Club off-Broadway. Even then it was grimly topical. Now the play resounds with a chilling immediacy that lends it even greater and more unsettling power.\n\nIt is an unhappy coincidence that the production, featuring largely the same flawless cast and the same expert director, David Cromer, returns as the world confronts a spike in antisemitism; but perhaps we can feel grateful that this beautifully realized staging so trenchantly addresses the here and now—however uncomfortable that here and now is.",
   "isFullReview": false,
   "textWordCount": 212,
   "textQuality": "partial",
+  "truncationSignals": [],
   "textStatus": "incomplete",
   "_removedDesignation": {
     "designation": "Recommended",
@@ -101,6 +102,5 @@
     "hadPositiveThumb": true,
     "dtliThumb": "none",
     "bwwThumb": "Up"
-  },
-  "tierReason": "Short but structurally complete review"
+  }
 }

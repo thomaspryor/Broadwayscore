@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Shaw acknowledges the play's ambition and some strong moments but criticizes its showy rhetoric, cold emotional tone, and weaker historical scenes. The review finds merit but significant reservations. | GPT-4o: The review acknowledges the play's sharpness and humor but criticizes its self-conscious ambition and showy engagement with themes. The critic finds the emotional impact lacking and the play's construction somewhat forced, leading to a mixed recommendation. | Gemini: The review acknowledges flaws like showiness and unevenness between time periods, but ultimately suggests the play is \"plenty sharp\" and raises important questions, indicating a qualified recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Shaw acknowledges the play's ambition and strong moments but finds it 'self-conscious' and 'showy,' with characters who 'leave me cold and a little suspicious.' She praises some elements but ultimately finds the execution lacking despite the weighty subject matter. | GPT-4o: The review acknowledges the play's sharpness and humor but criticizes its self-conscious ambition and showy engagement with themes. The critic finds the emotional impact lacking and describes the play as feeling obligatory rather than organic in quieter moments. | Gemini: The review acknowledges the play's strengths (sharpness, humor) but also points out flaws (showy engagement, less compelling historical scenes). It's a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,14 +43,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:24:31.762Z",
+    "scoredAt": "2026-02-02T18:54:25.711Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
   "ensembleData": {
     "claudeScore": 62,
@@ -74,7 +74,7 @@
   "previousLlmScore": 64,
   "textWordCount": 1398,
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/vulture--helen-shaw_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:44:27.426Z",
+  "textFetchedAt": "2026-02-02T17:02:18.805Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -85,12 +85,11 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241224194115",
   "archiveOrgUrl": "http://web.archive.org/web/20241224194115/https://www.vulture.com/2024/01/theater-review-prayer-for-the-french-republic.html",
   "duplicateTextOf": "vulture--sara-holdren.json",
-  "rescoreCompletedAt": "2026-02-02T14:24:31.762Z",
-  "wordCount": 1398,
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T14:24:31.762Z"
 }

@@ -9,15 +9,15 @@
   "bwwExcerpt": "The production, directed by Kenny Leon, never turns as grim as its undercurrents – or, for that matter, as its ruefully stated grievances. For one thing, it’s too fleet: the three-act original has been condensed into a 105-minute sprint sans intermission. Moreover, the cast is a joy to watch, seamlessly blending righteous passion and practical laughs, even as the play’s torrents of dialogue threaten to overwhelm them. Though Odom is the top-billed star attraction here, it takes Young all of abou",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the cast as 'note-perfect' and 'a joy to watch' while calling the play 'funny and stirring,' but notes character development issues with the lead role that prevent it from being a stronger recommendation. | Gemini: The review is generally positive, highlighting the play's relevance, humor, and the cast's performance. However, it notes some issues with the character of Purlie and the play's overall focus, preventing it from being a rave.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the cast as 'note-perfect' and 'a joy to watch', calls it 'funny and stirring', and emphasizes its continued relevance. However, there are reservations about character development and some structural issues with the condensed format. | GPT-4o: The review praises the production for its contemporary relevance, humor, and strong performances, particularly highlighting Leslie Odom Jr and Kara Young. Despite minor reservations about the character of Purlie, the overall tone is enthusiastic and recommends the show highly. | Gemini: The review is largely positive, praising the cast and humor, but notes some issues with the character development of Purlie. This leads to a 'recommended with reservations' verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,32 +38,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:52:17.229Z",
+    "scoredAt": "2026-02-02T18:55:01.859Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
+    "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dateUnknown": true,
   "dateSource": "historical-review",
-  "contentTier": "complete",
-  "wordCount": 1247,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 68,
   "isFullReview": true,
@@ -80,6 +81,7 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T15:54:40.121Z",
@@ -90,6 +92,5 @@
     "hadPositiveThumb": true,
     "dtliThumb": "none",
     "bwwThumb": "Up"
-  },
-  "tierReason": "Full review text"
+  }
 }

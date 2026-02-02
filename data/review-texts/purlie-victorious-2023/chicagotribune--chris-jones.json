@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 94,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses overwhelmingly enthusiastic language throughout, calling it a 'knockout show,' 'magnificent,' and praising virtually every aspect of the production from direction to design to performances. | GPT-4o: The review is overwhelmingly positive, praising the direction, performances, and the show's ability to engage and entertain a diverse audience. The critic uses strong language such as 'knockout show' and 'beautiful,' indicating a highly enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"knockout show\", \"hilarious\", and \"emotionally warmhearted\". The critic praises the direction, performances, and design, indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it a 'knockout show,' 'magnificent,' and praising it as Leon's 'latest achievement.' The enthusiastic tone and multiple layers of praise clearly indicate a must-see recommendation. | GPT-4o: The review is filled with enthusiastic praise for the production, the direction, and the performances, describing it as a 'knockout show' and highlighting its emotional and political impact. The critic's language strongly suggests a must-see recommendation. | Gemini: The review is overwhelmingly positive, calling the show a \"knockout\" and praising the direction, performances, and design. The critic clearly recommends seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,15 +42,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:51:42.321Z",
+    "scoredAt": "2026-02-02T18:54:43.431Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 88,
     "openaiScore": 95,
     "geminiScore": 82,
     "claudeBucket": "Rave",
