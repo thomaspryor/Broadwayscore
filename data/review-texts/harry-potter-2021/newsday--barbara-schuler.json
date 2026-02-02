@@ -62,7 +62,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 92,
   "archivePath": "data/archives/reviews/harry-potter-2021/newsday--barbara-schuler_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:32:02.497Z",
@@ -79,5 +79,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20210511175932/https://www.newsday.com/entertainment/theater/harry-potter-cursed-child-review-1.18173469",
   "rescoreCompletedAt": "2026-01-29T14:31:51.764Z",
   "contentTier": "complete",
-  "wordCount": 513
+  "wordCount": 513,
+  "needsRescore": true
 }

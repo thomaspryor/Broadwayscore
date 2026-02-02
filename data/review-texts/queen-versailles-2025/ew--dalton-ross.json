@@ -65,7 +65,7 @@
   "originalScoreNormalized": 65,
   "scoreSource": "letter-grade",
   "scoreExtractedFrom": "archive",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 37,
   "archivePath": "data/archives/reviews/queen-versailles-2025/ew--dalton-ross_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:59:20.476Z",
@@ -96,5 +96,6 @@
   "sourceMethod": "scrapingbee",
   "rescoreCompletedAt": "2026-02-01T15:56:48.330Z",
   "contentTier": "complete",
-  "wordCount": 1222
+  "wordCount": 1222,
+  "needsRescore": true
 }

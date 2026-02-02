@@ -72,7 +72,7 @@
   ],
   "dtliExcerpt": "As with the film, the musical adaptation of The Notebook is like a Hallmark card, its sweeping romance sparkly enough to mostly distract from its imperfections. What you’ll remember decades from now is Joy Woods’s ability to soar through the stratosphere.",
   "dtliThumb": "Meh",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 68,
   "rescoreCompletedAt": "2026-02-01T16:20:39.845Z",
   "contentTier": "complete",
@@ -82,5 +82,6 @@
   ],
   "humanReviewScore": 60,
   "humanReviewPreviousScore": 45,
-  "humanReviewAt": "2026-02-01T19:59:47.227Z"
+  "humanReviewAt": "2026-02-01T19:59:47.227Z",
+  "needsRescore": true
 }

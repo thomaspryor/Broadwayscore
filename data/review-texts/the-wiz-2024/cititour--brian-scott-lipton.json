@@ -89,10 +89,11 @@
   "dateSource": "could-not-extract",
   "contentTier": "complete",
   "wordCount": 684,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 43,
   "rescoreCompletedAt": "2026-02-01T16:30:45.258Z",
   "humanReviewScore": 48,
   "humanReviewPreviousScore": 38,
-  "humanReviewAt": "2026-02-01T19:59:47.225Z"
+  "humanReviewAt": "2026-02-01T19:59:47.225Z",
+  "needsRescore": true
 }

@@ -85,12 +85,13 @@
       "mergedAt": "2026-01-28T21:15:21.899Z"
     }
   ],
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 25,
   "rescoreCompletedAt": "2026-02-01T15:42:11.143Z",
   "contentTier": "complete",
   "wordCount": 1744,
   "truncationSignals": [
     "has_footer_junk"
-  ]
+  ],
+  "needsRescore": true
 }

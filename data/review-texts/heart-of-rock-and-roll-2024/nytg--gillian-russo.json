@@ -63,7 +63,7 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/heart-of-rock-and-roll-2024/nytg--gillian-russo_2026-02-02.html",
   "textFetchedAt": "2026-02-02T02:23:30.829Z",
@@ -92,5 +92,6 @@
   "isFullReview": true,
   "textWordCount": 1331,
   "textQuality": "truncated",
-  "textStatus": "truncated"
+  "textStatus": "truncated",
+  "needsRescore": true
 }

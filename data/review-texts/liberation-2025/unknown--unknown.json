@@ -69,7 +69,7 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "needsRescore": true,
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 61,
   "textWordCount": 1056,
   "archivePath": "data/archives/reviews/liberation-2025/unknown--unknown_2026-02-02.html",

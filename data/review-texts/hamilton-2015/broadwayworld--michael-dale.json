@@ -65,9 +65,10 @@
     "reviews-json-stub",
     "bww-roundup"
   ],
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
   "rescoreCompletedAt": "2026-01-29T01:56:34.466Z",
   "contentTier": "complete",
-  "wordCount": 606
+  "wordCount": 606,
+  "needsRescore": true
 }

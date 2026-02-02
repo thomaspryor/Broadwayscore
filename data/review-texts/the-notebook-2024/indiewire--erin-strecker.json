@@ -92,12 +92,13 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20250417003016",
   "archiveOrgUrl": "http://web.archive.org/web/20250417003016/https://www.indiewire.com/criticism/culture/the-notebook-broadway-musical-review-1234964639/",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 71,
   "rescoreCompletedAt": "2026-02-01T16:20:01.470Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "showScoreExcerpt": "\"The Notebook is leaping off the page and onto the stage...its finest adaptation yet.\"",
   "contentTier": "complete",
-  "wordCount": 905
+  "wordCount": 905,
+  "needsRescore": true
 }

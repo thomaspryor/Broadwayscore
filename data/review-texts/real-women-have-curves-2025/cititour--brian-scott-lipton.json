@@ -61,7 +61,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 65,
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/cititour--brian-scott-lipton_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:42:41.939Z",
@@ -88,5 +88,6 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 799
+  "wordCount": 799,
+  "needsRescore": true
 }

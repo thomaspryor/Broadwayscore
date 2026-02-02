@@ -61,7 +61,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 49,
   "archivePath": "data/archives/reviews/the-cottage-2023/cititour--brian-scott-lipton_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:37:09.188Z",
@@ -88,5 +88,6 @@
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 678
+  "wordCount": 678,
+  "needsRescore": true
 }

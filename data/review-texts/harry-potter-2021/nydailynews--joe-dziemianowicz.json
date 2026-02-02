@@ -64,7 +64,7 @@
   "sources": [
     "bww-roundup"
   ],
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 87,
   "archivePath": "data/archives/reviews/harry-potter-2021/nydailynews--joe-dziemianowicz_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:32:05.669Z",
@@ -81,5 +81,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20180423135208/http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
   "rescoreCompletedAt": "2026-02-01T15:08:02.884Z",
   "contentTier": "complete",
-  "wordCount": 498
+  "wordCount": 498,
+  "needsRescore": true
 }

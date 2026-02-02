@@ -98,12 +98,13 @@
   "showScoreExcerpt": "\"The choreography is mostly stuff you could try, accident-free, in your own backyard. And the score consists entirely of songs made famous in the disco era by Abba, music that people seldom admit to having danced to, much less sung in their showers. Yet these elements have been combined, with alchemical magic, into the theatrical equivalent of comfort food.\"",
   "bwwExcerpt": "Despite being slightly downscaled for the road — most notably in a set that feels a little flimsy — this is a fine iteration of “Mamma Mia!” It certainly is sprightlier than it was the last time I saw the show, dejectedly limping toward the end of the first Broadway run.",
   "bwwThumb": null,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 74,
   "rescoreCompletedAt": "2026-02-01T15:29:56.470Z",
   "contentTier": "complete",
   "wordCount": 1145,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "needsRescore": true
 }

@@ -89,9 +89,10 @@
     "show-score",
     "web-search"
   ],
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 20,
   "rescoreCompletedAt": "2026-01-28T23:26:02.146Z",
   "contentTier": "complete",
-  "wordCount": 1213
+  "wordCount": 1213,
+  "needsRescore": true
 }

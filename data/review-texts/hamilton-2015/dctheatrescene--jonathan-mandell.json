@@ -61,7 +61,7 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 92,
   "archivePath": "data/archives/reviews/hamilton-2015/dctheatrescene--jonathan-mandell_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:40:34.367Z",
@@ -78,5 +78,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240621143143/https://dctheatrescene.com/2015/08/06/hamilton-broadway-review-revolutionary/",
   "rescoreCompletedAt": "2026-01-29T01:56:52.456Z",
   "contentTier": "complete",
-  "wordCount": 2604
+  "wordCount": 2604,
+  "needsRescore": true
 }

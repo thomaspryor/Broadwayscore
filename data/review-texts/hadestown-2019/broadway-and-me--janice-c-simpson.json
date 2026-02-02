@@ -74,9 +74,10 @@
     }
   ],
   "fetchTier": 1,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 68,
   "rescoreCompletedAt": "2026-01-29T01:51:46.393Z",
   "contentTier": "complete",
-  "wordCount": 1153
+  "wordCount": 1153,
+  "needsRescore": true
 }

@@ -61,7 +61,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 94,
   "archivePath": "data/archives/reviews/spamalot-2023/cititour--brian-scott-lipton_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:49:46.773Z",
@@ -88,5 +88,6 @@
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 702
+  "wordCount": 702,
+  "needsRescore": true
 }

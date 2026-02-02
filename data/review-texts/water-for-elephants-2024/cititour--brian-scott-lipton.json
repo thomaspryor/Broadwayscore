@@ -61,7 +61,7 @@
     "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Down",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 49,
   "archivePath": "data/archives/reviews/water-for-elephants-2024/cititour--brian-scott-lipton_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:35:34.823Z",
@@ -88,5 +88,6 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 621
+  "wordCount": 621,
+  "needsRescore": true
 }

@@ -64,5 +64,7 @@
   "wordCount": 800,
   "truncationSignals": [
     "ends_with_ellipsis"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
 }

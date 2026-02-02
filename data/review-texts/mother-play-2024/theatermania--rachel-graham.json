@@ -66,7 +66,7 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/mother-play-2024/theatermania--rachel-graham_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:37:28.989Z",
@@ -91,5 +91,6 @@
   "wordCount": 898,
   "humanReviewScore": 75,
   "humanReviewPreviousScore": 50,
-  "humanReviewAt": "2026-02-01T19:59:47.221Z"
+  "humanReviewAt": "2026-02-01T19:59:47.221Z",
+  "needsRescore": true
 }

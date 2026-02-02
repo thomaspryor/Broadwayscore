@@ -83,6 +83,7 @@
     "dtli",
     "web-search"
   ],
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.818Z"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-01-29T14:31:51.818Z",
+  "needsRescore": true
 }

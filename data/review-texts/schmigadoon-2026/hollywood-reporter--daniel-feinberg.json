@@ -79,5 +79,7 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
 }

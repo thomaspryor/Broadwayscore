@@ -66,5 +66,7 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "needsRescore": true,
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
 }

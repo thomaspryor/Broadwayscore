@@ -63,7 +63,7 @@
     "modelAgreement": "2/3 models agree: Rave"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 84,
   "archivePath": "data/archives/reviews/purlie-victorious-2023/nytimes--jesse-green_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:17:43.985Z",
@@ -85,5 +85,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251027141347/https://www.nytimes.com/2023/09/27/theater/purlie-victorious-review.html",
   "contentTier": "complete",
   "wordCount": 1119,
-  "rescoreCompletedAt": "2026-02-01T15:55:18.152Z"
+  "rescoreCompletedAt": "2026-02-01T15:55:18.152Z",
+  "needsRescore": true
 }

@@ -92,7 +92,8 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 1302,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-02-01T15:27:13.524Z"
+  "rescoreCompletedAt": "2026-02-01T15:27:13.524Z",
+  "needsRescore": true
 }

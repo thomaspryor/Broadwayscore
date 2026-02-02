@@ -60,7 +60,7 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 79,
   "archivePath": "data/archives/reviews/doubt-2024/nysr--david-finkle_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:36:58.116Z",
@@ -83,5 +83,6 @@
   "_scoreFixedFrom": "4/5 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.707Z",
   "contentTier": "complete",
-  "wordCount": 955
+  "wordCount": 955,
+  "needsRescore": true
 }

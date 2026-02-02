@@ -65,5 +65,7 @@
   "wordCount": 871,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
 }

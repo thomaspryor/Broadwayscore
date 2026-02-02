@@ -65,9 +65,10 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 57,
   "rescoreCompletedAt": "2026-01-28T23:27:08.199Z",
   "contentTier": "complete",
-  "wordCount": 697
+  "wordCount": 697,
+  "needsRescore": true
 }

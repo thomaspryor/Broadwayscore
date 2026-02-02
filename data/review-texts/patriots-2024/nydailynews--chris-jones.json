@@ -78,7 +78,8 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240606173412/https://www.nydailynews.com/2024/04/22/broadway-review-patriots/",
   "contentTier": "complete",
   "wordCount": 603,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-02-01T15:51:07.974Z"
+  "rescoreCompletedAt": "2026-02-01T15:51:07.974Z",
+  "needsRescore": true
 }

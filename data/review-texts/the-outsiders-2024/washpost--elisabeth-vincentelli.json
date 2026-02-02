@@ -66,7 +66,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 54,
   "archivePath": "data/archives/reviews/the-outsiders-2024/washpost--elisabeth-vincentelli_2026-01-29.html",
   "textFetchedAt": "2026-01-29T05:09:10.740Z",
@@ -83,5 +83,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250724124346/https://www.washingtonpost.com/entertainment/theater/2024/04/11/outsiders-broadway-review/",
   "rescoreCompletedAt": "2026-02-01T16:24:02.903Z",
   "contentTier": "complete",
-  "wordCount": 765
+  "wordCount": 765,
+  "needsRescore": true
 }

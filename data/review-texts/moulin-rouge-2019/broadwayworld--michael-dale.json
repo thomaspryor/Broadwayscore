@@ -61,12 +61,13 @@
     "modelAgreement": "2/3 models agree: Positive"
   },
   "sourceMethod": "stub",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 62,
   "rescoreCompletedAt": "2026-01-29T14:31:51.911Z",
   "contentTier": "complete",
   "wordCount": 768,
   "truncationSignals": [
     "ends_with_ellipsis"
-  ]
+  ],
+  "needsRescore": true
 }

@@ -90,9 +90,10 @@
   "extractedPhrase": "rave reviews",
   "bwwThumb": "Up",
   "showScoreExcerpt": null,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 85,
   "rescoreCompletedAt": "2026-02-01T15:44:00.771Z",
   "contentTier": "complete",
-  "wordCount": 1473
+  "wordCount": 1473,
+  "needsRescore": true
 }

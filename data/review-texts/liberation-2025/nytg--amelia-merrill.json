@@ -80,7 +80,8 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 1056,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 77,
-  "rescoreCompletedAt": "2026-02-01T15:28:02.283Z"
+  "rescoreCompletedAt": "2026-02-01T15:28:02.283Z",
+  "needsRescore": true
 }

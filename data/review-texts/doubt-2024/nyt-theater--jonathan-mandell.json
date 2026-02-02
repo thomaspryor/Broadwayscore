@@ -61,7 +61,7 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 80,
   "archivePath": "data/archives/reviews/doubt-2024/nyt-theater--jonathan-mandell_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:32:02.791Z",
@@ -78,5 +78,6 @@
   "rescoreCompletedAt": "2026-01-29T01:48:57.577Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 1136
+  "wordCount": 1136,
+  "needsRescore": true
 }

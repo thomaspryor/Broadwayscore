@@ -78,7 +78,7 @@
     "previousScore": 0,
     "restoredScore": 67
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 67,
   "archivePath": "data/archives/reviews/grey-house-2023/broadwaynews--brittani-samuel_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:16:09.782Z",
@@ -110,5 +110,6 @@
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
   "wordCount": 560,
-  "rescoreCompletedAt": "2026-02-02T00:23:43.259Z"
+  "rescoreCompletedAt": "2026-02-02T00:23:43.259Z",
+  "needsRescore": true
 }

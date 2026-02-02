@@ -63,7 +63,7 @@
     "modelAgreement": "All 3 models agree: Negative"
   },
   "designation": "Critics_Pick",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 34,
   "archivePath": "data/archives/reviews/boop-2025/nytimes--jesse-green_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:07:58.289Z",
@@ -84,5 +84,6 @@
   "rescoreCompletedAt": "2026-02-01T17:32:39.394Z",
   "humanReviewScore": 45,
   "humanReviewPreviousScore": 38,
-  "humanReviewAt": "2026-02-01T19:59:47.217Z"
+  "humanReviewAt": "2026-02-01T19:59:47.217Z",
+  "needsRescore": true
 }

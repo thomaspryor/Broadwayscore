@@ -97,11 +97,12 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 95,
   "rescoreCompletedAt": "2026-01-29T14:31:51.743Z",
   "contentTier": "complete",
   "wordCount": 977,
   "wrongProduction": true,
-  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Public Theater. Reusable if off-Broadway show entry is created."
+  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Public Theater. Reusable if off-Broadway show entry is created.",
+  "needsRescore": true
 }

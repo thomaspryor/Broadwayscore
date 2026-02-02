@@ -69,9 +69,10 @@
   ],
   "bwwThumb": null,
   "designation": "Critics_Pick",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 61,
   "rescoreCompletedAt": "2026-01-28T23:30:05.736Z",
   "contentTier": "complete",
-  "wordCount": 1376
+  "wordCount": 1376,
+  "needsRescore": true
 }

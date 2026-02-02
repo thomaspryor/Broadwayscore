@@ -65,12 +65,13 @@
   "originalScoreNormalized": 100,
   "scoreSource": "numeric-stars",
   "scoreExtractedFrom": "fullText",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 79,
   "rescoreCompletedAt": "2026-01-29T01:40:35.022Z",
   "contentTier": "complete",
   "wordCount": 504,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "needsRescore": true
 }

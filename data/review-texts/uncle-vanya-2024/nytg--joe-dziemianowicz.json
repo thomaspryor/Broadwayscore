@@ -67,7 +67,7 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 68,
   "archivePath": "data/archives/reviews/uncle-vanya-2024/nytg--joe-dziemianowicz_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:21:59.918Z",
@@ -87,5 +87,6 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 891,
-  "rescoreCompletedAt": "2026-02-01T16:34:24.333Z"
+  "rescoreCompletedAt": "2026-02-01T16:34:24.333Z",
+  "needsRescore": true
 }

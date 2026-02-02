@@ -64,12 +64,13 @@
   "bwwExcerpt": "With jazzy ear-worms and a poignant showstopper in which MI5 secretary Hester Legatt (Jak Malone) dictates a letter to the agency’s fictive serviceman, Mincemeat is supremely entertaining. The ensemble is indefatigable, the stagecraft is inventive and the slapstick sublime. One can see why it has a fanatical following across the pond.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "bwwThumb": "Meh",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 52,
   "rescoreCompletedAt": "2026-02-01T15:47:40.207Z",
   "contentTier": "complete",
   "wordCount": 834,
   "truncationSignals": [
     "ends_with_ellipsis"
-  ]
+  ],
+  "needsRescore": true
 }

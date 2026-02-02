@@ -67,12 +67,13 @@
   "sources": [
     "dtli"
   ],
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 71,
   "rescoreCompletedAt": "2026-01-29T14:31:51.777Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
   "contentTier": "complete",
-  "wordCount": 842
+  "wordCount": 842,
+  "needsRescore": true
 }

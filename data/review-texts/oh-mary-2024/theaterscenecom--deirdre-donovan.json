@@ -92,12 +92,13 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20250116194745",
   "archiveOrgUrl": "http://web.archive.org/web/20250116194745/https://theaterscene.com/Oh-Mary-DD.html",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 69,
   "rescoreCompletedAt": "2026-02-01T15:44:53.719Z",
   "contentTier": "complete",
   "wordCount": 818,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "needsRescore": true
 }

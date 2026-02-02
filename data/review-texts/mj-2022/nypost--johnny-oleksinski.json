@@ -69,9 +69,10 @@
   ],
   "showScoreExcerpt": null,
   "designation": "Recommended",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 29,
   "rescoreCompletedAt": "2026-02-01T15:37:51.884Z",
   "contentTier": "complete",
-  "wordCount": 717
+  "wordCount": 717,
+  "needsRescore": true
 }

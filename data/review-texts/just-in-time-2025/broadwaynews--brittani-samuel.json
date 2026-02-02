@@ -80,7 +80,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 60,
   "rescoreCompletedAt": "2026-02-01T15:22:26.479Z",
   "contentTier": "complete",
@@ -90,5 +90,6 @@
   ],
   "humanReviewScore": 62,
   "humanReviewPreviousScore": 25,
-  "humanReviewAt": "2026-02-01T19:59:47.220Z"
+  "humanReviewAt": "2026-02-01T19:59:47.220Z",
+  "needsRescore": true
 }

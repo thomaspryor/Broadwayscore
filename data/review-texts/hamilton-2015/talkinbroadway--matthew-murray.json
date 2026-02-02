@@ -90,9 +90,10 @@
     "show-score",
     "web-search"
   ],
-  "rescoreReason": "low-conf: prompt=3.0.0, delta=17, upgrading to V5 + 3 models",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 34,
   "rescoreCompletedAt": "2026-02-01T14:54:28.743Z",
   "contentTier": "complete",
-  "wordCount": 1407
+  "wordCount": 1407,
+  "needsRescore": true
 }

@@ -61,7 +61,7 @@
     "modelAgreement": "All 3 models agree: Negative"
   },
   "bwwThumb": "Meh",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 42,
   "archivePath": "data/archives/reviews/i-need-that-2023/nyt-theater--jonathan-mandell_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:28:03.641Z",
@@ -78,5 +78,6 @@
   "rescoreCompletedAt": "2026-01-29T14:31:51.811Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 1393
+  "wordCount": 1393,
+  "needsRescore": true
 }

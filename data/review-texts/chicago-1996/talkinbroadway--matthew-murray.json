@@ -83,10 +83,11 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Rave"
   },
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
   "rescoreCompletedAt": "2026-01-29T01:45:07.945Z",
   "contentTier": "complete",
   "wordCount": 1112,
-  "duplicateTextOf": "curtainup--elyse-sommer.json"
+  "duplicateTextOf": "curtainup--elyse-sommer.json",
+  "needsRescore": true
 }

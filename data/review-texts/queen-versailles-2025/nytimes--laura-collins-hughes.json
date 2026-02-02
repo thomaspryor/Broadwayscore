@@ -99,12 +99,13 @@
   "sources": [
     "dtli"
   ],
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 82,
   "rescoreCompletedAt": "2026-02-01T15:58:07.735Z",
   "contentTier": "complete",
   "wordCount": 1209,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "needsRescore": true
 }

@@ -71,12 +71,13 @@
   },
   "originalScoreNormalized": 85,
   "scoreExtractedFrom": "fullText",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 95,
   "rescoreCompletedAt": "2026-01-28T23:33:35.191Z",
   "contentTier": "complete",
   "wordCount": 690,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "needsRescore": true
 }

@@ -63,7 +63,7 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 78,
   "archivePath": "data/archives/reviews/grey-house-2023/talkinbroadway--howard-miller_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:52:21.296Z",
@@ -93,5 +93,6 @@
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 639
+  "wordCount": 639,
+  "needsRescore": true
 }

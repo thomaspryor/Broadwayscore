@@ -61,7 +61,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
   },
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 49,
   "archivePath": "data/archives/reviews/suffs-2024/cititour--brian-scott-lipton_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:42:54.129Z",
@@ -88,5 +88,6 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 647
+  "wordCount": 647,
+  "needsRescore": true
 }

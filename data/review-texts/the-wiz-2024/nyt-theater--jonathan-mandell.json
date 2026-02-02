@@ -79,8 +79,9 @@
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
   "wordCount": 1128,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 52,
   "rescoreCompletedAt": "2026-02-01T16:31:20.460Z",
-  "duplicateTextOf": "ew--lester-fabian-brathwaite.json"
+  "duplicateTextOf": "ew--lester-fabian-brathwaite.json",
+  "needsRescore": true
 }

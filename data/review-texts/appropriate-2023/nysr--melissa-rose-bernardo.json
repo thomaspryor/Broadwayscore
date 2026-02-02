@@ -61,7 +61,7 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 75,
   "archivePath": "data/archives/reviews/appropriate-2023/nysr--melissa-rose-bernardo_2026-01-29.html",
   "textFetchedAt": "2026-01-29T05:12:43.991Z",
@@ -86,5 +86,6 @@
   "rescoreCompletedAt": "2026-01-29T14:31:51.652Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 622
+  "wordCount": 622,
+  "needsRescore": true
 }

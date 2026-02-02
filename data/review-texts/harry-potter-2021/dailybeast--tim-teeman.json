@@ -62,7 +62,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 79,
   "archivePath": "data/archives/reviews/harry-potter-2021/dailybeast--tim-teeman_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:32:47.787Z",
@@ -79,5 +79,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251227130753/https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force/",
   "rescoreCompletedAt": "2026-02-01T15:06:34.205Z",
   "contentTier": "complete",
-  "wordCount": 2093
+  "wordCount": 2093,
+  "needsRescore": true
 }

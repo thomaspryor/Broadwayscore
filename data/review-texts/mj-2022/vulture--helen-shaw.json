@@ -71,12 +71,13 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 52,
   "rescoreCompletedAt": "2026-02-01T15:38:49.857Z",
   "contentTier": "complete",
   "wordCount": 839,
   "truncationSignals": [
     "ends_with_ellipsis"
-  ]
+  ],
+  "needsRescore": true
 }

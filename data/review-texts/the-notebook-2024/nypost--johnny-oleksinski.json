@@ -84,7 +84,8 @@
   "showScoreExcerpt": "\"...the alterations dull its punch and turn it into a wispy memory play\"",
   "contentTier": "complete",
   "wordCount": 708,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 57,
-  "rescoreCompletedAt": "2026-02-01T16:20:07.642Z"
+  "rescoreCompletedAt": "2026-02-01T16:20:07.642Z",
+  "needsRescore": true
 }

@@ -92,9 +92,10 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20250429040653",
   "archiveOrgUrl": "http://web.archive.org/web/20250429040653/https://slate.com/culture/2018/04/harry-potter-and-the-cursed-child-on-broadway-reviewed.html",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 59,
   "rescoreCompletedAt": "2026-02-01T15:08:45.184Z",
   "contentTier": "complete",
-  "wordCount": 1442
+  "wordCount": 1442,
+  "needsRescore": true
 }

@@ -79,11 +79,12 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250801015743/https://www.nytimes.com/2024/03/07/theater/illinoise-review-sufjan-stevens-justin-pick.html",
   "contentTier": "complete",
   "wordCount": 379,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 87,
   "rescoreCompletedAt": "2026-02-01T15:19:28.034Z",
   "sources": [
     "dtli",
     "web-search"
-  ]
+  ],
+  "needsRescore": true
 }

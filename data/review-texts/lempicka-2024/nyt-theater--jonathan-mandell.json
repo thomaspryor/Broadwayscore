@@ -61,7 +61,7 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 62,
   "archivePath": "data/archives/reviews/lempicka-2024/nyt-theater--jonathan-mandell_2026-01-31.html",
   "textFetchedAt": "2026-01-31T22:32:24.126Z",
@@ -90,5 +90,6 @@
   "rescoreCompletedAt": "2026-02-01T15:25:35.068Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 2364
+  "wordCount": 2364,
+  "needsRescore": true
 }

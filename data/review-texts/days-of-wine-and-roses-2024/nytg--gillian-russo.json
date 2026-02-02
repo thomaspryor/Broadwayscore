@@ -63,7 +63,7 @@
     "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 83,
   "archivePath": "data/archives/reviews/days-of-wine-and-roses-2024/nytg--gillian-russo_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:31:47.219Z",
@@ -85,5 +85,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250715195124/https://www.newyorktheatreguide.com/reviews/days-of-wine-and-roses-broadway-review-kelli-ohara-brian-darcy-james",
   "rescoreCompletedAt": "2026-01-29T14:31:51.696Z",
   "contentTier": "complete",
-  "wordCount": 596
+  "wordCount": 596,
+  "needsRescore": true
 }

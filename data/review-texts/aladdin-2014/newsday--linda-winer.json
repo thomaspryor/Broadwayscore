@@ -71,7 +71,7 @@
   "previousUrl": "https://www.newsday.com/entertainment/aladdin-broadway-review/",
   "urlDiscoveredAt": "2026-02-01T15:46:54.205Z",
   "urlDiscoveryMethod": "google-serp",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 79,
   "isFullReview": true,
   "textWordCount": 472,
@@ -92,5 +92,6 @@
   "textStatus": "complete",
   "rescoreCompletedAt": "2026-02-01T19:57:11.565Z",
   "archiveOrgTimestamp": "20220814100320",
-  "archiveOrgUrl": "http://web.archive.org/web/20220814100320/https://www.newsday.com/entertainment/theater/aladdin-review-sweet-broadway-disney-o26581"
+  "archiveOrgUrl": "http://web.archive.org/web/20220814100320/https://www.newsday.com/entertainment/theater/aladdin-review-sweet-broadway-disney-o26581",
+  "needsRescore": true
 }

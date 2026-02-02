@@ -60,7 +60,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Negative"
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 25,
   "archivePath": "data/archives/reviews/chess/nypost--johnny-oleksinski_2026-02-01.html",
   "textFetchedAt": "2026-02-01T18:54:28.949Z",
@@ -83,5 +83,6 @@
   "textWordCount": 824,
   "textQuality": "full",
   "truncationSignals": [],
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "needsRescore": true
 }

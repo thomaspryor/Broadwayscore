@@ -61,7 +61,7 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 65,
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/cititour--brian-scott-lipton_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:46:21.022Z",
@@ -88,5 +88,6 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 762
+  "wordCount": 762,
+  "needsRescore": true
 }

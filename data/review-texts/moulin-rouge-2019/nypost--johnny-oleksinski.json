@@ -72,7 +72,7 @@
   "previousUrl": "https://nypost.com/2019/07/25/moulin-rouge-broadway-review/",
   "urlDiscoveredAt": "2026-02-01T15:11:00.780Z",
   "urlDiscoveryMethod": "google-serp",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 69,
   "isFullReview": true,
   "textWordCount": 518,
@@ -93,5 +93,6 @@
   "textStatus": "complete",
   "archiveOrgTimestamp": "20250724143204",
   "archiveOrgUrl": "http://web.archive.org/web/20250724143204/https://nypost.com/2019/07/25/moulin-rouge-review-nycs-hottest-nightclub-is-on-broadway/",
-  "rescoreCompletedAt": "2026-02-01T17:39:08.203Z"
+  "rescoreCompletedAt": "2026-02-01T17:39:08.203Z",
+  "needsRescore": true
 }

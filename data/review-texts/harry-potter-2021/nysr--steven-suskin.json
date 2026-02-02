@@ -65,7 +65,7 @@
   "sources": [
     "bww-roundup"
   ],
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 85,
   "archivePath": "data/archives/reviews/harry-potter-2021/nysr--steven-suskin_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:40:44.591Z",
@@ -85,5 +85,6 @@
   "_scoreFixedFrom": "4/4 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.710Z",
   "contentTier": "complete",
-  "wordCount": 1041
+  "wordCount": 1041,
+  "needsRescore": true
 }

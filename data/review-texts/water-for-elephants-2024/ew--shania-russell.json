@@ -72,12 +72,13 @@
   "showScoreExcerpt": null,
   "originalScoreNormalized": 85,
   "scoreExtractedFrom": "fullText",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 66,
   "rescoreCompletedAt": "2026-02-01T16:35:22.358Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
   "contentTier": "complete",
-  "wordCount": 946
+  "wordCount": 946,
+  "needsRescore": true
 }

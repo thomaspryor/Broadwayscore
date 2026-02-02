@@ -61,7 +61,7 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 88,
   "archivePath": "data/archives/reviews/days-of-wine-and-roses-2024/cititour--brian-scott-lipton_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:40:59.366Z",
@@ -88,5 +88,6 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 561
+  "wordCount": 561,
+  "needsRescore": true
 }

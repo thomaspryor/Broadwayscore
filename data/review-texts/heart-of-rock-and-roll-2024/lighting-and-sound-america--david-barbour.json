@@ -60,7 +60,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 60,
   "archivePath": "data/archives/reviews/heart-of-rock-and-roll-2024/lighting-and-sound-america--david-barbour_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:39:14.200Z",
@@ -80,5 +80,6 @@
   "rescoreCompletedAt": "2026-01-29T14:31:51.775Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 975
+  "wordCount": 975,
+  "needsRescore": true
 }

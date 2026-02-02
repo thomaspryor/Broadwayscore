@@ -65,7 +65,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 82,
   "rescoreCompletedAt": "2026-02-01T16:06:08.517Z",
   "garbageFullText": "Review — Six Review: ‘Six’ pops back on Broadway Theatergoers thirsty for something festive, fresh and funny — which is to say, just about all lovers of theater who have endured the drought of the past 18 months — will find much to delight in at the Brooks Atkinson Theatre, where the musical “Six” has opened. , and Charles Isherwood October 3, 2021 . 9:59 PM 5 min read Share on Twitter Share on Facebook Share on LinkedIn Share via Email (Photo: Joan Marcus) Theatergoers thirsty for something festive, fresh and funny — which is to say, just about all lovers of theater who have endured the drought of the past 18 months — will find much to delight in at the Brooks Atkinson Theatre, where the musical “Six” has opened.At last!As Broadway mavens know, “Six” was scheduled to open the very night the industry was, to borrow a handy metaphor, beheaded by the pandemic shutdown. There is a delicious symmetry in this musical being the first new one to open since Broadway has returned. A wave of pure joy rippled across the theater as soon as the first notes of the show were struck at the performance I attended. This post is for paying subscribers only Subscribe now Already have an account? Sign in Review — Six — Brooks Atkinson Theatre — Britney Spears — Sia — Beyoncé — Adele — Toby Marlow — Lucy Moss — Anne Boleyn — Andrea Macasaet — Abby Mueller — Rihanna — Brittney Mack — Adrianna Hicks — Samantha Pauly and Anna Uzele — Swarovski — Bratz Introductory Offer $1/month for 3 months Subscribe Already have an account? Log in Latest Closer Look What does it take to actually revise a musical? Closer Look How the original company of ‘Ragtime’ was cast Insights Loyalty Report: January 22, 2026 Closer Look How ‘Riverdance’ revolutionized the world of dance Podcast 30 years ago, Tracy Letts wrote a play tailor-made for today with ‘Bug’ Personnel Neil Mazzella steps down as CEO of Hudson entities Books The original music director of ‘Rent’ reveals scenes from the very first auditions Closer Look Christian Cowan uses detail and taste to make ‘The Queen of Versailles’ shine",
@@ -90,5 +90,6 @@
     "Show title not found in text"
   ],
   "contentTier": "complete",
-  "wordCount": 1273
+  "wordCount": 1273,
+  "needsRescore": true
 }

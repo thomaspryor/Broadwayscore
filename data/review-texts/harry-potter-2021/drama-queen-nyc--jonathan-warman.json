@@ -75,10 +75,11 @@
     "Show title not found in text"
   ],
   "designation": "Recommended",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 84,
   "rescoreCompletedAt": "2026-02-01T15:06:55.298Z",
   "contentTier": "complete",
   "wordCount": 711,
-  "showNotMentioned": true
+  "showNotMentioned": true,
+  "needsRescore": true
 }

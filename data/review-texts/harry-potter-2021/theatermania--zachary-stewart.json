@@ -91,9 +91,10 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20230320200716",
   "archiveOrgUrl": "http://web.archive.org/web/20230320200716/https://www.theatermania.com/broadway/reviews/review-harry-potter-and-the-cursed-child-broadway_93096.html",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 72,
   "rescoreCompletedAt": "2026-02-01T15:09:28.277Z",
   "contentTier": "complete",
-  "wordCount": 846
+  "wordCount": 846,
+  "needsRescore": true
 }

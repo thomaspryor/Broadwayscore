@@ -66,7 +66,7 @@
   "previousUrl": "https://www.vulture.com/2023/10/gutenberg-the-musical-broadway-review.html",
   "urlDiscoveredAt": "2026-02-01T19:00:15.697Z",
   "urlDiscoveryMethod": "google-serp",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 75,
   "textWordCount": 2010,
   "archivePath": "data/archives/reviews/gutenberg-2023/vulture--helen-shaw_2026-02-01.html",
@@ -88,5 +88,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250225084951/https://www.vulture.com/article/theater-review-gutenberg-the-musical-broadway.html",
   "rescoreCompletedAt": "2026-02-01T20:00:33.152Z",
   "contentTier": "complete",
-  "contentTierReason": "Full review text"
+  "contentTierReason": "Full review text",
+  "needsRescore": true
 }

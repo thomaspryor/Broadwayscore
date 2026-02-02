@@ -74,9 +74,10 @@
   "originalScoreNormalized": 80,
   "scoreSource": "unicode-stars",
   "scoreExtractedFrom": "fullText",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 83,
   "rescoreCompletedAt": "2026-01-28T23:29:53.306Z",
   "contentTier": "complete",
-  "wordCount": 803
+  "wordCount": 803,
+  "needsRescore": true
 }

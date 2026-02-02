@@ -62,7 +62,7 @@
     "modelAgreement": "All 3 models agree: Rave"
   },
   "designation": "Recommended",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
   "archivePath": "data/archives/reviews/stranger-things-2024/londontheatre--marianka-swain_2026-01-29.html",
   "textFetchedAt": "2026-01-29T03:08:28.107Z",
@@ -83,5 +83,6 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 831
+  "wordCount": 831,
+  "needsRescore": true
 }

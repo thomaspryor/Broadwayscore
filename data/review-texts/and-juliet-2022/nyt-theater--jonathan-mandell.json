@@ -72,9 +72,10 @@
   "dtliExcerpt": "It also means that “& Juliet” is more accurately described, not as a sequel, but as a rewrite of “Romeo and Juliet,” though it is nothing close to that.",
   "showScoreExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 71,
   "rescoreCompletedAt": "2026-01-28T23:29:58.969Z",
   "contentTier": "complete",
-  "wordCount": 1673
+  "wordCount": 1673,
+  "needsRescore": true
 }

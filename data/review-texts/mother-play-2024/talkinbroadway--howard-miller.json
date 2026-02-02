@@ -64,7 +64,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "rescoreReason": "low-conf: prompt=3.0.0, delta=20, upgrading to V5 + 3 models",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 55,
   "archivePath": "data/archives/reviews/mother-play-2024/talkinbroadway--howard-miller_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:43:34.298Z",
@@ -94,5 +94,6 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 708
+  "wordCount": 708,
+  "needsRescore": true
 }

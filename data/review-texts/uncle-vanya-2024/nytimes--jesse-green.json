@@ -62,7 +62,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 43,
   "archivePath": "data/archives/reviews/uncle-vanya-2024/nytimes--jesse-green_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:22:03.558Z",
@@ -88,5 +88,6 @@
   "sources": [
     "dtli",
     "web-search"
-  ]
+  ],
+  "needsRescore": true
 }

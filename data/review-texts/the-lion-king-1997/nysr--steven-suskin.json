@@ -64,9 +64,10 @@
     "show-score",
     "playwright-scraped"
   ],
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
   "rescoreCompletedAt": "2026-02-01T16:19:08.900Z",
   "contentTier": "complete",
-  "wordCount": 562
+  "wordCount": 562,
+  "needsRescore": true
 }

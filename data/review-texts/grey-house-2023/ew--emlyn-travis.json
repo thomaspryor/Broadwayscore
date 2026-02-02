@@ -70,7 +70,7 @@
   "originalScoreNormalized": 85,
   "scoreSource": "letter-grade",
   "scoreExtractedFrom": "excerpt",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 79,
   "archivePath": "data/archives/reviews/grey-house/ew--emlyn-travis_2026-02-01.html",
   "textFetchedAt": "2026-02-01T19:09:51.938Z",
@@ -95,5 +95,6 @@
   "isFullReview": true,
   "textWordCount": 1104,
   "textQuality": "partial",
-  "textStatus": "partial"
+  "textStatus": "partial",
+  "needsRescore": true
 }

@@ -94,7 +94,7 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20250128045759",
   "archiveOrgUrl": "http://web.archive.org/web/20250128045759/https://apnews.com/article/notebook-musical-broadway-review-75ff86fdfa180065618c886e5e0891d3",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 34,
   "rescoreCompletedAt": "2026-02-01T16:19:39.192Z",
   "dateUnknown": true,
@@ -103,5 +103,6 @@
   "wordCount": 3047,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "needsRescore": true
 }

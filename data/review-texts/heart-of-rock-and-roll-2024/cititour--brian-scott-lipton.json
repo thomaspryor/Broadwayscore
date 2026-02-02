@@ -61,7 +61,7 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 79,
   "archivePath": "data/archives/reviews/heart-of-rock-and-roll-2024/cititour--brian-scott-lipton_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:38:57.791Z",
@@ -88,5 +88,6 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 652
+  "wordCount": 652,
+  "needsRescore": true
 }

@@ -69,7 +69,7 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "needsRescore": true,
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 60,
   "textWordCount": 1327,
   "archivePath": "data/archives/reviews/chess-2025/unknown--unknown_2026-02-02.html",

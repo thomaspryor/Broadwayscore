@@ -112,11 +112,12 @@
   ],
   "bwwExcerpt": "A second look...suggests that something even more significant is going on. The breakthrough isn't so much the incorporation of those contemporary genres; after all, Miranda already did that, throwing in Latin music to boot, in the charming In the Heights. But Hamilton not only incorporates newish-to-Broadway song forms; it requires and advances them, in the process opening up new territory for exploitation. It's the musical theater, not just American history, that gets refurbished.",
   "bwwThumb": null,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 90,
   "rescoreCompletedAt": "2026-02-01T15:03:18.925Z",
   "contentTier": "complete",
   "wordCount": 1566,
   "wrongProduction": true,
-  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Public Theater. Reusable if off-Broadway show entry is created."
+  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Public Theater. Reusable if off-Broadway show entry is created.",
+  "needsRescore": true
 }

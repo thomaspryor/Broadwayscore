@@ -65,9 +65,10 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Mixed"
   },
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 31,
   "rescoreCompletedAt": "2026-02-01T15:04:04.694Z",
   "contentTier": "complete",
-  "wordCount": 2064
+  "wordCount": 2064,
+  "needsRescore": true
 }

@@ -64,7 +64,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 50,
   "archivePath": "data/archives/reviews/back-to-the-future-2023/talkinbroadway--howard-miller_2026-01-29.html",
   "textFetchedAt": "2026-01-29T05:15:02.160Z",
@@ -94,5 +94,6 @@
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 683
+  "wordCount": 683,
+  "needsRescore": true
 }

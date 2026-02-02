@@ -67,7 +67,7 @@
   ],
   "scoreSource": "live-fetch",
   "scoreExtractedFrom": "archive",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 60,
   "rescoreCompletedAt": "2026-02-01T16:17:54.192Z",
   "originalScore": "3/5 stars",
@@ -77,5 +77,6 @@
   "wordCount": 942,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "needsRescore": true
 }

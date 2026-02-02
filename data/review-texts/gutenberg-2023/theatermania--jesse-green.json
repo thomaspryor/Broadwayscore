@@ -102,5 +102,7 @@
   "textIssues": [
     "Word count too low: 42 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
 }

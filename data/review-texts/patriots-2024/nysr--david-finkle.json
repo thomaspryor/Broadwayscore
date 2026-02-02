@@ -81,7 +81,8 @@
   "_scoreFixedAt": "2026-01-31T23:10:41.720Z",
   "contentTier": "complete",
   "wordCount": 995,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-02-01T15:51:20.066Z"
+  "rescoreCompletedAt": "2026-02-01T15:51:20.066Z",
+  "needsRescore": true
 }

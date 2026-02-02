@@ -72,9 +72,10 @@
   "scoreSource": "letter-grade",
   "scoreExtractedFrom": "fullText",
   "designation": "Recommended",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 91,
   "rescoreCompletedAt": "2026-02-01T15:44:11.124Z",
   "contentTier": "complete",
-  "wordCount": 724
+  "wordCount": 724,
+  "needsRescore": true
 }

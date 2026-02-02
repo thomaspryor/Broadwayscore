@@ -73,7 +73,7 @@
     "modelAgreement": "All 3 models agree: Positive",
     "invalidatedAt": "2026-02-01T04:02:00.802Z"
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "llmScore": {
     "score": 79,
     "confidence": "high",
@@ -143,5 +143,6 @@
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "textStatus": "partial"
+  "textStatus": "partial",
+  "needsRescore": true
 }

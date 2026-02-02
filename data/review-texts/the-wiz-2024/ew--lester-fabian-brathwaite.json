@@ -77,7 +77,7 @@
   ],
   "bwwExcerpt": "The Wiz is all about feeling. It opens with the plaintive “The Feeling We Once Had,” about remembering the good times when things get bad. The musical is designed to uplift. Its cheery sentiment and its devotion to believing in oneself, to relying on one another, to easing on down the road of life and refusing to carry anything \"that might be a load\" may seem simplistic. But in complex times, its simple message rings loud and clear — even with some minor sound issues. A",
   "bwwThumb": "Up",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 79,
   "rescoreCompletedAt": "2026-02-01T16:30:50.564Z",
   "truncationSignals": [
@@ -88,5 +88,6 @@
   "humanReviewScore": 78,
   "humanReviewPreviousScore": 42,
   "humanReviewAt": "2026-02-01T19:59:47.225Z",
-  "misattributedNote": "fullText is from Jonathan Mandell/NY Theater, not EW/Lester Fabian Brathwaite"
+  "misattributedNote": "fullText is from Jonathan Mandell/NY Theater, not EW/Lester Fabian Brathwaite",
+  "needsRescore": true
 }

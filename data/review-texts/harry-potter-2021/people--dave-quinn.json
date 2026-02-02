@@ -93,9 +93,10 @@
   "archiveOrgTimestamp": "20210925145635",
   "archiveOrgUrl": "http://web.archive.org/web/20210925145635/https://people.com/theater/harry-potter-and-the-cursed-child-broadway-review/",
   "designation": "Must_See",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
   "rescoreCompletedAt": "2026-02-01T15:08:36.384Z",
   "contentTier": "complete",
-  "wordCount": 938
+  "wordCount": 938,
+  "needsRescore": true
 }

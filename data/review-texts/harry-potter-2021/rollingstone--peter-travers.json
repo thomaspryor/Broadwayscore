@@ -92,9 +92,10 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20180424000239",
   "archiveOrgUrl": "http://web.archive.org/web/20180424000239/https://www.rollingstone.com/culture/news/harry-potter-cursed-child-peter-travers-broadway-w519415",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 96,
   "rescoreCompletedAt": "2026-02-01T15:08:40.792Z",
   "contentTier": "complete",
-  "wordCount": 870
+  "wordCount": 870,
+  "needsRescore": true
 }

@@ -72,12 +72,13 @@
   "scoreConfidence": "medium",
   "extractedPhrase": "avoid",
   "bwwThumb": null,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 62,
   "rescoreCompletedAt": "2026-01-28T23:29:26.273Z",
   "contentTier": "complete",
   "wordCount": 1502,
   "truncationSignals": [
     "has_footer_junk"
-  ]
+  ],
+  "needsRescore": true
 }

@@ -63,7 +63,7 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 86,
   "rescoreCompletedAt": "2026-02-01T16:13:19.320Z",
   "originalScore": "4/5 stars",
@@ -71,5 +71,6 @@
   "scoreSource": "live-fetch",
   "_scoreFetchedAt": "2026-01-31T23:16:17.958Z",
   "contentTier": "complete",
-  "wordCount": 916
+  "wordCount": 916,
+  "needsRescore": true
 }

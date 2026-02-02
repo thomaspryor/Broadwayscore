@@ -65,7 +65,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
   "archivePath": "data/archives/reviews/boop-2025/washpost--naveen-kumar_2026-01-29.html",
   "textFetchedAt": "2026-01-29T15:08:10.755Z",
@@ -83,5 +83,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250411023851/https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
   "contentTier": "complete",
   "wordCount": 1316,
-  "rescoreCompletedAt": "2026-02-01T17:32:44.795Z"
+  "rescoreCompletedAt": "2026-02-01T17:32:44.795Z",
+  "needsRescore": true
 }

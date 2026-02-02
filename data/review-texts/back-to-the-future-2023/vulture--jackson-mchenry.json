@@ -66,10 +66,11 @@
     "bww-roundup"
   ],
   "bwwThumb": "Meh",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 36,
   "rescoreCompletedAt": "2026-01-28T23:33:09.121Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 1538
+  "wordCount": 1538,
+  "needsRescore": true
 }

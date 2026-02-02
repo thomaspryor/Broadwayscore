@@ -70,12 +70,13 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 52,
   "rescoreCompletedAt": "2026-02-01T15:56:25.232Z",
   "contentTier": "complete",
   "wordCount": 1251,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "needsRescore": true
 }

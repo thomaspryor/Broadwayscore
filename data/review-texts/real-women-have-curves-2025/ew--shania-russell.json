@@ -67,7 +67,7 @@
     "dtli"
   ],
   "showScoreExcerpt": null,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 85,
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/ew--shania-russell_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:41:20.575Z",
@@ -100,5 +100,6 @@
   "sourceMethod": "scrapingbee",
   "rescoreCompletedAt": "2026-02-01T16:02:33.928Z",
   "contentTier": "complete",
-  "wordCount": 1223
+  "wordCount": 1223,
+  "needsRescore": true
 }

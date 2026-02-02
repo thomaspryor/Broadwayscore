@@ -60,7 +60,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Negative"
   },
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 76,
   "archivePath": "data/archives/reviews/just-for-us-2023/the-globe-and-mail--aisling-murphy_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:55:04.124Z",
@@ -99,5 +99,6 @@
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 907
+  "wordCount": 907,
+  "needsRescore": true
 }

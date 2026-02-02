@@ -67,12 +67,13 @@
     "web-search",
     "bww-roundup"
   ],
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 65,
   "rescoreCompletedAt": "2026-02-01T16:06:35.155Z",
   "contentTier": "complete",
   "wordCount": 734,
   "truncationSignals": [
     "ends_with_ellipsis"
-  ]
+  ],
+  "needsRescore": true
 }

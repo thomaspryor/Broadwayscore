@@ -68,10 +68,11 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 79,
   "rescoreCompletedAt": "2026-01-28T23:31:34.279Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 2169
+  "wordCount": 2169,
+  "needsRescore": true
 }

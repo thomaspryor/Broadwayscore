@@ -64,7 +64,7 @@
   "sources": [
     "bww-roundup"
   ],
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 37,
   "archivePath": "data/archives/reviews/aladdin-2014/thewrap--robert-hofler_2026-01-29.html",
   "textFetchedAt": "2026-01-29T06:39:40.649Z",
@@ -106,5 +106,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20200428214150/https://www.thewrap.com/aladdin-theater-review-disney-animation-got-right-first-time-genie-courtney-reed-adam-jacobs/",
   "rescoreCompletedAt": "2026-01-29T14:31:51.633Z",
   "contentTier": "complete",
-  "wordCount": 481
+  "wordCount": 481,
+  "needsRescore": true
 }

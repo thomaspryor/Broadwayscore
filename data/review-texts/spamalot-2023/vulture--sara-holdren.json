@@ -59,7 +59,7 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
   },
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/spamalot-2023/vulture--sara-holdren_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:41:26.656Z",
@@ -80,5 +80,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240520112615/https://www.vulture.com/2023/11/theater-review-spamalot-broadway-revival.html",
   "rescoreCompletedAt": "2026-02-01T16:10:03.969Z",
   "contentTier": "complete",
-  "wordCount": 1634
+  "wordCount": 1634,
+  "needsRescore": true
 }

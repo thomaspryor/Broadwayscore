@@ -72,12 +72,13 @@
     "web-search"
   ],
   "bwwThumb": null,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 94,
   "rescoreCompletedAt": "2026-01-29T01:52:57.996Z",
   "contentTier": "complete",
   "wordCount": 711,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "needsRescore": true
 }

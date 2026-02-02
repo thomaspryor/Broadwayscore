@@ -61,7 +61,7 @@
     "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 61,
   "archivePath": "data/archives/reviews/the-roommate-2024/cititour--brian-scott-lipton_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:38:50.064Z",
@@ -88,5 +88,6 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 625
+  "wordCount": 625,
+  "needsRescore": true
 }

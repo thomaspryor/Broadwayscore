@@ -67,12 +67,13 @@
     "show-score",
     "dtli"
   ],
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 80,
   "rescoreCompletedAt": "2026-01-29T14:31:51.924Z",
   "truncationSignals": [
     "has_footer_junk"
   ],
   "contentTier": "complete",
-  "wordCount": 1810
+  "wordCount": 1810,
+  "needsRescore": true
 }

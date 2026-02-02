@@ -69,9 +69,10 @@
     "bww-roundup"
   ],
   "showScoreExcerpt": null,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 62,
   "rescoreCompletedAt": "2026-02-01T15:29:45.568Z",
   "contentTier": "complete",
-  "wordCount": 744
+  "wordCount": 744,
+  "needsRescore": true
 }

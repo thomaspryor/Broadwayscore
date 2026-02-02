@@ -68,7 +68,7 @@
   "previousUrl": "https://www.newsday.com/entertainment/theater/hamilton-broadway-review-2015/",
   "urlDiscoveredAt": "2026-02-01T15:10:06.478Z",
   "urlDiscoveryMethod": "google-serp",
-  "rescoreReason": "fullText added after excerpt-based scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
   "isFullReview": true,
   "textWordCount": 492,
@@ -92,5 +92,6 @@
   "textStatus": "truncated",
   "archiveOrgTimestamp": "20250830035550",
   "archiveOrgUrl": "http://web.archive.org/web/20250830035550/https://www.newsday.com/entertainment/theater/hamilton-review-even-better-on-broadway-p56633",
-  "rescoreCompletedAt": "2026-02-02T00:00:50.066Z"
+  "rescoreCompletedAt": "2026-02-02T00:00:50.066Z",
+  "needsRescore": true
 }

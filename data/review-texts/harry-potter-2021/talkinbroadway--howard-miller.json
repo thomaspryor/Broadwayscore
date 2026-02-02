@@ -92,12 +92,13 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20250327190806",
   "archiveOrgUrl": "http://web.archive.org/web/20250327190806/https://www.talkinbroadway.com/page/world/HarryPotterCursedChild2018.html",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 74,
   "rescoreCompletedAt": "2026-01-29T14:31:51.768Z",
   "contentTier": "complete",
   "wordCount": 1758,
   "truncationSignals": [
     "no_ending_punctuation"
-  ]
+  ],
+  "needsRescore": true
 }

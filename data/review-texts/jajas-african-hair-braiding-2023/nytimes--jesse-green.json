@@ -87,7 +87,8 @@
   ],
   "contentTier": "complete",
   "wordCount": 1169,
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 80,
-  "rescoreCompletedAt": "2026-02-01T15:21:11.809Z"
+  "rescoreCompletedAt": "2026-02-01T15:21:11.809Z",
+  "needsRescore": true
 }

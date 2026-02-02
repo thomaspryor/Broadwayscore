@@ -93,9 +93,10 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20151018024712",
   "archiveOrgUrl": "http://web.archive.org/web/20151018024712/http://www.northjersey.com/arts-and-entertainment/theater/revolutionary-musical-fits-on-broadway-1.1388340",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 95,
   "rescoreCompletedAt": "2026-01-29T01:57:45.990Z",
   "contentTier": "complete",
-  "wordCount": 634
+  "wordCount": 634,
+  "needsRescore": true
 }

@@ -62,7 +62,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 84,
   "archivePath": "data/archives/reviews/harry-potter-2021/mashable--erin-strecker_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:38:05.584Z",
@@ -81,5 +81,6 @@
   "contentTier": "needs-rescrape",
   "wordCount": 840,
   "garbageReasoningDetected": "thematic-overview",
-  "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.075Z"
+  "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.075Z",
+  "needsRescore": true
 }

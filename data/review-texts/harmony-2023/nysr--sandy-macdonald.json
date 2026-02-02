@@ -60,7 +60,7 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
   },
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 50,
   "archivePath": "data/archives/reviews/harmony-2023/nysr--sandy-macdonald_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:49:48.707Z",
@@ -85,5 +85,6 @@
   "rescoreCompletedAt": "2026-02-01T15:04:40.858Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 721
+  "wordCount": 721,
+  "needsRescore": true
 }
