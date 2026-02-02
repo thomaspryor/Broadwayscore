@@ -20,8 +20,52 @@
   "bwwThumb": null,
   "publishDate": "June 22, 2023",
   "originalScore": null,
-  "assignedScore": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses 'enjoyable' which indicates a positive recommendation, though 'dizzy' and 'goof' suggest it's not high art. The comparison to '& Juliet' (a successful jukebox musical) reinforces this as a fun, if lightweight, recommendation. | GPT-4o: The review describes the show as 'enjoyable,' indicating a positive experience, albeit with a lighthearted or frivolous tone. The comparison to 'similar in many ways to “& Juliet”' suggests it shares qualities with another known production, likely in a positive light. Given the single excerpt and aggregator's flat verdict, a mid-range positive score is appropriate. | Gemini: The review excerpt describes the show as \"enjoyable,\" indicating a positive, though not overwhelmingly enthusiastic, recommendation. The word \"goof\" suggests it's not high art, hence the reservation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T14:53:53.890Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

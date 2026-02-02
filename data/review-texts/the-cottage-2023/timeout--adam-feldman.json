@@ -21,8 +21,52 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": null,
-  "llmScore": null,
-  "llmMetadata": null,
-  "ensembleData": null
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic frames this as unpretentious entertainment that succeeds at its modest goals, with positive language like 'delivered on a platter' and 'properly silly cast,' but the single excerpt limits confidence in the full verdict. | GPT-4o: The review describes the show as a 'brazenly straightforward drawing-room farce' meant for 'light amusement,' suggesting a positive experience for those seeking entertainment without seriousness. The tone is positive, but the single excerpt and lack of depth in the review text suggest a conservative score within the Positive range. | Gemini: The review describes the play as being created for 'light amusement' and delivered well by the cast, indicating a positive but not overwhelmingly enthusiastic recommendation. The lack of full text and single excerpt warning suggest a conservative score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T14:54:23.755Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

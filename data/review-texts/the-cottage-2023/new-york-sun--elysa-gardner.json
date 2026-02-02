@@ -32,5 +32,52 @@
   ],
   "textStatus": "truncated",
   "sourceMethod": "playwright",
-  "duplicateTextOf": "variety--naveen-kumar.json"
+  "duplicateTextOf": "variety--naveen-kumar.json",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic consistently criticizes the play as unoriginal, superficial, and lacking depth, calling it 'paint-by-numbers' with 'familiar, superficial and fleeting' pleasures. Despite noting some strong performances, the overall assessment is negative with no recommendation to see it. | GPT-4o: The review describes 'The Cottage' as a 'paint-by-numbers sex farce' with familiar and superficial pleasures. While the direction and performances are noted, the play is criticized for lacking depth and originality. The truncated text suggests caution, but the overall tone leans towards mixed with some positive elements. | Gemini: The review highlights some positive aspects like Bundy's performance and the set design, but ultimately criticizes the lack of depth in the characters and the reliance on superficial humor. The truncated text makes it difficult to ascertain a definitive recommendation, but the overall tone suggests a mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T14:54:18.631Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }
