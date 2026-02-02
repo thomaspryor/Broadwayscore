@@ -109,16 +109,42 @@ const TRAILING_JUNK_PATTERNS = [
  * Also strips known leading junk (e.g., The Times UK paywall prefix).
  * Runs iteratively until no more patterns match.
  *
+ * Guards (ported from text-quality.js) prevent catastrophic text destruction:
+ *   - Back-half guard: only strip if match is in the last 40% of current text
+ *   - Minimum-remaining guard: at least 200 chars (or 15% of original) must survive
+ *
  * @param {string} text - Review text to clean
  * @returns {string} Cleaned text
  */
 function stripTrailingJunk(text) {
   if (!text) return text;
   let cleaned = text;
+  const originalLength = text.length;
+  const minRemaining = Math.max(200, originalLength * 0.15);
+
   let changed = true;
   while (changed) {
     changed = false;
     for (const pattern of TRAILING_JUNK_PATTERNS) {
+      // Leading patterns (^ anchored, e.g., Times UK paywall prefix) bypass position guards
+      if (pattern.source.startsWith('^')) {
+        const before = cleaned;
+        cleaned = cleaned.replace(pattern, '').trim();
+        if (cleaned !== before) changed = true;
+        continue;
+      }
+
+      // Find where the pattern matches
+      const match = cleaned.match(pattern);
+      if (!match) continue;
+
+      // Back-half guard: only strip if match is in the last 40% of current text.
+      // Prevents keywords like "Copyright" in page headers from eating the review.
+      if (match.index < cleaned.length * 0.6) continue;
+
+      // Minimum-remaining guard: don't strip if too little text would remain.
+      if (match.index < minRemaining) continue;
+
       const before = cleaned;
       cleaned = cleaned.replace(pattern, '').trim();
       if (cleaned !== before) changed = true;
