@@ -7,42 +7,26 @@
   "publishDate": "June 18, 2014",
   "dtliExcerpt": "In the opening number of The Lion King, director Julie Taymor created one of the most transporting visions ever seen in a Broadway show. A procession of African beasts of all shapes and sizes—flocks of birds, leaping gazelles, and towering giraffes—moves through the aisles, all interpreted via gorgeous, minutely detailed costumes and puppetry. This long-running New York City musical is based on the 1994 Disney animated flick about a Hamletesque lion who must win back his kingdom from the clutches of his evil uncle. Featuring a catchy score by Elton John and Tim Rice, Taymor’s adaptation is infused with additional spectacle and songs inspired by African culture.",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 86,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 80,
+      "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "one of the most transporting visions ever seen in a Broadway show",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "gorgeous, minutely detailed costumes and puppetry",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "catchy score by Elton John and Tim Rice",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Strong praise for direction and visual spectacle with superlative language ('most transporting visions ever seen'), positive notes on music, and no negative elements mentioned. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's visual and thematic elements, indicating a strong recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language is highly celebratory with phrases like 'amazing menagerie,' 'audacious staging,' and 'pride of Broadway,' indicating strong enthusiasm despite limited excerpt available. | GPT-4o: The review uses highly positive language such as 'amazing', 'audacious', and 'pride of Broadway', indicating a strong recommendation. The description of the staging as a 'celebration of heritage' suggests a transformative and must-see production. | Gemini: The review excerpt praises the staging and visual elements, suggesting a positive overall experience. The phrase \"celebration of heritage\" implies a strong positive takeaway.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,48 +35,66 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:28:25.384Z",
-    "promptVersion": "2.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:19.580Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 86,
+    "previousVersion": "2.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "scoreDelta": 8,
+    "geminiScore": 75,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
-  "sourceMethod": "scrapingbee",
-  "archivePath": "data/archives/reviews/the-lion-king-1997/timeout-ny--jenna-scherer_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:36:34.888Z",
-  "fetchMethod": "scrapingbee",
+  "sourceMethod": "playwright",
+  "archivePath": "data/archives/reviews/the-lion-king-1997/timeout--jenna-scherer_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:26:22.618Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
       "success": true
     }
   ],
-  "fetchTier": 2,
+  "fetchTier": 1,
   "showScoreExcerpt": "\"Taymor populates the stage with an amazing menagerie of beasts; her audacious staging expands a simple cub into the pride of Broadway, not merely a fable of heredity but a celebration of heritage.\"",
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 86,
   "rescoreCompletedAt": "2026-01-29T14:31:52.081Z",
   "garbageFullText": "Thanks for subscribing! Look out for your first newsletter in your inbox soon!\n\nThe best of New York straight to your inbox\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nThanks for subscribing! Look out for your first newsletter in your inbox soon!\n\nDéjà vu! We already have this email. Try another?\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nPhotograph: Courtesy Joan Marcus | The Lion KingGuide to The Lion King on BroadwayRead our guide to when, where and how to see the lavish and innovative Disney musical The Lion King on BroadwayThursday March 10 2016ShareCopy LinkFacebookTwitterPinterestEmailWhatsAppWritten by Adam FeldmanTheater and Dance Editor, Time Out USAAdvertisingAt the start of The Lion King, Broadway director Julie Taymor creates a pageant that instantly transports the audience to a gorgeous world of African imagination unlike anything we've seen in Broadway musicals before or since. As the company sings \"The Circle of Life,\" a procession of beasts parades through the aisles of the Minskoff Theatre: flocks of birds, leaping gazelles, towering giraffes, a lumbering elephant, all rendered thorugh eye-popping puppetry and costumes. Faithfully adapted from Disney's hugely popular 1994 animated movie, about a young lion who must reclaim his kingdom from the clutches of an evil uncle, the musical is one of the best Broadway shows for kids, and there's plenty of slapstick comedy to entertain the littles ones. But this is not just your children's Lion King. The movie's catchy score, by Elton John and Tim Rice, has been augmented with music rooted in proud African traditions, and the production is a stunning celebration of color and movement. No wonder The Lion King has been running for nearly 20 years. Taymor's audacious staging expands a simple cub into the pride of Broadway, not merely a fable of heredity but a celebration of heritage.\n\nThe Lion King is a musical adapted from the 1994 Disney animated film The Lion King. It features music by Elton John, lyrics by Tim Rice and a book by Roger Allers and Irene Mecchi. It is directed by Julie Taymor. It began previews on October 15, 1997, and opened on November 13, 1997. It is the winner of six 1998 Tony Awards, including Best Musical, and is currently the third-longest-running Broadway musical of all time.\n\nThe Lion King plays at Broadway's Minskoff Theatre, located at 200 West 45th Street at the corner of Seventh Avenue. (From 1997 through June 4, 2006, it was at the New Amsterdam Theatre.)\n\nThe Book of Mormon plays eight times a week, on the following schedule: Tuesdays at 7pm; Wednesdays at 2pm and 7pm; Thursdays at 7pm; Fridays at 8pm; Saturdays at 2pm and 8pm; and Sundays at 3pm.\n\nTickets to The Lion King are sold online. They can also be purchased by phone (866-870-2717) or in person at the Minskoff Theatre box office. Tickets cost $89–$172, and premium tickets cost $199–$299. A limited number of $30 tickets are also available every day via The Lion King's digital lottery, which can be entered until 9am on the day of the performance. If you're looking to buy last-minute Broadway tickets, you can try your luck at the secondary or resale market.\n\nThe running time of The Lion King is 2 hours and 40 minutes, with one intermission.\n\nThe cast of The Lion King currently includes Gareth Saxe (Scar), L. Steven Taylor (Mufasa), Tshidi Manye (Rafiki), Jeffrey Kuhn (Zazu), Ben Jeffrey (Pumbaa), Fred Berman (Timon), Jelani Remy (Simba) and Chantel Riley (Nala).\n\n• Jason Raize as Simba • John Vickery as Scar • Samuel E. Wright as Mufasa • Heather Headley as Nala • Tsidii Le Loka as Rafiki • Max Casella as Timon • Tom Alan Robbins as Pumbaa • Geoff Hoyle as Zazu • Tracy Nicole Chapman as Shenzi • Stanley Wayne Mathis as Banzai • Kevin Cahoon as Ed • Gina Breedlove as Sarabi • Scott Irby-Ranniar as Young Simba • Kajuana Shuford as Young Nala • Julie Taymor - Director • Roger Allers and Irene Mecchi - Book • Elton John - Music • Tim Rice - Lyrics • Lebo M, Mark Mancina, Jay Rifkin, Julie Taymor and Hans Zimmer - Additional Music and Lyrics • Garth Fagan - Choreographer • Richard Hudson - Scenic Design • Julie Taymor - Costume Design • Donald Holder - Lighting Design • Tony Meola - Sound Design • Disney Theatrical Productions - Producer\n\n• Best Musical• Best Direction of a Musical - Julie Taymor• Best Choreography - Garth Fagan• Best Scenic Design for a Musical - Richard Hudson• Best Costume Design for a Musical - Julie Taymor and Michael Curry• Best Lighting Design for a Musical - Donald Holder1998 Drama Desk Awards• Outstanding Featured Actress in a Musical - Tsidii Le Loka• Outstanding Director - Julie Taymor• Outstanding Choreography - Garth Fagan• Outstanding Set Design - Richard Hudson• Outstanding Costume Design - Julie Taymor• Outstanding Lighting Design - Donald Holder• Outstanding Sound Design - Tony Meola• Outstanding Puppet Design - Julie Taymor and Michael Curry\n\nBuy The Lion King's original Broadway cast album on Amazon\n\nRestaurantsThe top 13 Restaurant Row NYC eateriesThings to doEight hidden gems in Times SquareDiscover Time Out original video\n\nBack to TopCloseGet us in your inbox\n\nBy entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news, events, offers and partner promotions.\n\nThanks for subscribing! Look out for your first newsletter in your inbox soon!\n\ntiktokfacebooktwitteryoutubeAbout us\n\nPay to remove ads with contentpass\n\nAccess Time Out and over 600 other websites without banner ads, personalized tracking and video ads for only £3.49 per month.\n\nAlready have a contentpass account?\n\nMore information about our ads is available in our privacy manager\n\nYou can withdraw your consent at any time by visiting Privacy Preferences in the footer. Your consent only applies to this website. For more information, please see our Privacy Policy.\n\nThe following vendors use this purpose:",
   "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
   "garbageFixedAt": "2026-01-29T22:45:23.265Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "fullText": "At the start of The Lion King, Broadway director Julie Taymor creates a pageant that instantly transports the audience to a gorgeous world of African imagination unlike anything we've seen in Broadway musicals before or since. As the company sings \"The Circle of Life,\" a procession of beasts parades through the aisles of the Minskoff Theatre: flocks of birds, leaping gazelles, towering giraffes, a lumbering elephant, all rendered thorugh eye-popping puppetry and costumes. Faithfully adapted from Disney's hugely popular 1994 animated movie, about a young lion who must reclaim his kingdom from the clutches of an evil uncle, the musical is one of the best Broadway shows for kids, and there's plenty of slapstick comedy to entertain the littles ones. But this is not just your children's Lion King. The movie's catchy score, by Elton John and Tim Rice, has been augmented with music rooted in proud African traditions, and the production is a stunning celebration of color and movement. No wonder The Lion King has been running for nearly 20 years. Taymor's audacious staging expands a simple cub into the pride of Broadway, not merely a fable of heredity but a celebration of heritage. The Lion King is a musical adapted from the 1994 Disney animated film The Lion King. It features music by Elton John, lyrics by Tim Rice and a book by Roger Allers and Irene Mecchi. It is directed by Julie Taymor. It began previews on October 15, 1997, and opened on November 13, 1997. It is the winner of six 1998 Tony Awards, including Best Musical, and is currently the third-longest-running Broadway musical of all time. The Lion King plays at Broadway's Minskoff Theatre, located at 200 West 45th Street at the corner of Seventh Avenue. (From 1997 through June 4, 2006, it was at the New Amsterdam Theatre.) The Book of Mormon plays eight times a week, on the following schedule: Tuesdays at 7pm; Wednesdays at 2pm and 7pm; Thursdays at 7pm; Fridays at 8pm; Saturdays at 2pm and 8pm; and Sundays at 3pm. Tickets to The Lion King are sold online. They can also be purchased by phone (866-870-2717) or in person at the Minskoff Theatre box office. Tickets cost $89–$172, and premium tickets cost $199–$299. A limited number of $30 tickets are also available every day via The Lion King's digital lottery, which can be entered until 9am on the day of the performance. If you're looking to buy last-minute Broadway tickets, you can try your luck at the secondary or resale market. The running time of The Lion King is 2 hours and 40 minutes, with one intermission. The cast of The Lion King currently includes Gareth Saxe (Scar), L. Steven Taylor (Mufasa), Tshidi Manye (Rafiki), Jeffrey Kuhn (Zazu), Ben Jeffrey (Pumbaa), Fred Berman (Timon), Jelani Remy (Simba) and Chantel Riley (Nala). • Jason Raize as Simba • John Vickery as Scar • Samuel E. Wright as Mufasa • Heather Headley as Nala • Tsidii Le Loka as Rafiki • Max Casella as Timon • Tom Alan Robbins as Pumbaa • Geoff Hoyle as Zazu • Tracy Nicole Chapman as Shenzi • Stanley Wayne Mathis as Banzai • Kevin Cahoon as Ed • Gina Breedlove as Sarabi • Scott Irby-Ranniar as Young Simba • Kajuana Shuford as Young Nala • Julie Taymor - Director • Roger Allers and Irene Mecchi - Book • Elton John - Music • Tim Rice - Lyrics • Lebo M, Mark Mancina, Jay Rifkin, Julie Taymor and Hans Zimmer - Additional Music and Lyrics • Garth Fagan - Choreographer • Richard Hudson - Scenic Design • Julie Taymor - Costume Design • Donald Holder - Lighting Design • Tony Meola - Sound Design • Disney Theatrical Productions - Producer • Best Musical• Best Direction of a Musical - Julie Taymor• Best Choreography - Garth Fagan• Best Scenic Design for a Musical - Richard Hudson• Best Costume Design for a Musical - Julie Taymor and Michael Curry• Best Lighting Design for a Musical - Donald Holder1998 Drama Desk Awards• Outstanding Featured Actress in a Musical - Tsidii Le Loka• Outstanding Director - Julie Taymor• Outstanding Choreography - Garth Fagan• Outstanding Set Design - Richard Hudson• Outstanding Costume Design - Julie Taymor• Outstanding Lighting Design - Donald Holder• Outstanding Sound Design - Tony Meola• Outstanding Puppet Design - Julie Taymor and Michael Curry Buy The Lion King's original Broadway cast album on Amazon TJ Maxx is opening its first new store in NYC in over a decade The best things to do in NYC this weekend These are the most romantic restaurants in New York, according to OpenTable These NYC restaurants are closed today in solidarity with the ICE strike This historic New York hotel is throwing an epic murder mystery weekend—here's how you can attend Discover Time Out original video",
+  "isFullReview": true,
+  "textWordCount": 803,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated"
 }

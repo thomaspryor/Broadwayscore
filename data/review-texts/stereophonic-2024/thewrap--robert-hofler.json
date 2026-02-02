@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Adjmi captures that claustrophobia and inability to communicate, making his “Stereophonic” one of the very best plays to open last year Off Broadway and now this season on Broadway.",
@@ -20,62 +20,52 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 88,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "one of the very best plays to open last year Off Broadway and now this season on Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Adjmi captures that claustrophobia and inability to communicate",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Calling it 'one of the very best plays' to open both Off-Broadway and on Broadway represents exceptional praise that signals strong recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Calling it 'one of the very best plays' is strong praise that places it in rave territory, though limited excerpts prevent full confidence in the complete verdict. | GPT-4o: The critic describes the play as 'one of the very best plays' to open, indicating a strong recommendation and high praise, which aligns with a rave review. | Gemini: The review excerpt clearly states that the play is one of the best, indicating a positive recommendation. The aggregator context also suggests a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:12:27.887Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2342,
-    "outputTokens": 288,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:08:40.366Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 82,

@@ -18,64 +18,48 @@
     "score": 62,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 65,
-      "performances": 75,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "no, 'Redwood' is not a wholly satisfying Broadway musical",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "a work of stunning stagecraft that for a few moments even elicits something close to the sort of ineffable feeling of awe one gets in actual Nature",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "That awesome and fascinating tree turns 'Redwood' into a kind of poetry, albeit a lyrical poem rather than a narrative one",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic explicitly states the show is 'not a wholly satisfying Broadway musical' despite praising the stunning production design, performances, and innovative stagecraft, resulting in a mixed but slightly positive overall assessment.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic explicitly states the show is 'not a wholly satisfying Broadway musical' despite praising the spectacular stagecraft, tree metaphors, and performances. The review acknowledges impressive elements but concludes it falls short as a complete theatrical experience. | Gemini: The review highlights impressive visuals and performances but ultimately concludes that the musical is not wholly satisfying, indicating a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:04:37.028Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2860,
-    "outputTokens": 377,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:26.523Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 62,
-    "scoreDelta": 6,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/redwood-2025/nyt-theater--jonathan-mandell_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:29:14.004Z",

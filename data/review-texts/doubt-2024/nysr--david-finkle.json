@@ -10,64 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 83
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Assuring the revival's quality is director Scott Ellis, who elicits top-flight ensemble performances from the cast",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it succeeds without a doubt, but, okay, a few doubts aside, that's still exactly what it does",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "As a result, it may be that Father Flynn's goodness in opposition to Sister Aloysius' inflexibility is a dramaturgical drawback",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Despite some dramaturgical criticisms about character balance, the reviewer praises the performances as 'top-flight,' commends the direction, and concludes the revival 'succeeds without a doubt,' indicating a clear positive recommendation. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some minor shortcomings in the script, leading to a solid recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating and language like 'powerful theatrical debate' and 'smart set' indicate clear recommendation. The critic appreciates both the writing and performances, describing Shanley's work as 'clever' and the conflict as well-constructed. | Gemini: The review is positive, highlighting the play's strengths and the performances. The 4/5 star rating also indicates a positive recommendation, though not a rave.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:48:45.056Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:58.826Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,

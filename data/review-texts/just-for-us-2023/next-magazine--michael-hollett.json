@@ -17,10 +17,10 @@
     "score": 74,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -28,24 +28,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "hopeful antidote to trying times",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "you'll feel like doing something rather than nothing and giving into despair",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "feel like doing something rather than nothing",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The fragment describes the show as a 'hopeful antidote' that inspires action over despair, suggesting positive emotional impact, but the extremely limited text provides insufficient context for higher confidence. | GPT-4o-mini: The review conveys a positive sentiment about the show's hopeful message, indicating a clear recommendation despite the lack of specific details.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'hopeful antidote' suggests a positive recommendation, though with only one excerpt available, scoring conservatively within the positive range. | GPT-4o: The excerpt suggests a positive impact on the audience, indicating a recommendation to see the show. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The phrase 'hopeful antidote' suggests a positive experience, but the limited context and single excerpt warrant a score in the middle of the 'Positive' range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:09.896Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:16.138Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

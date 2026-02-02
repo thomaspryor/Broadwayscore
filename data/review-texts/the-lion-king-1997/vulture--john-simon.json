@@ -5,19 +5,19 @@
   "criticName": "John Simon",
   "url": "http://nymag.com/listings/theater/the_lion_king/",
   "publishDate": "November 15, 1997",
-  "fullText": null,
+  "fullText": "Ongoing Every Tue, 7pm; Wed, Fri-Sat, 2pm; Wed-Sat, 8pm; Sun, 3pm\n\nSkip to content, or skip to search.\n\nSkip to content, or skip to search.\n\nSearch Help\n\n Home > \n \n \n Arts & Events >\n \n \n Theater >\n \n The Lion King\n\nMinskoff Theatre\n \n \n \n\n \n\n \n \n200 W. 45th St.,\n\nNew York, NY 10036\n\n 40.757951\n -73.985661\n\n at Broadway \n \n See Map\n \n \n |\n Subway Directions \n \n\n \n\n \n work212-869-0550\n \n \n Send to Phone\n\nAndile Gumbi, Chantel Riley, Alton Fitzgerald White, Buyi Zama, Gareth Saxe, Derek Johnson, Caleb McLaughlin, Alonie Dowden, Bobbi Bordley, Ben Jeffrey, Jeff Binder, Fred Berman, James Brown-Orleans, Enrique Segura, Bonita J. Hamilton\n\n1, 2, 3, 7, N, Q, R, S at Times Sq.-42nd St.\n\nCome to The Lion King with two pairs of eyes, one ear, and half a brain. You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy. You will be harangued by second-rate standard-show music and lyrics by Elton John and Tim Rice, and also by Lebo Mï's stirring African chants and ululations, to which your active ear should be cocked. Finally, you will be subjected to a well-worn, simplistic children's tale about a lion cub's hard road to adulthood and the throne of the animal kingdom, usurped by his wicked uncle in cahoots with some murderously laughing hyenas. Kiddies, of course, will delightedly swallow it whole, unless they are tiny and flappable. But this is the one such show adults will feast on, too, mostly because of the wonders wrought by Julie Taymor, who designed and directed this cornucopia of dazzlements. First, the animals, large and small, re-created with unparalleled imagination, underpropped by costumes that artfully blend realism with fantasy: The prancing giraffes and leaping antelopes, the nodding elephant and barreling warthog, keep you marveling even during the story's stodgiest galumphing. \n\n — John Simon",
   "dtliExcerpt": "Come to The Lion King with two pairs of eyes, one ear, and half a brain. You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy. You will be harangued by second-rate standard-show music and lyrics by Elton John and Tim Rice, and also by Lebo Mï's stirring African chants and ululations, to which your active ear should be cocked. Finally, you will be subjected to a well-worn, simplistic children's tale about a lion cub's hard road to adulthood and the throne of the animal kingdom, usurped by his wicked uncle in cahoots with some murderously laughing hyenas.",
   "showScoreExcerpt": "\"You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 85,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 90
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -25,21 +25,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "most beautiful and spectacular sights theater can offer",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "You will be bombarded",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review uses superlative language about visual spectacle ('most beautiful and spectacular sights theater can offer') suggesting strong praise for production values, but the excerpt is too brief to assess overall recommendation strength with confidence.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes the visual elements as 'most beautiful and spectacular sights theater can offer,' which is highly positive praise. However, this appears to be a curated excerpt focused only on spectacle, and the aggregator suggests a 'flat' verdict, indicating possible reservations about other elements not shown in this excerpt. | GPT-4o: The review highlights the visual spectacle of the production, suggesting a positive experience. However, the lack of a full review and the aggregator's 'Flat' verdict imply some reservations, leading to a medium confidence in a positive classification. | Gemini: The quote suggests a visually stunning experience, which implies a positive recommendation, although the need for \"eyes in the back of the head\" hints at potential drawbacks or overwhelming aspects.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,32 +37,31 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:19:33.348Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2338,
-    "outputTokens": 285,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:37.992Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 35,
-    "scoreDelta": 37,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 37 points (Claude: 72, OpenAI: 35)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/the-lion-king-1997/vulture--john-simon_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T15:40:03.136Z",
+  "textFetchedAt": "2026-02-01T23:51:30.358Z",
   "sourceMethod": "archive",
   "sources": [
     "dtli",
@@ -81,19 +69,34 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "rescoreReason": "garbage-text: HTML/navigation instead of review content",
-  "previousLlmScore": 54,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 85,
   "rescoreCompletedAt": "2026-02-01T16:19:33.348Z",
   "contentTier": "needs-rescrape",
   "wordCount": 272,
   "truncationSignals": [
-    "no_ending_punctuation"
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
   ],
   "previousFullText": "Home > Arts & Events > Theater > The Lion King Minskoff Theatre 200 W. 45th St., New York, NY 10036 40.757951 -73.985661 at Broadway See Map | Subway Directions work212-869-0550 Send to Phone Andile Gumbi, Chantel Riley, Alton Fitzgerald White, Buyi Zama, Gareth Saxe, Derek Johnson, Caleb McLaughlin, Alonie Dowden, Bobbi Bordley, Ben Jeffrey, Jeff Binder, Fred Berman, James Brown-Orleans, Enrique Segura, Bonita J. Hamilton Come to The Lion King with two pairs of eyes, one ear, and half a brain. You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy. You will be harangued by second-rate standard-show music and lyrics by Elton John and Tim Rice, and also by Lebo Mï's stirring African chants and ululations, to which your active ear should be cocked. Finally, you will be subjected to a well-worn, simplistic children's tale about a lion cub's hard road to adulthood and the throne of the animal kingdom, usurped by his wicked uncle in cahoots with some murderously laughing hyenas. Kiddies, of course, will delightedly swallow it whole, unless they are tiny and flappable. But this is the one such show adults will feast on, too, mostly because of the wonders wrought by Julie Taymor, who designed and directed this cornucopia of dazzlements. First, the animals, large and small, re-created with unparalleled imagination, underpropped by costumes that artfully blend realism with fantasy: The prancing giraffes and leaping antelopes, the nodding elephant and barreling warthog, keep you marveling even during the story's stodgiest galumphing. — John Simon",
-  "isFullReview": false,
-  "textQuality": null,
-  "textWordCount": 0,
+  "isFullReview": true,
+  "textQuality": "truncated",
+  "textWordCount": 311,
   "humanReviewScore": 65,
   "humanReviewPreviousScore": 85,
-  "humanReviewAt": "2026-02-01T19:59:47.224Z"
+  "humanReviewAt": "2026-02-01T19:59:47.224Z",
+  "needsRescore": true,
+  "designation": "Recommended",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textStatus": "truncated",
+  "archiveOrgTimestamp": "20200918181207",
+  "archiveOrgUrl": "http://web.archive.org/web/20200918181207/https://nymag.com/listings/theater/the_lion_king/"
 }

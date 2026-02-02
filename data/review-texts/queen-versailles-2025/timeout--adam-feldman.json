@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "Like the 90,000–square-foot, $100-million palace that the Siegels are determined to build for themselves in Orlando, The Queen of Versailles is nothing if not ambitious. But like that same palace, it also feels misguided and very much still under construction.",
@@ -18,38 +18,22 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 44,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 37.5,
-      "high": 50.5
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
-      "music": 40,
+      "music": null,
       "performances": null,
-      "direction": 45
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the score doesn't quite cohere; it feels like less than the sum of its parts",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Arden's direction provides good small moments but can't provide an overall attitude the material lacks",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The Yiddish word for The Queen of Versailles is ongepotchket",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The review finds fundamental structural problems with the show (score doesn't cohere, lacks overall attitude) and concludes with a Yiddish term suggesting the production is overly busy and cluttered, indicating clear disappointment despite acknowledging some positive elements. | GPT-4o-mini: The review expresses significant dissatisfaction with the overall cohesion and direction of the production, leading to a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic uses the failed palace as a metaphor for the show itself, calling it 'misguided' and 'under construction' - clear negative assessment despite acknowledging ambition. | GPT-4o: The critic describes the production as 'misguided' and 'still under construction', suggesting a lack of coherence and polish. This aligns with the negative aggregator verdicts, indicating a clear recommendation to skip the show. | Gemini: The review draws a direct comparison to an unfinished and misguided project, suggesting the musical has ambition but falls short in execution. This indicates a mixed assessment rather than a clear recommendation or condemnation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,20 +42,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:45:18.724Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:12.276Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 44,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 45,
-    "scoreDelta": 3,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 44,

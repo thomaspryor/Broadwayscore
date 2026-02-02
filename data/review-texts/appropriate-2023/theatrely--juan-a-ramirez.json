@@ -9,64 +9,55 @@
   "bwwExcerpt": "Appropriate is a masterwork the likes of which crop up a handful of times per generation. Jacobs-Jenkins has crafted parallel statements on our relationships to ourselves and our families, convenient narratives and difficult truths, and ownership and entitlement, tied together by a profound clarity regarding the self-cannibalizing exploitation engendered by a pathological need to profit at all costs.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 94,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 95,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 95,
+      "book": null,
       "music": null,
-      "performances": 94,
-      "direction": 93
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Appropriate is a masterwork the likes of which crop up a handful of times per generation",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "an astonishing work of American fact and fiction",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "uniformly realized by this cast with a dropped-in vitality impossible to shake off",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic explicitly calls the play 'a masterwork' and 'astonishing work' with universal praise for all elements and no meaningful reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the play's depth, direction, and performances, categorizing it as a masterwork.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic explicitly calls this a 'masterwork' and 'astonishing work,' praising every element from writing to performances to production design with superlative language throughout. | Gemini: The review uses extremely strong positive language, calling the play a \"masterwork\" and \"spellbinding.\" The critic clearly believes this is an exceptional and important piece of theater.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:31:06.640Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:13.906Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 95,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Branden Jacobs-Jenkins’ play Appropriate, premiering on Broadway in a spellbinding Second Stage Theatre production after an off-Broadway run nearly a decade ago, is an astonishing work of American fact and fiction.",

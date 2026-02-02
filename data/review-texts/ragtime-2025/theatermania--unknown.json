@@ -12,7 +12,7 @@
   "assignedScore": 62,
   "llmScore": {
     "score": 62,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 57,
       "high": 67
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes the production for serving 'too many masters' and resulting in a compromise where no one is 'truly satisfied,' indicating a mixed assessment that leans slightly negative within the mixed range. | GPT-4o: The review highlights a mix of influences that create a harmonious but ultimately unsatisfying experience, suggesting a mixed reception with some positive elements. | Gemini: The review describes a production with mixed elements that ultimately doesn't fully satisfy. The phrase \"delicious harmony\" suggests some positive aspects, but the overall tone is one of compromise and lack of full satisfaction.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review uses food metaphors to describe a production that attempts to blend multiple elements but ultimately leaves audiences unsatisfied. The critic acknowledges the ambition ('jambalaya of disparate flavors that come together in delicious harmony') but concludes it's a compromise that doesn't fully deliver. | GPT-4o: The review describes the production as a mix of different influences that come together harmoniously, yet implies that it doesn't fully satisfy. This suggests a mixed verdict with some positive elements. | Gemini: The review describes the show as a \"jambalaya of disparate flavors that come together in delicious harmony\" but ultimately says that no one is \"truly satisfied.\" This suggests a mixed experience, not strongly positive or negative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:52:34.152Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:12:29.231Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
+    "claudeScore": 62,
+    "openaiScore": 62,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

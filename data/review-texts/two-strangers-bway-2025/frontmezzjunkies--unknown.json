@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 79,
+  "assignedScore": 78,
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review clearly describes the show as a 'winning Broadway arrival' and praises the direction, performances, and emotional craft, with hopes for Tony recognition, indicating a solid positive recommendation. | GPT-4o: The review uses highly positive language, describing the show as 'winning' and 'delightfully engaging,' suggesting a strong recommendation. The mention of a potential Tony Award further indicates high praise. | Gemini: The review uses positive language like \"winning Broadway arrival\" and highlights the show's emotional connection, suggesting a positive recommendation. The reference to \"delightfully engaging\" further supports this classification.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The excerpt clearly calls it a 'winning Broadway arrival' and praises the direction, performances, and emotional craft, but with only one curated quote available, I'm scoring conservatively within the positive range. | Gemini: The review uses positive language like \"winning Broadway arrival\" and praises the direction and creative team. It suggests the show is engaging and emotionally resonant, indicating a positive recommendation, though the single excerpt and lack of explicit recommendation temper the enthusiasm.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:56:32.723Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:40:26.666Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "openaiScore": null,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

@@ -7,42 +7,26 @@
   "publishDate": "April 24, 2024",
   "fullText": "Director Lila Neugebauer sets Lincoln Center Theater's starry, breathtaking new Broadway production of Anton Chekhov's \"Uncle Vanya\" in current-day America rather than Russia around 1898, the year the play was written. There's a baseball cap and a backpack with dayglow tape; pills are in plastic bottles with childproof caps; when someone runs out of ink while paying bills, they look for a new pen. What a difference 126 years can make!\n\nAnd yet, judging by the state of the world and the human psyche depicted in Chekhov's play, nothing at all has changed — man was destroying the planet then and still is, women were fighting for equal rights and still are, the artist class couldn't afford to live in the city and still can't, and when thoughtful older folks look back, they still feel deep regret for having wasted their precious lives with meaningless work and convictions full of sound and fury signifying nothing. Their bitterness is so relentless it makes the approaching end seem like a mercy.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 90,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 88,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 85,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "starry, breathtaking new Broadway production",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "What a difference 126 years can make! And yet, judging by the state of the world and the human psyche depicted in Chekhov's play, nothing at all has changed",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Their bitterness is so relentless it makes the approaching end seem like a mercy",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic calls the production 'breathtaking' and praises both the direction's contemporary update and Chekhov's enduring relevance, with no negative criticisms of the production itself.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening with contextual setup about the play's themes, the critic delivers clear praise calling it 'breathtaking,' highlighting the 'brilliance' of the production, and praising the 'stellar ensemble' and 'gorgeous broadway revival.' | GPT-4o: The review uses highly positive language such as 'starry, breathtaking' and praises the brilliance of the play and its ensemble, indicating a strong recommendation. | Gemini: The review highlights the brilliance of the play and the stellar ensemble, indicating a positive recommendation. The additional context confirms this positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,27 +35,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:34:53.821Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2533,
-    "outputTokens": 365,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:50:55.530Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "showScoreExcerpt": "\"Steve Carell fits seamlessly into a stellar ensemble in a gorgeous broadway revival\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/uncle-vanya-broadway",

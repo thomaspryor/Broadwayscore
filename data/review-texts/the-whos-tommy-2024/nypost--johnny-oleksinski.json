@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 87,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "The quaking revival of Pete Townshend’s seminal rock opera, which opened Thursday night at the Nederlander Theater after nearly three decades away, really is an espresso martini of a show after a chamomile-tea season of musicals.",
@@ -35,67 +35,51 @@
   "archiveOrgTimestamp": "20250829165623",
   "archiveOrgUrl": "http://web.archive.org/web/20250829165623/https://nypost.com/2024/03/28/entertainment/the-whos-tommy-broadway-review-4-stars-for-a-rock-revival/",
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 87,
+    "confidence": "low",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 82,
+      "high": 92
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 90,
-      "performances": 95,
-      "direction": 92
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Everything about this exhilarating production shakes you awake and leaves you buzzed: Knockout singing, superbly inventive stagecraft and a star-making performance",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "for two hours and 15 minutes, my jaw became all too well acquainted with the floor",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "There is not a second of dead air in his latest go-round",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Unqualified enthusiasm throughout with superlative language ('exhilarating', 'knockout', 'star-making', 'jaw became acquainted with the floor') and no meaningful criticisms, indicating a clear rave recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses rapturous language throughout, calling it 'exhilarating,' praising 'knockout singing' and 'star-making performance,' and uses vivid metaphors like jaw-dropping amazement to convey overwhelming enthusiasm. | Gemini: The review is overwhelmingly positive, praising the singing, stagecraft, and especially the lead performance. The critic uses strong language like \"exhilarating\" and predicts a bright future for the lead actor, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:28:42.149Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3663,
-    "outputTokens": 382,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:23.819Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "contentTier": "complete",
   "wordCount": 829,

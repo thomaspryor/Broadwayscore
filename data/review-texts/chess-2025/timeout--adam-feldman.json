@@ -8,64 +8,56 @@
   "showScoreExcerpt": "\"has plenty of good moves...but no checkmate. Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chess-broadway",
   "originalScore": null,
-  "assignedScore": 39,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 39,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 33,
-      "high": 45
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
-      "music": 73,
-      "performances": 78,
-      "direction": 48
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "All of the above might make for an entertaining evening if Chess were just a concert, which unfortunately it is not",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Christopher is not yet as well-known as his co-stars, but this performance may help change that; audiences who see him in Chess are unlikely to forget him",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: While the critic praises the music and performances, particularly Christopher's standout work, the devastating critique of the book and overall production ('goes down in forfeit') makes this a clear negative recommendation despite some strong elements. | GPT-4o-mini: The review is predominantly negative, criticizing the book and overall storytelling while acknowledging some strong performances and music.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Despite acknowledging some positive elements ('good moves'), the critic clearly delivers a negative verdict with the chess metaphor 'goes down in forfeit' and criticism of poor storytelling that undermines the production's assets. | GPT-4o: The review criticizes the storytelling as being worse than ever and concludes that the show 'goes down in forfeit,' indicating a negative assessment and a recommendation to skip it. | Gemini: The review explicitly states the show \"goes down in forfeit,\" indicating a negative assessment despite acknowledging some good aspects.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:44:22.967Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:39:17.710Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 39,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 40,
-    "scoreDelta": 2,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "dtliExcerpt": "The production at Broadway’s Imperial Theatre, directed by Michael Mayer, has plenty of good moves. Memorable and tuneful songs, including some bona fide bangers? Check! Slickly staged musical numbers? Check! Talented actor-singers Lea Michele, Aaron Tveit and Nicholas Christopher in the lead roles? Check, check, check!—but no checkmate. Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit.",
   "sources": [

@@ -7,66 +7,58 @@
   "publishDate": "November 12, 2024",
   "showScoreExcerpt": "\"Maybe Happy Ending stands out for both its intimacy and its originality. Arden and his actors approach the material with a delicate touch; they trust the romantic comedy to be charming, which it is, and let the wistfulness emerge naturally.\"",
   "originalScore": "5/5",
-  "assignedScore": 88,
+  "assignedScore": 91,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:41:00.000Z",
   "bwwExcerpt": "Can a show as strange and special as Maybe Happy Ending find a place for itself on Broadway today? I like to think that maybe it can. But as the show reminds us, everything is ephemeral: “We have a shelf life, you know that,” says Claire. “It’s the way that it has to be.” The fact that this show is ...",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 91,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 86,
+      "high": 96
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 86,
-      "performances": 89,
-      "direction": 90
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it is utterly enchanting",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "In a Broadway landscape dominated by loud adaptations of pre-existing IP, Maybe Happy Ending stands out for both its intimacy and its originality",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The fact that this show is casting its firefly glow on Broadway at all feels like a gift",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic uses consistently enthusiastic language ('utterly enchanting', 'superb', 'splendid') with strong praise for all elements and frames the show as a special gift to Broadway, indicating a clear recommendation despite some uncertainty about commercial viability. | GPT-4o-mini: The review expresses strong enthusiasm for the originality, performances, and direction of the show, with only minor reservations about its place on Broadway.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5/5 rating combined with praise for the show's distinctiveness ('stands out'), quality execution ('delicate touch'), and successful charm indicates strong enthusiasm despite limited excerpt text. | GPT-4o: The original 5/5 rating and the positive language in the excerpt indicate a strong recommendation. The critic praises the show's intimacy, originality, and the delicate handling by the director and actors, suggesting a highly favorable view. | Gemini: The critic's 5/5 rating, combined with phrases like \"stands out,\" \"delicate touch,\" and \"charming,\" indicates a very positive and enthusiastic recommendation, placing it in the Rave bucket.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:10:20.088Z",
-    "promptVersion": "2.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:17:44.715Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "2.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 88,
-    "scoreDelta": 0,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "sourceMethod": "playwright",
   "dtliExcerpt": "Arden and his actors approach the material with a delicate touch; they trust the romantic comedy to be charming, which it is, and let the wistfulness emerge naturally.",

@@ -6,7 +6,7 @@
   "url": "https://www.vulture.com/2019/12/re-reviewing-the-book-of-mormon-and-hamilton-in-2019.html",
   "publishDate": "2011-03-24",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 61,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "archivePath": "data/archives/reviews/book-of-mormon-2011/vulture--jesse-green_2026-02-01.html",
@@ -16,67 +16,51 @@
   "scoreConfidence": "medium",
   "showScoreExcerpt": "\"The Book of Mormon, arriving after months of hype, somehow delivers even more than its ridiculously felicitous advance buzz promised: It’s an often uproarious, spiritually up-tempo satire not just of Mormonism, and not just religion in general, but of (no kidding) Occidental civilization itself.\"",
   "llmScore": {
-    "score": 35,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 30,
-      "high": 40
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 25,
-      "music": 75,
-      "performances": 70,
+      "book": null,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The sequences in Uganda are grimly unfunny, especially as black actors are forced to sell jokes about curing AIDS by sodomizing babies",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "The story — created by Matt Stone and Trey Parker, the naughty brains of South Park, and Robert Lopez, who wrote Avenue Q — has not aged well",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Their 'Hello' brought the house down; it's one of the great scene-setting songs, and even after eight years, it's enough to hang a show on",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "While the reviewer praises individual elements like performances and music, they deliver a devastating critique of the show's racism and cultural insensitivity, concluding the material 'has not aged well' and is 'grimly unfunny.'",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges loving the show originally and praises specific elements like the opening number, but concludes the Uganda sequences are 'grimly unfunny' and calls out problematic racism that has become more apparent over time. | Gemini: The review praises the first part of the show as hilarious and well-performed, but criticizes the Uganda sequences as unfunny and racist, indicating a mixed experience overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:32:23.456Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3373,
-    "outputTokens": 411,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:27.701Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 35,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "sources": [
     "reviews-json-stub",

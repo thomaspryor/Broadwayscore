@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "5/5",
-  "assignedScore": 89,
+  "assignedScore": 96,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "originalScoreNormalized": 100,
@@ -25,60 +25,52 @@
     "playwright-scraped"
   ],
   "llmScore": {
-    "score": 89,
+    "score": 96,
     "confidence": "high",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 91,
+      "high": 101
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 86,
-      "performances": 89,
-      "direction": 90
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Daniel Aukin's superb production navigates the change without missing a beat. The jam has been preserved.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "There's nary a false note.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The result is richly satisfying multitrack production.",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Consistently enthusiastic praise throughout with superlative language ('superb production,' 'nary a false note,' 'richly satisfying') and no significant criticisms, indicating a strong positive recommendation. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, praising its direction, music, and overall execution, indicating a strong recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it a 'masterpiece' that 'sets a new standard' - this is unambiguous rave language, supported by the 5/5 rating and positive aggregator context. | GPT-4o: The critic's original 5/5 rating and the use of strong, enthusiastic language such as 'masterpiece' and 'staggering ambition' clearly indicate a rave review. The verdict is unambiguous and highly positive. | Gemini: The review explicitly calls the show a 'masterpiece' and states it 'sets a new standard,' indicating a rave review.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:23:59.037Z",
-    "promptVersion": "2.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:08:43.755Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "2.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 98,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 89,

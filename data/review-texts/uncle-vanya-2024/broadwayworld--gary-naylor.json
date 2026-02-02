@@ -16,57 +16,48 @@
     "score": 74,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 81,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Jones uses all of his charisma to create a sense of empathy with the audience",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "in less skilful hands, we might turn against his solipsistic victimhood",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Vanya does deserve more, his bad choices bad, but the price paid so",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: Strong praise for Toby Jones' performance and skill in making an unsympathetic character empathetic, but this appears to be an incomplete excerpt that cuts off mid-sentence, limiting assessment of overall recommendation. | GPT-4o-mini: The review highlights Toby Jones' strong performance and ability to evoke empathy, indicating a positive recommendation overall despite not addressing other elements of the production.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The excerpt praises Toby Jones's skillful performance and charisma, suggesting the production succeeds in making the character compelling. However, with only one curated excerpt available, I'm scoring conservatively within the positive range. | Gemini: The review focuses on a positive performance, but the overall recommendation is somewhat tempered due to the limited excerpt available. The phrase 'Vanya does deserve more' suggests a positive leaning.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:03:57.272Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:06.339Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 75,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "sources": [
     "bww-roundup"

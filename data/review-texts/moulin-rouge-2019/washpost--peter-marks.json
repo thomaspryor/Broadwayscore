@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "It's a feast for the senses but leaves you hungry for more... The musical adaptation of Baz Luhrmann's film is undeniably spectacular, yet it feels oddly hollow at its core.",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "It's a feast for the senses but leaves you hungry for more... The musical adaptation of Baz Luhrmann's film is undeniably spectacular, yet it feels oddly hollow at its core.",
   "needsScoring": true,
   "llmScore": {
-    "score": 58,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 52,
-      "high": 65
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -30,47 +30,41 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 70
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "undeniably spectacular",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "feels oddly hollow at its core",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "leaves you hungry for more",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review presents a clear dichotomy between visual spectacle and emotional emptiness, suggesting technical excellence undermined by lack of substance.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the show's spectacular qualities but emphasizes a fundamental emptiness, indicating neither a clear recommendation nor discouragement. | GPT-4o: The review acknowledges the spectacle and sensory appeal of the production but criticizes it for lacking depth, suggesting a mixed reception. | Gemini: The review acknowledges the spectacle but ultimately finds the musical lacking substance, indicating a mixed reaction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:07:40.906Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2345,
-    "outputTokens": 299,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:11.313Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

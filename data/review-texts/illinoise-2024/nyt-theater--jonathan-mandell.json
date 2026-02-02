@@ -8,17 +8,17 @@
   "bwwExcerpt": "There is near total overlap with the queer love story, involving Ben Cook as Carl, Henry’s small town friend and first love; Gaby Diaz as Shelby, Carl’s first love; and Ahmad Simmons as Douglas, Henry’s big-city mature love. If love suffuses the tale, it is as much about risk, adventure, loss and grief. This overwhelming jumble of emotions is expressed through an impressive synthesis of classical, modern and street choreography, accompanying an eclectic and pleasing mix of orchestral music, jaz",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 89,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language 'extraordinary' and 'often thrilling' indicates strong enthusiasm, though limited text prevents full confidence in the complete verdict. | GPT-4o: The use of 'extraordinary' and 'thrilling' indicates a highly positive assessment, suggesting a strong recommendation to see the show. | Gemini: The provided quote uses very positive language, indicating a recommendation. The phrases 'extraordinary' and 'thrilling' suggest a positive experience.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The language is highly enthusiastic with 'extraordinary' and 'often thrilling' indicating strong positive sentiment, though limited excerpt creates some uncertainty about full context. | GPT-4o: The language used in the review excerpt is highly positive, with words like 'extraordinary' and 'thrilling' indicating a strong recommendation. | Gemini: The phrase \"It's extraordinary, it's queer, it's often thrilling\" indicates a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,17 +37,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:55:21.976Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:15:42.873Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 78,
-    "claudeBucket": "Rave",
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "scoreDelta": 12,
@@ -56,7 +57,7 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"It's extraordinary, it's queer, it's often thrilling\"",

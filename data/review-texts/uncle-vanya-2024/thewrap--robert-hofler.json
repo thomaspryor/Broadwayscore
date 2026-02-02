@@ -7,7 +7,7 @@
   "publishDate": "April 24, 2024",
   "fullText": "Lila Neugebauer directs a very punchy revival of “Uncle Vanya,” which opened Wednesday at LCT’s Vivian Beaumont Theatre. Anton Chekhov’s characters suffer from ennui, but not so much in this production.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 75,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "Lila Neugebauer directs a very punchy revival of “Uncle Vanya,” which opened Wednesday at LCT’s Vivian Beaumont Theatre. Anton Chekhov’s characters suffer from ennui, but not so much in this production.",
@@ -15,38 +15,22 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 74,
-    "confidence": "medium",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 83
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 78
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "very punchy revival",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "characters suffer from ennui, but not so much in this production",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Lila Neugebauer directs a very punchy revival of 'Uncle Vanya'",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The brief excerpt shows clear praise for Neugebauer's direction with 'very punchy revival' and suggests the production successfully overcomes the inherent challenges of Chekhov's material. | GPT-4o-mini: The review indicates a strong direction and a lively production, but lacks detailed praise for performances or the script, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses positive language like 'very punchy' and notes the production avoids the typical sluggishness of Chekhov, but the brief excerpt provides limited detail for a stronger assessment. | GPT-4o: The review highlights the director's successful approach to making the production engaging, suggesting a positive recommendation despite potential reservations about the source material's typical tone. | Gemini: The review describes the production as \"punchy,\" suggesting a positive experience. While brief, the tone implies a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,20 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T06:38:51.157Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:50:36.914Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 70,
-    "scoreDelta": 8,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "truncated",
   "wordCount": 31

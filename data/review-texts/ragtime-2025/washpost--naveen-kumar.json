@@ -9,42 +9,26 @@
   "showScoreExcerpt": "\"Fortunately, the show sounds gloriously lush throughout...So much so that it hardly needs much embellishment at all.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/ragtime-broadway",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 79,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 83,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "sounds gloriously lush throughout",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "hardly needs much embellishment at all",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the show sounds gloriously lush throughout",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Clear praise for the musical elements with strong positive language, but extremely limited excerpt makes comprehensive assessment difficult. | GPT-4o-mini: The review highlights the lush sound of the show, indicating a strong positive sentiment towards the music, but lacks detail on other aspects.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges clear strengths (material, cast, director's vision) but notes significant weaknesses (bold strokes don't always work, narrative pitfalls). The balanced 'succeeds but doesn't always benefit' language indicates a mixed assessment. | GPT-4o: The review acknowledges the success of the material and cast, but also notes shortcomings in the production's approach, leading to a mixed assessment. | Gemini: The review highlights both successes (cast, material) and failures (overly bold direction, reliance on archetypes), resulting in a mixed assessment. The aggregator verdict of 'Flat' supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:57.206Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:13:44.112Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dtliExcerpt": "It succeeds on the merits of the material and the powerhouse principal cast reprising their roles. Director Lear DeBessonet, in her first show as artistic director of Lincoln Center Theater, makes some appealing use of the grand canvas, a promising sign for her upcoming tenure. But the production doesn’t always benefit from these bold strokes, which underline the pitfalls of a narrative told through archetypes and melodrama.",
   "sources": [

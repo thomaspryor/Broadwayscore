@@ -6,17 +6,17 @@
   "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
   "publishDate": "April 26, 2024",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 88,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:06:03.607Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:14:32.253Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.0.0"
   },
   "dtliExcerpt": "The final Broadway production of this crazy busy 2023-24 season is also one of its most exhilarating: Illinoise is a thrilling and absolutely gorgeous dance celebration of singer-songwriter Sufjan Stevens’ 2005 early-career masterpiece LP Illinois, using a large cast of dancer-actors – and three excellent singers, along with that extra “e” at the end of the show title – to flesh out the loose story that might (or might not) have stayed hidden in the grooves of the concept album all along.",
   "sources": [
@@ -86,11 +86,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.811Z"
   },
   "llmScore": {
-    "score": 89,
+    "score": 88,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 83,
+      "high": 93
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -101,7 +101,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language like 'most exhilarating,' 'thrilling,' and 'absolutely gorgeous,' positioning it as one of the season's standouts, indicating strong enthusiasm. | GPT-4o: The review uses highly positive language such as 'exhilarating', 'thrilling', and 'absolutely gorgeous', indicating a strong recommendation to see the show. | Gemini: The review excerpt uses strong positive language like \"thrilling\" and \"gorgeous,\" indicating a recommendation. The aggregator context also suggests a positive reception.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses strong positive language like 'exhilarating,' 'thrilling,' and 'absolutely gorgeous' to describe the production. However, with only one excerpt available, I'm scoring conservatively within the rave range despite the clearly enthusiastic tone. | GPT-4o: The review excerpt describes the production as 'exhilarating,' 'thrilling,' and 'absolutely gorgeous,' which strongly suggests a rave review. The lack of full text necessitates a conservative score within the Rave range. | Gemini: The review excerpt uses strong positive language like \"thrilling\" and \"gorgeous,\" indicating a positive recommendation. However, the single excerpt and reference to a \"loose story\" suggest some reservations, so the score is in the middle of the 'Positive' range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -111,8 +111,8 @@
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "openaiScore": 88,
+    "geminiScore": 78,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

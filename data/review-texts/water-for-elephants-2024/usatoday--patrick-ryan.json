@@ -10,74 +10,58 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 38,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "low",
     "range": {
-      "low": 35,
-      "high": 42
+      "low": 47,
+      "high": 57
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
-      "music": 45,
-      "performances": 65,
-      "direction": 40
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Water for Elephants is hardly the greatest show on Earth",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "by the final curtain, those in the audience may wish they'd just stayed at home",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "the magic is fleeting",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite praising some performances and circus elements, the critic finds the production fundamentally flawed with an 'earthbound' story, problematic design choices, and concludes audiences 'may wish they'd just stayed at home.'",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: Despite acknowledging some spectacular moments with the ensemble and circus elements, the critic finds the production 'earthbound,' calls proceedings 'interminable,' and concludes that audiences may wish they'd stayed home - a clear recommendation against seeing it. | Gemini: The review highlights both impressive and disappointing aspects of the show, ultimately suggesting a mixed experience with fleeting moments of magic. The final sentence indicates a lack of strong recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:36:38.740Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3173,
-    "outputTokens": 344,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:41.823Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 70,
-    "scoreDelta": 8,
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 66,

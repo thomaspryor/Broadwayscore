@@ -24,51 +24,43 @@
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 92,
-      "music": 95,
-      "performances": 90,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Hamilton is no less than genius!",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the most entertaining history lesson ever devised",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "This tuneful sampling is a brilliant reflection of the spirit of revolution and renewal",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review uses superlative language throughout, calling the show 'genius' and 'brilliant,' with extensive praise for all elements and no meaningful criticisms. | GPT-4o-mini: The review expresses unqualified enthusiasm and praise for the musical, highlighting its brilliance and entertainment value.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review culminates in calling Hamilton 'no less than genius' and 'the most entertaining history lesson ever devised,' with the critic acknowledging she may have previously 'understated how great' the musical really is. | GPT-4o: The review is overwhelmingly positive, praising the production as 'genius' and 'the most entertaining history lesson ever devised.' The critic's enthusiasm and use of superlatives clearly indicate a rave recommendation. | Gemini: The review is overwhelmingly positive, praising the show's music, direction, choreography, and historical storytelling. The critic explicitly calls it \"genius\" and \"the most entertaining history lesson ever devised,\" indicating a rave recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:58:25.212Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:01:45.892Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 95,
     "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/our-theater-blog--tamara-beck_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:31:48.058Z",

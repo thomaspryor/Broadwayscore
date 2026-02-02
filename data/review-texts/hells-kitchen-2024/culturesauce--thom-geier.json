@@ -10,7 +10,7 @@
   "bwwExcerpt": null,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 84,
   "source": "webfetch-scraped",
   "sourceUrl": "https://culturesauce.com/2024/04/20/alicia-keys-hells-kitchen-broadway-review/",
   "needsFullText": true,
@@ -18,67 +18,51 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 84,
+    "confidence": "low",
     "range": {
-      "low": 82,
-      "high": 88
+      "low": 79,
+      "high": 89
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 45,
-      "music": 90,
-      "performances": 88,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a heaven-sent new musical that seems destined for a long and successful run on Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "What sets Hell's Kitchen apart from other recent jukebox musicals is that it doesn't sound like Broadway — in the best possible way",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Kristoffer Diaz has crafted a thin wisp of a book from Keys's relatively uneventful, PG-13 spurt of teenage rebellion – and the bumpy second act sometimes veers into melodrama",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite criticizing the thin book and bumpy second act, the critic leads with 'heaven-sent' and emphasizes the show's groundbreaking musical approach, stellar performances, and production values, clearly recommending it overall.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The review is overwhelmingly positive throughout, praising performances as 'star-making,' calling it 'heaven-sent,' and highlighting how it 'kicks musical theater into bold, new directions.' Despite noting some minor flaws in the second act, the critic's enthusiasm is clear and sustained. | Gemini: Despite some reservations about the book, the review is overwhelmingly positive, praising the performances, staging, and music. The aggregator excerpt also indicates a strong recommendation. The truncated text is a concern, but the overall tone suggests a positive verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:38:24.797Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3494,
-    "outputTokens": 408,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:59:06.136Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 88,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

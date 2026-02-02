@@ -9,71 +9,56 @@
   "showScoreExcerpt": "“Lines in ‘Harmony’ about the recurrence of hate against Jews and state oppression in general, fashioned as generalities, are suddenly much more charged. The show — basically a fable — doesn’t meet the moment as much as the moment crashes over it.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 68,
-      "performances": 75,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The humor may remind you of college a cappella groups, clever and twee and earnest and pleasant enough in small doses",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "rote as that second act is, it arrives at the story's most compelling tension",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the musical is good at pulling off the goofy, even if it comes at the expense of its other elements",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds merit in the performances and musical numbers but identifies significant structural and tonal problems, particularly in Act Two, resulting in a qualified, lukewarm assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds merit in the show's lighter comedic elements and performances but criticizes the clumsy handling of serious historical material and describes it as having 'intriguing but not so successful' results when comedy meets grim history. | GPT-4o: The review acknowledges the show's strengths in humor and performance but criticizes its handling of serious themes and historical context. The overall tone suggests that while there are enjoyable elements, the production struggles to fully succeed in its ambitions. | Gemini: The review acknowledges flaws, particularly in the second act and historical context, but praises the onstage antics, music, and performances. It's a qualified recommendation, leaning towards positive due to the enjoyable elements despite the shortcomings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:05:44.156Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3813,
-    "outputTokens": 364,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:12:07.936Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 40,
-    "scoreDelta": 12,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwExcerpt": "What’s the use of frivolity in an unstable time? That’s the question asked, in form and content, by Harmony, a light curio of a musical that comes with a riptide of political anxiety. The songs are by Barry Manilow; the setting is Germany in the years before World War II; the tonal incongruity you might deduce from that juxtaposition is, mostly, the point. Harmony takes for its subject the Comedian Harmonists, a sextet of singers formed in Berlin at the end of the 1920s, who toured the world unt",
   "bwwThumb": "Meh",

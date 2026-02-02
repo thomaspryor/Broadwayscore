@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic's 80/100 rating and overall tone indicate a positive recommendation despite noting emotional shortcomings. The review highlights spectacular effects and strong performances, particularly praising Iglehart's genie, while acknowledging the show lacks heart but remains entertaining. | GPT-4o: The review highlights impressive elements like the magic carpet and James Monroe Iglehart's performance, despite noting a lack of emotional depth. The original rating of 80 aligns with a strong positive recommendation. | Gemini: The critic explicitly states the show is \"entertaining\" and gives it a rating of 80. While noting it's emotionally sparse, the overall tone is positive and recommends seeing it.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic finds the show entertaining with standout performances and spectacular effects, but notes it lacks emotional depth. The 80/100 original rating confirms this as positive territory with reservations. | Gemini: The critic explicitly states the show is \"entertaining\" and the original rating is 80. However, they also note it's \"emotionally sparse\" and \"canned,\" indicating reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,27 +43,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:11:50.371Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:06:51.713Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 69,
-    "previousVersion": "3.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 79,
-    "openaiScore": 80,
+    "openaiScore": null,
     "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "archivePath": "data/archives/reviews/aladdin-2014/ny-daily-news--joe-dziemianowicz_2026-01-26.html",
   "textFetchedAt": "2026-01-26T19:46:56.445Z",

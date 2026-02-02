@@ -9,71 +9,55 @@
   "bwwExcerpt": "At the Armory, those same stories felt monumental — a revolt of mighty compassion against a cruel, suffocating world. And now, as Ilinoise settles in on Broadway, Peck has found a harmony between those two modes, hitting on a beautiful alchemy of personal warmth and epic scale. Average Rating: 80.0% { \"@context\":\"https://schema.org\", \"@type\":\"LiveBlogPosting\", \"@id\":\"/article/Review-Roundup-ILLINOISE-Arrives-on-Broadway-20240426\", \"about\":{ \"@type\":\"Event\", \"startDate\":\"2",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 88,
-    "confidence": "medium",
+    "score": 85,
+    "confidence": "low",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 80,
+      "high": 90
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 90,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 88
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this miracle of a show",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "a magical work of fierce heart that bursts with indescribable wells of emotion",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the wondrous new dance-musical Illinoise keeps on growing in subtle and fascinating ways",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic uses superlative language ('miracle of a show', 'magical work') and describes deep emotional connection, indicating strong enthusiasm despite the excerpt ending mid-review.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses superlative language throughout ('miracle of a show,' 'magical work,' 'beautiful alchemy') and describes the production's evolution across venues with consistent praise, indicating this is a must-see recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"miracle of a show\" and praising the \"beautiful alchemy of personal warmth and epic scale.\" While acknowledging some minor flaws, the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:19:55.794Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2737,
-    "outputTokens": 334,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:17:06.905Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Now on Broadway at the St. James Theater, this miracle of a show has traded the grandeur of Park Avenue Armory’s monumental Drill Hall for a gentler intimacy. (“Intimate” would not be a typical descriptor for the St. James, but that’s just how massive the Drill Hall is.) It remains, above all else, a magical work of fierce heart that bursts with indescribable wells of emotion.",

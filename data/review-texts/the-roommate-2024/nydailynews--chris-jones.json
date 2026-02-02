@@ -9,71 +9,63 @@
   "bwwExcerpt": "It’s near-impossible to look away from Mia Farrow’s riveting performance as a lonely Iowan in Jack O’Brien‘s staging of Jen Silverman’s quirky one-act, one-set play “The Roommate.” One fears looking down at the floor for a second and missing an implosion. Maybe “explosion” is the better word. It’s hard to know. That’s because Farrow’s organic fusing of externals and internals is so central to her work as an actress. When you get to experience Farrow live, as you now can at Broadway’s Booth Theat",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 83,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 95.5
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 90,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's near-impossible to look away from Mia Farrow's riveting performance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "One fears looking down at the floor for a second and missing an implosion",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Farrow's organic fusing of externals and internals is so central to her work as an actress",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Strong praise for Farrow's performance with compelling language about its magnetic quality, but excerpt cuts off before revealing overall show assessment. | GPT-4o-mini: The review expresses strong enthusiasm for Mia Farrow's performance, indicating a must-see experience. | Note: Models differed by 15 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear admiration for Farrow's performance with strong language like 'riveting' and 'near-impossible to look away,' but with only one excerpt available and conflicting aggregator context, scoring conservatively within positive range. | GPT-4o: The review excerpt highlights a strong performance by Mia Farrow, suggesting the production is engaging. However, due to the single excerpt and lack of a full review, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt focuses on a \"riveting performance\" and the experience of seeing Farrow live, suggesting a positive experience, but the lack of full text and the \"flat\" aggregator verdict suggest a more tempered recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:34:59.929Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:13:28.884Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 83,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 90,
-    "scoreDelta": 15,
+    "claudeScore": 76,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Meh",
   "sources": [
     "bww-roundup"
   ],
-  "archivePath": "data/archives/reviews/the-roommate-2024/nydailynews--chris-jones_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T14:03:55.015Z",
+  "archivePath": "data/archives/reviews/the-roommate-2024/nydailynews--chris-jones_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:29:03.741Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {

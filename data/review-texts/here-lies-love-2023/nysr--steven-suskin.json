@@ -12,61 +12,55 @@
     "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "assignedScore": 72,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 72,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 78,
-      "performances": 70,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The vast array of inventive vibrancy is still there to be seen and felt. But while the 2013 Here Lies Love sent you bursting onto Astor Place eager to spread the word and plot a return visit, the level of excitement of those now experiencing the show for the first time, at the Broadway Theatre, is less predictable.",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "Here Lies Love remains an impressive and effective experience; but uptown on Broadway, at the over-sized Broadway, the bloom is off the rose",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Regretfully, we conclude that the uptown edition—as of the official opening—is not yet quite so powerful as what enthralled us, three times, down on Astor Place.",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic acknowledges the show's inventive vibrancy and technical excellence but repeatedly emphasizes that the Broadway transfer has diminished the original's power and excitement, particularly for audience members not on the stage floor.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite the 4/5 star rating, the critic clearly states the Broadway version is diminished from the original, calling it 'not yet quite so powerful' and noting 'the bloom is off the rose.' The review acknowledges it's still 'impressive and effective' but emphasizes significant reservations about the transfer. | GPT-4o: The review acknowledges the show's impressive elements and effective experience, but notes that the Broadway transfer lacks some of the original production's power and dynamism. The original rating of 4/5 stars suggests a positive recommendation, though with some reservations about the new venue's impact. | Gemini: The critic gives a mixed assessment, praising aspects like the cast and production but noting the transfer to a larger venue diminishes the original's impact. The 4/5 star rating and overall tone suggest a recommendation with reservations, but the truncated text makes it hard to be certain.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T18:09:30.863Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4259,
-    "outputTokens": 449,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:47.333Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "complete",
-  "contentTierReason": "Full review text"
+  "contentTierReason": "Full review text",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

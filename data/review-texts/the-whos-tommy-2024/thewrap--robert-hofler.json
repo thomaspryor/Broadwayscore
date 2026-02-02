@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Well, McAnuff is back at it with a new revival of “The Who’s Tommy” that opened Thursday at the Nederlander Theatre, and it made me want to see the Russell movie again.",
@@ -19,69 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 48,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 42,
-      "high": 53
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 40,
+      "book": null,
       "music": null,
-      "performances": 55,
-      "direction": 42
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it made me want to see the Russell movie again",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Some tableaux are breathtaking; others are rather pedestrian",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "What gives this production some sense of fun, though, is Ali Louis Bourzgui",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds more problems than strengths, criticizing the direction, costumes, choreography, and lead performances while offering only isolated praise for projections and one performer.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes multiple elements (direction, costumes, choreography, performances) as 'unimaginative,' 'mundane,' or 'mawkish,' but finds redeeming qualities in the projections ('Some tableaux are breathtaking') and lead performance, resulting in a mixed assessment without a clear recommendation. | GPT-4o: The review highlights both positive aspects, like the performance of Ali Louis Bourzgui and some breathtaking visuals, and negative aspects, such as unimaginative costumes and a lack of irreverence compared to the original film. The overall tone suggests a mixed experience with some redeeming qualities. | Gemini: The review is mixed, praising some aspects like the lead actor and projections, but criticizing the direction, costumes, and choreography. It doesn't outright recommend or discourage seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:29:48.832Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3144,
-    "outputTokens": 337,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:16.733Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 40,
-    "scoreDelta": 15,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (33 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 33,

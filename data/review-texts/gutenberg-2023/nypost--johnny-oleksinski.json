@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Josh Gad and Andrew Rannells are absolutely delightful as Bud and Doug, two hapless musical theater writers who have penned what they believe is the next 'Hamilton.'",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,57 +17,41 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Josh Gad and Andrew Rannells are absolutely delightful as Bud and Doug, two hapless musical theater writers who have penned what they believe is the next 'Hamilton.'",
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 80,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "absolutely delightful",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "hapless musical theater writers",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Strong praise for the lead performances but this appears to be only a fragment of a larger review, making it impossible to assess the critic's overall recommendation for the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear praise for the lead performances with 'absolutely delightful', but as a single curated quote from a larger review, the overall verdict remains uncertain. | GPT-4o: The excerpt praises the performances of the lead actors, suggesting a positive view of the production. However, due to the single excerpt warning, the overall sentiment may not be fully captured, leading to a conservative score within the Positive range. | Gemini: The review excerpt praises the performances of the leads, suggesting a positive experience, but the limited text and single excerpt warning necessitate a score in the lower end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:00:11.824Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2344,
-    "outputTokens": 270,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:20.997Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 80,
+    "claudeScore": 72,
+    "openaiScore": 77,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
@@ -104,6 +88,8 @@
   "archiveOrgTimestamp": "20240604194650",
   "archiveOrgUrl": "http://web.archive.org/web/20240604194650/https://nypost.com/2023/10/13/gutenberg-the-musical-review-gad-and-rannells-have-almost-too-much-fun/",
   "rescoreCompletedAt": "2026-02-01T20:00:11.824Z",
-  "contentTier": "complete",
-  "contentTierReason": "Full review text"
+  "contentTier": "needs-rescrape",
+  "contentTierReason": "Full review text",
+  "garbageReasoningDetected": "stub-or-fragment",
+  "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.063Z"
 }

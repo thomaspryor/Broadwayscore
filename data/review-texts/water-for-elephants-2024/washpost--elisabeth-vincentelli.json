@@ -10,74 +10,58 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 72,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 65,
-      "performances": 78,
-      "direction": 74
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "more often than not, the show captures the unabashed mix of romance and pathos that made its source material so wildly popular",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Not everything works in Jessica Stone's production",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "at least it summons a coherent theatrical universe",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic acknowledges significant flaws (weak score, some ineffective elements) but praises the production's coherent vision, strong performances, and successful adaptation of beloved source material, ultimately finding more to appreciate than criticize.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges clear flaws, particularly with the score, but praises the production's coherent theatrical universe, effective use of puppetry, and successful adaptation of the source material's appeal. | Gemini: The review indicates that the show is worth seeing despite some flaws, particularly with the music and dream sequences. However, it praises the performances, circus design, and integration of puppets, leading to a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:36:57.603Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3359,
-    "outputTokens": 352,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:14.194Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 68,
-    "scoreDelta": 0,
+    "claudeScore": 75,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 68,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
   "designation": "Critics_Pick",
@@ -29,67 +29,52 @@
   "archiveOrgTimestamp": "20250720154224",
   "archiveOrgUrl": "http://web.archive.org/web/20250720154224/https://www.nytimes.com/2024/10/10/theater/our-town-review-jim-parsons.html",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 94,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 89,
+      "high": 99
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 95,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Critic's Pick",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The revival that opened Thursday at the Ethel Barrymore Theater, the fifth on Broadway since the play's 1938 debut, is more than good enough. To use this word in the only positive sense I can imagine, it's unbearable: in its beauty",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Kenny Leon's swift and unsentimental direction, and of a fine cast led by the mercilessly acute Jim Parsons as the Stage Manager",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This is a Critic's Pick with lavish praise for the production being 'more than good enough' and 'unbearable in its beauty,' plus strong appreciation for Wilder's text, Parsons's performance, and Leon's direction.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Jesse Green delivers rapturous praise, calling the revival 'more than good enough' and 'unbearable' in its beauty, with admiration for both the production and Wilder's timeless play. The language is reverential and the recommendation is unequivocal. | GPT-4o: The review is highly enthusiastic, describing the production as 'more than good enough' and 'unbearable' in a positive sense, indicating a strong recommendation to see the show. | Gemini: The critic states the revival is 'more than good enough,' indicating a positive recommendation. While the review discusses the play's inherent qualities, the assessment of the current production is positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:49:40.266Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2854,
-    "outputTokens": 403,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:37:25.431Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dateSource": "extracted-from-url",
   "showScoreExcerpt": "\"...it’s unbearable: in its beauty, yes, but more so in its refusal to offer beauty as a cure when it is only, at best, a comfort.\"",

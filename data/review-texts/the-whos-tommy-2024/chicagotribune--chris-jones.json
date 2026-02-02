@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 84,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Now, though, the world has spun forward enough times to meet “Tommy” where it always lived, meaning its psychologically oriented story of delayed self-actualization due to childhood trauma, and its withering parody of abusive authority figures and celebrity worship.",
@@ -19,67 +19,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 83,
-    "confidence": "high",
+    "score": 84,
+    "confidence": "low",
     "range": {
-      "low": 80,
-      "high": 86
+      "low": 79,
+      "high": 89
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 88,
-      "performances": 82,
-      "direction": 85
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "will sock you right in the gut. Many a replay can be expected at the Nederlander Theatre",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this is the work of late-career people who now care about a lot more than selling tickets",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "an emancipatory rock banquet and a reminder that dads really have improved",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic delivers strong praise for McAnuff's direction, the choreography, projections, and overall production while expressing deep personal connection to the material, with only minor reservations about star power.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The review is filled with superlative language including 'sock you right in the gut,' 'eye-popping premiere,' 'some of the best virtual images I've ever seen,' and 'courageous stunner of a supporting performance.' The critic clearly loves this production and recommends it strongly. | Gemini: The review is largely positive, highlighting the production's impact and the effective use of digital projections. While acknowledging potential disconnect for some viewers, the reviewer ultimately recommends it, especially for those who connect with the source material.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:28:10.861Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3403,
-    "outputTokens": 353,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:29.280Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 83,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 55,
-    "openaiScore": 70,
-    "scoreDelta": 15,
+    "claudeScore": 88,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 63,

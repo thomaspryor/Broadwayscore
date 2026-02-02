@@ -7,43 +7,27 @@
   "publishDate": "July 20, 2023",
   "dtliExcerpt": "What may be most remarkable about “Here Lies Love” is how deftly it pivots from the celebratory and even sentimental presentation of Imelda’s rise to the inevitably condemnatory, as we witness the assassination of Aquino at the airport upon his return from exile.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/here-lies-love-bway/",
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 78
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "What may be most remarkable about \"Here Lies Love\" is how deftly it pivots",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "deftly it pivots from the celebratory and even sentimental presentation",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "inevitably condemnatory",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The excerpt praises the show's skillful handling of complex material and tonal shifts, suggesting admiration for the production's craft, but lacks context for a definitive recommendation. | GPT-4o-mini: The review highlights a notable strength in the show's ability to shift tones effectively, indicating a clear recommendation despite a lack of explicit enthusiasm.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt praises the show's 'deft' handling of a complex narrative shift, using 'remarkable' positively, but the truncated text cuts off mid-sentence before revealing the full verdict about the condemnatory aspects. | GPT-4o: The review acknowledges a notable aspect of the show in its ability to pivot between tones, suggesting a complex and potentially uneven experience. The lack of a clear recommendation or discouragement indicates a mixed verdict. | Gemini: The quote suggests a positive assessment of the show's ability to balance celebratory and critical elements, indicating a recommendation with some reservations. The word \"remarkable\" suggests a positive leaning.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,20 +36,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:00.981Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:38.328Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "showScoreExcerpt": "“What may be most remarkable about ‘Here Lies Love’ is how deftly it pivots from the celebratory and even sentimental presentation of Imelda’s rise to the inevitably condemnatory”",
   "sources": [

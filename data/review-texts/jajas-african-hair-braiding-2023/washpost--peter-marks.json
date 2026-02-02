@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"“This bittersweet facet of the play seems to be token Bioh’s not-so-sunny perspective, which emerges as the 95 minutes of ‘Jaja’s’ wind down, when she introduces a harsher reality...You sense in her fate the dramatist’s anger, as she pulls the rug of joy out from under ‘Jaja’s’ and forces us to confront a colder truth about the dangers immigrants face. The customers’ braids may hold, it seems, even when the braider’s life unravels.”\n\"",
@@ -19,38 +19,22 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 82,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a sparkling ensemble comedy as tautly woven as one of the intricate hairdos in Jaja's Harlem salon",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "marking Bioh's Broadway debut as an occasion worth toasting",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this wickedly entertaining evening",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic consistently praises the play with enthusiastic language ('sparkling', 'worth toasting', 'wickedly entertaining') and compares it favorably to works by August Wilson, with only minor reservations about the ending.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the play as 'sparkling,' 'wickedly entertaining,' and calls the Broadway debut 'an occasion worth toasting,' but notes the ending gives in to highlighting characters' plights 'a bit too baldly,' suggesting strong recommendation with some reservations. | GPT-4o: The review is overwhelmingly positive, praising the play's writing, direction, and performances. The critic uses strong language to convey enthusiasm, such as 'sparkling ensemble comedy' and 'occasion worth toasting,' indicating a highly favorable view of the production. | Gemini: The review is largely positive, praising the play's humor, characters, and performances. While it notes a slight misstep at the end, the overall tone suggests a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,27 +43,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:22:01.848Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3739,
-    "outputTokens": 360,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:45.041Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 75,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "openaiScore": 92,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 77,

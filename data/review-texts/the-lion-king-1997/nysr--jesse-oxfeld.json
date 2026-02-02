@@ -9,71 +9,56 @@
   "showScoreExcerpt": "\"It’s Julie Taymor’s puppetry that continues to astound...The problem is that the rest of the musical is not as good as Taymor’s vision for the animals and their gorgeous ensemble numbers...Now, the beauty is there, but the show feels a bit worn...The few big numbers aside, much of the John-Rice score is middling ’90s pop rock...That said, the performances, even now, are rather lovely...But you’re not here for the performances. You’re here for the puppets. And they’re worth it.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-lion-king",
   "originalScore": "3 stars",
-  "assignedScore": 62,
+  "assignedScore": 74,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
-      "music": 70,
+      "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it's not entirely engaging",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "it's Julie Taymor's puppetry that continues to astound",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "still warms children's hearts",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "3/5 stars with clear praise for the puppetry and spectacle but criticism that it's 'not entirely engaging,' indicating a qualified recommendation with mixed feelings.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 3-star rating and final verdict 'And they're worth it' clearly recommend seeing the show, though the critic acknowledges significant flaws in the score and overall engagement. | GPT-4o: The review acknowledges some shortcomings in the musical's overall engagement and music but ultimately recommends it for the puppetry, which is described as astounding. The original 3-star rating aligns with a positive but reserved recommendation. | Gemini: The critic explicitly states the puppets are 'worth it,' indicating a recommendation, despite reservations about other aspects of the show. The 3-star rating also supports a positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:19:03.272Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2575,
-    "outputTokens": 319,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:28.595Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 65,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "show-score",

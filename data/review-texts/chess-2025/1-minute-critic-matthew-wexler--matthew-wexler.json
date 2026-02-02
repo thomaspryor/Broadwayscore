@@ -27,61 +27,55 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "assignedScore": 82,
+  "assignedScore": 78,
   "llmScore": {
-    "score": 82,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
-      "music": 85,
-      "performances": 85,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "There's some magic happening on Broadway",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this revival proves every piece matters in a Cold War musical that finally finds its winning strategy",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Strong rethinks the game strategy by centering The Arbiter",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review consistently praises the revival's successful reimagining with Strong's new book, stellar performances across the cast, and effective direction that finally makes the musical work after its original Broadway failure.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review concludes positively, praising the new book, direction, and performances while acknowledging this revival has found success where the original didn't. The 'magic happening on Broadway' opening and 'winning strategy' conclusion clearly recommend seeing it. | GPT-4o: The review is highly positive, praising the new book, performances, direction, and choreography. The critic describes the production as finding its 'winning strategy,' suggesting a strong recommendation. | Gemini: The review is generally positive, highlighting the strengths of the revival and its winning strategy. While acknowledging the star power of Tveit and Michele, it emphasizes the importance of the ensemble and overall production, suggesting a worthwhile experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:57:10.125Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2823,
-    "outputTokens": 343,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:42.362Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "complete",
-  "contentTierReason": "Full review text"
+  "contentTierReason": "Full review text",
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

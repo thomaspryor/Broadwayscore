@@ -8,74 +8,59 @@
   "fullText": "Strutting strong, arms akimbo and ready for a royal rumble, the sextet of cheeky spouses of King Henry VIII take to the stage in triumph — not just over the much-married monarch who did them wrong, but also in celebration of the deferred Broadway bow of the musical “Six,” shut down by the pandemic last year just hours before its scheduled opening night.\n\nBut these ladies have been waiting for centuries even, ready to give some perspective and personality to their reductive footnote in history, as echoed in the schoolyard chant: \"Divorced, beheaded, died; divorced, beheaded, survived.\" You can now add \"gloriously revived\" thanks to this Brit import that has gathered passionate followers as the show made its journey from university lark to viral juggernaut to, finally, celebratory West End and now Broadway musical.",
   "dtliExcerpt": "This fast-paced show — it’s just 80 minutes long — places these Old Spice Girls in a competitive pop-rock concert — think “The SiX Factor” — with the wife who is judged as having suffered the most to be elevated to lead singer. It may not be much of a compensation for their pains — especially for those who have been literally on the chopping block. But for theatergoers, this show (by twenty-somethings Toby Marlow and Lucy Moss and directed by Moss and Jamie Armitage) is as sharp and shiny as a sequined stiletto heel, and couldn’t have come at a better time.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 92,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:08:10.597Z",
   "dtliThumb": "Up",
   "bwwExcerpt": "There's the spirit-lifting energy of an arena concert, the humor and sass of a special sisterhood, and a ton of biographical exposition easily received in rap and snap - and which might evoke another recent historical musical. Just as Lin-Manuel Miranda's \"Hamilton\" made us hyper-aware of \"who lives, who dies, who tells your story,\" this show now gives voice to these Tudor #MeToos, presenting a feminist - both proto and post - version of \"herstory.",
   "llmScore": {
-    "score": 85,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "take to the stage in triumph",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "gloriously revived",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "celebratory West End and now Broadway musical",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review is overwhelmingly positive with triumphant language ('triumph', 'gloriously revived', 'celebratory') and frames the show as a successful journey from university production to Broadway hit.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is filled with celebration language like 'triumph,' 'gloriously revived,' 'spirit-lifting energy,' and describes the show as coming at the perfect time with highly positive metaphors. | GPT-4o: The review is filled with enthusiastic praise, describing the show as triumphant, gloriously revived, and comparing it to the celebrated 'Hamilton'. The language used is highly positive, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"triumph,\" \"celebration,\" and describing the show as \"sharp and shiny.\" The comparison to \"Hamilton\" further suggests a high level of quality and impact.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:07:59.921Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2499,
-    "outputTokens": 318,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:41:59.923Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "textIssue": "too_short",
   "sourceMethod": "archive",

@@ -9,74 +9,59 @@
   "dtliExcerpt": "The show feels new and more overwhelming on Broadway, the consequence of a staging so fully imagined, sensitively expanded and brilliantly executed that it’s impossible to tell where one element ends and another begins.",
   "showScoreExcerpt": "\"“Maybe Happy Ending” [is] a ravishing addition to the catalog of Broadway nerdicals. The term is high praise, honoring supersmart, usually small-scale shows — like “Fun Home,” “The Band’s Visit” and “Kimberly Akimbo” — that nevertheless have big emotional impact. This one, directed with breathtaking bravura by Michael Arden, gets bonus points for difficulty, too\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 93,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112",
   "dtliThumb": "Up",
   "designation": "Critics_Pick",
   "bwwExcerpt": "What “Maybe Happy Ending” asks, even in its ambivalent title, is whether that’s a good thing, for them and for us, their mirror images. When Oliver fully realizes that Claire’s “shelf life” will end before his, he asks in real pain, “How can people do this?” — meaning survive the death of others....",
   "llmScore": {
-    "score": 92,
+    "score": 93,
     "confidence": "high",
     "range": {
       "low": 88,
-      "high": 95
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 85,
-      "performances": 90,
-      "direction": 95
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "makes 'Maybe Happy Ending' a ravishing addition to the catalog of Broadway nerdicals",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "directed with breathtaking bravura by Michael Arden",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "this astonishing musical",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic uses superlative language throughout ('ravishing,' 'breathtaking bravura,' 'astonishing musical') with sustained praise for all elements and calls it a significant addition to Broadway's catalog of intelligent musicals.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Jesse Green uses superlative language throughout, calling it 'astonishing,' 'ravishing,' and 'breathtaking,' with detailed praise for every element from direction to performances to technical design, clearly positioning this as a must-see show. | GPT-4o: The review is filled with high praise, describing the show as 'ravishing', 'astonishing', and comparing it favorably to other acclaimed productions. The critic highlights the show's emotional impact, innovative staging, and exceptional performances, making it clear this is a must-see production. | Gemini: The review is overwhelmingly positive, using phrases like \"ravishing addition\" and praising the direction, staging, and performances. The critic clearly recommends seeing the show, calling it \"astonishing.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:34:04.565Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3972,
-    "outputTokens": 348,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:16:40.229Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/maybe-happy-ending-2024/nytimes--jesse-green_2026-01-26.html",

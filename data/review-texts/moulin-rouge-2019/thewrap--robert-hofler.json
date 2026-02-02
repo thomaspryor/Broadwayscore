@@ -11,67 +11,59 @@
   "_removedScore": "A",
   "_removedScoreReason": "Grade doesn't match text - excerpt is negative ('uninspired book', 'poorly mimics') but score was A. Likely extracted from wrong critic in BWW roundup.",
   "_removedAt": "2026-01-31T23:45:00.000Z",
-  "assignedScore": 50,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
   "sourceMethod": "bww-roundup",
   "scoreSource": "extracted-grade",
   "llmScore": {
-    "score": 50,
-    "confidence": "medium",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 33,
+      "book": null,
       "music": null,
-      "performances": 70,
-      "direction": 50
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Too often the stage musical gets bogged down in John Logan's uninspired book",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Tveit's puppy-dog innocence is ideal",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "poorly mimics Baz Luhrmann's 2001 film",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review criticizes the book as 'uninspired' and notes the production 'gets bogged down' too often, with some praise for individual performances but overall mixed-negative sentiment. | GPT-4o-mini: The review highlights significant issues with the book while praising the performances, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The single excerpt mentions some positive elements (Tveit's performance, direction creating 'pandemonium') but emphasizes significant flaws like the 'uninspired book' and getting 'bogged down'. With only one curated excerpt available, scoring conservatively within mixed range. | GPT-4o: The review highlights issues with the book being uninspired, suggesting a lack of enthusiasm for the overall production. However, the mention of 'grandiose emotions' and 'storybook sensation of first love' indicates there are redeeming qualities, leading to a mixed verdict. | Gemini: The review praises some aspects like Tveit's performance and Timbers' direction in recreating the pre-show pandemonium, but criticizes the book as uninspired. This suggests a mixed experience, not strongly recommending or discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:39:32.126Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:50.751Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "mergedFrom": [
     {

@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "ry, which ties together the myths of Orpheus and Eurydice, respectively played by Reeve Carney and Eva Noblezada, and Hades and Persephone, played by Patrick Page and Amber Gray. Jessica Derschowitz, Entertainment Weekly : As far as tales as old as time go, the stories of Greek mythology are pretty high up there, those epic stories of gods and men that have been told for thousands of years and inspired countless adaptations. But there's little that feels old or stately about the way those stories - those old songs, those sad songs - are told in Hadestown, which makes its Broadway bow Thursday with a journey to the underworld that feels like it sprung forth as something entirely new. Christopher Kelly, NJ.com : Still, if this is your first visit to \"Hadestown,\" it's likely to be a satisfying one. Mitchell and director Rachel Chavkin (\"Natasha, Pierre and the Great Comet of 1812\") do an impressive job updating an oft-recounted myth; in this telling, Orpheus (Reeve Carney) falls in love w",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
@@ -17,60 +17,52 @@
   "scoreConfidence": "medium",
   "showScoreExcerpt": "“Proves to be smart and romantic but dramatically underwhelming...In Mitchell’s hands, the sensitive Orpheus is too focused on playing the guitar to provide for Eurydice’s real-world needs, so she independently ventures down to an industrialized underworld...The cast is excellent and songs are either gently touching or catchy, but ‘Hadestown’ does come off as slow, undercooked and choppy, more reminiscent of a concert than a theatrical work.”",
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 55,
+      "low": 57,
       "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
-      "music": 70,
-      "performances": 77,
-      "direction": 63
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The cast is excellent and songs are either gently touching or catchy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "does come off as slow, undercooked and choppy, more reminiscent of a concert than a theatrical work",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "smart and romantic but dramatically underwhelming",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Mixed review with strong praise for cast and music but significant criticism of pacing and theatrical cohesion, landing in qualified recommendation territory. | GPT-4o-mini: The review presents a mixed view, highlighting strong performances and music but criticizing the script and pacing, leading to a conditional recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges positives (excellent cast, touching songs) but concludes the show is 'dramatically underwhelming,' 'slow, undercooked and choppy' - clear mixed verdict that neither recommends nor discourages. | GPT-4o: The review highlights both positive aspects, such as the excellent cast and engaging songs, and negative aspects, like the slow pacing and lack of dramatic impact, suggesting a mixed but not entirely negative experience. | Gemini: The review praises the cast and songs but criticizes the pacing and overall theatricality, indicating a mixed reception. The description of it being 'undercooked' and 'choppy' suggests it's not a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:16:54.621Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:58:59.373Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 61,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 60,
-    "scoreDelta": 2,
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0

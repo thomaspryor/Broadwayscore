@@ -9,71 +9,56 @@
   "bwwExcerpt": "It’s hard to picture a better cast for this first Broadway revival of Ossie Davis’s 1961 broad, biting comedy about racism in the Old South. As the title character, Leslie Odom Jr., assuming the role originated by Davis himself, feels especially well-matched. Odom of course made his name on Broadway delivering with uncommon clarity the pithiest raps in “Hamilton,” as smooth-talking, untrustworthy but surprisingly sympathetic Aaron Burr. Similarly, as Purlie Victorious Judson, a newly-minted pre",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 75,
-    "confidence": "low",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 82,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's hard to picture a better cast for this first Broadway revival",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "feels especially well-matched",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "broad, biting comedy about racism in the Old South",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Strong praise for casting and lead performance suggests positive recommendation, but review is incomplete making assessment uncertain.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt opens with strong praise for the cast and lead performance, but with only one truncated quote available, the full verdict remains unclear. | GPT-4o: The review excerpt praises the casting, particularly Leslie Odom Jr.'s performance, suggesting a positive impression of the production. However, due to the single excerpt warning and lack of a full review, the confidence is medium, and the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt praises the cast, especially Leslie Odom Jr., suggesting a positive experience, but the limited text and single excerpt warning necessitate a score in the middle of the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:55:06.417Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2426,
-    "outputTokens": 305,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:37.234Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",

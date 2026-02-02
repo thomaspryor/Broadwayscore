@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Illinoise is a gorgeous, ambitious work that succeeds in translating Stevens' introspective indie folk into something bigger and more communal – a testament to the power of art to connect us across time and space.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,33 +18,22 @@
   "showScoreExcerpt": "Illinoise is a gorgeous, ambitious work that succeeds in translating Stevens' introspective indie folk into something bigger and more communal – a testament to the power of art to connect us across time and space.",
   "needsScoring": true,
   "llmScore": {
-    "score": 82,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 85,
+      "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "gorgeous, ambitious work that succeeds",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a testament to the power of art to connect us across time and space",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The review uses strong positive language ('gorgeous', 'succeeds', 'testament to the power of art') with no caveats or criticisms, indicating clear recommendation despite being brief.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses strongly positive language ('gorgeous', 'ambitious', 'succeeds') and frames the work as a testament to art's power, indicating clear enthusiasm and recommendation. | GPT-4o: The review uses highly positive language, describing the work as 'gorgeous' and 'ambitious', and highlights its success in creating a communal experience, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"gorgeous\" and \"ambitious\" and praises the show's ability to connect people, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,19 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:00:30.144Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2346,
-    "outputTokens": 289,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:14:43.570Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (35 words)"
+  "contentTierReason": "Short text (35 words)",
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

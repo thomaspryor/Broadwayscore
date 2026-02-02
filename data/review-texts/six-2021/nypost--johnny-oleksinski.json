@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": "A",
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -18,67 +18,51 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
-      "music": 85,
-      "performances": 80,
-      "direction": 65
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The songs here, by Toby Marlow and Lucy Moss, are all whip-smart and catchy. With jukebox shows proliferating like rabbits, audiences are getting used to hearing modern music onstage, but 'Six' is one of the few original musicals in memory whose score is radio-ready.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The one element lacking in 'Six'...is scale. For a short show — one inspired by Swift and Beyoncé, no less — it needs more production value and dazzle: the royal treatment, if you like.",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Still, 'Six' doesn't come up short on fun.",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite criticisms about production scale and set design, the critic consistently praises the music as 'whip-smart and catchy' with a 'radio-ready' score, compliments the performances, and concludes it 'doesn't come up short on fun,' indicating a clear positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gave an 'A' rating and consistently praises the show's energy, clever lyrics, and entertainment value, with only minor criticism about production scale. | Gemini: The review is overwhelmingly positive, praising the music, lyrics, and performances. The critic notes a lack of scale in the production design, but ultimately concludes that the show is fun and enjoyable, meriting a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:07:01.262Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3475,
-    "outputTokens": 454,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:40:14.478Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "scoreDelta": 8,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 86,

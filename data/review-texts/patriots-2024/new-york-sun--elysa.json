@@ -8,65 +8,57 @@
   "fullText": null,
   "dtliExcerpt": "I would advise them all to rush to the Ethel Barrymore Theatre, where Peter Morgan’s “Patriots” is offering one of the most absorbing accounts of political intrigue I’ve ever seen on a Broadway stage.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/patriots/",
   "llmScore": {
-    "score": 94,
+    "score": 89,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I would advise them all to rush to the Ethel Barrymore Theatre",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "one of the most absorbing accounts of political intrigue I've ever seen on a Broadway stage",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "one of the most absorbing accounts of political intrigue",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Strong superlative language ('most absorbing...I've ever seen') combined with explicit urgent recommendation ('rush to') indicates unqualified enthusiasm despite brief excerpt. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, indicating a strong recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly advises audiences to 'rush' to see the show and calls it 'one of the most absorbing accounts' they've ever seen on Broadway, indicating strong enthusiasm despite limited excerpt. | GPT-4o: The critic strongly recommends the show, describing it as 'one of the most absorbing accounts' they've seen, which indicates a high level of enthusiasm. The phrase 'advise them all to rush' suggests a strong recommendation to see the show. | Gemini: The critic uses very strong language, advising readers to 'rush' to see the show and calling it 'one of the most absorbing accounts of political intrigue' they've ever seen. This indicates a rave review.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:05.061Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:20.622Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
+    "claudeScore": 87,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "contentTier": "excerpt",
   "wordCount": 0

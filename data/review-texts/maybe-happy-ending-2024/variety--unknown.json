@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 79,
+  "assignedScore": 78,
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite limited text, the critic uses strongly positive language ('undeniably moving', 'well-made', 'adorable') and notes the emotional impact on audiences, indicating a clear recommendation. | GPT-4o: The review describes the musical as 'undeniably moving, well-made, adorable' and notes the audience's emotional reaction, indicating a positive recommendation. | Gemini: The review uses positive language like \"undeniably moving, well-made, adorable\" and notes the audience's emotional response, suggesting a positive, but not rave, recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses strongly positive language calling it 'undeniably moving, well-made, adorable' and notes the audience's emotional response. However, scoring conservatively due to single excerpt warning and potential for cherry-picking. | GPT-4o: The review excerpt describes the musical as 'undeniably moving, well-made, adorable,' which suggests a positive reception. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt uses positive language like \"undeniably moving, well-made, adorable musical\" and notes the audience's emotional response, suggesting a positive recommendation, but the use of \"maybe\" and the single excerpt makes it a cautious positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:56.772Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:18:23.528Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 79,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -7,44 +7,28 @@
   "publishDate": "October 28, 2025",
   "fullText": "It can be challenging to deliver something fresh and unique to the memory play genre. However, in writer Bess Wohl‘s new Broadway show, “Liberation,” she manages to do just that.\n\nDirected by Whitney White, “Liberation” is set in the 1970s and in the present. In the years following the Civil Rights Movement, shepherded by Black Americans, women were fighting to find an equal place in society. Now, a half-century later, the American government is clawing back several hard-earned wins. Bridging the time periods, “Liberation” addresses what was and who we’ve become as a society.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 90,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-LIBERATION-Opens-On-Broadway-20251028",
   "urlUpdated": "2026-01-23T05:22:35.143Z",
   "scrapedAt": "2026-01-23T22:05:50.666Z",
   "llmScore": {
-    "score": 78,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 85,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "she manages to do just that",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It can be challenging to deliver something fresh and unique to the memory play genre",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "Liberation addresses what was and who we've become as a society",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises the playwright for successfully delivering something 'fresh and unique' to a challenging genre and credits the thematic relevance, indicating clear appreciation for the work's achievement.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses clear superlative language calling the show 'brilliant' and 'well-acted,' and praises the writer for delivering 'something fresh and unique' to the genre, indicating strong enthusiasm. | GPT-4o: The review uses strong positive language such as 'brilliant' and 'well-acted,' indicating a highly enthusiastic recommendation. The critic highlights the show's unique take on the memory play genre and its impactful themes. | Gemini: The review uses strong positive language like \"brilliant\" and \"well-acted\" to describe the show, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:28:35.495Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2464,
-    "outputTokens": 327,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:57:17.703Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 87,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  },
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",

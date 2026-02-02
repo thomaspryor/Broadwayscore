@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "The supernatural thriller 'Grey House' succeeds in creating an atmosphere of dread, but the payoff doesn't quite match the buildup of suspense.",
@@ -20,62 +20,51 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 41,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 47
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 30,
+      "book": null,
       "music": null,
-      "performances": 73,
-      "direction": 55
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the play itself exists in a sort of gray zone — neither particularly terrifying nor profound",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It belongs in that lesser rank of thrillers that whip up suspense by withholding vital information",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Laurie Metcalf's enjoyable portrayal",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: While praising Metcalf's performance and the set design, the critic fundamentally dismisses the play as belonging to a 'lesser rank' of thrillers that manipulates rather than genuinely thrills. | GPT-4o-mini: The review highlights significant weaknesses in the play while acknowledging a strong performance, leading to a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges some positives (Metcalf's performance, the set design) but ultimately finds the play disappointing, saying he 'more often sank back into my seat than perched on the edge of it' and criticizing its 'ponderous knots' and lack of a 'sizzling payoff.' | Gemini: The review highlights some positive aspects like Metcalf's performance and the set design, but ultimately finds the play itself lacking in both terror and profundity, placing it in a 'gray zone'. The critic also mentions the plot being ponderous and the moralizing being murky, indicating a mixed experience overall.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:54.809Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:59.291Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 41,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 40,
-    "scoreDelta": 2,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (41 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 41,

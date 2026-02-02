@@ -5,40 +5,24 @@
   "criticName": "Peter Marks",
   "bwwExcerpt": "The big difficulty at this point in the musical's evolution - a production with Broadway on its agenda - is that no song gets the space and time necessary to truly break out. This frustratingly rushed sensation is emblematic of a production that packs in too many competing conceits and devices. The numbers are set off here in little explosions, courtesy of the Madrids' rat-a-tat tutting moves. Their dances are sharp but abbreviated: mere quotes, where an audience wants full sentences, and a bigger charge out of hearing Spears's repurposed music. (Along with Spears, Max Martin and Pharrell Williams are among the numerous songwriters.)",
   "source": "bww-roundup",
-  "assignedScore": 45,
+  "assignedScore": 62,
   "llmScore": {
-    "score": 45,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 45,
+      "music": null,
       "performances": null,
-      "direction": 38
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "frustratingly rushed sensation is emblematic of a production that packs in too many competing conceits and devices",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Their dances are sharp but abbreviated: mere quotes, where an audience wants full sentences",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "no song gets the space and time necessary to truly break out",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic identifies fundamental structural problems with pacing and song development, using frustrated language like 'rushed sensation' and 'competing conceits' that suggest the production fails to deliver what audiences expect. | GPT-4o-mini: The review highlights significant issues with pacing and execution, leading to a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic identifies significant structural problems (rushed pacing, too many competing elements, abbreviated numbers) but the tone suggests disappointment rather than outright dismissal. The 'frustratingly rushed' language indicates unmet potential. | GPT-4o: The review highlights significant issues with the production's pacing and execution, suggesting a negative impression. However, the single excerpt limits the ability to fully gauge the critic's overall sentiment, leading to a conservative score within the Negative range. | Gemini: The review excerpt describes the production as \"frustratingly rushed\" and suggests that the musical numbers are underdeveloped. This indicates a mixed assessment, as it highlights both positive and negative aspects without a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,22 +31,59 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-30T23:16:53.129Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:26.901Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "scoreDelta": 0,
+    "claudeScore": 62,
+    "openaiScore": 50,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "url": "https://www.washingtonpost.com/theater-dance/2023/06/22/one-more-time-broadway-spears/"
+  "url": "https://www.washingtonpost.com/theater-dance/2023/06/22/one-more-time-broadway-spears/",
+  "fullText": "‘Once Upon a One More Time,’ a sassy fairy-tale extravaganza featuring the Spears songbook, is a storybook mess NEW YORK — You don’t have to wait for the first AI musical. It’s here. Well, the artificial part, anyway. The ingredients of “Once Upon a One More Time” — various fairy tales, a bunch of Britney Spears songs, a how-to-strut-and-tut manual — may very well have been fed into a computer and reformulated by Chatbot GPT. For all I know, the musical might unfold in a different, random sequence of songs, words and dance every night at the Marquis Theatre, where it had its official Broadway opening Thursday.",
+  "isFullReview": false,
+  "textWordCount": 107,
+  "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/washpost--peter-marks_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:02:53.520Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 107 (min: 300)"
+  ]
 }

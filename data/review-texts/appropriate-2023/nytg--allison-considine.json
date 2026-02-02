@@ -9,42 +9,26 @@
   "bwwExcerpt": "Director Lila Neugebauer carefully threads the complexities of grief and racism with humor and lightness. The characters lob sharp-tongued dialogue (and a few punches) at one another. It’s a thrilling match.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 82,
+    "score": 93,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 84
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Director Lila Neugebauer carefully threads the complexities of grief and racism with humor and lightness",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's a thrilling match",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The characters lob sharp-tongued dialogue (and a few punches) at one another",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Consistently positive language praising direction, dialogue, and overall theatrical experience with 'thrilling' as the key recommendation signal. | GPT-4o-mini: The review expresses strong praise for the direction and the engaging dialogue, indicating a clear recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: This is explicitly labeled a 'five-star review' and concludes with clear recommendation language. The critic praises every element from performances to design, calling it a 'thrilling match' with 'stellar cast' and 'remarkable' performances. | GPT-4o: The review is overwhelmingly positive, highlighting the play's subversive nature, stellar cast, and remarkable design elements. The critic's use of 'five-star review' and 'well worth the buzz' strongly indicates a rave recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, cast, design, and writing. The concluding sentence explicitly states the show is \"well worth the buzz,\" indicating a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:13:01.763Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:47:13.331Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 90,
+    "openaiScore": 95,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“The sound design, by Bray Poor and Will Pickens, transports audiences into the sweltering discomfort of the South with the overpowering sound of the cicadas that continue throughout the show. ‘Appropriate’ is well worth the buzz.”",

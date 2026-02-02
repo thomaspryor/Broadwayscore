@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the playwright's craft and the effective use of theater space, indicating a positive recommendation despite the brief excerpt. | GPT-4o: The review praises the play's effective use of space and atmosphere, indicating a strong recommendation. | Gemini: The review highlights the play's effectiveness in creating a scary and dread-filled atmosphere, suggesting a positive experience overall.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the playwright's craft and the effective use of space, indicating a positive assessment of the production's theatrical merits. | GPT-4o: The review praises the effectiveness of the production in creating a scary atmosphere, indicating a positive recommendation. | Gemini: The review explicitly states that the play is \"genuinely scary\" and effectively uses the theater space, indicating a positive experience and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,11 +42,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:30:57.692Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:27:02.010Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,

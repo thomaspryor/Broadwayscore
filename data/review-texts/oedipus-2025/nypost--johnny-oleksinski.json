@@ -9,72 +9,56 @@
   "bwwExcerpt": "Reid, Strong and Manville are transfixing as awful revelation after revelation comes to light. Strong’s nice guy gives way to brutishness and boiling blood, and Manville’s heretofore stalwart Jocasta crushingly crumples when the grotesque truth is finally revealed. Brian",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "breathtakingly so, with his starkly intense revival from London starring Lesley Manville and Mark Strong",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Reid, Strong and Manville are transfixing as awful revelation after revelation comes to light",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The crowd was unquestionably rapt, though, and eerily silent in a way that Broadway audiences rarely are",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic praises the modernization as 'breathtaking,' calls the performances 'transfixing,' and notes the rapt audience response, with only minor complaints about venue acoustics and a brief final sequence.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the performances as 'transfixing' and 'brilliant,' calls the adaptation 'breathtaking,' and notes the audience was 'rapt.' Minor complaints about the venue and ending don't override the strong positive assessment. | Gemini: The review is largely positive, praising the performances and the modern adaptation. While there are minor criticisms about the venue and a flashback sequence, the overall tone suggests a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:42:47.997Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3477,
-    "outputTokens": 374,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:23.433Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 85,
-    "scoreDelta": 13,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "showScoreExcerpt": "\"Most of the play takes place in real time in Oedipusâ sleek living room. And Icke puts a pulse-pounding clock onstage that counts down to the election results. But we all know itâs leading up to much more than that.\"",
   "sources": [

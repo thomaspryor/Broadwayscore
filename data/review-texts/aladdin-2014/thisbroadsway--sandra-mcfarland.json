@@ -7,18 +7,18 @@
   "publishDate": "March 26, 2014",
   "showScoreExcerpt": "\"The stage is alive from beginning to end. It's a spectacle of lights and sound...Iglehart was a most lovable Genie, and the audience ate him up. It's not often you see a standing ovation partial.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "sourceMethod": "archive",
   "scoreSource": "enhanced-sentiment-lean-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 78,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review emphasizes positive elements like the 'alive' stage, spectacular production values, and audience enthusiasm including a standing ovation, but the truncated nature limits confidence in the full verdict. | GPT-4o: The review highlights a lively and engaging production with a standout performance by Iglehart, culminating in a partial standing ovation, indicating a strong positive reception. | Gemini: The review highlights the lively stage presence and spectacle, along with audience enjoyment of a particular performer, suggesting a positive experience overall.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear enthusiasm for the production's energy and spectacle, with praise for the lead performance and audience response, but limited text prevents a higher confidence assessment. | GPT-4o: The review excerpt is highly positive, highlighting the lively stage and the audience's enthusiastic reaction, including a partial standing ovation. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The review highlights the lively stage and praises Iglehart's performance, suggesting a positive experience. However, due to the limited excerpt and lack of an explicit recommendation, the score is placed in the middle of the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:12:55.001Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:08:14.536Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 88,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 87,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

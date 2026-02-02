@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 70,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "originalScoreNormalized": 80,
@@ -20,60 +20,52 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 70,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 80
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 73,
-      "performances": 80,
-      "direction": 78
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "sometimes risk stretching it too thin",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Silverman's elegant and arresting staging",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it's a powerful reminder",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review shows mixed sentiment with praise for staging and performances but concern about new material stretching the story thin, though the excerpt cuts off mid-sentence limiting confidence. | GPT-4o-mini: The review expresses clear appreciation for the staging and the ensemble's performance, with some reservations about the new songs, leading to a solid positive recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 original rating strongly indicates a positive recommendation, and 'full-throated' suggests energetic approval. However, limited excerpt text reduces confidence in the exact verdict strength. | GPT-4o: The 4/5 rating from the critic suggests a strong positive recommendation. The phrase 'full-throated musical call to action' indicates enthusiasm and engagement with the production, aligning with a positive bucket classification. | Gemini: The critic's rating of 4/5 and the description of the musical as a 'full-throated call to action' indicate a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:45.177Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:32.545Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 70,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 75,
-    "scoreDelta": 10,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 70,

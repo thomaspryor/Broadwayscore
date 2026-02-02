@@ -7,62 +7,54 @@
   "publishDate": "November 23rd, 1997",
   "showScoreExcerpt": "\"Make no mistake: The Lion King is a rare theater experience. The musical is intelligent spectacle, extravagance with a purpose -- and a heart. From the moment it begins, The Lion King offers astonishing stage magic. Performers walking on giant stilts become giraffes, birds, and a pride of lionesses, dance with a solemn gracefulness that is breathtaking.\"",
   "source": "show-score",
-  "assignedScore": 91,
+  "assignedScore": 89,
   "llmScore": {
-    "score": 91,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 97
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 93
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The Lion King is a rare theater experience",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "astonishing stage magic",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "dance with a solemn gracefulness that is breathtaking",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Unqualified praise with superlatives like 'rare,' 'astonishing,' and 'breathtaking,' describing it as 'intelligent spectacle' with 'heart' indicates a rave review. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its spectacle and emotional depth.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language calling it 'rare theater experience', 'astonishing stage magic', and 'breathtaking', but single excerpt warning requires conservative scoring within rave range. | GPT-4o: The review uses highly positive language such as 'rare theater experience' and 'astonishing stage magic', indicating a strong recommendation. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The review excerpt uses phrases like \"intelligent spectacle\" and \"astonishing stage magic,\" indicating a positive recommendation. However, the single excerpt warrants a score in the middle of the positive range.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-30T23:17:13.749Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:57:57.136Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 91,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "scoreDelta": 2,
+    "geminiScore": 78,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "excerpt",
   "wordCount": 0

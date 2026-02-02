@@ -10,74 +10,59 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 35,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 30,
-      "high": 40
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
-      "performances": 60,
-      "direction": 30
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "His direction exhausts every cliché of stage terror about half an hour into this 100-minute one-act",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "By the time Max screams in terror upon seeing the ghost late in the play, the audience does not join her. We're already bored with the creature",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Her Mommie Weirdest performance provides a number of belly laughs",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The critic systematically dismantles the play's logic, pacing, and effectiveness while finding fault with nearly every creative element except some performances.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the horror play ineffective and boring, criticizing the direction for exhausting clichés early on, plot inconsistencies, and failure to maintain audience engagement. | GPT-4o: The review criticizes the play for exhausting clichés, lacking inner logic, and failing to maintain suspense, leading to audience boredom. The negative tone and lack of recommendation are clear. | Gemini: The review is largely negative, criticizing the direction, writing, and overall effectiveness of the horror elements. While acknowledging some contributions from the design team and performances, the reviewer ultimately finds the play boring and illogical.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:35:52.269Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3344,
-    "outputTokens": 361,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:16.281Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 35,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 40,
-    "scoreDelta": 2,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 39,

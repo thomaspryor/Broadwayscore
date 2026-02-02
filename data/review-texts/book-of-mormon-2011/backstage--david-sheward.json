@@ -8,67 +8,59 @@
   "fullText": "Popular Searches: listing, casting, acting, voiceover\n\nSave | E-mail | Print | Most Popular| RSS| Reprints\n\n-->\n \n -->\n \n \n \n \n \n \n \n \n \n \n \n \n \n More |\n \n -->\n \n \n \n \n \n \n \n \n \n \n Tweet\n\nSave | E-mail | Print | Most Popular| RSS| Reprints\n\n-->\n \n -->\n \n \n \n \n \n \n \n \n \n \n \n \n \n More |\n \n -->\n \n \n \n \n \n \n \n \n \n \n Tweet\n\nView Other Blogs &raquo; Visit Unscripted &raquo;\n\nWeek ending Jan 16, 2012.\n Credit: The Broadway League\n\nBackstage - Acting Resources | Search Casting Calls | Acting Talent Search | Call Sheet | Acting Advice Columns | News & Features | About Back Stage\n Acting Community Information | Actor/Actress Message Board | Professional Acting Resources | Advertising Information | Auditions and Casting FAQ \n Customer Service | Contact Back Stage | Acting and Casting Newsletter | Entertainment News Site Map | Casting and Auditions RSS | Acting Magazine Subscription\n\n© 2012 Back Stage. All rights reserved. Terms of Use | Privacy Policy",
   "bwwExcerpt": "the sharp-edged book and fun score by Parker, Stone, and Lopez offer a screamingly funny yet sharply insightful full-length take on religion in general and Mormonism in particular. There are also pointed but loving tributes to musical comedy conventions, shockingly vulgar humor, and that rarity on Broadway these days: topical and effective satire.",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 61,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 90,
-      "music": 88,
+      "book": null,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "screamingly funny yet sharply insightful",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "that rarity on Broadway these days: topical and effective satire",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "sharp-edged book and fun score",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review uses strong superlatives like 'screamingly funny' and 'sharply insightful' while praising the show as a rare example of effective Broadway satire, indicating clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the book and score, highlighting humor and insight, indicating a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be website navigation/header text rather than actual review content, making it impossible to determine the critic's recommendation about any show. | GPT-4o: The text provided is not a review but rather a list of links and options. Without evaluative content, the review is assumed to be mixed due to lack of information. | Gemini: There is no review text provided, so I am assuming it is a negative review.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:05:36.714Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:02.384Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 40,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,

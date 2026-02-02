@@ -7,7 +7,7 @@
   "publishDate": "April 17, 2019",
   "showScoreExcerpt": "The smartest new musical on Broadway. The production is visually and aurally stunning. Rachel Hauck's multi-tiered set conjures the French Quarter with a breathtaking scene transition where its stucco walls fall away to reveal the enormity of the Hadestown mine. Sound designers Nevin Steinberg and Jessica Paz ensured every one of Mitchell's lyrics was audible. However, the protagonist comes across as a shiftless dude with a guitar and few marketable skills, making it difficult to root for him. While recognizing the show's commentary on nativism through the character of Hades as a wall-building tycoon, the message is on the nose. Despite praising the production design, music, and performances, the show left no emotional impact. A musical fated to be the snob hit of this Broadway season - formally accomplished but ultimately more intellectually engaging than emotionally satisfying.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 58,
   "source": "webfetch-scraped",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.948Z",
@@ -18,11 +18,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 50,
-    "confidence": "low",
+    "score": 58,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 53,
+      "high": 63
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,14 +32,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "A wall-building tycoon reigns at New York Theatre Workshop this spring",
-        "sentiment": "neutral",
-        "strength": 1
-      }
-    ],
-    "reasoning": "This single sentence appears to be a factual description rather than a review, providing no evaluative content about the production's quality or recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be only a headline or opening line with no evaluative content about the production's quality, performances, or recommendation. | GPT-4o: The provided text is too brief and lacks evaluative content, making it difficult to determine the critic's overall opinion. The phrase does not clearly indicate a positive or negative stance, resulting in a mixed classification with low confidence. | Gemini: This is a single sentence review. It is difficult to determine the critic's opinion based on this sentence alone. It is more descriptive than evaluative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,27 +42,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:36:03.500Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2318,
-    "outputTokens": 243,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:02:44.809Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 55,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "designation": "Must_See",
   "rescoreReason": "fullText added after excerpt-based scoring",
@@ -89,6 +84,8 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20221207062317",
   "archiveOrgUrl": "http://web.archive.org/web/20221207062317/https://www.theatermania.com/off-broadway/reviews/hadestown-_77163.html",
-  "contentTier": "complete",
-  "wordCount": 790
+  "contentTier": "needs-rescrape",
+  "wordCount": 790,
+  "garbageReasoningDetected": "no-evaluative-content",
+  "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.066Z"
 }

@@ -29,56 +29,55 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20241225122945",
   "archiveOrgUrl": "http://web.archive.org/web/20241225122945/https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/",
-  "assignedScore": 45,
+  "assignedScore": 61,
   "llmScore": {
-    "score": 45,
-    "confidence": "low",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 55
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 55,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Some joyful musical moments",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "but very little depth",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review's bottom line explicitly states limited positive elements ('some joyful musical moments') but emphasizes a significant flaw ('very little depth'), suggesting more problems than strengths.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The bottom line explicitly states the show has positive elements ('joyful musical moments') but significant flaws ('very little depth'), indicating a mixed assessment that neither fully recommends nor discourages seeing it. | GPT-4o: The review acknowledges some positive aspects with 'joyful musical moments' but ultimately suggests a lack of depth, indicating a mixed recommendation. | Gemini: The review concludes with a mixed assessment, highlighting \"joyful musical moments\" but noting a lack of depth, placing it in the Mixed category. The lack of a clear recommendation prevents a higher score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:13:46.695Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2515,
-    "outputTokens": 278,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:41.188Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (253 words)"
+  "contentTierReason": "Short text (253 words)",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

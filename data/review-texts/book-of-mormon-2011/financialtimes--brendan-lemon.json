@@ -7,67 +7,59 @@
   "publishDate": "2011-03-25T13:49:16-04:00",
   "bwwExcerpt": "Stretched to Broadway length, the duo's patented gags pall: in this surprisingly old-fashioned show, when we get to a trimmable production number called \"Spooky Mormon Hell Dream\", the comparisons to South Park reach their apogee, and not in favour of the stage musical. The audience devours all the antics. Casey Nicholaw, who co-directed with Parker and whose previous safe-for-your-teenage-son Broadway musical credit was Spamalot, keeps his actors, especially the terrifically game ensemble who play a chorus of young Mormon missionaries, in whirring motion.",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 59,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 50.5,
-      "high": 67.5
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 48,
+      "book": null,
       "music": null,
-      "performances": 73,
-      "direction": 64
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the duo's patented gags pall",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "terrifically game ensemble",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The audience devours all the antics",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Mixed review that criticizes the material as stretched thin and old-fashioned but praises the energetic performances and notes strong audience response. | GPT-4o-mini: The review indicates mixed feelings, with some praise for the performances but significant criticism of the material and overall execution.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt criticizes the show's length and gags wearing thin, while acknowledging positive audience response and praising the ensemble's energy. With only one curated excerpt available, scoring conservatively in middle of Mixed range. | GPT-4o: The review notes some negative aspects, such as the gags becoming stale and unfavorable comparisons to South Park. However, it also highlights the audience's positive reaction and the energetic performances, suggesting a mixed but somewhat engaging experience. | Gemini: The review highlights both positive and negative aspects. While the critic notes that some gags \"pall\" and the show is \"surprisingly old-fashioned\", they also acknowledge the audience's enjoyment and the energetic performance of the ensemble. The overall tone suggests a mixed experience, leaning towards slightly positive due to the audience reception and ensemble performance.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:06:43.949Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:39.778Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 59,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 55,
-    "scoreDelta": 7,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 59,

@@ -9,71 +9,56 @@
   "showScoreExcerpt": "“Edelman does the all spinning here as he displays his irresistible gift for storytelling, comedy, and capturing theatregoers’ undivided attention...Count me in as an instant admirer.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 94,
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 95,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Read our five-star review",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It's that rare theatrical production that doesn't just live up to the hype — it exceeds it",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Count me in as an instant admirer",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Five-star review with superlative language including 'exceeds the hype' and 'instant admirer' with consistent praise throughout and no significant criticisms.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review opens by stating it's a 'five-star review' and explicitly declares the show 'exceeds the hype.' The critic uses superlative language throughout, calling Edelman's gift 'irresistible' and describing themselves as an 'instant admirer.' | GPT-4o: The review is overwhelmingly positive, describing the show as exceeding the hype and highlighting Edelman's storytelling and comedic talents. The critic's admiration is clear, making it a strong recommendation. | Gemini: The review is overwhelmingly positive, praising Edelman's storytelling and humor. The critic explicitly states the show exceeds the hype and counts themselves as an \"instant admirer.\"",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:22:12.269Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3200,
-    "outputTokens": 329,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:41.196Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 89,

@@ -9,7 +9,7 @@
   "showScoreExcerpt": "âAdjmi writes realistic, sometimes amusing dialogue, and Daniel Aukin directs to mine maximal humor out of it, with the jagged rhythms and friendly-bullshitting encounters presumably endemic to recording sessions like these...It's as if Adjmi was so determined to illustrate the bruises and abuses and arguments and insecurities that go into producing an enduring work of popular art, after that he had nothing else to say. We get all that. We got it well before 10:45.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/stereophonic",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/stereophonic-2024/talkin-broadway--marc-miller_2026-01-27.html",
@@ -48,67 +48,52 @@
   "archiveOrgTimestamp": "20250603075555",
   "archiveOrgUrl": "http://web.archive.org/web/20250603075555/https://www.talkinbroadway.com/page/ob/10_29_23b.html",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 72,
-      "performances": 75,
-      "direction": 68
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "But why we have to be locked in here for over three hours, only Adjmi knows.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Pidgeon sings beautifully, acts the hell out of Diana, and must be exhausted by curtain.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "they just take up so much time",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Mixed review that praises performances and music but criticizes pacing and length, with conditional recommendation based on musical taste preferences.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges strong elements like Pidgeon's breakout performance and beautiful music, but criticizes the excessive length ('why we have to be locked in here for over three hours') and questions the show's appeal to general audiences. | GPT-4o: The review highlights both strengths, such as the performances and music, and weaknesses, like the lengthy runtime and some unconvincing character development. The overall tone suggests a mixed experience with notable positive elements. | Gemini: The review highlights both positive and negative aspects of the play. While praising the performances and set design, it also criticizes the length and some character portrayals. Overall, it leans towards a recommendation but with reservations due to the play's length and some unevenness.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:12:09.805Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3256,
-    "outputTokens": 335,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:08:00.668Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 3,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 64,

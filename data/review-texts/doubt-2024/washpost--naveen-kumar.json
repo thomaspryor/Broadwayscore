@@ -10,74 +10,58 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 42,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 38,
-      "high": 46
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
-      "performances": 45,
-      "direction": 35
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "uncertainty is curiously scarce in the first Broadway revival of \"Doubt\"",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the answer seems too obvious",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the lead performances are miscalibrated",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic finds fundamental flaws in the revival's approach and execution, particularly criticizing the lack of ambiguity that makes the play work and calling the lead performances 'miscalibrated,' despite acknowledging some technical merits.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic finds both productions conceptually interesting but poorly executed, with 'Doubt' having miscalibrated lead performances and both shows lacking the uncertainty that should drive their narratives. | Gemini: The review praises supporting performances and some aspects of the staging, but criticizes the lead performances and finds the production somewhat boring and lacking in necessary ambiguity. This suggests a mixed experience overall.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:35:32.119Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3724,
-    "outputTokens": 338,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:19.003Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 40,
-    "scoreDelta": 2,
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 39,

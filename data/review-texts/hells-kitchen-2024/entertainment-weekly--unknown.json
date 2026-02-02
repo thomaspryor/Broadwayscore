@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The word 'remarkable' and emphasis on the show feeling 'fresh' despite a familiar story indicates a positive recommendation, though the limited excerpt makes it difficult to assess the full strength of endorsement. | GPT-4o: The quote highlights a positive aspect of the show, indicating that it brings a fresh perspective to a familiar story. This suggests a recommendation, though the lack of a full review text limits confidence. | Gemini: The quote indicates a positive sentiment, suggesting the show is worth seeing despite the familiarity of the story. The \"remarkable\" aspect points towards a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The word 'remarkable' and the contrast between 'familiar' yet 'fresh' indicates positive assessment, but with only one excerpt available, scoring conservatively within positive range. | GPT-4o: The excerpt praises the production for making a familiar story feel fresh, suggesting a positive impression. However, due to the single excerpt and text quality warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The quote indicates that the reviewer found the show remarkable and fresh, despite the familiarity of the story, suggesting a positive but not overwhelmingly enthusiastic recommendation. Given it's a single excerpt, I'm scoring conservatively.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:47:07.006Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-01T23:59:12.765Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
+    "openaiScore": 77,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

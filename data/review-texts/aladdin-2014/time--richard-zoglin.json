@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review concludes with clear praise calling it 'frisky and fun' and defending Disney's positive impact on Broadway, despite acknowledging formulaic elements and lack of emotional depth. | GPT-4o: The review acknowledges some limitations but ultimately praises the show for its entertainment value and Disney's professionalism, indicating a positive recommendation. | Gemini: The review acknowledges the show's formulaic nature and lack of emotional depth, but ultimately finds it \"frisky and fun\" and a demonstration of Disney's professionalism, indicating a positive but not overwhelmingly enthusiastic recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting some limitations and calling it a 'downsizing of ambition,' the critic ultimately endorses the show as entertaining and professionally crafted, concluding with clear approval. | GPT-4o: The review acknowledges the show's limitations but ultimately praises its entertainment value and Disney's professionalism, indicating a positive recommendation despite some reservations. | Gemini: The review acknowledges the show's formulaic nature and lack of emotional depth but ultimately concludes that it is \"frisky and fun\" and a demonstration of Disney's professionalism, implying a positive, albeit reserved, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:12:58.330Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:08:22.218Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 80,
-    "geminiScore": 75,
+    "claudeScore": 74,
+    "openaiScore": 78,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

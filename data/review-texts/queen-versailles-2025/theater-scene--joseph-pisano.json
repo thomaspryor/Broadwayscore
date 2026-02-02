@@ -9,7 +9,7 @@
   "showScoreExcerpt": "It's neither a credible hero's journey nor a compelling antihero's one; it's simply soulless.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 42,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/queen-versailles-2025/theaterscene-net--joseph-pisano_2026-01-27.html",
@@ -28,33 +28,22 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 25,
+    "score": 42,
     "confidence": "medium",
     "range": {
-      "low": 15,
-      "high": 35
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "neither a credible hero's journey nor a compelling antihero's one",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "simply soulless",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic delivers a devastating assessment calling the show 'soulless' and criticizing fundamental storytelling elements, indicating a clear pan with no redeeming qualities mentioned.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic explicitly calls the show 'soulless' and finds it fails as both a hero's and antihero's journey, indicating clear disappointment. However, with only one excerpt available, I score conservatively within the negative range. | GPT-4o: The excerpt strongly criticizes the show as lacking depth and engagement, suggesting a very negative view. The term 'soulless' indicates a fundamental flaw, which aligns with a 'Pan' classification. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review excerpt uses the word 'soulless' to describe the show, indicating a negative assessment and lack of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -63,27 +52,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:58:35.191Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2326,
-    "outputTokens": 263,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:51.803Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 38,
-    "openaiScore": 45,
-    "scoreDelta": 7,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 42,

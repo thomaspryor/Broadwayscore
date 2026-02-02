@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/cititour--brian-scott-lipton_2026-02-01.html",
@@ -32,11 +32,11 @@
   "fetchTier": 2,
   "sourceMethod": "scrapingbee",
   "llmScore": {
-    "score": 75,
-    "confidence": "low",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 85
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -44,50 +44,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "has wisely hired some of theater's smartest wizards",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "technological visuals that delight the eye throughout",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The excerpt praises the director's choices and technical elements enthusiastically, but lacks overall assessment or recommendation, making it an incomplete positive fragment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt focuses on positive technical elements and visual appeal, but with only one curated quote available, this may not represent the full review sentiment. Scoring conservatively within positive range. | GPT-4o: The excerpt praises the visual aspects of the production, highlighting the director's wise choices and the delightful technological visuals. However, due to the single excerpt warning, the score is conservative within the Positive range. | Gemini: The review highlights the positive aspects of the show's design and visuals, suggesting an enjoyable experience despite the 'tricky material'. Given the single excerpt, a conservative positive score is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:28:15.797Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2413,
-    "outputTokens": 278,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:40.515Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 88,
-    "scoreDelta": 6,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

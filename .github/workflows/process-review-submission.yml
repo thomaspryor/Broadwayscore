@@ -208,18 +208,18 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const now = new Date().toISOString();
+            const body = '## ✅ Review Successfully Added!\n\n' +
+              'The review has been scraped and added to our database. ' +
+              'It will appear on the site within a few minutes after the next deployment.\n\n' +
+              'Thank you for your contribution to Broadway Scorecard! 🎭\n\n' +
+              '---\n' +
+              '*Added by automated system • ' + now + '*';
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `## ✅ Review Successfully Added!
-
-The review has been scraped and added to our database. It will appear on the site within a few minutes after the next deployment.
-
-Thank you for your contribution to Broadway Scorecard! 🎭
-
----
-*Added by automated system • ${new Date().toISOString()}*`
+              body: body
             });
 
             // Close the issue
@@ -237,18 +237,17 @@ Thank you for your contribution to Broadway Scorecard! 🎭
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const now = new Date().toISOString();
+            const body = '## ⚠️ Scraping Failed\n\n' +
+              'The review validation passed, but we encountered an error while scraping the review content.\n\n' +
+              'A maintainer will investigate and manually add the review if possible.\n\n' +
+              '---\n' +
+              '*Error occurred at ' + now + '*';
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `## ⚠️ Scraping Failed
-
-The review validation passed, but we encountered an error while scraping the review content.
-
-A maintainer will investigate and manually add the review if possible.
-
----
-*Error occurred at ${new Date().toISOString()}*`
+              body: body
             });
 
             // Add needs-manual-review label

@@ -6,69 +6,53 @@
   "bwwExcerpt": "Hadestown has arrived on Broadway. Like so many of its mythic antecedents, it's the product of much metamorphosis, and its current manifestation feels lush, vigorous, and formally exciting, not to mention, in certain moments, witchily prescient.",
   "source": "bww-roundup",
   "showScoreExcerpt": "“’Hadestown’ has arrived...And its current manifestation feels lush, vigorous, and formally exciting, not to mention witchily prescient...As an intricate and gorgeous feat of songwriting, as a vehicle for dynamite performances, as a visionary long-term collaboration and a courageous experiment with form, ‘Hadestown’ is cause for celebration...Mitchell’s lyrics are image-rich and clever, her tunes exhilarating...Page and Gray are the twin sensations of the show.”",
-  "assignedScore": 83,
+  "assignedScore": 79,
   "llmScore": {
-    "score": 83,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 86
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 88,
-      "performances": 85,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "as an intricate and gorgeous feat of songwriting, as a vehicle for dynamite performances, as a visionary long-term collaboration and a courageous experiment with form, Hadestown is cause for celebration",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Page and Gray are the twin sensations of the show",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "in terms of character and narrative pathos, Hadestown is more than a bit out of balance",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite noting some character imbalances and pacing issues, the critic celebrates the show as a 'gorgeous feat of songwriting' with 'dynamite performances' and calls it 'cause for celebration,' indicating strong overall recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic celebrates the songwriting, performances, and vision while noting significant character and narrative imbalances. The positive elements clearly outweigh the reservations, landing in solid positive territory. | Gemini: The review is overwhelmingly positive, praising the songwriting, performances, and overall vision of the show, while acknowledging some weaknesses in character development. The critic ultimately recommends seeing it, making it a positive review.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:00:48.309Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4490,
-    "outputTokens": 381,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:03:48.967Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 83,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
-    "scoreDelta": 7,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 39,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "But The Queen of Versailles isn’t camp. It’s cheap tat, queasy spectacle, grubby glitz. It doesn’t burrow beneath its surface wealth to ask anything of substance.",
@@ -19,38 +19,22 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 25,
+    "score": 39,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 34,
+      "high": 44
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 15,
-      "music": 20,
-      "performances": 65,
-      "direction": 25
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "nearly three hours of grimly ugly musical theater",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "It's cheap tat, queasy spectacle, grubby glitz",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Chenoweth fans will rightly appreciate that she sings loud and proud; she absolutely gives it, belts it, her all",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "This is a comprehensive pan that savages nearly every aspect of the production while acknowledging only Chenoweth's vocal commitment, calling it 'grimly ugly musical theater' and 'cheap tat.'",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic delivers a scathing review calling the show 'grimly ugly,' 'cheap tat,' and 'queasy spectacle' with overwhelmingly negative language throughout and no recommendation to see it. | Gemini: The review is overwhelmingly negative, describing the show as \"grimly ugly musical theater,\" \"cheap tat,\" and \"queasy spectacle.\" The critic clearly does not recommend seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,27 +43,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:56:43.341Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3971,
-    "outputTokens": 356,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:29.074Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 15,
-    "scoreDelta": 10,
+    "claudeScore": 38,
+    "openaiScore": null,
+    "geminiScore": 40,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 20,

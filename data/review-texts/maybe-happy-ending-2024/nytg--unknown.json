@@ -9,15 +9,15 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 89,
+  "assignedScore": 78,
   "llmScore": {
-    "score": 89,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 73,
+      "high": 83
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The phrase 'theatrical magic' combined with 'gorgeous staging' and the emphatic 'No maybe about it' indicates strong enthusiasm and recommendation. | GPT-4o: The review uses highly positive language, describing the staging as 'gorgeous' and the show as having 'theatrical magic', indicating a strong recommendation. | Gemini: The review excerpt highlights the 'gorgeous staging' and 'theatrical magic,' indicating a positive experience and recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt praises the direction, staging, and sets, concluding definitively that the show 'has theatrical magic.' However, with only one curated excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The excerpt praises the staging and design elements, culminating in a strong endorsement of the show's 'theatrical magic,' which suggests a highly positive view. Despite the single excerpt warning, the language used is indicative of a rave review. | Gemini: The review praises the staging and sets, and the final sentence indicates a positive recommendation, although the single excerpt makes it hard to be certain of the overall tone.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:41.928Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:16:33.394Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 78,
     "openaiScore": 90,
-    "geminiScore": 80,
-    "claudeBucket": "Rave",
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

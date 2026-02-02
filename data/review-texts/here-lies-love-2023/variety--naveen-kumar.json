@@ -9,42 +9,26 @@
   "showScoreExcerpt": "“Byrne and Fatboy Slim’s sung-through score is the star of the 90-minute production, a hypnotic churn of synth beats, funky rhythms and pop momentum that aims squarely for the pelvis.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/here-lies-love-broadway",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 63,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 90.5
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 84,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "score is the star of the 90-minute production",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "hypnotic churn of synth beats, funky rhythms and pop momentum",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "aims squarely for the pelvis",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The excerpt strongly praises the musical score as the standout element with vivid, enthusiastic language, but provides no context about other show elements or overall recommendation. | GPT-4o-mini: The review highlights the score as a standout feature, indicating a strong recommendation for the musical experience. | Note: Models differed by 13 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the show's innovative staging and musical strengths but expresses significant concern about its problematic treatment of historical figures and lack of critical perspective on the Marcos regime's crimes. | GPT-4o: The review highlights the show's innovative staging and musical energy but criticizes its lack of depth and coherent perspective on its historical subject. While it acknowledges the production's sensory appeal and cultural significance, it also notes significant shortcomings in its narrative and character development. | Gemini: The review acknowledges the show's innovative staging and infectious music but criticizes its lack of critical perspective on the Marcos' legacy and its superficial character development. It neither strongly recommends nor discourages seeing the show, highlighting both its strengths and weaknesses.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:57.901Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:13.116Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 85,
-    "scoreDelta": 13,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,

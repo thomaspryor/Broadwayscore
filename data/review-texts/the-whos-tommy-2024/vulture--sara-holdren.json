@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"There’s something exhilarating and also a little bizarre about Tommy\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 72,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 55,
-      "music": 82,
-      "performances": 85,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I spent long stretches of the show intrigued and amused rather than earnestly rocking out, I was never not entertained. I had plenty of questions, but I also had a damn good time.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The second act struggles to refind that sense of momentum and sheer musical euphoria, perhaps because now it has to start making sense.",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Bourzgui has something about him that feels un-modern-Broadway in a completely exciting way.",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic enjoys the show despite acknowledging significant structural problems, praising performances and spectacle while noting second act issues and dated elements, ultimately having 'a damn good time.'",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic expresses clear enjoyment and entertainment value throughout, praising the lead performance and staging while acknowledging some dated elements and second act issues. The overall tone is positive recommendation. | Gemini: The review acknowledges datedness and some awkwardness, but ultimately concludes that the show is entertaining and features exciting performances, leading to a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:30:06.878Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4908,
-    "outputTokens": 396,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:00.662Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 65,
-    "scoreDelta": 0,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "sources": [
     "show-score",

@@ -10,74 +10,58 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 88,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 85,
-      "performances": 95,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "one of the best and most alive musicals of the season",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "You would be floored by the acting of Jonathan Groff, Daniel Radcliffe and Lindsay Mendez, whose perfect chemistry is acting alchemy",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The stunning turnaround for 'Merrily' is owed not only to the passage of time, but a refreshingly realistic approach from director Maria Friedman",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic declares this 'one of the best and most alive musicals of the season' with unqualified praise for performances and direction, indicating strong recommendation despite acknowledging past flaws.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite opening with context about the show's troubled history, the critic delivers an enthusiastic recommendation, calling it 'one of the best and most alive musicals of the season' and praising the performances as 'acting alchemy.' | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, praising the acting, direction, and overall quality of the production. The critic clearly states it's 'one of the best and most alive musicals of the season.'",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:35:38.941Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3681,
-    "outputTokens": 378,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:38.672Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,

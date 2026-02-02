@@ -8,67 +8,59 @@
   "fullText": null,
   "bwwExcerpt": "The show is a hoot - and a literal guilty pleasure. Parker and Stone have made their names by pushing the line between irreverence and offense until it stretches into a blur. It's impossible not to laugh at their two mismatched Mormon guys (played for maximum ingratiation by the wonderful Josh Gad and Andrew Rannells) as they run up against every cultural barrier they confront at a Ugandan village (where Nikki M. James and Michael Potts gamely play the main roles.)",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 88,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The show is a hoot - and a literal guilty pleasure",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's impossible not to laugh",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "played for maximum ingratiation by the wonderful Josh Gad and Andrew Rannells",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Clear enthusiasm for the show's entertainment value and strong praise for performances, with no significant reservations expressed in this excerpt. | GPT-4o-mini: The review expresses strong enjoyment and highlights the performances positively, indicating a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes it as entertaining ('a hoot') and praises the performances as 'wonderful' and 'gamely played,' indicating a positive recommendation despite acknowledging it as a 'guilty pleasure.' Single excerpt warning warrants conservative scoring within the positive range. | GPT-4o: The review describes the show as a 'hoot' and a 'guilty pleasure,' indicating enjoyment and entertainment value. The performances are praised, suggesting a positive experience overall. However, the text quality warning and single excerpt caution suggest a conservative score within the Positive range. | Gemini: The review describes the show as a \"hoot\" and a \"guilty pleasure,\" indicating a positive experience. However, the mention of pushing the line between irreverence and offense suggests potential reservations, placing it in the lower end of the positive range.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:06:57.171Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:47:40.196Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 76,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

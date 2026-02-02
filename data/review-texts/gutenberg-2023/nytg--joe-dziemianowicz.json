@@ -9,64 +9,56 @@
   "bwwExcerpt": "In the end, Gutenberg! presses beyond pure goofiness to deliver a sweet message about going for one’s dreams. Another idea emerges, too. Between the visible musicians, the brick wall, and the prominent door, the show’s set bears a bit of a resemblance to Saturday Night Live. There, like on Broadway, the best sketches leave you wanting more. Average Rating: 71.3% { \"@context\":\"https://schema.org\", \"@type\":\"LiveBlogPosting\", \"@id\":\"/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-O",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 72,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 66.5,
-      "high": 77.5
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 72
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "presses beyond pure goofiness to deliver a sweet message about going for one's dreams",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the best sketches leave you wanting more",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Average Rating: 71.3%",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review acknowledges the show delivers meaningful content beyond comedy and makes a favorable comparison to SNL's best sketches, with the 71.3% rating confirming mixed-positive territory. | GPT-4o-mini: The review indicates a generally positive sentiment about the show's message but lacks strong enthusiasm, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show as entertainment worth seeing, praising the lead performances and comedy, but notes significant flaws like length and diminishing returns that prevent a stronger endorsement. | GPT-4o: The review highlights the comedic talents of the lead actors and the cleverness of the show, despite noting that it feels overstuffed and too long. The overall tone is positive, emphasizing the enjoyable performances and clever moments. | Gemini: The review highlights the talents of the leads and finds the show clever and filled with laughs, but also notes that it's too long and overstuffed. This indicates a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:07:32.264Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:56.362Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 71,
-    "openaiScore": 72,
-    "scoreDelta": 1,
+    "claudeScore": 74,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Meh",
   "showScoreExcerpt": "“The show is a roughly 2-hour sketch – one that’s clever and filled with laughs but too long and overstuffed to ward off diminishing returns. Still, the production provides a prime showcase for the talents of Josh Gad and Andrew Rannells”",

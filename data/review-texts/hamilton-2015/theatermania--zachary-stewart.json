@@ -21,51 +21,43 @@
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 95,
-      "music": 90,
-      "performances": 85,
+      "book": null,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Hamilton exceeds all expectations",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the best new American musical in years",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Electricity pervades the air from the earliest moments",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Unqualified superlative praise calling it the 'best new American musical in years' that 'exceeds all expectations' with no meaningful reservations expressed. | GPT-4o-mini: The review expresses unqualified enthusiasm and high praise, indicating it is a must-see production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite opening with concerns about hype, the critic delivers an unequivocal rave verdict, calling it the 'best new American musical in years' and saying it 'exceeds all expectations' with 'electricity pervading the air.' | GPT-4o: The review describes Hamilton as exceeding all expectations and being the best new American musical in years, which strongly indicates a rave review. The language used is enthusiastic and unequivocally positive. | Gemini: The review explicitly states that Hamilton \"exceeds all expectations\" and is \"the best new American musical in years,\" indicating a rave review.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-24T05:03:28.521Z",
-    "promptVersion": "2.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:02:43.470Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "2.0.0"
   },
   "ensembleData": {
     "claudeScore": 95,
     "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/hamilton-2015/theatermania--zachary-stewart_2026-01-26.html",

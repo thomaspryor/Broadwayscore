@@ -9,72 +9,57 @@
   "bwwExcerpt": "But for all its clairvoyance and foresight about technology, Marjorie Prime’s most potent superpowers are its sensitivity and tenderness. Harrison’s spare, gently gripping script is a model of eloquent economy as the characters grapple with grief and what it means to truly love and remember someone.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 82,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Harrison's spare, gently gripping script is a model of eloquent economy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "has assembled an A-list ensemble that hums like a finely tuned machine",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "hers is the performance I can't get out of my head",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The review consistently praises the script, performances, and direction with phrases like 'A-list ensemble that hums like a finely tuned machine' and calls it 'perceptive and prescient,' indicating a strong positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the script as 'eloquent economy', calls the ensemble 'A-list' and 'finely tuned', and highlights standout performances, particularly Nixon's. The positive tone and professional recommendation are clear despite some analytical distance. | GPT-4o: The review praises the production's themes, script, and performances, particularly highlighting the cast's ability to generate genuine emotions. The critic's language is enthusiastic and emphasizes the play's impact, suggesting a strong recommendation. | Gemini: The review is generally positive, highlighting the play's sensitivity and the strong performances, especially Nixon's. While not a rave, it clearly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:31:22.250Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3190,
-    "outputTokens": 354,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:43.872Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dtliExcerpt": "Director Anne Kauffman, who staged the play’s 2015 Off-Broadway run, has assembled an A-list ensemble that hums like a finely tuned machine. The drama is a showcase for its women, with Squibb — newly 96 and last seen on Broadway in Waitress — infusing Marjorie with an irresistible, vinegary sass. Nixon, a two-time Tony winner with 45 years of Broadway experience, is without question in her prime: wry, vulnerable, and conflicted as Tess, who struggles to connect with the real Marjorie and her Prime. In a play that now hit me fathoms deeper than it did a decade ago, hers is the performance I can’t get out of my head.",
   "showScoreExcerpt": "\"For all its clairvoyance and foresight about technology, Marjorie Prime’s most potent superpowers are its sensitivity and tenderness.\"",

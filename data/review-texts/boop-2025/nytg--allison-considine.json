@@ -9,7 +9,7 @@
   "bwwExcerpt": "BOOP! The Musical proves that bringing Betty Boop to life on stage is a worthy endeavor, even if only for the spectacle of it all.",
   "showScoreExcerpt": "\" 'BOOP! The Musical' proves that bringing Betty Boop to life on stage is a worthy endeavor, even if only for the spectacle of it all.\"",
   "originalScore": "A",
-  "assignedScore": 76,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
   "urlSource": "show-score",
@@ -21,60 +21,52 @@
   "scoreSource": "letter-grade",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 76,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 67,
-      "high": 85
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 60,
-      "music": 65,
-      "performances": 84,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "BOOP! The Musical proves that bringing Betty Boop to life on stage is a worthy endeavor, even if only for the spectacle of it all",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "The show's book is much like the storylines of the Fleischer Studio Betty Boop cartoons: full of romance, slapstick, and science fiction. It is also a bit silly and far-fetched at times, with unengaging subplots",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "While the songs are toe-tapping, they're often unmemorable",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The review acknowledges significant flaws in the book and music but praises the performances, direction, and spectacle enough to deem it 'a worthy endeavor' for audiences seeking Broadway entertainment. | GPT-4o-mini: The review highlights strong performances and dazzling production elements while noting some weaknesses in the book and music, leading to a solid positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 'A' rating combined with superlative language like 'dazzling,' 'best of Broadway,' and 'sparkling' indicates strong enthusiasm and recommendation. | GPT-4o: The original rating of 'A' and the positive language in the excerpt suggest a highly favorable view. The description of the musical as 'big, dazzling' and showcasing 'the best of Broadway' indicates a strong recommendation. | Gemini: The review uses positive language like \"dazzling\" and \"best of Broadway\" to describe the musical, indicating a positive recommendation. The A rating from the critic further supports this classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:36:51.624Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:17:19.712Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "designation": "Recommended",
   "bwwThumb": "Up",

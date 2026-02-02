@@ -8,64 +8,56 @@
   "showScoreExcerpt": "3/5 Stars. The play's not the thing here...Stuhlbarg and Keen are the crème de la Kremlin.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/patriots-broadway",
   "originalScore": "3/5",
-  "assignedScore": 63,
+  "assignedScore": 74,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 74,
+    "confidence": "medium",
     "range": {
-      "low": 55.5,
-      "high": 70.5
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 40,
+      "book": null,
       "music": null,
-      "performances": 78,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "3/5 Stars",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "The play's not the thing here",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Stuhlbarg and Keen are the crème de la Kremlin",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: 3/5 stars with strong praise for lead performances but explicit criticism of the play itself creates a mixed-positive recommendation carried primarily by the actors. | GPT-4o-mini: The review indicates a mixed experience, with a focus on the performances being strong but the overall play lacking substance.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 rating and praise for the lead performances indicate a positive but not enthusiastic recommendation, though the single excerpt limits confidence in the full verdict. | GPT-4o: The original rating of 3/5 suggests a mixed review. The quote indicates that while the play itself may not be strong, the performances by Stuhlbarg and Keen are noteworthy, suggesting some redeeming qualities. | Gemini: The 3/5 star rating suggests a positive but not rave review. The positive comment about the actors supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:10.218Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:41.332Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 63,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 60,
-    "scoreDelta": 5,
+    "claudeScore": 72,
+    "openaiScore": 62,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,

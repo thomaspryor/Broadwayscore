@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,59 +21,53 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 82,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 88
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "truly a sight to behold",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "What a time to be alive, indeed",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "knockout trio are firing on all cylinders",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong positive language about peak moments and performances suggests enthusiasm, but brief excerpt limits confidence in overall assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt emphasizes spectacular moments and uses enthusiastic language like 'sight to behold' and 'What a time to be alive,' but the conditional phrasing ('when...') suggests these moments are intermittent rather than consistent, indicating positive recommendation with some reservations. | GPT-4o: The excerpt highlights moments of the show that are impressive and engaging, suggesting a positive experience. However, the lack of full context and the warning about a single excerpt necessitate a conservative score within the Positive range. | Gemini: The review highlights positive aspects of the show, suggesting it's enjoyable when certain elements align, but the limited excerpt and the phrase \"when...firing on all cylinders\" suggests it's not consistently excellent. Therefore, it's a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:04:57.729Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2359,
-    "outputTokens": 298,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:24.613Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 79,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges flaws but concludes with clear appreciation, calling it 'fresh' and 'rich' while praising the score as 'incontestable star' and 'beautiful'. | GPT-4o: The review acknowledges some flaws but emphasizes the freshness and richness of the show, recommending it despite its imperfections. | Gemini: Despite some criticisms (length, undramatic songs), the review emphasizes the show's freshness, stylistic variety, and richness, ultimately leading to a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges flaws but concludes positively, calling it 'fresh' and 'rich' with praise for the score, direction, and choreography, indicating a clear recommendation despite reservations. | GPT-4o: The review acknowledges flaws but emphasizes the freshness and richness of the show, recommending it despite imperfections. The positive elements like the score and direction are highlighted, suggesting an overall positive experience. | Gemini: The review acknowledges flaws but ultimately recommends seeing the show, highlighting the score and direction as strengths. The phrase \"no point in fussing over a show as rich as this one\" indicates a positive overall sentiment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,20 +45,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:31:51.997Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:03:12.547Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 81,
+    "claudeScore": 76,
+    "openaiScore": 78,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

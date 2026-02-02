@@ -7,66 +7,59 @@
   "publishDate": "March 21, 2024",
   "dtliExcerpt": "Time was, when a dreamy kid felt oppressed, the allure of running away to join the circus would fire the imagination. An American myth, or sentimental lore, probably. But in the new musical “Water for Elephants,” ostensibly set in a seedy, second-rate circus, running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop.",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 42,
   "dtliThumb": "Meh",
   "source": "dtli",
   "showScoreExcerpt": "\"this musical adaptation of the hit novel loses much of its sourceâs pungency and grit.\"",
   "bwwExcerpt": "Still, the largely pasteurized manner in which the musical depicts the often-sordid lives of circus folk of the period lends “Water for Elephants” an anodyne weightlessness, at least until the denouement. I’m not sure if a more faithful adaptation of the book would make for a better musical—although John Kander and Fred Ebb, in their heyday, might have taken a good crack at it—but it certainly would have made for a more provocative and adventurous one.",
   "bwwThumb": "Down",
   "llmScore": {
-    "score": 38,
-    "confidence": "medium",
+    "score": 42,
+    "confidence": "high",
     "range": {
-      "low": 32,
-      "high": 45
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "loses much of its sourceâs pungency and grit",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic indicates the adaptation fails to capture the essential qualities that made the source material compelling, suggesting significant disappointment with the show's execution.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic states the adaptation 'loses much' of what made the source material compelling, indicating disappointment with the production. However, with only an excerpt available, confidence is medium as the full verdict may contain additional context. | GPT-4o: The critic notes that the adaptation loses important qualities of the source material, suggesting a negative view. The aggregator context supports this interpretation. | Gemini: The review excerpt indicates a negative assessment, stating that the musical adaptation loses key qualities of the source material. This suggests a disappointing experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:37:01.639Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2323,
-    "outputTokens": 243,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:17.435Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 20,
-    "scoreDelta": 22,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 22 points (Claude: 42, OpenAI: 20)"
-    ]
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/water-for-elephants-2024/wsj--charles-isherwood_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:34:31.049Z",

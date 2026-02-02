@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 79,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review suggests audiences won't regret attending and praises Farrow's rare performance quality, indicating a positive recommendation despite limited text available. | GPT-4o: The review suggests that the performance by Farrow is exceptional and implies that the show is worth seeing for this reason. The lack of explicit negative language and the positive note about the performance lead to a positive classification. | Gemini: The quote indicates a positive experience and lack of regret, suggesting a recommendation. The additional comment about the performance quality further supports this.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly states audiences won't regret attending and praises Farrow's rare performance quality, indicating a positive recommendation despite being only a single excerpt. | GPT-4o: The review excerpt suggests a positive experience for the audience, particularly highlighting a standout performance. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The quote suggests a positive experience, but the single excerpt and lack of full context warrant a score in the middle of the 'Positive' range. The phrase 'will regret their attendance' implies a worthwhile experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:54:52.876Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:12:45.066Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "claudeScore": 73,
+    "openaiScore": 76,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

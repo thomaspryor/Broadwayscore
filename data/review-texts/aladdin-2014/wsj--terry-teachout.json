@@ -9,18 +9,18 @@
   "showScoreExcerpt": "\"It's not nearly as good as the movie, but it does have a terrific star, super-duper sets and sensational special effects.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 64,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite unfavorable comparison to the source material, the review highlights multiple strong positives (terrific star, super-duper sets, sensational special effects), suggesting overall recommendation despite flaws. | GPT-4o: The review acknowledges significant positive elements like the star and production values, but the comparison to the movie suggests it falls short overall, leading to a mixed verdict. | Gemini: The review acknowledges it's not as good as the source material, but highlights positive aspects like the star, sets, and special effects, suggesting it's still worth seeing despite its shortcomings.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges significant positives (terrific star, excellent production values) but opens with a clear comparative disappointment to the source material, suggesting mixed feelings overall. | GPT-4o: The review acknowledges significant strengths in the production, such as the star performance, sets, and special effects, but ultimately suggests it falls short of the movie, indicating a mixed recommendation. | Gemini: The review acknowledges shortcomings compared to the movie but highlights positive aspects like the star, sets, and special effects, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:13:25.214Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:09:18.810Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwExcerpt": "Billing notwithstanding, the real star of \"Aladdin\" is James",
   "contentTier": "excerpt",

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a show that demands to be seen and heard, even if it doesn't always succeed in making its case as clearly or as compellingly as it might.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "This is a show that demands to be seen and heard, even if it doesn't always succeed in making its case as clearly or as compellingly as it might.",
   "needsScoring": true,
   "llmScore": {
-    "score": 65,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "demands to be seen and heard",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "doesn't always succeed in making its case as clearly or as compellingly as it might",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic gives a qualified recommendation with 'demands to be seen and heard' but immediately undercuts it with significant reservations about execution.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'demands to be seen and heard' is a clear recommendation despite acknowledging the show's imperfections in execution. | GPT-4o: The critic strongly recommends seeing the show, indicating it is a must-see despite some minor reservations about its clarity and compelling nature. | Gemini: The review states the show \"demands to be seen and heard\" which indicates a positive recommendation, but the caveat that it \"doesn't always succeed\" suggests reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:10:40.015Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2335,
-    "outputTokens": 282,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:03.125Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -20,64 +20,48 @@
     "score": 95,
     "confidence": "high",
     "range": {
-      "low": 92,
-      "high": 98
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": 95,
-      "performances": 95,
-      "direction": 95
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "as close to perfect as Broadway gets",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the most top-to-bottom perfect production of them all",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "splendid and shattering revival",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The headline declares it 'as close to perfect as Broadway gets' and the review consistently uses superlative language like 'most top-to-bottom perfect production' with no meaningful criticism, only praise for all elements.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'as close to perfect as Broadway gets,' 'the most top-to-bottom perfect production of them all,' and praising every aspect from performances to direction with unqualified enthusiasm. | Gemini: The review uses extremely positive language such as \"splendid and shattering revival\" and \"top-to-bottom perfect production\" indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:36:41.222Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3499,
-    "outputTokens": 334,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:38.918Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
+    "claudeScore": 95,
+    "openaiScore": null,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 94,

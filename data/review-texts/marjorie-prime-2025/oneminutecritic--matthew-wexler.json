@@ -9,65 +9,59 @@
   "bwwExcerpt": "June Squibb and a superb company turn Marjorie Prime into an acting masterclass about mortality, memory, and why we love. Brian",
   "bwwRoundupUrl": null,
   "originalScore": "5/5",
-  "assignedScore": 89,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "dtliThumb": null,
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 95,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 90,
+      "high": 100
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 94,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "superb company",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "acting masterclass",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "mortality, memory, and why we love",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Strong praise for performances with superlative language ('superb', 'masterclass') and meaningful thematic content, though brief review limits confidence in overall production assessment. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and the thematic depth of the production, indicating a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: This appears to be heavily truncated text with only a headline and photo caption. While the critic gave 5/5 stars, the actual review content is missing, making it impossible to determine the true recommendation based on the text alone. | GPT-4o: The critic's original rating of 5/5 strongly indicates a rave review, suggesting the production is highly recommended. | Gemini: The critic gave the show a perfect score of 5/5, indicating a rave review.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:34.568Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:04.906Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
-    "needsReview": false,
-    "needsReviewReasons": []
+    "claudeScore": 60,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 35,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Outlier claude chose Mixed, 2+ buckets from majority"
+    ],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sources": [
     "bww-roundup",

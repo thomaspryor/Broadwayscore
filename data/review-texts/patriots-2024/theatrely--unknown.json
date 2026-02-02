@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review criticizes the playwright's unclear intentions and concludes that the drama lacks direction, suggesting the critic does not recommend the show despite acknowledging Morgan's previous successes. | GPT-4o: The review highlights a lack of direction and clarity in the play, suggesting it is not worth seeing. The tone is clearly negative, indicating disappointment with the production. | Gemini: The review highlights the playwright's tendency towards both dignified and \"haute-trashy\" approaches, but ultimately concludes that the play lacks direction, suggesting a mixed or neutral recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The excerpt criticizes the playwright's unclear intentions and describes the drama as going nowhere, suggesting disappointment. However, with only one curated excerpt available, this could be cherry-picked criticism from a more nuanced review. | GPT-4o: The review criticizes the play for lacking direction and suggests that the audience is left without a clear dramatic path, indicating a negative assessment of the production. | Gemini: The review highlights both positive and negative aspects, ultimately suggesting the play has issues with its dramatic direction, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,10 +36,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:52:11.285Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:20:34.749Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 44,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,

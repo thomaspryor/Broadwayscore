@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "This puzzling, undercooked, but still arresting play, set in 1977, knows and accords to the genre conventions from whence it derives.",
@@ -19,60 +19,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 52,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 40.5,
-      "high": 63.5
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 38,
+      "book": null,
       "music": null,
-      "performances": 73,
-      "direction": 55
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This puzzling, undercooked, but still arresting play",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "The actors work admirably hard in its quirkily baffling folds, but the story sticks and stops and starts and eventually disappears into itself",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It's not that you aren't tense in your seat for the duration of Grey House—you really are—but all the teasing and foreboding glares and there-be-terror-in-these-parts signposting begin to grate",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic finds the play atmospherically engaging and praises the performances, particularly Metcalf, but ultimately criticizes the confusing narrative, poor execution, and unsatisfying conclusion, describing it as 'puzzling, undercooked' with a story that 'disappears into itself.' | GPT-4o-mini: The review expresses significant disappointment with the script and clarity of the production, despite acknowledging some strong performances. | Note: Models differed by 13 points.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the show is 'arresting' and creates genuine tension, but ultimately finds it 'undercooked,' 'puzzling,' and irritating rather than thrilling, with a story that 'doesn't execute its landing.' | Gemini: The review describes the show as puzzling and undercooked, but also arresting. While the actors are praised, the story is criticized for being baffling and not executing its landing. The reviewer ultimately finds it irritating rather than thrilling, placing it in the mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:50:19.250Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:19.849Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 45,
-    "scoreDelta": 13,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 57,

@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Clear positive recommendation emphasizing the show's success as a stage adaptation, with praise for performances, production values, and family appeal, though not quite enthusiastic enough for rave territory. | GPT-4o: The review is overwhelmingly positive, highlighting the seamless transition from film to stage, the impressive performances, and the stunning production elements. The critic's enthusiastic tone and specific praise for various aspects of the show indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the enjoyable experience for both children and adults, the impressive performances, and the seamless transition to the stage. While not a rave, it's a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic clearly recommends the show, praising performances, production values, and stating it works well for the whole family, despite some minor reservations about certain songs making less of an impression than others. | GPT-4o: The review is overwhelmingly positive, highlighting the seamless transition from film to stage, the impressive performances, and the stunning production elements. The critic's enthusiasm and the use of phrases like 'lavish and magical production' indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the enjoyable music, impressive performances, stunning costumes, and seamless transition to the stage. It explicitly recommends it for families.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,8 +43,8 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:10:36.663Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:03:59.854Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 79,
@@ -52,12 +52,12 @@
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
+    "openaiScore": 92,
     "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

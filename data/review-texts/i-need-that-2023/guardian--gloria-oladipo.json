@@ -9,37 +9,26 @@
   "bwwExcerpt": "I Need That is clearly a vehicle for DeVito’s return to Broadway, coming six years after his debut in Arthur Miller’s The Price. DeVito is funny and makes the most of Rebeck’s slapstick material. Within the ensemble and alone, he brings charm and occasional devastation to Sam’s afflictions. A scene where he plays a solo game of Sorry! is arresting and hilarious, an exhibition of his considerable talents.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 25,
-    "confidence": "medium",
+    "score": 52,
+    "confidence": "low",
     "range": {
-      "low": 20,
-      "high": 35
+      "low": 47,
+      "high": 57
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 25
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "trudges along",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "poorly written sitcom",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The comparison to a 'poorly written sitcom' and description of the play 'trudging along' clearly indicates the critic found this a disappointing, low-quality production.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic delivers a clear negative assessment, calling the play 'messy,' criticizing its lack of emotional depth, and condemning the problematic treatment of Black characters. While praising DeVito's performance as the 'only saving grace,' the overall recommendation is clearly against seeing the show. | Gemini: The review praises Danny DeVito's performance but criticizes the writing and handling of sensitive topics. It acknowledges some humor but ultimately finds the play lacking depth and nuance, resulting in a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,27 +37,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:38:41.861Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2323,
-    "outputTokens": 274,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:09.304Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "bwwThumb": "Down",
   "dateUnknown": true,

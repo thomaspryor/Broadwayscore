@@ -6,17 +6,17 @@
   "url": "https://www.chicagotribune.com/entertainment/theater/ct-aladdin-broadway-review-column.html",
   "publishDate": "2014-03-20",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 63,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "urlUpdated": "2026-01-23T05:12:14.992Z",
   "fetchedAt": "2026-01-23T05:23:00.882Z",
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review consistently praises James Monroe Iglehart's Genie performance as exceptional but criticizes most other elements including the book, character development, and pacing. The critic sees potential but finds the execution lacking, landing in clear mixed territory. | GPT-4o: The review highlights the strengths of the Genie character and some visual elements, but criticizes the lack of emotional stakes and flatness in the main plot. The overall tone suggests a mixed experience with notable highs and lows. | Gemini: The review highlights both strengths (Genie, magic carpet) and weaknesses (flat main plot, tentative romance). The overall tone suggests a worthwhile but flawed production, placing it in the 'Positive' bucket. The critic suggests improvements that could elevate the show, indicating it's currently good but not great.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review praises James Monroe Iglehart's Genie performance as the show's 'greatest asset' but criticizes the weak central romance, flat non-Genie scenes, and unclear tone between straight storytelling and satire. The critic sees potential but finds significant structural problems. | GPT-4o: The review highlights strong performances, particularly by James Monroe Iglehart as the Genie, and some impressive visual elements. However, it also notes significant issues with the plot and character engagement, suggesting a lack of emotional stakes and excitement. The truncated nature of the text suggests caution, but the overall tone leans towards mixed with some positive highlights. | Gemini: The review highlights both positive and negative aspects. The Genie's performance and the magic carpet are praised, but the main plot and the connection between Aladdin and Jasmine are criticized. The truncated text makes it difficult to determine the overall recommendation, but the mixed assessment suggests a score in the middle range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,8 +37,8 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:10:56.805Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:04:38.030Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
@@ -47,17 +47,17 @@
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwExcerpt": "You might argue that nobody cares about such veracity in a show based on a cartoon and now expanded into a family musical full of color and exuberance - if still wanting for an overarching theatrical reason for being. But if the director Casey Nicholaw, the book writer Chad Beguelin and their cast a...",
   "textFetchedAt": "2026-01-30T16:15:12.293Z",

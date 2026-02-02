@@ -9,7 +9,7 @@
   "dtliExcerpt": "With a zippy score, terrific tap numbers choreographed by director Jerry Mitchell, energetic performances from a top-notch cast, and a plot that doesn’t tax your brain, Boop! is one of the feel-good musicals of the year.",
   "showScoreExcerpt": "\"With a zippy score, terrific tap numbers...Boop! is one of the feel-good musicals of the year.\"",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "textFetchedAt": "2026-01-25T14:14:04.184Z",
@@ -17,60 +17,51 @@
   "archivePath": "data/archives/reviews/boop-2025/theatermania--pete-hempstead_2026-01-25.html",
   "sourceMethod": "dtli",
   "llmScore": {
-    "score": 87,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 78.5,
-      "high": 95.5
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
-      "music": 84,
-      "performances": 88,
-      "direction": 86
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Boop! is one of the feel-good musicals of the year",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a bright, colorful extravaganza of nostalgic comedy, charming songs, and high-stepping choreography",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "had me boop-oop-a-dooping out the door",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic clearly enjoyed the show, calling it 'one of the feel-good musicals of the year' and praising multiple elements including performances, choreography, and production values with consistent enthusiasm throughout. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its charm, performances, and overall feel-good nature, indicating a strong recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic enthusiastically recommends this as escapist entertainment that succeeds in its goals, praising performances, choreography, and production values while acknowledging it doesn't aim for depth. | Gemini: The review is overwhelmingly positive, highlighting the show's escapism, energetic performances, and feel-good nature. The critic clearly enjoyed the production and recommends it as a diverting experience.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:37:04.280Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:17:54.955Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 86,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 90,
-    "scoreDelta": 7,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "sources": [
     "dtli"

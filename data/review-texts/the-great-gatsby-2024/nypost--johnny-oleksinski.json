@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "mistakes Fitzgerald’s story for a standard romance novel. And when she keeps in a few lines of Fitzgerald’s actual prose (spoken by Nick), you become even more aware of Kerrigan’s modern sensibility. Johnny Oleksinski, New York Post: The musical, a patchwork quilt of discordant styles that belongs in a box, becomes the latest in a long line of adaptions of this beloved novel to mess up a story that’s far more satisfying to read and imagine. It completely misses its intoxicating atmosphere, meaning and layered characters. One of the rare smart decisions of the night is the casting of Noah J. Ricketts as our man Nick Carraway, a modest Midwesterner who moves to a Long Island cottage in “new money” West Egg. Robert Hofler, The Wrap: It’s debatable whether one of American literature’s most mysterious characters should ever sing. What Gatsby should definitely not ever do is lead a chorus of tap dancers. That not-since-“Carrie” spectacle sums up what goes wrong with the new musical “The Grea",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
@@ -16,60 +16,52 @@
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 25,
+    "score": 43,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 38,
+      "high": 48
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
-      "performances": 53,
-      "direction": 23
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "becomes the latest in a long line of adaptions of this beloved novel to mess up a story",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "It completely misses its intoxicating atmosphere, meaning and layered characters",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "One of the rare smart decisions of the night is the casting of Noah J. Ricketts",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Multiple critics pan the adaptation as fundamentally flawed, citing complete failure to capture the source material's essence, with only isolated praise for casting choices. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the adaptation's failure to capture the essence of the original story and suggesting it should be avoided.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic describes the show as derivative and unoriginal, which is a negative assessment. However, with only this brief excerpt available, the full verdict remains unclear. | GPT-4o: The phrase suggests a lack of originality and implies that the show fails to stand out or offer anything new. The aggregator context supports a negative assessment. | Gemini: The review excerpt suggests a lack of originality and overall negative impression, indicating a negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:52:45.617Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:00.702Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
-    "scoreDelta": 0,
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
   "bwwThumb": "Down",

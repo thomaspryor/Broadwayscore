@@ -10,42 +10,26 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 90,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 90,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 85,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 88,
+      "music": null,
       "performances": null,
-      "direction": 87
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "thrillingly alarmist new Broadway musical",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "score that feels like it comes from somewhere deep in the American gut",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "eye-popping, mythological blend",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong positive language like 'thrillingly alarmist' and 'eye-popping' combined with praise for the score and production design indicates clear enthusiasm and recommendation. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's themes and score, indicating a clear recommendation despite lacking specific details on performances or direction.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses highly enthusiastic language throughout - 'thrillingly alarmist', 'masterfully staged', 'true stunner' - and praises every aspect from performances to design to political relevance without any significant reservations. | GPT-4o: The review is overwhelmingly positive, praising the production's staging, score, and relevance. It describes the musical as thrilling, relevant, and masterfully staged, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, highlighting the show's thrilling and relevant nature. While there are some minor reservations, the overall tone suggests a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:46.677Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:00:03.741Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 85,

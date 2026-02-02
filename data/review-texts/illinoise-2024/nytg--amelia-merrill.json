@@ -9,71 +9,56 @@
   "showScoreExcerpt": "\"A few instances of more heavy-handed literalism are sprinkled through the piece\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
-      "music": 85,
-      "performances": 82,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "otherwise gorgeously crafted show",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Peck's choreography, however, leaves a lasting impression",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "choices like this from director/choreographer Peck put too fine a point on",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite some criticism of heavy-handed directorial choices, the review consistently praises the choreography, performances, and overall craft, describing it as 'gorgeously crafted' with 'lasting impression' choreography.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review criticizes some heavy-handed literal elements but praises the choreography as leaving 'a lasting impression' and calls it 'gorgeously crafted.' The positive elements (strong performances, memorable choreography, creative staging) outweigh the criticisms, supported by the 84% audience approval rating mentioned. | GPT-4o: The review highlights the impressive choreography and standout performances, despite some criticism of heavy-handed literalism. The overall tone is positive, with the show being well-received by audiences. | Gemini: The review is mostly positive, highlighting the choreography and performances, but notes some heavy-handed literalism. The overall tone suggests a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:19:22.542Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3075,
-    "outputTokens": 340,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:46.737Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 50,
-    "scoreDelta": 5,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 48,

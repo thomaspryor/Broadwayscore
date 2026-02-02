@@ -9,72 +9,57 @@
   "dtliExcerpt": "Saddled with an unmemorable score by Stephen Schwartz (Wicked, Pippin) and a confused book by Lindsey Ferrentino (Amy and the Orphans), Versailles glides by as bland bio-musical for much of its excessive runtime, the show’s perspective on Siegel meandering confusedly between misplaced sympathy and perverse fascination. That is until both the text and director Michael Arden’s staging (crisp up to this point, if sleepy) jolt suddenly to life in the story’s final section, as the overall tone shifts abruptly into bitter rage.",
   "bwwExcerpt": "Saddled with an unmemorable score by Stephen Schwartz (Wicked, Pippin) and a confused book by Lindsey Ferrentino (Amy and the Orphans), Versailles glides by as bland bio-musical for much of its excessive runtime, the show's perspective on Siegel meandering confusedly between misplaced sympathy and perverse fascination.",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 44,
   "source": "dtli",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 46
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 35,
-      "music": 40,
-      "performances": 75,
-      "direction": 45
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this mostly dull work traces Siegel's journey from rags to riches",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Chenoweth herself is excellent throughout, finding pathos in Siegel's journey without ever sentimentalizing",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's too little and too late, but suggests an intriguing road not taken",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite praising Chenoweth's performance, the critic finds the show 'mostly dull' with an 'unmemorable score' and 'confused book', calling it a 'plodding narrative' that only briefly comes alive at the end.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review calls the show 'mostly dull', 'bland', and 'plodding' with a 'forgettable score', despite praising Chenoweth's performance and finding some merit in the finale. The overall assessment is clearly negative. | GPT-4o: The review describes the musical as mostly dull with an unmemorable score and a confused book. While it notes a potent finale, it states that it is too little and too late to redeem the overall production, suggesting the show is not worth seeing. | Gemini: The review is largely negative, citing a dull book and unmemorable score. However, it praises Chenoweth's performance and notes a potent finale, indicating some redeeming qualities. The overall tone is mixed, leaning slightly negative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:58:53.017Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3500,
-    "outputTokens": 381,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:09.079Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "sourceMethod": "playwright",
   "bwwThumb": "Meh",

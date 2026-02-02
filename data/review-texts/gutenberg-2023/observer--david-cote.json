@@ -9,77 +9,56 @@
   "bwwExcerpt": "Scenic designer Scott Pask simulates a disorganized backstage area with tables, technical gear and touches that suggest a Nutley yard sale (I see he bought the Star Wars bedsheets from my childhood on eBay) and costume designer Emily Rebholz gives the boys the perfect level of dweeby élan, down to Rannells’ tucked-in sweater. I don’t know if the bazillion trucker hats are sets, costumes, props or what, but give someone a Tony. Having staged much costlier and busier spectacles, it’s a treat to se",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 78,
+      "low": 75,
       "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 70,
-      "performances": 88,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Oh my Gad yes",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it's firmly imprinted on my heart, sans serif",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It takes craft to be this crappy",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic clearly enjoys and recommends this show despite its intentionally bad musical-within-a-musical premise, praising the performances, direction, and clever execution of the concept.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with self-aware criticism of musicals being 'stupid,' the critic clearly enjoyed the show immensely, praising the performances, direction, and craft throughout, concluding with genuine affection for the production. | GPT-4o: The review is filled with praise for the performances, direction, and cleverness of the production, culminating in a strong personal endorsement from the critic. The tone is consistently positive and enthusiastic, indicating a must-see recommendation. | Gemini: The review expresses enjoyment and appreciation for the show's humor and performances, ultimately recommending it despite acknowledging its flaws and niche appeal. The critic clearly enjoyed the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:00:22.174Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3872,
-    "outputTokens": 322,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:37:14.606Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
-    "geminiScore": 75,
+    "claudeScore": 79,
+    "openaiScore": 90,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "\" 'Gutenberg!' is not designed to be anyone’s gateway musical or inspire a career in that impossible, flop-filled field, but it’s firmly imprinted on my heart, sans serif.\"",

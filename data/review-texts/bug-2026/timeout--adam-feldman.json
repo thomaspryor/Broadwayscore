@@ -7,66 +7,58 @@
   "publishDate": "January 8, 2026",
   "showScoreExcerpt": "\"The slipperiness of ostensible skepticism into utter credulity is what makes Bug continue to resonate so powerfully today.\"",
   "originalScore": "4/5",
-  "assignedScore": 83,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T05:45:00.000Z",
   "bwwExcerpt": "Although Agnes and Peter sleep together early on, their relationship isn’t primarily sexual. But there’s an element of seduction to their whole dynamic, as Peter, at first reluctantly, gets under Agnes’s skin. Letts is an actor as well as a playwright—he and Coon, who are married, met while co-starring in a revival of Who’s Afraid of Virginia Woolf?—and he knows how to craft scenes that keep performers intensely engaged with each other onstage.",
   "llmScore": {
-    "score": 83,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 90
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 81,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 83
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "4 out of 5 stars",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Tracy Letts's engrossing and unsettling 1996 psycho-thriller",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "makes Bug continue to resonate so powerfully today",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The 4/5 star rating combined with consistently positive language about the play's resonance, performances, and direction indicates a clear positive recommendation despite the dark subject matter. | GPT-4o-mini: The review expresses strong praise for the performances and direction, indicating a clear recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic's 4/5 rating strongly indicates a positive recommendation, and describing the show as resonating 'so powerfully today' suggests meaningful impact and worth seeing. | GPT-4o: The original rating of 4/5 suggests a positive review. The key quote indicates that the show has a powerful resonance, which aligns with a positive recommendation, though the lack of full context leaves some room for reservations. | Gemini: The review excerpt indicates that the play resonates powerfully, suggesting a positive recommendation. The 4/5 rating further supports this classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:40:46.448Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:12:50.620Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 83,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 85,
-    "scoreDelta": 4,
+    "claudeScore": 80,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textFetchedAt": "2026-01-25T14:20:55.465Z",
   "textFetchMethod": "playwright-stealth",

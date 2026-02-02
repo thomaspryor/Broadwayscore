@@ -9,42 +9,26 @@
   "bwwExcerpt": "There is not a word of dialogue in Illinoise, but this hybrid production fusing dance and music accomplishes far more than mere words can express. Inspired by Sufjan Stevens’ groundbreaking concept album, Illinois, choreographer Justin Peck came up with his own theatrical concept. With Jackie Sibblies Drury as co–book writer, they crafted a narrative that translates the emotional import of Stevens songs into a unique language that can best be described as poetry in motion.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "originalScore": "4/5 stars",
-  "assignedScore": 84,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 84,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 88,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "accomplishes far more than mere words can express",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "can best be described as poetry in motion",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "groundbreaking concept album",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong praise for the artistic achievement and creative concept with evocative language like 'poetry in motion' and 'accomplishes far more than mere words can express' indicates clear positive recommendation. | GPT-4o-mini: The review expresses strong appreciation for the innovative fusion of dance and music, indicating a clear recommendation to see the production.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating and concluding praise about raising the bar for Broadway musicals indicate a strong positive recommendation, though the critic acknowledges it's 'esoteric and likely not everyone's cup of tea.' | Gemini: The review is overwhelmingly positive, highlighting the unique and collaborative nature of the production. The critic notes it might not be for everyone due to its esoteric nature, but still recommends it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:36:00.905Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:39.975Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 84,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Illinoise is a wonderfully collaborative effort that raises the “barre” for Broadway musicals moving forward.",

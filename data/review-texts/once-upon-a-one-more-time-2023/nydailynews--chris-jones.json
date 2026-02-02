@@ -19,63 +19,47 @@
     "confidence": "high",
     "range": {
       "low": 10,
-      "high": 25
+      "high": 20
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 5,
-      "music": 25,
-      "performances": 35,
-      "direction": 20
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The truly awful 'Once Upon a One More Time'",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "It goes on for two acts, god help us, and it is painful to watch",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "The rest of this summer dud is just a pale and pandering whitewash",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic uses unambiguously harsh language throughout ('truly awful', 'painful to watch', 'summer dud') with almost no redeeming qualities found except for isolated moments, making this a clear pan.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Pan | Claude: The critic uses exceptionally harsh language throughout, calling it 'truly awful,' 'disaster,' 'painful to watch,' and 'summer dud,' with virtually no redeeming qualities mentioned beyond one performer and one musical number. | Gemini: The review is overwhelmingly negative, describing the show as \"truly awful,\" \"painful to watch,\" and a \"summer dud.\" The critic finds the plot incomprehensible, the singing mediocre, and the overall production lacking in narrative cohesion and entertainment value.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:45:57.588Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3470,
-    "outputTokens": 350,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:19.987Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 15,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 15,
-    "openaiScore": 15,
+    "openaiScore": null,
+    "geminiScore": 15,
+    "claudeBucket": "Pan",
+    "geminiBucket": "Pan",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Pan"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 15,

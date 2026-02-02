@@ -9,36 +9,18 @@
   "bwwExcerpt": "For followers of the book and film, the climactic moment on stage remains equally thrilling — and the most creative stampede since the wildebeest run in “The Lion King” (whose co-producer Peter Schneider is also top-lined here). This underdog circus troupe may promote its entertainment as “Benzini Brothers’ Most Spectacular Show on Earth,” but for this rube’s nickels, “Water for Elephants” could be the greatest show on Broadway.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "showScoreExcerpt": "\"...a unique and imaginative creation of the stage and live performance.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/water-for-elephants-broadway",
-  "archivePath": "data/archives/reviews/water-for-elephants-2024/variety--frank-rizzo_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T20:28:01.298Z",
+  "archivePath": "data/archives/reviews/water-for-elephants-2024/variety--frank-rizzo_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:03:31.199Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -47,67 +29,52 @@
   "archiveOrgTimestamp": "20251112075210",
   "archiveOrgUrl": "http://web.archive.org/web/20251112075210/https://variety.com/2024/legit/reviews/water-for-elephants-review-broadway-musical-1235948534/",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 93,
+    "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "offers escapism, enchantment and heart — and thrills, too",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "elevates the musical to new and literal heights with its seamless integration of theatrical and cirque artistry",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Then 'Water for Elephants' would be the show of choice",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Strong positive language throughout with clear recommendation signals ('show of choice', 'elevates to new heights') and enthusiastic praise for the production's artistic integration, though excerpt appears incomplete.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it a show that 'offers escapism, enchantment and heart' and concluding it 'could be the greatest show on Broadway' - clear rave territory. | GPT-4o: The review is highly enthusiastic, praising the show for its escapism, enchantment, and creative artistry. The critic suggests it could be the greatest show on Broadway, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"escapism, enchantment and heart\" and concludes with the bold statement that it \"could be the greatest show on Broadway,\" indicating a rave review.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:36:43.934Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2389,
-    "outputTokens": 351,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:45.443Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "sources": [
@@ -116,8 +83,8 @@
     "dtli"
   ],
   "dtliExcerpt": "This underdog circus troupe may promote its entertainment as “Benzini Brothers’ Most Spectacular Show on Earth,” but for this rube’s nickels, “Water for Elephants” could be the greatest show on Broadway.",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 94,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
   "rescoreCompletedAt": "2026-02-01T16:36:43.934Z",
   "contentTier": "complete",
   "wordCount": 924

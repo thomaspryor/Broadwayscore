@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a show that sounds like no other musical on or off Broadway, one whose score has the craggy authenticity of American folk music at its most uncompromising.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The result is a show that sounds like no other musical on or off Broadway, one whose score has the craggy authenticity of American folk music at its most uncompromising.",
   "llmScore": {
-    "score": 77,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review emphasizes uniqueness and authenticity as positive qualities, describing the score as having 'craggy authenticity' which reads as praise for artistic merit, though the excerpt is brief and may not capture the full assessment. | GPT-4o: The review uses highly positive language, emphasizing the uniqueness and authenticity of the musical, suggesting a strong recommendation. | Gemini: The review highlights the unique and authentic score, suggesting a positive experience and a recommendation to see the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic highlights the show's distinctive and authentic musical qualities, using positive language like 'craggy authenticity' and 'uncompromising,' though this excerpt lacks explicit recommendation language. | GPT-4o: The review uses strong, positive language to describe the uniqueness and authenticity of the show's score, suggesting a highly enthusiastic recommendation. | Gemini: The review praises the show's unique and authentic score, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,14 +42,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:31:58.313Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:03:55.415Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 75,
     "openaiScore": 90,
     "geminiScore": 75,
     "claudeBucket": "Positive",

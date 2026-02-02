@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's saving grace is its irrepressible spirit and the fact that it knows exactly what it is: a big, silly, glittery spectacle that never takes itself too seriously.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "The show's saving grace is its irrepressible spirit and the fact that it knows exactly what it is: a big, silly, glittery spectacle that never takes itself too seriously.",
   "needsScoring": true,
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The show's saving grace is its irrepressible spirit",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a big, silly, glittery spectacle that never takes itself too seriously",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic frames the show's qualities as a 'saving grace' and appreciates its self-aware nature, suggesting a qualified positive recommendation for those who enjoy this type of theatrical entertainment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic frames the show positively as knowing what it is and having 'irrepressible spirit,' though calling it the show's 'saving grace' and describing it as 'big, silly' suggests modest recommendation for those seeking light entertainment rather than high art. | GPT-4o: The review highlights the show's positive attributes, emphasizing its spirit and self-awareness, suggesting it's worth seeing for its entertainment value. | Gemini: The review highlights the show's positive qualities like its spirit and self-awareness, suggesting it's enjoyable despite potential flaws. This indicates a recommendation, albeit with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:08:45.770Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2341,
-    "outputTokens": 296,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:29.846Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

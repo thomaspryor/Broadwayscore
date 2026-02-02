@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "ng) is a misfire. The survivor of Spider-Man: Turn Off the Dark remains a bit generic, despite sweet looks and a pretty pop falsetto. Hadestown needs a stronger injection of sexually charged romance. Johnny Oleksinski, The New York Post : Yes, composer Ana&iuml;s Mitchell's musical retelling of the Orpheus and Eurydice myth, which opened Wednesday on Broadway, sounds pleasant and looks more expensive than it did in 2016 at New York Theatre Workshop. But this classic tale of love - he looks back, she gets trapped in the underworld for all eternity - is still too slick and sterile for us to give a damn about her damnation. Marilyn Stasio, Variety : \" Hadestown \" triggered a lot of buzz when this wholly American show (which came to the stage by way of a concept album) premiered at Off Broadway 's New York Theatre Workshop in 2016. Arriving on Broadway with its earthly delights more or less intact, this perfectly heavenly musical - with book, music and lyrics by Ana&iuml;s Mitchell - shoul",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
@@ -16,60 +16,52 @@
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 50,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 35,
-      "music": 63,
-      "performances": 40,
-      "direction": 50
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "too slick and sterile for us to give a damn about her damnation",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "sounds pleasant and looks more expensive",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "perfectly heavenly musical",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Mixed signals with strong negative criticism about being 'slick and sterile' alongside praise for being 'perfectly heavenly,' but the emotional disconnect criticism dominates the recommendation. | GPT-4o-mini: The review expresses mixed feelings, highlighting both the pleasant aspects of the production and significant criticisms regarding its emotional impact and depth.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges positive elements (pleasant sound, expensive look) but delivers significant criticism about the show being 'too slick and sterile' to emotionally engage audiences, indicating a lukewarm mixed assessment. | GPT-4o: The review describes the production as 'a misfire' and 'too slick and sterile,' suggesting a lack of emotional impact. The critique of needing 'a stronger injection of sexually charged romance' indicates significant dissatisfaction with the show's execution. | Gemini: The review presents both positive and negative aspects of the show. While acknowledging pleasant sounds and improved visuals, it criticizes the lack of emotional depth and sterile presentation, suggesting a mixed overall experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:15:09.312Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:00:07.455Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "sources": [
     "bww-roundup",

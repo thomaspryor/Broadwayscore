@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Here Lies Love is an ambitious, immersive musical that transforms the Broadway Theatre into a dancefloor-cum-dictator origin story, though its political complexities sometimes get lost in the spectacle.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "Here Lies Love is an ambitious, immersive musical that transforms the Broadway Theatre into a dancefloor-cum-dictator origin story, though its political complexities sometimes get lost in the spectacle.",
   "needsScoring": true,
   "llmScore": {
-    "score": 62,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 68
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 65
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "ambitious, immersive musical",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "political complexities sometimes get lost in the spectacle",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review praises the production's ambition and immersive qualities but criticizes it for prioritizing spectacle over political substance, indicating a mixed recommendation with qualified appreciation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges the show's ambition and immersive qualities but identifies a significant flaw where important content gets overshadowed by spectacle, indicating neither strong recommendation nor discouragement. | GPT-4o: The review describes the show as ambitious and immersive, which suggests a positive experience, but notes that political complexities sometimes get lost, indicating some reservations. | Gemini: The review describes the musical as \"ambitious\" and \"immersive\", but notes that its political complexities are sometimes lost. This suggests a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:58:44.887Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2345,
-    "outputTokens": 286,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:04.427Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

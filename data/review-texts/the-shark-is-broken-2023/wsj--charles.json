@@ -7,65 +7,56 @@
   "publishDate": "August 10, 2023",
   "dtliExcerpt": "Slender though it may be, at a crisp 95 minutes it holds one’s attention in no small part because the actors playing their more famous counterparts are so superb, giving performances that perfectly capture the personas, mannerisms and idiosyncrasies of Shaw, Dreyfuss and Scheider, at least as documented in various books and movies about the making of “Jaws.”",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/the-shark-is-broken/",
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 85
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 60,
+      "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Slender though it may be",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "holds one's attention",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the actors playing their more famous counterparts are so superb",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges the material is thin but praises the performances highly and notes the show holds attention, suggesting a qualified positive recommendation. | GPT-4o-mini: The review highlights the superb performances of the actors, indicating a strong recommendation despite not discussing other elements of the production.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly recommends the show as 'perfect entertainment' despite acknowledging it's not groundbreaking, indicating a positive but measured endorsement. | Gemini: The review calls the play \"frisky and continuously amusing\" and \"perfect late-summer entertainment,\" which indicates a positive, but not rave, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:35.208Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:31.395Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwExcerpt": "Slender though it may be, at a crisp 95 minutes it holds one’s attention in no small part because the actors playing their more famous counterparts are so superb, giving performances that perfectly capture the personas, mannerisms and idiosyncrasies of Shaw, Dreyfuss and Scheider, at least as documented in various books and movies about the making of “Jaws.” Yet none of the actors is indulging in mere comic mimicry. All give fully rounded, nuanced performances that give the play a layer of veris",
   "showScoreExcerpt": "“ ‘The Shark Is Broken’ is not a play for the ages, or even for those who have never seen ‘Jaws,’ but it’s a frisky and continuously amusing diversion—perfect late-summer entertainment if you want to stay away from the ocean.”",

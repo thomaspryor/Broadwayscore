@@ -7,12 +7,12 @@
   "publishDate": "March 20, 2025",
   "dtliExcerpt": "Audiences are always receptive to flights into jubilant escapism—perhaps particularly now—and this plucky musical provides it in generous doses.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/operation-mincemeat/",
-  "archivePath": "data/archives/reviews/operation-mincemeat-2025/wall-street-journal--charles_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T20:30:49.992Z",
+  "archivePath": "data/archives/reviews/operation-mincemeat-2025/wsj--charles_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:58:40.401Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -29,60 +29,52 @@
     "Word count too low: 182 (min: 300)"
   ],
   "llmScore": {
-    "score": 72,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 63.5,
-      "high": 80.5
+      "low": 73,
+      "high": 83
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 72,
-      "performances": 78,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "sometimes exhaustingly antic comedy that drives this odd duck of a musical",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Performed by Mr. Malone with a touching sincerity untainted by sentimentality",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "indicates a subtle emotional core beneath the sometimes exhaustingly antic comedy",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The review acknowledges strong individual performances and musical moments but criticizes the show's exhausting comedy style, suggesting appreciation for elements within a flawed whole. | GPT-4o-mini: The review expresses clear appreciation for the performances and emotional depth, suggesting a positive recommendation despite some reservations about the overall comedic tone.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review presents the show as delivering what audiences want (escapism) in 'generous doses,' indicating a positive recommendation, though the excerpted nature limits confidence in the full verdict. | GPT-4o: The review highlights the musical's ability to deliver 'jubilant escapism' which is a positive attribute, suggesting a recommendation. However, due to the text quality warning, the confidence is medium. | Gemini: The review excerpt indicates the musical provides 'jubilant escapism' and is 'plucky' and 'generous,' suggesting a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:46.081Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:42.695Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwExcerpt": "t rather inside the pocket of a stolen corpse. Jesse Green, The New York Times: I enjoyed ‘Operation Mincemeat’ well enough, but I would have enjoyed it much more if I thought that were true onstage. Charles Isherwood, The Wall Street Journal: But the limited run has been extended more than once, and the surprise sensation of the Broadway season has been the unabashedly silly ‘Oh, Mary!,’ which also lampoons history, albeit more cavalierly. Audiences are always receptive to flights into jubilant escapism—perhaps particularly now—and this plucky musical provides it in generous doses. Sara Holdren, Vulture: Operation Mincemeat isn’t exactly blazingly clever—the jokes fly thick and fast, and they tend toward broad grin-crackers rather than breathless zingers—but it overflows with good humor and heartfelt commitment… While some moments certainly sizzle more than others, there’s more than enough sincerity and goofy charisma on stage to keep the show powered. Frank Rizzo, Variety: Though the",
   "bwwThumb": "Up",
@@ -94,5 +86,17 @@
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.083Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 72,
+  "fullText": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9\n\nThe cast of ‘Operation Mincemeat.’ Julieta CervantesIt may be telling that the song receiving the most enthusiastic response in the daffy British musical “Operation Mincemeat” is not one of the many comic romps that are the show’s bread and butter—or should I say tea and crumpets? Instead it’s a tender ballad in which the schoolmistressy secretary Hester Leggatt, played by Jak Malone, sings an imagined love letter to be planted on a corpse to add verisimilitude to the dead man’s manufactured life story. Intrigued yet?\n\nPerformed by Mr. Malone with a touching sincerity untainted by sentimentality, the song hints at a lost love in Hester’s past that reveals a beating heart just below the classic British stiff upper lip. Yet it’s not just the character but the musical, too, that in this moment takes a necessary breath, indicating a subtle emotional core beneath the sometimes exhaustingly antic comedy that drives this odd duck of a musical, now on Broadway.",
+  "isFullReview": false,
+  "textWordCount": 160,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated",
+  "duplicateTextOf": "wsj--charles-isherwood.json"
 }

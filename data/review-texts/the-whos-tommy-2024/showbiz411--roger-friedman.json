@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/showbiz411--roger-friedman_2026-02-01.html",
@@ -31,67 +31,52 @@
   "archiveOrgTimestamp": "20251110045842",
   "archiveOrgUrl": "http://web.archive.org/web/20251110045842/https://www.showbiz411.com/2024/03/28/broadway-can-you-hear-me-the-whos-tommy-returns-vibrant-as-ever-after-30-years",
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 78,
+      "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Tommy brims with fun",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "I'll take this over a lot of musicals with unhummable songs and flat scores",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Maybe it's a little nostalgic for classic rock fans",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The critic offers qualified praise with positive comments about production values and music while positioning it as better than many current musicals, suggesting a recommendation despite some reservations.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses clearly positive language ('pop', 'tight', 'brims with fun') and explicitly prefers this show over other musicals, indicating a recommendation despite being only a single excerpt. | GPT-4o: The review highlights positive aspects like the sets, choreography, and overall fun of the production, indicating a recommendation. However, the nostalgia comment suggests it may appeal more to a specific audience, which tempers the enthusiasm slightly. | Gemini: The review is generally positive, highlighting the sets, choreography, and fun factor. The phrase \"I'll take this over a lot of musicals\" indicates a recommendation, though not an enthusiastic one.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:29:30.479Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2397,
-    "outputTokens": 326,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:36.444Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "scoreDelta": 8,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",

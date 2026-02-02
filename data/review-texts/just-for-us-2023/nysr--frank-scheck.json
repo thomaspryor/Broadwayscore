@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and phrases like 'consistently uproarious' and 'extremely well crafted' clearly indicate a positive recommendation, despite the truncated text. | GPT-4o: The review highlights the show as 'consistently uproarious' and 'extremely well crafted', indicating a strong positive reception. The original 4/5 star rating further supports a positive classification. However, due to the truncated text, the confidence is medium. | Gemini: The review is positive, highlighting the show's well-crafted nature and uproarious content. The 4/5 star rating also suggests a positive recommendation. However, the truncated text and the phrase 'as one hopes it would be' suggest a slight reservation, preventing a 'Rave' classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and phrases like 'consistently uproarious' and 'extremely well crafted' indicate strong positive recommendation, though truncated text prevents full assessment of final verdict. | GPT-4o: Despite the truncated text, the critic describes the show as 'consistently uproarious' and 'extremely well crafted', suggesting a strong positive impression. The original 4/5 star rating further supports a positive classification. | Gemini: The review is positive, highlighting the show's well-crafted nature and uproarious content. The 4/5 star rating also suggests a positive recommendation. However, the truncated text and lack of a clear concluding statement introduce some uncertainty.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,19 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:55:36.307Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:59:33.666Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 80,
-    "openaiScore": 81,
+    "openaiScore": 80,
     "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

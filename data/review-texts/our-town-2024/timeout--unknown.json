@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic describes a deeply emotional experience and suggests others will feel similarly, indicating strong positive impact despite the limited excerpt available. | GPT-4o: The review excerpt indicates a deeply emotional and impactful experience, suggesting a strong recommendation. The critic's personal reaction and the suggestion that others may feel similarly imply a high level of praise. | Gemini: The reviewer describes a powerful emotional experience, suggesting a positive reaction to the play. However, the phrase 'perhaps you will feel the same way' indicates some reservation, as does the statement that Wilder's view 'stays clear and dry'.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic describes a deeply emotional response and suggests the audience will feel similarly, indicating strong recommendation despite being only a single excerpt from the full review. | GPT-4o: The excerpt suggests a deeply emotional and impactful experience, indicating a strong positive reaction from the critic. The mention of tears and the suggestion that others might feel similarly implies a high level of engagement and recommendation. | Gemini: The reviewer describes a strong emotional reaction, suggesting a positive experience, but the limited text makes it difficult to gauge the overall enthusiasm.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,10 +36,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:52:04.963Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:38:15.682Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,

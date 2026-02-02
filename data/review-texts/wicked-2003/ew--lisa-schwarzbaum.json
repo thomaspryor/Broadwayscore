@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own rating of 88 places this firmly in rave territory, and the language 'smart, resilient show that does honor' indicates strong positive assessment. | GPT-4o: The original rating of 88, combined with the positive language in the review, indicates a strong recommendation. The critic praises the show as smart and resilient, suggesting a high level of approval. | Gemini: The review is positive, highlighting the show's intelligence and resilience. While the critic's original rating is 88, the language used suggests a strong positive rather than a rave, so I slightly lowered the score.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating places this firmly in Rave territory, and the language ('smart', 'resilient', 'does honor') is clearly positive without any reservations expressed. | GPT-4o: The critic's original rating of 88 aligns with a 'Rave' classification, and the review text is highly positive, emphasizing the show's intelligence and respect for its source material. | Gemini: The review is positive, highlighting the show's intelligence and resilience. The critic's original rating of 88 also indicates a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,11 +42,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:59:50.391Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:43:30.451Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-wiz-2024/slantmagazine--dan-rubins_2026-01-29.html",
@@ -49,69 +49,52 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 72,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 45,
-      "music": 85,
-      "performances": 90,
-      "direction": 40
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it's easy enough to put the 'hard stuff' to one side and just relish the aural euphoria",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the stunning vocal performances from her cast",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "A smarter, warmer, bolder revival of The Wiz remains tantalizingly out of reach",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite significant criticism of direction and staging, the critic clearly recommends the show for its exceptional vocal performances and score, suggesting audiences can overlook production flaws for the musical rewards.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges major staging and production issues but finds the vocal performances so exceptional that they redeem the show, landing in mixed territory with a lean toward the positive side due to the standout cast. | GPT-4o: The review acknowledges several shortcomings in staging and choreography but ultimately emphasizes the strength of the vocal performances and the score, suggesting that these elements make the production worth seeing despite its flaws. | Gemini: The review praises the vocal performances, particularly Nichelle Lewis as Dorothy, and the score, but criticizes the staging and some of the updates to the book. The overall tone suggests a positive experience despite the flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:31:44.017Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3563,
-    "outputTokens": 350,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:38.748Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 72,
-    "scoreDelta": 0,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (72 → Up) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

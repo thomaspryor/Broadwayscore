@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges ambition and praises the performances as 'electric' but clearly states the play 'stalls' and becomes 'arduous' with 'no answers', indicating neither recommendation nor strong discouragement. | GPT-4o: The review highlights strong performances but criticizes the play's lack of momentum and resolution. This suggests a mixed reception, recognizing some positive aspects but not enough to fully recommend. | Gemini: The review praises the performances but ultimately states that the play itself 'is not', indicating a mixed assessment with some positive aspects but an overall lack of recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic describes the play as 'arduous' with stalled momentum, praising only the performances while clearly criticizing the play itself as unsuccessful despite its ambitions. | GPT-4o: The review highlights strong performances but criticizes the play's momentum and lack of resolution. The mixed signals suggest neither a strong recommendation nor a strong discouragement, placing it in the 'Mixed' bucket. | Gemini: The review praises the performances as 'electric' but ultimately states 'the play...is not,' indicating a mixed assessment with strong elements but an overall lack of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:44:59.879Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:10:14.510Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
+    "claudeScore": 42,
+    "openaiScore": 62,
     "geminiScore": 62,
-    "claudeBucket": "Mixed",
+    "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

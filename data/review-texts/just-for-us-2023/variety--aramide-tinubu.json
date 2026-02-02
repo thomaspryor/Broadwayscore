@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Edelman's storytelling is masterful, weaving together personal anecdotes with larger societal observations in a way that feels both intimate and universal.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,33 +18,22 @@
   "showScoreExcerpt": "Edelman's storytelling is masterful, weaving together personal anecdotes with larger societal observations in a way that feels both intimate and universal.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "low",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 85
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "masterful",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "feels both intimate and universal",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong praise for storytelling craft with 'masterful' but this appears to be a very brief excerpt from a larger review, making overall recommendation unclear.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the storytelling as 'masterful' and highlights effective weaving of personal and universal themes, indicating a positive recommendation, though the excerpt is brief and may be incomplete. | GPT-4o: The use of 'masterful' to describe the storytelling suggests a highly positive evaluation, indicating a strong recommendation to see the show. | Gemini: The review uses positive language like \"masterful\" and \"intimate and universal,\" indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,19 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:01:40.044Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2333,
-    "outputTokens": 266,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:02.566Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

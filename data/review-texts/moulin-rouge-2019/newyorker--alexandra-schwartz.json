@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"A Millennial Reboot of Chekhov, and 'Moulin Rouge!' on Broadway. Halley Feiffer translates 'Three Sisters' into Internet-speak, and Baz Luhrmannâs glitzy movie comes into its own onstage.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/moulin-rouge-broadway",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/moulin-rouge-2019/new-yorker--alexandra-schwartz_2026-01-27.html",
@@ -30,60 +30,52 @@
   "archiveOrgTimestamp": "20250903015917",
   "archiveOrgUrl": "http://web.archive.org/web/20250903015917/https://www.newyorker.com/magazine/2019/08/05/a-millennial-reboot-of-chekhov-and-moulin-rouge-on-broadway",
   "llmScore": {
-    "score": 82,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 78,
-      "music": 88,
-      "performances": 86,
-      "direction": 83
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The sensitive, comedic cast is uniformly excellent",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "what little story there is in 'Moulin Rouge!' is almost too much. We are here for the music, which rolls through the audience in wave after wave of dopamine",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Irreverence can be a form of homage, and the thirty-four-year-old Feiffer gets cheeky with Chekhov's delicate realism",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic praises both shows with enthusiasm - calling the Moscow cast 'uniformly excellent' and describing Moulin Rouge's music as delivering 'wave after wave of dopamine' - while offering thoughtful analysis rather than reservations. | GPT-4o-mini: The review expresses strong praise for the performances and direction, alongside a positive overall impression of the adaptation and its execution.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a headline or subheading rather than evaluative content, providing only descriptive information about the productions without any clear critical assessment or recommendation. | GPT-4o: The excerpt suggests a transformation of the movie into a successful stage production, but the lack of full context and the single excerpt warning lead to a conservative mixed classification. | Gemini: The excerpt suggests a positive view of \"Moulin Rouge!\" on Broadway, implying it's worth seeing. However, the limited text and the mention of a 'reboot' of Chekhov suggest potential reservations, hence the 'recommended with reservations' verdict and a score in the middle of the positive range.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:43.324Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:23.314Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "sources": [
     "show-score"

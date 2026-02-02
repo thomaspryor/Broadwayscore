@@ -7,7 +7,7 @@
   "publishDate": "2025-11-13",
   "showScoreExcerpt": "\"I thought what might follow would be Mr. Ickeâs most provocativeâand logical and interestingâdeparture from Sophocles, an ending of a more ambiguous and less gruesome kind. \"",
   "originalScore": null,
-  "assignedScore": 53,
+  "assignedScore": 60,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "I thought what might follow would be Mr. Icke’s most provocative—and logical and interesting—departure from Sophocles, an ending of a more ambiguous and less gruesome kind. Instead he reverts to tradition. It’s an understandable move: Many might feel shortchanged if Mr. Icke had chosen otherwise. Nevertheless, it’s a Grand Guignol finish to what has previously been an effective, affecting and strictly naturalistic new interpretation of this canonical drama.",
@@ -16,11 +16,11 @@
   "sourceMethod": "archive",
   "scoreSource": null,
   "llmScore": {
-    "score": 53,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 45.5,
-      "high": 60.5
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,74 +28,48 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 55
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "most provocative—and logical and interesting—departure from Sophocles",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Instead he reverts to tradition. It's an understandable move",
-        "sentiment": "negative",
-        "strength": 2
-      },
-      {
-        "quote": "Mr. Icke’s most provocative—and logical and interesting—departure from Sophocles",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The fragment shows the critic praising Icke's creative potential but expressing disappointment that he chose a conventional ending instead of a more provocative departure. | GPT-4o-mini: The review expresses disappointment in the director's choice to revert to tradition rather than take a more innovative approach, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt suggests the critic had positive expectations that weren't met, indicating disappointment with creative choices. However, with only one fragment available and aggregator showing 'Up', the full verdict remains unclear. | GPT-4o: The excerpt suggests an appreciation for the director's provocative and interesting choices, but it lacks a clear recommendation or strong enthusiasm, indicating a mixed reception. | Gemini: The excerpt suggests the reviewer had expectations for a more interesting departure but doesn't explicitly state whether the production met those expectations. The BroadwayWorld aggregator says 'Up', which suggests a positive leaning, but the limited text makes it difficult to be certain.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:41:20.552Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:56:58.742Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 53,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 55,
-    "scoreDelta": 5,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
-  "archivePath": "data/archives/reviews/oedipus-2025/wsj--charles-isherwood_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T04:49:25.889Z",
+  "archivePath": "data/archives/reviews/oedipus-2025/wsj--charles-isherwood_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:34:40.824Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (500): Request failed with status code 500"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
@@ -106,12 +80,19 @@
     "Word count too low: 144 (min: 300)"
   ],
   "bwwThumb": "Up",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
+  "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 53,
   "rescoreCompletedAt": "2026-01-29T14:31:51.924Z",
   "garbageFullText": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144\n\nThe cast of ‘Oedipus.’ Julieta CervantesNew York\n\nA powerful politician’s night of triumph descends precipitously into waking-nightmare territory in the transfixing “Oedipus,” an adaptation of Sophocles’ tragedy from the British writer-director Robert Icke. In this ingeniously reimagined contemporary staging on Broadway (“created by” Mr. Icke “after” Sophocles), the Theban king of the original becomes a hard-driving candidate hoping to lead his country as he gathers with his family on election night to await the returns, while a dark fate gradually encircles him like a snake ready to spring.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nNew York State to Loosen Environmental Rules to Speed Up Homebuilding\n\nThousands of New York City Nurses Go On Strike\n\nopinionBreads Lines in Mamdani’s New York\n\nopinionHow Mamdani and Cea Weaver Plan to End Private Housing\n\n‘Bug’ Review: A Broadway Drama of Insidious Delusion",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.051Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "fullText": "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144\n\nThe cast of ‘Oedipus.’ Julieta CervantesNew York\n\nA powerful politician’s night of triumph descends precipitously into waking-nightmare territory in the transfixing “Oedipus,” an adaptation of Sophocles’ tragedy from the British writer-director Robert Icke. In this ingeniously reimagined contemporary staging on Broadway (“created by” Mr. Icke “after” Sophocles), the Theban king of the original becomes a hard-driving candidate hoping to lead his country as he gathers with his family on election night to await the returns, while a dark fate gradually encircles him like a snake ready to spring.",
+  "isFullReview": false,
+  "textWordCount": 89,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete"
 }

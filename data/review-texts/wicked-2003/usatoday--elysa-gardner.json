@@ -8,43 +8,27 @@
   "fullText": "I would have to go back to the 1970s and '80s, when two composer/lyricists named Stephen proved able, in very different ways, to entertain, move and intrigue mass audiences. Stephen Schwartz, who would also write music for popular films, never became an icon of Stephen Sondheim's stature. But Schwartz did enjoy such notable successes as Pippin and Godspell.\n\nIt's too soon to tell whether Schwartz's score for Wicked (***½ out of four), which opened Thursday at the Gershwin Theatre, will prove as enduring. But it's safe to say that this is the most complete, and completely satisfying, new musical I've come across in a long time.\n\nThe triumph is not Schwartz's alone. Adapted from a Gregory Maguire novel, Wicked offers a post-feminist, socially conscious reinterpretation of the story of Oz's Wicked Witch of the West. Though that may sound like a recipe for pretentious pedantry, writer Winnie Holzman, whose TV credits include thirtysomething and My So-Called Life, provides a libretto that juggles winning irreverence with thoughtfulness and heart.\n\nCentral to her account is the relationship between Glinda the Good Witch and the ostensibly wicked one, Elphaba, presented as would-be rivals bound by an unlikely sense of empathy and mutual admiration. Kristin Chenoweth is ideally cast as Glinda, a dizzy blonde whose peppy facade belies a fragile heart, while Idina Menzel's Elphaba is a powerfully human sorceress, particularly when delivering haunting new songs such as No Good Deed and I'm Not That Girl.\n\nNorbert Leo Butz is compelling as a suitor who threatens to come between the witches, and Joel Grey and Carole Shelley shine as a somewhat ethically challenged Wizard and his press secretary. A fine ensemble helps ensure that even the most flagrantly cute and sentimental moments are hard to resist.\n\nAdd in tunes that you can actually leave the theater humming, and you have a thoroughly enchanting experience.",
   "dtliExcerpt": "Remember the last time an original Broadway musical made you laugh, cry and think — in the right places, and for the right reasons?",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 88,
-      "performances": 90,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this is the most complete, and completely satisfying, new musical I've come across in a long time",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Add in tunes that you can actually leave the theater humming, and you have a thoroughly enchanting experience",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "3.5 out of four",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic gives 3.5/4 stars and calls this 'the most complete, and completely satisfying, new musical' they've encountered in a long time, with consistent praise across all elements and a conclusion describing it as 'thoroughly enchanting.'",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic calls it 'the most complete, and completely satisfying, new musical' in a long time and describes it as 'a thoroughly enchanting experience' with multiple specific praise points for performances, writing, and music. | GPT-4o: The review is overwhelmingly positive, praising the musical as 'completely satisfying' and highlighting the strong performances, compelling story, and memorable music. The critic's enthusiasm and use of terms like 'thoroughly enchanting experience' indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, calling it the most complete and satisfying new musical the critic has seen in a long time. While the critic uses a star rating, the text itself is more enthusiastic than the 3.5 stars would suggest, so I am prioritizing the text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:38:21.532Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2789,
-    "outputTokens": 364,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:13.673Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 80,
-    "scoreDelta": 5,
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/wicked-2003/usa-today--elysa-gardner_2026-01-26.html",
   "textFetchedAt": "2026-01-26T23:35:17.341Z",

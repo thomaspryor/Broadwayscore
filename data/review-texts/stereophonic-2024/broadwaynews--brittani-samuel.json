@@ -7,18 +7,18 @@
   "publishDate": "April 20, 2024",
   "dtliExcerpt": "Sometimes, a song is so good you want to live in it. You want to nestle into its melodies, unravel the chords holding it up and more than anything, wander in the mind fields of the people who created it. David Adjmi’s “Stereophonic” is the play that sparks this very desire.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 90,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:02:25.654Z",
   "llmScore": {
-    "score": 85,
-    "confidence": "low",
+    "score": 90,
+    "confidence": "medium",
     "range": {
-      "low": 75,
+      "low": 85,
       "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -26,19 +26,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it's a hit",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Drama from the studio enters the stage",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The phrase 'it's a hit' strongly suggests positive recommendation, but the extremely brief review provides no substantive analysis to confirm or refine this assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses deeply enthusiastic language ('unshakeable, hyperreal', 'salivary meta-trifecta') and poetic metaphors expressing strong admiration. The opening metaphor about wanting to 'live in' a song sets up the play as something transcendent and immersive. | GPT-4o: The review is overwhelmingly positive, praising the play's naturalism and the script's ability to create complex, lifelike portraits. The additional context quote 'Drama from the studio enters the stage, and it's a hit' further supports a strong recommendation. | Gemini: The review is overwhelmingly positive, describing the play as an \"unshakeable, hyperreal slice-of-life drama\" and a \"hit\". The critic clearly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,30 +36,31 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:10:18.520Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2315,
-    "outputTokens": 270,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:04:30.210Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 89,
     "openaiScore": 90,
-    "scoreDelta": 2,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
-  "archivePath": "data/archives/reviews/stereophonic-2024/broadwaynews--brittani-samuel_2026-01-30.html",
-  "textFetchedAt": "2026-01-30T16:06:38.931Z",
+  "archivePath": "data/archives/reviews/stereophonic-2024/broadwaynews--brittani-samuel_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:03:54.595Z",
   "sourceMethod": "archive",
   "sources": [
     "dtli"
@@ -94,9 +84,7 @@
     }
   ],
   "fetchTier": 4,
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
+  "truncationSignals": [],
   "archiveOrgTimestamp": "20251018110727",
   "archiveOrgUrl": "http://web.archive.org/web/20251018110727/https://www.broadwaynews.com/the-broadway-review-stereophonic-is-a-strum-of-genius/",
   "textIssues": [

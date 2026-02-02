@@ -20,12 +20,12 @@
   ],
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:06:14.565Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:34:21.136Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "3.0.0"
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "rescoreReason": "LLM score invalidated (based on garbage text), excerpts available",
   "previousLlmScore": 45,
@@ -101,7 +101,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The word 'triumph' combined with 'finally does justice' indicates strong enthusiasm and recommendation. The critic's own 80 rating supports this high assessment. | GPT-4o: The review describes the production as a 'triumph' and suggests it 'finally does justice' to the musical, indicating a strong positive recommendation. The original rating of 80 supports a high score within the Rave bucket. | Gemini: The review explicitly calls the production a 'triumph' and states that it 'finally does justice' to the musical, indicating a strong positive recommendation. The critic's rating of 80 aligns with the positive bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic explicitly calls the production 'a triumph' and says it 'finally does justice' to the source material, indicating strong enthusiastic recommendation despite limited excerpt. | GPT-4o: The review uses strong positive language, describing the production as a 'triumph' and indicating it 'finally does justice' to the musical, suggesting a highly enthusiastic recommendation. | Gemini: The critic explicitly calls the production a \"triumph\" and states that it \"does justice\" to the musical, indicating a positive recommendation. The original rating of 80 aligns with the positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,

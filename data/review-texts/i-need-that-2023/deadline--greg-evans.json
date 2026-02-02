@@ -8,59 +8,56 @@
   "bwwExcerpt": "Given the play’s underdeveloped feel, it’s no wonder the cast seems to flounder. Granted, the reviewed performance was early in the string of shows available to critics, and the actors’ tenuous grasp of the script – jumping lines, circling back, apparent improvisational word-grabs – might well have already tightened up (along with a tech issue that had the revolving set stubbornly refusing to move; other tech credits were fine despite some weird, Twilight Zone-ish sounds meant to signify that TV",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 41,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 42,
+    "score": 41,
     "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
-      "performances": 55,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "works mightily and with increasing futility",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "to stuff with laughs and meaning",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review criticizes the play's fundamental failure to deliver despite DeVito's efforts, with 'increasing futility' signaling the production doesn't work.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The phrase 'increasing futility' clearly indicates the critic found the production unsuccessful, despite acknowledging effort. The aggregator context confirms negative verdicts. | GPT-4o: The phrase 'works mightily and with increasing futility' suggests that the play struggles and ultimately fails to deliver on its comedic and meaningful intentions, indicating a negative assessment. | Gemini: The phrase \"increasing futility\" suggests a struggle to find meaning and laughs, indicating a mixed or lukewarm reception. The aggregator verdicts also point towards a negative or mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:12:45.136Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:54.952Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "openaiScore": 40,
+    "geminiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "bwwThumb": "Down",
   "showScoreExcerpt": "“Clutter – physical, emotional – is the subject of Theresa Rebeck’s new Broadway play ‘I Need That’, a comedy-drama that stars Danny DeVito works mightily and with increasing futility to stuff with laughs and meaning.”",

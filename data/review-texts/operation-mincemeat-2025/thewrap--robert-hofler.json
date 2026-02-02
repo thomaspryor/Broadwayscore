@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "Robert Hastie provides the frenzied “Mincemeat” direction. It forced someone behind me to whisper halfway through Act 1, “This is exhausting.” Nothing kills a laugh faster than seeing actors sweat.",
@@ -20,67 +20,52 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 32,
-    "confidence": "medium",
+    "score": 44,
+    "confidence": "high",
     "range": {
-      "low": 25,
-      "high": 40
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 25,
-      "direction": 20
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This is exhausting",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Nothing kills a laugh faster than seeing actors sweat",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "frenzied direction",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review criticizes the frenzied direction as exhausting and notes that the actors' visible strain kills the comedy, indicating a production that fails in its basic entertainment value.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic describes the direction as 'frenzied' and notes audience fatigue and failed comedy, indicating clear disapproval of the production's execution, though this is based on limited excerpts. | GPT-4o: The review excerpts highlight a negative experience with the direction being described as 'frenzied' and 'exhausting', leading to a lack of humor. The aggregator context supports a negative impression. | Gemini: The review excerpt is negative, citing the direction as 'frenzied' and the production as 'exhausting,' ultimately stating that the actors' sweat kills the humor. This suggests a negative experience and lack of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:48:47.989Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2350,
-    "outputTokens": 310,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:41.545Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 32,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 30,
-    "scoreDelta": 5,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 33,

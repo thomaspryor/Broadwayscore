@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"A breathtaking spectacle that captures the spirit of Africa with stunning puppetry and costumes...\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 74,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 74,
+    "confidence": "medium",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,48 +27,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 88
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "breathtaking spectacle",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "stunning puppetry and costumes",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "A breathtaking spectacle",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Strong positive language ('breathtaking', 'stunning') suggests clear recommendation, but extremely brief excerpt limits confidence in full critical assessment. | GPT-4o-mini: The review expresses strong enthusiasm and admiration for the production's visual elements, indicating a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear admiration for production values, but with only one curated quote available, I'm scoring conservatively in the lower positive range as this could be cherry-picked from a mixed review. | GPT-4o: The excerpt uses highly positive language such as 'breathtaking spectacle' and 'stunning', suggesting a strong recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The phrase \"breathtaking spectacle\" indicates a positive experience, but the lack of further context and the single excerpt warning suggest a conservative score within the positive range.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:54:50.736Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:54.122Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
+    "claudeScore": 72,
     "openaiScore": 90,
-    "scoreDelta": 5,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

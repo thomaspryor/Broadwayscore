@@ -7,7 +7,7 @@
   "publishDate": "April 22, 2024",
   "fullText": "Michael Stuhlbarg | Photo: Matthew Murphy\n\nPeter Morgan, like a moth to the flame of spirited stateliness, can be relied upon to provide dramatized look behind diplomatic doors in one of two modes: dignified (The Queen, The Audience, the first few seasons of The Crown) and haute-trashy (The Other Boleyn Girl, the last few seasons of The Crown). In Patriots, his latest play, now in performance at the Barrymore Theatre after a London run last year, he’s drawn to the fire of narcissistic politicos but burned by the frost of his unclear intentions.\n\nIt introduces Boris Berezovsky (Michael Stuhlbarg) as a child math whiz quickly outpacing his surroundings in 1955 Moscow – a trait which will follow him through the decades as he becomes a well-connected oligarch, kingmaker and, ultimately, Faust-Icarus figure. The next scene imagines him as performing a variation on Roy Cohn’s “I wish I was an octopus” speech from Angels in America and, in an impressive physical performance, Stuhlbarg charges through in that mode: vicious, vulgar, and avaricious.\n\nThe problem is, dramatically, he has nowhere to go, and neither do we. He sets up Vladimir Putin (Will Keen, in a perfectly balanced scary caricature) in government and is then shocked when his discovery turns his back on him; we’re not. He lures a State Security officer (Alex Hurt) to come work as his bodyguard, promising his wife (Stella Baker) financial security, then doesn’t blink when he’s, of course, killed; neither do we, though this is the only storyline, however unfortunately small, with any semblance of heart. And flashes back to his studies under Professor Perelman (Ronald Guttman) are dull ploys for empathy, retreads of better-told “ah, he once had values!” narratives.\n\nGlimpses of newness shine through when Roman Abramovich (Luke Thallon), another businessman, slowly takes his place, and when Berzovsky, running the state TV channel, fires back at the image-controlling Putin. Neither thread is satisfactorily explored.\n\nRupert Goold directs with a coach’s jingoism, an approach which moves things along quickly, sometimes loudly, and makes the most of Miriam Buether’s set: a palatial office cutting across a long, posh bar and flanked by raised balconies pegged to an imposing brick wall. Though Jack Knowles’ lighting and Adam Cork’s music and sound design similarly turn up the energy, they cannot create a character out of Berezovsky, of whom we learn very little. Lacking detail and focus, Patriots is a character study without much of either.\n\nPatriots is in performance through June 23, 2024 at the Barrymore Theatre on West 47th Street in New York City. For tickets and more information, visit here.\n\nJuan A. Ramirez writes arts and culture reviews, features, and interviews for publications in New York and Boston, and will continue to do so until every last person is annoyed. Thanks to his MA in Film and Media Studies from Columbia University, he has suddenly found himself the expert on Queer Melodrama in Venezuelan Cinema, and is figuring out ways to apply that.\n\nA fresh look at features, news, reviews, and interviews of theatre across the globe, from Broadway to London and everywhere in between. Your one-stop shop for the latest information in arts and culture by the next generation, for the next generation.",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 44,
   "dtliThumb": "Meh",
   "source": "dtli",
   "dtliExcerpt": "The problem is, dramatically, he has nowhere to go, and neither do we.",
@@ -18,67 +18,52 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 38,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 32,
-      "high": 45
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
-      "performances": 68,
-      "direction": 45
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "burned by the frost of his unclear intentions",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Lacking detail and focus, Patriots is a character study without much of either",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Stuhlbarg charges through in that mode: vicious, vulgar, and avaricious",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds significant structural and narrative problems with the play despite praising Stuhlbarg's performance, concluding it lacks the detail and focus necessary for effective character study.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review consistently criticizes the play's fundamental flaws - unclear intentions, lack of character development, unsatisfying plot threads, and concludes with a damning summary that it fails as a character study. While acknowledging some technical merits, the overall assessment is clearly negative. | GPT-4o: The review highlights several shortcomings, such as unclear intentions, lack of character development, and unsatisfactory exploration of plot threads. The overall tone suggests the production falls short of expectations. | Gemini: The review highlights both positive and negative aspects of the play. While praising Stuhlbarg's performance and the set design, it criticizes the lack of character development and unclear intentions, ultimately leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:51:50.774Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3086,
-    "outputTokens": 340,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:31.595Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
+    "claudeScore": 42,
     "openaiScore": 45,
-    "scoreDelta": 7,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "contentTier": "complete",
   "wordCount": 537,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Josh Gad and Andrew Rannells are absolutely delightful as Doug and Bud, two hapless dreamers who believe they've created the next great Broadway musical.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Josh Gad and Andrew Rannells are absolutely delightful as Doug and Bud, two hapless dreamers who believe they've created the next great Broadway musical.",
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'absolutely delightful' indicates clear enjoyment and positive assessment of the lead performances, though the brief excerpt limits full context of the overall recommendation. | GPT-4o: The review highlights the performances of the lead actors as 'absolutely delightful', suggesting a positive experience. However, the review is brief and lacks a comprehensive assessment, leading to a medium confidence level. | Gemini: The review highlights the positive performances of the leads, suggesting an enjoyable experience despite the 'hapless dreamers' description, implying potential flaws in the musical itself.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The use of 'absolutely delightful' is clearly positive praise for the lead performances, though the truncated text limits confidence in the overall assessment. | GPT-4o: The review highlights the performances of the lead actors as 'absolutely delightful,' indicating a positive reception. However, the review text is short and lacks additional context, leading to a medium confidence level. | Gemini: The review highlights positive aspects of the performances, suggesting an enjoyable experience, but lacks a strong overall recommendation, implying some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,20 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:31:24.649Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:37:36.228Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 80,
+    "claudeScore": 75,
+    "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -9,72 +9,57 @@
   "bwwExcerpt": "Friedman’s production is a theatrical miracle, finding the heart at the center of this story of dreams, regrets, and good things going, going, gone. Somewhere, its creators are bursting with pride to see their vision fully realised, at long last.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 92,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 90,
-      "performances": 95,
-      "direction": 92
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this Merrily is one of those transcendent productions I'll look back on fondly forever",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Friedman's production is a theatrical miracle",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "They're giving career-best performances",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic uses superlative language throughout ('transcendent productions', 'theatrical miracle', 'career-best performances') with deep appreciation for the revival's success in fixing the original's problems, indicating an unqualified rave recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'transcendent,' a 'theatrical miracle,' and praising 'career-best performances.' The enthusiastic tone and repeated use of words like 'miracle' and 'heaven' indicate an unmissable recommendation. | GPT-4o: The review is overwhelmingly positive, describing the production as 'transcendent' and 'a theatrical miracle.' The critic praises the performances as 'career-best' and highlights the emotional impact of the show, making it a must-see. | Gemini: The review is overwhelmingly positive, using phrases like \"transcendent production,\" \"career-best performances,\" and \"theatrical miracle.\" The critic clearly believes this production is exceptional and a must-see.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:37:15.203Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3531,
-    "outputTokens": 352,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:20.365Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 92,
     "openaiScore": 95,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 92,

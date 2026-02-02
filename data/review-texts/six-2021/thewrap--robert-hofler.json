@@ -10,74 +10,58 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 72,
-    "confidence": "high",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
-      "book": 75,
-      "music": 70,
-      "performances": 78,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Six is a needed antidote to 'Anastasia,' 'Frozen,' 'Jagged Little Pill,' 'Wicked' and other pompous shows of female empowerment",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The often witty book, built around a competition among the six wives of Henry VIII, borrows a lot from 'RuPaul's Drag Race' while offering yet another #MeToo story",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "A disappointment is Carrie-Anne Ingrouillle's choreography",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic acknowledges derivative elements but finds the show witty, irreverent, and a refreshing antidote to more serious musicals, with strong performances despite choreography disappointments.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic acknowledges the show as a 'needed antidote' to other musicals and praises some elements like the performances and production design, but criticizes the derivative music, disappointing choreography, and notes audience members literally walking out during the finale. | Gemini: The review has some criticisms (choreography, derivative music) but ultimately frames the show as a needed antidote to other female empowerment musicals, suggesting it's worth seeing despite its flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:07:55.523Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3157,
-    "outputTokens": 405,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:41:48.980Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 13,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "I hoped the tag-team of Chenoweth and Arden would have magic to do. No such luck. The actress is a theatrical force, as everybody knows, but Simone Biles can’t do a back handspring on a toothpick, either. With skin-deep material to work with, Chenoweth transparently leans into broad yuks like she’s serving donuts for dinner. If only her long-anticipated return could be returned.",
@@ -19,60 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 25,
+    "score": 13,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 8,
+      "high": 18
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 25
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "drops the ball by juggling too many",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "should've gotten the guillotine in early development",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "all come to naught",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic systematically dismantles multiple elements of the production with harsh metaphors and concludes everything 'comes to naught,' indicating a clear pan despite praising the creator's previous work. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script and staging without any redeeming qualities mentioned.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: The critic delivers an absolutely scathing review with zero redeeming qualities mentioned, calling it 'criminally bad' with the 'worst score of Schwartz's long career' and ending with the metaphor that while the real house might be finished, the musical is 'scheduled for demolition.' | GPT-4o: The review is overwhelmingly negative, describing the show as 'criminally bad' and a 'wrecking ball to good taste.' The critic finds no redeeming qualities, criticizing the music, direction, and performances, and suggesting the show should be 'scheduled for demolition.' | Gemini: The review is overwhelmingly negative, using phrases like \"criminally bad show,\" \"wrecking ball to good taste,\" \"worst score,\" and concluding the show is \"scheduled for demolition.\" This indicates a strong pan.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:07.456Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:14.352Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
-    "scoreDelta": 0,
+    "claudeScore": 15,
+    "openaiScore": 10,
+    "geminiScore": 15,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Pan"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,

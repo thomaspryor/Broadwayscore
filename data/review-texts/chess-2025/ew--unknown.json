@@ -11,75 +11,54 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "https://ew.com/chess-review-infamous-broadway-flop-returns-with-lea-michele-aaron-tveit-11850388",
-  "assignedScore": 45,
+  "assignedScore": 63,
   "llmScore": {
-    "score": 45,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a struggle against error",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Chess is a show constantly at war with its past",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "37 years after it infamously flopped on Broadway",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review uses the show's own chess metaphor against it, describing it as a 'struggle against error' and emphasizing its infamous past failure, suggesting ongoing problems without offering clear reasons to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The C+ rating and 'struggle against error' framing indicate mixed feelings, though the praise for Tveit and Michele's performances ('bring the house down') provides some positive elements. | GPT-4o: The original C+ rating suggests a mixed review. While the show struggles with its past, the performances by Tveit and Michele are highlighted positively, indicating some redeeming qualities. | Gemini: The critic gives the show a C+ rating, which is a mixed assessment. While praising the performances of Tveit and Michele, the review also acknowledges the show's troubled history and ongoing struggles.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:57:54.685Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2392,
-    "outputTokens": 326,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:37:25.190Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,

@@ -8,17 +8,17 @@
   "fullText": null,
   "showScoreExcerpt": "A production rejoicing in originality, soulfulness and luminescence...With Rachel Chavkin's brilliant direction, the visual wonders are enthralling. I cannot imagine there will be a better Broadway musical this season.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 93,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 94,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -26,48 +26,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 95
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I cannot imagine there will be a better Broadway musical this season",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "A production rejoicing in originality, soulfulness and luminescence",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Rachel Chavkin's brilliant direction, the visual wonders are enthralling",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic uses superlative language ('brilliant', 'enthralling', 'luminescence') and makes an explicit claim that nothing will be better this season, indicating unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm and high praise for the production, particularly highlighting the direction and overall experience, indicating a strong recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language like 'brilliant,' 'enthralling,' and explicitly states this will likely be the best Broadway musical of the season, indicating an exceptionally strong recommendation. | GPT-4o: The review excerpt is highly positive, praising the originality, direction, and visual aspects of the production. The strong statement about it being the best musical this season indicates a rave review, though confidence is medium due to the single excerpt warning. | Gemini: The review uses extremely positive language like \"rejoicing in originality, soulfulness and luminescence\" and \"brilliant direction.\" The final sentence is a strong indication of a rave review.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:18:51.861Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:02:19.751Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
+    "openaiScore": 92,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "contentTier": "excerpt",
   "wordCount": 0

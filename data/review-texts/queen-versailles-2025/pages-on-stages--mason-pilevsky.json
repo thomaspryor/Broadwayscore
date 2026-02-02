@@ -9,7 +9,7 @@
   "showScoreExcerpt": "The frivolous first act and the stirring second act deliciously dance together.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-queen-of-versailles-broadway",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/queen-versailles-2025/pages-on-stages--mason-pilevsky_2026-01-27.html",
@@ -25,38 +25,22 @@
   "fetchTier": 1,
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Kristin Chenoweth is vivacious, and her character is augmented by beautiful, thoughtful design and direction",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The frivolous first act and the stirring second act deliciously dance together as they hold space for multiple truths",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "By showing a world that is utterly fake The Queen of Versailles leaves us wanting to examine what is real",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic delivers sophisticated praise for the show's structure, performances, design, and thematic depth, celebrating how it 'deliciously' balances spectacle with meaningful critique, despite no explicit recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review offers substantive praise for performances (especially Chenoweth), design, and the show's structural effectiveness, while providing thoughtful analysis of its themes and impact rather than discouraging attendance. | GPT-4o: The review praises the show's structure, performances, and thematic depth, indicating a positive experience. However, it acknowledges that the show may resonate differently with various audiences, suggesting some reservations. | Gemini: The review is largely positive, highlighting strong performances and design. While it acknowledges the show's critique of materialism might not resonate with everyone, it ultimately suggests the show is enjoyable, especially for those who can laugh at the excess.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -65,27 +49,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:58:18.747Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3374,
-    "outputTokens": 374,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:40.434Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 88,
-    "scoreDelta": 10,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 83,

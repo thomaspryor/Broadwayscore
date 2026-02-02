@@ -19,7 +19,7 @@
   "scoreConfidence": "low",
   "llmScore": {
     "score": 44,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 39,
       "high": 49
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite praising two performances, the critic explicitly states they cannot recommend the show and calls it a 'grueling endurance test' that exemplifies 'Adaptation Decay.' | GPT-4o: The review is overwhelmingly negative, criticizing the adaptation choices, execution, and humor of the production. The critic explicitly states they cannot recommend the show, indicating a strong negative verdict. | Gemini: The review is overwhelmingly negative, citing issues with adaptation, humor, and overall quality. The critic explicitly states they cannot recommend paying full price.",
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The review explicitly states they cannot recommend paying full price for the show and calls it 'a grueling endurance test' that suffers from 'Adaptation Decay,' despite praising two performances. | Gemini: The review is overwhelmingly negative, criticizing numerous aspects of the production and ultimately stating that they cannot recommend paying full price to see it. The critic uses the term \"Adaptation Decay\" to describe the show's failure to translate the original film effectively.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,27 +43,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:11:17.005Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:05:31.768Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "3.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 20,
+    "openaiScore": null,
     "geminiScore": 45,
     "claudeBucket": "Negative",
-    "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 25,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 25,

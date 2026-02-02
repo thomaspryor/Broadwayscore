@@ -17,66 +17,49 @@
     "score": 78,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 75,
-      "performances": 82,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "But, in the end, 'Suffs' does what all of the best Broadway musicals do: It humanizes, empowers, entertains and moves an audience",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Taub's enormous talent — she is arguably the first woman ever to compose, write and star in the same Broadway musical — is the biggest single reason",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "for most of the folks in an audience that likely will attract the most fiscally golden of Broadway combos, mothers and daughters, 'Suffs' will be a chance to cheer some of America's revolutionaries",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite acknowledging flaws like 'buffoonish paper tigers' and committee-like approach, the critic ultimately praises Taub's talent and concludes the show 'does what all of the best Broadway musicals do,' positioning it as a worthy Broadway experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with concerns about the show feeling moralistic and committee-designed, the critic ultimately concludes it succeeds as entertainment and praises Taub's talent, calling it worthy for the target audience of mothers and daughters. | GPT-4o: The review acknowledges some flaws and challenges in the production but ultimately praises the musical for its ability to entertain and move the audience, highlighting Taub's talent and the strong performances. The positive aspects outweigh the criticisms, resulting in a strong recommendation. | Gemini: The review acknowledges flaws and potential pitfalls but ultimately concludes that the musical is entertaining, empowering, and moving, making it a positive recommendation despite reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:14:37.462Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3234,
-    "outputTokens": 428,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:57:17.013Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 35,
-    "scoreDelta": 10,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (30 → Down) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "bww-roundup"

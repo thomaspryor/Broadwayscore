@@ -9,71 +9,55 @@
   "showScoreExcerpt": "CRITICâS PICK: âSo however you want to categorize âStereophonicâ â perhaps a playical?...The music justifies the long buildup, and the play, Adjmiâs best so far, is as rich and lustrous as they come. You could even call it platinum.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/stereophonic",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 87,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 87,
+    "confidence": "low",
     "range": {
-      "low": 85,
+      "low": 82,
       "high": 92
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": 85,
-      "performances": 88,
-      "direction": 90
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "relentlessly compelling production by Daniel Aukin that has the grit of a documentary",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the play, Adjmi's best so far, is as rich and lustrous as they come. You could even call it platinum",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "I wouldn't have minded a 20-minute trim, if only to keep the material from falling, as it does occasionally, into the gap between drama and mini-series",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Jesse Green delivers enthusiastic praise for multiple elements (calling it 'platinum' and Adjmi's 'best so far'), with only minor quibbles about pacing, indicating a strong positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: Despite the lengthy contextual setup, Green delivers an unambiguously enthusiastic verdict, calling it 'Adjmi's best so far' and describing it as 'platinum' quality. The review is marked as a 'CRITIC'S PICK' and concludes with glowing praise for both the music and drama elements. | Gemini: Despite the length and potential for trimming, the critic ultimately praises the play as Adjmi's best, rich and lustrous, and justifies the buildup with its music, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:11:57.039Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4123,
-    "outputTokens": 383,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:07:39.114Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "designation": "Critics_Pick",
   "rescoreReason": "scored on brief excerpt, now has fullText",

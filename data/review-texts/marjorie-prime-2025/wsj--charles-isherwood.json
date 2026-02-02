@@ -7,40 +7,24 @@
   "publishDate": "December 9th, 2025",
   "showScoreExcerpt": "\"People without people’s problems, humor or original insights—which is to say, hardly human at all.\"",
   "source": "show-score",
-  "assignedScore": 18,
+  "assignedScore": 42,
   "llmScore": {
-    "score": 18,
-    "confidence": "medium",
+    "score": 42,
+    "confidence": "high",
     "range": {
-      "low": 5.5,
-      "high": 30.5
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
-      "performances": 25,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "People without people's problems, humor or original insights",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "hardly human at all",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "People without people’s problems, humor or original insights",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic delivers a scathing assessment that characters lack basic human qualities like problems, humor, and insights, suggesting fundamental failures in characterization and writing. | GPT-4o-mini: The review expresses a strong negative sentiment about the show's lack of human qualities, indicating a clear rejection of the production. | Note: Models differed by 15 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: This excerpt suggests the critic found the characters fundamentally lacking in human qualities, which is a substantial criticism of the show's writing and character development, though the single excerpt limitation prevents a lower score. | GPT-4o: The excerpt suggests a lack of depth and engagement in the production, indicating a negative view. However, due to the single excerpt warning, the score is conservatively placed in the middle of the negative range. | Gemini: The quote is highly critical, suggesting a lack of depth and humanity in the characters, leading to a negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -49,20 +33,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-30T23:16:46.962Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:38.309Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 18,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 10,
-    "scoreDelta": 15,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "contentTier": "excerpt",
   "wordCount": 0

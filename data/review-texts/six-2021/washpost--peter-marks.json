@@ -10,71 +10,55 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 86,
+    "confidence": "low",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 81,
+      "high": 91
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 82,
-      "music": 90,
-      "performances": 88,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "what an exhilarating jolt of musical-theater wit and joyful affirmation 'Six' supplies",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "If you're looking for a sleek, swift and superbly sung evening to take you out of yourself, the Brooks Atkinson Theatre fits ideally in your itinerary",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "spreads exactly the kind of energizing, inspirational illumination this town aches for",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong positive review with enthusiastic language ('exhilarating jolt,' 'superbly sung,' 'energizing, inspirational') and clear recommendation to see it, with detailed praise for all elements and no significant criticisms.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: Despite truncation warning, the review is overwhelmingly positive with language like 'exhilarating jolt,' 'supercharged,' 'delightful,' and explicit recommendation that it 'fits ideally in your itinerary.' The critic praises every element and calls it exactly what Broadway needed. | Gemini: The review is overwhelmingly positive, describing the show as an \"exhilarating jolt of musical-theater wit and joyful affirmation.\" The critic clearly recommends seeing it. The truncated text makes me slightly cautious, but the BWW excerpt confirms the positive sentiment.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:08:13.707Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3947,
-    "outputTokens": 390,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:28.646Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 84,

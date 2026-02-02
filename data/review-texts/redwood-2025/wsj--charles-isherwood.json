@@ -8,37 +8,26 @@
   "showScoreExcerpt": "\"They wrap the show in visually alluring wallpaper. \"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 43,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 35.5,
-      "high": 50.5
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 43
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "wrap the show in visually alluring wallpaper",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "visually alluring wallpaper",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The metaphor of 'wrapping in wallpaper' suggests superficial visual appeal masking underlying problems, indicating style over substance criticism. | GPT-4o-mini: The review only provides a vague positive note about the visuals, lacking substantial praise or a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single excerpt describes attractive visuals but uses 'wallpaper' metaphorically, suggesting style over substance. Without full context, this could go either direction - scoring conservatively in middle of Mixed range due to single excerpt warning. | GPT-4o: The excerpt suggests a focus on visual appeal but lacks substantive praise or criticism of the overall production. Given the lack of context and the warning about potential cherry-picking, a middle-of-the-road score within the Mixed bucket is appropriate. | Gemini: The single excerpt suggests a focus on visual appeal, but lacks a clear recommendation or overall assessment of the show's quality. It's neither strongly positive nor negative.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,20 +36,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:11.224Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:06.305Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 43,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 40,
-    "scoreDelta": 5,
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/redwood-2025/wsj--charles-isherwood_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:31:51.273Z",

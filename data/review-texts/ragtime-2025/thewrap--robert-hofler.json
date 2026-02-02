@@ -9,16 +9,16 @@
   "bwwExcerpt": "“Ragtime,” like “Les Miz,” gives anthems a very bad name. DeBessonet emphasizes their excessiveness by having her cast, especially Joshua Henry in the Coalhouse role, hold on to a note well passed its sell-by date. It’s difficult to tell if people are applauding mid-song because they’re impressed by Henry’s lung power or if they just want him to get off the note and finish the song. DeBessonet’s blunt direction only encourages us to applaud before the actors have finished singing.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "Down",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 45,
-    "confidence": "low",
+    "score": 44,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 55
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -26,47 +26,39 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 45
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "gives us a good idea of what the 1981 film adaptation of E. L. Doctorow's critically acclaimed 1975 bestseller would have been like if Steven Spielberg had directed it &#8212; and not Milos Forman",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The comparison implies the revival has the mainstream, commercial sensibility of Spielberg rather than Forman's more artistic approach, suggesting a disappointment with the production's artistic choices.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic consistently criticizes the production's direction, sound design, book adaptation, and overall execution, calling it pompous and numbing while acknowledging only a few bright spots. | Gemini: The review is largely negative, criticizing the direction, book, and sound design. While acknowledging some vocal strengths, the overall assessment is unfavorable, leading to a negative classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:01:34.658Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2378,
-    "outputTokens": 297,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:13:08.180Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 25,
-    "scoreDelta": 13,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (32 → Down) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "dtliExcerpt": "“Ragtime,” like “Les Miz,” gives anthems a very bad name. DeBessonet emphasizes their excessiveness by having her cast, especially Joshua Henry in the Coalhouse role, hold on to a note well passed its sell-by date. It’s difficult to tell if people are applauding mid-song because they’re impressed by Henry’s lung power or if they just want him to get off the note and finish the song. DeBessonet’s blunt direction only encourages us to applaud before the actors have finished singing.",
   "sources": [

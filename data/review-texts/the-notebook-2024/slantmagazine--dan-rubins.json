@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -17,69 +17,52 @@
     "scraped"
   ],
   "llmScore": {
-    "score": 52,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 48,
-      "high": 56
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 68,
-      "music": 42,
+      "book": null,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this production never quite transcends the clichés that it conflictingly both seeks to challenge and embrace",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Michaelson's score here falls on the wrong side too much of the time",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Michaelson and book writer Bekah Brunstetter have laid out the structure for a thoughtful adaptation that improves upon both the book and the film adaptation",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds significant flaws in the score's theatrical effectiveness while acknowledging improvements to the source material's structure, resulting in a balanced but ultimately lukewarm assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the thoughtful adaptation structure but criticizes the score as falling 'on the wrong side' of simple versus simplistic, with an overall tone that neither recommends nor discourages attendance. | GPT-4o: The review acknowledges the potential for a thoughtful adaptation but criticizes the score for failing to transcend clichés and lacking distinct character voices. The overall tone suggests a mixed reception with some positive elements. | Gemini: The review points out both positive and negative aspects of the show. While the reviewer acknowledges the thoughtful adaptation and potential improvements, they also criticize the score for being cliché and simplistic, ultimately leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:20:44.961Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2759,
-    "outputTokens": 365,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:47:21.264Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 52,
-    "scoreDelta": 7,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (49 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 49,

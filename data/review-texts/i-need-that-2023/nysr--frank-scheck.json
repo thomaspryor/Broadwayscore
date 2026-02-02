@@ -10,64 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "bwwThumb": "Meh",
   "originalScore": "3/5 stars",
-  "assignedScore": 66,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 66,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 77
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 83,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "actors so good you would pay to see them read the phone book",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "turns a solo game of Sorry into the comic highlight",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "you would pay to watch them play a board game",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Strong praise for Danny DeVito's performance as a 'comic highlight' suggests the show is worth seeing primarily for his work, indicating a qualified positive recommendation. | GPT-4o-mini: The review highlights strong performances, particularly by Danny DeVito, but lacks a clear recommendation for the overall show. | Note: Models differed by 12 points.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 3/5 star rating and review tone indicate a positive but qualified recommendation. The critic acknowledges significant flaws in the play itself but strongly endorses DeVito's performance as making it worth seeing. | Gemini: The critic gives the play 3/5 stars, which is a positive rating. While the play has flaws, Danny DeVito's performance makes it watchable.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:21:49.157Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:41.648Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 66,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 60,
-    "scoreDelta": 12,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 66,

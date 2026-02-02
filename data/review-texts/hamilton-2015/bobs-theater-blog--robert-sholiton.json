@@ -8,67 +8,59 @@
   "fullText": "When I first saw Lin-Manuel Miranda’s highly anticipated hip-hop musical about the life of one of our most intriguing founding fathers, it was still in previews at the Public Theater. The multi-talented Miranda not only wrote the music, lyrics and book; he is the co-arranger and, last but not least, the original star. This ambitious, inventive show remains strong across the board: the entertaining, informative and emotionally involving book is filled with moments of humor and pathos, the characters are vividly drawn, the lyrics are extremely clever, the deceptively simple scenic design (by David Korins) is effective, the costumes (by Paul Tazewell) are attractive, the choreography (by Andy Blankenbuehler) supports the action brilliantly, the cast is uniformly strong and the direction (by Thomas Kail) is fluid and assured. As for the music, Miranda makes a strong case for the expressive possibilities of hip-hop. Christopher Jackson, the only holdover in a principal role, has just the right gravitas for George Washington. The good news is that the newcomers to the cast are generally fine and the production is as sharp as ever. Javier Munoz’s Hamilton is just as impressive as Miranda’s was. Brandon Victor Dixon is a fine Aaron Burr even though he lacks Leslie Odom Jr’s lean hungry look. Seth Stewart is almost as good as Daveed Diggs was in two juicy roles — Lafayette and Jefferson. The replacements for Eliza (Lexi Lawson) and Angelica (Mandy Gonzalez) were a bit of a letdown after Philllipa Soo and Renée Elise Goldsberry. I miss Brian D’Arcy James’s loopy King George, but Rory O’Malley is good. If the show has a fault, it is that Miranda was overambitious and included too much material. The finale remains a bit flat. I was a bit exhausted by play’s end, but it was a pleasant kind of exhaustion. Running time: 2 hours, 50 minutes including intermission.",
   "showScoreExcerpt": "\"This ambitious, inventive show remains strong across the board: the entertaining, informative and emotionally involving book is filled with moments of humor and pathos, the characters are vividly drawn, the lyrics are extremely clever, the choreography supports the action brilliantly, the cast is uniformly strong and the direction is fluid and assured...The good news is that the newcomers to the cast are generally fine and the production is as sharp as ever.\"",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 81,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 84,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 85,
-      "performances": 80,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This ambitious, inventive show remains strong across the board",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the production is as sharp as ever",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it was a pleasant kind of exhaustion",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Despite noting some flaws like overambitious material and a flat finale, the critic consistently praises the show as 'strong across the board' with 'sharp' production values and calls the exhaustion 'pleasant,' indicating clear recommendation. | GPT-4o-mini: The review expresses strong praise for the overall quality of the production while noting some minor flaws, leading to a solid recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises virtually every aspect of the production - book, characters, lyrics, design, cast, direction - calling it 'strong across the board' and 'as sharp as ever.' Minor criticisms about pacing and some cast replacements don't diminish the overall enthusiastic recommendation. | GPT-4o: The review is overwhelmingly positive about the production's elements, praising the book, music, performances, and direction. While there are minor criticisms about the length and some cast replacements, the overall tone is highly favorable. | Gemini: The review is overwhelmingly positive, praising almost all aspects of the production. While it notes some replacements aren't as good as the originals and the show is overambitious, the overall tone is one of recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:56:06.671Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:58:49.899Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 84,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/bobs-theater-blog--robert-sholiton_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:26:29.861Z",

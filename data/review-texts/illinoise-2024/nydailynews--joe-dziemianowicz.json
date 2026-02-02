@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a transcendent experience that uses dance as its primary language to tell stories both personal and universal, with Sufjan Stevens' intricate compositions providing the emotional backbone.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,33 +18,22 @@
   "showScoreExcerpt": "The show is a transcendent experience that uses dance as its primary language to tell stories both personal and universal, with Sufjan Stevens' intricate compositions providing the emotional backbone.",
   "needsScoring": true,
   "llmScore": {
-    "score": 85,
-    "confidence": "low",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 95
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 90,
+      "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "transcendent experience",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "intricate compositions providing the emotional backbone",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Uses superlative language like 'transcendent experience' suggesting strong enthusiasm, but excerpt is too brief to determine full recommendation strength.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The word 'transcendent' indicates an extraordinary, must-see recommendation, suggesting the show rises above ordinary theatrical experiences. | GPT-4o: The review uses highly enthusiastic language, describing the show as 'transcendent' and highlighting its universal storytelling and emotional impact, indicating a strong recommendation. | Gemini: The review uses very strong positive language like \"transcendent experience\" indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,19 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:00:34.823Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2337,
-    "outputTokens": 267,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:03.518Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

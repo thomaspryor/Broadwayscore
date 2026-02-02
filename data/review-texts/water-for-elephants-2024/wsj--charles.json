@@ -7,7 +7,7 @@
   "publishDate": "March 21, 2024",
   "dtliExcerpt": "Time was, when a dreamy kid felt oppressed, the allure of running away to join the circus would fire the imagination. An American myth, or sentimental lore, probably. But in the new musical “Water for Elephants,” ostensibly set in a seedy, second-rate circus, running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop.",
   "originalScore": null,
-  "assignedScore": 33,
+  "assignedScore": 43,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": null,
@@ -29,13 +29,13 @@
     "Word count too low: 181 (min: 300)"
   ],
   "llmScore": {
-    "score": 33,
+    "score": 43,
     "confidence": "high",
     "range": {
-      "low": 25.5,
-      "high": 40.5
+      "low": 38,
+      "high": 48
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -43,24 +43,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "ostensibly set in a seedy, second-rate circus",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "running off to join the crew would seem to be little more rebellious than joining an unusually boisterous Boy Scout troop.",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic uses dismissive language comparing the show unfavorably to a 'Boy Scout troop' and describes it as 'second-rate,' suggesting disappointment with the production's lack of edge or authenticity. | GPT-4o-mini: The review conveys a strong sense of disappointment and criticism, indicating that the production lacks the excitement and allure typically associated with circus themes.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic directly states the adaptation fails to capture essential qualities of the source material, indicating disappointment. However, this is only an excerpt so the full verdict may be more nuanced. | GPT-4o: The review text indicates a loss of key qualities from the source material, suggesting a negative assessment. The aggregator context supports a negative verdict, but the lack of full text reduces confidence. | Gemini: The review excerpt states that the musical adaptation loses much of the source material's quality, indicating a negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -69,20 +53,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:45:29.335Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:21.329Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 33,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 30,
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
     "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "bwwExcerpt": "Still, the largely pasteurized manner in which the musical depicts the often-sordid lives of circus folk of the period lends “Water for Elephants” an anodyne weightlessness, at least until the denouement. I’m not sure if a more faithful adaptation of the book would make for a better musical—although John Kander and Fred Ebb, in their heyday, might have taken a good crack at it—but it certainly would have made for a more provocative and adventurous one.",
   "showScoreExcerpt": "\"this musical adaptation of the hit novel loses much of its sourceâs pungency and grit.\"",

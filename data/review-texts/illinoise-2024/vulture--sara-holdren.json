@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"Beyond...its few brief stumbles, Illinoise achieves a holistic transcendence.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/illinoise",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 87,
+    "confidence": "low",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 82,
+      "high": 92
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 95,
-      "performances": 92,
-      "direction": 90
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this is the real triumph of the new show... Illinoise achieves a holistic transcendence. For 90 glorious minutes, you do feel.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The show's extraordinary corps of dancers, musicians, and singers throws open a window to the cosmos",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "May it leave behind seeds for more theater that dances, literally or figuratively, with such joyful abandon.",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic uses rapturous language like 'triumph,' 'holistic transcendence,' 'extraordinary,' and '90 glorious minutes,' with only minor reservations ('few brief stumbles'), clearly positioning this as a transformative theatrical experience worthy of emulation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses rapturous language throughout, calling it a 'triumph' that achieves 'holistic transcendence' and praising its 'many technical glories.' The review concludes hoping it leaves seeds for more theater 'with such joyful abandon.' | Gemini: The review is overwhelmingly positive, praising the show's ability to evoke emotion and its technical achievements. While acknowledging minor flaws, the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:20:22.566Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4613,
-    "outputTokens": 393,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:18:05.531Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "sources": [
     "show-score",

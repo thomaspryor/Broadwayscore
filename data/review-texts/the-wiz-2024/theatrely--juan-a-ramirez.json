@@ -14,64 +14,48 @@
     "score": 78,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 78,
-      "performances": 85,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this iteration of The Wiz is pretty terrific",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "What this staging of the beloved 1974 musical has in spades are some of the liveliest performances in New York right now",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The road to success might have a few bricks missing, but it's a golden one nonetheless",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic gives clear praise calling the production 'pretty terrific' with 'some of the liveliest performances in New York right now,' acknowledging minor flaws but ultimately recommending it as 'a golden' road despite some missing bricks.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the lively performances, direction, and cast chemistry while acknowledging budget limitations and one underwhelming performance, ultimately delivering a clear recommendation. | Gemini: The review is generally positive, highlighting the lively performances and the cast's connection to the material. While it notes some underwhelming aspects like Wayne Brady's performance and the economical staging, it ultimately concludes that the show is a golden one, making it a recommended experience with reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:31:55.657Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3313,
-    "outputTokens": 370,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:56.898Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dtliExcerpt": "The real riches are in the cast’s connection to each other, and to the material. Its young leads, as well as their more experienced counterparts, are having the time of their lives and making the most of their roles, singing with an infectious joy typically missing from oft-retread properties. The road to success might have a few bricks missing, but it’s a golden one nonetheless.",
   "sources": [

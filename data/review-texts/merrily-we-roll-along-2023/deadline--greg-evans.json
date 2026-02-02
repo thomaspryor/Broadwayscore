@@ -8,15 +8,15 @@
   "bwwExcerpt": "Not that this new production of Merrily completely fills in and smoothes out the musical’s legendary potholes, but it certainly helps us step around them without too much effort or frustration. You’d be hard-pressed to imagine a better Merrily We Roll Along.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 85,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -24,48 +24,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "smartly tended production",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "deserves all the applause – and ticket-buying business – it's getting",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "that most troubled of stage properties",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic explicitly endorses both critical acclaim and commercial success with 'deserves all the applause – and ticket-buying business,' which is a strong recommendation despite acknowledging the show's historically troubled reputation. | GPT-4o-mini: The review expresses strong approval of the production, indicating a clear recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the musical's inherent problems but praises this production as likely the best possible version, indicating a clear recommendation despite reservations about the source material. | GPT-4o: The review acknowledges some issues with the musical but ultimately praises this production as possibly the best version of 'Merrily We Roll Along', indicating a strong recommendation. | Gemini: The review acknowledges flaws but ultimately suggests this production is the best imaginable, indicating a positive recommendation with reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:05:26.185Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:16.162Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“Not that this new production of ’Merrily’ completely fills in and smoothes out the musical’s legendary potholes, but it certainly helps us step around them without too much effort or frustration. You’d be hard-pressed to imagine a better ’Merrily We Roll Along’.”",

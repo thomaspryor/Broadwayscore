@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "This is a rare Broadway show that actually succeeds in scaring the bejesus out of you. 'Grey House' is a genuinely creepy thriller that will have you jumping out of your seat.",
@@ -19,11 +19,11 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 41,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 35,
-      "high": 47
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -31,26 +31,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 40
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "only offers a few audio-based jump-scares and a vaguely spooky atmosphere",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The tension is swallowed whole even by a house as intimate as the Lyceum, and shudders from the audience are rare",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "the play settles for being merely unsettling",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review criticizes the production's fundamental failure to deliver horror thrills, noting weak scares, lack of tension, and poor audience response. | GPT-4o-mini: The review highlights significant shortcomings in tension and atmosphere, leading to a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically dismantles the production, calling it 'watered-down,' criticizing the execution as 'far worse' than its inspirations, and ending with a clear negative pun that positions it as boring rather than scary. | GPT-4o: The review is overwhelmingly negative, criticizing the play's inability to replicate horror effectively, lack of tension, and poor execution. The critic describes the script as a 'mess' and the performances as unremarkable, leading to a strong recommendation to avoid the show. | Gemini: The review is largely negative, criticizing the play's lack of tension, unconvincing characters, and messy script. The critic explicitly states the execution is 'far worse' than its inspirations and calls the second half a 'slog'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,20 +43,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:01.926Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:44.059Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 41,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 41,

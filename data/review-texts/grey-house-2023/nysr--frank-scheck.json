@@ -10,66 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": "3/5 stars",
-  "assignedScore": 79,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "A first-rate cast and creative team have been assembled",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "all working at the top of their game",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "sterling ensemble",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Review fragment shows consistent praise for cast and creative team with strong superlatives, but lacks overall assessment or explicit recommendation. | GPT-4o-mini: The review highlights a strong cast and creative team, indicating a positive recommendation despite lacking explicit endorsement.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 3/5 star rating and review tone indicate mixed feelings - praising the cast, direction, and originality while criticizing the narrative momentum and frustrating vagueness. The critic acknowledges it's 'something original' and suggests seeing it with friends, but doesn't give a clear recommendation. | GPT-4o: The review highlights both strengths and weaknesses of the production, noting its originality and strong performances but also its frustrating vagueness and lack of narrative momentum. The 3/5 star rating suggests a mixed reception. | Gemini: The review acknowledges originality and strong production elements but ultimately finds the vagueness frustrating. The 3/5 star rating and the description of audience reactions as 'baffled' suggest a mixed reception.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:17.104Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:59.793Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (79 → Up) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,

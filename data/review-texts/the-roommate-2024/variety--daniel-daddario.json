@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "It wouldn’t be right to say that these scenes, at the play’s end, make you forget what came before, the jokes that didn’t land. Instead, they put them into context: She’d been playing at being a person, and now, so many hilarious scams later, she’s become one.",
@@ -20,62 +20,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 85
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "bring out each other's best",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "charming double act",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review focuses entirely on praising the two lead performances with warm, positive language, suggesting a recommendable show despite the extremely brief excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The description of the leads as 'charming' and bringing out 'each other's best' suggests positive recommendation, though the truncated text limits confidence in the full verdict. | GPT-4o: The review highlights the strong performances of the lead actors, describing their interaction as 'charming,' which suggests a positive experience. However, due to the lack of full text and mixed aggregator context, the confidence is medium. | Gemini: The review excerpt highlights a positive aspect of the production, indicating a favorable, but not overwhelmingly enthusiastic, recommendation. The aggregator verdicts also suggest a mixed to positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:25:30.056Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2328,
-    "outputTokens": 267,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:15.414Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 60,
-    "scoreDelta": 12,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 66,

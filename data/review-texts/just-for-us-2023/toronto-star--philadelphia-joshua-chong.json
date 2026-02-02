@@ -10,64 +10,56 @@
   "bwwExcerpt": "Objectively speaking, John O’Farrell’s Live Aid retrospective doesn’t stand out among the sea of jukebox musicals that wash up on our shores these days. His dialogue is often trite. The characters come across as one-dimensional, cardboard cut-outs. And the songs (including hits such as “Dancing in the Streets,” “My Generation” and “All You Need Is Love”) aren’t integrated with the story so much as they’re body checked into the plot.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JUST-FOR-US-2023",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 25,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
-      "music": 30,
+      "book": null,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "His dialogue is often trite",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The characters come across as one-dimensional, cardboard cut-outs",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "doesn't stand out among the sea of jukebox musicals",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic systematically criticizes every major element - calling the dialogue trite, characters one-dimensional, and song integration poor - with no redeeming qualities mentioned. | GPT-4o-mini: The review is overwhelmingly negative, criticizing the script and character development, leading to a clear recommendation against seeing the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic systematically criticizes the dialogue as trite, characters as one-dimensional, and song integration as poor. However, given this is only one excerpt and could be cherry-picked, I score conservatively within the negative range. | GPT-4o: The review criticizes the dialogue as trite, characters as one-dimensional, and the integration of songs as forced, suggesting a negative impression. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Negative range. | Gemini: The review excerpt is overwhelmingly negative, criticizing the dialogue, characters, and integration of songs. While it's only one excerpt, the language is strong enough to suggest a negative overall assessment.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:17.684Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:59.496Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
-    "scoreDelta": 0,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

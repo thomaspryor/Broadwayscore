@@ -8,71 +8,55 @@
   "bwwExcerpt": "At the center of this prodigious cast and Leon’s clockwork staging—the pearl if you will—is Kara Young. With several Off Broadway and now three Broadway shows to her credit, Young (Cost of Living, Clyde’s) always astonishes. She’s a walking paradox: demure yet fiery; petite but imposing; seemingly naïve yet a conduit of deep, witchy wisdom. Her physical comedy is outrageous, especially when Lutiebelle, worked into a tizzy about facing Cotchipee, falls apart and reassembles right in front of us.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 85,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 82,
-      "high": 88
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
+      "book": null,
       "music": null,
-      "performances": 92,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Here's an ensemble to cherish",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Purlie is victorious indeed; but anyone who gets to see Young in her comic glory is a winner",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Davis's bravura script, stuffed with earthy epigrams and colorful braggadocio, is never dull",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review lavishes praise on the performances (especially Kara Young's 'outrageous' physical comedy), calls the ensemble one 'to cherish,' and concludes that anyone who sees it 'is a winner,' with only minor quibbles about pacing.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the cast extensively, particularly highlighting standout performances, and concludes that 'anyone who gets to see Young in her comic glory is a winner,' indicating a clear recommendation despite some structural concerns about pacing. | Gemini: The review is overwhelmingly positive, highlighting the strong performances, particularly Kara Young's. While it mentions some initial confusion, the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:55:29.401Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3919,
-    "outputTokens": 375,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:58.790Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

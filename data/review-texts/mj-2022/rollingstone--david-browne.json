@@ -13,10 +13,10 @@
   "fetchedAt": "2026-01-23T05:04:27.233Z",
   "llmScore": {
     "score": 62,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 70
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -26,53 +26,38 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "equally exhilarating and confounding show",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "this equally exhilarating and confounding show really does have it right",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "likely to gratify some and infuriate others",
-        "sentiment": "neutral",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review is deeply ambivalent, calling the show both 'exhilarating and confounding' while acknowledging it will divide audiences, suggesting a mixed but thoughtful production that succeeds on some artistic level.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic describes the show as both 'exhilarating and confounding' - indicating mixed feelings. The review critiques the show's selective timeline approach while acknowledging it may have merit, suggesting neither clear recommendation nor dismissal. | GPT-4o: The review describes the show as both 'exhilarating and confounding,' suggesting a mixed experience. The lack of updates on Jackson's life post-1992 is noted as potentially polarizing, indicating neither a strong recommendation nor a strong dissuasion. | Gemini: The review highlights both positive (\"exhilarating\") and negative (\"confounding\") aspects of the show, suggesting a mixed experience. The aggregator verdict also points towards a flat or mixed reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:38:23.159Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2434,
-    "outputTokens": 337,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:17.350Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 75,
-    "scoreDelta": 7,
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "textIssue": "truncated",
   "sourceMethod": "stub",

@@ -7,23 +7,18 @@
   "publishDate": "March 7, 2024",
   "dtliExcerpt": "Twenty years later, all reasonable doubt has been removed from Shanley’s parable. This taut drama, back in a gripping new Broadway production from the Roundabout Theatre Company and director Scott Ellis, plays like a cautionary tale, an ode to those who found the courage to stand up to abusers and side with the young and the vulnerable.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 75,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/doubt-a-parable/",
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:35:20.537Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2317,
-    "outputTokens": 261,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:26.357Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "5.0.0"
   },
   "bwwExcerpt": "Ryan, whose performance is tart, vulnerable, and unstinting, shows us a character slowly realizing that her unswerving belief in the hierarchy she serves — heck, the way she has ordered her entire life — is incompatible with her moral and practical quest. The similarly excellent Kazan, whose teaching nun has the assets and drawbacks of youth, can only stare horrified at a future that she now understands is coming for her, too. It’s just a matter of time. Melissa Rose Bernardo, New York Stage",
   "showScoreExcerpt": "\"...a timely and now seemingly timeless piece of art that shed light\"",
@@ -105,48 +100,37 @@
     "invalidatedAt": "2026-02-01T04:02:00.808Z"
   },
   "llmScore": {
-    "score": 50,
+    "score": 75,
     "confidence": "low",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "timely and now seemingly timeless piece of art",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "shed light",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Fragment contains only positive language about artistic value but provides no clear recommendation or substantive critique to determine recommendation strength.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The excerpt is too fragmentary to determine a clear verdict. The phrase suggests artistic merit but provides no recommendation context. Given the BroadwayWorld 'Up' indicator and positive language about the art, this leans slightly positive within the mixed range. | GPT-4o: The phrase 'timely and now seemingly timeless piece of art' suggests a strong positive impression, indicating a high level of recommendation. However, due to the text quality warning, the confidence is medium. | Gemini: The quote suggests a positive assessment, indicating the show is worth seeing, but the limited text prevents a higher score. | Buckets: claude=Mixed, openai=Rave, gemini=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 88,
+    "openaiScore": 87,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 28,
+    "scoreDelta": 27,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": true,

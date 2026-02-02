@@ -9,74 +9,57 @@
   "bwwExcerpt": "At its core, “Marjorie Prime” tells a simple kitchen-sink story of two adults trying to care for an aging relative. Harrison tries to up the ante by dipping into his gothic drawer of horrors to deliver not one but two suicides that push the human narrative into the contrived. In the end, the machines are more honest than the humans and, better yet, there’s none of the angst.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 61,
   "source": "dtli",
   "dtliThumb": "Meh",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 48,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 52
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 40,
+      "book": null,
       "music": null,
-      "performances": 55,
-      "direction": 45
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I much preferred watching the actors impersonate machines in Harrison's sci-fi tale than watching them impersonate human beings",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Harrison tries to up the ante by dipping into his gothic drawer of horrors to deliver not one but two suicides that push the human narrative into the contrived",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The play's best scene is when the living have left the stage completely, and the three primes sit down for a kitchen-table conversation",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds the play's premise dated, the human characters poorly written with contrived dramatic elements, and prefers the robot scenes to the human ones, indicating fundamental problems with the material despite some isolated praise.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds significant flaws in performances and human drama but appreciates the robot scenes and concept, resulting in a genuinely mixed assessment. | GPT-4o: The review expresses a preference for the robotic elements over the human performances, indicating a mixed reception. While there are some positive notes about the robot scenes, the human interactions are criticized for being contrived and less engaging. | Gemini: The review has both positive and negative elements. It praises the robot scenes and Cynthia Nixon's performance but criticizes the human interactions and some casting choices. The overall impression is that the play has potential but is uneven in its execution.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:31:59.990Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3448,
-    "outputTokens": 388,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:53.001Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 45,
-    "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (47 → Down) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dtliExcerpt": "At its core, “Marjorie Prime” tells a simple kitchen-sink story of two adults trying to care for an aging relative. Harrison tries to up the ante by dipping into his gothic drawer of horrors to deliver not one but two suicides that push the human narrative into the contrived. In the end, the machines are more honest than the humans and, better yet, there’s none of the angst.",
   "sources": [

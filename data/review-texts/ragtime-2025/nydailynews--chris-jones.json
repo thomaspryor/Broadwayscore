@@ -9,71 +9,56 @@
   "showScoreExcerpt": "â 'Ragtime' is generous to all of its characters...But there is still something touching about its conviction that they will have a better life. I mean, Americans look to musicals for hope, donât we?\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/ragtime-broadway",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 72,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 85,
-      "performances": 88,
-      "direction": 65
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it was the anthemic score of 'Ragtime' that endeared it to so many theatergoers, and that is where the solid new Lincoln Center revival wisely places its focus",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "an empathetic cast that sings the bejesus out of these famous songs",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "I missed the epic, foundation metaphor of a country in forward motion, especially since there is no clear overarching visual statement in its place",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises the exceptional performances and music while expressing reservations about the direction's lack of epic scope, resulting in a qualified positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite missing some epic elements of the original production, the critic praises the cast performances, vocal work, and acknowledges the show's touching qualities while noting it's 'fair enough' for different times. | GPT-4o: The review acknowledges some changes and lacks in the production but ultimately praises the cast's performance and the emotional impact of the show, indicating a positive recommendation. | Gemini: The review highlights the strengths of the cast and the enduring power of the score, but also notes the lack of an overarching visual statement and a shift in focus away from the epic scope of the original production. This suggests a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:00:30.656Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3422,
-    "outputTokens": 375,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:10:43.956Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 65,
-    "scoreDelta": 10,
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Joshua Henry’s Colehouse feels younger than has been typical, less initially polite, more impassioned and, of course, his voice is the stuff of standing ovations. Nichelle Lewis’ Sarah is more fragile, which makes her crushed optimism especially moving. As Tateh, Brandon Uranowitz focuses on energetic joy. He expands the role and makes it all the more essential to the piece. Both Lewis and Ben Levi Ross, who plays the brooding Mother’s Younger Brother, bring qualities to those two characters I’d never seen before. They are doing the best work of the night; Ross, especially, fleshes out what mostly has been a caricature.",
   "bwwExcerpt": null,

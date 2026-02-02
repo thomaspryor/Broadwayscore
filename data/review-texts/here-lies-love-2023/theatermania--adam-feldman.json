@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production succeeds in creating an immersive disco experience that makes the audience complicit in the glamour and corruption of the Marcos regime.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The production succeeds in creating an immersive disco experience that makes the audience complicit in the glamour and corruption of the Marcos regime.",
   "needsScoring": true,
   "llmScore": {
-    "score": 75,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 85
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,26 +30,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The production succeeds",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "creating an immersive disco experience",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "makes the audience complicit in the glamour and corruption",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic states the production 'succeeds' in its artistic goals, suggesting positive reception, but this single sentence provides insufficient context for a confident assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The word 'succeeds' indicates positive assessment of the production's achievement, though the complex subject matter and brief excerpt limit confidence in the full verdict. | GPT-4o: The review highlights the production's success in creating an immersive experience, indicating a positive recommendation. | Gemini: The review highlights the production's success in creating an immersive experience, indicating a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,19 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:58:55.901Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2331,
-    "outputTokens": 282,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:08.765Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

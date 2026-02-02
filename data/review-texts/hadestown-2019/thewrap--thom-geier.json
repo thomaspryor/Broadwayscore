@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "el Chavkin's endlessly varied direction and David Neumann's dances, all of them fully integrated into the staging, help to keep things on the move, as does Rachel Hauck's turntable-and-trap-door set. Thom Geier, TheWrap : Chavkin, her production team and cast are working at the top of their form - and they go a long way to masking some of the show's shortcomings. Mitchell is a better composer than a lyricist, alas, and sometimes leans too heavily on De Shields' narration to advance the plot instead of her occasionally repetitive songs. And the fact remains that there's just not much story here - not nearly enough for a two and a half hour show. Will Hermes, Rolling Stone : This chilling scene remains the centerpiece of Hadestown , a love story and class-struggle parable based on the Orpheus myth that arrives on the same Broadway stage Bruce Springsteen worked for 14 months prior. The cast has changed from Mitchell's original LP (where Bon Iver's Justin Vernon, The Low Anthem's Ben Knox",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
@@ -16,60 +16,52 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 69,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 77.5
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 48,
-      "music": 59,
-      "performances": 82,
-      "direction": 82
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Chavkin, her production team and cast are working at the top of their form",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "they go a long way to masking some of the show's shortcomings",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "there's just not much story here - not nearly enough for a two and a half hour show",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong praise for direction, cast, and production values, but significant criticism of the book's length and Mitchell's lyrics creates a qualified positive recommendation. | GPT-4o-mini: The review highlights strong direction and production elements but notes significant shortcomings in the story and lyrics, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the direction, choreography, and performances as top-tier work that compensates for acknowledged flaws in the writing and pacing. However, with only one curated excerpt available, the full critical verdict remains unclear. | GPT-4o: The review praises the direction and production team for their high-quality work, which compensates for some of the show's weaknesses. The mention of shortcomings suggests some reservations, but the overall tone is positive. | Gemini: The review highlights the strengths of the direction, choreography, and set design, while also acknowledging shortcomings in the lyrics and story. The overall sentiment leans towards positive, suggesting it's worth seeing despite its flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:15:32.230Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:02:59.070Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 69,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 65,
-    "scoreDelta": 7,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "mergedFrom": [
     {

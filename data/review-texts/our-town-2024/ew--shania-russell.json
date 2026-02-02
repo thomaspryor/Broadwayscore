@@ -10,40 +10,29 @@
   "bwwExcerpt": "Not coincidentally, the most striking aspects of this particular production are baked into the DNA of Wilder’s timeless play. There’s something undefinable missing: perhaps a cut line that was the secret skeleton key or merely the fact of changing the pacing and losing the reality of the show’s slow simplicity. Ultimately, Wilder’s words remain the magic; the progression from a day to a wedding to a funeral a guaranteed gut punch.",
   "showScoreExcerpt": "\"Leon’s inclusive approach to casting means the play better reflects life as we know it.\"",
   "originalScore": "B",
-  "assignedScore": 45,
+  "assignedScore": 75,
   "source": "show-score",
   "archivePath": "data/archives/reviews/our-town-2024/ew--shania-russell_2026-01-25.html",
   "textFetchedAt": "2026-01-25T05:04:44.559Z",
   "sourceMethod": "showscore",
   "scoreSource": "extracted-grade",
   "llmScore": {
-    "score": 45,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 55
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a text just as resonant 86 years after it was penned",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Jim Parsons tells the audience, delivering the opening lines as Stage Manager",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This appears to be an incomplete excerpt that focuses on plot summary and cast description rather than critical evaluation, making it impossible to determine the critic's actual recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The B rating and overall tone indicate a positive recommendation, though the critic notes something 'undefinable missing' and pacing issues that prevent it from being a stronger endorsement. | Gemini: The review is generally positive, highlighting the strength of the original play. However, it also notes something is \"missing\" from this particular production, indicating reservations. The B rating from EW further supports a positive but not rave classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,25 +41,33 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:09:35.117Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2606,
-    "outputTokens": 296,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:26.938Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  },
   "bwwThumb": "Up",
   "rescoreReason": "cleaned-text: stripped HTML tags, video player, related articles from EW page",
   "previousLlmScore": 74,
   "rescoreCompletedAt": "2026-02-01T15:49:10.183Z",
-  "contentTier": "full",
+  "contentTier": "needs-rescrape",
   "wordCount": 1855,
   "truncationSignals": [
     "no_ending_punctuation"

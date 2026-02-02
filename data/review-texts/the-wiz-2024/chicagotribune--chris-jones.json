@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-wiz-2024/chicagotribune--chris-jones_2026-01-29.html",
@@ -31,67 +31,51 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 72,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
-      "music": 85,
-      "performances": 75,
-      "direction": 68
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "For all its flaws, and whatever qualms might now exist about a white writer, William F. Brown, cheerfully writing in a Black vernacular, 'The Wiz' is just one of those rare and special titles that gets an audience ginned up, glammed up and ready to drop the big bucks necessary for a night out at the theater",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the three friends of Dorothy who follow those yellow bricks toward self-actualization, Avery Wilson's Scarecrow, Phillip Johnson Richardson's Tinman (the most moving I've seen) and Kyle Ramar Freeman's Lion, cowardly variety, really are the heart of this particular revival and they're a delightful quartet",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Lewis hits the notes, and these are tough notes to hit, but the overall performance remains too guarded to really launch itself fans' hearts, even though at the show I saw, everyone was more than ready to receive and respond",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic acknowledges flaws but celebrates the show's cultural significance and audience appeal, praises key performances and improvements from the touring version, while noting some disappointments in lead performance and ending.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges flaws but emphasizes improvements from the touring version and praises the heart of the revival, particularly the supporting cast, indicating a recommendation despite reservations. | Gemini: The review indicates improvements from the pre-Broadway tour and praises several performances, but also notes some shortcomings, such as Dorothy's performance and the abrupt ending. Overall, it leans towards a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:30:40.444Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3230,
-    "outputTokens": 494,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:09.229Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 72,
-    "scoreDelta": 4,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",

@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 93,
+  "assignedScore": 90,
   "llmScore": {
-    "score": 93,
+    "score": 90,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 85,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review explicitly calls it a 'must-see' and describes it as 'thrilling from beginning to end' with unqualified enthusiasm, indicating a strong rave recommendation. | GPT-4o: The review uses strong, enthusiastic language such as 'thrilling' and 'must-see', indicating a highly positive recommendation. | Gemini: The review explicitly states the show is a 'must-see' and 'thrilling from beginning to end,' indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls it a 'must-see' and describes it as 'thrilling from beginning to end,' indicating enthusiastic recommendation despite limited excerpt. | GPT-4o: The excerpt describes the show as 'thrilling from beginning to end' and a 'must-see,' indicating a strong recommendation. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Rave range. | Gemini: The review explicitly calls the show a \"must-see\" and \"thrilling from beginning to end,\" indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:47:17.289Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:01:07.776Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 93,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
+    "claudeScore": 88,
+    "openaiScore": 90,
     "geminiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

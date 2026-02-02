@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 76,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 76,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The language is clearly positive with 'refreshing' and 'crackling with vibrant characters' indicating appreciation, though this is only an excerpt which limits confidence in the full verdict. | GPT-4o: The review highlights the play's refreshing nature and vibrant characters, suggesting a positive experience. However, without the full text, the confidence is medium. | Gemini: The review uses positive language like \"refreshing\" and \"vibrant\" to describe the play, indicating a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt uses clearly positive language ('refreshing', 'crackling', 'vibrant') praising key theatrical elements, but with only one curated quote available, I'm scoring conservatively within the positive range. | GPT-4o: The review excerpt praises the play as 'refreshing' and highlights its vibrant characters and comedy, suggesting a positive reception. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review excerpt uses positive language like \"refreshing\" and \"vibrant,\" suggesting a positive, but not overwhelmingly enthusiastic, recommendation. Given the single excerpt and lack of explicit recommendation, I'm scoring towards the lower end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:48:07.878Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:51:23.583Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
+    "claudeScore": 72,
+    "openaiScore": 77,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

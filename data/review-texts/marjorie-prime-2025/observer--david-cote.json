@@ -7,7 +7,7 @@
   "publishDate": "2025-12-08",
   "bwwExcerpt": "r of horrors to deliver not one but two suicides that push the human narrative into the contrived. In the end, the machines are more honest than the humans and, better yet, there’s none of the angst. David Cote, Observer: Still relevant after its world premiere at Playwrights Horizons, the 90-minute chamber drama sparkles and unsettles in its Broadway debut, positing that holographic avatars will remember us after we’re gone, airbrushing life’s sorrow and complexity from every snapshot. In 2025, such a message is not ahead of its time, but perfectly punctual. Average Rating: 84.7% REVIEW ROUNDUP REAL-TIME ALERTS To read more reviews, click here ! Discuss the show on the BroadwayWorld Forum Buy Tickets to Marjorie Prime Opening Night Coverage Photos: The Cast of MARJORIE PRIME Takes Opening Night Bows Photos: The Stars of MARJORIE PRIME Hit the Red Carpet On Opening Night Video: MARJORIE PRIME Celebrates Opening Night Photos: MARJORIE PRIME Cast Celebrates Opening Night Previous Next Re",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Opens-On-Broadway-20250116",
@@ -15,67 +15,52 @@
   "scoreSource": "sentiment-lean-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "sparkles and unsettles in its Broadway debut",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Still relevant after its world premiere at Playwrights Horizons",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "In 2025, such a message is not ahead of its time, but perfectly punctual",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises the play's continued relevance and describes it positively as 'sparkles and unsettles,' indicating a clear recommendation despite acknowledging it's not groundbreaking.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with context about AI plays in general, the critic clearly recommends this production with positive language like 'sparkles and unsettles' and calls its message 'perfectly punctual' for 2025, indicating strong relevance and quality. | GPT-4o: The review highlights the play's relevance, its ability to 'sparkle and unsettle,' and describes it as perfectly timed for its message. These positive descriptors indicate a strong recommendation. | Gemini: The review uses positive language like \"sparkles and unsettles\" and deems the play \"still relevant.\" While not a rave, it's a clear recommendation to see the show, but the mention of \"airbrushing life's sorrow and complexity\" suggests some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:31:32.003Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2535,
-    "outputTokens": 340,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:01.872Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/marjorie-prime-2025/observer--david-cote_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:13:41.586Z",

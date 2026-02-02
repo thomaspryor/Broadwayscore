@@ -10,73 +10,55 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
-      "music": 75,
-      "performances": 88,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The show is smart, witty, tuneful, and teeming with mighty performances",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Suffs is full of nerve and spark. Under the steady direction of Leigh Silverman, the show's large ensemble glows with the gutsiness and visible affection that come from a good-faith process",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "That Suffs allows us to hold both — young and old, Ida and Mary, Carrie and Alice — and to see them all in their humanity and bravery is a real achievement",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic offers sustained praise for the performances, writing, direction, and thematic depth, calling it 'smart, witty, tuneful' with 'mighty performances' and describing it as a 'real achievement,' despite some minor quibbles about certain comedic moments.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite opening with concerns about comparisons to Hamilton and noting some flaws (music-hall shtick, unoriginal material for Wilson), the critic clearly recommends the show, praising its intelligence, performances, humor, and emotional impact while acknowledging it as a 'real achievement.' | Gemini: The review is largely positive, highlighting the show's strengths and performances, but also pointing out some flaws in the writing and humor. The overall tone suggests a recommendation with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:15:35.043Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 5900,
-    "outputTokens": 421,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:52.781Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (50 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 50,

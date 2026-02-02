@@ -8,64 +8,56 @@
   "bwwExcerpt": "When it comes to horror, Broadway typically cedes turf to Hollywood, the occasional Martin McDonough play notwithstanding. There have been giant apes, operatic phantoms, and a misguided vampire or two without providing so much as a single genuine tingle. All of which makes the effort of Grey House so bold. A creepy mash-up of haunted house tropes, cabin in the woods traditions, ghosty kids, errant hatchets, screams, black-outs and the sort of Lynchian lounge music that drips with reverb and mena",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 74,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 84
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The cast is excellent. Metcalf scores another fine collaboration with Mantello",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Grey House shows him knocking on all the right doors",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "There are some stretches that start to feel dull or repetitive, possibly the result of confusion as to what, exactly, is going on",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Clear positive recommendation with extensive praise for performances, direction, and design, though acknowledging some pacing issues and narrative confusion. | GPT-4o-mini: The review expresses strong praise for the performances and direction while acknowledging some minor issues with pacing, leading to a solid recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the show's atmospheric qualities and effectiveness, acknowledging some pacing issues but indicating they don't significantly detract from the overall experience. | GPT-4o: The review acknowledges some dull or repetitive stretches but suggests these are outweighed by the overall impact of the show, indicating a positive recommendation with some reservations. | Gemini: The review acknowledges flaws but ultimately suggests the show is worth seeing, particularly due to its engaging and scary elements.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:50:26.244Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:22.797Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“...a savvy tale that might be likened to a dark, lonely lake on a moonless night – scary enough on the surface, scarier still when one ponders what’s below the surface. There are some stretches that start to feel dull or repetitive, possibly the result of confusion as to what, exactly, is going on, but such moments fade with the next scream.”",

@@ -17,57 +17,48 @@
     "score": 79,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 53,
-      "music": 85,
-      "performances": 75,
-      "direction": 79
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "When the show is at its best, it hits levels of unironic ludicrousness that are more fun than most things on Broadway",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "And I had a great time",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The song is such a ridiculous rush that it pretty much justifies the whole project",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Despite acknowledging the show's narrative weaknesses and lack of character chemistry, the critic clearly had a great time and celebrates the production's campy energy, spectacular choreography, and standout musical numbers. | GPT-4o-mini: The review expresses enjoyment of the campy atmosphere and music, with some reservations about the book and character chemistry, leading to a solid recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite acknowledging flaws in story and character development, the critic enthusiastically embraces the show's campy, over-the-top nature and finds it genuinely entertaining, with particular praise for 'One Night in Bangkok' and the ensemble work. | Gemini: The review acknowledges the show's flaws but ultimately recommends it, highlighting its entertainment value and campy atmosphere. The critic explicitly states having a \"great time\" and that the show's ludicrousness is \"more fun than most things on Broadway.\"",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:44:46.036Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:40:12.112Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/chess-2025/vulture--sara-holdren_2026-01-26.html",

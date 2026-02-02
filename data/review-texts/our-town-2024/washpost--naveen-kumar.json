@@ -10,76 +10,58 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 72,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Leon does beautiful and evocative work updating the everyday Americans",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Leon's staging is lovely, but I found myself craving a daring challenge to the idea of convention rather than simply an inclusive version of it",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "The production's haunting and seductive design aims to envelop the senses",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic praises the performances, direction, and design elements while expressing philosophical reservations about the production's approach to updating the classic text, resulting in qualified appreciation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the performances, direction, and design elements consistently, calling Leon's work 'beautiful and evocative' and the staging 'lovely.' While expressing philosophical disagreement with the play's traditional framework, the review recommends the production for its artistic merits. | Gemini: The review praises the direction, performances, and design elements, indicating a positive experience overall. However, the critic expresses a desire for a more radical interpretation of the play's themes, suggesting a reservation in their recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:50:21.189Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3327,
-    "outputTokens": 350,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:38:53.480Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 55,
-    "openaiScore": 55,
+    "claudeScore": 75,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 0,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (55 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "archivePath": "data/archives/reviews/our-town-2024/washpost--naveen-kumar_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:21:29.168Z",

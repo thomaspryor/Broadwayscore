@@ -8,18 +8,18 @@
   "fullText": null,
   "bwwExcerpt": "The cartoonish musical is modelled after snappy 1960s Broadway musical comedies, complete with passing scenes staged \"in-one\" in front of a curtain to cover changes in décor. Sure, that's retro, but it suits the light-hearted material as well as a Disney crowd who probably prefers familiar formats. Casey Nicholaw, an ace director-choreographer, maintains a slightly tongue-in-cheek quality throughout the fast-moving show, especially in his frisky dances that, with their sinuous arm gestures, synchronized moves and general acrobatics, often suggest Bollywood production numbers. A lively and good-looking ensemble expertly undulates through the sometimes zany choreography.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 76,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses positive descriptors like 'ace director-choreographer', 'expertly', 'lively and good-looking' and appreciates the production's style and execution, though the tone suggests measured rather than enthusiastic praise. | GPT-4o: The review highlights the show's lively nature, expert choreography, and suitability for its audience, indicating a positive recommendation despite its retro style. | Gemini: The review highlights positive aspects like the choreography and ensemble, but the phrase \"suits the light-hearted material as well as a Disney crowd who probably prefers familiar formats\" suggests it might not appeal to everyone, indicating a recommendation with reservations.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the direction, choreography, and ensemble performance with positive descriptors like 'ace director-choreographer,' 'expertly,' and 'lively,' but the single excerpt warning requires conservative scoring within the positive range. | Gemini: The review highlights positive aspects like the direction, choreography, and ensemble performance, suggesting an enjoyable experience despite being 'cartoonish' and 'retro'. The phrase 'suits the light-hearted material' implies it's well-executed for its intended audience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:11:40.283Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:06:20.090Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
+    "claudeScore": 73,
+    "openaiScore": null,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

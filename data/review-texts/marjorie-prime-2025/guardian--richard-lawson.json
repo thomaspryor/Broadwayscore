@@ -18,64 +18,48 @@
     "score": 62,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
+      "book": null,
       "music": null,
-      "performances": 68,
-      "direction": 58
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "does nothing big or revolutionary enough to fill a Broadway house",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Only Nixon does the work of making the play seem urgent, worthy of its new high-profile positioning",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "frustratingly ambivalent about that idea, tossing it around and wanly entertaining both sides of the argument",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review finds the play thoughtfully performed but fundamentally underwhelming for Broadway, praising Nixon's performance while criticizing the script's ambivalence and lack of urgency.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review acknowledges strong elements (Nixon's performance, thematic relevance) but concludes the play is insufficient for its Broadway positioning, with multiple performance criticisms and frustration with its ambivalence. | Gemini: The review acknowledges some positive aspects, particularly Nixon's performance, but ultimately finds the play underwhelming and not fully worthy of a Broadway production. It's neither a strong recommendation nor a strong discouragement.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:30:48.127Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4039,
-    "outputTokens": 351,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:50.506Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 55,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "dtliThumb": "Meh",

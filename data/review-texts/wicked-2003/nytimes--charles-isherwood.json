@@ -9,71 +9,56 @@
   "showScoreExcerpt": "\"In retrospect, Wicked seems an early sign of the cultural clout which is to say buying power of a generation of girls (and now women) whose desire to see, read, and sing along with stories about female empowerment has become a snowballing trend.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/wicked",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 75,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 82,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "evinces little sign of box office fatigue",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "continue to secure performers who can both fill the (hefty) vocal and (less taxing) acting demands",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the producers have been careful, not to say monomaniacal, about replicating the experience",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises the production's consistency and quality maintenance over a decade, noting strong performances and successful preservation of the original experience, indicating clear recommendation despite acknowledging mixed initial reviews.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges initial mixed reviews but emphasizes the show's remarkable staying power and successful casting strategy, presenting it as a sustained achievement worth experiencing. | GPT-4o: The review acknowledges the show's continued success and careful replication of its original appeal, suggesting a positive experience for audiences. However, the mention of mixed to negative initial reviews and the focus on replication rather than innovation introduces some reservations. | Gemini: The review indicates that the show is still enjoyable and well-produced, even if it doesn't reach the heights of the original cast. The producers have maintained the quality, making it worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:37:46.638Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2717,
-    "outputTokens": 345,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:19.763Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 60,
-    "scoreDelta": 10,
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "designation": "Critics_Pick",
   "rescoreReason": "scored on brief excerpt, now has fullText",

@@ -11,66 +11,56 @@
   "bwwThumb": "Up",
   "originalScore": "3/5 stars",
   "_originalScoreRemoved": "Was '5/5 stars' - scraped from link to Roma Torre's review, not Frank Scheck's. His review is mixed.",
-  "assignedScore": 49,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 49,
+    "score": 64,
     "confidence": "high",
     "range": {
-      "low": 43,
-      "high": 55
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 65,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "thin charms and relentless meta-humor don't prove quite as accessible",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "main selling point is its stars Josh Gad and Andrew Rannells",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "commensurately extravagant ticket prices",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic finds the show's material thin and less effective on Broadway, suggesting it's mainly worth seeing for the star performers rather than the show itself. | GPT-4o-mini: The review expresses mixed feelings about the show's accessibility and charm, leading to a conditional recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 3/5 star rating and review tone indicate a mixed recommendation - the critic acknowledges the stars' talents and some clever writing, but notes significant issues with the material's thinness and unsuitability for Broadway's scale and prices. | GPT-4o: The review acknowledges the strong performances of Gad and Rannells and some clever writing, but criticizes the show's length, venue size, and lack of humor in its concept. The original 3/5 star rating suggests a mixed reception, aligning with the critique's balance of positive and negative observations. | Gemini: The review acknowledges the show's cleverness and the stars' performances but also points out its thin charms, relentless meta-humor, and forgettable songs. The critic's 3/5 star rating further supports a mixed classification.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:10.193Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:25.325Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 49,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 50,
-    "scoreDelta": 2,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (49 → Down) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 49,

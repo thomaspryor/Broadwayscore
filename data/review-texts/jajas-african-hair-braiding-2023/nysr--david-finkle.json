@@ -9,71 +9,56 @@
   "bwwExcerpt": "Bioh contrives a heart-stopping development that threatens not only Jaja but daughter Marie. She contrives it but awkwardly. As she rapidly heads into ending the play, she leaves things on — forgive this — ice. And this leaves Jaja’s African Hair Braiding as insufficiently dramatic, though never less than amusing, as acted by the 10-member cast and directed by Whitney White, who apparently knows exactly what has a braiding outfit buzzing any and every day. The play does give a reviewer a chance",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "originalScore": "3/5 stars",
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 70
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "from start almost to finish Bioh doesn't dig too deeply beneath the surface of her tale",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "never less than amusing, as acted by the 10-member cast and directed by Whitney White",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "leaves Jaja's African Hair Braiding as insufficiently dramatic",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The 3/5 star rating combined with praise for performances and direction but significant criticism of the script's lack of depth and awkward dramatic contrivances suggests a mixed reception with qualified reservations.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and the critic's assessment that the play is 'never less than amusing' but 'insufficiently dramatic' with an 'awkward' ending clearly places this in mixed territory - entertaining but flawed. | GPT-4o: The critic gives the play a 3/5 star rating, indicating a mixed review. The review acknowledges the play's amusing elements and well-executed performances but criticizes it for lacking depth and dramatic impact. | Gemini: The review is generally positive, highlighting the amusing aspects and the performances, but notes that the play is \"insufficiently dramatic.\" The 3/5 star rating also indicates a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:20:57.086Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3817,
-    "outputTokens": 352,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:17.300Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 58,
-    "scoreDelta": 0,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",

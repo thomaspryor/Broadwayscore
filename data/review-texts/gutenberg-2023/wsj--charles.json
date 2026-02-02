@@ -7,43 +7,27 @@
   "publishDate": "October 12, 2023",
   "dtliExcerpt": "The two exclamation points in the title are a super-spoiler for “Gutenberg! The Musical!,” a ticklishly funny but, well, paper-thin show about two theater-smitten fellows determined to put on a big Broadway show about the inventor of the printing press.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/gutenberg/",
   "llmScore": {
-    "score": 65,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 53,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "ticklishly funny",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "paper-thin show",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "two theater-smitten fellows determined to put on a big Broadway show",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The review presents a classic mixed signal - praising the show as 'ticklishly funny' while criticizing it as 'paper-thin,' suggesting entertainment value but lacking substance. | GPT-4o-mini: The review indicates some humor but also highlights significant weaknesses in the show's substance, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges initial fun but criticizes the show for becoming repetitive and overly long, suggesting a qualified recommendation that doesn't fully endorse seeing it. | GPT-4o: The review suggests that while the show has an entertaining start, it ultimately becomes repetitive. The lack of a full review text and the mixed nature of the provided quote lead to a medium confidence level. | Gemini: The review excerpt suggests that the show's initial appeal diminishes over time, indicating a mixed assessment. The phrase 'wheel-spinning' implies a lack of sustained engagement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,20 +36,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:02.706Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:38:40.080Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
+    "claudeScore": 60,
     "openaiScore": 65,
-    "scoreDelta": 0,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwExcerpt": "With Mr. Gad and Mr. Rannells pinballing around the stage under the direction of Alex Timbers (“Here Lies Love,” “Moulin Rouge!”), working up visible sweat as they dash between characters, “Gutenberg!” proffers much comic ingenuity. The silly accents are a delight. Cockney in 15th-century Germany? Why not? Still, even at a fairly pacey two hours the fun eventually turns to wheel-spinning, since the central gag—the ludicrous mismatch between content and form—is established from the start and then",
   "showScoreExcerpt": "\"Even at a fairly pacey two hours the fun eventually turns to wheel-spinning, since the central gag—the ludicrous mismatch between content and form—is established from the start and then merely elaborated.\"",

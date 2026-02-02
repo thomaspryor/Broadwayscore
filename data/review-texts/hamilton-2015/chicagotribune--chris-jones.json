@@ -20,57 +20,48 @@
     "score": 94,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": 95,
-      "performances": 89,
-      "direction": 93
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This is, for sure, an extraordinary new show that commands attention",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "This is, for sure, an extraordinary new show that commands attention",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "many of the songs in \"Hamilton\" are quite staggeringly beautiful — richly melodic and passionately performed ballads",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic uses unqualified superlatives like 'extraordinary,' 'supremely executed,' and 'staggeringly beautiful' while calling it the 'most entertaining, provocative and moving civics lesson in Broadway history,' indicating a clear rave review. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the show's ambition, execution, and emotional impact without significant reservations.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'supremely executed', 'extraordinary', and 'the most entertaining, provocative and moving civics lesson in Broadway history', with consistent praise for all elements of the production. | Gemini: The review is overwhelmingly positive, using phrases like \"supremely executed\", \"most entertaining\", and \"moving civics lesson\". The critic clearly believes this is an extraordinary and important show.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:56:41.125Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:59:24.589Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
+    "openaiScore": null,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 88,

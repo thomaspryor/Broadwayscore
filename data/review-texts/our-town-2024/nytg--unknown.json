@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 77,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt only provides positive descriptive language about the production's approach and casting, but contains no clear recommendation or critical assessment of quality/success. | GPT-4o: The review highlights the evocative nature of the production and the director's successful vision, suggesting a positive reception. However, without a clear verdict or more context, the recommendation is assumed to be positive but not overwhelmingly so. | Gemini: The review excerpt highlights the positive aspects of the production, such as the star-studded cast and the evocative portrayal of the town. While brief, the tone suggests a favorable impression, leading to a positive classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt describes the production positively ('comes to life in an evocative way') and notes the director's successful vision, but with only one curated quote available, I'm scoring conservatively in the lower positive range. | GPT-4o: The review highlights the evocative nature of the production and praises the director's vision, suggesting a positive experience. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review highlights the positive aspects of the production, such as the diverse cast and the director's vision, suggesting a positive experience overall. However, without the full review, it's difficult to gauge the extent of the recommendation, so I'm scoring it conservatively within the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:51:58.764Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:37:20.959Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 78,
+    "claudeScore": 72,
+    "openaiScore": 76,
     "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 18,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

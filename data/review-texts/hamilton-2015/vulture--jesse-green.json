@@ -58,37 +58,21 @@
   "extractedPhrase": "avoid",
   "llmScore": {
     "score": 92,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": 88,
-      "performances": 85,
+      "book": null,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's just great",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Lin-Manuel Miranda's sensational new hip-hop biomusical",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "in order to dislike it you'd pretty much have to dislike the American experiment",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic uses unqualified superlatives like 'sensational' and 'great', suggests only unpatriotic people would dislike it, and praises the complexity and joy of the show with minimal reservations.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening with complex analysis, the critic delivers clear praise calling it 'sensational,' 'just great,' 'joyful and funny,' with Hamilton as 'eminently likable.' The enthusiastic tone and strong positive language place this firmly in rave territory. | GPT-4o: The review is overwhelmingly positive, describing the show as 'sensational' and 'great', with no significant criticisms. The critic emphasizes the show's wit, complexity, and entertainment value, suggesting it is a must-see production. | Gemini: The review is overwhelmingly positive, calling the show \"great\" and praising Miranda's performance. While the reviewer acknowledges complexity and draws comparisons to other musicals, the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -97,27 +81,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:03:18.925Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3090,
-    "outputTokens": 348,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:03:52.370Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 88,
-    "scoreDelta": 4,
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dtliExcerpt": "I don’t mean to suggest that you’re unpatriotic if you aren’t moved by Hamilton, Lin-Manuel Miranda’s sensational new hip-hop biomusical at the Public. But in order to dislike it you’d pretty much have to dislike the American experiment. The conflict between independence and interdependence is not just the show’s subject but also its method: It brings the complexity of forming a union from disparate constituencies right to your ears. It may confuse your ears, too; Few are the theatergoers who will be familiar with all of Miranda’s touchstones. I caught the verbal references to Rodgers and Hammerstein, Gilbert and Sullivan, Sondheim, West Side Story, and 1776, but other people had to point out to me the frequent hat-tips to hip-hop: Biggie Smalls, the Fugees, “Blame It (On the Alcohol).” And I’m sure that historians in the audience (the show was “inspired by” Ron Chernow’s 800-page Hamilton biography) will catch references that the rest of us fail to notice. (“The world turned upside down,” a repeated phrase in a number about the Battle of Yorktown, is the name of the ballad supposedly played by Redcoat musicians upon Cornwallis’s surrender there, in 1781.) But for all its complexity — its multistrand plotting and exploding rhyme-grenades — Hamilton is neither a challenge nor a chore. It’s just great.",
   "sources": [

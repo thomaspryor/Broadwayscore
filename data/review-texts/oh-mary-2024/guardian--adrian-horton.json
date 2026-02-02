@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "etting people express themselves and live their truth may not solve every political problem, but it can certainly make life way more fun. Escola’s doing that, and the rest of us should too. Grade: A- Adrian Horton, The Guardian: The real Mary Todd Lincoln was, by most accounts, erratic, often bedridden by sadness and prone to lavish spending. Not exactly a comic figure, though in the hands of the inimitable Cole Escola, the former first lady is the buzziest, and funniest, theater draw this summer. The comedian’s show Oh, Mary!, which transferred to Broadway after critical raves and a twice-extended Off-Broadway run, takes the public blank slate of Abraham’s hoop-skirted wife as a launchpad for 80 minutes of irreverent, raunchy, gleefully deranged revisionist history. Greg Evans, Deadline: There’s funny, there’s very funny, and then there’s Oh, Mary!, Cole Escola’s riotous new comedy that brings more laughs to Broadway than all the Gutenberg!s, Edelmans and Birbiglias combined. You can",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 90,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
@@ -23,60 +23,52 @@
   "scoreConfidence": "medium",
   "extractedGrade": "A",
   "llmScore": {
-    "score": 89,
+    "score": 90,
     "confidence": "high",
     "range": {
-      "low": 83,
+      "low": 85,
       "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "brings more laughs to Broadway than all the Gutenberg!s, Edelmans and Birbiglias combined",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "riotous new comedy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "This moment, among many others, brought the house down",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Multiple critics use superlative language ('riotous', 'funniest', 'brought the house down') with explicit comparisons showing it outperforms other Broadway comedies, plus an A- grade signals strong positive recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and excitement for the show, highlighting its humor and unique take on history, indicating a must-see status.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Multiple critics give superlative praise with Grade A-, 'critical raves', 'riotous', and comparison to other Broadway comedies. The tone is enthusiastically positive throughout. | GPT-4o: The review describes the show as the 'buzziest, and funniest, theater draw this summer' and highlights critical raves and an extended run, indicating a strong recommendation. The use of 'Grade: A-' further supports a rave verdict. | Gemini: The review uses extremely positive language such as \"riotous,\" \"critical raves,\" and \"funniest theater draw this summer,\" indicating a rave review.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T22:39:37.416Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:04:45.830Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 90,
     "openaiScore": 90,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "geminiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "bwwThumb": "Up",

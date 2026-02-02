@@ -7,43 +7,27 @@
   "publishDate": "November 2, 2023",
   "dtliExcerpt": "The national pastime—I refer not to baseball, but to the acquisition of too much stuff and the refusal to get rid of a single dog-eared book, worn pair of shoes or old Playbill, as if life weren’t worth living without each—comes under sympathetic scrutiny in “I Need That,” a modest but likable, sentiment-spritzed comedy by Theresa Rebeck, on Broadway in a Roundabout Theatre Company production.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/i-need-that/",
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 63.5,
-      "high": 80.5
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "modest but likable, sentiment-spritzed comedy",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "comes under sympathetic scrutiny",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "modest but likable",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic describes the show as 'modest but likable' with 'sympathetic scrutiny' - gentle praise that suggests a pleasant but unremarkable experience worth seeing without strong enthusiasm. | GPT-4o-mini: The review expresses a clear positive sentiment towards the show, describing it as likable and sympathetic, though it lacks strong enthusiasm.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The excerpts show appreciation for the director's effectiveness and DeVito's performance that 'buoys the play,' suggesting a positive but not enthusiastic recommendation. The aggregator context confirms an 'Up' verdict. | Gemini: The review highlights DeVito's performance and the director's effectiveness, suggesting a positive experience despite mentioning a lack of high drama. The aggregator context also indicates a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,20 +36,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:21:59.617Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:29.736Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 75,
-    "scoreDelta": 7,
+    "claudeScore": 72,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwExcerpt": "Absent high drama, the director, Moritz von Stuelpnagel (“Hand to God”), massages the play’s turning points effectively. An affecting and surprisingly funny passage finds Sam engaging in a solo game of Sorry!, with Mr. DeVito mustering his considerable arsenal of comic effects to depict a fiercely fought combat. A story about the provenance of an old guitar, formerly the property of a black Vietnam War veteran traumatized by his experience whom Sam once worked with, strikes another moving note.",
   "showScoreExcerpt": "“Absent high drama, the director, Moritz von Stuelpnagel massages the play’s turning points effectively...Mr. DeVito, a master of sharp jabs of sarcasm...buoys the play with his tangy ripostes, as when he feigns surrender...but in surprising ways Sam’s travails remind us that at least they can keep sadness and emptiness briefly at bay.”",

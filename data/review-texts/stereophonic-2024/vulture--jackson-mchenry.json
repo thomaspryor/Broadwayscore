@@ -9,7 +9,7 @@
   "showScoreExcerpt": "âAside from the fighting within the band, what binds âStereophonicâ together is the work and perspective of Grover, the sound engineer. Gelb plays him with just enough slightly toxic aw-shucks male confidence, and he stealthily becomes the dramatic center of gravity.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/stereophonic",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 81,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/stereophonic-2024/new-york-magazine-vulture--jackson-mchenry_2026-01-27.html",
@@ -30,38 +30,22 @@
   "archiveOrgTimestamp": "20250722220313",
   "archiveOrgUrl": "http://web.archive.org/web/20250722220313/https://www.vulture.com/2023/10/theater-review-stereophonic-goes-its-own-way.html",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": 85,
-      "performances": 82,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Stereophonic is, refreshingly, the real thing",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "against all indications, incandescent art comes out",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "meticulously made, visually redolent with pot and sweat",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic demonstrates clear admiration for the production's authenticity and craftsmanship, calling it 'the real thing' and praising its documentary-like approach, meticulous design, and ability to create 'incandescent art' from mundane details.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the play as 'the real thing' compared to inferior alternatives, admires its construction and attention to detail, and describes moments when 'incandescent art comes out' - all indicating strong enthusiasm and recommendation. | GPT-4o: The review praises the play's authenticity, attention to detail, and documentary-like approach, suggesting a strong recommendation for those interested in rock history and the creative process. | Gemini: The review is largely positive, highlighting the play's immersive staging and realistic portrayal of band dynamics. While acknowledging the play's length and potential tedium, the critic ultimately finds it a worthwhile experience, making it a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -70,27 +54,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:12:39.058Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3143,
-    "outputTokens": 354,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:09:07.045Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 87,

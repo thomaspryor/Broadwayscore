@@ -9,7 +9,7 @@
   "bwwExcerpt": "Each queen gets an absurdly catchy pop-inspired anthem to tell her own (often untold) story. There's a little Beyoncé in Catherine of Aragon's salsa-tinged \"No Way,\" which details Henry's infidelity, his quest for an annulment, and her refusal (\"You must think that I'm crazy/ You wanna replace me, baby, there's/ N-n-n-n-n-n-no way\"). Anne Boleyn's bouncy, electro-pop \"Don't Lose Ur Head\" has a Lily Allen vibe. To play up her sex appeal-and youthfulness-Catherine Parr sings the breathy, Britney Spears-style \"All You Wanna Do.\"",
   "showScoreExcerpt": "\"Six brings together a sextet of badass queens—clad in brilliant chain-trimmed corsets, studded black boots, and spiky crown-like headpieces designed by Gabriella Slade—to compete, American Idol–style, for a somewhat dubious honor: Who took the most crap from that self-serving, Church-splitting, six-times-married monarch?\"",
   "originalScore": "5/5",
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T20:00:00.000Z",
   "bwwThumb": null,
@@ -21,67 +21,51 @@
   "archivePath": "data/archives/reviews/six-2021/ny-stage-review--melissa-rose-bernardo_2026-01-25.html",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 92,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 96
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 95,
-      "performances": 90,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "★★★★★",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "if you're a Tudor history buff, a royal watcher, or someone who's simply looking for a show with strong central female characters, you bloody well should",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Each queen gets an absurdly catchy pop-inspired anthem",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This is a clear 5-star rave review with explicit recommendation language, enthusiastic praise for the music and performances, and no significant reservations expressed.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic gives a perfect 5/5 rating and uses enthusiastic language like 'you bloody well should' see it, describing it as a 'rockin' rewrite' with 'absurdly catchy' songs and calling the queens 'badass.' The tone is celebratory throughout with no significant reservations. | Gemini: The critic gave the show a 5/5 rating and uses enthusiastic language like \"celebration,\" \"idolizes,\" and \"rockin' rewrite.\" The explicit recommendation to see the show, especially for certain audiences, further supports a Rave classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:07:07.357Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3512,
-    "outputTokens": 349,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:40:28.892Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
+    "openaiScore": null,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "sources": [
     "playwright-scraped",

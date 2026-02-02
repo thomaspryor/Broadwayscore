@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"...full of funk, R&B, gospel, and more, will still thrill and delight you.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-wiz-broadway",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 65,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 62,
-      "high": 68
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 85,
-      "performances": 80,
-      "direction": 40
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The score of The Wiz, full of funk, R&B, gospel, and more, will still thrill and delight you. Boy, can this cast sing",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "although the talent is all over the stage, it's also trapped in confused and even ugly packaging",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The effect was, as with so much of the revival, of missing out on a moment that could have been great, if only given more care and fine tuning",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises the exceptional vocal performances and beloved score but heavily criticizes the production design, staging, and technical elements, resulting in a show that succeeds musically but fails theatrically.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic praises the cast's vocal abilities and musical performances but consistently criticizes the production values, staging, and technical elements, concluding that the show repeatedly falls short of its potential. | Gemini: The review praises the music and performances but criticizes the staging, set design, and book updates. It acknowledges enjoyable moments but ultimately finds the production lacking in overall impact.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:32:17.706Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4136,
-    "outputTokens": 387,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:41.437Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "sources": [
     "show-score",

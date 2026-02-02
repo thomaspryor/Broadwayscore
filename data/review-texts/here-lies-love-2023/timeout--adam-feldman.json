@@ -8,17 +8,17 @@
   "showScoreExcerpt": "“Our complicity with such cycles of populist fervor—whether, depending on your ticket, as spectators from a safe distance or as extras in a mob scene—is the loudly beating heart of ‘Here Lies Love,’ a party that hides a mordant critique of civilization and its discotheques.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/here-lies-love-broadway",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 74,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -26,24 +26,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a party that hides a mordant critique",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Our complicity with such cycles of populist fervor",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "the loudly beating heart",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: This appears to be an intellectually appreciative take on the show's thematic depth and social commentary, suggesting the critic finds merit in its artistic ambitions, but the excerpt is too brief to determine clear recommendation strength. | GPT-4o-mini: The review suggests a thoughtful and engaging experience, indicating a clear recommendation despite the lack of explicit praise for specific elements.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic frames the show as substantive and intellectually engaging, describing it as having a 'loudly beating heart' with meaningful critique, though the truncated text limits certainty about the full recommendation. | GPT-4o: The review describes the show as a 'party' with a 'mordant critique,' suggesting an engaging and thought-provoking experience. The tone implies a positive recommendation, though the lack of full context and the critical tone of 'mordant critique' suggests some reservations. | Gemini: The review describes the show as a 'party' with a hidden critique, suggesting an enjoyable experience with intellectual depth. The aggregator context also indicates a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,20 +36,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:47.232Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:49.912Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Director Alex Timbers and set designer David Korins have revolutionized and radicalized the capacious Broadway Theatre into a gleaming dance club, walled by dozens of video screens, where audience members—often literally standing in the middle of the action—get swept up in the shifting tides and undertows of history.",
   "sources": [

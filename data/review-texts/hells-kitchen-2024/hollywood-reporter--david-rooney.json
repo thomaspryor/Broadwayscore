@@ -8,7 +8,7 @@
   "fullText": "The musical succeeds in translating Keys' deeply personal story into an affecting coming-of-age tale that resonates beyond the specifics of her experience.",
   "dtliExcerpt": "The musical succeeds in translating Keys' deeply personal story into an affecting coming-of-age tale that resonates beyond the specifics of her experience.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "contentTier": "truncated",
   "wordCount": 22,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses positive language like 'succeeds' and 'affecting' and indicates the musical works well as storytelling, though the excerpt is brief and lacks stronger enthusiasm markers. | GPT-4o: The review highlights the success of the musical in conveying a personal story that resonates broadly, indicating a strong positive recommendation. | Gemini: The review uses the word 'succeeds' and 'affecting' which indicates a positive recommendation. The lack of stronger language prevents it from being a rave.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses positive language like 'succeeds' and 'affecting' and notes the story 'resonates,' indicating a recommendation, though the tone is measured rather than enthusiastic. | GPT-4o: The review highlights the success of the musical in conveying a personal story with broader resonance, indicating a positive recommendation. | Gemini: The review states that the musical \"succeeds\" and is \"affecting,\" indicating a positive recommendation, though not overwhelmingly so.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,20 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:58:24.277Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-01T23:59:23.528Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 82,
+    "openaiScore": 80,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

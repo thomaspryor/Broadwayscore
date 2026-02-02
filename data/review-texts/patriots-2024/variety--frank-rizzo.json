@@ -9,71 +9,56 @@
   "showScoreExcerpt": "\"...characters are broadly outlined, psychologically shallow and simplistically played.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/patriots-broadway",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 42,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 38,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 32,
-      "high": 44
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
-      "performances": 30,
-      "direction": 35
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "tantalizing but disappointing",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "These charmless characters are broadly outlined, psychologically shallow and simplistically played",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Morgan's footing is less sure",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "While acknowledging Morgan's previous successes and some potential in the premise, the critic delivers harsh criticism of the characters, writing, and performances with no offsetting praise.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic explicitly calls the play 'disappointing' and criticizes the characters as 'charmless,' 'broadly outlined,' 'psychologically shallow and simplistically played,' indicating clear dissatisfaction with the production quality. | GPT-4o: The critic describes the play as 'disappointing' and criticizes the characters as 'broadly outlined, psychologically shallow and simplistically played,' indicating a negative assessment of the production. | Gemini: The review explicitly states the play is \"disappointing\" and that the characters are \"psychologically shallow and simplistically played,\" indicating a negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:52:15.819Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2499,
-    "outputTokens": 296,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:47.646Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 25,
-    "scoreDelta": 13,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 32,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 89,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 90,
+    "score": 89,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly states they are 'in love with this show' and connects it powerfully to current events, indicating strong enthusiasm and recommendation despite the truncated text. | GPT-4o: The critic expresses a strong personal connection and admiration for the show and its message, indicating a highly enthusiastic recommendation. | Gemini: The reviewer expresses strong positive feelings and love for the show and its message, indicating a rave review.",
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic explicitly states they are 'in love with this show' and praises both the message and relevance, indicating strong enthusiasm despite only having a single excerpt available. | Gemini: The critic states they are \"in love with this show\" and its message, indicating a very strong positive recommendation. The show's relevance is also highlighted, further supporting a 'Rave' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,26 +45,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:59:56.647Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:45:10.762Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 90,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 92,
+    "openaiScore": null,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available"

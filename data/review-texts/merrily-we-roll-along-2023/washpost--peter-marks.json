@@ -9,71 +9,56 @@
   "showScoreExcerpt": "“Ideally, this Broadway incarnation will be both a hit and a reflection of the higher aspirations of musical theater. It’s even tighter, funnier and more touching than what Friedman staged off-Broadway. So much ingenuity. So much joyful creativity. So much for audiences to savor.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/merrily-we-roll-along-broadway",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 93,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 92,
+    "score": 93,
     "confidence": "high",
     "range": {
       "low": 88,
-      "high": 95
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 95,
-      "performances": 90,
-      "direction": 90
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Like precision code-breakers, the team responsible for the revival of \"Merrily We Roll Along\" has cracked it",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Friedman's poignant Broadway revival, officially opening Tuesday night at the Hudson Theatre, is a marvelous marriage of Sondheim's stupendously satisfying music and lyrics with Friedman's seminal insights",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "So much ingenuity. So much joyful creativity. So much for audiences to savor",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "This is an unqualified rave with superlative language throughout ('marvelous,' 'stupendously satisfying,' 'spiritual'), praising all aspects of the production and explicitly stating it's 'even tighter, funnier and more touching' than the acclaimed off-Broadway version.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout ('marvelous', 'stupendously satisfying', 'wondrously') and concludes that this revival should be 'both a hit and a reflection of the higher aspirations of musical theater' with 'so much for audiences to savor.' | GPT-4o: The review is overwhelmingly positive, praising the production's emotional depth, performances, and direction. The critic highlights the show's transformation into a 'marvelous marriage' of music and insights, making it a must-see. | Gemini: The review is overwhelmingly positive, using phrases like \"marvelous marriage,\" \"expertly and tenderly refined,\" and praising the performances and direction. The critic clearly believes this revival has cracked the code of the musical and is a must-see.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:37:08.894Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3874,
-    "outputTokens": 417,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:12.232Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 88,
-    "scoreDelta": 4,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 90,

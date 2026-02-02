@@ -9,71 +9,55 @@
   "showScoreExcerpt": "“It’s a fun enough concert, though not worth sitting through two hours and 30 minutes of a dull musical to get there.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/once-upon-a-one-more-time-broadway",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 38,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 42
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
-      "music": 55,
-      "performances": 45,
-      "direction": 30
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it's reductive and pandering, hitting all the expected marks without any unique spark",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "not worth sitting through two hours and 30 minutes of a dull musical to get there",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "The highlights come when Jennifer Simard's Stepmother storms onstage to 'Work Bitch'",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds the show fundamentally flawed with a weak book and heavy-handed execution, explicitly stating it's not worth the time investment despite acknowledging some entertaining Britney Spears musical moments.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic finds the show 'reductive and pandering' with major flaws in book, direction, and staging, explicitly stating it's not worth the time investment despite acknowledging some enjoyable Britney songs. | Gemini: The review is largely negative, criticizing the book, direction, and scenic design. While it acknowledges some fun moments, the overall assessment is that the show is not worth seeing.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:46:57.355Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4234,
-    "outputTokens": 364,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:22.783Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 40,
-    "openaiScore": 35,
-    "scoreDelta": 5,
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "sources": [
     "show-score",

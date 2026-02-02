@@ -10,7 +10,7 @@
   "bwwExcerpt": "*CRITIC'S PICK* As the plot follows the intersecting fortunes of those three characters’ families, each seeking to redeem the country’s promise at a time of tumultuous change, old-fashioned musical-theater pleasures are very much on offer: a multitudinous cast clad in sumptuous costumes; riveting vocals undergirded by a 28-piece orchestra; a sprinkling of spectacle descending from above and rising from below. It works as rousing entertainment, full stop.",
   "showScoreExcerpt": "\"The considerable beauty of this inspiriting show â full of complicated emotions about our diaspora nation â is streaked with melancholy.\"",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 78,
   "source": "dtli",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html",
@@ -18,67 +18,51 @@
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 84,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 88
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 82,
-      "performances": 92,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the glorious cast of Lear deBessonet's inspiriting Broadway revival",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It works as rousing entertainment, full stop",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "deBessonet's impeccable actors elevate the artistry",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite acknowledging the script's heavy-handedness, the critic delivers consistent praise for the 'glorious cast,' 'inspiriting' production, and 'impeccable' direction, calling it 'rousing entertainment' with clear enthusiasm.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review acknowledges script weaknesses but consistently praises the production's execution, performances, and direction. The critic calls it 'inspiriting,' 'glorious,' and notes it 'works as rousing entertainment, full stop,' indicating a clear positive recommendation despite some reservations about the source material. | Gemini: The review is generally positive, highlighting the glorious cast and rousing entertainment value. However, it also acknowledges the heavy-handedness of the script and the risk of two-dimensional pageantry, indicating reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:01:02.864Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4259,
-    "outputTokens": 360,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:12:18.451Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 84,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "archivePath": "data/archives/reviews/ragtime-2025/nytimes--laura-collins-hughes_2026-01-27.html",
   "textFetchedAt": "2026-01-27T05:06:39.787Z",

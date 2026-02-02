@@ -8,7 +8,7 @@
   "showScoreExcerpt": "â âStereophonicâ doesnât really have a plot; it has a vibe...Without exception the cast is appealing and utterly cohesive, directed by Daniel Aukin with his usual preternatural gift for tonal control...Does âStereophonicâ rock? It does, hard. Instant classic.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/stereophonic",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 89,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/stereophonic-2024/observer--david-cote_2026-01-27.html",
@@ -44,60 +44,52 @@
   "archiveOrgTimestamp": "20251109075613",
   "archiveOrgUrl": "http://web.archive.org/web/20251109075613/https://observer.com/2023/10/review-stereophonic-has-the-vinyl-word-on-70s-rock-drama/",
   "llmScore": {
-    "score": 95,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 91,
-      "music": 90,
-      "performances": 95,
-      "direction": 95
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I'd gladly rewind to see it again",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Does Stereophonic rock? It does, hard. Instant classic.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Without exception the cast is appealing and utterly cohesive, directed by Daniel Aukin with his usual preternatural gift for tonal control",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic delivers unqualified praise with superlatives like 'instant classic' and 'does rock hard,' explicitly states wanting to see it again, and praises every aspect without meaningful reservations. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, highlighting its cohesive cast, direction, and unique storytelling approach, leading to a strong recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being a single excerpt, the critic explicitly calls it an 'instant classic' and praises the cast as 'appealing and utterly cohesive' with excellent direction, indicating strong enthusiasm. | GPT-4o: The review excerpt praises the cast and direction, and concludes with 'Instant classic,' indicating a strong recommendation. Despite the single excerpt warning, the language used suggests a rave review. | Gemini: The review praises the cast, direction, and overall vibe, stating it 'rocks hard.' While 'instant classic' suggests a higher score, the truncated text and single excerpt warrant a more conservative placement in the positive range.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:44:01.020Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:07:50.174Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 95,
-    "scoreDelta": 0,
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 95,

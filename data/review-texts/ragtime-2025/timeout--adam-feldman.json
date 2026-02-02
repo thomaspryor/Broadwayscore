@@ -8,59 +8,56 @@
   "showScoreExcerpt": "\"What he delivers in Ragtime is, quite simply, some of the most magnificent singing I have ever heard on Broadway\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/ragtime-broadway",
   "originalScore": "4/5",
-  "assignedScore": 93,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 93,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 85.5,
-      "high": 100
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 98,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "quite simply, some of the most magnificent singing I have ever heard on Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "some of the most magnificent singing I have ever heard on Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Superlative praise for vocal performance using strongest possible language ('most magnificent...ever heard'), but this appears to be only a fragment focusing on one performer rather than a complete show review. | GPT-4o-mini: The review expresses unqualified enthusiasm for the singing, indicating a strong recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The superlative language 'most magnificent singing I have ever heard on Broadway' indicates exceptional praise, and the 4/5 rating confirms this is a strong positive recommendation. | GPT-4o: The critic's original rating of 4/5 suggests a strong positive recommendation. The key quote highlights exceptional singing, indicating a high level of praise for the production. | Gemini: The critic uses extremely strong positive language, calling the singing \"some of the most magnificent...ever heard on Broadway.\" The 4/5 rating and aggregator context further support a rave classification.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:53.015Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:13:11.238Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 93,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 90,
-    "openaiScore": 95,
-    "scoreDelta": 5,
+    "claudeScore": 92,
+    "openaiScore": 82,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Rave",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dtliExcerpt": "Henry has been at the forefront of Broadway leading men for 15 years, but this show is his triumph. He takes one of the most demanding roles in the Broadway canon and he does it full justice.",
   "bwwExcerpt": "DeBessonet’s elegant direction contributes to the clarity. This is the same production that she premiered in semi-concert form last year at New York City Center (and which we discussed in an interview then), newly outfitted with a spare, effective set by David Korins and attractive abstract projections by 59 Studio. The very fine 2024 design team is otherwise intact: Linda Cho (costumes), Tom Watson (hair), Adam Honoré and Donald Holder (lights) and Kai Harada (sound). The beautifully full orchestra, led by music director James Moore, plays William David Brohn’s original orchestrations; Ragtime is not dance-driven, but choreographer Ellenore Scott keeps things moving when appropriate.",

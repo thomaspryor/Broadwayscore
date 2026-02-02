@@ -9,42 +9,26 @@
   "showScoreExcerpt": "“...the crowd itself is ‘Here Lies Love’s’ main character, this mass of people looking to be appeased by a good performance, no matter who’s singing the political karaoke. The show ends with democracy, but it has a wary relationship with the masses. The thought may be that, lured by a beat good enough, they’ll dance along to anything.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/here-lies-love-broadway",
   "originalScore": null,
-  "assignedScore": 56,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 56,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 67
+      "low": 73,
+      "high": 83
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the crowd itself is 'Here Lies Love's' main character",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "The show ends with democracy, but it has a wary relationship with the masses",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "lured by a beat good enough, they'll dance along to anything",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: This appears to be an excerpt focused on thematic analysis rather than recommendation, with neutral-to-critical commentary on the show's political messaging but no clear evaluative judgment. | GPT-4o-mini: The review presents a mixed view, acknowledging the crowd's role but expressing skepticism about the show's engagement with its audience. | Note: Models differed by 12 points.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly states it's 'a great, unsettling time' and praises the music as 'irresistible,' the performances, and the innovative staging, while acknowledging the show's moral ambiguity as intentional and effective rather than as flaws. | Gemini: The review uses the phrase \"great, unsettling time\" which indicates a positive recommendation, despite the unsettling nature of the show's themes. The critic also praises the music and direction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:28.665Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:30.839Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 56,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 50,
-    "scoreDelta": 12,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dtliExcerpt": "The point, as elsewhere in the show, is to get the audience grooving with the synthy messaging of dictatorship, with enough moral dissonance to make your stomach churn as your feet keep moving—a that’s how they get you parable.",
   "sources": [

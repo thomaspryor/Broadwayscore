@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 58,
+  "assignedScore": 60,
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 60,
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges some entertainment value ('I smiled more than once') but ultimately finds the production exhausting and overly forced, suggesting neither a recommendation nor a strong dismissal. | GPT-4o: The review acknowledges some enjoyable moments but overall suggests that the performance is overdone and exhausting, indicating a mixed experience. | Gemini: The review suggests that enjoyment depends on the viewer's tolerance for the actors' style. While there are positive moments, the overall experience is described as exhausting, indicating a mixed recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly states this will work for some audiences but not others, and expresses personal fatigue with the performance style over the show's length. The conditional recommendation ('if this looks to you like...') combined with personal criticism suggests a mixed assessment. | GPT-4o: The review acknowledges some enjoyable moments but overall suggests the performance is overdone and exhausting. The tone is neither fully positive nor negative, indicating a mixed reception. | Gemini: The review presents a mixed opinion. While the critic acknowledges potential enjoyment for some, they also express feeling exhausted by the performance, indicating a 'hit or miss' experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:51:49.587Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:30:58.571Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 65,
+    "openaiScore": 60,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

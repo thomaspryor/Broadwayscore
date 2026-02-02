@@ -9,43 +9,27 @@
   "bwwExcerpt": "Happily, I have no need to keep my mouth shut about Purlie Victorious. (Conveniently, too, since my job is to run it constantly.) Fast, fierce, and big-hearted, the show crackles with the verve of its central performances, and the play, at 62 years old, feels wittier, braver, less careful, and more caring than much contemporary writing. Both unflinching and generous, it’s just about as sharp as satire gets.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 86,
   "source": "dtli",
   "dtliThumb": "Up",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 86,
+    "confidence": "low",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 81,
+      "high": 91
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 95,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Fast, fierce, and big-hearted, the show crackles with the verve of its central performances",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "it's just about as sharp as satire gets",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Both unflinching and generous",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Unqualified praise with superlatives like 'just about as sharp as satire gets' and vivid positive descriptors throughout indicate strong enthusiasm without any reservations.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic delivers unqualified praise throughout, calling it 'just about as sharp as satire gets' with performances that are 'revelations' and an ensemble that is 'aces.' The review is filled with superlatives and enthusiasm for every aspect of the production. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and the play itself. The critic explicitly states they have \"no need to keep my mouth shut about Purlie Victorious\" and uses strong positive language throughout.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,27 +38,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:56:15.061Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2373,
-    "outputTokens": 333,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:07.744Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 90,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 89,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "dtliExcerpt": "Fast, fierce, and big-hearted, the show crackles with the verve of its central performances, and the play, at 62 years old, feels wittier, braver, less careful, and more caring than much contemporary writing. Both unflinching and generous, it’s just about as sharp as satire gets.",
   "sources": [

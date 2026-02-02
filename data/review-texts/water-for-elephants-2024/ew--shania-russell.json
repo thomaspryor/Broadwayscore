@@ -9,74 +9,59 @@
   "bwwExcerpt": "If nothing else, we never wonder how Jacob is swept away by the circus. The romance may fall short, and the songs lack a certain luster, but the magic of the circus is winning. Grade: B–",
   "bwwRoundupUrl": null,
   "originalScore": "B",
-  "assignedScore": 68,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "scoreSource": "letter-grade",
   "scoreConfidence": "medium",
   "extractedGrade": "B",
   "llmScore": {
-    "score": 68,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 55,
+      "book": null,
       "music": null,
-      "performances": 72,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The circus performers, or kinkers as they so frequently remind him, bring Water For Elephants to life. The Jessica Stone-directed musical is never more compelling than when the stage is theirs for the taking.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "he's plausible, but not invigorating",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "There are heartstrings to be pulled, tears to elicit, astonishment to inspire, and this is the musical to do it…. Or is it?",
-        "sentiment": "neutral",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review praises the circus performers and direction but finds the lead performance merely adequate and questions whether the show delivers on its emotional promises, resulting in a mixed but slightly positive assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B rating and positive language about the circus performers being 'dazzling' and bringing the show 'to life' indicate a recommendation, though with clear reservations about the lead performance and story structure. | GPT-4o: The review highlights strong performances from the circus performers and describes the musical as compelling, particularly when they are on stage. The critic's original rating of 'B' suggests a positive recommendation, albeit with some reservations about the lead performance. | Gemini: The critic gives the show a B rating and says that Grant Gustin is 'perfectly charming' but that the circus performers 'bring Water For Elephants to life'. This indicates a positive review with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:35:22.358Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2885,
-    "outputTokens": 383,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:13.572Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 70,
-    "scoreDelta": 8,
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "If nothing else, we never wonder how Jacob is swept away by the circus. The romance may fall short, and the songs lack a certain luster, but the magic of the circus is winning.",

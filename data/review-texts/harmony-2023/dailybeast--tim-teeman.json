@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "The unevenly staged Harmony is a shakily constructed set of misfiring elements, whose most compelling beats around Nazism, Antisemitism, and bigotry—all points resoundingly and rightly made—feel imposed and didactic rather than flowing naturally from the source material.",
@@ -19,67 +19,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 38,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 32,
-      "high": 45
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 25,
-      "music": 45,
-      "performances": 65,
-      "direction": 35
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The unevenly staged Harmony is a shakily constructed set of misfiring elements",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "it makes for a strangely hollow, hero- and bravery-free musical",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "only makes an occasionally compelling case that the Harmonists should be better remembered by history",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic finds fundamental structural and storytelling problems with the musical, describing it as 'shakily constructed' and 'hollow,' with only occasional praise for individual performances, particularly the female leads.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges compelling elements around important themes but finds the musical 'shakily constructed' with 'misfiring elements' and characters that 'seem insubstantial,' indicating a production with merit but too many problems to recommend. | Gemini: The review highlights both positive and negative aspects of the show, indicating a mixed reaction. While the subject matter is compelling, the execution is described as uneven and shakily constructed, leading to a 'Mixed' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:04:04.694Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3621,
-    "outputTokens": 355,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:08:53.139Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 32,
-    "openaiScore": 30,
-    "scoreDelta": 2,
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 31,

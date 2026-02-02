@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the show fundamentally lacking in magic and questions the cynical approach to introducing children to theater, indicating disappointment with the production despite acknowledging some clever wordplay. | GPT-4o: The review criticizes the lack of magic in a story that should be magical, and questions the suitability of the humor for children, suggesting a negative view of the production. | Gemini: The review excerpt is largely negative, criticizing the book and humor. There's no indication of a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the book unmagical despite magical source material and questions the cynical approach to introducing children to theater, indicating disappointment with the production. | GPT-4o: The review criticizes the show for lacking magic and suggests that its humor may not be suitable for children, indicating a negative impression. However, due to the single excerpt warning, the score is placed conservatively in the middle of the negative range. | Gemini: The review excerpt expresses disappointment with the book, stating it 'finds no magic' and questions the humor's suitability for children. This suggests a negative overall assessment of the show's writing and appeal.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,12 +39,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:12:52.056Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:08:11.263Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 37,
-    "previousVersion": "3.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,

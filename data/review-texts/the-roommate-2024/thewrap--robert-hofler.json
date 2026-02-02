@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 23,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "It is too early in the Broadway season to call something the worst. That caveat aside, “The Roommate” is the saddest spectacle of wasted talent on Broadway since Andre De Shields played a gorilla in “Prymate” in 2004.",
@@ -19,67 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 25,
-    "confidence": "high",
+    "score": 23,
+    "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 18,
+      "high": 28
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 15,
+      "book": null,
       "music": null,
-      "performances": 35,
-      "direction": 45
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It is too early in the Broadway season to call something the worst. That caveat aside, \"The Roommate\" is the saddest spectacle of wasted talent on Broadway since Andre De Shields played a gorilla in \"Prymate\" in 2004.",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Silverman has unfortunately confused Iowa with Afghanistan. She has also confused the \"now\" time frame of the play with 1970.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Farrow delivers a busy, fussy, twitchy performance that runs whimsy into the ground.",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic delivers a scathing review calling it 'the saddest spectacle of wasted talent' and systematically dismantles the script, performances, and concept with harsh criticism throughout.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: The critic delivers devastating criticism throughout, calling it potentially 'the worst' of the season and comparing it to one of Broadway's most notorious failures, with no redeeming qualities mentioned. | GPT-4o: The review is overwhelmingly negative, highlighting the play's outdated humor, poor sound system, and wasted talent. The critic explicitly compares it to a past Broadway failure, indicating a strong recommendation to avoid the show. | Gemini: The review is overwhelmingly negative, criticizing the writing, performances, and direction. The reviewer calls it the \"saddest spectacle of wasted talent\" and highlights numerous flaws in the play's humor and plot.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:25:19.523Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3254,
-    "outputTokens": 407,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:14:45.413Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 15,
-    "openaiScore": 15,
-    "scoreDelta": 0,
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Pan"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 15,

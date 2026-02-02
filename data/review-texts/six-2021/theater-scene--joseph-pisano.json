@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"Indeed, as the queens take their respective turns in the spotlight, spectacle does overwhelm decorum, as the actors stunningly evoke the vocal stylings and stage presences of Beyoncé, Adele, Rihanna, and a few others I probably didn’t catch.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/six",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/six-2021/theaterscene-net--joseph-pisano_2026-01-27.html",
@@ -31,67 +31,51 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 42,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 38,
-      "high": 46
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 25,
-      "music": 55,
-      "performances": 75,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a glib extravaganza that transforms the pitiable wives of the male-heir-chasing monarch into a queens-of-pop sextet",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The major problem with this about-face declaration is that everything said or sung before it doesn't feel changed, making it come off as either a huge structural misstep or completely insincere",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "the actors stunningly evoke the vocal stylings and stage presences of Beyoncé, Adele, Rihanna",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic finds serious structural and conceptual flaws in the show despite praising the performances and production values, describing it as ultimately insincere and poorly constructed.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the show's spectacular production values and performances but identifies significant structural and tonal problems that prevent full endorsement, landing in mixed territory with reservations outweighing praise. | Gemini: The review acknowledges the spectacle and entertainment value but also points out a discomfort and structural issues, leading to a mixed assessment. The critic doesn't explicitly recommend or discourage seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:07:42.630Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3720,
-    "outputTokens": 401,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:41:23.420Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 55,
-    "scoreDelta": 13,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 49,

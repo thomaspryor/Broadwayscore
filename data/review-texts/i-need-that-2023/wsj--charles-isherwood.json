@@ -7,67 +7,59 @@
   "publishDate": "November 2, 2023",
   "dtliExcerpt": "The national pastime—I refer not to baseball, but to the acquisition of too much stuff and the refusal to get rid of a single dog-eared book, worn pair of shoes or old Playbill, as if life weren’t worth living without each—comes under sympathetic scrutiny in “I Need That,” a modest but likable, sentiment-spritzed comedy by Theresa Rebeck, on Broadway in a Roundabout Theatre Company production.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 75,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": "“Absent high drama, the director, Moritz von Stuelpnagel massages the play’s turning points effectively...Mr. DeVito, a master of sharp jabs of sarcasm...buoys the play with his tangy ripostes, as when he feigns surrender...but in surprising ways Sam’s travails remind us that at least they can keep sadness and emptiness briefly at bay.”",
   "bwwExcerpt": "Absent high drama, the director, Moritz von Stuelpnagel (“Hand to God”), massages the play’s turning points effectively. An affecting and surprisingly funny passage finds Sam engaging in a solo game of Sorry!, with Mr. DeVito mustering his considerable arsenal of comic effects to depict a fiercely fought combat. A story about the provenance of an old guitar, formerly the property of a black Vietnam War veteran traumatized by his experience whom Sam once worked with, strikes another moving note.",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 74,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 68,
+      "low": 70,
       "high": 80
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
-      "performances": 79,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "modest but likable, sentiment-spritzed comedy",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "massages the play's turning points effectively",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Mr. DeVito mustering his considerable arsenal of comic effects",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic offers measured praise for performances and direction while describing the play as 'modest but likable,' suggesting a qualified positive recommendation with clear appreciation but tempered expectations. | GPT-4o-mini: The review expresses clear appreciation for the humor and direction while acknowledging the modest nature of the play, leading to a solid recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights effective direction and DeVito's strong performance that 'buoys the play,' suggesting a positive assessment despite noting the absence of high drama. The aggregator context supports an upward verdict. | GPT-4o: The review highlights effective direction and strong performances, particularly from Mr. DeVito, suggesting an overall positive but not overwhelmingly enthusiastic reception. The absence of 'high drama' indicates some reservations. | Gemini: The review highlights positive aspects of the direction and DeVito's performance, suggesting an enjoyable experience despite mentioning a lack of 'high drama'. The aggregator context also indicates a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T22:48:09.451Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:15.423Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 73,
-    "openaiScore": 75,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "archivePath": "data/archives/reviews/i-need-that-2023/wsj--charles-isherwood_2026-01-29.html",

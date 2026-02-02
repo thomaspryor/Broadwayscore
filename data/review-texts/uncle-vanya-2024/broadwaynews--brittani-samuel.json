@@ -7,71 +7,56 @@
   "publishDate": "April 25, 2024",
   "fullText": "Heidi Schreck pens a comedy-bolstered but disorienting translation of Chekhov’s seminal play.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Uncle Vanya.”\n\nLincoln Center Theater’s current Broadway revival was my first time meeting “Uncle Vanya.” I suspect there will be many Vanya virgins like me drawn to this production’s familiar and diverse ensemble of theater, film and TV stalwarts — Alfred Molina, Anika Noni Rose, Steve Carell to name a few. The diverse accreditation only matters for its impact on placing Heidi Schreck’s adaptation of the work in a sense of time and place. We are still on a sweeping estate with a disparate gang of hapless characters — farm worker Vanya (Carell), his niece Sonia (Alison Pill), his love interest Yelena (Rose) and the rest.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 62,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 45,
-    "confidence": "low",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 35,
-      "high": 55
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 40,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "comedy-bolstered but disorienting translation",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "diverse ensemble of theater, film and TV stalwarts",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "disparate gang of hapless characters",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This appears to be an incomplete excerpt that describes the adaptation as 'disorienting' while noting the strong cast, but lacks sufficient evaluative content to determine the critic's actual recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly states they're 'not convinced audiences need to' see this production and that it 'still seems to be finding its footing,' indicating neither recommendation nor strong discouragement. | GPT-4o: The review acknowledges the high-caliber cast and comedic elements but ultimately suggests the production is still finding its footing and doesn't strongly recommend it to audiences yet. | Gemini: The review acknowledges the appeal for actors but expresses doubt about whether audiences need to see it, suggesting a mixed or lukewarm reception. The phrase 'still finding its footing' indicates it's not fully realized.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:33:48.355Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2529,
-    "outputTokens": 326,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:51.982Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 55,
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dtliExcerpt": "One can see why top-caliber actors would flock to revel in this flurry of familial relationships, hormonal hangering and endless suffering, but I’m still not convinced audiences need to. Or at least not yet. This “Uncle Vanya” still seems to be finding its footing.",
   "sources": [
@@ -83,8 +68,8 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 52,
   "rescoreCompletedAt": "2026-02-01T16:33:48.355Z",
-  "archivePath": "data/archives/reviews/uncle-vanya-2024/broadwaynews--brittani-samuel_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T14:12:47.249Z",
+  "archivePath": "data/archives/reviews/uncle-vanya-2024/broadwaynews--brittani-samuel_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:33:43.993Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -100,11 +85,13 @@
   "textIssues": [
     "Word count too low: 151 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 145,
   "isFullReview": false,
   "textWordCount": 145,
   "textQuality": "partial",
   "truncationSignals": [],
-  "textStatus": "incomplete"
+  "textStatus": "incomplete",
+  "garbageReasoningDetected": "no-evaluative-content",
+  "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.156Z"
 }

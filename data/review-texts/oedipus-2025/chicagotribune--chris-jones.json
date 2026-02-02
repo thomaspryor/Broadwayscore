@@ -6,73 +6,58 @@
   "url": "https://www.chicagotribune.com/2025/11/13/review-oedipus-broadway/",
   "publishDate": "2025-11-13",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 90,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:06:05.851Z",
   "bwwExcerpt": "Icke’s work is really something: I can’t recall ever being as riveted at a Greek tragedy. And my admiration for his show is increased by how Icke manages to stay remarkably true to so much of the original play while turning its dialogue into contemporary speech; this doesn’t read as something based on the Greek original, it feels like the play itself, re-energized with the kind of crackling relevance all too rare on Broadway.",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 90,
+    "confidence": "medium",
     "range": {
       "low": 85,
-      "high": 92
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 90
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Icke's thrilling (and self-directed) new adaptation",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "I can't recall ever being as riveted at a Greek tragedy",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "nobody at my performance moved much of a muscle for the two intermission-less hours",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong enthusiasm with superlative praise for riveting experience and adaptation quality, minor caveats don't diminish clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite minor reservations about the coda and Strong's performance, Jones delivers an overwhelmingly positive review calling the adaptation 'thrilling' and praising Icke's work as 'really something' with 'crackling relevance all too rare on Broadway.' | GPT-4o: The review is overwhelmingly positive, praising the adaptation's relevance, the performances, and the overall impact of the production. The critic's admiration and the strong language used indicate a highly enthusiastic recommendation. | Gemini: Despite some minor caveats about the coda and Strong's performance, the review is overwhelmingly positive, praising Icke's adaptation and the performances, especially Manville's. The critic states he was riveted and highlights the play's crackling relevance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:42:16.823Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3463,
-    "outputTokens": 329,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:15.329Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sourceMethod": "archive",
   "bwwThumb": "Up",

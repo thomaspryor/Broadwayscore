@@ -10,73 +10,58 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "showScoreExcerpt": "“Though its quality is not consistent throughout, ‘Harmony’ has its high points...This immersive quality is chilling, but doesn’t make up for 'Harmony’s' dissonance.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway",
   "llmScore": {
-    "score": 45,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 25,
-      "music": 55,
-      "performances": 70,
-      "direction": 60
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The first 20 minutes of Barry Manilow's musical Harmony are, quite frankly, uncomfortable",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "how have subsequent productions, including last year's Off-Broadway run with the National Yiddish Theatre Folksbiene, not addressed such structural issues?",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "This immersive quality is chilling, but doesn't make up for Harmony's dissonance",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Despite acknowledging some strong performances and staging moments, the critic identifies fundamental structural problems that haven't been fixed across multiple productions, with the concluding line explicitly stating the positives don't compensate for the show's core issues.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges high points and strong individual performances but criticizes fundamental structural issues, inconsistent quality, and problematic story choices. The review neither recommends nor discourages attendance. | GPT-4o: The review highlights both significant flaws and some redeeming qualities in the production. While it criticizes structural issues and certain performances, it acknowledges standout moments and performances, leading to a mixed overall impression. | Gemini: The review highlights both positive and negative aspects of the show, with the reviewer noting inconsistencies in quality but also praising certain performances and staging choices. The overall tone suggests a mixed experience, neither strongly recommending nor discouraging attendance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:04:52.962Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3054,
-    "outputTokens": 383,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:10:31.749Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 60,
-    "scoreDelta": 8,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dtliExcerpt": "As the Comedian Harmonists, a ragtag group of male singers in Weimar Germany, gradually find their footing, so does the show: The songs grow more polished, the choreography by director Warren Carlyle more precise, the performances more distinguishable. For a show that debuted over 25 years ago, however, how have subsequent productions, including last year’s Off-Broadway run with the National Yiddish Theatre Folksbiene, not addressed such structural issues?",
   "sources": [

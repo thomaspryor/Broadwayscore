@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": "2/5 stars",
-  "assignedScore": 42,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/the-wiz-2024/nysr--bob-verini_2026-01-29.html",
@@ -37,67 +37,51 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 42,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 38,
-      "high": 46
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 30,
-      "music": 45,
-      "performances": 55,
-      "direction": 35
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Those with fond memories of M-G-M's 1939 Wizard of Oz, or William F. Brown and Charlie Smalls' brash, funky 1975 Tony winner The Wiz, might elect to give the current revival of the latter a pass. It could break your heart.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Under Schele Williams' direction, the story is perfunctory, just a series of disconnected scenes. Moment by moment there is little character reality to play: Dorothy's need to get home is never felt, and there's no urgency in her journey.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Of the cast, Richardson comes off best because he's allowed most of the time to speak like a normal person. Betts is a warm, nurturing Aunt Em anyone would click their heels to come home to",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The 2/5 star rating combined with harsh criticism of direction, story structure, and characterization, plus the explicit suggestion that fans 'might elect to give the current revival a pass' signals a clear negative recommendation despite some praise for individual performances.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic gives 2/5 stars and delivers a consistently negative assessment, criticizing the direction, storytelling, character development, and overall execution while suggesting fans of the original should avoid this production. | Gemini: The critic explicitly states that those who love previous versions should \"give the current revival of the latter a pass.\" The review is filled with negative comments about the direction, choreography, and performances, leading to a negative classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:31:08.041Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3586,
-    "outputTokens": 483,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:00.770Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 30,
-    "scoreDelta": 8,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",

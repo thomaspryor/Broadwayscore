@@ -8,64 +8,56 @@
   "bwwExcerpt": "Cole Escola’s Oh, Mary! is not just funny: It is dizzyingly, breathtakingly funny, the kind of funny that ambushes your body into uncontained laughter. Stage comedies have become an endangered species in recent decades, and when they do pop up they tend to be the kind of funny that evokes smirks, chuckles or wry smiles of recognition. Not so here: I can’t remember the last time I saw a play that made me laugh, helplessly and loudly, as much as Oh, Mary! did—and my reaction was shared by the rest",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "originalScore": "5/5",
-  "assignedScore": 94,
+  "assignedScore": 93,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 94,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 90,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "dizzyingly, breathtakingly funny, the kind of funny that ambushes your body into uncontained laughter",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "I can't remember the last time I saw a play that made me laugh, helplessly and loudly, as much as Oh, Mary! did",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Stage comedies have become an endangered species in recent decades",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Critic uses superlatives and expresses overwhelming physical reaction to the comedy, describing it as extraordinarily funny with personal testimony of uncontrollable laughter shared by the entire audience. | GPT-4o-mini: The review expresses unqualified enthusiasm for the show's humor, indicating a strong recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic's 5/5 rating combined with superlative language about exceptional comedic impact indicates a rave review. The phrase 'I can't remember the last time' suggests this is a standout, memorable experience. | GPT-4o: The critic's 5/5 rating and the enthusiastic language about the play's comedic impact strongly suggest a rave review, indicating a must-see recommendation. | Gemini: The critic's statement about laughing \"helplessly and loudly\" and the 5/5 rating indicate a rave review. The aggregator context also points to a positive reception.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:43:49.734Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:07:10.961Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Cole Escola’s Oh, Mary! is not just funny: It is dizzyingly, breathtakingly funny, the kind of funny that ambushes your body into uncontained laughter.",

@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"The Lion King is a visual masterpiece that transports audiences to the African savanna...\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 74,
   "source": "show-score",
   "designation": null,
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 74,
+    "confidence": "medium",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,26 +27,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 88
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "visual masterpiece",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "transports audiences to the African savanna",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The Lion King is a visual masterpiece",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The excerpt contains strong positive language ('masterpiece') and suggests successful immersion, but the fragment is too brief to confidently assess the full recommendation strength. | GPT-4o-mini: The review highlights the visual excellence of the production, indicating strong enthusiasm and a clear recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Single curated excerpt describing the show as a 'visual masterpiece' suggests positive assessment, but without full context or clear recommendation language, scoring conservatively in lower positive range. | GPT-4o: The phrase 'visual masterpiece' strongly indicates a rave review, suggesting a high level of recommendation. However, due to the single excerpt warning, the confidence is medium, and the score is conservatively placed in the middle of the rave range. | Gemini: While the excerpt praises the visual aspects of the show, the lack of further context and the single excerpt warning suggest a conservative score within the positive range is appropriate. It's likely recommended, but potentially with reservations about other aspects not mentioned.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,20 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:54:07.518Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:58:00.447Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
+    "claudeScore": 72,
     "openaiScore": 90,
-    "scoreDelta": 5,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 91,
+  "assignedScore": 89,
   "llmScore": {
-    "score": 91,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The superlative language declaring it 'the funniest comedy on Broadway right now' combined with praise for the uptown transfer and constant laughs indicates an enthusiastic recommendation. | GPT-4o: The review is highly positive, emphasizing the show's improvement and consistent humor. The phrase 'without a doubt, the funniest comedy on Broadway right now' strongly suggests a must-see recommendation. | Gemini: The review uses strong positive language like \"funniest comedy on Broadway\" and highlights the show's improvement, indicating a rave review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The superlative language declaring it definitively the funniest comedy currently on Broadway indicates an enthusiastic recommendation, though single excerpt warning prevents highest confidence. | GPT-4o: The review excerpt is highly enthusiastic, praising the show's performances and script, and declaring it the funniest comedy on Broadway, which suggests a strong recommendation. | Gemini: The review excerpt is overwhelmingly positive, highlighting the show's humor and improved performance. However, due to the single excerpt and lack of full context, a 'Positive' classification with a mid-range score is most appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:51:24.991Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:06:35.793Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 91,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 90,
+    "geminiScore": 78,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 2,
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

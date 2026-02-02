@@ -19,12 +19,12 @@
   "scoreConfidence": "medium",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:06:22.809Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:32:54.671Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 69,
-    "previousVersion": "3.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.0.0"
   },
   "designation": "Critics_Choice",
   "sources": [
@@ -109,7 +109,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic's own 60 rating places this firmly in mixed territory, and the 'costume jewelry' metaphor suggests something flashy but ultimately superficial, despite acknowledging its dazzling qualities. | GPT-4o: The review acknowledges the show as 'gorgeous, gaudy, spectacularly overstuffed' and 'dazzling,' suggesting a positive impression despite reservations about jukebox musicals. The original rating of 60 indicates a mixed to positive view, but the positive language in the excerpt leans towards a positive recommendation. | Gemini: The critic acknowledges the show's flaws ('costume jewelry') but also praises its dazzling shine, indicating a mixed but somewhat positive experience. The original rating of 60 aligns with the Mixed bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic's own 60 rating aligns perfectly with mixed territory. The review acknowledges the show's spectacular visual appeal while dismissing it as 'costume jewelry' - impressive surface but lacking substance. | GPT-4o: The review acknowledges the show as 'gorgeous, gaudy, spectacularly overstuffed' and 'dazzling,' suggesting a positive view despite potential reservations about its substance. The original rating of 60 indicates a mixed to positive assessment, but the language used leans more towards a positive recommendation. | Gemini: The review acknowledges the show's flaws (\"costume jewelry\") but also praises its spectacle (\"shine is dazzling\"). The critic seems to be on the fence, suggesting a mixed reaction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -119,12 +119,12 @@
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 72,
+    "openaiScore": 73,
     "geminiScore": 65,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Mixed",
-    "scoreDelta": 12,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

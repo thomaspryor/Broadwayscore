@@ -9,71 +9,56 @@
   "showScoreExcerpt": "“Fathers end up being ‘The Shark Is Broken’s’ primary way into its whole central trio...The scene in the latter half of the one act where the three of them start to open up about their fathers hits at something emotionally where the rest of the play tends to be too stuffed with trivia...It’s where the actors’ performances cool off from nervous, meticulous imitation into a truer dynamic.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-shark-is-broken-broadway",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 48,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 52
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 40,
+      "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 45
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "has less integrity as a play than as a thoroughly researched dress-up presentation for a history-of-film class",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the writing, intent on remaining lightly comic and knowing, keeps delivering what is familiar and unchallenging",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "The Shark Is Broken chases the Oedipal cycle back to the stage, but it doesn't succeed in usurping the tendencies of the movies",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic consistently criticizes the play's lack of depth and theatrical integrity, viewing it more as fan service than meaningful drama, despite acknowledging some strong performances and moments.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges some strong moments (the father discussion scene, Ian Shaw's performance) but consistently criticizes the play for being shallow, overly reliant on fan service, and more like a 'dress-up presentation' than a substantive work. The critic finds it emotionally limited despite its potential. | GPT-4o: The review highlights both strengths and weaknesses, noting the play's reliance on audience knowledge and its lack of depth, but also acknowledging moments of emotional resonance and strong performances. This suggests a mixed reception with some redeeming qualities. | Gemini: The review is mixed. While praising the actors' performances and the emotional depth of certain scenes, the critic finds the play overall to be too reliant on trivia and lacking in depth. The final sentence suggests a leaning towards positive, but the overall tone is still mixed.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:27:59.104Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3537,
-    "outputTokens": 374,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:02.688Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 7,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwExcerpt": "That extra-textural dramatic irony gnaws at The Shark Is Broken, which has less integrity as a play than as a thoroughly researched dress-up presentation for a history-of-film class. Ian Shaw, no great surprise, strongly resembles his father, and Brightman and Donnell have both been made up into ringers for Dreyfuss and Scheider. (Praise to Duncan Henderson’s costumes and to the wigs by Campbell Young Associates.) Everyone is meticulously re-creating those familiar voices — Brightman in particul",
   "bwwThumb": "Meh",

@@ -9,71 +9,55 @@
   "bwwExcerpt": "Circus sagas so easily lend themselves to bathos: “Ridi, pagliaccio” and all that. Director Jessica Stone’s stage rendition of Water for Elephants – adapted by book writer Rick Elice from the best-selling novel (2006) and film (2011) – captures all the drama, but it’s clean-cut and concise, propulsive with passion and action. Unlike some other literary adaptations in the works or already on the boards, this production stands on its own merits as theatre. You could walk in with no prior knowledge",
   "bwwRoundupUrl": null,
   "originalScore": "4/5 stars",
-  "assignedScore": 82,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 78,
-      "performances": 88,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "You could walk in with no prior knowledge, no expectations, and be transported",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "this production stands on its own merits as theatre",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Presto-chango: A full-blown circus campground springs to life as magically as a children's pop-up book",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Four-star review with consistent praise for the production's theatrical merits, strong performances, and impressive staging, with the critic emphasizing the show's ability to transport audiences and stand on its own as theater.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating and overwhelmingly positive language throughout indicate a strong recommendation. The critic praises the direction, performances, staging, and overall theatrical effectiveness with phrases like 'unshowily stellar,' 'awe-inspiring feats,' and 'stands on its own merits as theatre.' | Gemini: The critic gives the show 4 out of 5 stars and uses positive language throughout the review, highlighting the drama, passion, and action. The critic also praises the performances and the overall production quality, indicating a positive recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:35:51.476Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3631,
-    "outputTokens": 361,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:12.280Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",

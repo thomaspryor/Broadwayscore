@@ -8,7 +8,7 @@
   "showScoreExcerpt": "\"They have created a generous, funny, provocative show that races by you, grabs your hand and flies up into the stratosphere.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/six",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 89,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/six-2021/front-row-center--tulis-mccall_2026-01-27.html",
@@ -47,60 +47,52 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 90,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 100
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 82,
-      "music": 92,
-      "performances": 91,
-      "direction": 90
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "They have created a generous, funny, provocative show that races by you, grabs your hand and flies up into the stratosphere",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "BRAVA all around",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Each song a showstopper exquisitely crafted to suit the woman and her time",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic delivers enthusiastic praise throughout with vivid metaphors ('grabs your hand and flies up into the stratosphere'), celebrates all aspects of the production, and concludes with 'BRAVA all around' - clear rave territory. | GPT-4o-mini: The review expresses unqualified enthusiasm for the musical's energy, performances, and thematic relevance, indicating a strong recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language is highly enthusiastic with vivid metaphors suggesting an exhilarating experience. However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses highly positive and enthusiastic language, suggesting a strong recommendation. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Rave range. | Gemini: The excerpt describes the show in very positive terms, indicating a recommendation. Given the single excerpt and lack of full context, a score in the middle of the 'Positive' range is appropriate.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:56.766Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:39:33.774Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 90,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 95,
-    "scoreDelta": 10,
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 90,

@@ -10,45 +10,29 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 80,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a most fun 90 minutes",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The show is meticulous in its recreation of this business",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "You don't need to be a Black woman with braids to enjoy this play",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic clearly enjoys and recommends the show, praising its authenticity, ensemble performances, and entertainment value with phrases like 'most fun 90 minutes' and detailed appreciation for the production's meticulous craft.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly enjoys the show, calling it 'very lively,' 'most fun 90 minutes,' and praising its authenticity and ensemble work. While noting it's not earth-shattering, the overall tone is appreciative and recommending. | GPT-4o: The review describes the play as 'very lively' and 'most fun 90 minutes,' highlighting its authenticity and character-driven storytelling. The critic appreciates the play's focus on community and entrepreneurship, making it an affirmative experience, which suggests a strong recommendation. | Gemini: The review is generally positive, highlighting the play's lively nature, authenticity, and celebration of community and entrepreneurship. While not a rave, the description of it being a \"most fun 90 minutes\" and the overall tone suggest a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,27 +41,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:20:33.245Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3263,
-    "outputTokens": 340,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:31.489Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 65,

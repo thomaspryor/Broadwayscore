@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael Stuhlbarg gives a commanding performance as Boris Berezovsky, the Russian oligarch whose relationship with Vladimir Putin is at the center of Peter Morgan's fact-based drama.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "Michael Stuhlbarg gives a commanding performance as Boris Berezovsky, the Russian oligarch whose relationship with Vladimir Putin is at the center of Peter Morgan's fact-based drama.",
   "needsScoring": true,
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 63,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 80,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "commanding performance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "fact-based drama",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This extremely brief excerpt only praises Stuhlbarg's performance without any evaluation of the overall show or recommendation, making it impossible to determine the critic's full assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a truncated excerpt focusing only on one positive performance element, with no overall assessment or recommendation provided about the production as a whole. | GPT-4o: The review highlights a strong performance but lacks a clear overall recommendation or critique of the production. The absence of a broader evaluative context makes the verdict ambiguous. | Gemini: The review highlights a strong performance, suggesting a positive experience, but lacks broader commentary to indicate a rave review. It's a recommendation based on the acting.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:11:01.719Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2340,
-    "outputTokens": 269,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:20.880Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

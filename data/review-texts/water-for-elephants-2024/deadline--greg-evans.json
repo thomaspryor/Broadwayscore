@@ -50,64 +50,48 @@
     "score": 92,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 88,
-      "performances": 87,
-      "direction": 92
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Water for Elephants isn't just the frontrunner for the 2024 Tony Award for Best Musical, it's a bold assertion that this still young artform has plenty of tricks left to reveal",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "it is most certainly the best new musical on Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the first fully integrated circus musical on Broadway",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic declares this 'the best new musical on Broadway' and 'frontrunner for the Tony Award,' with extensive praise for all production elements and no significant caveats.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic delivers an overwhelmingly positive review calling it 'the best new musical on Broadway' and 'the frontrunner for the Tony Award,' with praise for every aspect of the production and calling it a 'theatrical full package.' | Gemini: The review is overwhelmingly positive, praising the integration of circus acts with the story, the music, and the performances. The critic explicitly calls it the \"best new musical on Broadway\" and a \"bold assertion\" of the art form's potential, indicating a Rave recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:35:16.987Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4016,
-    "outputTokens": 359,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:10.011Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 65,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "bwwThumb": "Up",
   "sources": [

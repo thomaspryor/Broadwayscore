@@ -8,72 +8,57 @@
   "fullText": "Queer alt-comedy in the vein of Oh, Mary! seldom makes it to Broadway, so the arrival of Cole Escola's downtown theatrical sensation at the Lyceum is cause for Big Gay Jubilation. But if that makes this blissfully absurd rethink of a key moment in American history sound like niche entertainment showing up late for Pride Month, don't be deceived. It's hard to imagine anyone with a sense of humor not joining the infectious laughter sparked by Escola's gut-bustingly funny antics, reimagining Mary Todd Lincoln as an alcoholic cabaret artiste manqué, married to a president struggling to keep the closet door shut.",
   "dtliExcerpt": "The playwright might describe it as stupid, but any comedy that liberates audiences from the despair of the current political climate with 80 minutes of almost uninterrupted laughter is a work of genius.",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 92,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
-      "performances": 92,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "cause for Big Gay Jubilation",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "gut-bustingly funny antics",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It's hard to imagine anyone with a sense of humor not joining the infectious laughter",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The review is overwhelmingly enthusiastic with superlative language like 'Big Gay Jubilation', 'gut-bustingly funny', and 'infectious laughter', positioning it as broadly appealing entertainment that transcends niche audiences.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic calls it a 'work of genius' that provides '80 minutes of almost uninterrupted laughter' and describes it as 'gut-bustingly funny' with 'infectious laughter,' indicating strong enthusiasm for the production. | GPT-4o: The review is overwhelmingly positive, highlighting the show's ability to spark 'infectious laughter' and describing it as a 'work of genius'. The critic's enthusiasm and the mention of packed houses with notable attendees further support a rave classification. | Gemini: The review uses strong positive language like \"Big Gay Jubilation,\" \"blissfully absurd,\" and \"gut-bustingly funny.\" The critic also states that any comedy that provides \"80 minutes of almost uninterrupted laughter is a work of genius.\"",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:44:05.702Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2451,
-    "outputTokens": 339,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:05:10.167Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 90,
-    "scoreDelta": 5,
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "sourceMethod": "archive",
   "bwwExcerpt": "In its original extended run at the Lortel Theatre earlier this year, Oh, Mary! drew packed houses that one night included Steven Spielberg, Sally Field and Tony Kushner, respectively the director, co-star and screenwriter of Lincoln. The widely circulated backstage photo of the group with Escola in...",

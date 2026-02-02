@@ -8,64 +8,56 @@
   "bwwExcerpt": "But Act Two has some unmitigated joy too, particularly “It’s a Hit,” an ecstatic ditty the three leads sing with Joe when they realize the new show Shepard and Kringas have written, Musical Husbands, is scoring and their lives have been irrevocably changed (“No more writing clever little shows for those basement saloons,” sings Shepard. “No more proclamations from the pros that ‘You can’t hum the tunes’”). Well, more than four decades after it premiered to quizzical expressions, Merrily We Roll",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 75,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
-      "music": 81,
-      "performances": 80,
+      "book": null,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Act Two has some unmitigated joy too, particularly 'It's a Hit,' an ecstatic ditty",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "their lives have been irrevocably changed",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "more than four decades after it premiered to quizzical expressions",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The excerpt shows clear appreciation for specific musical moments and emotional impact, suggesting positive reception despite the incomplete nature of the text. | GPT-4o-mini: The review highlights a joyful moment in the show, indicating a positive experience, but lacks a comprehensive evaluation of the overall production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'unmitigated joy' is clearly positive, but this is only a single curated excerpt that may not represent the full review's verdict. Scoring conservatively within positive range. | GPT-4o: The review excerpt highlights a positive moment in Act Two, describing it as 'unmitigated joy' and 'ecstatic,' suggesting a generally favorable view. However, the single excerpt and text quality warning suggest caution, leading to a conservative score within the Positive range. | Gemini: The excerpt highlights a moment of 'unmitigated joy' in the second act, suggesting a positive experience, but the limited text and single excerpt warning necessitate a score towards the middle of the 'Positive' bucket. The aggregator verdict of 'Up' also supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:09:20.098Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:51.936Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 75,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

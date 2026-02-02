@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"A new revival...feels like it takes place in the multiverse\"",
@@ -19,11 +19,11 @@
     "show-score"
   ],
   "llmScore": {
-    "score": 50,
-    "confidence": "low",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,14 +33,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "feels like it takes place in the multiverse",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The single quoted phrase is ambiguous and could be interpreted positively (innovative/creative) or negatively (confusing/disconnected), with insufficient context to determine clear recommendation strength.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt is too brief and ambiguous to determine a clear verdict. The 'multiverse' comment could be positive (creative, imaginative) or negative (confusing, scattered), and the aggregator suggests positive but the text alone is insufficient. | GPT-4o: The excerpt provides a vague and potentially neutral statement about the production. Without more context, it's hard to determine the overall tone. The aggregator's 'Up' verdict suggests a positive lean, but the lack of a clear recommendation in the text results in a mixed classification with low confidence. | Gemini: The provided text is too short to determine a clear recommendation. The 'multiverse' comment could be positive or negative, so I'm placing it in the 'Mixed' bucket with low confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -49,27 +43,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:30:10.875Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2315,
-    "outputTokens": 245,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:08.946Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 50,
-    "scoreDelta": 0,
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/the-whos-tommy-2024/washpost--elisabeth-vincentelli_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:12:55.012Z",
@@ -98,7 +93,7 @@
   "textIssues": [
     "Word count too low: 138 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 86,
   "isFullReview": false,
   "textWordCount": 138,

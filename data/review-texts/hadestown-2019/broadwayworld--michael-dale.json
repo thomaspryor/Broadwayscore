@@ -14,59 +14,51 @@
   "bwwExcerpt": "If the story loses steam a bit in the second act, the storytelling doesn't, and at the center of Hadestown is the theme of why we repeat the songs and stories that we've heard and sung countless times before. As she did with her excellent staging of NATASHA, PIERRE & THE GREAT COMET OF 1812, Chavkin turns her cast into an irresistible community of storytelling entertainers, carrying on their traditions even after they've taken their bows.",
   "llmScore": {
     "score": 89,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 88,
-      "performances": 90,
-      "direction": 89
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "an otherworldly experience with sublime staging",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Life and energy pervade the piece, unlike anything else I've encountered",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Get the hell down to the National and Hadestown",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic delivers enthusiastic praise across all elements with superlative language ('otherworldly', 'sublime', 'unlike anything else I've encountered') and ends with an explicit strong recommendation to see the show. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production's staging, performances, and overall experience, indicating a strong recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is overwhelmingly positive with effusive praise for every element - performances, staging, choreography, music. The explicit recommendation 'Get the hell down to the National and Hadestown' combined with phrases like 'otherworldly experience' and 'sublime staging' clearly indicates a rave review. | GPT-4o: The review is overwhelmingly positive, praising the staging, music, and performances. The key quote strongly suggests a must-see recommendation. Despite the text being truncated, the tone and language indicate a rave review. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the staging, performances, and overall experience. The final line, \"Get the hell down to the National and Hadestown,\" strongly suggests a recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:51:52.402Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:58:36.174Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "scoreDelta": 2,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sourceMethod": "stub",
   "rescoreReason": "scored on brief excerpt, now has fullText",

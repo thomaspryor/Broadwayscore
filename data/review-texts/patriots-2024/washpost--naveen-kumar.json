@@ -9,66 +9,55 @@
   "showScoreExcerpt": "\"...most gripping when it delivers...the inner workings of a burgeoning mastermind\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/patriots-broadway",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 74,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "most gripping when it delivers",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "inner workings of a burgeoning mastermind",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "This excerpt suggests the show has compelling moments but implies inconsistency with 'when it delivers', indicating mixed effectiveness.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The phrase 'most gripping' suggests engagement and quality, but with only one curated excerpt available, this could be cherry-picked from a more mixed review. Scoring conservatively in lower positive range. | Gemini: The phrase \"most gripping\" suggests a positive experience, but the limited excerpt and single quote necessitate a score in the lower-middle of the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:52:26.424Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2322,
-    "outputTokens": 268,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:08.767Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 70,
-    "scoreDelta": 5,
+    "claudeScore": 72,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 68,

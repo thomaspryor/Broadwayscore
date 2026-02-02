@@ -9,71 +9,55 @@
   "showScoreExcerpt": "“Bioh has written a colorful, tactile, and caring work, letting us in on both the beauty of the braiding process...and the intense labor of it”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/jaja-s-african-hair-braiding-broadway",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 82,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
+      "book": null,
       "music": null,
-      "performances": 87,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "waves of glee roll through the audience on the regular. People are cackling, downright screaming with delight",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "it's bright, generous, and forceful, and those currents carry the day",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Jaja's can sometimes veer a little formulaic or presentational",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The critic describes extraordinary audience reaction with people 'screaming with delight' and praises the performances highly, particularly the veterans, with only minor reservations about some formulaic elements.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the writing, performances, and audience engagement throughout, noting only minor issues with some formulaic moments. The overall tone is enthusiastic and recommending. | Gemini: The review is largely positive, highlighting the humor, specificity, and celebratory atmosphere of the play. While it notes some formulaic moments, the overall impression is that it's a worthwhile and enjoyable experience.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:21:55.592Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4378,
-    "outputTokens": 353,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:40.241Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwExcerpt": "Jaja’s can sometimes veer a little formulaic or presentational: In the single-scene appearance of Jaja herself, Kakoma spends most of her time standing directly downstage center (in, not to spoil anything, an absolute battleship of a wedding gown), facing out and delivering a rousing monologue about her right to call America “my country.” It rings clear and true, though I wonder how the same speech would have felt had White oriented Jaja as much toward her fellow characters as toward us, or what",
   "bwwThumb": "Up",

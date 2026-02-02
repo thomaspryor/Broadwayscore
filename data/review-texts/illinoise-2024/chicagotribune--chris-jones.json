@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "designation": "Recommended",
@@ -21,65 +21,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 77.5
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "sits very comfortably in the St. James Theatre",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "It's not a show for all tastes",
-        "sentiment": "negative",
-        "strength": 2
-      },
-      {
-        "quote": "certainly makes the case that it belongs on Broadway",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic offers qualified praise acknowledging the show suits the venue and belongs on Broadway, but explicitly notes limited appeal with 'not a show for all tastes.' | GPT-4o-mini: The review indicates a mixed recommendation, acknowledging that the show may not appeal to everyone while still affirming its place on Broadway.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Jones clearly recommends the show despite acknowledging it's not mainstream, praising the choreography as 'spectacular' and stating it 'belongs on Broadway' while noting it will find its audience. | GPT-4o: The review acknowledges that 'Illinoise' is not for everyone, but praises its unique sensorial experience and the work of choreographer Justin Peck, suggesting that it is a worthwhile experience for those open to its style. | Gemini: The review is generally positive, highlighting Peck's choreography and the sensorial experience. While noting it's not for everyone, the critic concludes it belongs on Broadway, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
-    },
-    "humanReviewOverride": {
-      "previousConfidence": "medium",
-      "reason": "Both thumbs Up but current score 69. Override to thumb-based 80.",
-      "appliedAt": "2026-02-01T17:37:53.687Z"
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:34:17.963Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:14:14.859Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 69,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "scoreDelta": 7,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 69,

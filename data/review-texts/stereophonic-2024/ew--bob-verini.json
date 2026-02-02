@@ -9,64 +9,56 @@
   "bwwExcerpt": "Playwright David Adjmi’s extensive resume has included an intimate portrait of Syrian Jews in Brooklyn (Stunning), a fanciful contempo take on Marie Antoinette, and 3C, a controversial sexed-up parody of the sitcom Three’s Company. Interesting work all around, but none of it prepares us for the hyperrealistic triumph that is Stereophonic, now at the Golden Theatre for a limited run after a similarly limited run at Playwrights Horizons.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 90,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 91,
+    "score": 90,
     "confidence": "high",
     "range": {
       "low": 85,
-      "high": 97
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 92,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "hyperrealistic triumph that is Stereophonic",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "none of it prepares us for",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Interesting work all around",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic calls Stereophonic a 'hyperrealistic triumph' and suggests it surpasses Adjmi's previous 'interesting work,' indicating unqualified enthusiasm despite the brief excerpt. | GPT-4o-mini: The review expresses strong enthusiasm for the production, describing it as a 'hyperrealistic triumph', indicating a must-see recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic explicitly calls the show a 'triumph' and emphasizes that Adjmi's previous work doesn't prepare audiences for how exceptional this production is, indicating strong enthusiasm. | GPT-4o: The critic describes the production as a 'hyperrealistic triumph,' indicating a strong, enthusiastic recommendation. The use of 'triumph' suggests the show is a standout success, warranting a high score in the Rave bucket. | Gemini: The review uses the phrase \"hyperrealistic triumph\" which indicates a very positive assessment and a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T21:42:29.667Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:05:27.890Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 91,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

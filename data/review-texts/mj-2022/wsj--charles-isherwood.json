@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a slick, professionally mounted tribute that will satisfy Jackson's devoted fans, but it doesn't dig deep enough to reveal the complex humanity of its subject.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,59 +18,53 @@
   "showScoreExcerpt": "The show is a slick, professionally mounted tribute that will satisfy Jackson's devoted fans, but it doesn't dig deep enough to reveal the complex humanity of its subject.",
   "needsScoring": true,
   "llmScore": {
-    "score": 62,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 70
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "slick, professionally mounted tribute",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "will satisfy Jackson's devoted fans",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "doesn't dig deep enough to reveal the complex humanity",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Mixed review that acknowledges professional quality and fan appeal but criticizes lack of depth, suggesting conditional recommendation for specific audiences.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges professional quality and fan satisfaction but criticizes the show's lack of depth, indicating a lukewarm assessment that neither strongly recommends nor discourages attendance. | GPT-4o: The review acknowledges the show's professional quality and appeal to fans but criticizes its lack of depth, resulting in a mixed recommendation. | Gemini: The review states the show will \"satisfy Jackson's devoted fans,\" which indicates a positive, albeit qualified, recommendation. The criticism that it \"doesn't dig deep enough\" suggests reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:06:25.907Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2335,
-    "outputTokens": 276,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:41.472Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

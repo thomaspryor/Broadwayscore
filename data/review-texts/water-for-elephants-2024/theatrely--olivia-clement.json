@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Water for Elephants is a sweeping spectacle that manages to capture both the grandeur and intimacy of Sara Gruen's beloved novel. The production succeeds in creating theatrical magic through stunning puppetry and heartfelt performances.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,38 +18,22 @@
   "showScoreExcerpt": "Water for Elephants is a sweeping spectacle that manages to capture both the grandeur and intimacy of Sara Gruen's beloved novel. The production succeeds in creating theatrical magic through stunning puppetry and heartfelt performances.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 80,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "manages to capture both the grandeur and intimacy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "succeeds in creating theatrical magic",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "stunning puppetry and heartfelt performances",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Consistent positive language praising the production's success in adaptation, visual spectacle, and performances, with no negative caveats mentioned.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses clearly positive language like 'sweeping spectacle,' 'succeeds,' and 'theatrical magic' with no reservations expressed, indicating a solid recommendation. | GPT-4o: The review uses strong positive language such as 'sweeping spectacle', 'theatrical magic', and 'stunning puppetry', indicating a highly enthusiastic recommendation. | Gemini: The review uses positive language like \"sweeping spectacle\" and \"theatrical magic\", indicating a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,19 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:15:45.403Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2351,
-    "outputTokens": 310,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:02.240Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

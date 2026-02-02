@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review criticizes the overall production as fundamentally misguided, praising only one performance while condemning the directorial approach as incompatible with the source material. | GPT-4o: The review highlights a standout performance but criticizes the overall production for being at odds with the original's intended tone. This suggests a mixed reception, acknowledging strengths but also significant weaknesses. | Gemini: The review praises David Hyde Pierce's performance but criticizes the overall production. This suggests a mixed experience, with some elements working well and others falling short.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic praises only one performance while describing the overall production as fundamentally misguided and at odds with the source material's intentions. | GPT-4o: The review praises David Hyde Pierce's performance but criticizes the overall production for being at odds with the original's tone. This suggests a mixed reception, with some positive elements but notable issues. | Gemini: The review praises David Hyde Pierce's performance but criticizes the overall production's tone, suggesting a mixed experience. Given the single excerpt warning, I'm scoring conservatively within the 'Mixed' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,14 +36,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:52:30.730Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:12:22.230Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 61,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 59,
+    "openaiScore": 60,
     "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Mixed",

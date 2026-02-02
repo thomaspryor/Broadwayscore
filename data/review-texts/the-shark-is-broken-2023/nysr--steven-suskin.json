@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 82,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "offer exceptionally diverting caricatures",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "As is the whole 95 minutes of three men—no, three actors with a broken mechanical shark—on a boat. All laughter, with no threat of a shark attack.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "its mighty funny",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Four-star review with consistent praise for performances, humor, and entertainment value, describing the show as 'mighty funny' and 'exceptionally diverting' with no significant criticisms.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and consistently positive language throughout, praising the performances as 'exceptionally diverting caricatures' and calling the whole show 'mighty funny,' clearly indicates a positive recommendation despite some gentle reservations about accessibility for unfamiliar audiences. | GPT-4o: The review provides a positive assessment of the performances and production, highlighting the humor and entertainment value of the play. The original 4/5 star rating strongly supports a positive classification. | Gemini: The critic gives the show 4 out of 5 stars and states that the show is funny. The reservation is that those unfamiliar with the movie 'Jaws' may be lost.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:26:43.102Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3367,
-    "outputTokens": 347,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:43.786Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 70,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 70,

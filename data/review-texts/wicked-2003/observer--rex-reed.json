@@ -14,12 +14,12 @@
   "scoreSource": null,
   "llmScore": {
     "score": 89,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -27,46 +27,38 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "check your cynicism at the door and get in touch with the little kid inside you who's been begging to get out",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Neither of you will want to leave 'Wicked.'",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "check your cynicism at the door",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The review expresses strong enthusiasm with explicit recommendation language about not wanting to leave, though the brief excerpt limits confidence in the full assessment. | GPT-4o-mini: The review expresses strong enthusiasm and a clear recommendation to see the show, indicating it's a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The closing statement 'Neither of you will want to leave' is a clear enthusiastic endorsement, and the tone throughout suggests wonder and recommendation despite being a single curated excerpt. | GPT-4o: The excerpt suggests a strong recommendation to see 'Wicked', encouraging audiences to embrace the experience and indicating that they will not want to leave. This language is indicative of a rave review, despite the limited context. | Gemini: The review excerpt strongly suggests a positive experience and recommendation, urging the audience to embrace the show and implying they will enjoy it.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T06:01:30.413Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:23.535Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "scoreDelta": 2,
+    "geminiScore": 78,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/wicked-2003/observer--rex-reed_2026-01-26.html",
   "textFetchedAt": "2026-01-26T23:29:46.803Z",

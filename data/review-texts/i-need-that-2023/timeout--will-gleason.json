@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "bwwThumb": "Meh",
   "originalScore": "3/5",
-  "assignedScore": 65,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "originalScoreNormalized": 60,
@@ -17,60 +17,52 @@
   "scoreExtractedFrom": "archive",
   "designation": "Recommended",
   "llmScore": {
-    "score": 65,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 53,
+      "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "good-natured but threadbare comedy",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "His vulnerable, hilarious performance is a certifiable gem",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "If only this treasure weren",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Review praises DeVito's performance highly but criticizes the script as 'threadbare' and cuts off mid-sentence expressing regret about wasted potential. | GPT-4o-mini: While the performances, particularly by DeVito, are highly praised, the overall script is described as threadbare, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 rating and mixed language praising DeVito's performance while criticizing the surrounding production indicates a reserved recommendation with significant reservations. | GPT-4o: The review praises DeVito's performance but suggests that the overall production is lacking, as indicated by the phrase 'lost in the piles that surround it.' The original rating of 3/5 supports a mixed verdict. | Gemini: The review praises DeVito's performance highly, calling it a \"certifiable gem,\" but also notes that it's \"often lost in the piles that surround it,\" suggesting the production as a whole has flaws. The 3/5 rating supports a positive but not rave classification.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:18:12.578Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:50:53.249Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 0,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 65,

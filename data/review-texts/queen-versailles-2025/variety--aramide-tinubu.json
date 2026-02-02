@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "The performances, including a megatallented ensemble, are also excellent. As expected, Chenoweth is a force, and though Jackie isn’t really a “likable” figure, the Emmy Award winner draws out aspects of her personality that offer glimmers of sympathy for this toxicly positive billionaire woman.",
@@ -19,67 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 38,
+    "score": 44,
     "confidence": "medium",
     "range": {
-      "low": 32,
-      "high": 45
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Unfortunately, Greenfield's dazzling assessment of greed, consumption and the American dream doesn't translate on the stage",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "became a Sundance darling",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "dazzling assessment",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review acknowledges the strong source material and impressive creative team but definitively states the adaptation 'doesn't translate' to stage, indicating fundamental failure despite pedigree.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite praising Chenoweth's performance and the ensemble, the critic explicitly states the show's 'positive components do not make up for its faults' and that 'Broadway is the wrong medium for this story,' delivering a clear negative recommendation. | GPT-4o: The review highlights significant issues with the production, stating that Broadway is the wrong medium and that musicalizing the story detracts from its impact. Despite strong performances, the overall recommendation is negative. | Gemini: The review acknowledges excellent performances, especially Chenoweth's, but ultimately concludes that the musical adaptation doesn't work and the story is better suited for film. This suggests a mixed experience with redeeming qualities but significant flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:58:57.869Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2534,
-    "outputTokens": 329,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:23.120Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 45,
-    "scoreDelta": 3,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 44,

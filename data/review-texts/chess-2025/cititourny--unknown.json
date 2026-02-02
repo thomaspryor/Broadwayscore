@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 77,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 77,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The wordplay on 'knight/night to remember' and praise for 'superb stars' suggests a positive recommendation, though the brevity of the excerpt limits confidence in the full verdict. | GPT-4o: The review highlights the superb stars and describes the show as a 'night to remember,' suggesting a positive experience. However, without the full context, the confidence is medium. | Gemini: The phrase \"night to remember\" indicates a positive experience and recommendation, even if the review is truncated.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly calls the stars 'superb' and concludes it's 'a night to remember,' indicating a positive recommendation despite the wordplay and single excerpt limitation. | GPT-4o: The excerpt praises the stars of the show, suggesting a positive experience, but the lack of a full review and the single excerpt warning suggest caution, leading to a conservative score within the Positive range. | Gemini: The phrase \"night to remember\" suggests a positive experience, but the \"still\" and the single excerpt warning indicate some reservations. Therefore, it's classified as positive but not overwhelmingly so.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,14 +36,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:45:39.540Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:36:53.367Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 80,
+    "claudeScore": 72,
+    "openaiScore": 77,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",

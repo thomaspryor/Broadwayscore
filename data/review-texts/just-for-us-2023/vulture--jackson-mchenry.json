@@ -9,71 +9,55 @@
   "showScoreExcerpt": "“Like the stools, Edelman’s sometimes shaggy material is laid out intentionally. He’s a people-pleaser as a comedian, and he admits in the show that he’s holding back potentially alienating aspects of himself in order to win us over. To a much more extreme degree, he was also performing to ingratiate himself among the white nationalists.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/alex-edelman-just-for-us-broadway",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This is a crowd-pleasing, often hilarious show, with a time bomb labeled 'Is it good that I am here making you laugh?' at its center.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's a nifty, thorny trick: Spend a show teaching an audience to be suspicious of easy comforts, and then leave them with one.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "In this portion of the show, the question of aspiring to assimilate into whiteness gets supercharged, and I wanted him to get there sooner and stay there longer.",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The critic clearly admires Edelman's performance and the show's construction, calling it 'crowd-pleasing' and 'often hilarious' while appreciating its deeper thematic complexity and 'nifty, thorny trick' structure.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic finds the show 'crowd-pleasing' and 'often hilarious' while praising Edelman's 'cannily constructed' performance and 'nifty, thorny trick' of making audiences suspicious of easy comforts. However, the critic expresses reservations about pacing ('I wanted him to get there sooner and stay there longer') and some material being 'past its sell-by date.' | Gemini: The review is generally positive, highlighting the show's humor and thought-provoking nature, but also points out areas where it could be stronger. The 'time bomb' comment indicates a reservation, but overall the show is recommended.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:22:30.089Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4535,
-    "outputTokens": 422,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:24.962Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 55,
-    "openaiScore": 50,
-    "scoreDelta": 5,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 53,

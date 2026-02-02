@@ -9,59 +9,57 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 75,
-    "confidence": "low",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 85
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 80,
-      "performances": 75,
-      "direction": 70
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "has provided the company with both haunting romantic ballads and snazzy production numbers",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Mr. Carlyle serves the latter with predictable buoyancy and wit",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The fragment shows clear appreciation for Manilow's music and Carlyle's performance with positive descriptors, but the excerpt cuts off mid-sentence making definitive assessment difficult.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises Manilow's musical contributions and describes performances with positive descriptors like 'buoyancy and wit,' but with only one truncated excerpt and awareness of potential cherry-picking, I'm scoring conservatively in the lower positive range. | GPT-4o: The review highlights the effective musical contributions and entertaining production numbers, suggesting a positive experience. However, due to the single excerpt and text quality warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review highlights positive aspects of the music and performances, suggesting a generally favorable impression. However, the limited excerpt and mention of 'melodrama, at times' indicates some reservations, placing it in the lower end of the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:05:03.282Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2419,
-    "outputTokens": 300,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:11:04.175Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
   "rescoreReason": "low-conf: prompt=3.0.0, delta=30, upgrading to V5 + 3 models",
   "previousLlmScore": 60,
   "archivePath": "data/archives/reviews/harmony-2023/the-new-york-sun--elysa-gardner_2026-01-28.html",

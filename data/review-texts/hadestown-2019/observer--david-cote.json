@@ -7,7 +7,7 @@
   "publishDate": "2019-04-17",
   "bwwExcerpt": "by Broadway standards. Many of the songs are reflective in nature, which leads to some slow points, especially in Act Two. But, more often than not, \"Hadestown\" is exciting, compelling and beautiful. David Cote, The Observer : Silver fox André De Shields lends his funky-grandpa vibe to the narration-heavy role of Hermes. Big-voiced Eva Noblezada is pluck personified as a waifish Eurydice. Fitting for the god of the underworld, Patrick Page's basso profundo seems to issue from the lower basement. And, as Persephone, Amber Grey dials her devil-may-care hootchie-mama routine to 11, ensuring her eventual transfiguration as Eartha Kitt on Broadway one day. Less fruitful is Reeve Carney's Orpheus, conceived as a socially awkward art savant. Laying on the Dear Evan Hansen too thick, Carney's neurodiverse Orpheus (lots of gaping, arms hanging limply, fingers twitching) is a misfire. The survivor of Spider-Man: Turn Off the Dark remains a bit generic, despite sweet looks and a pretty pop",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
@@ -15,60 +15,52 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 74,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 65,
-      "performances": 78,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "more often than not, 'Hadestown' is exciting, compelling and beautiful",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Many of the songs are reflective in nature, which leads to some slow points, especially in Act Two",
-        "sentiment": "negative",
-        "strength": 2
-      },
-      {
-        "quote": "Reeve Carney's Orpheus... is a misfire",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review praises most performances and calls the show 'exciting, compelling and beautiful' overall, but notes pacing issues and criticizes the lead male performance as a 'misfire.' | GPT-4o-mini: The review expresses clear praise for the overall experience and performances, despite some criticisms of pacing and one character's portrayal.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds the show 'exciting, compelling and beautiful' overall despite noting slow points and one casting misfire. The positive assessment outweighs the criticisms. | GPT-4o: The review acknowledges some slow points and a misfire in casting, but overall describes the show as exciting, compelling, and beautiful, suggesting a positive recommendation with some reservations. | Gemini: The review highlights several positive aspects of the show, including the performances of most of the cast and the overall excitement and beauty of the production. However, it also notes some slow points and a miscast actor, suggesting a recommendation with reservations. Given the single excerpt warning, I'm scoring conservatively.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:18:03.584Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:00:59.479Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/hadestown-2019/observer--david-cote_2026-01-27.html",
   "textFetchedAt": "2026-01-27T20:36:48.157Z",

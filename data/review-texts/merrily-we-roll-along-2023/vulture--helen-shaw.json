@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production succeeds because it understands that Merrily is fundamentally about grief — grief for lost friendships, lost idealism, lost time.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The production succeeds because it understands that Merrily is fundamentally about grief — grief for lost friendships, lost idealism, lost time.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 85
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,21 +30,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 78
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The production succeeds",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "understands that Merrily is fundamentally about grief",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The phrase 'production succeeds' indicates clear approval, and the analytical insight about the show's themes suggests the critic views this as an intelligent, well-conceived production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The word 'succeeds' indicates a positive assessment, and the explanation shows the critic appreciates the production's insight into the material's deeper themes. | GPT-4o: The review highlights the production's success in capturing the essence of the show, indicating a positive reception. However, the lack of detailed evaluative content makes the overall recommendation somewhat ambiguous. | Gemini: The review states the production 'succeeds,' indicating a positive assessment, but lacks the enthusiastic language of a 'rave' review. The single sentence provided suggests a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,19 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:05:07.615Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2333,
-    "outputTokens": 279,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:49.942Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

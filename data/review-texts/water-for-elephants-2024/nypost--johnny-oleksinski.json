@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "“Water” has more exuberance than wit; more catchphrases than character.",
@@ -19,33 +19,22 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 44,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "low",
     "range": {
-      "low": 37.5,
-      "high": 50.5
+      "low": 47,
+      "high": 57
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "more exuberance than wit",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "more catchphrases than character",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic uses a balanced comparison structure that suggests the show has energy but lacks substance in writing and character development, indicating fundamental flaws that outweigh any positive elements. | GPT-4o-mini: The review indicates significant shortcomings in character development and wit, leading to a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic identifies fundamental flaws in writing and character development, suggesting style over substance. The aggregator context confirms a negative reception, though the limited excerpt prevents a stronger confidence rating. | Gemini: The review excerpt suggests the show has some positive qualities (exuberance) but is lacking in others (wit, character development), indicating a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +43,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:09.901Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:35.814Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 44,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 45,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "garbageFullText": "“Water” has more exuberance than wit; more catchphrases than character.",
   "garbageReason": "Content too short (71 chars)",

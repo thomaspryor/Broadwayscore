@@ -9,37 +9,26 @@
   "showScoreExcerpt": "\"worth being wary of any musical that positions itself as a love letter to New York City.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/hell-s-kitchen",
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 33,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 25.5,
-      "high": 40.5
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "worth being wary of any musical that positions itself as a love letter to New York City",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "worth being wary of any musical that positions itself as a love letter to New York City.",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The fragment expresses skepticism and warning about the show's premise, suggesting the critic has negative expectations or views about musicals with this theme. | GPT-4o-mini: The review expresses a strong caution against the musical, indicating a clear rejection of its premise.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic identifies powerful, moving elements (particularly the teacher-student dynamic and Kecia Lewis's performance) but finds the overall production frustratingly unfocused with competing storylines and tonal inconsistencies. | Gemini: The review highlights both compelling and frustrating aspects of the show, indicating a mixed experience. The critic points out specific elements that work well but are overshadowed by less successful choices.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,20 +37,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:24:43.552Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:03:15.067Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 55,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 30,
-    "scoreDelta": 5,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "dtliExcerpt": "There are elements of Hell’s Kitchen that are specific and well motivated and moving, and they’re obscured by the musical’s tilt toward bombast.",
   "bwwExcerpt": "Moon, to her credit, grounds all this wherever she can. She’s a great discovery, a virtuoso who also appears surprised and delighted by her own talent. In Dede Ayite’s throwback ’90s costumes — so much Tommy Hilfiger, such giant pants — Moon has both swagger and that crucial touch of naïveté that makes Ali feel like a real and contradictory teenage girl, even when the plot swerves around her. Her voice, for all its power, has a sandpaper edge, a texture that makes her stand out when so many youn",

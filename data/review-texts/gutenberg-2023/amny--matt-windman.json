@@ -9,66 +9,55 @@
   "bwwExcerpt": "Rannells and Gad once again make a terrific pair of unlikely pals and earn many laughs. However, “Gutenberg!” was intended to be what the Polish theater theorist Jerzy Grotowski termed “Poor Theater,” built upon minimal production values and maximized imagination. On Broadway, it feels both overdone (with an elaborate set invoking an empty stage, instead of an actual empty stage, and a band instead of a single piano, losing its original charm) and undercooked (a slight, overextended, and rudimen",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 37,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 37,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "low",
     "range": {
-      "low": 30.5,
-      "high": 43.5
+      "low": 47,
+      "high": 57
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
-      "music": 30,
-      "performances": 50,
-      "direction": 40
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "no more than an hour's worth of laughs in a two-person vaudeville routine that goes on for two hours, becoming tedious",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "The score is largely unmemorable. The premise makes little sense.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "There are some funny lines",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic finds the show tedious with an unmemorable score, weak premise, and insufficient laughs to sustain its length, with only scattered positive elements. | GPT-4o-mini: The review expresses significant criticism of the script and music, with only mild praise for some performances, leading to a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic finds the show tedious, overextended, and poorly conceived despite praising Gad and Rannells' performances. The antisemitism critique and overall assessment that it becomes 'tedious' with 'no more than an hour's worth of laughs in a two-hour routine' clearly indicates a negative recommendation. | Gemini: The review highlights both funny moments and tedious stretches, suggesting a mixed experience. The truncated text makes it difficult to determine a final recommendation, but the overall tone leans towards a qualified appreciation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:51:03.072Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:38.627Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 37,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 35,
-    "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (37 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "dtliExcerpt": "On Broadway, it feels both overdone (with an elaborate set invoking an empty stage, instead of an actual empty stage, and a band instead of a single piano, losing its original charm) and undercooked (a slight, overextended, and rudimentary comic routine).",
   "sources": [

@@ -5,7 +5,7 @@
   "criticName": "Michael Dale",
   "url": "https://www.broadwayworld.com/article/BWW-Review-A-Complete-Neophytes-Guide-To-HARRY-POTTER-AND-THE-CURSED-CHILD-20180423",
   "publishDate": "2018-04-22T20:11:20-04:00",
-  "fullText": null,
+  "fullText": "Get Show Info\n\n Info\n\nGet Tickets\n\nCast\n\nPhotos\n\nVideos",
   "bwwExcerpt": "From row P of the orchestra section of the cavernous Lyric Theatre, one might feel a bit disconnected from the characters and plot, especially with designer Christopher Jones' skeletal set adding to the hollowness, but admittedly, that might just be the result of my unfamiliarity with the play's backstory. Surely, judging from the enthusiastic responses throughout the two-parter, fans of the books and films were having a blast.",
   "originalScore": null,
   "assignedScore": 62,
@@ -65,10 +65,10 @@
   "sources": [
     "bww-roundup"
   ],
-  "rescoreReason": "garbage-text: BWW paywall content, not review",
-  "previousLlmScore": 59,
-  "archivePath": "data/archives/reviews/harry-potter-2021/broadwayworld--michael-dale_2026-01-31.html",
-  "textFetchedAt": "2026-01-31T23:19:29.026Z",
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 58,
+  "archivePath": "data/archives/reviews/harry-potter-2021/broadwayworld--michael-dale_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:36:41.538Z",
   "designation": "Recommended",
   "fetchMethod": "archive",
   "fetchAttempts": [
@@ -80,7 +80,9 @@
   ],
   "fetchTier": 4,
   "truncationSignals": [
-    "no_ending_punctuation"
+    "no_ending_punctuation",
+    "shorter_than_excerpt",
+    "possible_mid_word_cutoff"
   ],
   "archiveOrgTimestamp": "20240731102244",
   "archiveOrgUrl": "http://web.archive.org/web/20240731102244/https://www.broadwayworld.com/article/BWW-Review-A-Complete-Neophytes-Guide-To-HARRY-POTTER-AND-THE-CURSED-CHILD-20180423",

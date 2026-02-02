@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show works best when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, with Myles Frost delivering a committed performance that captures the pop icon's distinctive mannerisms and vocal style.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "The show works best when it focuses on Jackson's creative process and his perfectionist drive in the recording studio, with Myles Frost delivering a committed performance that captures the pop icon's distinctive mannerisms and vocal style.",
   "needsScoring": true,
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 78,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The show works best when it focuses on Jackson's creative process",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Myles Frost delivering a committed performance that captures the pop icon's distinctive mannerisms and vocal style",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This appears to be a partial excerpt that praises specific elements (performance, creative process scenes) but implies the show has weaker moments when not focusing on these strengths.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights what works well in the show and praises the lead performance, but the phrase 'works best when' suggests there are weaker elements, indicating a qualified positive recommendation. | GPT-4o: The review highlights positive aspects, particularly the lead performance and focus on Jackson's creative process, suggesting a recommendation despite potential limitations in other areas. | Gemini: The review highlights the show's strengths, particularly Frost's performance and the focus on Jackson's creative process, suggesting a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:06:01.438Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2347,
-    "outputTokens": 297,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:07.869Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (36 words)"
+  "contentTierReason": "Short text (36 words)",
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

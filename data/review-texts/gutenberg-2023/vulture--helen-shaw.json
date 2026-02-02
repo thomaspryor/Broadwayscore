@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show is a love letter to the theater itself, and to the particular kind of madness that drives people to put on shows in the first place.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,73 +17,51 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a love letter to the theater itself, and to the particular kind of madness that drives people to put on shows in the first place.",
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 68
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "at its best it's both outrageously funny and strangely, sweetly sublime",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a question the production dances with but isn't quite able to resolve",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Andrew Rannells and Josh Gad...played to the hilt",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic appreciates the performances and concept but identifies unresolved structural issues with adapting the material to Broadway, suggesting qualified recommendation despite clear affection for the show.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic appreciates the show's concept, praises the lead performances as played 'to the hilt,' and describes positive elements like the excellent three-piece band and comedy timing. While there are some reservations about resolving the central tension of the premise, the overall tone is appreciative and recommending. | Gemini: The review describes the show as funny and enjoyable, highlighting the performances of the leads. While it acknowledges some shortcomings, the overall tone suggests a positive experience, leading to a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:00:33.152Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3144,
-    "outputTokens": 343,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:38:18.329Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 75,
+    "openaiScore": null,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "previousUrl": "https://www.vulture.com/2023/10/gutenberg-the-musical-broadway-review.html",
   "urlDiscoveredAt": "2026-02-01T19:00:15.697Z",

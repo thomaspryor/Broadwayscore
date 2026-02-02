@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"This big, busy, splashy family entertainment fits right in; it feels a bit generic, but it certainly delivers in terms of sheer eye-popping spectacle, and is sure to run and run.\"",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 74,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 75,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: While calling it 'generic', the critic clearly sees it as successful family entertainment that delivers spectacle and will have commercial success, indicating a positive recommendation. | GPT-4o: The review highlights the show's spectacle and suggests it will be successful, indicating a positive recommendation despite noting it feels 'a bit generic'. | Gemini: The review acknowledges the show is 'generic' but also states it 'delivers' and 'is sure to run and run', indicating a positive, albeit reserved, recommendation.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic calls it 'generic' but still recommends it as entertainment that 'certainly delivers' and predicts commercial success. This is a qualified positive recommendation. | Gemini: The review states that the show delivers spectacle and will likely be successful, indicating a positive, though somewhat generic, experience. The \"a bit generic\" phrase suggests reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:12:48.904Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:08:08.210Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 71,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 78,
+    "claudeScore": 72,
+    "openaiScore": null,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

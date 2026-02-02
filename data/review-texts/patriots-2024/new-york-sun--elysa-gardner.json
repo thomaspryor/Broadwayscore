@@ -8,67 +8,58 @@
   "dtliExcerpt": "I would advise them all to rush to the Ethel Barrymore Theatre, where Peter Morgan’s “Patriots” is offering one of the most absorbing accounts of political intrigue I’ve ever seen on a Broadway stage.",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 84,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 94,
-    "confidence": "high",
+    "score": 84,
+    "confidence": "low",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 79,
+      "high": 89
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I would advise them all to rush to the Ethel Barrymore Theatre",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "one of the most absorbing accounts of political intrigue I've ever seen on a Broadway stage",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "one of the most absorbing accounts of political intrigue I’ve ever seen on a Broadway stage",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic explicitly tells readers to 'rush' to see the show and calls it 'one of the most absorbing' political plays ever seen on Broadway, indicating unqualified enthusiasm. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong recommendation for the show, indicating it is a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses urgent language 'rush to' and calls it 'one of the most absorbing accounts' ever seen on Broadway, indicating strong enthusiasm. However, confidence is medium due to single excerpt warning. | Gemini: The critic explicitly advises readers to \"rush\" to see the show, indicating a strong positive recommendation. The phrase \"one of the most absorbing accounts\" further reinforces this positive sentiment.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T05:33:46.660Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:17.506Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
+    "claudeScore": 88,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

@@ -6,73 +6,57 @@
   "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-mj-review-michael-jackson-20220201-qgfajhkotfdwlnwm5ert2umnzm-story.html",
   "publishDate": "2022-02-01",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:04:13.138Z",
   "bwwExcerpt": "COVID means a lack of tourists, short-term. But the show has all kinds of artistic beauties to offer the artist's global fans. Thanks in no small part to the gorgeous palate created by Derek McLane, Natasha Katz, Paul Tazewell and Peter Nigrini, the show is genuinely beautiful to experience througho...",
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 55,
-      "music": 85,
-      "performances": 88,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "brilliantly choreographed new Broadway show",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It's a star-making turn",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it's a gorgeously executed celebration of a pained subject's artistry",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite acknowledging controversial omissions and weak book elements, the critic consistently praises the choreography, performances, and visual spectacle as 'brilliant' and 'gorgeous,' calling it a clear artistic success.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges serious concerns about the show's omissions regarding Jackson's controversies but ultimately praises the performances, choreography, and visual elements as 'gorgeously executed' and 'genuinely beautiful to experience throughout,' concluding with a clear recommendation despite reservations. | Gemini: The review acknowledges the show's omission of controversial aspects of Jackson's life but praises the choreography, performances, and overall visual experience, ultimately recommending it as a celebration of his artistry.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:37:47.391Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3658,
-    "outputTokens": 334,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:29.898Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 80,
-    "scoreDelta": 4,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "sourceMethod": "archive",
   "dtliThumb": "Up",

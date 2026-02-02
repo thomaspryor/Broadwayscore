@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "high",
     "range": {
       "low": 70,
-      "high": 85
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,26 +33,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The play remains radical today",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "reinvigorates the jesting that animates the antic action",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Broadway's go-to helmer of black-themed plays",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The excerpt shows clear appreciation for the play's continued relevance and praises Kenny Leon's direction for 'reinvigorating' the production, suggesting a positive recommendation despite the very limited text.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows appreciation for Kenny Leon's direction and the production's ability to reinvigorate the source material, indicating a positive assessment, though the truncated nature requires conservative scoring. | GPT-4o: The review highlights the production's ability to reinvigorate the play's comedic elements, suggesting a positive reception. However, due to the single excerpt and lack of full context, the score is placed conservatively in the middle of the Positive range. | Gemini: The review highlights the play's continued relevance and praises the production's direction, suggesting a positive experience despite the limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -61,19 +45,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:12:42.012Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2387,
-    "outputTokens": 326,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:49.622Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

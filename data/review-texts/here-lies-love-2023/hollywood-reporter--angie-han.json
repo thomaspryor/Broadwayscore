@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show succeeds in making the audience complicit in the Marcoses' rise to power, forcing us to reckon with our own susceptibility to charismatic authoritarianism.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The show succeeds in making the audience complicit in the Marcoses' rise to power, forcing us to reckon with our own susceptibility to charismatic authoritarianism.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 85
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,21 +30,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 78
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The show succeeds in making the audience complicit",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "forcing us to reckon with our own susceptibility to charismatic authoritarianism",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic praises the show's intellectual and emotional impact, suggesting it effectively achieves its thematic goals, but this excerpt is too brief to determine full recommendation strength.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses 'succeeds' positively and describes the show as effectively achieving its dramatic and political goals, though the excerpt is brief and may not capture the full review. | GPT-4o: The review highlights a thought-provoking aspect of the show, but lacks clear language indicating a strong recommendation or discouragement, suggesting a mixed reception. | Gemini: The review highlights a successful aspect of the show, suggesting a positive, though perhaps not overwhelmingly enthusiastic, recommendation. The use of \"succeeds\" indicates a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,19 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:58:51.309Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2340,
-    "outputTokens": 290,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:08.017Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This excerpt appears to be analytical setup rather than verdict, describing the production's approach as 'campier' and 'bigger and bawdier' without clear positive or negative judgment. The truncated nature makes the final recommendation unclear. | GPT-4o: The review highlights the production's choice to be 'bigger and bawdier,' which suggests a distinct style choice that may appeal to some but not all. The tone is neither fully positive nor negative, indicating a mixed reception. | Gemini: The truncated text makes it difficult to determine the overall recommendation. The quote suggests a specific direction, but without more context, it's hard to say if this is positive or negative. I'm leaning towards mixed due to the lack of a clear recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt describes production choices in a tone that could be either critical or appreciative of the 'bigger and bawdier' approach, but provides no clear evaluative judgment about quality or recommendation. | GPT-4o: The review highlights the show's decision to embrace a campy and bold approach, which may appeal to some audiences but not others. The lack of a clear recommendation or discouragement suggests a mixed verdict. | Gemini: The review excerpt describes the show's approach as \"bigger and bawdier,\" which doesn't clearly indicate a positive or negative recommendation. Without more context, it's best classified as mixed.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:46:01.928Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:40:40.322Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

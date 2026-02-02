@@ -10,67 +10,59 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 68,
-    "confidence": "high",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 65
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Davis's play never fully leaps out from the archives despite the cast's entertaining efforts to justify its reemergence",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "sends revitalizing currents through the long-dormant text, thanks to a bevy of boisterously engaged performances",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "If Purlie Victorious never completely conquers in cohering its disparate ambitions, its last moments offer an unexpected, quiet triumph",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The reviewer praises the performances and production elements but finds fundamental flaws in the dated material that prevent it from fully succeeding, resulting in a qualified mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The review acknowledges strong individual performances and production elements but consistently notes the play's failure to fully cohere, describing it as never 'leaping out from the archives' despite 'entertaining efforts' - a classic mixed verdict that neither fully recommends nor discourages. | Gemini: The review acknowledges the entertaining performances and some strong moments, but ultimately suggests the play doesn't fully cohere or feel entirely fresh. It's a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:55:35.920Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4203,
-    "outputTokens": 369,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:13.188Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+  },
   "rescoreReason": "low-conf: prompt=3.0.0, delta=30, upgrading to V5 + 3 models",
   "previousLlmScore": 60,
   "archivePath": "data/archives/reviews/purlie-victorious-2023/slantmagazine--dan-rubins_2026-01-29.html",

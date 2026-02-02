@@ -8,64 +8,56 @@
   "bwwExcerpt": "No, the let down is really the fault of a book that relies on easily predictable personal triumphs – shells will be broken, invitations extended, bad boyfriends dumped, all not a moment before or after you’d expect. And as loving and sweet-natured as Cannold’s direction is, it, and the show, is destined to live in the inescapable shadow of that Tony-winning musical populated with othered teens also demanding independence and dignity in a world not of their making. Kimberly Akimbo, that perfect s",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HOW-TO-DANCE-IN-OHIO-Opens-on-Broadway-Updating-LIVE-20231209",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 62,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 78,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "their charming performances seal the deal: We want this show to soar",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "That it doesn't is a disappointment",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "getting so thrillingly close to something like flight",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic praises the performances but explicitly states the show disappoints by not achieving its potential, creating a mixed review that leans slightly positive due to appreciation for the newcomer performers.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The phrase 'gets so splendidly right' indicates positive assessment, but this is only a curated excerpt and aggregator context suggests 'Flat' verdicts, creating uncertainty about the full review's recommendation. | GPT-4o: The review highlights a positive aspect of the show, but the aggregator context suggests a flat response overall. The text quality warning and lack of a clear, strong recommendation lead to a mixed classification. | Gemini: The provided quote highlights a positive aspect of the show, but without a clear recommendation or overall assessment, it's difficult to place it definitively in the 'Positive' bucket. The aggregator verdicts also suggest a 'Flat' response, indicating a 'Mixed' classification is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:13:25.703Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:07.154Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 75,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "showScoreExcerpt": "“One of the things ‘How To Dance In Ohio’ gets so splendidly right is the easy comfort with diversity these young people with autism are graced, as if they’ve long ago made peace with the very concept of outsiderdom.”",

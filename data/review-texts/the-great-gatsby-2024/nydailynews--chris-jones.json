@@ -9,69 +9,59 @@
   "bwwExcerpt": "That said, this new musical, as penned by Kait Kerrigan with music composed by Jason Howland and lyrics by Nathan Dylan, makes you feel very little, except when Howland’s lush melodies are reaching their climax. Even then, the feelings that flow are more admiration for Howland’s craft than the kind of emotion that flows back into an embrace of story.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "bwwThumb": "Down",
   "showScoreExcerpt": "“This is an inventive and intriguingly populist new staging of an iconic novel that already has informed all manner of adaptations. Here, it is genuinely hard to tell the actors from the customers, only the elegant design of Vanessa Leuck’s costumes offers a meaningful distinction.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-great-gatsby-musical",
   "llmScore": {
-    "score": 52,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 43.5,
-      "high": 60.5
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 73,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 63
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "makes you feel very little, except when Howland's lush melodies are reaching their climax",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the feelings that flow are more admiration for Howland's craft than the kind of emotion that flows back into an embrace of story",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "inventive and intriguingly populist new staging",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges some positive elements (inventive staging, lush melodies) but fundamentally criticizes the musical for failing to generate emotional connection with the story, which is a core theatrical failure. | GPT-4o-mini: The review indicates a mixed experience, praising the music while expressing disappointment in the emotional impact and story engagement.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic uses positive language like 'inventive' and 'intriguingly populist' while praising the costume design, but the excerpt is limited and aggregator context suggests possible reservations not captured here. | GPT-4o: The review highlights an inventive and intriguing staging, but the lack of a clear recommendation and the aggregator context suggest a mixed reception. The inventive staging is a positive note, but the overall tone lacks strong endorsement. | Gemini: The review describes the staging as \"inventive and intriguingly populist\" but doesn't explicitly recommend or discourage seeing it. The aggregator verdicts also suggest a negative leaning.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:57.727Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:57.969Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 55,
-    "scoreDelta": 7,
-    "thumbsMatch": false,
-    "expectedThumb": "Down",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (52 → Flat) conflicts with aggregator thumbs (Down)"
-    ]
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "Audiences don’t exactly need their hand held by Nick or anyone else through “Gatsby,” but given the familiarity of this territory, we do crave a distinctive point of view. Beyond exploiting this famously beguiling title, it’s never clear what this telling really wants to say.",
   "contentTier": "excerpt",

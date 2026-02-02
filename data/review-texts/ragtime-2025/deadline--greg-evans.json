@@ -8,66 +8,58 @@
   "dtliExcerpt": "While deBessonet could have better provided a certain focus or point of view – Ragtime‘s telling of America’s immigrant tale is, at this point in history, ripe for the picking – she certainly brings out the best in her uniformly splendid cast.",
   "bwwExcerpt": "But whatever its faults and near-misses, Ragtime has always been, like its ’90s contemporaries Titanic and Parade, an opportunity for rediscovery. DeBessonet takes the challenge and wins, rescuing a near-classic from the excesses of the 1990s to prove, once and for all, that Ragtime, imperfect as it may be, deserves a place among the most significant musical theater achievements of that decade.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 79,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "dtliThumb": "Meh",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 74,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 60
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "uniformly splendid cast",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "could have better provided a certain focus or point of view",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "brings out the best in her",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Mixed signals with strong praise for performances ('uniformly splendid cast') but clear criticism of direction lacking focus, resulting in qualified positive recommendation. | GPT-4o-mini: The review highlights strong performances but notes a lack of focus in direction, leading to a positive but qualified recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges flaws but ultimately concludes the director 'wins' and proves the show 'deserves a place among the most significant musical theater achievements.' The positive verdict outweighs the reservations about focus and missed opportunities. | GPT-4o: The review acknowledges some faults but ultimately praises the production for its rediscovery and significance, indicating a positive recommendation. The truncated nature of the text suggests caution, but the excerpts support a generally favorable view. | Gemini: Despite the truncated text, the review indicates a positive assessment, highlighting the director's success in rescuing the show and emphasizing its significance. The aggregator excerpts further support this positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:46:54.190Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:10:14.527Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/ragtime-2025/deadline--greg-evans_2026-02-01.html",
   "textFetchedAt": "2026-02-01T23:50:41.397Z",

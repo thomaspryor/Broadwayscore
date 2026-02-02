@@ -16,63 +16,51 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 75,
-    "confidence": "low",
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 85
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 80,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "boisterously funny performances",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "preening rivals",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Strong praise for lead performances suggests positive recommendation, but excerpt is too brief to assess overall show quality or provide confident scoring.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single positive quote about performances suggests recommendation, but extremely limited text makes full assessment impossible. | GPT-4o: The review highlights strong performances by the lead actors, suggesting an entertaining production. However, due to the lack of a full review and context, the recommendation is made with some reservations. | Gemini: The review excerpt highlights positive performances, suggesting a favorable, though possibly not rave, assessment. Given the truncated text, I'm assuming a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:35:00.291Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2323,
-    "outputTokens": 267,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:01.039Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 80,
-    "scoreDelta": 35,
+    "claudeScore": 72,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Models disagree by 35 points (Claude: 45, OpenAI: 80)"
-    ]
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/death-becomes-her-2024/wsj--charles-isherwood_2026-01-26.html",
   "textFetchedAt": "2026-01-26T23:15:25.800Z",

@@ -9,66 +9,56 @@
   "bwwExcerpt": "In the end, it’s not “Gutenberg” the show but rather this odd coupling of comedic pals, both on stage and off, that delights. Hats off to them.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 67,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 67,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 60.5,
-      "high": 73.5
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 50,
-      "music": 45,
-      "performances": 83,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It almost makes it all worthwhile — almost.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The real fun, however — and there is much of it — lies in simply watching Gad and Rannells run riot",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it's not 'Gutenberg' the show but rather this odd coupling of comedic pals, both on stage and off, that delights",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic clearly enjoys the star performances but finds significant flaws in the material itself, creating a mixed recommendation that's worth seeing primarily for Gad and Rannells rather than the show's merits. | GPT-4o-mini: While the performances of Gad and Rannells are praised, the overall material and execution are criticized, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic clearly enjoys Gad and Rannells' performances but finds the show itself increasingly tiresome with weak material that doesn't sustain interest through two acts. | GPT-4o: The review highlights the performances of Gad and Rannells as the main source of enjoyment, while criticizing the show's songs, lyrics, and overall engagement. The critic appreciates the comedic duo but finds the show itself lacking, resulting in a mixed recommendation. | Gemini: The review highlights the strong comedic pairing of Gad and Rannells as the primary draw, while noting that the show itself has shortcomings. The recommendation is positive but qualified, focusing on the actors' performances rather than the overall quality of the musical.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:51:32.516Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:38:03.987Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 67,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (67 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"The real fun, however — and there is much of it — lies in simply watching Gad and Rannells run riot, riff with each other, play with the audience, and just have a grand old time once again playing sweet, deluded dreamers...In the end, it’s not 'Gutenberg' the show but rather this odd coupling of comedic pals, both on stage and off, that delights. Hats off to them.\"",

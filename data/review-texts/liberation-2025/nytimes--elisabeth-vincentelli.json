@@ -9,43 +9,27 @@
   "dtliExcerpt": "If there is a show that can make the case for a Tony Award for best ensemble, it’s this one. White directs the actors like a conductor leading an orchestra: Each one gets to shine in at least one aria (or speech, in this case), but they also function as a multifaceted single organism onstage. When these women talk, we want to hear every word.",
   "showScoreExcerpt": "\"The miracle of this play is that the circle feels as if it is extending to embrace us all.\"",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 81,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 84,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 82,
-      "high": 87
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 83,
+      "book": null,
       "music": null,
-      "performances": 87,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "spending time in their company is also an unadulterated pleasure",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "If there is a show that can make the case for a Tony Award for best ensemble, it's this one",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "But this is a rare dissonance in a production that just percolates",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic consistently praises the ensemble work, direction, and writing with enthusiasm, highlighting the production's humor, pacing, and emotional impact, with only minor criticism about one scene.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic consistently praises the production with enthusiasm, calling it a 'miracle,' highlighting the cast's exceptional ensemble work, and noting only minor missteps while emphasizing the show's sustained quality and emotional impact. | Gemini: The review is overwhelmingly positive, highlighting the strong performances, direction, and writing. While there are minor criticisms, the overall tone suggests a recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,27 +38,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:28:13.186Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3983,
-    "outputTokens": 346,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:56:54.691Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 84,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "archivePath": "data/archives/reviews/liberation-2025/nytimes--elisabeth-vincentelli_2026-01-26.html",
   "textFetchedAt": "2026-01-26T15:45:48.093Z",

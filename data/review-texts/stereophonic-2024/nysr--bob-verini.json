@@ -16,35 +16,19 @@
     "score": 95,
     "confidence": "high",
     "range": {
-      "low": 92,
-      "high": 98
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
-      "music": 88,
-      "performances": 92,
-      "direction": 95
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "hyperrealistic triumph that is Stereophonic",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "You won't see more assured direction this year, I feel sure of it",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "quite simply terrific",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Five-star review with unqualified superlatives like 'triumph' and 'terrific,' plus the bold prediction that this will be the year's best direction, indicating an absolute rave.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic gives 5/5 stars and uses superlative language throughout, calling it a 'hyperrealistic triumph' that is 'quite simply terrific' with 'the most assured direction this year.' The overwhelmingly positive tone and explicit recommendation make this a clear rave. | Gemini: The review is overwhelmingly positive, using words like \"triumph\" and \"terrific.\" The critic also gave the show a 5/5 rating, indicating a very strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +37,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:11:23.002Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3541,
-    "outputTokens": 332,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:06:35.315Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
+    "claudeScore": 95,
+    "openaiScore": null,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "bwwThumb": "Up",
   "sources": [

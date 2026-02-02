@@ -30,61 +30,55 @@
   ],
   "textStatus": "partial",
   "sourceMethod": "playwright",
-  "assignedScore": 78,
+  "assignedScore": 80,
   "llmScore": {
-    "score": 78,
+    "score": 80,
     "confidence": "high",
     "range": {
       "low": 75,
-      "high": 82
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 68,
-      "music": 82,
-      "performances": 85,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "do expect a titanic amount of pure joy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's best just to grab your friends, grab some drinks (the show sells them in buckets), and just get on board",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "if you just let it wash over you, you'll have a boatload of fun",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite cautioning against high art expectations, the critic enthusiastically recommends the show for its infectious joy, strong performances, and pure entertainment value.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show despite acknowledging it's not high art, praising the cast's Broadway-grade talent and infectious enthusiasm while advising audiences to embrace the campy fun. | GPT-4o: The review describes the show as a joyful, fun experience with strong performances and an infectious enthusiasm. The critic clearly recommends seeing it for a good time, despite it not being 'high art.' | Gemini: The review explicitly states that audiences will have a \"boatload of fun\" and recommends grabbing friends and drinks to \"get on board.\" While acknowledging the campy nature and potential limitations, the overall tone is positive and encouraging.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:14:54.352Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3218,
-    "outputTokens": 342,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:23.639Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "complete",
-  "contentTierReason": "Full review text"
+  "contentTierReason": "Full review text",
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

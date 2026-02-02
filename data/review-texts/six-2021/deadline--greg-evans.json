@@ -8,73 +8,58 @@
   "fullText": "The cast of 'Six' Joan Marcus Gallows humor – and after the last 18 months, can there be any other kind? – is in exuberant form at Broadway ‘s Brooks Atkinson Theatre, where the terrific new musical Six just had its long-in-coming opening night. Originally set to open on March 12, 2020 – Covid had other plans – Six and its sextet of singing, dancing queens has lost none of its vitality and charm over the ensuing months of darkness. If anything, the musical seems even more joyous for the time away. Take that, virus. As unlikely a musical as the one with dancing cats, and, if Broadway stays healthy fiscally and otherwise, potentially as durable, Six mashes together history’s most compelling marriage stories with the brightest musical styles streaming today. blogherads.adq.push(function () { blogherads .defineSlot( 'medrec', 'gpt-dsk-tab-mid-article1-uid0' ) .setTargeting( 'pos', [\"mid-article1\",\"mid\",\"mid-articleX\",\"mid-article\",\"300x251\"] ) .setTargeting( 'viewable', 'yes' ) .setSubAdUnitPath(\"ros\\/mid-article\") .addSize([[2,2],[300,250],[620,350],[300,251],[501,282],[3,3],[2,4],[4,2],[620,366]]) .exemptFromSleep() .setClsOptimization(\"minsize\") ; }); Related Stories Casting 'Just In Time': Jeremy Jordan To Succeed Jonathan Groff As Broadway's Bobby Darin",
   "showScoreExcerpt": "\"Somehow managing to seem loose and improvisational without missing a beat, the cast (backed by a hard-rocking all-female four-piece band called The Ladies in Waiting) is pretty much flawless, one as good as the next and each distinguishing herself when the time comes.\"",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 78,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:08:04.998Z",
   "bwwExcerpt": "Introducing themselves by both name and fate - \"Divorced, beheaded, died, divorced, beheaded, survived!\", they chant-sing - the wives, dressed in glitzy, geometric dresses that recall the space-glam flourishes of Lady Marmalade-era LaBelle, take the stage in a non-stop high-energy avalanche of sound...",
   "llmScore": {
-    "score": 85,
-    "confidence": "low",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 90
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 90,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the cast is pretty much flawless",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "one as good as the next and each distinguishing herself when the time comes",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "managing to seem loose and improvisational without missing a beat",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "High praise for cast and band with superlatives like 'flawless' suggests strong positive recommendation, but excerpt is too brief to assess overall show quality.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt praises the cast as 'flawless' and highlights strong musical accompaniment, indicating a positive assessment. However, this is only a performance-focused excerpt from a larger review, so confidence is medium. | GPT-4o: The review excerpt praises the cast as 'pretty much flawless' and highlights the seamless performance, suggesting a highly positive view. The lack of full context lowers confidence slightly, but the language is strongly positive. | Gemini: The review excerpt focuses on the exceptional quality of the cast and band, suggesting a positive experience overall. The phrase \"pretty much flawless\" indicates a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:06:24.984Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2364,
-    "outputTokens": 325,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:39:17.926Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": 88,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "textIssue": "truncated",
   "sourceMethod": "stub",

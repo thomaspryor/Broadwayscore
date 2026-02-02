@@ -10,45 +10,29 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 94,
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "is a knockout show, as hilarious as it is cutting and as emotionally warmhearted as it is politically potent",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "supremely well-toned revival",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Magnificent, if there is any justice in the world",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Critic uses superlative language ('knockout show', 'magnificent', 'supremely well-toned') with multiple dimensions of praise and clear enthusiasm for both the production and performances.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses overwhelmingly enthusiastic language throughout, calling it a 'knockout show,' 'magnificent,' and praising virtually every aspect of the production from direction to design to performances. | GPT-4o: The review is overwhelmingly positive, praising the direction, performances, and the show's ability to engage and entertain a diverse audience. The critic uses strong language such as 'knockout show' and 'beautiful,' indicating a highly enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"knockout show\", \"hilarious\", and \"emotionally warmhearted\". The critic praises the direction, performances, and design, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,27 +41,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:54:22.170Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2685,
-    "outputTokens": 349,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:42.321Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 89,

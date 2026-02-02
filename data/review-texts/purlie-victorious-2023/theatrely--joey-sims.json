@@ -9,71 +9,55 @@
   "bwwExcerpt": "It is also one of few moments when this revival of Ossie Davis’ razor-sharp satire Purlie Victorious (A Non-Confederate Romp Through the Cotton Patch) fully comes to life. Back on Broadway for the first time since its historic 1961 premiere, Davis’ play has lost little of its bite. But under an ill-suited Kenny Leon’s direction, it has received an unevenly paced and tonally confused production that never finds the same delightful boldness as Young’s performance.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 58,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 62
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 72,
+      "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 42
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "an unevenly paced and tonally confused production that never finds the same delightful boldness as Young's performance",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It is a riotously hilarious scene and a showcase for two-time Tony-nominee Young's genius delivery and masterful physical humor",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "while the play still essentially works, it loses a lot of laughs as a result",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises Kara Young's performance and the source material but criticizes the direction as 'ill-suited' and 'tonally confused,' resulting in a production that 'still essentially works' but fails to reach its potential.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic praises Kara Young's performance and acknowledges the play's inherent quality, but criticizes the direction as 'ill-suited' and 'tonally confused,' finding the production 'unevenly paced' with only occasional moments of success. | Gemini: The review praises Kara Young's performance and the play's writing, but criticizes the direction and pacing, leading to an overall mixed assessment. It highlights moments of brilliance but notes inconsistencies in the production.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:55:58.477Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3786,
-    "outputTokens": 380,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:34.980Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 45,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "Back on Broadway for the first time since its historic 1961 premiere, Davis’ play has lost little of its bite. But under an ill-suited Kenny Leon’s direction, it has received an unevenly paced and tonally confused production that never finds the same delightful boldness as Young’s performance.",

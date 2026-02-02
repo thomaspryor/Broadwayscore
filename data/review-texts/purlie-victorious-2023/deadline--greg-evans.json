@@ -8,64 +8,56 @@
   "bwwExcerpt": "Long before Slave Play, decades before Ain’t No Mo, there was Purlie Victorious, the Ossie Davis comedy masterwork that, like those descendant plays, fused broad comedy, satirical minstrelsy, racial satire and still-relevant social commentary to create a play that is so encompassing in its views of history and legacy, so generous in its humanity and pinpoint sharp in its take on debts long owed and now demanded that Kenny Leon’s revival, opening tonight on Broadway, feels as current and bracing",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 91,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "magnificent Leslie Odom, Jr., in the title role",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "urgent – and, oh yes, very, very funny – revival",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "top-notch creative team",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Consistent superlative praise for performances ('magnificent', 'equally fine', 'enchanting') and production ('urgent', 'very, very funny', 'top-notch') with no caveats or criticisms mentioned. | GPT-4o-mini: The review highlights strong performances and a humorous revival, indicating a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises performances as 'magnificent' and 'equally fine' and describes the revival as 'urgent' and 'very, very funny', indicating clear recommendation despite limited excerpt text. | GPT-4o: The review highlights exceptional performances and describes the revival as 'urgent' and 'very, very funny,' indicating a strong recommendation. The use of 'magnificent' and 'top-notch' suggests a highly positive assessment. | Gemini: The review excerpt praises the performances and the revival, indicating a positive recommendation. The aggregator context also suggests a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:04:51.998Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:59.681Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 88,
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Starring a magnificent Leslie Odom, Jr., in the title role, and featuring equally fine performances by an enchanting Kara Young, Billy Eugene Jones, Vanessa Bell Calloway and more, Purlie Victorious – full title (and one of the few signifiers of its 1961-era creation): Purlie Victorious: A Non-Confederate Romp Through the Cotton Patch – has been given an urgent – and, oh yes, very, very funny – revival by Leon and his top-notch creative team.",

@@ -9,64 +9,56 @@
   "bwwExcerpt": "As they become younger, Frank, Charley, and Mary de-age into starry-eyed dreamers who swear to keep their flames lit forever. But roads bend and dreams will shapeshift over the years due to realities and unheeded follies. A good production of 'Merrily We Roll Along' ensures that the stargazing 'Our Time' finale packs that wallop. Embracing its newly acquired Broadway scope, the musical concludes with stars blazing upon the ceiling of the Hudson Theatre. Only by reflecting upon the old times can",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 85,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 82,
-      "high": 88
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
-      "music": 85,
-      "performances": 90,
-      "direction": 82
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The chemistry between Groff, Radcliffe, and Mendez is easy wind in the sails",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Friedman's grounded approach hits the right notes with Sondheim's chromatic lyricism, singing a tune that feels universal on many wavelengths",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "not one second in this musical registers as a cynical exercise",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The reviewer consistently praises the performances, direction, and emotional impact while acknowledging script limitations, ultimately celebrating this production as a successful realization of challenging material.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite opening with extensive historical context about the original production's failure, the critic clearly recommends this revival. The review praises the performances, direction, and emotional impact while noting some script limitations, indicating a solid positive recommendation. | Gemini: The review acknowledges potential issues for die-hard fans but ultimately praises the production's grounded approach and the chemistry of the leads, indicating a positive but not ecstatic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:36:08.824Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4343,
-    "outputTokens": 360,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:40.002Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 79,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  },
   "bwwThumb": "Up",
   "rescoreReason": "low-conf: prompt=3.0.0, delta=25, upgrading to V5 + 3 models",
   "previousLlmScore": 68,
