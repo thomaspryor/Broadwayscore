@@ -338,6 +338,7 @@ export class EnsembleReviewScorer {
           const kq = ensembleResult.modelResults.claude?.keyQuote
             || ensembleResult.modelResults.openai?.keyQuote
             || ensembleResult.modelResults.gemini?.keyQuote
+            || ensembleResult.modelResults.kimi?.keyQuote
             || '';
           return kq.length > 20 ? [{ quote: kq, sentiment: 'neutral' as const, strength: 3 }] : [];
         })(),
