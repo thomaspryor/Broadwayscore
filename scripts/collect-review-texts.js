@@ -809,8 +809,8 @@ async function loginToSite(domain, email, password) {
       await emailInput.type(email, { delay: 30 });
       await page.waitForTimeout(500);
 
-      // Click "Continue" button (WSJ uses "Continue" not "Submit")
-      const continueBtn = await page.$('button:has-text("Continue"), button:has-text("Sign In"), button[type="submit"]');
+      // Click "Continue" button (WSJ uses "Continue" not "Submit" on email step)
+      const continueBtn = await page.$('button:has-text("Continue"), button[type="submit"]');
       if (continueBtn) {
         await continueBtn.click();
       } else {
@@ -825,8 +825,8 @@ async function loginToSite(domain, email, password) {
         await passInput.type(password, { delay: 30 });
         await page.waitForTimeout(500);
 
-        // Click Continue/Sign In for password step
-        const signInBtn = await page.$('button:has-text("Continue"), button:has-text("Sign In"), button[type="submit"]');
+        // Click Sign In for password step (prefer "Sign In" over "Continue" to avoid re-clicking email step)
+        const signInBtn = await page.$('button:has-text("Sign In"), button:has-text("Continue"), button[type="submit"]');
         if (signInBtn) {
           await signInBtn.click();
         } else {
@@ -839,21 +839,22 @@ async function loginToSite(domain, email, password) {
         return false;
       }
 
-      // Verify: check if redirected away from login (both old and new URLs)
+      // Verify: check if redirected away from SSO domain (hostname-based)
       const postUrl = page.url();
-      const leftLogin = !postUrl.includes('accounts.wsj.com/login') && !postUrl.includes('accounts.dowjones.com/login');
-      const hasError = await page.$('[class*="error"], [class*="Error"], .message--error').catch(() => null);
+      const postHost = new URL(postUrl).hostname;
+      const leftSso = !postHost.includes('accounts.dowjones.com') && !postHost.includes('accounts.wsj.com');
+      const hasError = await page.$('.error-message, [class*="error-text"], [role="alert"][class*="error"], .message--error').catch(() => null);
 
       if (hasError) {
         const errorText = await hasError.textContent().catch(() => '');
         console.log(`    ✗ WSJ login FAILED (error: ${errorText.substring(0, 80)})`);
         return false;
       }
-      if (leftLogin) {
-        console.log('    ✓ WSJ login verified (left login page)');
+      if (leftSso) {
+        console.log('    ✓ WSJ login verified (left SSO domain)');
         return true;
       }
-      console.log('    ⚠ WSJ login uncertain (still on login page) - continuing anyway');
+      console.log('    ⚠ WSJ login uncertain (still on SSO domain) - continuing anyway');
       return true;
     }
 
@@ -917,7 +918,7 @@ async function browserbaseLogin(bbPage, domain, email, password) {
         type: i.type, name: i.name, id: i.id, placeholder: i.placeholder,
       }));
       const buttons = Array.from(document.querySelectorAll('button')).map(b => b.textContent?.trim().substring(0, 30));
-      const errorMsg = document.querySelector('[class*="error"], [class*="alert"], [role="alert"]');
+      const errorMsg = document.querySelector('.error-message, [class*="error-text"], [role="alert"][class*="error"], .message--error');
       return { title: document.title, inputs, buttons, error: errorMsg?.textContent?.trim() };
     });
     console.log(`    → WSJ page title: "${pageInfo.title}"`);
@@ -945,7 +946,7 @@ async function browserbaseLogin(bbPage, domain, email, password) {
     await emailInput.type(email, { delay: 30 });
     await bbPage.waitForTimeout(500);
 
-    const continueBtn = await bbPage.$('button:has-text("Continue"), button:has-text("Next"), button:has-text("Sign In"), button[type="submit"]');
+    const continueBtn = await bbPage.$('button:has-text("Continue"), button:has-text("Next"), button[type="submit"]');
     if (continueBtn) {
       console.log(`    → Clicking continue/sign-in button...`);
       await continueBtn.click();
@@ -968,7 +969,7 @@ async function browserbaseLogin(bbPage, domain, email, password) {
       const postEmailUrl = bbPage.url();
       const postEmailInfo = await bbPage.evaluate(() => {
         const inputs = Array.from(document.querySelectorAll('input')).map(i => ({ type: i.type, name: i.name }));
-        const errorMsg = document.querySelector('[class*="error"], [class*="alert"], [role="alert"]');
+        const errorMsg = document.querySelector('.error-message, [class*="error-text"], [role="alert"][class*="error"], .message--error');
         return { inputs, error: errorMsg?.textContent?.trim() };
       });
       console.log(`    ✗ WSJ login FAILED (no password field found)`);
