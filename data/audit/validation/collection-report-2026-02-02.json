@@ -1,97 +1,113 @@
 {
-  "runDate": "2026-02-02T05:11:23.491Z",
+  "runDate": "2026-02-02T05:16:30.782Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "wicked-2003",
+    "showFilter": "oh-mary-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
+    "processed": 3,
     "failed": 7,
     "skipped": 0,
-    "successRate": "22.2%"
+    "successRate": "30.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 3
+    "brightdata": 2,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 1,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 13,
+    "tier1Success": 3,
+    "tier1_5Attempts": 5,
     "tier1_5Success": 1,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier4Attempts": 10,
-    "tier4Success": 5,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 12,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 0,
+    "tier2Attempts": 7,
+    "tier2Success": 1,
+    "tier3Attempts": 4,
+    "tier3Success": 3,
+    "tier4Attempts": 12,
+    "tier4Success": 1,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 55,
+    "browserbaseSessionsUsed": 5,
+    "browserbaseMinutesUsed": 3.1,
+    "urlDiscoveryAttempts": 5,
+    "urlDiscoverySuccess": 5,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/observer--rex-reed.json"
+    "oh-mary-2024/nytimes--jesse-green.json",
+    "oh-mary-2024/deadline--greg-evans.json",
+    "oh-mary-2024/ew--christian-holub.json"
   ],
   "failed": [
-    "wicked-2003/variety--charles-isherwood.json",
-    "wicked-2003/ew--lisa-schwarzbaum.json",
-    "wicked-2003/timeout--david-cote.json",
-    "wicked-2003/wsj--terry-teachout.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/frontmezzjunkies--unknown.json",
-    "wicked-2003/njcom-star-ledger--michael-sommers.json"
+    "oh-mary-2024/hollywood-reporter--angie-han.json",
+    "oh-mary-2024/hollywood-reporter--david-rooney.json",
+    "oh-mary-2024/variety--aramide-tinubu.json",
+    "oh-mary-2024/vulture--helen-shaw.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "oh-mary-2024/guardian--adrian-horton.json",
+    "oh-mary-2024/nydailynews--chris-jones.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "oh-mary-2024/deadline--greg-evans.json",
+      "oh-mary-2024/ew--christian-holub.json"
+    ],
     "browserbase": [
-      "data/review-texts/wicked-2003/observer--rex-reed.json",
-      "wicked-2003/observer--rex-reed.json"
+      "data/review-texts/oh-mary-2024/nytimes--jesse-green.json",
+      "oh-mary-2024/nytimes--jesse-green.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "oh-mary-2024/hollywood-reporter--angie-han.json",
+      "oh-mary-2024/hollywood-reporter--david-rooney.json"
+    ],
     "archive": [
-      "wicked-2003/nytimes--charles-isherwood.json",
-      "wicked-2003/ew--alice-king.json",
-      "wicked-2003/variety--charles-isherwood.json"
+      "oh-mary-2024/variety--aramide-tinubu.json"
     ]
   },
   "failuresByOutlet": {
-    "Entertainment Weekly": {
+    "New York Daily News": {
       "count": 1,
-      "domain": "ew.com",
+      "domain": "nydailynews.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NJ.com": {
-      "count": 1,
-      "domain": "wickedthemusical.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+      "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "oh-mary-2024/hollywood-reporter--angie-han.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-broadway-review-1235943706/",
+      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/"
+    },
+    {
+      "reviewId": "oh-mary-2024/vulture--helen-shaw.json",
+      "oldUrl": "https://www.vulture.com/article/oh-mary-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html"
+    },
+    {
+      "reviewId": "oh-mary-2024/ew--christian-holub.json",
+      "oldUrl": "https://ew.com/oh-mary-broadway-review-cole-escola/",
+      "newUrl": "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908?srsltid=AfmBOoqowr6i0HwFgvZ_qZKr-djjulpYw8RB1rZvnpV8xAd5K5aM3n1j"
+    },
+    {
+      "reviewId": "oh-mary-2024/guardian--adrian-horton.json",
+      "oldUrl": "https://www.theguardian.com/stage/2024/jul/11/oh-mary-broadway-review",
+      "newUrl": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway"
+    },
+    {
+      "reviewId": "oh-mary-2024/nydailynews--chris-jones.json",
+      "oldUrl": "https://www.nydailynews.com/2024/07/11/oh-mary-broadway-review/",
+      "newUrl": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/"
+    }
+  ]
 }
