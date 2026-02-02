@@ -72,13 +72,19 @@
   "wordCount": 1260,
   "isFullReview": false,
   "textWordCount": 82,
-  "archivePath": "data/archives/reviews/an-enemy-of-the-people-2024/variety--daniel-d--8217-addario_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T21:19:46.215Z",
+  "archivePath": "data/archives/reviews/an-enemy-of-the-people-2024/variety--daniel-d--8217-addario_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T01:20:58.892Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
       "success": true
     }
   ],
@@ -90,5 +96,6 @@
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260101011754",
-  "archiveOrgUrl": "http://web.archive.org/web/20260101011754/https://variety.com/2024/legit/news/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/"
+  "archiveOrgUrl": "http://web.archive.org/web/20260101011754/https://variety.com/2024/legit/news/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/",
+  "needsRescore": true
 }

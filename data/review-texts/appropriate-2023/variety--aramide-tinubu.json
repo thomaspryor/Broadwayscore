@@ -75,13 +75,19 @@
   "wordCount": 674,
   "isFullReview": false,
   "textWordCount": 152,
-  "archivePath": "data/archives/reviews/appropriate-2023/variety--aramide-timubu_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T21:21:53.322Z",
+  "archivePath": "data/archives/reviews/appropriate-2023/variety--aramide-timubu_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T01:28:40.062Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
       "success": true
     }
   ],

@@ -62,19 +62,37 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
-  "archivePath": "data/archives/reviews/appropriate-2023/hollywood-reporter--lovia-gyarkye_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T21:21:50.112Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/appropriate-2023/hollywood-reporter--lovia-gyarkye_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T01:26:10.486Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "timeout of 30000ms exceeded"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "truncationSignals": [],
-  "sourceMethod": "archive",
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20250213100804",
   "archiveOrgUrl": "http://web.archive.org/web/20250213100804/https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/",
   "textQualityOverride": "batch-fix-2026-01-30",

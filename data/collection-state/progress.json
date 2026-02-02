@@ -1,25 +1,35 @@
 {
   "processed": [
-    "chess-2025/theatermania--unknown.json",
-    "chess-2025/timeout--adam-feldman.json"
+    "an-enemy-of-the-people-2024/variety--daniel-dand8217addario.json",
+    "cabaret-2024/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
-    "chess-2025/nytg--unknown.json",
-    "chess-2025/wsj--charles-isherwood.json",
-    "chess-2025/wsj--christopher-isherwood.json"
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "an-enemy-of-the-people-2024/hollywood-reporter--david-rooney.json",
+    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+    "an-enemy-of-the-people-2024/vulture--jesse-green.json",
+    "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+    "appropriate-2023/variety--aramide-tinubu.json",
+    "appropriate-2023/vulture--jesse-green.json",
+    "book-of-mormon-2011/variety--marilyn-stasio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "aladdin-2014/hollywood-reporter--david-rooney.json",
+      "cabaret-2024/nyt-theater--jonathan-mandell.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "chess-2025/theatermania--unknown.json"
+      "an-enemy-of-the-people-2024/hollywood-reporter--david-rooney.json",
+      "appropriate-2023/hollywood-reporter--lovia-gyarkye.json"
     ],
     "archive": [
-      "chess-2025/timeout--adam-feldman.json"
+      "an-enemy-of-the-people-2024/variety--daniel-dand8217addario.json",
+      "appropriate-2023/variety--aramide-tinubu.json"
     ]
   },
-  "startTime": "2026-02-02T01:08:20.609Z",
-  "lastProcessed": "chess-2025/wsj--christopher-isherwood.json"
+  "startTime": "2026-02-02T01:11:40.656Z",
+  "lastProcessed": "cabaret-2024/nyt-theater--jonathan-mandell.json"
 }
