@@ -47,7 +47,8 @@ function extractLetterGrade(text) {
   }
 
   // Check for "Grade: B" or "Rating: B+" patterns
-  const explicitMatch = text.match(/(?:grade|rating|score)[:\s]+([A-D][+-]?|F)\b/i);
+  // "grade" requires colon (idiom: "Grade B" = mediocre); "score" excluded (theater: musical score)
+  const explicitMatch = text.match(/(?:grade:\s*|rating[:\s]+)([A-D][+-]?|F)(?!\w)/i);
   if (explicitMatch) {
     const grade = explicitMatch[1].toUpperCase();
     return { grade, score: LETTER_TO_SCORE[grade] };
