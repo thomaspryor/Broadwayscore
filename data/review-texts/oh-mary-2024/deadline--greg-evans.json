@@ -61,47 +61,41 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/oh-mary-2024/deadline--greg-evans_2026-01-27.html",
-  "textFetchedAt": "2026-01-27T01:42:45.137Z",
-  "fetchMethod": "archive",
+  "sourceMethod": "playwright",
+  "archivePath": "data/archives/reviews/oh-mary-2024/deadline--greg-evans_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T05:14:31.933Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
-      "success": false,
-      "error": "CAPTCHA or access blocked"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": false,
-      "error": "Access blocked in Bright Data response"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 1,
   "archiveOrgTimestamp": "20260121174231",
   "archiveOrgUrl": "http://web.archive.org/web/20260121174231/https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"Oh, Mary! is a deliriously campy take on that well-known House Divided. A couple houses, in fact.\"",
-  "rescoreReason": "fullText significantly longer than excerpt used for scoring",
-  "previousLlmScore": 92,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 74,
   "rescoreCompletedAt": "2026-01-29T14:31:51.925Z",
   "garbageFullText": "There’s funny, there’s very funny, and then there’s Oh, Mary!, Cole Escola's riotous new comedy that brings more laughs to Broadway than all the Gutenberg!s, Edelmans and Birbiglias combined. You can throw in Shucked for good measure.\n\nEscola, low-key famous these last few years through YouTube videos, late night appearances and gigs for TV’s The Other Two and Difficult People, ups the career stakes immensely with Oh, Mary!, opening tonight at Broadway’s Lyceum Theatre. With nods and hints to Charles Busch, the late, great and forever Ridiculous Everett Quinton, the Sedaris siblings, Carol Burnett, Pee-wee Herman and Absolutely Fabulous, Escola squeezes just enough juice from their influences for a mix that is entirely fresh and not to be missed.\n\n\t\n\t\t\t\t\t\n\t\t\t\t\n\n\t\n\t\t\n\t\n\n\t\t\t\n\t\t\t\t\n\n\n\t\n\n\n\t\n\t\n\t\t\n\t\t\t\t\tRelated Stories\t\t\n\t\n\n\t\n\t\t\t\t\t\n\n\n\t\t\t\n\t\n\t\n\t\t\t\t\t\n\n\t\n\t\t\t\n\t\n\t\t\t\t\t\t\n\t\t\t\n\t\t\t\n\t\n\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\n\t\t\n\t\t\n\t\t\n\t\t\t\t\t\n\n\t\n\n\tNews\n\t\n\n\t\t\n\t\t\t\t\t\n\n\n\t\n\t\t\t\n\t\n\t\t\n\t\t\t\t\tBroadway Hit 'Oh, Mary!' Will Launch U.S. Tour This Fall, Casting To Be Announced\t\t\n\t\t\t\n\t\n\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\t\n\n\t\t\n\t\n\n\t\t\t\t\t\t\t\n\n\n\t\t\t\n\t\n\t\n\t\t\t\t\t\n\n\t\n\t\t\t\n\t\n\t\t\t\t\t\t\n\t\t\t\n\t\t\t\n\t\n\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\n\t\t\n\t\t\n\t\t\n\t\t\t\t\t\n\n\t\n\n\tCasting\n\t\n\n\t\t\n\t\t\t\t\t\n\n\n\t\n\t\t\t\n\t\n\t\t\n\t\t\t\t\tMark Consuelos To Make Broadway Debut In 'Fallen Angels' With Rose Byrne & Kelli O'Hara; Aasif Mandvi, Christopher Fitzgerald & Tracee Chimo Also Join Cast\n\nFollowing its acclaimed and sold-out Off Broadway engagement at the Lucille Lortel Theatre, Oh, Mary!, directed by Sam Pinkleton without so much as a split second wasted, arrives on Broadway with its fearless queerness and brash vulgarity fully intact. Yes, this 80-minute, low-tech production carries Broadway ticket prices, but that fact should stick in the craw only until its dislodged by the first guffaw.\n\n\n\n\t\t\t\n\t\t\tWatch on Deadline\n\nWith Escola draped in Mary Todd Lincoln’s famous black gown and ringlet hair,  Oh, Mary! is a deliriously campy take on that well-known House Divided. A couple houses, in fact.\n\nWhen we first set eyes on Mary, she’s gone absolutely feral in search of the bottle her husband has hidden from her. “No one is safe while my wife has access to booze,” Abraham (Conrad Ricamora, Fire Island, Broadway’s Here Lies Love) says to his ever-present Union soldier assistant (Tony Macht). “The last time this happened she scaled a clock tower, derailed a freight train, and took a piss all over the senate floor.”\n\nFor her part, the self-absorbed Mary insists she wouldn’t need to drink if she wasn’t so damned bored. “Our country is at war!,” says her incredulous chaperone Louise. “Thousands are being ravaged by typhoid. Your own son perished just last year!”\n\nSnaps Mary, “It's no use trying to make me laugh, Louise.”\n\nEven if she isn’t quite sure what all the national fuss is about, Mary is counting the days till Abe (and post-war decorum) permits her return to her one true love: the stage. She once was, she brags, “a rather well-known niche cabaret legend.”\n\nSays she, \"People traveled the world over for my short legs and long medleys!\"\n\nTo keep her preoccupied and off the hooch, Abe promises Mary that once the war is over she can return to the stage, but only legitimate theater, and only if she takes acting lessons in the meantime. In fact, Abe’s hired her a teacher already, a handsome mustachioed young actor (James Scully, Fire Island) in need of work.\n\nBefore long, Mary and the teacher are besotted with one another, at least as much as Abe is besotted with that young soldier (somewhere Larry Kramer is smiling).\n\nTo reveal much more of the plot would risk spoilers and rob Escola’s whiplash storyline of its great pleasures. A few teases: Watch for the moments when Mary gleefully torments her prim chaperone (Bianca Leigh) with all manner of indignities, especially the betrayal of a lewd confidence involving the application of ice cream somewhere between kneecaps and heaven.\n\nOr watch as Mary repeatedly attempts to restrain herself from interrupting her blowhard husband in an extended back-and-forth of flawless comic timing. While Escola is the no-doubt-about-it star here, the rest of the impeccable cast keeps pace, from Ricamora as the only-sometimes repressed Abe to Scully as the lovesick hunk, Leigh as the hardly prissy chaperone and Macht as the not-so-dumb presidential boytoy.\n\nThe rest of the creative team is on point, too: the great scenic design collective known as dots has fashioned a look that delights in community theater aesthetics – until it doesn’t – and Holly Pierson’s period costumes are a joy, particularly Mary’s black hoop skirt that twirls like it has an engine (the better to see Mary’s heart-dotted bloomers). No matter that you’ll come to expect those skirt twirls at regular intervals – like everything else in Oh, Mary!, it’s all in the timing.\n\nOr as Mary says when asked by Abe how it would look for the first lady to be flitting around a stage in the ruins of war, \"Sensational!\"\n\nTitle: Oh, Mary!Venue: Broadway's Lyceum Theatre (through Sept. 15)Written By: Cole EscolaDirected By: Sam PinkletonCast: Cole Escola, Conrad Ricamora, James Scully, Bianca Leigh, Tony MachtRunning time: 1 hr 20 min (no intermission)\n\nGet our Breaking News Alerts and Keep your inbox happy.\n\nDeadline is a part of Penske Media Corporation. © 2026 Deadline Hollywood, LLC. All Rights Reserved.",
   "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
   "garbageFixedAt": "2026-01-29T22:45:23.053Z",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "fullText": "The runaway First Family spoof continues its agenda of delirious, deranged and undeniable fun on Broadway. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Oh, Mary!” Upon walking into the Lyceum Theatre for the new Broadway comedy “Oh, Mary!”, there’s a chance that you know little about its central character, former President Lincoln’s wife, other than her name: Mary Todd Lincoln. Walking out, you might know even less. That’s because Cole Escola’s wild hit, their first full-length play, is defiantly ahistorical. Escola, a proud ham and cabaret veteran, did not set out to make a damning political satire with “Oh, Mary!” The show, set against the backdrop of a nation mucking through war, disease and division, is exceedingly silly. President Lincoln calls on United States military generals to control his wife; Mary (played by Escola) is a booze-addicted slosh desperate to reignite a fledgling cabaret career; and nearly every person is queer and/or riddled with kink. Escola’s zany, imagined account of a major moment in American history — the play is specifically set in the leadup to Lincoln’s assassination — is a relief for anyone looking to have an intellect-less evening in the theater, though less satisfying for those who demand their comedy sit higher up the brow.",
+  "isFullReview": false,
+  "textWordCount": 227,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "textIssues": [
+    "Word count too low: 239 (min: 300)"
+  ],
+  "showNotMentioned": true,
+  "duplicateTextOf": "broadwaynews--brittani-samuel.json"
 }
