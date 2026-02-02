@@ -1,15 +1,33 @@
 {
-  "updatedAt": "2026-02-02T05:00:42.476Z",
-  "processed": 3,
-  "failed": 3,
+  "updatedAt": "2026-02-02T05:01:27.363Z",
+  "processed": 5,
+  "failed": 5,
   "successRate": "50.0%",
   "tierBreakdown": {
     "playwright": 3,
-    "browserbase": 0,
+    "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-02T04:57:54.037Z",
+      "event": "bb-session",
+      "session": "2db092cd",
+      "url": "https://www.newsday.com/news/new-york/theater-review-the-book-of-mormon-4-stars-"
+    },
+    {
+      "t": "2026-02-02T04:58:15.152Z",
+      "event": "bb-session",
+      "session": "56da6a30",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-02-02T04:58:43.565Z",
+      "event": "bb-login-uncertain",
+      "domain": "wsj.com"
+    }
+  ]
 }
