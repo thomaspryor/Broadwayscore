@@ -75,16 +75,14 @@
   "previousLlmScore": 94,
   "rescoreCompletedAt": "2026-02-01T16:11:38.905Z",
   "contentTier": "truncated",
-  "wordCount": 679,
+  "wordCount": 686,
   "truncationSignals": [
-    "no_ending_punctuation",
-    "has_read_more_prompt",
-    "shorter_than_excerpt"
+    "no_ending_punctuation"
   ],
   "isFullReview": true,
   "textWordCount": 686,
   "archivePath": "data/archives/reviews/stereophonic-2024/nytg--allison-considine_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:47:24.573Z",
+  "textFetchedAt": "2026-02-02T23:27:36.674Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -98,5 +96,6 @@
   "textStatus": "truncated",
   "archiveOrgTimestamp": "20251018082225",
   "archiveOrgUrl": "http://web.archive.org/web/20251018082225/https://www.newyorktheatreguide.com/reviews/stereophonic-broadway-review",
-  "duplicateTextOf": "hollywood-reporter--david-rooney.json"
+  "duplicateTextOf": "hollywood-reporter--david-rooney.json",
+  "tierReason": "Missing proper ending or other signals"
 }
