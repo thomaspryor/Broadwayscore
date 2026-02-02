@@ -4168,42 +4168,6 @@
     "timestamp": "2026-02-01T15:48:30.603Z"
   },
   {
-    "reviewId": "an-enemy-of-the-people-2024/deadline--greg-evans.json",
-    "showId": "an-enemy-of-the-people-2024",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/2024/03/enemy-of-the-people-broadway-review-1235860766/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
-    "textLength": 9225,
-    "timestamp": "2026-02-01T15:48:34.025Z"
-  },
-  {
-    "reviewId": "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
-    "showId": "an-enemy-of-the-people-2024",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/an-enemy-of-the-people-broadway-review-jeremy-strong-michael-imperioli",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 7536,
-    "timestamp": "2026-02-01T15:50:11.010Z"
-  },
-  {
-    "reviewId": "and-juliet-2022/timeout--adam-feldman.json",
-    "showId": "and-juliet-2022",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/and-juliet-broadway-musical-review-max-martin",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6574,
-    "timestamp": "2026-02-01T15:53:31.863Z"
-  },
-  {
     "reviewId": "appropriate-2023/deadline--greg-evans.json",
     "showId": "appropriate-2023",
     "outlet": "Deadline",
@@ -6340,18 +6304,6 @@
     "timestamp": "2026-02-02T02:22:35.517Z"
   },
   {
-    "reviewId": "and-juliet-2022/theatermania--jesse-green.json",
-    "showId": "and-juliet-2022",
-    "outlet": "TheaterMania",
-    "critic": "Jesse Green",
-    "url": "https://www.theatermania.com/broadway/reviews/juliet-broadway-review_92586.html",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 5326,
-    "timestamp": "2026-02-02T02:41:44.248Z"
-  },
-  {
     "reviewId": "back-to-the-future-2023/chelsea-community-news--michael-musto.json",
     "showId": "back-to-the-future-2023",
     "outlet": "Chelsea Community News",
@@ -6806,5 +6758,65 @@
     "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
     "textLength": 5906,
     "timestamp": "2026-02-02T08:17:26.843Z"
+  },
+  {
+    "reviewId": "an-enemy-of-the-people-2024/deadline--greg-evans.json",
+    "showId": "an-enemy-of-the-people-2024",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2024/03/enemy-of-the-people-broadway-review-1235860766/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
+    "textLength": 9310,
+    "timestamp": "2026-02-02T08:25:26.996Z"
+  },
+  {
+    "reviewId": "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
+    "showId": "an-enemy-of-the-people-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/an-enemy-of-the-people-broadway-review-jeremy-strong-michael-imperioli",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 7842,
+    "timestamp": "2026-02-02T08:26:22.503Z"
+  },
+  {
+    "reviewId": "an-enemy-of-the-people-2024/wsj--unknown.json",
+    "showId": "an-enemy-of-the-people-2024",
+    "outlet": "The Wall Street Journal",
+    "critic": "Unknown",
+    "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadway-michael-imperioli-sam-gold-ibsen-amy-herzog-6b1bb53e",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2024 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 850,
+    "timestamp": "2026-02-02T08:26:25.854Z"
+  },
+  {
+    "reviewId": "and-juliet-2022/theatermania--jesse-green.json",
+    "showId": "and-juliet-2022",
+    "outlet": "TheaterMania",
+    "critic": "Jesse Green",
+    "url": "https://www.theatermania.com/broadway/reviews/juliet-broadway-review_92586.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 5321,
+    "timestamp": "2026-02-02T08:26:40.200Z"
+  },
+  {
+    "reviewId": "and-juliet-2022/timeout--adam-feldman.json",
+    "showId": "and-juliet-2022",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/and-juliet-broadway-musical-review-max-martin",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 7799,
+    "timestamp": "2026-02-02T08:26:55.782Z"
   }
 ]
