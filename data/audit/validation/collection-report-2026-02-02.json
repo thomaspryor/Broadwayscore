@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-02-02T04:21:52.845Z",
+  "runDate": "2026-02-02T04:35:42.742Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 5,
+    "maxReviews": 3,
     "priority": "all",
     "showFilter": "uncle-vanya-2024",
     "aggressive": false,
@@ -11,45 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 3,
+    "processed": 1,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "40.0%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 2,
     "tier1Success": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 7,
-    "tier4Success": 3,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "tier4Attempts": 4,
+    "tier4Success": 1,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 1,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.6,
     "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "uncle-vanya-2024/variety--trish-deitch.json",
     "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "uncle-vanya-2024/variety--bob-verini.json",
-    "uncle-vanya-2024/vulture--helen-shaw.json",
-    "uncle-vanya-2024/deadline--greg-evans.json"
+    "uncle-vanya-2024/vulture--helen-shaw.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -57,7 +55,6 @@
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "uncle-vanya-2024/variety--trish-deitch.json",
       "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
     ]
   },
