@@ -1,53 +1,58 @@
 {
   "processed": [
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-    "harry-potter-2021/broadwayworld--michael-dale.json",
-    "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
-    "harry-potter-2021/exeunt-magazine--kev-berry.json",
-    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
-    "harry-potter-2021/medium--christian-lewis.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/the-times--ann-treneman.json",
-    "harry-potter-2021/washpost--peter-marks.json"
+    "here-lies-love-2023/hollywood-reporter--angie-han.json",
+    "here-lies-love-2023/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/theatermania--adam-feldman.json",
+    "here-lies-love-2023/wsj--charles-isherwood.json",
+    "here-lies-love-2023/ap--mark-kennedy.json"
   ],
   "failed": [
-    "harry-potter-2021/national-review--kyle-smith.json",
-    "harry-potter-2021/timeout--adam-feldman.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "here-lies-love-2023/nytimes--jesse-green.json",
+    "here-lies-love-2023/deadline--greg-evans.json",
+    "here-lies-love-2023/guardian--adrian-horton.json",
+    "here-lies-love-2023/timeout--adam-feldman.json",
+    "here-lies-love-2023/bergen-record--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-      "harry-potter-2021/exeunt-magazine--kev-berry.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-      "harry-potter-2021/the-times--ann-treneman.json",
-      "harry-potter-2021/washpost--peter-marks.json"
+      "here-lies-love-2023/guardian--adrian-horton.json",
+      "here-lies-love-2023/ap--mark-kennedy.json"
     ],
     "browserbase": [],
     "scrapingbee": [
-      "harry-potter-2021/limelight-magazine-au--clive-paget.json",
-      "harry-potter-2021/medium--christian-lewis.json"
+      "here-lies-love-2023/theatermania--adam-feldman.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "here-lies-love-2023/nytimes--jesse-green.json",
+      "here-lies-love-2023/deadline--greg-evans.json"
+    ],
     "archive": [
-      "harry-potter-2021/wsj--terry-teachout.json",
-      "harry-potter-2021/broadwayworld--michael-dale.json",
-      "harry-potter-2021/drama-queen-nyc--jonathan-warman.json"
+      "here-lies-love-2023/hollywood-reporter--angie-han.json",
+      "here-lies-love-2023/broadwaynews--brittani-samuel.json",
+      "here-lies-love-2023/wsj--charles-isherwood.json"
     ]
   },
-  "startTime": "2026-02-02T23:11:31.584Z",
-  "lastProcessed": "harry-potter-2021/zeal-nyc--chris-caggiano.json",
-  "log": []
+  "startTime": "2026-02-02T23:18:25.982Z",
+  "lastProcessed": "here-lies-love-2023/bergen-record--robert-feldberg.json",
+  "log": [
+    {
+      "t": "2026-02-02T23:19:33.487Z",
+      "event": "bb-session",
+      "session": "5e414556",
+      "url": "https://www.nytimes.com/2023/07/20/theater/here-lies-love-review-david-byrne.htm"
+    },
+    {
+      "t": "2026-02-02T23:20:22.456Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074388936\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAdTAGyjAHPAcANA1qtA==&cid=0CY3ZhYJX1nWnkRGdUpkhkmABRQSNgbstgZn_korWoqT12C6r41Q0BkmM4xd3L3Gp48nzp7yBE8qZqkE5SF4m0PTHCRohx_c7nO3hf4MClNStKB2mik51EZNJdp0m~Jk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074388936\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074388936\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAdTAGyjAHPAcANA1qtA==&cid=0CY3ZhYJX1nWnkRGdUpkhkmABRQSNgbstgZn_korWoqT12C6r41Q0BkmM4xd3L3Gp48nzp7yBE8qZqkE5SF4m0PTHCRohx_c7nO3hf4MClNStKB2mik51EZNJdp0m~Jk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074388936\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770074388936\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAdTAGyjAHPAcANA1qtA==&cid=0CY3ZhYJX1nWnkRGdUpkhkmABRQSNgbstgZn_korWoqT12C6r41Q0BkmM4xd3L3Gp48nzp7yBE8qZqkE5SF4m0PTHCRohx_c7nO3hf4MClNStKB2mik51EZNJdp0m~Jk&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770074388936\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n"
+    },
+    {
+      "t": "2026-02-02T23:27:44.451Z",
+      "event": "bb-session",
+      "session": "737e8881",
+      "url": "https://www.theatermania.com/broadway/reviews/here-lies-love_93847.html"
+    }
+  ]
 }
