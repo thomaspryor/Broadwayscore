@@ -13,8 +13,8 @@
   "contentTierReason": "No text content",
   "dtliThumb": "Meh",
   "dtliExcerpt": "In any case, “Once Upon a One More Time” is a dizzy but enjoyable goof, similar in many ways to “& Juliet.”",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "https://www.wsj.com/articles/once-upon-a-one-more-time-review-princesses-with-britney-spears-e1e61468\n\nThe company of ‘Once Upon a One More Time’ Matthew MurphySquint and you can see in “Once Upon a One More Time,” a musical built around a hefty playlist of Britney Spears songs, a parable about the tumultuous life of the pop star herself.\n\nMarquis Theatre, 210 W. 46th St., New York, $49-$159, ticketmaster.com\n\nThe show is not biographical, unlike many jukebox musicals. The plot weaves together the stories of various princesses from Grimm Brothers fairy tales. But the heroines undergo a spiritual awakening—thanks to a godmother’s gift of Betty Friedan’s “The Feminine Mystique”—and by the finale have taken control of their own stories, and set out to rewrite them.\n\nMuch, you might say, as Ms. Spears took back ownership of her own life, and finances, in 2021 after more than a decade under a conservatorship. Because the show was originally conceived and written before Ms. Spears’s legal victory, you might fancifully imagine that she took inspiration from the musical, and its book by Jon Hartmere, to galvanize her desire for self-empowerment. (It was apparently Ms. Spears who suggested the fairy-tale setting.)\n\nIn any case, “Once Upon a One More Time” is a dizzy but enjoyable goof, similar in many ways to “& Juliet.” That show offers an upbeat feminist rewrite of Shakespeare’s tragedy, set to songs (mostly) by Max Martin, who wrote some of Ms. Spears’s big hits. Broadway doom-watchers can now decry the fact that not one, not two, but three musicals on the boards feature songs made famous by Ms. Spears. (The third is “Moulin Rouge!,” although it contains only a smidgen.)",
+  "isFullReview": true,
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
@@ -67,5 +67,29 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 74,
+  "textWordCount": 266,
+  "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/wsj--charles-isherwood_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T16:33:44.312Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20251224094919",
+  "archiveOrgUrl": "http://web.archive.org/web/20251224094919/https://www.wsj.com/articles/once-upon-a-one-more-time-review-princesses-with-britney-spears-e1e61468",
+  "textIssues": [
+    "Word count too low: 285 (min: 300)"
+  ]
 }
