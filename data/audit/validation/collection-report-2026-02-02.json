@@ -72,5 +72,34 @@
       "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "Vulture": {
+      "count": 1,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "TheWrap": {
+      "count": 1,
+      "domain": "thewrap.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "amNewYork": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "moulin-rouge-2019/nydailynews--joe-dziemianowicz.json",
+      "oldUrl": "https://www.nydailynews.com/2019/07/25/moulin-rouge-broadway-review/",
+      "newUrl": "https://www.nydailynews.com/2019/07/25/review-broadways-moulin-rouge-the-musical-is-dazzling-decadent-live-translation-of-2001-movie/"
+    }
+  ]
 }

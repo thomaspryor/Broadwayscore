@@ -1,27 +1,39 @@
 {
-  "updatedAt": "2026-02-02T05:05:12.505Z",
-  "processed": 5,
-  "failed": 5,
-  "successRate": "50.0%",
+  "updatedAt": "2026-02-02T05:07:16.435Z",
+  "processed": 3,
+  "failed": 7,
+  "successRate": "30.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-02-02T04:59:27.868Z",
+      "t": "2026-02-02T05:01:26.081Z",
       "event": "bb-session",
-      "session": "0368c930",
-      "url": "https://www.nytimes.com/2023/06/14/theater/once-upon-a-one-more-time-review.html"
+      "session": "febbe7cf",
+      "url": "https://www.vulture.com/article/the-notebook-broadway-review.html"
     },
     {
-      "t": "2026-02-02T04:59:33.938Z",
+      "t": "2026-02-02T05:01:28.469Z",
       "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-02T05:05:34.965Z",
+      "event": "bb-session",
+      "session": "39d38858",
+      "url": "https://www.nydailynews.com/2024/03/14/broadway-review-the-notebook-is-an-unexpe"
+    },
+    {
+      "t": "2026-02-02T05:06:21.552Z",
+      "event": "bb-session",
+      "session": "7ea78948",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-notebook_93127.ht"
     }
   ]
 }

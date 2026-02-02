@@ -1,46 +1,58 @@
 {
   "processed": [
-    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
-    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+    "the-notebook-2024/nytimes--unknown.json",
+    "the-notebook-2024/broadwaynews--brittani-samuel.json",
+    "the-notebook-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
-    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
-    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
+    "the-notebook-2024/hollywood-reporter--david-rooney.json",
+    "the-notebook-2024/variety--frank-rizzo.json",
+    "the-notebook-2024/vulture--helen-shaw.json",
+    "the-notebook-2024/deadline--greg-evans.json",
+    "the-notebook-2024/nydailynews--chris-jones.json",
+    "the-notebook-2024/timeout--adam-feldman.json",
+    "the-notebook-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-      "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+      "the-notebook-2024/broadwaynews--brittani-samuel.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-notebook-2024/theatermania--jesse-green.json"
+    ],
     "brightdata": [],
     "archive": [
-      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
+      "the-notebook-2024/nytimes--unknown.json",
+      "the-notebook-2024/variety--frank-rizzo.json"
     ]
   },
-  "startTime": "2026-02-02T04:57:29.378Z",
-  "lastProcessed": "once-upon-a-one-more-time-2023/thestage--lane-williamson.json",
+  "startTime": "2026-02-02T04:57:26.696Z",
+  "lastProcessed": "the-notebook-2024/wsj--charles-isherwood.json",
   "log": [
     {
-      "t": "2026-02-02T04:59:27.868Z",
+      "t": "2026-02-02T05:01:26.081Z",
       "event": "bb-session",
-      "session": "0368c930",
-      "url": "https://www.nytimes.com/2023/06/14/theater/once-upon-a-one-more-time-review.html"
+      "session": "febbe7cf",
+      "url": "https://www.vulture.com/article/the-notebook-broadway-review.html"
     },
     {
-      "t": "2026-02-02T04:59:33.938Z",
+      "t": "2026-02-02T05:01:28.469Z",
       "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-02T05:05:34.965Z",
+      "event": "bb-session",
+      "session": "39d38858",
+      "url": "https://www.nydailynews.com/2024/03/14/broadway-review-the-notebook-is-an-unexpe"
+    },
+    {
+      "t": "2026-02-02T05:06:21.552Z",
+      "event": "bb-session",
+      "session": "7ea78948",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-notebook_93127.ht"
     }
   ]
 }
