@@ -62,13 +62,19 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 30,
-  "archivePath": "data/archives/reviews/spamalot-2023/variety--naveen-kumar_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:43:22.966Z",
+  "archivePath": "data/archives/reviews/spamalot-2023/variety--naveen-kumar_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:05:54.195Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 0,
-      "method": "archive-first",
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
       "success": true
     }
   ],
