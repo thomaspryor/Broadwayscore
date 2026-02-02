@@ -1,72 +1,90 @@
 {
-  "runDate": "2026-02-02T23:28:35.860Z",
+  "runDate": "2026-02-02T23:30:39.191Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "mother-play-2024",
+    "showFilter": "uncle-vanya-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 5,
+    "processed": 6,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "44.4%"
+    "successRate": "46.2%"
   },
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 2,
+    "browserbase": 2,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 4
+    "brightdata": 1,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 2,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier1Attempts": 7,
+    "tier1Success": 4,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 1,
+    "tier2Attempts": 4,
     "tier2Success": 1,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 7,
-    "tier4Success": 6,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
+    "tier4Attempts": 10,
+    "tier4Success": 4,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 31,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 1.2,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "mother-play-2024/nytimes--jesse-green.json",
-    "mother-play-2024/variety--aramide-tinubu.json",
-    "mother-play-2024/broadwaynews--brittani-samuel.json",
-    "mother-play-2024/theatermania--rachel-graham.json"
+    "uncle-vanya-2024/variety--bob-verini.json",
+    "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
+    "uncle-vanya-2024/observer--rex-reed.json",
+    "uncle-vanya-2024/theatermania--jesse-green.json",
+    "uncle-vanya-2024/ap--mark-kennedy.json",
+    "uncle-vanya-2024/exeunt-nyc--cameron-kelsall.json"
   ],
   "failed": [
-    "mother-play-2024/new-york-sun--elysa-gardner.json",
-    "mother-play-2024/timeout--adam-feldman.json",
-    "mother-play-2024/wsj--charles-isherwood.json",
-    "mother-play-2024/queerty--matthew-wexler.json",
-    "mother-play-2024/thestage--nicole-serratore.json"
+    "uncle-vanya-2024/vulture--helen-shaw.json",
+    "uncle-vanya-2024/deadline--greg-evans.json",
+    "uncle-vanya-2024/new-york-sun--elysa-gardner.json",
+    "uncle-vanya-2024/thewrap--robert-hofler.json",
+    "uncle-vanya-2024/timeout--adam-feldman.json",
+    "uncle-vanya-2024/wsj--unknown.json",
+    "uncle-vanya-2024/thestage--nicole-serratore.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [],
+    "playwright": [
+      "uncle-vanya-2024/ap--mark-kennedy.json",
+      "uncle-vanya-2024/exeunt-nyc--cameron-kelsall.json"
+    ],
+    "browserbase": [
+      "data/review-texts/uncle-vanya-2024/observer--rex-reed.json",
+      "uncle-vanya-2024/observer--rex-reed.json"
+    ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "uncle-vanya-2024/theatermania--jesse-green.json"
+    ],
     "archive": [
-      "mother-play-2024/nytimes--jesse-green.json",
-      "mother-play-2024/variety--aramide-tinubu.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json",
-      "mother-play-2024/theatermania--rachel-graham.json"
+      "uncle-vanya-2024/variety--bob-verini.json",
+      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Vulture": {
+      "count": 1,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
