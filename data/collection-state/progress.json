@@ -1,25 +1,42 @@
 {
   "processed": [
     "chess-2025/nytimes--elisabeth-vincentelli.json",
-    "chess-2025/timeout--adam-feldman.json"
+    "chess-2025/timeout--adam-feldman.json",
+    "and-juliet-2022/nytg--unknown.json"
   ],
   "failed": [
-    "chess-2025/wsj--charles-isherwood.json"
+    "chess-2025/wsj--charles-isherwood.json",
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "an-enemy-of-the-people-2024/hollywood-reporter--david-rooney.json",
+    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
+    "an-enemy-of-the-people-2024/variety--daniel-dand8217addario.json",
+    "an-enemy-of-the-people-2024/vulture--jesse-green.json",
+    "and-juliet-2022/variety--peter-marks.json",
+    "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+    "appropriate-2023/variety--aramide-tinubu.json",
+    "appropriate-2023/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "browserbase": [],
+    "playwright": [
+      "and-juliet-2022/nytg--unknown.json"
+    ],
+    "browserbase": [
+      "data/review-texts/appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+      "appropriate-2023/hollywood-reporter--lovia-gyarkye.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
       "chess-2025/nytimes--elisabeth-vincentelli.json"
     ],
     "archive": [
-      "chess-2025/timeout--adam-feldman.json"
+      "chess-2025/timeout--adam-feldman.json",
+      "aladdin-2014/hollywood-reporter--david-rooney.json",
+      "an-enemy-of-the-people-2024/variety--daniel-dand8217addario.json"
     ]
   },
   "startTime": "2026-02-02T03:48:14.615Z",
-  "lastProcessed": "chess-2025/wsj--charles-isherwood.json",
+  "lastProcessed": "appropriate-2023/vulture--jesse-green.json",
   "log": [
     {
       "t": "2026-02-02T03:49:40.892Z",
@@ -43,6 +60,12 @@
       "t": "2026-02-02T03:51:11.911Z",
       "event": "bb-login-uncertain",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-02T04:15:50.584Z",
+      "event": "bb-session",
+      "session": "0efd7f49",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sara"
     }
   ]
 }
