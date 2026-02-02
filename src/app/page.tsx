@@ -328,26 +328,25 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
       {/* Score Badge */}
       <div className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 sm:w-24">
         {scoreMode === 'audience' ? (
-          // Audience mode: Show letter grade badge
+          // Audience mode: Show letter grade badge (matches critic score badge style)
           audienceGrade ? (
             <div className="flex flex-col items-center gap-1.5 w-full">
               <div
-                className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: `${audienceGrade.color}20`, border: `2px solid ${audienceGrade.color}40` }}
+                className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold"
+                style={{
+                  backgroundColor: audienceGrade.color,
+                  color: audienceGrade.textColor,
+                  boxShadow: `0 2px 8px ${audienceGrade.color}4d`,
+                }}
                 title={audienceGrade.tooltip}
               >
-                <span
-                  className="text-2xl sm:text-3xl font-black leading-none"
-                  style={{ color: audienceGrade.color }}
-                >
-                  {audienceGrade.grade}
-                </span>
+                {audienceGrade.grade}
               </div>
             </div>
           ) : show.status === 'previews' ? (
             <div className="flex flex-col items-center gap-1.5 w-full">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center bg-gray-500/10 border-2 border-gray-500/20">
-                <span className="text-sm font-semibold text-gray-500">TBD</span>
+              <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-sm rounded-xl score-none font-bold text-gray-400">
+                TBD
               </div>
             </div>
           ) : null
