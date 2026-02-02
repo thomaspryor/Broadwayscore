@@ -63,7 +63,7 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 71,
   "archivePath": "data/archives/reviews/wicked-2003/ew--alice-king_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T00:38:55.307Z",
+  "textFetchedAt": "2026-02-02T05:09:23.011Z",
   "originalScoreNormalized": 85,
   "scoreSource": "letter-grade",
   "fetchMethod": "archive",
@@ -71,6 +71,18 @@
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
       "success": true
     }
   ],
@@ -88,9 +100,7 @@
   "wordCount": 166,
   "isFullReview": false,
   "textWordCount": 166,
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "shorter_than_excerpt"
-  ],
-  "textStatus": "truncated"
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete"
 }
