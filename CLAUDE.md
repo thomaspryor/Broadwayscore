@@ -539,4 +539,4 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 
 **27 cross-outlet duplicate-text reviews:** Files with `duplicateTextOf` field where the same fullText appears at a different outlet (e.g., Chris Jones at both Chicago Tribune and NY Daily News). These are legitimate — the same freelance critic published in multiple outlets. Same-outlet duplicates and wrong-critic attributions have been cleaned up.
 
-**Test infrastructure issues:** Two pre-existing test failures unrelated to data quality: (1) `tests/unit/trade-press-scraper.test.mjs` — ESM `export` syntax fails under CJS test runner; (2) `tests/unit/ensemble.test.ts` — uses Jest `describe`/`test` but runs under Node test runner. Both need test harness fixes, not code fixes.
+**Test infrastructure issues:** `tests/unit/trade-press-scraper.test.mjs` — ESM `export` syntax fails under CJS test runner (needs test harness fix, not code fix). The ensemble test was converted to Node test runner (Feb 2026) and passes. The CI text quality audit was fixed to use `contentTier` fallback and skip symlinks (Feb 2026).
