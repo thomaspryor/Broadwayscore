@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "https://www.amny.com/entertainment/ambroadway-the-cottage-wins-yawns-instead-of-laughs/",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "New Yorkers wouldn’t know it, but Sandy Rustin is one of the country’s most popular playwrights. Her stage version of “Clue” (which is based on the popular board game and the 1985 film adaptation) has been the most popular play for high school theater groups for four years. I caught a professional production of “Clue” last year at New Jersey’s Paper Mill Playhouse, which made for a breezy, family-friendly whodunit. Considering that “Clue” will embark on a national tour next season, it’s a shame that it did not come to Broadway first for a short run.\n\nInstead, Rustin is now making her Broadway debut with a limited run of a different farce: “The Cottage,” a 1920s comedy inspired by the lightweight English comedies of Noel Coward (think “Private Lives” or “Design for Living”), full of infidelity, romantic pairings, innuendo, and a sly point of view.\n\nJason Alexander (who was a Tony Award-winning actor before he won fame on “Seinfeld”) makes his Broadway directing debut with an impressive ensemble cast that includes Eric McCormack (“Will & Grace”), Laura Bell Bundy (“Legally Blonde”), Alex Moffat (“Saturday Night Live”), and Lilli Cooper (“Tootsie”).\n\nThe performers are all pleasant and spirited, the period costumes are gorgeous, and the detailed scenic design (full of hidden cigarette lighters and alcoholic beverages) is a source of endless amusement. That being said, I simply could not get into the play itself, which struck me as uninspired and utterly unfunny. However, many audience members around me seemed to be having a swell time. This is not an unusual phenomenon. Some farces work for people and others simply don’t. For instance, I thought “Peter Pan Goes Wrong” (which ended its limited run earlier this week) was brilliantly executed and criminally underrated.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 62,
@@ -68,5 +68,29 @@
     "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 62,
+  "textWordCount": 291,
+  "archivePath": "data/archives/reviews/the-cottage-2023/amny--unknown_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T05:01:40.639Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250601032049",
+  "archiveOrgUrl": "http://web.archive.org/web/20250601032049/https://www.amny.com/entertainment/ambroadway-the-cottage-wins-yawns-instead-of-laughs/",
+  "textIssues": [
+    "Word count too low: 291 (min: 300)"
+  ]
 }
