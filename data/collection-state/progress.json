@@ -1,57 +1,70 @@
 {
   "processed": [
-    "water-for-elephants-2024/nypost--johnny-oleksinski.json",
-    "water-for-elephants-2024/observer--rex-reed.json",
-    "water-for-elephants-2024/theatermania--david-gordon.json",
-    "water-for-elephants-2024/lighting-and-sound-america--david-barbour.json"
+    "the-roommate-2024/variety--charles-isherwood.json",
+    "the-roommate-2024/vulture--helen-shaw.json",
+    "the-roommate-2024/broadwaynews--brittani-samuel.json",
+    "the-roommate-2024/nydailynews--chris-jones.json",
+    "the-roommate-2024/observer--rex-reed.json",
+    "the-roommate-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "water-for-elephants-2024/variety--frank-rizzo.json",
-    "water-for-elephants-2024/broadwaynews--brittani-samuel.json",
-    "water-for-elephants-2024/timeout--adam-feldman.json",
-    "water-for-elephants-2024/wsj--charles-isherwood.json",
-    "water-for-elephants-2024/theatrely--olivia-clement.json",
-    "water-for-elephants-2024/thestage--lane-williamson.json"
+    "the-roommate-2024/variety--daniel-daddario.json",
+    "the-roommate-2024/deadline--greg-evans.json",
+    "the-roommate-2024/nypost--johnny-oleksinski.json",
+    "the-roommate-2024/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "water-for-elephants-2024/lighting-and-sound-america--david-barbour.json"
+      "the-roommate-2024/broadwaynews--brittani-samuel.json"
     ],
     "browserbase": [
-      "data/review-texts/water-for-elephants-2024/nypost--johnny-oleksinski.json",
-      "water-for-elephants-2024/nypost--johnny-oleksinski.json",
-      "data/review-texts/water-for-elephants-2024/observer--rex-reed.json",
-      "water-for-elephants-2024/observer--rex-reed.json"
+      "data/review-texts/the-roommate-2024/observer--rex-reed.json",
+      "the-roommate-2024/observer--rex-reed.json"
     ],
     "scrapingbee": [
-      "water-for-elephants-2024/theatermania--david-gordon.json"
+      "the-roommate-2024/variety--charles-isherwood.json"
     ],
     "brightdata": [
-      "water-for-elephants-2024/variety--frank-rizzo.json"
+      "the-roommate-2024/theatermania--jesse-green.json"
     ],
-    "archive": []
+    "archive": [
+      "the-roommate-2024/variety--daniel-daddario.json",
+      "the-roommate-2024/vulture--helen-shaw.json",
+      "the-roommate-2024/nydailynews--chris-jones.json"
+    ]
   },
-  "startTime": "2026-02-02T04:57:07.773Z",
-  "lastProcessed": "water-for-elephants-2024/thestage--lane-williamson.json",
+  "startTime": "2026-02-02T04:56:56.650Z",
+  "lastProcessed": "the-roommate-2024/timeout--adam-feldman.json",
   "log": [
     {
-      "t": "2026-02-02T05:03:15.430Z",
+      "t": "2026-02-02T05:01:24.310Z",
       "event": "bb-session",
-      "session": "63fb7035",
-      "url": "https://nypost.com/2024/03/21/entertainment/water-for-elephants-review-acrobats-"
+      "session": "54f9d7d7",
+      "url": "https://www.vulture.com/article/the-roommate-review-broadway-patti-lupone-mia-fa"
     },
     {
-      "t": "2026-02-02T05:03:36.461Z",
-      "event": "bb-session",
-      "session": "42131719",
-      "url": "https://observer.com/2024/03/water-for-elephants-theater-review-the-worst-broadw"
+      "t": "2026-02-02T05:01:26.254Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-02T05:03:48.814Z",
+      "t": "2026-02-02T05:05:34.014Z",
       "event": "bb-session",
-      "session": "a5464997",
-      "url": "https://www.theatermania.com/broadway/reviews/water-for-elephants_93847.html"
+      "session": "65b641f9",
+      "url": "https://nypost.com/2024/09/13/entertainment/the-roommate-review-margo-martindale"
+    },
+    {
+      "t": "2026-02-02T05:06:05.190Z",
+      "event": "bb-session",
+      "session": "b06f264b",
+      "url": "https://observer.com/2024/09/theater-review-mia-farrow-patti-lupone-the-roommate"
+    },
+    {
+      "t": "2026-02-02T05:06:18.019Z",
+      "event": "bb-session",
+      "session": "57f5d7bd",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-roommate-booth-th"
     }
   ]
 }
