@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-02T03:51:35.539Z",
+  "runDate": "2026-02-02T04:21:52.845Z",
   "config": {
-    "batchSize": 3,
-    "maxReviews": 3,
+    "batchSize": 10,
+    "maxReviews": 5,
     "priority": "all",
-    "showFilter": "chess-2025",
+    "showFilter": "uncle-vanya-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,61 +12,69 @@
   },
   "summary": {
     "processed": 2,
-    "failed": 1,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 1
+    "brightdata": 0,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 2,
     "tier1Success": 0,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 4,
-    "tier4Success": 1,
-    "totalFailed": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 7,
+    "tier4Success": 3,
+    "totalFailed": 3,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 3.2,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "chess-2025/nytimes--elisabeth-vincentelli.json",
-    "chess-2025/timeout--adam-feldman.json"
+    "uncle-vanya-2024/variety--trish-deitch.json",
+    "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
-    "chess-2025/wsj--charles-isherwood.json"
+    "uncle-vanya-2024/variety--bob-verini.json",
+    "uncle-vanya-2024/vulture--helen-shaw.json",
+    "uncle-vanya-2024/deadline--greg-evans.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "chess-2025/nytimes--elisabeth-vincentelli.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "chess-2025/timeout--adam-feldman.json"
+      "uncle-vanya-2024/variety--trish-deitch.json",
+      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
     ]
   },
   "failuresByOutlet": {
-    "The Wall Street Journal": {
+    "Variety": {
       "count": 1,
-      "domain": "wsj.com",
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Vulture": {
+      "count": 1,
+      "domain": "vulture.com",
       "hasCredentials": true,
       "isPaywalled": true,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
