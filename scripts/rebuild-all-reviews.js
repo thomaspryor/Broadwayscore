@@ -388,8 +388,8 @@ function selectBestExcerpt(data) {
     }
   }
 
-  // 3. Try extracting from fullText
-  if (data.fullText && data.fullText.length > 300) {
+  // 3. Try extracting from fullText (skip truncated/garbage scrapes)
+  if (data.fullText && data.fullText.length > 300 && data.textStatus !== 'truncated') {
     const extracted = extractExcerptFromFullText(data.fullText, data.showId);
     if (extracted && extracted.length > 50) {
       return extracted;
