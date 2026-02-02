@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ONCE-UPON-A-ONE-MORE-TIME-2023",
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 64,
+    "score": 65,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the cast and production quality but identifies significant story problems, concluding the show needs more work before being Broadway-ready. | GPT-4o: The review praises the cast and the high-energy numbers but notes significant shortcomings in the story and inclusivity, suggesting it needs workshopping before being Broadway-ready. | Gemini: The review praises the cast, choreography, and vocal performances, particularly in the high-energy numbers. However, it also notes that the story needs more inclusion and workshopping before it's ready for Broadway royalty, indicating a positive but not rave recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the cast as 'worthy of Broadway' and highlights strong performances and choreography, but concludes the show is 'missing something' and needs more workshopping before being ready for Broadway. | GPT-4o: The review praises the cast and musical numbers but notes significant shortcomings in the story's inclusivity and originality, suggesting it needs further workshopping. This indicates a mixed review with both positive and negative elements. | Gemini: The review praises the cast and production quality, highlighting strong performances and choreography. However, it also points out that the story needs more development and inclusion, suggesting it's not quite ready for Broadway despite its potential.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,16 +39,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:40.741Z",
+    "scoredAt": "2026-02-02T18:47:05.560Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 66,
+    "openaiScore": 67,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",

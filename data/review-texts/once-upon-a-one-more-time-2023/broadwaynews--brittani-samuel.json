@@ -7,15 +7,15 @@
   "publishDate": "June 22, 2023",
   "fullText": "The musical of Britney Spears songs hits all the right notes of zaniness, creativity and unbridled joy.\n\nLiberation sits at the foundation of our favorite pop songs, and few superstars have more to say about freedom than Britney Spears. The Mississippi-born singer held on to juggernaut status in the pop arena for over a decade with an ample discography of hits she now lends to the new Broadway musical “Once Upon a One More Time.” But the music is where all direct connections to my namesake end.\n\nThe plot instead centers on a group of old-school princesses, including Cinderella (Briga Heelan), Snow White (Aisha Jackson), Little Mermaid (Lauren Zakrin) — the gals — whose lives change when the Original Fairy Godmother (Brooke Dillman) introduces “The Feminine Mystique” to their book, err sorry, scroll club. Friedan’s words tug at Cinderella’s already hankering suspicion that there is more to “happy ever after.” But the princess posse has to deal with obstacles in the form of their omnipotent male Narrator (Adam Godley) and Cinderella's Stepmother (Jennifer Simard, already gunning for her third Tony nomination with this deliciously vampy performance), who swiped the manifesto.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review delivers a clear positive verdict despite opening with plot description. The critic explicitly calls it 'thoroughly enjoyable' and 'relentlessly watchable,' indicating a solid recommendation. | GPT-4o: The review is overwhelmingly positive, highlighting the show's charm, creativity, and humor. The critic uses strong language to convey an enthusiastic recommendation. | Gemini: The review explicitly states the show is \"thoroughly enjoyable, relentlessly watchable and genuinely funny\", indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show with enthusiastic language about it being 'thoroughly enjoyable' and 'relentlessly watchable,' praising its charm, creativity, and entertainment value despite not being deeply analytical. | GPT-4o: The review praises the musical for its creativity, joy, and humor, describing it as thoroughly enjoyable and relentlessly watchable, indicating a strong positive recommendation. | Gemini: The review concludes with strong positive language, indicating a recommendation despite the initial setup describing the plot.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,27 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:31.719Z",
+    "scoredAt": "2026-02-02T18:47:02.274Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
+    "openaiScore": 82,
     "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "I’m not exactly sure how this creative team conjured up so much charm (perhaps, a fairy godmother really was involved) but the result is a thoroughly enjoyable, relentlessly watchable and genuinely funny good time.",
   "sources": [
@@ -68,7 +68,7 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,
   "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:44:21.111Z",
+  "textFetchedAt": "2026-02-02T17:15:50.558Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {

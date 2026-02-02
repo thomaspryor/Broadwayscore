@@ -13,13 +13,13 @@
     "playbill-verdict"
   ],
   "originalScore": "3/5 stars",
-  "assignedScore": 69,
+  "assignedScore": 64,
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic gives a 3/5 star rating and offers balanced criticism - praising standout performances (especially Simard) and energetic choreography while criticizing the book scenes, loud volume, and comparing it unfavorably to superior examples of the genre. The tone suggests it's adequate entertainment without being particularly recommendable. | Gemini: The review is mixed, pointing out flaws in the book and design, but praises performances and choreography. The critic's 3/5 star rating also indicates a positive but not rave review. The truncated text makes it hard to be certain of the final verdict.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic gives 3/5 stars and acknowledges the show succeeds at its modest goal of entertaining its target audience, praising several performances (especially Simard) while critiquing the shallow material and deafening volume. The tone is bemused rather than dismissive. | GPT-4o: The review presents a mix of positive and negative elements, highlighting strong performances and energetic choreography but also critiquing the show's depth and originality. The original rating of 3/5 stars and the truncated nature of the text suggest a balanced view with both praise and criticism. | Gemini: The review acknowledges flaws (sterile design, uneven book scenes, some unfunny jokes) but praises performances (Simard, Guarini), choreography, and the overall energetic nature of the show. The 3/5 star rating also indicates a positive but not rave review. The truncated text makes it hard to be certain of the final verdict, but the overall tone leans positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,28 +40,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:43:49.005Z",
+    "scoredAt": "2026-02-02T18:47:40.906Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "playbillVerdictUrl": "https://nystagereview.com/2023/06/22/once-upon-a-one-more-time-what-youre-tired-of-fairy-tale-musicals/",
   "contentTier": "complete",
   "contentTierReason": "Full review text",
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   }
 }
