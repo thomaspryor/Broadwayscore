@@ -1,92 +1,102 @@
 {
-  "runDate": "2026-02-02T23:32:44.934Z",
+  "runDate": "2026-02-02T23:34:44.273Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "once-upon-a-one-more-time-2023",
+    "showFilter": "wicked-2003",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 5,
+    "processed": 6,
+    "failed": 8,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "42.9%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "browserbase": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 4
   },
   "statistics": {
     "tier1Attempts": 6,
-    "tier1Success": 1,
-    "tier1_5Attempts": 1,
+    "tier1Success": 3,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 4,
-    "tier3Attempts": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier4Attempts": 8,
-    "tier4Success": 4,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 41,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 2.1,
-    "urlDiscoveryAttempts": 1,
+    "tier4Attempts": 16,
+    "tier4Success": 8,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 12,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
-    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "wicked-2003/variety--charles-isherwood.json",
+    "wicked-2003/ew--alice-king.json",
+    "wicked-2003/the-journal-news-lohud--jacques-le-sourd.json",
+    "wicked-2003/village-voice--michael-feingold.json",
+    "wicked-2003/washpost--peter-marks.json"
   ],
   "failed": [
-    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
-    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
-    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
+    "wicked-2003/newyorker--.json",
+    "wicked-2003/ew--lisa-schwarzbaum.json",
+    "wicked-2003/observer--rex-reed.json",
+    "wicked-2003/timeout--david-cote.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "wicked-2003/curtainup--elyse-sommer.json",
+    "wicked-2003/frontmezzjunkies--unknown.json",
+    "wicked-2003/njcom-star-ledger--michael-sommers.json"
   ],
   "tierDetails": {
     "playwright": [
-      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+      "wicked-2003/the-journal-news-lohud--jacques-le-sourd.json",
+      "wicked-2003/washpost--peter-marks.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-      "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-      "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-      "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "wicked-2003/variety--charles-isherwood.json",
+      "wicked-2003/ew--alice-king.json",
+      "wicked-2003/village-voice--michael-feingold.json"
     ]
   },
   "failuresByOutlet": {
-    "The Hollywood Reporter": {
+    "Entertainment Weekly": {
       "count": 1,
-      "domain": "hollywoodreporter.com",
+      "domain": "ew.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "CurtainUp": {
+      "count": 1,
+      "domain": "curtainup.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NJ.com": {
+      "count": 1,
+      "domain": "wickedthemusical.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "our-town-2024/washpost--peter-marks.json",
-      "oldUrl": "https://www.washingtonpost.com/theater-dance/2024/10/11/our-town-broadway-review/",
-      "newUrl": "https://www.washingtonpost.com/entertainment/theater_dance/theater-review-our-town-at-fords-theatre/2013/01/31/3f0ad3cc-6be4-11e2-8f4f-2abd96162ba8_story.html"
-    }
-  ]
+  "urlDiscoveries": []
 }
