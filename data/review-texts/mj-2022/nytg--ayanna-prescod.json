@@ -14,7 +14,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 92,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 87,
       "high": 97
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review is overwhelmingly positive with superlative language throughout - 'flawless production,' 'platinum standard,' 'masterful choreography,' and 'perfect salutation.' The critic praises every aspect from performances to design. | GPT-4o: The review is overwhelmingly positive, praising the production as 'flawless' and a 'platinum standard'. The critic highlights the exemplary direction, choreography, and performances, particularly Myles Frost's portrayal of Michael Jackson. The review's language and tone strongly recommend the show as a must-see. | Gemini: The review is overwhelmingly positive, using terms like \"flawless production,\" \"exemplary direction,\" \"brilliant book,\" and \"masterful choreography.\" The critic clearly believes this is a must-see show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic calls it a 'flawless production' and 'platinum standard' with superlative praise throughout for performances, direction, choreography, and design elements, describing it as 'the perfect salutation' to Jackson's legacy. | GPT-4o: The review is overwhelmingly positive, praising the production as 'flawless' and a 'platinum standard'. The critic highlights the exceptional performances, direction, and choreography, making it a must-see recommendation. | Gemini: The review is overwhelmingly positive, calling the production \"flawless\" and a \"platinum standard.\" While acknowledging Jackson's flaws, the critic clearly recommends seeing the show, praising the performances, choreography, and overall production quality.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:00.104Z",
+    "scoredAt": "2026-02-02T18:39:16.599Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 90,
+    "claudeScore": 89,
     "openaiScore": 95,
-    "geminiScore": 92,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 5,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 79,

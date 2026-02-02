@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic declares this a 'historic night on Broadway' and praises virtually every aspect - the performances ('brilliantly overacts'), direction, sets ('terrific'), and overall effect ('absolutely radioactive'). The enthusiasm is unmistakable throughout. | GPT-4o: The review is overwhelmingly positive, highlighting the show's successful transition to Broadway, the exceptional performances, and the uproarious audience reaction. The language used is highly enthusiastic, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the show's success on Broadway and the comedic performances. The critic praises the cast and direction, indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic calls it a 'historic night on Broadway,' praises the performances as 'brilliant,' describes the audience reaction as 'atomic' laughter, and celebrates every aspect from cast to direction with enthusiastic language throughout. | GPT-4o: The review is overwhelmingly positive, praising the production's transition to Broadway, the performances, and the comedic impact. The language used is enthusiastic and suggests a must-see experience. | Gemini: The review is overwhelmingly positive, praising the show's humor, performances, and overall impact. The critic explicitly states that the show plays even better on Broadway, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:07:04.084Z",
+    "scoredAt": "2026-02-02T18:46:14.541Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,

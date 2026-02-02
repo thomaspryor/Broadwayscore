@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and consistently positive language about the adaptation being 'gripping' and 'timelier-than-ever' with praise for performances, particularly calling Manville 'staggeringly good,' clearly indicates a positive recommendation despite some minor criticisms about expository elements. | GPT-4o: The review is highly positive, praising the adaptation as 'gripping' and 'timelier-than-ever'. The critic's 4/5 star rating strongly supports a positive classification, indicating a strong recommendation to see the show. | Gemini: The critic gives the production 4 out of 5 stars and describes it as 'gripping' and 'timelier-than-ever'. While noting some reservations, the overall tone is positive, indicating a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating indicates strong positive recommendation, with praise for Strong's performance as 'splendid' and Manville as 'staggeringly good,' though the review notes some expository issues and compares less favorably to traditional Greek drama elements. | GPT-4o: The review praises the adaptation as 'gripping' and 'timelier-than-ever,' highlighting the strong performances and effective modernization of the classic play. The original 4/5 star rating supports a strong positive recommendation. | Gemini: The review is overwhelmingly positive, praising the adaptation and performances, and the 4/5 star rating indicates a strong recommendation. While there are minor reservations about one scene, the overall tone is enthusiastic.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:35.404Z",
+    "scoredAt": "2026-02-02T18:43:59.965Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 79,
     "openaiScore": 82,
-    "geminiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

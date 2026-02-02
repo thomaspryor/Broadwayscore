@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "theatrical entertainment is, as we end this panicked second decade of the 21st century, no longer immersive enough. The bar has risen. Ergo, \"Moulin Rouge! The Musical.\" Yes, baby, you're a firework. Tim Teeman, The Daily Beast : Not that the thumping, pumping Moulin Rouge allows you to dwell on its misogyny. This is musical as spectacle, so if you don't exactly feel the peril and passion of Christian and Satine's doomed romance, then no matter, because another visual bonbon will be thrown at you soon enough. Alexis Soloski, The Guardian : You could be forgiven for thinking that this tale has reached its sell-by date. But Moulin Rouge is one of those shows that is not only critic-proof, but maybe also story-proof. In Alex Timbers's production, with a book by John Logan, the characters are so thinly drawn that they disappear behind their corsetry and the love triangle so lopsided that it defies most laws of geometry. Any subtext has been shoved into a push-up bra and short shorts. It do",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
@@ -16,11 +16,11 @@
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt shows mixed signals - acknowledging the show as entertaining spectacle while criticizing thin characters and lack of emotional depth. Single excerpt warning requires conservative scoring within mixed range. | GPT-4o: The review acknowledges the spectacle and entertainment value of the musical but criticizes its lack of emotional depth and character development. The tone suggests a mixed reception, appreciating the visual elements while noting significant narrative shortcomings. | Gemini: The review acknowledges the spectacle and entertainment value but also points out the thin characters and lack of emotional depth. It doesn't explicitly recommend or discourage seeing it, suggesting a mixed experience. Given the truncated text, erring towards the middle of the bucket is appropriate.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show as entertaining spectacle but criticizes its lack of emotional depth, thin characters, and story issues. The tone suggests it works as visual entertainment despite narrative shortcomings. | GPT-4o: The review acknowledges the spectacle and entertainment value of the show but criticizes the lack of depth in the romance and characters. The tone suggests that while the show is visually engaging, it lacks emotional impact, leading to a mixed recommendation. | Gemini: While acknowledging flaws in the story and character development, the review suggests the spectacle and entertainment value make it worthwhile. The phrase \"another visual bonbon will be thrown at you soon enough\" indicates a positive, albeit qualified, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,27 +41,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:50.126Z",
+    "scoredAt": "2026-02-02T18:41:38.074Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "sources": [
     "bww-roundup"

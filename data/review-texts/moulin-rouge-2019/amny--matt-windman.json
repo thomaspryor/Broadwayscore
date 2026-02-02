@@ -11,18 +11,18 @@
   "_removedScore": "Negative",
   "_removedScoreReason": "Sentiment placeholder, not an actual explicit score. amNY doesn't use letter/star grades.",
   "_removedAt": "2026-01-31T23:45:00.000Z",
-  "assignedScore": 61,
+  "assignedScore": 76,
   "source": "reviews-json-stub",
   "sourceMethod": "stub",
   "llmScore": {
-    "score": 61,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt is severely truncated mid-sentence and begins with 'Despite,' suggesting contrast between positive elements and unstated negative points. Insufficient text to determine the critic's final verdict. | GPT-4o: The excerpt highlights positive aspects such as the visual design and leading actors, but the use of 'despite' suggests there may be reservations or issues not fully captured in the text. The single excerpt and text quality warning suggest a conservative middle-range score within the Mixed bucket. | Gemini: The review excerpt mentions \"first-rate leading actors\" and an \"ornate and environmental visual design,\" suggesting a positive experience, though the lack of a full review makes it difficult to assess the overall recommendation strength. I am scoring conservatively due to the limited text.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt mentions 'first-rate leading actors' which is positive praise, but the word 'Despite' suggests reservations may follow. With severely truncated text and only one fragment, scoring conservatively in lower positive range. | GPT-4o: The excerpt highlights the impressive visual design and high-quality leading actors, suggesting a positive view of the production. However, the lack of a complete sentence and potential for omitted negative aspects lead to a cautious score at the lower end of the Positive range. | Gemini: The review excerpt mentions 'first-rate leading actors,' which suggests a positive assessment of the performance aspect of the show. Given the limited text, it's reasonable to assume a positive, leaning towards strong positive, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:43.403Z",
+    "scoredAt": "2026-02-02T18:41:29.992Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "3.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 62,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

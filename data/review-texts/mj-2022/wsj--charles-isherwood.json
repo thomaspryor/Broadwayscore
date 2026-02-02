@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges professional quality and fan satisfaction but criticizes the show's lack of depth, indicating a lukewarm assessment that neither strongly recommends nor discourages attendance. | GPT-4o: The review acknowledges the show's professional quality and appeal to fans but criticizes its lack of depth, resulting in a mixed recommendation. | Gemini: The review states the show will \"satisfy Jackson's devoted fans,\" which indicates a positive, albeit qualified, recommendation. The criticism that it \"doesn't dig deep enough\" suggests reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges professional quality but clearly states it will only satisfy existing fans and lacks depth, indicating a qualified, lukewarm assessment rather than a broader recommendation. | GPT-4o: The review acknowledges the show's professional quality and appeal to fans but criticizes its lack of depth, leading to a mixed recommendation. | Gemini: The review states that the show will satisfy fans, indicating a positive experience, but also notes that it doesn't dig deep enough, suggesting a reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,12 +43,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:41.472Z",
+    "scoredAt": "2026-02-02T18:40:06.982Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",

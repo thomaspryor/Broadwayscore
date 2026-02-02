@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite truncation, the review is filled with superlatives like 'astonishing,' 'devastating,' 'extraordinary,' and 'brilliant,' with Tony nomination predictions and comparisons to must-see theater. | GPT-4o: The review is overwhelmingly positive, praising the performances, direction, and adaptation with terms like 'astonishing', 'utter brilliance', and 'devastating clarity'. The critic describes the production as a 'must-see', indicating a strong recommendation. Despite the truncation warning, the provided text is consistently enthusiastic. | Gemini: The review is overwhelmingly positive, praising the adaptation, direction, and especially the performances of Strong and Manville. The truncated text makes it hard to be certain, but the overall tone suggests a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite truncation, the review is overwhelmingly positive with superlative language like 'astonishing piece of work,' 'utterly brilliant,' 'devastating,' and predictions of 'Tony nominations are inevitable.' The critic praises every aspect from adaptation to performances. | GPT-4o: The review is filled with superlatives and high praise for the production, performances, and adaptation. The critic describes it as 'astonishing' and 'utter brilliance,' indicating a strong recommendation. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the adaptation, performances, and overall impact. The critic highlights the brilliance of the reimagining and the powerful performances, suggesting a strong recommendation. The mention of Tony nominations further supports a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:34:58.741Z",
+    "scoredAt": "2026-02-02T18:43:36.200Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
+    "claudeScore": 88,
     "openaiScore": 95,
-    "geminiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

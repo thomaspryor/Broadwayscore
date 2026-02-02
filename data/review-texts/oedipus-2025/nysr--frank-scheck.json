@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and language like 'gripping theatrical experience' and 'epic performances' indicate a positive recommendation, though the critic notes the adaptation 'doesn't fully succeed' and has 'clunky' writing, preventing a higher score. | GPT-4o: The review awards 4 out of 5 stars and praises the performances and staging, despite noting some issues with the modernistic writing. The overall tone is clearly positive, recommending the show as a gripping experience. | Gemini: The critic gives 4 out of 5 stars and states that the play provides a gripping theatrical experience. Although the writing is clunky at times, the performances by the leads make up for it.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and language like 'gripping theatrical experience' and 'epic performances' indicate a solid recommendation, though the critic notes the adaptation 'doesn't fully succeed' and has 'clunky' writing at times. | GPT-4o: The review praises the performances and the gripping nature of the production, despite some reservations about the modern adaptation. The original 4/5 star rating aligns with a strong positive recommendation. | Gemini: The review has a 4/5 star rating and ultimately recommends the show, highlighting the performances and staging, but notes that the modernistic writing feels clunky at times. It's a positive review with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,17 +38,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:27.609Z",
+    "scoredAt": "2026-02-02T18:43:56.128Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 82,
-    "geminiScore": 80,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

@@ -12,15 +12,15 @@
     "nysr-api"
   ],
   "originalScore": "5/5 stars",
-  "assignedScore": 87,
+  "assignedScore": 82,
   "llmScore": {
-    "score": 87,
-    "confidence": "low",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Positive, gemini=Rave | Claude: The 5/5 star rating and glowing praise for the technical artistry, performances, and production design clearly indicate strong enthusiasm, despite the review being more analytical than effusive in tone. | Gemini: The critic gives the show a 5/5 rating and uses enthusiastic language throughout the review, praising the design elements and performances. The overall tone is overwhelmingly positive, indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 5/5 star rating and enthusiastic praise for the creative team, performances, and production values clearly indicate a strong positive recommendation despite some mixed commentary about the leads. | GPT-4o: The review is overwhelmingly positive, highlighting the impressive design, performances, and successful adaptation from film to stage. The critic's 5/5 star rating further supports a strong recommendation. | Gemini: The critic gives the show a 5/5 rating and states that fans of the movie will be delighted. The review is overwhelmingly positive, highlighting the strengths of the design and performances.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:02.076Z",
+    "scoredAt": "2026-02-02T18:42:20.391Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 87,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": null,
-    "geminiScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
-    "geminiBucket": "Rave",
-    "scoreDelta": 10,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Positive, gemini=Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text"

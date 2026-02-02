@@ -9,16 +9,16 @@
   "bwwExcerpt": "Reid, Strong and Manville are transfixing as awful revelation after revelation comes to light. Strong’s nice guy gives way to brutishness and boiling blood, and Manville’s heretofore stalwart Jocasta crushingly crumples when the grotesque truth is finally revealed. Brian",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "dtli",
   "dtliThumb": "Up",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the performances as 'transfixing' and 'brilliant,' calls the adaptation 'breathtaking,' and notes the audience was 'rapt.' Minor complaints about the venue and ending don't override the strong positive assessment. | Gemini: The review is largely positive, praising the performances and the modern adaptation. While there are minor criticisms about the venue and a flashback sequence, the overall tone suggests a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the performances as 'transfixing' and 'breathtaking,' calling the revival brilliant and noting the audience was 'rapt.' However, venue concerns and a weak ending sequence prevent a stronger recommendation. | GPT-4o: The review is highly positive, praising the adaptation, performances, and direction, while only noting minor venue-related issues. The critic's enthusiasm and the description of the audience's reaction suggest a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and modernization of the classic story. Despite minor reservations about the venue and a flashback sequence, the critic clearly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:23.433Z",
+    "scoredAt": "2026-02-02T18:43:51.945Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "openaiScore": 90,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "showScoreExcerpt": "\"Most of the play takes place in real time in Oedipusâ sleek living room. And Icke puts a pulse-pounding clock onstage that counts down to the election results. But we all know itâs leading up to much more than that.\"",
   "sources": [

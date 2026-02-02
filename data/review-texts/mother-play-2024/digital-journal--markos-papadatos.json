@@ -9,7 +9,7 @@
   "sources": [
     "playbill-verdict"
   ],
-  "contentTier": "complete",
+  "contentTier": "stub",
   "contentTierReason": "No text content",
   "fullText": "Two-time Academy Award winner Jessica Lange stars in “Mother Play”‘ on Broadway. Two-time Academy Award winner Jessica Lange stars in “Mother Play”‘ on Broadway. It is being performed at the Hayes Theater, and it is done without an intermission. Pulitzer Prize winner Paula Vogel has written a humorous and unflinchingly honest new play about the hold our family has over us and the surprises we find when we unpack the past. Tina Landau does an exceptional job with its direction and bringing Vogel’s screenplay to life in a refreshing manner. It’s 1962, just outside of D.C., and matriarch Phyllis (Jessica Lange) is supervising her teenage children, Carl (Emmy winner Jim Parsons) and Martha (Celia Keenan-Bolger), as they move into a new apartment. Phyllis has strong ideas about what her children need to do and be to succeed. Bolstered by gin and cigarettes, the family endures or survives the changing world around them. This is a show that blends flares of imaginative theatricality, surreal farce, and deep tenderness. This bumpy roller coaster ride reveals timeless truths of love, family, redemption, and forgiveness. Lange’s acting runs the gamut, and she will leave the audience drenched in a wide spectrum of raw feelings: she is witty, miserable, and commanding, all in one. Lange steals every scene she is in, and she makes everyone better around her, proving that she is a giving actress. A truly “wow” performance all around. Lange should be locked for a Tony nomination (and win) for “Best Performance by an Actress in a Play.” She layers her emotions well as she portrays a ferocious woman who is trying to cope with divorce, alcohol (gin), and smoking cigarettes. What makes it an even more superb performance, is that Lange plays a woman who is trying to be young again. Her co-stars Jim Parsons and Celia Keenan-Bolger are also memorable in their own right. “Mother Play” garners an A rating. Markos Papadatos is Digital Journal's Editor-at-Large for Music News. Papadatos is a Greek-American journalist and educator that has authored over 24,000 original articles over the past 19 years. He has interviewed some of the biggest names in music, entertainment, lifestyle, magic, and sports. He is an 19-time \"Best of Long Island\" winner, where for three consecutive years (2020, 2021, and 2022), he was honored as the \"Best Long Island Personality\" in Arts & Entertainment, an honor that has gone to Billy Joel six times. Alaska is the best state for a tech career, scoring 7.31 out of 10. Nvidia announced the plan in September to invest $100 billion in OpenAI. Actor Kristoffer Polaha chatted about his new film \"Missing the Boat,\" which premiered on Saturday, January 31st on Hallmark. Capgemini operates in about 50 countries and is one of France's largest listed companies.",
   "isFullReview": true,
@@ -29,15 +29,16 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "assignedScore": 94,
+  "assignedScore": 92,
   "llmScore": {
-    "score": 94,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -48,7 +49,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives the show an 'A' rating and uses highly positive language throughout, praising Lange's 'wow' performance, calling the direction 'exceptional,' and describing the co-stars as 'memorable.' Despite some setup about family dysfunction themes, the overall assessment is strongly favorable. | GPT-4o: The review is overwhelmingly positive, highlighting exceptional performances, particularly by Jessica Lange, and praises the direction and writing. The original A rating further supports a rave classification. | Gemini: The review is overwhelmingly positive, praising the direction, writing, and especially Jessica Lange's performance. The critic gives the play an \"A\" rating and suggests Lange is a lock for a Tony Award, indicating a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives an 'A' rating and uses highly enthusiastic language like 'exceptional job', 'truly wow performance', and predicts Tony nominations, indicating strong enthusiasm for the production. | GPT-4o: The review is overwhelmingly positive, highlighting exceptional performances, particularly by Jessica Lange, and praises the direction and writing. The original A rating strongly supports a Rave classification. | Gemini: The review is overwhelmingly positive, praising the direction, writing, and especially Jessica Lange's performance, which the critic believes is Tony-worthy. The 'A' rating and enthusiastic language indicate a 'Rave' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,26 +59,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T02:27:27.718Z",
+    "scoredAt": "2026-02-02T18:40:22.672Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 88,
     "openaiScore": 95,
     "geminiScore": 92,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 13,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
-  },
-  "wordCount": 462,
-  "tierReason": "Full review text"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

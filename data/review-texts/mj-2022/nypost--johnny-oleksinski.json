@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically criticizes nearly every aspect of the production - script, staging, sets, choreography - while acknowledging only the strong lead performances as positives. The overall assessment is clearly negative despite some praise for individual performers. | GPT-4o: The review criticizes the script, staging, and overall energy of the production, indicating it fails to capture the essence of Michael Jackson's performances. Despite some praise for individual performances, the overall tone is negative, emphasizing the show's shortcomings. | Gemini: The review praises the performances, especially Myles Frost, but criticizes the script and staging. The reviewer acknowledges some good moments but ultimately finds the production lacking in energy and depth, leading to a mixed assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic finds fundamental flaws in the script, staging, and energy level, calling it 'lifeless,' 'indecisive,' and failing to match Jackson's electricity, though acknowledges strong individual performances. | GPT-4o: The review consistently highlights issues with the script, staging, and overall production, describing it as lifeless and lacking energy. Despite acknowledging some strong performances, the critic does not recommend the show due to its significant shortcomings. | Gemini: The review praises the lead actor and some musical moments, but heavily criticizes the script, staging, and overall energy. It doesn't outright recommend or discourage seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,11 +39,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:33:40.746Z",
+    "scoredAt": "2026-02-02T18:39:00.813Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
+    "previousScore": 44,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

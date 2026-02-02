@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 91,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,13 +21,13 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 77,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 86,
+      "high": 96
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic describes the show as creating 'unbearable levels' of dread and being 'impossible to look away' from, indicating strong theatrical impact and engagement, though the single excerpt limits confidence in the overall verdict. | GPT-4o: The review excerpt uses highly positive language, describing the production as 'shattering' and 'impossible to look away,' suggesting a powerful and compelling experience. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review describes a compelling and intense experience, suggesting it is worth seeing despite the difficult subject matter. The phrase 'impossible to look away' implies a positive, albeit potentially unsettling, recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic delivers sustained, passionate praise throughout, calling it a work of 'awful clarity of vision' with performances that will 'haunt you for days' and concluding that 'we rarely get theatrical tragedy of this scale and intensity.' This is clearly a rave review despite the serious subject matter. | GPT-4o: The review praises the production's intensity, scale, and the performances of the cast, particularly highlighting the modern adaptation's relevance and impact. Despite the truncated text, the provided excerpts and the review's tone suggest a highly positive assessment. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the direction, performances, and overall impact of the production. The aggregator excerpt also points to a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,33 +46,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:56:47.686Z",
+    "scoredAt": "2026-02-02T18:43:44.603Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
+  "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "claudeScore": 89,
+    "openaiScore": 92,
+    "geminiScore": 79,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
-  },
-  "wordCount": 1069,
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
-  "tierReason": "Full review text"
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

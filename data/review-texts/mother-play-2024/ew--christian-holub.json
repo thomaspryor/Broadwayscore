@@ -9,15 +9,15 @@
   "bwwExcerpt": "In addition to her years of teaching playwriting at Brown and Yale, Vogel is best-known for her Pulitzer-winning 1997 play How I Learned to Drive, which finally made it to Broadway in 2022 and remains unquestionably one of the very best works of recent American theater. That’s a hard standard to match, especially since the various twists and turns are almost impossible to predict when watching How I Learned to Drive for the first time. By contrast, Mother Play probably isn’t the first story you’",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review gives a B- grade and concludes positively despite noting predictability and some pacing issues. The critic praises Parsons' standout performance and acknowledges the play hits its emotional targets. | Gemini: The review highlights both strengths (performances, emotional resonance) and weaknesses (predictability, pacing). The truncated text makes it hard to be certain, but the overall tone suggests a qualified recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review concludes with a B- grade and affirms the play 'hits the emotional beats it needs to,' indicating a qualified positive recommendation despite noting predictability and some unsuccessful creative choices. | GPT-4o: The review acknowledges strong performances, particularly by Jim Parsons, and some creative staging choices. However, it also highlights predictability and some creative risks that don't pay off, leading to a mixed assessment. The truncated nature of the text suggests caution, but the provided excerpts indicate a balanced view with both strengths and weaknesses. | Gemini: The review highlights both positive and negative aspects, but the concluding statement suggests a recommendation, albeit with reservations. The truncated nature of the text makes it difficult to be certain, but the aggregator excerpts support a positive leaning.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:02.756Z",
+    "scoredAt": "2026-02-02T18:40:26.555Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "claudeScore": 73,
+    "openaiScore": 68,
+    "geminiScore": 76,
     "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"...Vogel’s latest hits the emotional beats...reminder to call your mom now and then.\"",

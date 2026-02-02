@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "playwright might describe it as stupid, but any comedy that liberates audiences from the despair of the current political climate with 80 minutes of almost uninterrupted laughter is a work of genius. Chris Jones, The New York Daily News: Second, the director Sam Pinkerton moves the show at such a lightning pace that we’re all on to the next laugh before you start to wonder about the merits of the one before or even dare to question the whole tawdry enterprise. Blackouts come so hard upon the lines of dialogue that the actors have to rush to get their gags out, which makes them all the funnier because it both raises the stakes and keys into one of the key ingredients of great farce: the mutual experience of the chaotic. David Cote, Observer: Escola’s splendidly nasty queer romp has hiked up its petticoats and staggered uptown from a sold-out run at the Lucille Lortel Theatre, goosing a sleepy Broadway summer. I’m happy to report that although director Sam Pinkleton leveled up the produc",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
@@ -16,11 +16,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 77,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises key production elements (director, cast) and suggests the show effectively captures current political chaos, but confidence is medium due to limited excerpt availability. | Gemini: The review highlights positive aspects like the director and cast, and the aggregator context also indicates a positive reception. This suggests a recommendation, although the limited text makes it difficult to gauge the strength of that recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt highlights multiple strong elements (perfect director, right cast, timely relevance) with enthusiastic language, indicating a positive recommendation despite limited text available. | GPT-4o: The review highlights the perfect director and right supporting cast, indicating a strong recommendation. The tone is enthusiastic, suggesting the production is highly effective and relevant. | Gemini: The review excerpt praises the director and cast, and suggests the show is relevant and enjoyable, indicating a positive recommendation. The aggregator verdicts also point to a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,26 +41,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:05:28.634Z",
+    "scoredAt": "2026-02-02T18:45:22.562Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "openaiScore": 81,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "bwwThumb": "Up",

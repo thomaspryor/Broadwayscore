@@ -6,17 +6,17 @@
   "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-mj-review-michael-jackson-20220201-qgfajhkotfdwlnwm5ert2umnzm-story.html",
   "publishDate": "2022-02-01",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "reviews-json-stub",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:04:13.138Z",
   "bwwExcerpt": "COVID means a lack of tourists, short-term. But the show has all kinds of artistic beauties to offer the artist's global fans. Thanks in no small part to the gorgeous palate created by Derek McLane, Natasha Katz, Paul Tazewell and Peter Nigrini, the show is genuinely beautiful to experience througho...",
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges serious concerns about the show's omissions regarding Jackson's controversies but ultimately praises the performances, choreography, and visual elements as 'gorgeously executed' and 'genuinely beautiful to experience throughout,' concluding with a clear recommendation despite reservations. | Gemini: The review acknowledges the show's omission of controversial aspects of Jackson's life but praises the choreography, performances, and overall visual experience, ultimately recommending it as a celebration of his artistry.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges serious concerns about the show's omissions regarding Jackson's controversies but ultimately recommends it for its artistic merits, praising the choreography, performances, and visual design while noting it would be better without some weaker scenes. | GPT-4o: The review praises the choreography, performances, and visual elements, describing the show as the most visually impressive of any Jackson experience. Despite noting some narrative flaws, the overall tone is enthusiastic and recommends the show for its artistic beauty and excitement. | Gemini: The review acknowledges the controversy surrounding Jackson but ultimately praises the show's visual and artistic elements, particularly the choreography and performance of Myles Frost. The final statement indicates a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,26 +37,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:23:29.898Z",
+    "scoredAt": "2026-02-02T18:38:56.604Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sourceMethod": "archive",
   "dtliThumb": "Up",

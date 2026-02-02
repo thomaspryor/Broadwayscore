@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: While acknowledging some powerful moments (Lange's performance), the critic ultimately finds the play insufficient as theater, describing it as feeling 'evanescent' and more personal exercise than meaningful drama. | GPT-4o: The review acknowledges a powerful performance by Ms. Lange, but criticizes the play for lacking depth and resonance, suggesting it is more of a personal exercise than a compelling production. This indicates a mixed reception. | Gemini: The review highlights a powerful final scene but ultimately suggests the play doesn't resonate deeply, indicating a mixed assessment. The 'Flat' aggregator verdict reinforces this classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds merit in Lange's performance and describes the play as 'funny and affecting,' but ultimately judges it as 'slight and fragmentary' and 'more a personal exercise in exorcising ghosts than a play that resonates on deeper levels.' | GPT-4o: The review describes the play as funny and affecting but ultimately slight and fragmentary, indicating a mixed reception. The final scene is noted for its emotional impact, but the play overall is seen as lacking depth. | Gemini: The review describes the play as \"funny and affecting\" which indicates a positive experience, but the terms \"slight and fragmentary\" suggest reservations, placing it in the lower end of the positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:54:50.065Z",
+    "scoredAt": "2026-02-02T18:41:26.396Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 57,
-    "previousVersion": "3.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
-    "claudeBucket": "Negative",
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -62,8 +62,8 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
   },
-  "contentTier": "truncated",
-  "wordCount": 58,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "isFullReview": false,
   "textWordCount": 58,
   "archivePath": "data/archives/reviews/mother-play-2024/wsj--charles-isherwood_2026-02-02.html",
@@ -78,6 +78,9 @@
   ],
   "fetchTier": 4,
   "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240430055355",
@@ -92,6 +95,5 @@
     "hadPositiveThumb": false,
     "dtliThumb": "Meh",
     "bwwThumb": "none"
-  },
-  "tierReason": "Short text (58 words)"
+  }
 }

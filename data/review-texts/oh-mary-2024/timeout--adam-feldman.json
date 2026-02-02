@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic's 5/5 rating combined with superlative language about exceptional comedic impact indicates a rave review. The phrase 'I can't remember the last time' suggests this is a standout, memorable experience. | GPT-4o: The critic's 5/5 rating and the enthusiastic language about the play's comedic impact strongly suggest a rave review, indicating a must-see recommendation. | Gemini: The critic's statement about laughing \"helplessly and loudly\" and the 5/5 rating indicate a rave review. The aggregator context also points to a positive reception.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5/5 rating combined with the critic's enthusiastic personal testimony about laughing 'helplessly and loudly' and noting the audience shared this reaction indicates a strong rave recommendation. | GPT-4o: The critic's 5/5 rating and the enthusiastic description of the play's comedic impact strongly indicate a rave review. The shared audience reaction further supports this high level of recommendation. | Gemini: The critic's statement about laughing 'helplessly and loudly' and the 5/5 rating strongly indicates a rave review. The aggregator context also points to a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,12 +37,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:07:10.961Z",
+    "scoredAt": "2026-02-02T18:46:32.698Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
-    "previousVersion": "3.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,

@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Her script assembles the contradictions...but it doesn’t provide a route through them.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mother-play-broadway",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds interesting theatrical moments and strong performances in spots, but ultimately concludes the script lacks synthesis and the characters are too compartmentalized, with performances constrained by echoes of other works. | GPT-4o: The review highlights both strengths and weaknesses of the production. While it praises certain performances and moments, it also notes structural issues and lack of character development, leading to a mixed overall impression. | Gemini: The review highlights both strengths (Keenan-Bolger's performance, Lange's ability to cast a spell) and weaknesses (script not fully refined, characters too neatly compartmentalized). The overall assessment is neither strongly positive nor negative, leaning towards a mixed experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges strong elements (Lange's performance, theatrical moments, good material) but consistently points to structural and execution problems that prevent full recommendation. The critic finds merit but significant flaws that keep it from being recommended viewing. | GPT-4o: The review acknowledges some delightful moments and strong performances but criticizes the play for lacking focus and synthesis, ultimately resulting in a mixed assessment. | Gemini: The review highlights both strengths (Lange's performance, some theatricality) and weaknesses (script issues, character development). The overall impression is that the play has potential but doesn't fully realize it, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,7 +38,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:34:10.501Z",
+    "scoredAt": "2026-02-02T18:41:21.626Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -46,13 +46,13 @@
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 58,
     "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

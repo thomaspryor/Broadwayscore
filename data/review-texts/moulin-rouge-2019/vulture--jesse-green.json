@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show is a masterpiece of maximalism, a sugar rush of spectacle that somehow manages to be both completely overwhelming and oddly touching.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "The show is a masterpiece of maximalism, a sugar rush of spectacle that somehow manages to be both completely overwhelming and oddly touching.",
   "needsScoring": true,
   "llmScore": {
-    "score": 94,
-    "confidence": "medium",
+    "score": 42,
+    "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Rave",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses 'masterpiece' and describes the show as both spectacular and emotionally resonant, indicating strong enthusiasm despite acknowledging it's overwhelming. | GPT-4o: The review uses highly enthusiastic language, calling the show a 'masterpiece' and describing it as both 'overwhelming' and 'touching', indicating a strong recommendation. | Gemini: The review uses strong positive language like \"masterpiece\" and describes the show as both overwhelming and touching, indicating a very positive experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Jesse Green delivers a scathing critique calling the show 'unsatisfying,' 'not interesting,' and 'a product' that 'never moves us,' clearly advising against seeing it despite acknowledging some technical merits. | GPT-4o: The review consistently criticizes the production for its lack of substance, over-reliance on pop songs, and failure to capture the essence of the original film. The critic describes the show as a 'singularly unsatisfying smorgasbord' and 'creepily cold-blooded,' indicating a strong negative impression. | Gemini: The review is overwhelmingly negative, criticizing the show's lack of depth, emotional connection, and character development. The critic uses strong language like \"unsatisfying smorgasbord\" and \"creepily cold-blooded,\" indicating a clear disapproval.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,39 +43,38 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:33:04.371Z",
+    "scoredAt": "2026-02-02T18:43:06.540Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 95,
-    "geminiScore": 92,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 13,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "previousUrl": "https://www.vulture.com/2019/07/moulin-rouge-the-musical-broadway-review.html",
   "urlDiscoveredAt": "2026-02-02T16:48:41.875Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 94,
   "textWordCount": 1618,
-  "archivePath": "data/archives/reviews/moulin-rouge-2019/vulture--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:42:38.310Z",
+  "archivePath": "data/archives/reviews/moulin-rouge/vulture--jesse-green_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T16:48:41.883Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -86,11 +85,11 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251214120718",
   "archiveOrgUrl": "http://web.archive.org/web/20251214120718/https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html",
   "duplicateTextOf": "vulture--sara-holdren.json",
-  "wordCount": 1618,
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T18:43:06.540Z"
 }

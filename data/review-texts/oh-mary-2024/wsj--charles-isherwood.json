@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the direction and pacing, noting successful comedy timing and joke delivery. However, with only excerpted text available, confidence is tempered by the limited context. | Gemini: The review excerpt praises the direction, suggesting an enjoyable experience. The aggregator verdict also indicates a positive reception.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the direction's pacing and comedic timing, noting it makes both strong and weaker jokes work effectively. However, this is only an excerpt so the full recommendation strength is unclear. | GPT-4o: The review highlights the effective direction and successful comedic timing, suggesting a positive experience. However, the mention of 'lesser gags' implies some reservations, leading to a solid recommendation with minor caveats. | Gemini: The review excerpt indicates that the direction is effective in maximizing the humor, suggesting a positive experience overall, but the mention of \"lesser gags\" implies some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:07:55.722Z",
+    "scoredAt": "2026-02-02T18:46:51.384Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
+    "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "bwwThumb": "Up",

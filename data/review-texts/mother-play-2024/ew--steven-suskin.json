@@ -9,15 +9,15 @@
   "bwwExcerpt": "At times it seems like Vogel has been inspired by Tennessee Williams’ The Glass Menagerie. At other times—with that problematic mother losing composure during a series of revealing telephone calls, that ignored and emotionally damaged daughter, that son itching to leave home and go out into the dangerous world—it seems like Vogel is consciously giving us an updated version of what might or could have happened to those forlorn Wingfields had they, and Williams, existed 30 years later. In any even",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": 73,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 73,
+    "score": 74,
     "confidence": "medium",
     "range": {
-      "low": 68,
-      "high": 78
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Extremely limited text provides only neutral descriptive language about emotional content. No clear recommendation language present, and truncated nature makes full verdict assessment impossible. | GPT-4o: The excerpt suggests the show successfully delivers emotional impact, which indicates a positive reception. However, without more context, the recommendation seems to come with some reservations. | Gemini: The review excerpt suggests the play is emotionally resonant and impactful, leading to a positive but not overwhelmingly enthusiastic recommendation. The 'reminder to call your mom' implies a heartwarming, relatable quality.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt suggests the play achieves its emotional goals but provides insufficient context to determine if this constitutes a recommendation. The truncated nature makes any definitive verdict impossible. | GPT-4o: The phrase 'hits the emotional beats' suggests a positive reception, indicating the show effectively delivers emotional impact. However, without further context, the recommendation appears solid but not overly enthusiastic. | Gemini: The phrase \"hits the emotional beats\" suggests a positive, albeit potentially sentimental, experience. The reminder to call your mom implies a heartwarming takeaway, leaning towards a mild recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:05.954Z",
+    "scoredAt": "2026-02-02T18:40:30.428Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 59,
-    "previousVersion": "3.0.0"
+    "previousScore": 73,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 74,
+    "claudeScore": 60,
+    "openaiScore": 75,
     "geminiScore": 72,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

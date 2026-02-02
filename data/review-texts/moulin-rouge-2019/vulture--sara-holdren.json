@@ -41,7 +41,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic delivers a scathing review calling the show 'unsatisfying,' 'cold-blooded,' and 'a product' that 'never moves us.' Despite acknowledging some talent, the overall assessment is clearly negative with no recommendation to see it. | GPT-4o: The review is overwhelmingly negative, criticizing the production for being a 'singularly unsatisfying smorgasbord' and 'creepily cold-blooded.' The critic finds the show devoid of passion and character, focusing on its commercial and superficial aspects. | Gemini: The review is overwhelmingly negative, criticizing the show's lack of passion, character development, and emotional depth. The critic uses phrases like \"singularly unsatisfying smorgasbord\" and \"creepily cold-blooded\" to describe the production, indicating a negative recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically dismantles the show as 'unsatisfying,' 'cold-blooded,' and 'creepily' product-like, calling it 'two and a half hours of karaoke on a multimillion-dollar budget' with no clear recommendation to see it. | GPT-4o: The review is overwhelmingly critical, describing the show as a 'singularly unsatisfying smorgasbord' and 'creepily cold-blooded.' It emphasizes the lack of passion and coherence, suggesting the production is more of a commercial product than a compelling theatrical experience. | Gemini: The review is overwhelmingly negative, criticizing the show's lack of originality, emotional depth, and character development. The critic uses strong language like \"unsatisfying smorgasbord\" and \"creepily cold-blooded\" to convey their disappointment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,11 +51,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:34:50.875Z",
+    "scoredAt": "2026-02-02T18:43:10.325Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 44,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

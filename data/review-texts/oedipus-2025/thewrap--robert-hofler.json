@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic finds the production entertaining and acknowledges Strong's charismatic performance, but ultimately dismisses it as parody rather than tragedy, with clever modernization that doesn't elevate the material beyond surface-level updates. | Gemini: The review acknowledges some enjoyment in watching the modern references but ultimately finds the production more of a parody than a tragedy. The truncated text makes it difficult to ascertain a definitive recommendation, but the overall tone suggests a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review finds the production 'fun to watch' with some pleasurable moments, but ultimately dismisses it as 'never more than clever' and 'more parody than tragedy,' suggesting it fails as serious theater despite some entertainment value. | GPT-4o: The review highlights both positive and negative aspects of the production, noting the cleverness of modern references but also describing it as more parody than tragedy. The truncated text suggests caution, but the overall tone leans towards mixed with some enjoyable elements. | Gemini: The review highlights both positive and negative aspects. It acknowledges the fun in watching the modern references but ultimately finds the production more of a parody than a tragedy. The truncated text makes a final assessment difficult.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:56:41.022Z",
+    "scoredAt": "2026-02-02T18:44:23.746Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": null,
+    "claudeScore": 60,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "sourceMethod": "stub",
   "dtliExcerpt": "The biggest pleasure of this prestige production is watching how Icke pastes these modern references onto a classic story. It’s often fun to watch, but never more than clever.",

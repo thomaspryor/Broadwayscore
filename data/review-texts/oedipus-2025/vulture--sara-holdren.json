@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Manville and Strong crackle together â their chemistry is steamy and genuine and, in some of the productionâs best moments, after all terrible secrets have been revealed, so is their body-wracking devastation.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/oedipus-broadway",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic identifies significant flaws (overwriting, heavy-handed themes) but praises the leads' chemistry and powerful moments, concluding with genuine admiration for the climactic scenes and calling the ending 'a stunning closer.' | GPT-4o: The review acknowledges flaws in the production, particularly in the overwriting and some labored elements, but ultimately highlights the potency and strong performances, suggesting a recommendation despite reservations. | Gemini: The review highlights both strengths and weaknesses, ultimately leaning towards a positive recommendation due to the powerful performances and some effective staging choices, despite some overwriting and heavy-handedness.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite extensive criticism of overwriting and heavy-handed elements, the critic praises the lead performances, highlights several powerful scenes, and concludes with genuine admiration for the climactic moments, indicating a qualified recommendation. | GPT-4o: The review acknowledges some overwriting and labored elements in the production, but ultimately highlights strong performances and potent moments, suggesting a recommendation despite some reservations. | Gemini: The review acknowledges overwriting and some less elegant choices, but praises the performances, chemistry, and tension-building elements, ultimately finding the production potent and worthwhile despite its flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:35:07.547Z",
+    "scoredAt": "2026-02-02T18:44:32.001Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
+    "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 76,
     "openaiScore": 78,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -7,7 +7,7 @@
   "publishDate": "2024-07-11",
   "bwwExcerpt": "h as Oh, Mary! did—and my reaction was shared by the rest of the audience, which burst into applause at the end of every scene. Fasten your seatbelts: This 80-minute show is a fast and wild joy ride. Christian Holub, Entertainment Weekly: Oh, Mary! is laugh-out-loud funny from the first moments; though much of the humor comes from Escola’s unbelievable delivery and the slapstick combination of actors on stage. But what makes Oh, Mary! such a fulfilling theatrical experience is that it also has a real message about the dangers of repression, both societal and personal. Letting people express themselves and live their truth may not solve every political problem, but it can certainly make life way more fun. Escola’s doing that, and the rest of us should too. Grade: A- Adrian Horton, The Guardian: The real Mary Todd Lincoln was, by most accounts, erratic, often bedridden by sadness and prone to lavish spending. Not exactly a comic figure, though in the hands of the inimitable Cole Escola,",
   "originalScore": "A-",
-  "assignedScore": 90,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
@@ -20,7 +20,7 @@
   "dtliThumb": "Up",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:23:58.074Z",
+    "scoredAt": "2026-02-02T18:45:07.810Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -88,13 +88,13 @@
     "invalidatedAt": "2026-02-01T04:02:00.816Z"
   },
   "llmScore": {
-    "score": 90,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -103,7 +103,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The A- grade combined with phrases like 'fast and wild joy ride,' 'fulfilling theatrical experience,' and audience applause after every scene clearly indicates strong positive recommendation. | GPT-4o: The review describes the show as 'laugh-out-loud funny' and a 'fulfilling theatrical experience' with a real message, indicating a strong recommendation. The original rating of A- supports a Rave classification. | Gemini: The review uses highly positive language like \"laugh-out-loud funny\" and \"fulfilling theatrical experience.\" The critic's \"A-\" rating and the phrase \"fast and wild joy ride\" indicate a strong recommendation, placing it in the Rave bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The A- grade, description of audience applause after every scene, calling it 'laugh-out-loud funny' and 'a fulfilling theatrical experience' indicates strong enthusiasm and clear recommendation. | GPT-4o: The critic's A- rating, combined with the enthusiastic language describing the show as a 'fast and wild joy ride' and 'laugh-out-loud funny,' strongly indicates a rave review. The audience's reaction and the show's fulfilling message further support this classification. | Gemini: The review uses highly positive language like \"laugh-out-loud funny\" and \"fulfilling theatrical experience,\" and the critic gave it an A-. This indicates a strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -113,21 +113,21 @@
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 90,
+    "openaiScore": 87,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 8,
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "complete",
-  "wordCount": 535,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "previousUrl": "https://ew.com/oh-mary-broadway-review-cole-escola/",
   "urlDiscoveredAt": "2026-02-02T05:14:47.180Z",
   "urlDiscoveryMethod": "google-serp",
@@ -156,6 +156,5 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "rescoreCompletedAt": "2026-02-02T14:23:58.074Z",
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T14:23:58.074Z"
 }

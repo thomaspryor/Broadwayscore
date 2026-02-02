@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Moulin Rouge! The Musical is a gaudy, glitzy, over-the-top extravaganza that assaults the senses with relentless energy and spectacular production values. It's a sensory overload that somehow works despite its excesses.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Moulin Rouge! The Musical is a gaudy, glitzy, over-the-top extravaganza that assaults the senses with relentless energy and spectacular production values. It's a sensory overload that somehow works despite its excesses.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the show's over-the-top nature but concludes it 'somehow works,' indicating a positive recommendation despite reservations about its excesses. | GPT-4o: The review describes the show as an extravagant spectacle that succeeds in its execution, indicating a strong recommendation despite acknowledging its excesses. | Gemini: The review acknowledges the show's excesses but ultimately finds it works and is spectacular, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges the show's over-the-top nature but concludes it 'somehow works,' indicating a positive recommendation with reservations about the spectacle. | GPT-4o: The review describes the show as an extravagant and energetic production that succeeds in engaging the audience despite its overwhelming nature, indicating a strong recommendation. | Gemini: The review acknowledges the show's excesses but ultimately concludes that it 'somehow works,' indicating a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,23 +43,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:08.521Z",
+    "scoredAt": "2026-02-02T18:42:34.373Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 76,
     "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 9,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

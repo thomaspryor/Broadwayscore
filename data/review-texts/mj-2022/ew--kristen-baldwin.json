@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating clearly indicates rave territory, and the review praises the show as succeeding on multiple levels - both as celebration and thoughtful examination. | GPT-4o: The critic's original rating of 88 aligns with a 'Rave' classification, and the review text praises the show as both a celebration and a thoughtful examination, indicating a strong recommendation. | Gemini: The review is positive, highlighting the show's success in celebrating Jackson's artistry and examining the costs of fame. The critic's rating of 88 supports a positive classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating places this firmly in Rave territory, and the review declares the show 'succeeds' on multiple levels, indicating strong endorsement. | GPT-4o: The critic's original rating of 88 and the positive language in the review text indicate a strong recommendation, classifying it as a rave. | Gemini: The review explicitly states the show 'succeeds' in its goals, indicating a positive assessment. The critic's original rating of 88 further supports a classification within the Positive bucket, leaning towards the higher end.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,23 +43,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:23:01.327Z",
+    "scoredAt": "2026-02-02T18:38:40.221Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 88,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (19 words)",
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 88,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

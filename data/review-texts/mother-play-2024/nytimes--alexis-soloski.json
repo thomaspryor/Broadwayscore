@@ -9,15 +9,15 @@
   "bwwExcerpt": "Thirty or so years ago, Vogel told a reporter, “I like theater that makes me feel like it’s a healing.” That’s what “Mother Play” is, a balm that comes in cardboard boxes and packing tape. It honors the dead by making them alive again and nurtures the living by providing a place to put a daughter’s love and rage. Martha’s box is not Pandora’s. It’s just another way of organizing a life. Adam Feldman , TimeOut New York: Keenan-Bolger and Parsons are very good indeed in Mother Play, but there’",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the performances, particularly Lange's showcase role, and concludes that the play serves as meaningful 'healing' and a 'balm,' despite some concerns about excessive silliness in the direction. | Gemini: The review is generally positive, highlighting the play's emotional depth and healing qualities. While noting some potential silliness, the critic ultimately finds the play to be a compassionate and worthwhile experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite some critiques about excessive silliness and comparing it less favorably to Vogel's previous work, the review concludes with strong praise for the play as healing theater and a meaningful artistic achievement. | GPT-4o: The review praises the play's emotional depth, performances, and direction, highlighting its healing and compassionate nature. The critic's tone is enthusiastic, suggesting a strong recommendation to see the play. | Gemini: The review is generally positive, highlighting strong performances and Vogel's understanding of complex characters. While noting some silliness, the critic ultimately finds the play healing and compassionate, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:54:17.782Z",
+    "scoredAt": "2026-02-02T18:40:52.961Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
+    "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“Mother Play is a quieter show, softer and less shattering.\"",

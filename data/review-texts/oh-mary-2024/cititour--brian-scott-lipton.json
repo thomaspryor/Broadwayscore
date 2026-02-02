@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review is overwhelmingly positive with multiple superlatives like 'don't-miss,' 'complete tour de force,' 'uproarious,' and '80 of the funniest minutes you'll see in any medium,' concluding with urgent recommendation to 'head down to the Lortel as soon as you possibly can!' | GPT-4o: The review is overwhelmingly positive, describing the show as 'hilarious,' 'uproarious,' and a 'tour de force.' The critic explicitly states it is a 'don’t-miss' production, indicating a strong recommendation. | Gemini: The review uses extremely positive language such as \"don't-miss farce\" and \"funniest minutes you'll see in any medium!\" indicating a strong recommendation and placing it firmly in the Rave bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review is overwhelmingly enthusiastic with language like 'don't-miss,' 'complete tour de force,' 'even more uproarious,' and 'funniest minutes you'll see in any medium,' concluding with urgent 'don't miss your shot' recommendation. | GPT-4o: The review is overwhelmingly positive, describing the show as 'hilarious' and 'uproarious,' and strongly urging readers not to miss it. The critic praises the performances, writing, and direction, indicating a highly enthusiastic recommendation. | Gemini: The review uses extremely positive language like \"don't-miss farce\" and \"funniest minutes you'll see in any medium,\" indicating a strong recommendation and placing it firmly in the Rave bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:03:31.076Z",
+    "scoredAt": "2026-02-02T18:44:46.057Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
@@ -82,9 +82,11 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 94,
   "rescoreCompletedAt": "2026-02-01T15:43:51.717Z",
-  "contentTier": "invalid",
-  "wordCount": 602,
+  "contentTier": "complete",
+  "wordCount": 610,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
   "wrongProduction": true,
-  "wrongProductionNote": "Off-Broadway run at Lucille Lortel Theatre (Feb-May 2024), not Broadway transfer (Jun 2024)",
-  "tierReason": "Wrong production"
+  "wrongProductionNote": "Off-Broadway run at Lucille Lortel Theatre (Feb-May 2024), not Broadway transfer (Jun 2024)"
 }

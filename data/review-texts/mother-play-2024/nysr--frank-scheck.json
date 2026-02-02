@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": "3/5 stars",
-  "assignedScore": 69,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic gives 3/5 stars and explicitly states the play is 'unfocused and self-indulgent' while acknowledging 'many amusing and moving moments' and praising Jessica Lange's performance. This is a clear mixed review. | Gemini: The review acknowledges flaws in the play itself, calling it \"unfocused and self-indulgent\". However, it praises Jessica Lange's performance and states it's \"worth the price of admission\" to see her, indicating a positive, albeit qualified, recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and review structure clearly indicate mixed feelings - the critic acknowledges 'many amusing and moving moments' and praises Lange's performance, but ultimately finds the play 'unfocused and self-indulgent' with predictable plotting. | GPT-4o: The review acknowledges the strong performances, particularly by Jessica Lange, and some amusing and moving moments. However, it criticizes the play for being unfocused and lacking emotional depth. The 3/5 star rating supports a mixed classification. | Gemini: The critic gives the play 3/5 stars and states that Jessica Lange's performance is worth the price of admission. While the critic notes flaws in the play itself, the positive aspects, especially Lange's performance, lead to a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:39.772Z",
+    "scoredAt": "2026-02-02T18:40:42.081Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "openaiScore": 65,
+    "geminiScore": 77,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 76,

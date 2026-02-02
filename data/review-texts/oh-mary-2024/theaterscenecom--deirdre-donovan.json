@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite the truncated text, the review is clearly positive throughout, praising the performances as 'superb,' calling it 'uproariously funny,' noting it broke box office records, and encouraging readers to 'see it for yourself' to understand the buzz. | GPT-4o: The review is largely positive, highlighting the show's humor, strong performances, and creative production elements. The critic notes the play's popularity and buzz, suggesting a recommendation to see it despite potential controversy over historical liberties. The truncated text warning suggests caution, but the provided excerpts support a positive verdict. | Gemini: The review is overwhelmingly positive, highlighting the humor, performances, and design elements. While acknowledging potential offense for some, it suggests most will enjoy the play's unique approach, indicating a recommendation with slight reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is overwhelmingly positive with praise for performances, direction, design elements, and entertainment value. The critic calls it 'uproariously funny,' praises the 'superb actors' and 'crackerjack acting,' and notes it's 'one of the hottest tickets in town.' The final recommendation to 'head to the Lyceum and see it for yourself' confirms the positive verdict. | GPT-4o: The review is filled with praise for the performances, direction, and production elements, and it highlights the play's popularity and buzz. Despite the truncated text, the positive tone and recommendation to see the play suggest a strong endorsement. | Gemini: The review is overwhelmingly positive, praising the direction, acting, and design elements. While acknowledging potential offense for some, it suggests most will enjoy the play's humor and recommends seeing it to understand the buzz.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:35:33.485Z",
+    "scoredAt": "2026-02-02T18:46:07.854Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 81,
-    "geminiScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

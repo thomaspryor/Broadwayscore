@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting structural flaws and comparing it unfavorably to traditional plays, the critic concludes it's a 'cheerful night of theater' and acknowledges moments that 'tickle' organically, indicating a positive recommendation with clear reservations. | GPT-4o: The review acknowledges the show's comedic nature and audience enthusiasm, despite some reservations about character development and the improv comedy sketch feel. The overall tone suggests a positive experience for those aligned with Escola's style. | Gemini: The review acknowledges the show's flaws (lack of character development, improv sketch nature) but ultimately calls it a \"cheerful night of theater\" and implies it's enjoyable for those who appreciate Escola's style. This suggests a positive but not rave recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds it genuinely funny and entertaining, calling it 'a cheerful night of theater' and praising specific moments, but has reservations about pacing and character development that prevent stronger enthusiasm. | GPT-4o: The review acknowledges the show's comedic nature and the audience's enjoyment, despite some reservations about character development and the improv comedy sketch nature. The overall tone suggests a positive experience for those who appreciate Escola's style. | Gemini: The review acknowledges the show's comedic nature and audience enthusiasm, ultimately describing it as a \"cheerful night of theater\" for those who appreciate Escola's style, but also notes some issues with character development and the audience's overzealous reactions.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:35:25.836Z",
+    "scoredAt": "2026-02-02T18:45:56.279Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 75,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 74,
+    "openaiScore": 75,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -62,8 +62,8 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "complete",
-  "wordCount": 721,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "isFullReview": true,
@@ -86,7 +86,7 @@
   ],
   "fetchTier": 1,
   "textQuality": "partial",
+  "truncationSignals": [],
   "textStatus": "partial",
-  "rescoreCompletedAt": "2026-02-02T03:35:25.836Z",
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T03:35:25.836Z"
 }

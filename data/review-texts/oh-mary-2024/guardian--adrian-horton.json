@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "etting people express themselves and live their truth may not solve every political problem, but it can certainly make life way more fun. Escola’s doing that, and the rest of us should too. Grade: A- Adrian Horton, The Guardian: The real Mary Todd Lincoln was, by most accounts, erratic, often bedridden by sadness and prone to lavish spending. Not exactly a comic figure, though in the hands of the inimitable Cole Escola, the former first lady is the buzziest, and funniest, theater draw this summer. The comedian’s show Oh, Mary!, which transferred to Broadway after critical raves and a twice-extended Off-Broadway run, takes the public blank slate of Abraham’s hoop-skirted wife as a launchpad for 80 minutes of irreverent, raunchy, gleefully deranged revisionist history. Greg Evans, Deadline: There’s funny, there’s very funny, and then there’s Oh, Mary!, Cole Escola’s riotous new comedy that brings more laughs to Broadway than all the Gutenberg!s, Edelmans and Birbiglias combined. You can",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
@@ -23,11 +23,11 @@
   "scoreConfidence": "medium",
   "extractedGrade": "A",
   "llmScore": {
-    "score": 90,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -38,7 +38,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Multiple critics give superlative praise with Grade A-, 'critical raves', 'riotous', and comparison to other Broadway comedies. The tone is enthusiastically positive throughout. | GPT-4o: The review describes the show as the 'buzziest, and funniest, theater draw this summer' and highlights critical raves and an extended run, indicating a strong recommendation. The use of 'Grade: A-' further supports a rave verdict. | Gemini: The review uses extremely positive language such as \"riotous,\" \"critical raves,\" and \"funniest theater draw this summer,\" indicating a rave review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The Guardian critic gives an explicit A- grade and describes it as making life 'way more fun,' while the Deadline quote calls it 'riotous' and says it 'brings more laughs to Broadway' than multiple other comedies combined. | GPT-4o: The review is highly positive, highlighting the show as a standout comedic performance on Broadway. The use of terms like 'buzziest' and 'funniest' indicates a strong recommendation, supported by the Grade: A-. | Gemini: The review uses strong positive language like \"buzziest, and funniest, theater draw this summer\" and \"riotous new comedy that brings more laughs to Broadway than all the Gutenberg!s, Edelmans and Birbiglias combined.\" The A- grade also indicates a strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,27 +48,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:04:45.830Z",
+    "scoredAt": "2026-02-02T18:45:11.689Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 90,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 90,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 90,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 0,
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "bwwThumb": "Up",

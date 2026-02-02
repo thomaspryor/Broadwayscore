@@ -7,7 +7,7 @@
   "publishDate": "2019-07-25",
   "bwwExcerpt": "The spectacular spectacular, the ring-ding razzle dazzle, the gitchie gitchie ya-ya da-da: It's all in Moulin Rouge!, a Broadway musical so stuffed with songs and sequins and sheer outrageous excess that it's hard to catch a breath for most of its two-hour-and-45-minute runtime (at least not without inhaling an errant feather or a spangled scrap of confetti).",
   "originalScore": "B+",
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "reviews-json-stub",
   "archivePath": "data/archives/reviews/moulin-rouge-2019/ew--leah-greenblatt_2026-02-01.html",
   "textFetchedAt": "2026-02-01T15:09:04.739Z",
@@ -15,12 +15,12 @@
   "showScoreExcerpt": "\"A Millennial Reboot of Chekhov, and 'Moulin Rouge!' on Broadway. Halley Feiffer translates 'Three Sisters' into Internet-speak, and Baz Luhrmannâs glitzy movie comes into its own onstage.\"",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:31:01.512Z",
+    "scoredAt": "2026-02-02T18:41:44.999Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
   "garbageReason": "/page not found/i",
@@ -79,11 +79,11 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -94,7 +94,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ rating strongly indicates positive territory, and the phrase 'comes into its own onstage' suggests the adaptation succeeds theatrically, though the limited excerpt prevents a higher confidence assessment. | GPT-4o: The original rating of B+ indicates a positive review, and the text suggests a fresh take on classic material, implying a recommendation with some reservations. | Gemini: The B+ rating and the positive comparison to 'Moulin Rouge!' suggest a positive recommendation, though the 'reboot' description implies some reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ rating indicates a positive recommendation, and 'comes into its own onstage' suggests the production succeeds theatrically, though limited excerpt text prevents higher confidence. | GPT-4o: The original rating of B+ suggests a positive review. The phrase 'comes into its own onstage' indicates a successful adaptation, supporting a positive recommendation with some reservations. | Gemini: The B+ rating and the phrase \"comes into its own onstage\" indicate a positive recommendation. The comparison to 'Moulin Rouge!' on Broadway further suggests an enjoyable experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -105,11 +105,11 @@
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 79,
-    "geminiScore": 78,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -118,8 +118,8 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreCompletedAt": "2026-02-02T00:31:01.512Z",
-  "contentTier": "complete",
-  "wordCount": 566,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "previousUrl": "https://ew.com/moulin-rouge-broadway-review/",
   "urlDiscoveredAt": "2026-02-01T15:09:04.734Z",
   "urlDiscoveryMethod": "google-serp",
@@ -146,6 +146,5 @@
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "textStatus": "partial",
-  "tierReason": "Full review text"
+  "textStatus": "partial"
 }

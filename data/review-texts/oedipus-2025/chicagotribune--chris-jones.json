@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite minor reservations about the coda and Strong's performance, Jones delivers an overwhelmingly positive review calling the adaptation 'thrilling' and praising Icke's work as 'really something' with 'crackling relevance all too rare on Broadway.' | GPT-4o: The review is overwhelmingly positive, praising the adaptation's relevance, the performances, and the overall impact of the production. The critic's admiration and the strong language used indicate a highly enthusiastic recommendation. | Gemini: Despite some minor caveats about the coda and Strong's performance, the review is overwhelmingly positive, praising Icke's adaptation and the performances, especially Manville's. The critic states he was riveted and highlights the play's crackling relevance.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite minor reservations, the critic uses superlative language like 'thrilling,' 'spectacularly good,' and describes being completely riveted for two hours without intermission, indicating a strong must-see recommendation. | GPT-4o: The review is overwhelmingly positive, highlighting the adaptation's riveting nature, the contemporary relevance, and the strong performances. Despite minor reservations, the critic's tone is enthusiastic and admiring, indicating a strong recommendation. | Gemini: Despite some caveats about the coda and Strong's performance, the review is largely positive, praising Icke's adaptation and the performances, especially Manville's. The critic states he was riveted and that the adaptation re-energizes the play.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:54:15.329Z",
+    "scoredAt": "2026-02-02T18:43:21.162Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 90,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 92,
-    "geminiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 76,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Jessica Lange's nuanced central performance and acknowledges the play's compelling character study, though notes issues with underwritten supporting roles and structural boldness that may not work for all viewers. | GPT-4o: The review highlights the compelling nature of Jessica Lange's performance and the bold direction, suggesting a positive experience despite some reservations about the character development of the siblings. The overall tone leans towards recommending the show for its strong elements. | Gemini: The review praises Jessica Lange's performance and the play's exploration of a complex character, but notes that other aspects, like the siblings' portrayal, are less compelling. This suggests a positive but not overwhelmingly enthusiastic recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises Jessica Lange's nuanced central performance and acknowledges the play's compelling character study, though notes some structural issues with underwritten supporting characters and tonal shifts. | GPT-4o: The review highlights strong performances, particularly by Jessica Lange, and appreciates the bold directorial choices. While there are some reservations about the idealized sibling relationship and the lack of redemption in the story, the overall tone is positive, recommending the show for its compelling character study and nuanced performances. | Gemini: The review praises Jessica Lange's performance and the play's exploration of a complex character, but notes that other aspects, like the siblings' portrayal, are less compelling. This suggests a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:33:58.446Z",
+    "scoredAt": "2026-02-02T18:41:03.299Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 76,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 76,
     "openaiScore": 78,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

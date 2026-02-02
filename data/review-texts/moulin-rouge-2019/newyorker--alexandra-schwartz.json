@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"A Millennial Reboot of Chekhov, and 'Moulin Rouge!' on Broadway. Halley Feiffer translates 'Three Sisters' into Internet-speak, and Baz Luhrmannâs glitzy movie comes into its own onstage.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/moulin-rouge-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 76,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/moulin-rouge-2019/new-yorker--alexandra-schwartz_2026-01-27.html",
@@ -30,14 +30,14 @@
   "archiveOrgTimestamp": "20250903015917",
   "archiveOrgUrl": "http://web.archive.org/web/20250903015917/https://www.newyorker.com/magazine/2019/08/05/a-millennial-reboot-of-chekhov-and-moulin-rouge-on-broadway",
   "llmScore": {
-    "score": 62,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -45,7 +45,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be a headline or subheading rather than evaluative content, providing only descriptive information about the productions without any clear critical assessment or recommendation. | GPT-4o: The excerpt suggests a transformation of the movie into a successful stage production, but the lack of full context and the single excerpt warning lead to a conservative mixed classification. | Gemini: The excerpt suggests a positive view of \"Moulin Rouge!\" on Broadway, implying it's worth seeing. However, the limited text and the mention of a 'reboot' of Chekhov suggest potential reservations, hence the 'recommended with reservations' verdict and a score in the middle of the positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'comes into its own onstage' suggests positive assessment of Moulin Rouge's theatrical adaptation, but with only this brief excerpt available, the full verdict remains unclear. | GPT-4o: The excerpt suggests a positive transformation of the movie to the stage, indicating a strong recommendation. The phrase 'comes into its own' implies a successful adaptation, warranting a higher score within the Positive range. | Gemini: The excerpt suggests a positive reception, particularly regarding the stage adaptation of 'Moulin Rouge!'. The phrase 'comes into its own onstage' implies that the reviewer found the stage production successful.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,27 +55,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:31:23.314Z",
+    "scoredAt": "2026-02-02T18:41:59.613Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "3.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 62,
+    "claudeScore": 72,
+    "openaiScore": 82,
     "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "show-score"

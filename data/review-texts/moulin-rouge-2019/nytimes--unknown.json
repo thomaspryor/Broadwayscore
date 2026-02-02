@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 94,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses rapturous language throughout, calling it 'euphoric,' praising stellar performances, and explicitly states 'I swear you'll feel nothing like regret.' This is clearly a must-see recommendation despite minor acknowledged flaws. | GPT-4o: The review is overwhelmingly positive, describing the production as euphoric, a natural high, and a cloud-surfing experience. It praises the performances, direction, and overall production quality, making it a must-see recommendation. | Gemini: The review is largely positive, highlighting the energetic performances, dazzling set, and overall escapism. While acknowledging potential drawbacks like the jukebox musical format, the critic ultimately recommends the show as an enjoyable experience.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses rapturous language throughout, calling it 'euphoric,' praising standout performances, and concluding with 'I swear you'll feel nothing like regret' - clear enthusiastic recommendation despite acknowledging it as escapist entertainment. | GPT-4o: The review is filled with enthusiastic praise, describing the show as euphoric, a natural high, and a must-see for its opulent and energetic production. The critic uses strong, positive language throughout, indicating a highly enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, highlighting the energetic performances, dazzling set, and overall escapism. While acknowledging potential drawbacks like the jukebox musical format, the critic ultimately recommends the show enthusiastically.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,23 +46,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:23:46.425Z",
+    "scoredAt": "2026-02-02T18:42:28.023Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
+    "previousScore": 94,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
+  "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 88,
     "openaiScore": 95,
-    "geminiScore": 80,
+    "geminiScore": 81,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -85,11 +85,10 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251102083001",
   "archiveOrgUrl": "http://web.archive.org/web/20251102083001/https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html",
-  "rescoreCompletedAt": "2026-02-02T14:23:46.425Z",
-  "wordCount": 1261,
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T14:23:46.425Z"
 }

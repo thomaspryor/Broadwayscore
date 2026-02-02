@@ -17,7 +17,7 @@
   "showScoreExcerpt": "\"Wheeldonâs choreography â performed by Frost along with a superb if amazingly jacked ensemble â remains compelling longer, offering a three-dimensional version of what most of us have seen only from distant arena seats or in dark videos on depthless screens. (The showâs âMichael Jackson movementâ is credited to two additional choreographers, Rich + Tone Talauega.) The stage patterns are far more varied and expressive than in similar musicals, scoring points without words as they deliver the thrills and, following the biomusical road map, pave the way between present and past...In this, âMJâ is trying to have it both ways. It wants to blame everything sad and weird about Jackson on others (especially the press, who are equated with the zombies in âThrillerâ) but credit him alone for his every good deed and success. Acknowledgment of the choreographers and songwriters he collaborated with is mostly saved for the program.\"",
   "llmScore": {
     "score": 62,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 57,
       "high": 67
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: Green praises the early scenes, Frost's performance, and Wheeldon's choreography, but concludes the show 'becomes a grind of obfuscation' and 'disintegrates in the second half' due to its defensive avoidance of serious accusations, making it neither a clear recommendation nor a complete dismissal. | Gemini: The review acknowledges strengths in the choreography and performance but ultimately finds the show lacking depth and integrity due to its avoidance of controversial aspects of Jackson's life. It settles for a mixed assessment, highlighting enjoyable moments while criticizing the overall obfuscation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Green acknowledges the show's strengths (Wheeldon's choreography, Frost's performance, strong opening) but ultimately finds it fundamentally flawed due to its defensive avoidance of Jackson's most serious controversies, calling it 'a grind of obfuscation' that becomes 'dulling' due to 'bad faith.' | GPT-4o: The review acknowledges the show's strengths in choreography and performance but criticizes its lack of depth and ethical stance, ultimately leaving the impression of a production that is entertaining yet flawed. | Gemini: The review acknowledges the show's flaws, particularly its avoidance of controversy and its disintegration in the second half, but ultimately finds it \"pretty good\" within its genre, especially praising the choreography and the lead performer. This indicates a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,26 +41,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:14.408Z",
+    "scoredAt": "2026-02-02T18:39:24.438Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 62,
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "sources": [
     "dtli",

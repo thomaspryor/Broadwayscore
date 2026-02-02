@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic gives 2/5 stars and calls it 'monumentally silly' and 'crude,' but acknowledges it gets laughs and praises the production values. The tone is neither recommendatory nor dismissive. | GPT-4o: The critic's 2/5 star rating and the description of the show as 'monumentally silly' and 'crude' suggest a negative impression. Although there are some positive notes about the production's look and the supporting cast, the overall tone is dismissive and critical of the show's substance and Escola's performance. | Gemini: The review acknowledges some amusement and good production elements, but ultimately finds the script flimsy and the humor crude. The 2/5 star rating also indicates a mixed to negative leaning, but the presence of amusement prevents a fully negative score.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 2/5 star rating and language like 'monumentally silly,' 'slapdash artistry crude,' and 'flimsy script' indicate clear reservations, but the critic acknowledges laughs and praises the production elements, landing in mixed territory. | GPT-4o: The critic's 2/5 star rating and description of the show as 'monumentally silly' and 'slapdash' indicate a negative assessment, despite acknowledging some laughs and production quality. | Gemini: The review acknowledges some amusement and praises the production elements, but also notes the script's flimsiness and the critic's lack of connection with Escola's artistry. The 2/5 star rating also indicates a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:05:50.942Z",
+    "scoredAt": "2026-02-02T18:45:35.324Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,

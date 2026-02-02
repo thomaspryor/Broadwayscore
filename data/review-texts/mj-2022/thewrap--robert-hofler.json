@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic describes the show as having 'minor offenses on display' and questions whether Jackson would approve, indicating disapproval. However, with only excerpted text available, the full negative verdict may be stronger than what's shown here. | GPT-4o: The critic describes the musical as having 'minor offenses' and questions whether Jackson would approve, suggesting a negative view of the production. | Gemini: The review excerpt uses negative language like \"minor offenses,\" suggesting a negative overall assessment despite the mention of \"greatest hits.\"",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic describes the show as having 'minor offenses' and questions whether Jackson would approve, indicating disappointment with the production despite limited excerpt text. | GPT-4o: The review describes the show as having 'minor offenses' and questions the approval of the production, suggesting a negative view of its quality and execution. | Gemini: The review excerpt clearly indicates a negative assessment of the show, using phrases like \"minor offenses\" to describe it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:52.465Z",
+    "scoredAt": "2026-02-02T18:39:41.467Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 42,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,

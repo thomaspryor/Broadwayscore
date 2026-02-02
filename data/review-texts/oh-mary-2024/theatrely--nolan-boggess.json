@@ -16,7 +16,7 @@
   "bwwExcerpt": "With the world finally catching up with Escola’s work, let’s hope more people travel all over the world to see Mary’s “short legs and long medleys.” Or at least enough to turn a strictly limited run into a Broadway mainstay.",
   "llmScore": {
     "score": 93,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 88,
       "high": 98
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses emphatic language like 'masterpiece,' 'sensational,' 'revolutionary,' and calls it 'the buzziest show of the season.' Despite acknowledging its niche origins, the review is unambiguously celebratory and recommends it as essential viewing. | GPT-4o: The review is overwhelmingly positive, describing the show as a 'sensational Broadway debut' and a 'stupid masterpiece.' The critic praises the performances, writing, and direction, and expresses excitement about the show's impact and significance, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"sensational Broadway debut,\" \"stuff of dreams,\" and \"stupid masterpiece.\" The critic clearly believes this is a groundbreaking and essential show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses explicitly superlative language calling it a 'masterpiece' and declaring it 'the future of Broadway,' with enthusiastic praise for performances, writing, and direction throughout. | GPT-4o: The review is overwhelmingly positive, describing the show as a 'sensational Broadway debut' and a 'masterpiece'. The critic uses enthusiastic language throughout, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, calling the show a \"sensational Broadway debut\" and a \"stupid masterpiece.\" The critic expresses excitement and hope for the future of Broadway based on this production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:06:55.399Z",
+    "scoredAt": "2026-02-02T18:46:11.403Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 91,
     "openaiScore": 95,
-    "geminiScore": 92,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "bwwThumb": "Up",

@@ -6,20 +6,20 @@
   "url": "https://www.latimes.com/entertainment-arts/story/2025-11-13/review-theater-mark-strong-lesley-manville-robert-ickes-sophocles-oedipus-broadway",
   "publishDate": "2025-11-14",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "archivePath": "data/archives/reviews/oedipus-2025/latimes--charles-mcnulty_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:42:50.234Z",
+  "textFetchedAt": "2026-02-02T17:04:16.743Z",
   "sourceMethod": "archive",
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt contains positive descriptors like 'smart and sleek direction' and 'charismatic' performance, plus notes it's the 'buzziest' show of the season. However, this appears to be opening description rather than final verdict, so confidence is low. | GPT-4o: The review highlights the production as a 'buzzy' and 'chic' offering with 'smart and sleek direction' and a 'charismatic' lead, suggesting a positive reception. However, the text is truncated, and the full verdict is not available, leading to a medium confidence level. | Gemini: The review excerpt highlights \"smart and sleek direction\" and a \"charismatic\" lead, suggesting a positive experience, but the limited text and aggregator context indicate a likely positive but not rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: McNulty praises the performances (especially Strong and Manville), direction, and concept while noting structural flaws like clumsy plot devices and diminished cathartic impact. The review concludes with appreciation for the production's insights into political hubris. | GPT-4o: The review praises the performances, particularly Mark Strong's, and the modern retelling of the classic play, despite noting some clumsiness in plot handling and a diminished cathartic impact. The overall tone suggests a positive recommendation with some reservations. | Gemini: The review acknowledges flaws like clumsiness and overdone family dynamics, but praises Strong's performance and Icke's astute understanding. The ending is considered diminished, but the overall takeaway is positive, suggesting it's worth seeing despite imperfections.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:04.613Z",
+    "scoredAt": "2026-02-02T18:43:40.534Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "geminiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -88,8 +88,8 @@
     }
   ],
   "fetchTier": 4,
-  "contentTier": "complete",
-  "wordCount": 1429,
+  "contentTier": "truncated",
+  "wordCount": 207,
   "previousUrl": "https://www.latimes.com/entertainment-arts/story/2025-11-14/oedipus-broadway-review-mark-strong-lesley-manville",
   "urlDiscoveredAt": "2026-02-01T14:18:36.842Z",
   "urlDiscoveryMethod": "google-serp",
@@ -97,12 +97,10 @@
   "textWordCount": 1429,
   "textQuality": "partial",
   "truncationSignals": [
-    "has_footer_junk"
+    "has_footer_text"
   ],
   "textStatus": "partial",
   "archiveOrgTimestamp": "20260107174807",
   "archiveOrgUrl": "http://web.archive.org/web/20260107174807/https://www.latimes.com/entertainment-arts/story/2025-11-13/review-theater-mark-strong-lesley-manville-robert-ickes-sophocles-oedipus-broadway",
-  "rescoreCompletedAt": "2026-02-01T15:42:35.791Z",
-  "needsRescore": true,
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T18:43:40.534Z"
 }

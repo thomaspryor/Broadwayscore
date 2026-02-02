@@ -6,16 +6,16 @@
   "url": "https://broadwaynews.com/2022/02/01/review-a-flashy-mj-dazzles-and-distracts-with-dance/",
   "publishDate": "February 1, 2022",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 64,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:04:09.619Z",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises the performances, choreography, and production values while criticizing the superficial treatment of Jackson's life and the morally questionable aspects of the enterprise. The review acknowledges strengths but ultimately finds the show lacking in depth and substance. | GPT-4o: The review acknowledges the show's impressive staging and performances, particularly in its musical and dance sequences, but criticizes it for being superficial and lacking depth in its narrative and character exploration. The review suggests that while fans might enjoy it, others may find it morally questionable. | Gemini: The review acknowledges the show's strengths in staging, choreography, and performances, but ultimately finds it superficial and lacking emotional depth. The critic points out the show's failure to address the more disturbing aspects of Jackson's life, leading to a mixed assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic praises the elaborate staging, magnetic performances, and dazzling choreography, but ultimately finds the show superficial and unrevelatory, describing it as 'fan-bait' that avoids deeper issues. | GPT-4o: The review acknowledges the show's strengths in music and choreography but criticizes its superficial treatment of Jackson's life and the trite dialogue. It suggests the show is enjoyable for fans but raises moral questions for others, indicating a mixed reception. | Gemini: The review acknowledges the show's flaws, particularly the superficiality and avoidance of serious issues, but praises the music, dancing, and performances. The reviewer finds it enjoyable despite its shortcomings, making it a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,27 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:22:46.587Z",
+    "scoredAt": "2026-02-02T18:38:24.202Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "sourceMethod": "archive",
   "dtliExcerpt": "And yet — you knew that was coming, didn’t you? — for all its surface flash and stylish presentation, “MJ” comes across, like most jukebox/bio-musical hybrids, as superficial fan-bait: a glossy but unrevelatory moonwalk through the ups and downs (mostly the ups) of Jackson’s career.",

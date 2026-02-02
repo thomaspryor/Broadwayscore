@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic clearly disapproves of the show's approach, describing it as a 'sidestep' and 'surface-skimming rehabilitation tour' that 'flattens rather than reckoning' with Jackson's legacy. The language is consistently critical of the production's substance. | GPT-4o: The review acknowledges the impressive musical numbers and Myles Frost's performance but criticizes the production for avoiding deeper engagement with Jackson's complex legacy. The tone is mixed, highlighting both strengths and significant shortcomings. | Gemini: The review acknowledges the impressive musical catalogue and performance but criticizes the show's handling of Jackson's legacy, suggesting a superficial and rehabilitative approach. This indicates a mixed assessment, neither strongly recommending nor discouraging.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges strong performances and effective fan service elements but criticizes the show's fundamental approach as a 'rehabilitation tour' that avoids meaningful examination of Jackson's complex legacy. | GPT-4o: The review acknowledges the production's impressive musical and performance elements, but criticizes its superficial treatment of Michael Jackson's complex legacy. The critic appreciates the fan service and musical execution but finds the narrative lacking depth, resulting in a mixed verdict. | Gemini: The review acknowledges the show's strengths in music and performance but criticizes its handling of Jackson's controversial legacy, suggesting a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,21 +41,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:28.578Z",
+    "scoredAt": "2026-02-02T18:39:52.674Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
-    "claudeBucket": "Negative",
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

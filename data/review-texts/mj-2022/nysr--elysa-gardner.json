@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 3/5 star rating and review tone indicate a solid positive recommendation. The critic praises the performances, choreography, and musical numbers while acknowledging the show's limitations in handling Jackson's controversial aspects. | GPT-4o: The review acknowledges the challenges and some shortcomings of the production, particularly in the book and certain roles, but ultimately highlights the joy and talent in the performances, especially Myles Frost's portrayal of Michael Jackson. The original 3/5 star rating suggests a positive but not overwhelmingly enthusiastic recommendation. | Gemini: The review is generally positive, highlighting the talent of the cast, particularly Myles Frost, and the effective use of Jackson's music. While acknowledging the challenges of portraying Jackson's life and the limitations of the book, the critic ultimately finds the production enjoyable and worth seeing, especially for its musical and dance numbers.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 3/5 rating and review text show clear appreciation for the performances and production values while acknowledging structural flaws in the book. The critic finds much to praise in Frost's performance and Wheeldon's direction, calling it 'winning when song and dance are in progress.' | GPT-4o: The review acknowledges the challenges of the jukebox musical format and some weaknesses in the book, but ultimately praises the performances, particularly Myles Frost's, and the production's ability to capture the joy of Michael Jackson's music. The original rating of 3/5 stars suggests a positive but not overwhelming recommendation. | Gemini: Despite acknowledging the challenges of portraying a controversial figure, the review highlights the show's strengths, particularly the performances and choreography, leading to a positive, albeit qualified, recommendation. The 3/5 star rating also supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:23:37.943Z",
+    "scoredAt": "2026-02-02T18:39:04.536Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 74,
+    "claudeScore": 76,
+    "openaiScore": 75,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

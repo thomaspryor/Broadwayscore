@@ -14,7 +14,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 62,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 57,
       "high": 67
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges strong elements (Lange's performance, staging details) but consistently emphasizes the play's failure to meet expectations, calling it 'minor work' from 'major' talents and noting it lacks emotional impact when needed most. | Gemini: The review acknowledges Jessica Lange's captivating performance and some clever staging, but ultimately finds the play emotionally underpowered and uneven. The critic suggests it's not a complete failure but doesn't strongly recommend it.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges Jessica Lange's captivating performance and some effective staging elements, but concludes the play is 'not quite specific or emotionally searing enough' and calls it 'a minor work' from major talents, indicating neither recommendation nor strong discouragement. | GPT-4o: The review highlights some positive aspects, particularly Jessica Lange's performance, but overall suggests that the play is not emotionally impactful or memorable enough to be strongly recommended. The critic notes that while there are moments that work, the play as a whole is not compelling. | Gemini: The review praises Jessica Lange's performance and the staging, but finds the play emotionally underpowered and uneven. It's a qualified recommendation, leaning towards positive due to Lange's performance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,32 +38,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:53:20.305Z",
+    "scoredAt": "2026-02-02T18:40:34.610Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 79,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
-  "contentTier": "complete",
-  "wordCount": 1241,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 57,
   "isFullReview": true,
@@ -80,6 +81,7 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-01T15:39:23.894Z",
@@ -90,6 +92,5 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "Meh"
-  },
-  "tierReason": "Full review text"
+  }
 }

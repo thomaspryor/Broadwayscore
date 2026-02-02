@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Still, despite its imperfections, “Mother Play” is a genuinely engaging examination of a family trying to find equilibrium. It honors the glimmers and low points of mothering and explains why, in some cases, the role is transposed onto those who were never called to it in the first place.",
@@ -21,11 +21,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 75,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges 'two major missteps' and calls parts 'overlong and dull,' but concludes positively with 'genuinely engaging' and praises how it 'honors' the complexities of motherhood, indicating a clear recommendation despite reservations. | GPT-4o: The review acknowledges some flaws in the production, such as predictability and a dull scene, but overall describes the play as engaging and insightful, indicating a positive recommendation despite reservations. | Gemini: The review acknowledges flaws but ultimately calls the play \"genuinely engaging,\" indicating a positive recommendation. The additional context from the aggregator reinforces this.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the performances as magnificent and delightful, highlights brilliant design elements, and concludes it's 'genuinely engaging' despite noting two specific missteps. | GPT-4o: The review acknowledges some flaws, such as predictability and an overlong scene, but overall praises the performances, set design, and engaging narrative, leading to a solid recommendation. | Gemini: The review is mostly positive, highlighting strong performances and engaging narrative, but notes predictable plot points and a dull scene, leading to a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,21 +46,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:54:42.094Z",
+    "scoredAt": "2026-02-02T18:41:18.127Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 76,
     "openaiScore": 78,
-    "geminiScore": 75,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -71,7 +71,7 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 60,
   "rescoreCompletedAt": "2026-02-01T15:40:31.038Z",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 656,
   "humanReviewScore": 72,
   "humanReviewPreviousScore": 45,
@@ -79,7 +79,7 @@
   "isFullReview": true,
   "textWordCount": 656,
   "archivePath": "data/archives/reviews/mother-play-2024/variety--aramide-timubu_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:42:31.243Z",
+  "textFetchedAt": "2026-02-02T16:46:50.872Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -90,6 +90,7 @@
   ],
   "fetchTier": 4,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250104141059",
@@ -101,6 +102,5 @@
     "hadPositiveThumb": true,
     "dtliThumb": "Up",
     "bwwThumb": "Up"
-  },
-  "tierReason": "Full review text"
+  }
 }
