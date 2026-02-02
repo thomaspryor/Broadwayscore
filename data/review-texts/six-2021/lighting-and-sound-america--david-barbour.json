@@ -9,7 +9,7 @@
   "showScoreExcerpt": "Best of all, Six is an original musical, with a wildly novel concept, put together by a young creative team, many of them in their twenties. This is how musical theatre moves forward, not by recycling yesterday's hits but by applying fresh thinking and up-to-date wit to a seemingly unlikely subject.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/six",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 75,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/six-2021/lighting-sound-america--david-barbour_2026-01-27.html",
@@ -28,11 +28,11 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 74,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -43,7 +43,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic explicitly gives the show a 7/10 grade and acknowledges its entertainment value and talented cast, but notes significant structural and thematic weaknesses that prevent a stronger recommendation. | Gemini: The review acknowledges the show's flaws, such as its superficiality and lack of historical depth, but ultimately praises the cast's performances and the show's entertainment value. The critic explicitly states there are many features that deserve high grades, especially the cast.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the show's entertainment value and praises the 'sensational cast' while noting it's 'slickly entertaining,' but expresses reservations about its 'hollow core' and 'glossy superficiality.' The final grade of 7/10 confirms a qualified positive recommendation. | GPT-4o: The review acknowledges the show's entertainment value and the sensational cast, but also notes its superficiality and lack of depth in addressing historical themes. The critic's overall tone suggests a recommendation, albeit with notable reservations about the show's substance. | Gemini: The critic clearly enjoyed the show and praises the cast and individual numbers. However, they also point out the show's superficiality and lack of dramatic tension, leading to a 'Positive' score with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,26 +53,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:39:51.850Z",
+    "scoredAt": "2026-02-02T19:05:00.522Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 70,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 70,
-    "openaiScore": null,
-    "geminiScore": 77,
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Best of all, Six is an original musical, with a wildly novel concept, put together by a young creative team, many of them in their twenties. This is how musical theatre moves forward, not by recycling yesterday's hits but by applying fresh thinking and up-to-date wit to a seemingly unlikely subject.\n\nRead more",
   "mergedFrom": [

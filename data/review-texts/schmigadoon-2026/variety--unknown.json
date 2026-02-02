@@ -42,64 +42,56 @@
   ],
   "fetchTier": 3,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "brightdata",
-  "assignedScore": 58,
+  "assignedScore": 64,
   "llmScore": {
-    "score": 58,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 62
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 70,
-      "performances": 65,
-      "direction": 72
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The show is well worth watching in many particulars, but it may elicit more nods of appreciation for what it mimics well than standing ovations for how it transcends",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "what's missing from Schmigadoon, and from 'Schmigadoon!,' is real idiosyncracy",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "The songs of 'Schmigadoon!' are genuinely impressive but rarely involving",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds technical merit and craftsmanship but lacks enthusiasm for the show's core concept and execution, offering qualified appreciation rather than genuine recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges technical excellence and craft while consistently pointing to fundamental flaws in concept and execution. The final verdict suggests appreciation rather than recommendation. | GPT-4o: The review acknowledges the show's impressive technical aspects and moments of genuine emotion, particularly highlighting Ariana DeBose's performance. However, it criticizes the lack of a compelling core idea and the show's struggle to stand on its own, resulting in a mixed recommendation. | Gemini: The review acknowledges the show's flaws, such as its lack of originality and miscalibration, but ultimately states that it is \"well worth watching in many particulars.\" This suggests a positive recommendation with reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-02T16:25:57.155Z",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T19:04:09.288Z",
     "promptVersion": "5.1.0",
-    "inputTokens": 3851,
-    "outputTokens": 370,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
-  "wordCount": 1087,
-  "tierReason": "Full review text"
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

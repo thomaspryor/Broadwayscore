@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The six wives of Henry VIII get their moment to shine in this energetic pop concert disguised as a musical, though the historical revisionism feels more like fan fiction than feminist empowerment.",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The six wives of Henry VIII get their moment to shine in this energetic pop concert disguised as a musical, though the historical revisionism feels more like fan fiction than feminist empowerment.",
   "needsScoring": true,
   "llmScore": {
-    "score": 59,
-    "confidence": "medium",
+    "score": 58,
+    "confidence": "high",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 53,
+      "high": 63
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error message or search page rather than an actual review, making it impossible to determine any critical assessment. | GPT-4o: The text provided does not contain any evaluative content about a specific production. The lack of review content leads to a default 'Mixed' classification with low confidence due to the absence of a clear verdict. | Gemini: The review text is a placeholder indicating the review is missing, so it's impossible to determine a recommendation. I'm classifying it as mixed with a low score due to the lack of content.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error page or navigation text rather than an actual review, making it impossible to assess the critic's recommendation. | GPT-4o: The text provided does not contain any evaluative content about a Broadway show, making it impossible to determine a recommendation. The score reflects the lack of information. | Gemini: The review text is missing, making it impossible to determine the critic's opinion. I'm defaulting to a low 'Mixed' score due to the lack of content.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,21 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:39:07.531Z",
+    "scoredAt": "2026-02-02T19:05:47.778Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
+    "previousScore": 59,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 62,
+    "openaiScore": 60,
     "geminiScore": 55,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -69,7 +69,7 @@
   "contentTierReason": "Short text (32 words)",
   "textWordCount": 42,
   "archivePath": "data/archives/reviews/six-2021/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:47:40.529Z",
+  "textFetchedAt": "2026-02-02T16:34:23.525Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -83,6 +83,12 @@
       "method": "playwright",
       "success": false,
       "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 75 chars"
     },
     {
       "tier": 2,

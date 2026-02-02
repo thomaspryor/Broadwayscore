@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The single quote provided is too ambiguous to determine the critic's verdict - it could be describing what the show should achieve or what it does achieve, and the aggregator context suggests negative reception. | GPT-4o: The quote suggests a desire for an experience that the production does not deliver, implying disappointment. The aggregator context supports a negative verdict. | Gemini: The quote suggests a positive experience, but the lack of full context and the aggregator verdict of 'Down' indicate some reservations. | Buckets: claude=Mixed, openai=Negative, gemini=Positive",
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The excerpt is too brief and context-free to determine the critic's verdict. The aggregator suggests negative, but the quote itself could be describing what the show should achieve rather than what it does achieve. | GPT-4o: The quote suggests that the production fails to deliver the intended emotional impact, aligning with the aggregator's 'Down' verdict, indicating a negative review. | Gemini: The quote suggests a positive experience, but the lack of further context and the \"Down\" aggregator verdict indicate some reservations. | Buckets: claude=Mixed, openai=Negative, gemini=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:51.782Z",
+    "scoredAt": "2026-02-02T19:02:30.161Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 50,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
@@ -69,12 +69,11 @@
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
-  "contentTier": "excerpt",
+  "contentTier": "needs-rescrape",
   "wordCount": 0,
   "rescoreReason": "tiny-excerpt: only 56 chars, try re-fetching",
   "rescoreCompletedAt": "2026-02-01T16:05:10.880Z",
   "garbageReasoningDetected": "stub-or-fragment",
   "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.131Z",
-  "isFullReview": false,
-  "tierReason": "Only aggregator excerpts available"
+  "isFullReview": false
 }

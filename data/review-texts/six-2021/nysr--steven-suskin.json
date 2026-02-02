@@ -18,7 +18,7 @@
   "scoreExtractedFrom": "archive",
   "llmScore": {
     "score": 92,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 87,
       "high": 97
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic gives 5/5 stars and uses enthusiastic language like 'rafter-raising entertainment,' 'mass appeal,' 'incredibly high sense of style,' and describes it as having 'irresistible sense of high style' with 'steady propulsion.' The praise for performances, production values, and overall experience is consistently strong throughout. | Gemini: The critic gives the show 5/5 stars and uses overwhelmingly positive language, calling it a \"rafter-raising entertainment\" with \"mass appeal, immediacy, enthusiasm, and an incredibly high sense of style.\"",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars and uses enthusiastic language like 'rafter-raising entertainment,' 'mass appeal,' 'incredibly high sense of style,' and 'irresistible sense of high style,' clearly indicating strong enthusiasm for the production. | GPT-4o: The review is overwhelmingly positive, highlighting the show's mass appeal, high energy, and impressive performances. The critic's 5/5 star rating further indicates a strong recommendation. | Gemini: The critic gave the show 5/5 stars and uses overwhelmingly positive language such as \"rafter-raising entertainment\" and \"irresistible sense of high style\". The review is clearly a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:40:43.261Z",
+    "scoredAt": "2026-02-02T19:05:18.892Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": null,
+    "claudeScore": 88,
+    "openaiScore": 95,
     "geminiScore": 92,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 0,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,

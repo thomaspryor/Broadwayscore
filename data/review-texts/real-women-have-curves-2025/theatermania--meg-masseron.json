@@ -14,7 +14,7 @@
   "showScoreUrl": "https://www.show-score.com/broadway-shows/real-women-have-curves-the-musical-broadway",
   "llmScore": {
     "score": 80,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 75,
       "high": 85
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the performances, themes, and cultural importance while acknowledging some structural issues ('all-over-the-place' plot), landing in positive territory with mild reservations. | Gemini: The review is overwhelmingly positive, highlighting the show's important themes, strong performances, and effective direction. While acknowledging some potential drawbacks (plot may seem all-over-the-place), the reviewer ultimately praises the show as \"triumphant\" and \"the realest thing Broadway has seen in quite some time.\"",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the performances, direction, and cultural significance while acknowledging the plot may be 'all-over-the-place' for some. The critic finds it 'triumphant' and 'desperately needed' with strong positive language throughout. | GPT-4o: The review is overwhelmingly positive, highlighting the show's empowering themes, strong performances, and effective direction. The critic describes it as 'triumphant' and 'the realest thing Broadway has seen in quite some time,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, choreography, and themes. While noting some may find the plot \"all-over-the-place\", the reviewer ultimately concludes it's \"real\" and \"the realest thing Broadway has seen in quite some time.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:22:45.626Z",
+    "scoredAt": "2026-02-02T19:00:50.037Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dtliExcerpt": "As pertinent as that notion is, it’s just one empowering theme in this triumphant musical. While some might find the plot to be all-over-the-place, it’s about Ana’s experience. Serving as a slice-of-life, it is desperately needed now, at a time when so many women like her are dehumanized on a daily basis, whether because of their body, race, or immigration status. Just as beauty is so much more than meets the eye, Real Women Have Curves offers far more than just its body-positive title. It may not be the flashiest musical of the season, but it’s real. The realest thing Broadway has seen in quite some time.",
   "sources": [

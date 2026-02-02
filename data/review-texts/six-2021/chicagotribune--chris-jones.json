@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Jones clearly recommends the show as fun and entertaining, praising the performances and concept while acknowledging it's not groundbreaking. His positive assessment outweighs any reservations about artistic ambition. | GPT-4o: The critic describes the show as entertaining, well-executed, and self-aware, emphasizing its ability to please the audience. The overall tone is positive with no significant reservations, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the show's entertainment value and execution. While not groundbreaking, it's described as pleasing and well-suited for the current Broadway audience, making it a recommended show with some reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show as entertaining and well-executed, though acknowledges it's not groundbreaking artistically. The positive assessment of performances, concept, and audience appeal outweighs the modest artistic ambitions. | GPT-4o: The review is highly positive, praising the show's entertainment value, execution, and ability to please its audience. The critic's tone is enthusiastic, indicating a strong recommendation to see the show. | Gemini: The review clearly states that the show is \"entertaining\" and \"well-executed,\" indicating a positive recommendation. While not a rave, the critic acknowledges its appeal and suitability for the current Broadway climate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,12 +42,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:54.867Z",
+    "scoredAt": "2026-02-02T19:04:25.103Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,

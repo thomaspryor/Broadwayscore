@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review describes technical achievements (lighting, sound design) and notes the show finds its footing narratively, but the overall tone suggests an uneven experience with initial 'fractured chaos' that eventually settles into something more coherent. | GPT-4o: The review provides a mix of descriptions about the production's themes and design but lacks a clear positive or negative recommendation. The phrase 'solidifies into narrative ease' suggests some resolution or coherence, but the overall tone is not strongly positive. | Gemini: The review describes both positive and negative aspects of the show, without a clear recommendation either way. The phrase \"solidifies into narrative ease\" suggests an improvement, but the overall tone remains neutral.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review provides detailed description of the show's elements with some praise for design work, but lacks clear recommendation language and reads more as analysis than verdict. | GPT-4o: The review describes the musical as a 'bluff take on grief' and mentions 'fractured chaos,' suggesting mixed elements. However, it also notes positive aspects like 'astute design' and the book eventually solidifying, indicating some redeeming qualities. | Gemini: The review describes the show as having a chaotic and fractured beginning, but then solidifying into narrative ease. This suggests a mixed experience with both positive and negative aspects.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,12 +36,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:10.937Z",
+    "scoredAt": "2026-02-02T19:01:18.220Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -68,7 +68,7 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 70,
   "archivePath": "data/archives/reviews/redwood-2025/broadwaynews--brittani-samuel_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:45:22.213Z",
+  "textFetchedAt": "2026-02-02T15:05:35.322Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {

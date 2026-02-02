@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "In scene after scene, Lisa Loomer and Nell Benjamin’s book for the new musical “Real Women Have Curves” is a vast improvement on George LaVoo and Josefina Lopez’s screenplay, which is based on Lopez’s play. Where the 2002 film dawdles, the musical defines and drives with great narrative precision its timely tale of Latina immigrants who make dresses in a Los Angeles shop.",
@@ -18,11 +18,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly praises the musical as superior to its source material with positive language about narrative precision and improvement, indicating a recommendation despite limited excerpt text. | Gemini: The review highlights the improvement of the musical's book compared to the source material, suggesting a positive experience. The aggregator verdicts also point towards a positive reception.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the musical as a 'vast improvement' over the source material, highlighting 'great narrative precision' in positive terms. However, this is only an excerpt so the full verdict may be stronger or weaker. | GPT-4o: The review praises the musical's book as a significant improvement over the film, highlighting its narrative precision and timely storytelling, indicating a strong recommendation. | Gemini: The review excerpt indicates an improvement over the source material, suggesting a positive experience, but without the full review, it's hard to gauge the enthusiasm level. The aggregator verdicts also suggest a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,26 +43,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:23:31.014Z",
+    "scoredAt": "2026-02-02T19:00:57.773Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
+    "openaiScore": 82,
     "geminiScore": 75,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 68,

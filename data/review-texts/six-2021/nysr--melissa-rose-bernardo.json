@@ -9,7 +9,7 @@
   "bwwExcerpt": "Each queen gets an absurdly catchy pop-inspired anthem to tell her own (often untold) story. There's a little Beyoncé in Catherine of Aragon's salsa-tinged \"No Way,\" which details Henry's infidelity, his quest for an annulment, and her refusal (\"You must think that I'm crazy/ You wanna replace me, baby, there's/ N-n-n-n-n-n-no way\"). Anne Boleyn's bouncy, electro-pop \"Don't Lose Ur Head\" has a Lily Allen vibe. To play up her sex appeal-and youthfulness-Catherine Parr sings the breathy, Britney Spears-style \"All You Wanna Do.\"",
   "showScoreExcerpt": "\"Six brings together a sextet of badass queens—clad in brilliant chain-trimmed corsets, studded black boots, and spiky crown-like headpieces designed by Gabriella Slade—to compete, American Idol–style, for a somewhat dubious honor: Who took the most crap from that self-serving, Church-splitting, six-times-married monarch?\"",
   "originalScore": "5/5",
-  "assignedScore": 94,
+  "assignedScore": 93,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T20:00:00.000Z",
   "bwwThumb": null,
@@ -21,11 +21,11 @@
   "archivePath": "data/archives/reviews/six-2021/ny-stage-review--melissa-rose-bernardo_2026-01-25.html",
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 94,
-    "confidence": "high",
+    "score": 93,
+    "confidence": "medium",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic gives a perfect 5/5 rating and uses enthusiastic language like 'you bloody well should' see it, describing it as a 'rockin' rewrite' with 'absurdly catchy' songs and calling the queens 'badass.' The tone is celebratory throughout with no significant reservations. | Gemini: The critic gave the show a 5/5 rating and uses enthusiastic language like \"celebration,\" \"idolizes,\" and \"rockin' rewrite.\" The explicit recommendation to see the show, especially for certain audiences, further supports a Rave classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives a perfect 5/5 rating with explicit 'you bloody well should' see it language, calling it a 'rockin' rewrite' and praising every element from vocals to choreography with genuine enthusiasm throughout. | GPT-4o: The review is overwhelmingly positive, awarding a perfect 5/5 rating and using enthusiastic language to describe the show as a celebration of girl power with standout performances and catchy music. The critic strongly recommends seeing the show, particularly for fans of Tudor history and strong female characters. | Gemini: The critic gave the show a 5/5 rating and uses enthusiastic language like \"musical celebration\" and \"rockin' rewrite.\" The phrase \"you bloody well should\" indicates a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,26 +46,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:40:28.892Z",
+    "scoredAt": "2026-02-02T19:05:14.046Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": null,
+    "claudeScore": 88,
+    "openaiScore": 95,
     "geminiScore": 95,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "sources": [
     "playwright-scraped",

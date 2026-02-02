@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 92,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -18,11 +18,11 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 94,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite truncated text, the critic delivers an unambiguous rave with explicit recommendation language and superlative praise throughout. The BWW excerpt confirms this enthusiastic verdict. | GPT-4o: The review is overwhelmingly positive, describing the show as 'one of the cleverest, wittiest, flashiest musicals in town' and strongly recommends buying a ticket. The language used indicates a high level of enthusiasm and endorsement. | Gemini: Despite the truncated text warning, the review contains strong positive language and a clear recommendation to see the show. The aggregator excerpts confirm this positive assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite truncated text, the review contains explicit enthusiastic recommendation language and consistent praise throughout. The critic calls it 'one of the cleverest, wittiest, flashiest musicals in town' and uses phrases like 'much deserved moment to shine' and describes performances as 'uniformly excellent' and 'phenomenal.' | GPT-4o: The review is overwhelmingly positive, highlighting the show's cleverness, wit, and the excellence of the cast and music. The critic strongly recommends buying a ticket and praises the production as one of the best musicals in town. | Gemini: Despite being truncated, the review contains strong positive language and explicit recommendations to see the show, indicating a positive assessment. The aggregator excerpts further support this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,15 +43,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:38:59.571Z",
+    "scoredAt": "2026-02-02T19:04:29.590Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
+    "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 89,
     "openaiScore": 95,
     "geminiScore": 82,
     "claudeBucket": "Rave",

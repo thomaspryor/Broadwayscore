@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"Indeed, as the queens take their respective turns in the spotlight, spectacle does overwhelm decorum, as the actors stunningly evoke the vocal stylings and stage presences of Beyoncé, Adele, Rihanna, and a few others I probably didn’t catch.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/six",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/six-2021/theaterscene-net--joseph-pisano_2026-01-27.html",
@@ -31,11 +31,11 @@
     "Show title not found in text"
   ],
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -46,7 +46,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the show's spectacular production values and performances but identifies significant structural and tonal problems that prevent full endorsement, landing in mixed territory with reservations outweighing praise. | Gemini: The review acknowledges the spectacle and entertainment value but also points out a discomfort and structural issues, leading to a mixed assessment. The critic doesn't explicitly recommend or discourage seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show's spectacular elements and audience appeal but identifies fundamental structural problems with the empowerment message, ultimately finding it insincere and poorly executed despite its entertainment value. | GPT-4o: The review acknowledges the impressive performances and production elements but criticizes the show's narrative and thematic execution, suggesting a mixed experience with notable strengths and weaknesses. | Gemini: The review acknowledges the show's spectacle and entertainment value but expresses discomfort with its handling of serious historical events and its mixed messaging, ultimately landing in the mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,26 +56,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:41:23.420Z",
+    "scoredAt": "2026-02-02T19:05:40.246Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 49,

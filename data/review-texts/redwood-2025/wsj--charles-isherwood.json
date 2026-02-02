@@ -8,18 +8,18 @@
   "showScoreExcerpt": "\"They wrap the show in visually alluring wallpaper. \"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 75,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single excerpt describes attractive visuals but uses 'wallpaper' metaphorically, suggesting style over substance. Without full context, this could go either direction - scoring conservatively in middle of Mixed range due to single excerpt warning. | GPT-4o: The excerpt suggests a focus on visual appeal but lacks substantive praise or criticism of the overall production. Given the lack of context and the warning about potential cherry-picking, a middle-of-the-road score within the Mixed bucket is appropriate. | Gemini: The single excerpt suggests a focus on visual appeal, but lacks a clear recommendation or overall assessment of the show's quality. It's neither strongly positive nor negative.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review describes impressive visual elements and Menzel's performance but the 'wallpaper' comment suggests surface appeal without substance, indicating a lukewarm assessment. | GPT-4o: The review highlights Idina Menzel's strong performance and the visual appeal of the production, suggesting a positive experience, though it lacks strong enthusiastic language, indicating some reservations. | Gemini: The review describes Menzel's performance and the visual aspects positively, suggesting an enjoyable experience despite the lack of explicit recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +37,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:51:06.305Z",
+    "scoredAt": "2026-02-02T19:03:12.796Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 43,
-    "previousVersion": "3.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 62,
-    "geminiScore": 62,
+    "openaiScore": 75,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/redwood-2025/wsj--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T04:46:51.215Z",
@@ -79,8 +79,8 @@
   "garbageFullText": "https://www.wsj.com/articles/redwood-review-idina-menzel-climbs-back-to-broadway-f8998fae\n\nIdina Menzel Matthew Murphy and Evan ZimmermanNew York\n\nIdina Menzel is defying gravity again on Broadway in the new musical “Redwood.” On this occasion she gets an assist from a more substantial piece of wood than the spindly broomstick that sent her skyward in her Tony-winning turn in “Wicked.” Portraying a woman in flight from grief who finds herself entranced by the majestic beauty of an ancient forest in California, Ms. Menzel is rigged up to a massive facsimile of a redwood tree, and proceeds to leap, twirl and deploy her steel-belted powerhouse of a voice from a dozen feet above the stage.\n\nCopyright ©2025 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.176Z",
-  "contentTier": "truncated",
-  "wordCount": 104,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "_removedDesignation": {
     "designation": "Recommended",
     "removedAt": "2026-02-02T04:23:14.270Z",
@@ -93,6 +93,6 @@
   "isFullReview": false,
   "textWordCount": 104,
   "textQuality": "partial",
-  "textStatus": "incomplete",
-  "tierReason": "Short text (104 words)"
+  "truncationSignals": [],
+  "textStatus": "incomplete"
 }

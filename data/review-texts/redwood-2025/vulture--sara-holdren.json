@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"for all its soaring vocals and vertical movement, Redwood leaves us stubbornly grounded.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 44,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 52,
-    "confidence": "low",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 47,
-      "high": 57
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic systematically dismantles the show's narrative logic, calls it 'soggy,' criticizes its generic metaphors, and concludes it fails to achieve catharsis despite Menzel's strong performance. | Gemini: The review highlights both positive and negative aspects of the show. While praising the aerial choreography and Menzel's performance, it criticizes the narrative's thinness, wonkiness, and reliance on clichés. The overall tone suggests a mixed experience with some enjoyable moments but significant flaws.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically dismantles the show's logic, narrative, and emotional authenticity while acknowledging Menzel's strong performance and some production elements. The overall assessment is clearly negative with no recommendation to see it. | GPT-4o: The review criticizes the show for its lack of depth and coherence, describing it as 'soggy' and full of 'throw-pillow truisms.' The critic finds the narrative thin and questions the logic of the plot, ultimately suggesting that the production fails to engage or provide true catharsis. | Gemini: The review acknowledges some positive aspects like the aerial choreography and Menzel's performance, but ultimately finds the show \"soggy\" and lacking depth. It neither strongly recommends nor discourages seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:50:53.465Z",
+    "scoredAt": "2026-02-02T19:03:04.420Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 32,
-    "previousVersion": "5.0.0"
+    "previousScore": 52,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 45,
     "geminiScore": 62,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
     "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 46,

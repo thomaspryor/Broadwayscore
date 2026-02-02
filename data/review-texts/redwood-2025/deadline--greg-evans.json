@@ -6,17 +6,17 @@
   "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/",
   "publishDate": "February 13, 2025",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 65,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:18.159Z",
+    "scoredAt": "2026-02-02T19:01:37.693Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 63,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "dtliExcerpt": "Redwood, though, ultimately is just a shade too thin in its storytelling imagination, hitting the familiar dramatic beats we’ve come to expect through countless grief and recovery stories. Still, it’s not hard to focus your attention on the successful aspects — Menzel, that set, the sky dancing, and across-the-board fine performances from the rest of the cast.",
   "sources": [
@@ -98,11 +98,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.819Z"
   },
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 65,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -113,7 +113,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic identifies significant storytelling weaknesses but acknowledges multiple successful elements including performances and production values. The 'ultimately' suggests an overall lukewarm assessment despite positives. | GPT-4o: The review acknowledges weaknesses in the storytelling but highlights successful elements like performances and staging, suggesting a mixed reception. | Gemini: The review highlights both positive and negative aspects. While praising Menzel, the set, and the performances, it criticizes the thin storytelling, suggesting a mixed experience overall. The aggregator verdict also supports a flat/mixed assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds the show formulaic and lacking in imagination, but acknowledges successful aspects like Menzel's performance and production values. This mixed assessment with qualified positives places it in the middle-to-lower Mixed range. | GPT-4o: The review acknowledges successful elements like performances and set design but criticizes the storytelling as thin and familiar. The overall tone suggests a mixed reception with some positive highlights. | Gemini: The review points out flaws in the storytelling but highlights several positive aspects, suggesting a mild recommendation. The 'not hard to focus your attention' phrasing indicates a positive but not overwhelming experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -123,18 +123,18 @@
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 74,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

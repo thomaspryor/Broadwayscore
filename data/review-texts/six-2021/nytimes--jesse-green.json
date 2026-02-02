@@ -16,7 +16,7 @@
   "bwwThumb": null,
   "llmScore": {
     "score": 79,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 74,
       "high": 84
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Green clearly recommends the show despite noting some flaws, praising the performances as 'unimprovable,' calling it a 'rollicking, reverberant blast from the past,' and describing it positively as 'a lark and a provocation.' The reservations about over-direction and commercial calculation prevent this from being a rave. | Gemini: The review is overall positive, highlighting the show's wit, execution, and performances. While noting some potential drawbacks like the 'brand discipline' and 'bullying' aspects, the critic ultimately recommends the show as a 'lark and a provocation' and a 'great thing for a pop musical to do'.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Green clearly recommends the show as 'a rollicking, reverberant blast from the past' with 'fantastic physical production and unimprovable performances,' though he notes some structural contradictions and commercial calculations that prevent it from being a stronger endorsement. | GPT-4o: The review is overwhelmingly positive, praising the show's energy, wit, and execution. The critic describes it as a 'rollicking, reverberant blast from the past' and highlights its 'fantastic physical production and unimprovable performances,' indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the show's wit, execution, and performances. While noting some potential drawbacks like over-priming and a contest of female degradation, the critic ultimately recommends the show as a lark and a provocation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:41:05.046Z",
+    "scoredAt": "2026-02-02T19:05:29.524Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
+    "openaiScore": 92,
     "geminiScore": 80,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "designation": "Critics_Pick",
   "archivePath": "data/archives/reviews/six-2021/nytimes--jesse-green_2026-01-29.html",

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the production's 'grandeur and heart' and suggests audiences will welcome its comfort, with strong praise for Menzel's performance and the show being 'tailor-made to the star's strengths.' | GPT-4o: The review uses highly positive language, praising the production's grandeur and heart, and highlights Idina Menzel's captivating performance. The overall tone suggests a strong recommendation. | Gemini: The review highlights the show's appeal and the star's performance, suggesting it's worth seeing for those seeking comfort and a story of healing.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Menzel's 'stunning performance,' the 'extraordinary design team,' and calls it a 'production of grandeur and heart,' but notes limitations like generic lyrics and questions whether audiences will care about the journey. | GPT-4o: The review praises the production's grandeur, heart, and impressive design, highlighting Menzel's captivating performance and the show's emotional impact. Despite some reservations about the lyrics, the overall tone is strongly positive, recommending the show for its emotional depth and visual splendor. | Gemini: The review is generally positive, highlighting Menzel's performance and the impressive design, but notes some weaknesses in the lyrics and plot. The final sentence, \"So is this comforting call to nature,\" suggests a recommendation, but not an overwhelming one.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:50:39.178Z",
+    "scoredAt": "2026-02-02T19:02:58.888Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "It’s a show tailor-made to the star’s strengths as an actress, a vocalist, and a defier of gravity as here she scales, swings and sings from the heights.",
   "sources": [

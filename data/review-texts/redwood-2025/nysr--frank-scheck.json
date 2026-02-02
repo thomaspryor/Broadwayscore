@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The 3/5 star rating and review language indicate neither recommendation nor discouragement. While praising Menzel's performance and the visual design, the critic finds the book predictable, dialogue cliched, and songs unmemorable. | GPT-4o: The review provides both positive and negative elements, praising the visual effects and performances but criticizing the predictability of the book and the repetitiveness of the score. The original 3/5 star rating aligns with a mixed assessment. | Gemini: The review highlights impressive visuals and Menzel's performance but criticizes the predictable book, unmemorable songs, and annoying character. The 3/5 star rating also indicates a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic gives 3/5 stars and acknowledges the heartfelt effort and stunning visuals, but ultimately finds the book predictable, dialogue cliched, and songs unmemorable, neither recommending nor discouraging attendance. | GPT-4o: The review highlights impressive production design and strong performances, particularly from Idina Menzel, but criticizes the predictability of the script and the unmemorable score. The 3/5 star rating suggests a mixed reception, with notable strengths in visual elements and performances but significant weaknesses in writing and music. | Gemini: The review highlights impressive visuals and Menzel's performance but criticizes the predictable book, unmemorable songs, and annoying subplot. The 3/5 star rating also indicates a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:09.449Z",
+    "scoredAt": "2026-02-02T19:02:10.652Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,

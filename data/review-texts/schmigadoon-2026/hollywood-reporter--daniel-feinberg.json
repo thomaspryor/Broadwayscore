@@ -41,13 +41,13 @@
   "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20241225122945",
   "archiveOrgUrl": "http://web.archive.org/web/20241225122945/https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/",
-  "assignedScore": 62,
+  "assignedScore": 61,
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -58,7 +58,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review explicitly states 'Some joyful musical moments, but very little depth' in the bottom line, and describes it as feeling like an overstretched parody without sufficient justification for its length. The mixed assessment acknowledges positive elements while clearly identifying significant structural problems. | GPT-4o: The review acknowledges some enjoyable aspects but criticizes the lack of depth and the extended running time. The tone suggests a mixed experience with both positive and negative elements. | Gemini: The review highlights some enjoyable aspects but ultimately finds the show lacking depth and feeling overextended. This places it in the 'Mixed' category, leaning slightly towards positive due to the mention of 'joyful musical moments'.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review explicitly states 'Some joyful musical moments, but very little depth' in the bottom line, and describes the show as feeling like an overextended parody without sufficient justification for its runtime. | GPT-4o: The review acknowledges some positive aspects, such as joyful musical moments, but criticizes the lack of depth and the extended running time. The overall tone suggests a mixed reception, with both positive and negative elements. | Gemini: The review highlights both positive aspects (joyful musical moments) and negative aspects (lacking depth, feeling like a long parody). The overall impression is mixed, not strongly recommending or discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -68,23 +68,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:38:48.727Z",
+    "scoredAt": "2026-02-02T19:03:39.055Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 61,
+    "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (253 words)",
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
+    "claudeScore": 62,
+    "openaiScore": 58,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -29,13 +29,13 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20260105215009",
   "archiveOrgUrl": "http://web.archive.org/web/20260105215009/https://www.vulture.com/article/schmigadoon-series-review.html",
-  "assignedScore": 78,
+  "assignedScore": 80,
   "llmScore": {
-    "score": 78,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -46,7 +46,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite extensive criticism about the show being overly self-aware and lacking depth, the critic explicitly states 'I love it' and concludes 'I'd happily take a second helping,' indicating clear recommendation despite acknowledged flaws. | GPT-4o: The review is filled with enthusiastic praise for the show, despite acknowledging its excessive and self-referential nature. The critic expresses a strong personal affection for the show, indicating a must-see recommendation. | Gemini: Despite pointing out flaws and corniness, the critic explicitly states \"I love it\" and ends with \"I'd happily take a second helping,\" indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite extensive criticism about the show being 'mortifying', 'excessive', and 'pandering', the critic explicitly states 'I love it' and ends with 'I'd happily take a second helping', indicating a clear positive recommendation. | GPT-4o: Despite some criticisms about the show's lack of depth and overly sweet nature, the critic expresses a strong affection for the show, emphasizing enjoyment and a desire for more. The tone is enthusiastic, indicating a solid recommendation. | Gemini: Despite some reservations about its corniness and lack of depth, the reviewer ultimately expresses strong affection for the show, indicating a positive recommendation. The closing line, \"I’d happily take a second helping,\" reinforces this.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,29 +56,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T01:00:07.546Z",
+    "scoredAt": "2026-02-02T19:04:12.809Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text",
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "wrongShow": true,
   "wrongShowNote": "This is a review of the Apple TV+ series Schmigadoon! (2021), not the Broadway musical (previews April 2026)."

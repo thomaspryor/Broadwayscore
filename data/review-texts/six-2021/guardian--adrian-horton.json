@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Six is a triumph of concept and execution, a historically minded musical that manages to be both educational and genuinely entertaining.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,13 +18,13 @@
   "showScoreExcerpt": "Six is a triumph of concept and execution, a historically minded musical that manages to be both educational and genuinely entertaining.",
   "needsScoring": true,
   "llmScore": {
-    "score": 92,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The word 'triumph' signals strong enthusiasm, and the review praises both the concept and execution while noting it's both educational and genuinely entertaining. | GPT-4o: The review uses strong positive language, describing the show as a 'triumph' and 'genuinely entertaining', indicating a highly enthusiastic recommendation. | Gemini: The review uses the word \"triumph\" and describes the show as both educational and genuinely entertaining, indicating a very positive and enthusiastic recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is clearly positive, praising the performances, staging, and feminist message while acknowledging some risks of being 'syrupy' and heavy-handed. The enthusiasm and recommendation come through despite minor criticisms. | GPT-4o: The review is overwhelmingly positive, celebrating the show's innovative approach, strong performances, and cultural impact. The critic draws parallels to 'Hamilton' and praises the production's energy and execution, indicating a strong recommendation. | Gemini: The review is largely positive, highlighting the strengths of the performers, costumes, and music. While it notes some potential weaknesses like a light feminist message and occasional heavy-handed lyrics, the overall impression is that the show is enjoyable and worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,38 +43,38 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:59:00.745Z",
+    "scoredAt": "2026-02-02T19:04:52.198Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 78,
     "openaiScore": 95,
-    "geminiScore": 92,
-    "claudeBucket": "Rave",
+    "geminiScore": 79,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 7,
+    "geminiBucket": "Positive",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "complete",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
   "previousUrl": "https://www.theguardian.com/stage/2021/oct/04/six-review-broadway-brooks-atkinson-theater",
   "urlDiscoveredAt": "2026-02-02T16:33:27.017Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 92,
   "textWordCount": 1235,
   "archivePath": "data/archives/reviews/six-2021/guardian--adrian-horton_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:47:09.977Z",
+  "textFetchedAt": "2026-02-02T16:33:27.039Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -91,11 +91,11 @@
   ],
   "fetchTier": 1,
   "textQuality": "full",
+  "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "textIssues": [
     "Show title not found in text"
   ],
-  "wordCount": 1235,
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T19:04:52.198Z"
 }

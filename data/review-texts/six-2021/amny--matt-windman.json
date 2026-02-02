@@ -9,15 +9,15 @@
   "bwwExcerpt": "Notwithstanding the dynamic score, \"Six\" is weighed down by a labored book (which is built around a flimsy setup and banal banter), bargain-basement scenic design, and clunky dance choreography. That being said, \"Six,\" which was highly anticipated before the shutdown, still has the makings of a solid hit. The history-meets-contemporary pop concept certainly worked out well for a little show called \"Hamilton,\" and it is easy to imagine \"Six\" appealing to teen girls, history buffs, and many others",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 65,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 65,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review presents significant criticisms (labored book, bargain-basement design, clunky choreography) but concludes it will likely be a hit with broad appeal. This balances negative artistic assessment with positive commercial prediction. | GPT-4o: The review notes significant flaws in the book, design, and choreography, but acknowledges the show's potential appeal and likens its concept to 'Hamilton,' suggesting it could still be successful. | Gemini: The review points out flaws in the book, design, and choreography, but also suggests the show has the potential to be a hit, appealing to a broad audience. This indicates a mixed assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review lists significant criticisms (labored book, bargain-basement design, clunky choreography) but concludes it will likely be commercially successful and appeal to various audiences, indicating a mixed assessment that neither strongly recommends nor discourages. | GPT-4o: The review highlights several significant flaws in the production, such as a labored book and clunky choreography, but acknowledges its potential appeal and compares it to the success of 'Hamilton.' This suggests a mixed but somewhat positive outlook. | Gemini: Despite criticisms of the book, design, and choreography, the reviewer states the show \"still has the makings of a solid hit\" and could appeal to a wide audience. Given the reservations, the score is in the lower end of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:47.068Z",
+    "scoredAt": "2026-02-02T19:04:16.490Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
-    "previousVersion": "3.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 74,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "sources": [
     "bww-roundup"

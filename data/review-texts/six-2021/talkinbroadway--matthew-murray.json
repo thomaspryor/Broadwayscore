@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be only a plot summary or opening description with no evaluative content about the production quality, performances, or recommendation to see the show. | GPT-4o: The review text is truncated and lacks evaluative content, making it difficult to determine the critic's recommendation. The description of the show is neutral, leading to a mixed classification with low confidence. | Gemini: The provided text is purely descriptive, setting up the premise of the show without offering any evaluative judgment. Without further information, it's impossible to determine if the critic recommends or discourages seeing it.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be only a plot summary or opening description with no evaluative content or critical assessment of the production's quality or recommendation. | GPT-4o: The provided text is purely descriptive and does not contain any evaluative content or a clear recommendation. Without further context, it's impossible to determine the critic's stance on the production. | Gemini: The review provides a description of the show but does not offer a clear recommendation or discouragement. It's purely descriptive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,16 +43,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:59:03.793Z",
+    "scoredAt": "2026-02-02T19:05:36.715Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 58,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 55,
-    "geminiScore": 60,
+    "geminiScore": 58,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",

@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic delivers sustained criticism calling it 'shallow,' 'obvious,' with 'muddled characters' and 'repetitive ballads,' concluding it's a 'textbook tearjerker' that 'leaves your eyes totally dry.' Despite some praise for individual performances, the overall assessment is clearly negative. | Gemini: The review is overwhelmingly negative, criticizing the story, characters, and music. While it acknowledges Menzel's talent, it ultimately finds the show shallow and unmoving, leading to a negative recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic delivers multiple harsh criticisms calling the show 'shallow,' with 'muddled characters' and 'repetitive ballads,' ultimately describing it as a 'textbook tearjerker' that 'leaves your eyes totally dry.' Despite some praise for individual performances, the overall recommendation is clearly negative. | GPT-4o: The review criticizes the show for its shallow exploration of grief, poorly written characters, and ineffective emotional impact. Despite some praise for individual performances, the overall tone is negative, suggesting the production falls short of expectations. | Gemini: The review is overwhelmingly negative, criticizing the story, characters, songs, and overall emotional impact. The critic clearly does not recommend seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,26 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:05.146Z",
+    "scoredAt": "2026-02-02T19:02:05.931Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": null,
+    "openaiScore": 45,
     "geminiScore": 45,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/redwood-2025/nypost--johnny-oleksinski_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:30:58.368Z",

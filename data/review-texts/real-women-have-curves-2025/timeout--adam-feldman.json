@@ -8,15 +8,15 @@
   "showScoreExcerpt": "\"This show is a bona fide crowd pleaser: a warm hug that pulls you into its generous bosom. With a little luck, it could turn out to be a sleeper hit.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/real-women-have-curves-the-musical-broadway",
   "originalScore": "4/5",
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and enthusiastic language like 'bona fide crowd pleaser' and 'sleeper hit' clearly indicate a positive recommendation, though the excerpt doesn't suggest the rapturous enthusiasm of a rave. | GPT-4o: The critic describes the show as a 'bona fide crowd pleaser' and a 'warm hug,' indicating a strong positive reception. The original rating of 4/5 supports a high score within the Positive bucket. | Gemini: The review uses very positive language like \"crowd pleaser\" and \"warm hug\", and predicts it could be a \"sleeper hit\", indicating a strong recommendation. The 4/5 rating also supports this.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses highly positive language calling it a 'bona fide crowd pleaser' and 'warm hug,' paired with optimistic prediction of it becoming a 'sleeper hit.' The 4/5 rating confirms strong recommendation. | GPT-4o: The critic describes the show as a 'bona fide crowd pleaser' and a 'warm hug,' indicating a strong positive recommendation. The original rating of 4/5 supports this classification. | Gemini: The review uses very positive language like \"bona fide crowd pleaser\" and \"warm hug\", and the critic predicts it could be a \"sleeper hit\". The 4/5 rating also indicates a strong positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:23:43.334Z",
+    "scoredAt": "2026-02-02T19:01:01.027Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 81,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 82,
     "openaiScore": 82,
     "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

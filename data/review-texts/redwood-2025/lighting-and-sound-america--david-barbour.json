@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,14 +21,14 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 45,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The excerpt suggests the production design overshadows a weak story, implying fundamental structural problems. However, with only one curated quote available, scoring conservatively within negative range. | GPT-4o: The excerpt suggests impressive design elements but implies that the story is lacking or underwhelming. This indicates a mixed review, with strong production values but a weak narrative. | Gemini: The quote indicates that the design overshadows the story, suggesting a negative assessment of the show's overall impact. Given the single excerpt warning, I'm scoring conservatively within the negative bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic lavishly praises the technical elements (design, sound, performances) but finds the story fundamentally flawed with weak character development and earnest banalities, resulting in a qualified recommendation for technical theater enthusiasts only. | GPT-4o: The review highlights impressive design and performances, particularly by Idina Menzel, but criticizes the weak storyline and late emotional revelations. The truncated text suggests caution, but the critique of the narrative is strong enough to place it in the Mixed bucket. | Gemini: The review praises the design elements but criticizes the story and music. The truncated text makes it difficult to determine the overall recommendation, but the negative comments about the story outweigh the positive design aspects, leading to a mixed score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,33 +46,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:50:21.991Z",
+    "scoredAt": "2026-02-02T19:02:01.736Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 35,
-    "previousVersion": "5.0.0"
+    "previousScore": 45,
+    "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
+  "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 62,
-    "geminiScore": 45,
-    "claudeBucket": "Negative",
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Negative",
-    "scoreDelta": 17,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
-  },
-  "wordCount": 1161,
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
-  "tierReason": "Full review text"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

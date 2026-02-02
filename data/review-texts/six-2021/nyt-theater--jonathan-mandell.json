@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show's high energy and charismatic performances but finds it lacks substance, comparing it unfavorably to Hamilton and suggesting the feminism feels performative rather than genuine. | GPT-4o: The review acknowledges the high-energy and charismatic performances, but criticizes the show for feeling static and lacking depth compared to 'Hamilton'. The enthusiasm for the spectacle is tempered by the critique of its substance, leading to a mixed verdict. | Gemini: The review acknowledges the show's energy and charisma but ultimately finds it superficial and lacking depth. The comparison to Hamilton highlights its shortcomings.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the show's high energy and charismatic performances but criticizes it as superficial compared to Hamilton, with feminism that 'feels more for show than out of conviction.' The critic neither strongly recommends nor discourages seeing it. | GPT-4o: The review acknowledges the high energy and charisma of the cast but criticizes the show for lacking depth and feeling static. It draws unfavorable comparisons to 'Hamilton' and suggests the feminism is more performative than substantive. | Gemini: The review acknowledges the show's high energy and charismatic cast but ultimately finds it superficial and lacking depth. It praises individual performances but criticizes the show's reliance on pop culture over historical substance, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,12 +37,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:40:47.512Z",
+    "scoredAt": "2026-02-02T19:05:22.307Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
