@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-02T06:00:59.174Z",
-  "processed": 9,
-  "failed": 44,
-  "successRate": "17.0%",
+  "updatedAt": "2026-02-02T06:24:00.900Z",
+  "processed": 13,
+  "failed": 50,
+  "successRate": "20.6%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 6,
     "browserbase": 4,
     "scrapingbee": 6,
     "brightdata": 1,
-    "archive": 16
+    "archive": 23
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-02-02T03:49:40.892Z",
@@ -66,6 +66,28 @@
     },
     {
       "t": "2026-02-02T05:49:03.402Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-02T06:02:35.464Z",
+      "event": "bb-session",
+      "session": "047556f6",
+      "url": "https://www.vulture.com/2023/06/theater-review-just-for-us-broadway.html"
+    },
+    {
+      "t": "2026-02-02T06:02:37.695Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-02T06:23:26.705Z",
+      "event": "bb-session",
+      "session": "0cc3e55c",
+      "url": "https://www.vulture.com/2023/11/merrily-we-roll-along-broadway-review.html"
+    },
+    {
+      "t": "2026-02-02T06:23:28.787Z",
       "event": "bb-login-uncertain",
       "domain": "vulture.com"
     }
