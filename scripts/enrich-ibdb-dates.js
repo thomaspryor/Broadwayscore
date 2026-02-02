@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * IBDB Date Enrichment Script
+ * IBDB Date & Creative Team Enrichment Script
  *
  * Enriches shows.json with accurate preview, opening, and closing dates
- * from IBDB (Internet Broadway Database).
+ * and creative team data from IBDB (Internet Broadway Database).
  *
  * Usage:
  *   node scripts/enrich-ibdb-dates.js [options]
@@ -13,7 +13,7 @@
  *   --show=SLUG     Only process a specific show by slug
  *   --missing-only  Only fill in null/missing dates (default behavior)
  *   --verify        Compare IBDB dates vs shows.json, report discrepancies (no writes)
- *   --force         Overwrite all dates with IBDB values
+ *   --force         Overwrite all dates/creative team with IBDB values
  *   --status=STATUS Filter by show status (open, previews, closed)
  */
 
@@ -71,10 +71,11 @@ async function main() {
     shows = shows.filter(s => s.status === statusFilter);
   }
 
-  // If missing-only mode, filter to shows with incomplete dates
+  // If missing-only mode, filter to shows with incomplete dates or empty creative team
   if (missingOnly && !verify && !showSlug) {
     shows = shows.filter(s =>
-      !s.previewsStartDate || !s.openingDate || !s.closingDate
+      !s.previewsStartDate || !s.openingDate || !s.closingDate ||
+      !s.creativeTeam || s.creativeTeam.length === 0
     );
   }
 
@@ -186,6 +187,19 @@ async function main() {
       }
     }
 
+    // Check creativeTeam
+    if (ibdb.creativeTeam && ibdb.creativeTeam.length > 0) {
+      const hasCreativeTeam = show.creativeTeam && show.creativeTeam.length > 0;
+      if (!hasCreativeTeam || force) {
+        showChanges.push({
+          field: 'creativeTeam',
+          old: hasCreativeTeam ? `${show.creativeTeam.length} role(s)` : 'empty',
+          new: ibdb.creativeTeam,
+          newLabel: `${ibdb.creativeTeam.length} role(s)`
+        });
+      }
+    }
+
     // Data integrity guards
     const filteredChanges = showChanges.filter(c => {
       // Never set previewsStartDate >= openingDate
@@ -229,7 +243,8 @@ async function main() {
     for (const c of changes) {
       console.log(`  ${c.show} (${c.slug}):`);
       for (const ch of c.changes) {
-        console.log(`    ${ch.field}: ${ch.old || 'null'} → ${ch.new}`);
+        const displayNew = ch.newLabel || ch.new;
+        console.log(`    ${ch.field}: ${ch.old || 'null'} → ${displayNew}`);
       }
     }
     console.log('');
@@ -242,7 +257,11 @@ async function main() {
       if (!showRecord) continue;
 
       for (const ch of c.changes) {
-        showRecord[ch.field] = ch.new;
+        if (ch.field === 'creativeTeam') {
+          showRecord.creativeTeam = ch.new; // ch.new is the array from IBDB
+        } else {
+          showRecord[ch.field] = ch.new;
+        }
       }
       updated++;
     }
