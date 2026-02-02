@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/spamalot-broadway-st-james-theatre_94071.html",
   "publishDate": "November 16, 2023",
-  "fullText": "The new Broadway revival of Spamalot at the St. James Theatre is a joyous, silly, and thoroughly entertaining production that captures the anarchic spirit of Monty Python while updating the material for contemporary audiences.",
-  "isFullReview": false,
+  "fullText": "This year’s ceremony will be held in Washington, DC, on December 4.\n\nThe Kennedy Center has announced its 45th class of honorees, who will be celebrated for their lifetime artistic achievements.\n\nThis year's Kennedy Center Honors recipients are acclaimed actor and filmmaker George Clooney; contemporary Christian and pop singer-songwriter Amy Grant; legendary soul, Gospel, R&B, and pop singer Gladys Knight; Cuban-born American composer, conductor, and educator Tania León; and iconic Irish rock band U2, composed of band members Bono, The Edge, Adam Clayton, and Larry Mullen Jr.\n\nThe ceremony will be held on December 4 at the Kennedy Center in Washington, DC, and will be broadcast on CBS at a later date. Done Dusted, the award-winning production company and producers of the Center's Mark Twain Prize since 2018, have been selected as executive producers of the 45th annual Kennedy Center Honors.\n\nFor more information about the honorees, click here.\n\nReview: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Every Step Has Meaning in Anne Gridley’s Watch Me Walk \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Leopold Bloom for Rookies and Pros in a Hilarious Ulysses \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "The new Broadway revival of Spamalot at the St. James Theatre is a joyous, silly, and thoroughly entertaining production that captures the anarchic spirit of Monty Python while updating the material for contemporary audiences.",
   "originalScore": null,
   "assignedScore": 80,
@@ -65,5 +65,55 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "textWordCount": 253,
+  "archivePath": "data/archives/reviews/spamalot-2023/theatermania--jesse-green_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:42:06.061Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 253 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }
