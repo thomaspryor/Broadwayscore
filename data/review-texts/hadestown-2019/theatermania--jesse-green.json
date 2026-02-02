@@ -70,8 +70,8 @@
   "previousLlmScore": 92,
   "textWordCount": 364,
   "archivePath": "data/archives/reviews/hadestown-2019/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T03:26:09.931Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-02T16:38:50.396Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -86,24 +86,24 @@
       "error": "Skipped - known blocked site"
     },
     {
-      "tier": 2,
-      "method": "scrapingbee",
+      "tier": 1.5,
+      "method": "browserbase",
       "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+      "error": "Insufficient text: 0 chars"
     },
     {
-      "tier": 3,
-      "method": "brightdata",
+      "tier": 2,
+      "method": "scrapingbee",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 2,
   "textQuality": "truncated",
   "truncationSignals": [
     "has_paywall_text"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "scrapingbee",
   "textIssues": [
     "Show title not found in text"
   ],

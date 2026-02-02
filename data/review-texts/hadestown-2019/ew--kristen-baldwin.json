@@ -3,10 +3,10 @@
   "outletId": "ew",
   "outlet": "Entertainment Weekly",
   "criticName": "Kristen Baldwin",
-  "url": "https://ew.com/theater/2019/04/18/hadestown-broadway-review/",
+  "url": "https://ew.com/theater-reviews/2019/04/17/hadestown-review/?srsltid=AfmBOoplwi0_hrl0iF6g18yZfPpoXMm7-f7uqhgsoZucAb9rGCzodPVh",
   "publishDate": "April 18, 2019",
-  "fullText": "This folk-opera retelling of the Orpheus and Eurydice myth is a stunning piece of musical theater that weaves together gorgeous melodies, poetic lyrics, and masterful performances.",
-  "isFullReview": false,
+  "fullText": "As far as tales as old as time go, the stories of Greek mythology are pretty high up there, those epic stories of gods and men that have been told for thousands of years and inspired countless adaptations. But there’s little that feels old or stately about the way those stories — those old songs, those sad songs — are told in Hadestown, which makes its Broadway bow Thursday with a journey to the underworld that feels like it sprung forth as something entirely new. This entrancing, romantic new musical has taken a long road to get to the Walter Kerr Theatre. Conceived by singer-songwriter Anaïs Mitchell, the folk opera began its life in 2006 as a stage production in her native Vermont before morphing into a concept album in 2010, which was subsequently adapted for a 2016 Off-Broadway production followed by runs in Canada and London. This Broadway incarnation is the first one I saw, and under the flawless direction of Rachel Chavkin (Natasha, Pierre & The Great Comet of 1812) it’s — pardon the pun — one hell of a show. Hadestown builds its story around two of those mythic love stories — that of doomed young lovers Orpheus and Eurydice, and underworld ruler Hades and wife Persephone — set in Mitchell’s telling against a more contemporary, Americanized setting. Orpheus (a dreamy Reeve Carney) is a sensitive and penniless artist, too caught up in his own head trying to finish a song to tend to his beloved Eurydice (Miss Saigon standout Eva Noblezada), more jaded and attuned to the world’s hardships. In the original myth, Eurydice travels to the underworld after dying of snakebite — here, though, she makes the choice to go down there herself after crossing paths with Hades (Patrick Page, with a voice so deep it sounds like it was forged from brimstone), a devil in a pinstriped suit who rules over an industrialized kingdom down below, while Persephone (Amber Gray, kinetic and wildly fun) reluctantly spends half the year with her husband down below and the other half spreading joy and sharing wine above ground. The set evokes a New Orleans-style music hall — a nimble seven-person band surrounds the action on both sides of the stage — with a few tricks up its sleeve, like bright lights and turntables that transform it into Hades’ domain. (Sets are by Rachel Hauck, the gorgeous costumes are from Michael Krass, and lighting design by Bradley King.) Orpheus, encouraged by the messenger god and the show’s resident emcee Hermes (André De Shields, a smooth crooner in a silver suit), makes the dangerous journey to Hades’ domain to rescue Eurydice, and Hades allows them to leave together on one condition: Orpheus must lead the way and can’t look back to see if Eurydice is following behind him — if he does, she’s doomed to stay in the underworld forever. You don’t have to be a literary scholar to guess what happens, but when Hadestown reaches that pivotal moment, it knocks the wind out of you. That’s a credit to Chavkin’s direction, the stellar cast, and Mitchell’s storytelling (she wrote the show’s music, lyrics, and book). The songs will stay in your head after you leave the theater, from the catchy “Way Down Hadestown” to Persephone’s jazzy “Livin’ It Up On Top” and the haunting ballad “Wait For Me,” sung as Orpheus journeys down below to find his love. Another song many will likely be talking about is the Act One capper “Why We Build The Wall,” in which Hades explains why he makes his underworld slaves work endlessly to construct a massive border around his kingdom. The song and show predate the current presidential administration, but hearing a song about building barriers to keep enemies out (“The wall keeps out the enemy/and we build the wall to keep us free … the enemy is poverty”) feels all the more ominous in this current era. And while the second act slows down at points, as the story builds toward that fated journey back to the surface, Hadestown is a trip to Hell that’s dark and tragic but spellbinding all the same — as Hermes says, “it’s a sad song, but we keep singin’ even so” — a welcome dance with the devil you’ll be glad you took. A-",
+  "isFullReview": true,
   "dtliExcerpt": "This folk-opera retelling of the Orpheus and Eurydice myth is a stunning piece of musical theater that weaves together gorgeous melodies, poetic lyrics, and masterful performances.",
   "originalScore": 88,
   "assignedScore": 89,
@@ -65,5 +65,36 @@
     "modelAgreement": "All 3 models agree: Rave"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "previousUrl": "https://ew.com/theater/2019/04/18/hadestown-broadway-review/",
+  "urlDiscoveredAt": "2026-02-02T16:35:29.719Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 89,
+  "textWordCount": 719,
+  "archivePath": "data/archives/reviews/hadestown-2019/ew--kristen-baldwin_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T16:35:29.725Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial",
+  "sourceMethod": "playwright",
+  "duplicateTextOf": "ew--jessica-derschowitz.json"
 }
