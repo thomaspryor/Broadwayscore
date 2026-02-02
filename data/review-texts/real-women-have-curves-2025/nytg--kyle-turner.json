@@ -70,10 +70,16 @@
   "designation": "Recommended",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 48,
-  "archivePath": "data/archives/reviews/real-women-have-curves-2025/nytg--kyle-turner_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T01:37:41.744Z",
+  "archivePath": "data/archives/reviews/real-women-have-curves-2025/nytg--kyle-turner_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:45:04.227Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
     {
       "tier": 1,
       "method": "playwright",
@@ -90,5 +96,9 @@
   "wordCount": 1129,
   "garbageReasoningDetected": "insufficient-text",
   "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.128Z",
-  "needsRescore": true
+  "needsRescore": true,
+  "isFullReview": true,
+  "textWordCount": 1129,
+  "textQuality": "partial",
+  "textStatus": "partial"
 }

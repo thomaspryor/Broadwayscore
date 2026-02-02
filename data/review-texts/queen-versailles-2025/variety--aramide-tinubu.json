@@ -73,15 +73,15 @@
   "wordCount": 722,
   "isFullReview": false,
   "textWordCount": 126,
-  "archivePath": "data/archives/reviews/queen-versailles-2025/variety--aramide-timubu_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:40:22.294Z",
+  "archivePath": "data/archives/reviews/queen-versailles-2025/variety--aramide-timubu_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:41:46.113Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "Insufficient text extracted: 33 chars"
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
     },
     {
       "tier": 2,

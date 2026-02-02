@@ -68,18 +68,36 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,
-  "archivePath": "data/archives/reviews/redwood-2025/variety--frank-rizzo_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:41:06.669Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/redwood-2025/variety--frank-rizzo_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:48:26.117Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "sourceMethod": "archive",
+  "fetchTier": 3,
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20250725041231",
   "archiveOrgUrl": "http://web.archive.org/web/20250725041231/https://variety.com/2025/legit/reviews/redwood-review-idina-menzel-broadway-musical-1236305841/",
   "rescoreCompletedAt": "2026-02-01T16:05:53.435Z",
