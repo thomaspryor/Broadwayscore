@@ -5272,30 +5272,6 @@
     "timestamp": "2026-02-01T23:52:05.006Z"
   },
   {
-    "reviewId": "redwood-2025/timeout--adam-feldman.json",
-    "showId": "redwood-2025",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/redwood-broadway-musical-review-idina-menzel",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6337,
-    "timestamp": "2026-02-01T23:52:35.824Z"
-  },
-  {
-    "reviewId": "redwood-2025/wsj--charles-isherwood.json",
-    "showId": "redwood-2025",
-    "outlet": "The Wall Street Journal",
-    "critic": "Charles Isherwood",
-    "url": "https://www.wsj.com/articles/redwood-review-idina-menzel-climbs-back-to-broadway-f8998fae",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 791,
-    "timestamp": "2026-02-01T23:52:39.174Z"
-  },
-  {
     "reviewId": "grey-house-2023/theatermania--unknown.json",
     "showId": "grey-house-2023",
     "outlet": "TheaterMania",
@@ -6628,42 +6604,6 @@
     "timestamp": "2026-02-02T04:21:50.516Z"
   },
   {
-    "reviewId": "redwood-2025/deadline--greg-evans.json",
-    "showId": "redwood-2025",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (20): maybe happy ending, the outsiders, operation mincemeat, oh, mary!, wicked...",
-    "textLength": 72791,
-    "timestamp": "2026-02-02T04:46:35.866Z"
-  },
-  {
-    "reviewId": "redwood-2025/new-york-sun--elysa-gardner.json",
-    "showId": "redwood-2025",
-    "outlet": "New York Sun",
-    "critic": "Elysa Gardner",
-    "url": "https://www.nysun.com/article/redwood-features-idina-menzel-returning-to-broadway-for-second-time-since-winning-a-tony-for-wicked-more-than-20-years-ago",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
-    "textLength": 575,
-    "timestamp": "2026-02-02T04:46:41.825Z"
-  },
-  {
-    "reviewId": "redwood-2025/observer--david-cote.json",
-    "showId": "redwood-2025",
-    "outlet": "Observer",
-    "critic": "David Cote",
-    "url": "https://observer.com/2025/02/review-idina-menzel-goes-out-on-a-limb-in-eco-musical-redwood/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"turn off your ad block\"",
-    "textLength": 7146,
-    "timestamp": "2026-02-02T04:46:44.924Z"
-  },
-  {
     "reviewId": "ragtime-2025/timeout--adam-feldman.json",
     "showId": "ragtime-2025",
     "outlet": "Time Out New York",
@@ -6818,5 +6758,65 @@
     "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
     "textLength": 7799,
     "timestamp": "2026-02-02T08:26:55.782Z"
+  },
+  {
+    "reviewId": "redwood-2025/deadline--greg-evans.json",
+    "showId": "redwood-2025",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
+    "textLength": 72791,
+    "timestamp": "2026-02-02T15:05:40.550Z"
+  },
+  {
+    "reviewId": "redwood-2025/new-york-sun--elysa-gardner.json",
+    "showId": "redwood-2025",
+    "outlet": "New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/redwood-features-idina-menzel-returning-to-broadway-for-second-time-since-winning-a-tony-for-wicked-more-than-20-years-ago",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
+    "textLength": 575,
+    "timestamp": "2026-02-02T15:05:46.610Z"
+  },
+  {
+    "reviewId": "redwood-2025/observer--david-cote.json",
+    "showId": "redwood-2025",
+    "outlet": "Observer",
+    "critic": "David Cote",
+    "url": "https://observer.com/2025/02/review-idina-menzel-goes-out-on-a-limb-in-eco-musical-redwood/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 7146,
+    "timestamp": "2026-02-02T15:05:49.951Z"
+  },
+  {
+    "reviewId": "redwood-2025/timeout--adam-feldman.json",
+    "showId": "redwood-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/redwood-broadway-musical-review-idina-menzel",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6337,
+    "timestamp": "2026-02-02T15:05:56.803Z"
+  },
+  {
+    "reviewId": "redwood-2025/wsj--charles-isherwood.json",
+    "showId": "redwood-2025",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/redwood-review-idina-menzel-climbs-back-to-broadway-f8998fae",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 791,
+    "timestamp": "2026-02-02T15:06:00.092Z"
   }
 ]
