@@ -1,78 +1,62 @@
 {
-  "runDate": "2026-02-02T04:35:42.742Z",
+  "runDate": "2026-02-02T04:41:04.788Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 3,
+    "maxReviews": 2,
     "priority": "all",
-    "showFilter": "uncle-vanya-2024",
+    "showFilter": "redwood-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 2,
+    "processed": 2,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 0,
     "tier1Success": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 1,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 1,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 2,
+    "tier4Attempts": 2,
+    "tier4Success": 2,
+    "totalFailed": 0,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
+    "redwood-2025/variety--frank-rizzo.json",
+    "redwood-2025/broadwaynews--brittani-samuel.json"
   ],
-  "failed": [
-    "uncle-vanya-2024/variety--bob-verini.json",
-    "uncle-vanya-2024/vulture--helen-shaw.json"
-  ],
+  "failed": [],
   "tierDetails": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
+      "redwood-2025/variety--frank-rizzo.json",
+      "redwood-2025/broadwaynews--brittani-samuel.json"
     ]
   },
-  "failuresByOutlet": {
-    "Variety": {
-      "count": 1,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Vulture": {
-      "count": 1,
-      "domain": "vulture.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
