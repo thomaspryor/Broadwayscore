@@ -48,6 +48,7 @@ const {
 const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
+const { LETTER_GRADES } = require('./lib/score-extractors');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -1279,20 +1280,15 @@ function parseRating(rating, outletId) {
   const stars4 = r.match(/([\d.]+)\s*(?:\/|\s*out of\s*)?\s*4/);
   if (stars4) return Math.round((parseFloat(stars4[1]) / 4) * 100);
 
-  // Letter grades — only for outlets that use letter grade scoring
-  const grades = {
-    'a+': 100, 'a': 95, 'a-': 92,
-    'b+': 88, 'b': 83, 'b-': 78,
-    'c+': 73, 'c': 68, 'c-': 63,
-    'd+': 58, 'd': 53, 'd-': 48,
-    'f': 35
-  };
-  if (grades[r]) {
+  // Letter grades — only for outlets that use letter grade scoring.
+  // Uses canonical LETTER_GRADES from score-extractors.js (matches src/config/scoring.ts).
+  const upperR = r.toUpperCase();
+  if (LETTER_GRADES[upperR] !== undefined) {
     if (outletId && !LETTER_GRADE_OUTLETS.has(outletId)) {
       console.warn(`⚠️  Rejecting letter grade "${rating}" for ${outletId} (not a letter-grade outlet)`);
       return null;
     }
-    return grades[r];
+    return LETTER_GRADES[upperR];
   }
 
   return null;
