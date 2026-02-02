@@ -69,22 +69,33 @@
     "needsReviewReasons": []
   },
   "textIssue": "too_short",
-  "sourceMethod": "playwright",
-  "archivePath": "data/archives/reviews/bug-2026/deadline--greg-evans_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:46:47.690Z",
-  "fetchMethod": "playwright",
+  "sourceMethod": "brightdata",
+  "archivePath": "data/archives/reviews/bug-2026/deadline--greg-evans_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:31:56.716Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 1,
+  "fetchTier": 3,
   "archiveOrgTimestamp": "20260113215722",
   "archiveOrgUrl": "http://web.archive.org/web/20260113215722/https://deadline.com/2026/01/bug-broadway-review-carrie-coon-tracy-letts-1236680796/",
   "textIssues": [
-    "Word count too low: 92 (min: 300)",
     "Show title not found in text"
   ],
   "showScoreExcerpt": null,
@@ -98,14 +109,13 @@
   "garbageFixedAt": "2026-01-29T22:45:22.726Z",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "fullText": "Get our Breaking News Alerts and Keep your inbox happy. Comments On Deadline Hollywood are monitored. So don't go off topic, don't impersonate anyone, and don't get your facts wrong. Δdocument.getElementById( \"ak_js_1\" ).setAttribute( \"value\", ( new Date() ).getTime() ); Signup for Breaking News Alerts & Newsletters By providing your information, you agree to our Terms of Use and our Privacy Policy. We use vendors that may also process your information to help provide our services. This site is protected by reCAPTCHA Enterprise and the Google Privacy Policy and Terms of Service apply.",
-  "isFullReview": false,
-  "textWordCount": 92,
+  "fullText": "The afternoon I saw Tracy Letts‘ excellent, itchy Bug on Broadway — an earlier scheduled performance had been canceled — the bestselling and unfortunately influential crackpot Dr. Erich von Däniken died. The author who, back in 1968 wrote a ludicrous, and supposedly true, book called Chariots of the Gods? (that question mark did some very heavy lifting) positing that pretty much the entire history of human achievement can be credited to interventions of ancient, advanced aliens.\n\nA silly but far-reaching classic of conspiracy theories and paranoia, the book put the concept of alien-assisted pyramid-building and Stonehenge-erecting firmly into a Cold War culture primed for rabbit holes, gullibility and rejection of anything smacking of the sort of Establishment thinking that relied on little details like evidence and science.\n\nVon Däniken may be gone, but his make-believe chariots still bedevil the minds of those unfortunates stubbornly averse to Occam’s razor. To them, the more complex and implausible a theory is, well, so much the better.\n\n \n Watch on Deadline\n\nLetts’ Bug debuted in London in 1996 and Off Broadway in 2004, years when the sort of plunge-into-the-crazy-weeds obsessiveness seemed a fringe pursuit, spooky mostly due to the times when the obsessions turned violent, tragic or otherwise troubling and made headlines in the world at large. The People’s Temple, the Branch Davidians, the Manson Family and the Heaven’s Gate suicides owe at least a little bit, if only spiritually, to those ancient aliens as much as to JFK conspiracies and moon landing denialism. From there, you can draw a line to Pizzagate, Birtherism and too many red-pill lunacies to enumerate.\n\nAnd while Bug, at least with the fresh eyes of 2026, seems to owe more to Alex Cox’s grim 1986 folie &agrave; deux claustrophobic dead punks masterpiece Sid & Nancy as to those ’70s paranoid classics The Conversation, Klute, Marathon Man and Three Days of the Condor, the Manhattan Theatre Club production on stage at Broadway's Samuel J. Friedman Theatre unequivocally resonates in today’s culture of conspiracies and disinformation and the dead certainties of those who embrace both.\n\nCoon, Letts’ wife and a revelation even if you saw her spectacular work on HBO’s The White Lotus last year, plays Agnes White, a dreadfully lonely waitress whose most consistent companions in her depressing residential motel room are glass pipes and liquor bottles. Bedeviled by mysterious (landline) phone calls – the era is the mid-1990s, the setting somewhere in a McVeigh-haunted Oklahoma – Agnes is sure she’s being harassed by the abusive ex-husband Jerry just sprung from prison for her attempted murder.\n\nAnd while Jerry – played by Steve Key in a performances as menacing as Agnes fears – shows up in person at the motel, we can certainly believe he had indeed been making the calls. Or that he hasn’t.\n\nAgnes is offered a momentary bit of grace when she’s visited by her good friend R.C. (a wondrously eccentric Jennifer Engstrom), a biker-tough lesbian whose very existence would irk the violent ex even if she wasn’t so fiercely protective of Agnes.\n\nUnfortunately, R.C. unwittingly opens that ol’ rabbit hole hatch by introducing Agnes to a new acquaintance, a soft-spoken drifter with gentle manners and no obvious signs of the cruelty that the ex-husband exults in. Peter (Namir Smallwood, in a fine, nuanced performance that slips under your skin before you feel that first worrisome itch) is as mysterious as any drifter should be, with a shady military past, an ear for sounds that might or might not register in decibels and an eye for the planted symbols he convinces Agnes are hidden in the cheesy motel-room painting.\n\nTo acknowledge that we see what’s coming from the first moment Agnes becomes intrigued by Peter’s seeming delusions – are the government-implanted bugs under his skin now under hers? Are those helicopters flying by really out to get him? And how, exactly, did her young son disappear from a grocery store nearly a decade ago? Could the bugs – aphids, Peter insists, genetically altered of course – contain all the answers?\n\nLoony, huh? But damned if Letts, his director and their cast don’t take us in hand as they descend into the madness, mollifying at least some credulousness by sending yet another mystery man into the motel room, a military man (or is he a scientist? a doctor? a lunatic?) named Dr. Sweet (a tightrope-walking Randall Arney) who confronts Agnes with information he shouldn’t really know about her life and the unbalanced man hiding in her bathroom.\n\nWhile the arrival of Dr. Sweet strains dramatic plausibility, the device certainly adds to the play’s sense of instability, of the quicksand that is conspiracism. Haven’t we just seen Peter horrifically remove his own infected tooth – another character talks of a sweet tooth – that he’s convinced is controlling him. And now Dr. Sweet shows up, in the flesh.\n\nWe’d be well within our rights to assume Dr. Sweet is a drug hallucination were it not for his interactions, onstage or off, with both R.C. and Jerry, and even after – especially after – we see his lifeblood splash onto the motel room walls. By that point I was still wondering whether I could trust my own eyes. Such is the lure of the rabbit hole.\n\nIf Letts does well in illustrating such bewitchments, his once prescient vision, sad to say, does little to enlighten us on the here and now, and how, exactly, a good part of a developed nation could be led to believe in kindergarten bathroom litter boxes, January 6 denialism or pizzeria porn rings. The insanity on stage is, however horrifying and bloody, too specific, too character-contained, to lend itself to easy extrapolation.\n\nThat blood, by the way, is quite expertly splattered against scenic designer Takeshi Kata’s glumly accurate motel room set, as perfect a visualization of depression, addiction and claustrophobia as that miserable Chelsea Hotel room where Gary Oldman’s Sid Vicious stabbed Chloe Webb’s Nancy Spungen. Letts and Kata have outfitted their room, though, with microscopes, the better to examine whatever teeny pests Agnes and Peter think they’re carving from their skin.\n\nThe set is matched creep-by-creep by the moody contributions of lighting designer Heather Gilbert, the did-I-just-hear-something sound design of Josh Schmidt and Sarah Laux’s authentically grimy, no-one-can-see-us-anyway costumes. Together, the creative touches corralled by Cromer and his company build a world that’s unerringly, distressingly realistic, even when everything inside those soon-to-be tinfoil-covered walls loses all recognizable meaning.\n\nTitle: BugVenue: Broadway's Samuel J. Friedman TheatrePlaywright: Tracy LettsDirector: David CromerCast: Carrie Coon, Namir Smallwood, Steve Key, Jennifer Engstrom, Randall ArneyRunning time: 1 hr 55 min (including intermission)\n\nGet our Breaking News Alerts and Keep your inbox happy.\n\nComments On Deadline Hollywood are monitored. So don't go off topic, don't impersonate anyone, and don't get your facts wrong.\n\nDeadline is a part of Penske Media Corporation. © 2026 Deadline Hollywood, LLC.",
+  "isFullReview": true,
+  "textWordCount": 1145,
   "designation": "Recommended",
   "textQuality": "partial",
   "truncationSignals": [
     "has_footer_text"
   ],
-  "textStatus": "incomplete",
-  "showNotMentioned": true
+  "textStatus": "incomplete"
 }
