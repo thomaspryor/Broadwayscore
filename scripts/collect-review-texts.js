@@ -907,27 +907,51 @@ async function browserbaseLogin(bbPage, domain, email, password) {
     }
 
     // Wait for the SPA to render the login form (up to 30s)
+    const currentUrl = bbPage.url();
+    console.log(`    → WSJ login page URL: ${currentUrl.substring(0, 80)}`);
+
+    // Dump page title and visible inputs for diagnostics
+    const pageInfo = await bbPage.evaluate(() => {
+      const inputs = Array.from(document.querySelectorAll('input')).map(i => ({
+        type: i.type, name: i.name, id: i.id, placeholder: i.placeholder,
+      }));
+      const buttons = Array.from(document.querySelectorAll('button')).map(b => b.textContent?.trim().substring(0, 30));
+      const errorMsg = document.querySelector('[class*="error"], [class*="alert"], [role="alert"]');
+      return { title: document.title, inputs, buttons, error: errorMsg?.textContent?.trim() };
+    });
+    console.log(`    → WSJ page title: "${pageInfo.title}"`);
+    console.log(`    → WSJ form inputs: ${JSON.stringify(pageInfo.inputs)}`);
+    console.log(`    → WSJ buttons: ${JSON.stringify(pageInfo.buttons)}`);
+    if (pageInfo.error) console.log(`    → WSJ error on page: "${pageInfo.error}"`);
+
     let emailInput = null;
+    // Try broad set of selectors including generic text input
+    const emailSelectors = 'input[type="email"], input[name="email"], input[name="emailOrUsername"], input[name="username"], input[type="text"]:not([name="search"])';
     try {
-      await bbPage.waitForSelector('input[type="email"], input[name="email"], input[name="emailOrUsername"], input[name="username"]', { timeout: 30000 });
-      emailInput = await bbPage.$('input[type="email"], input[name="email"], input[name="emailOrUsername"], input[name="username"]');
+      await bbPage.waitForSelector(emailSelectors, { timeout: 30000 });
+      emailInput = await bbPage.$(emailSelectors);
     } catch (e) {
-      // SPA may still be loading - try waiting longer
       console.log(`    → WSJ login SPA slow to render, waiting...`);
       await bbPage.waitForTimeout(10000);
-      emailInput = await bbPage.$('input[type="email"], input[name="email"], input[name="emailOrUsername"], input[name="username"]');
+      emailInput = await bbPage.$(emailSelectors);
     }
     if (!emailInput) {
       console.log(`    ✗ WSJ login FAILED (no email/username field found after CAPTCHA wait)`);
       return false;
     }
+    console.log(`    → Found email input, typing credentials...`);
     await emailInput.click();
     await emailInput.type(email, { delay: 30 });
     await bbPage.waitForTimeout(500);
 
-    const continueBtn = await bbPage.$('button:has-text("Continue"), button:has-text("Sign In"), button[type="submit"]');
-    if (continueBtn) await continueBtn.click();
-    else await bbPage.keyboard.press('Enter');
+    const continueBtn = await bbPage.$('button:has-text("Continue"), button:has-text("Next"), button:has-text("Sign In"), button[type="submit"]');
+    if (continueBtn) {
+      console.log(`    → Clicking continue/sign-in button...`);
+      await continueBtn.click();
+    } else {
+      console.log(`    → No continue button found, pressing Enter...`);
+      await bbPage.keyboard.press('Enter');
+    }
 
     // Wait for password step (Dow Jones SSO is two-step)
     let passInput = null;
@@ -939,23 +963,46 @@ async function browserbaseLogin(bbPage, domain, email, password) {
       passInput = await bbPage.$('input[type="password"]');
     }
     if (!passInput) {
+      // Dump current page state for debugging
+      const postEmailUrl = bbPage.url();
+      const postEmailInfo = await bbPage.evaluate(() => {
+        const inputs = Array.from(document.querySelectorAll('input')).map(i => ({ type: i.type, name: i.name }));
+        const errorMsg = document.querySelector('[class*="error"], [class*="alert"], [role="alert"]');
+        return { inputs, error: errorMsg?.textContent?.trim() };
+      });
       console.log(`    ✗ WSJ login FAILED (no password field found)`);
+      console.log(`    → Post-email URL: ${postEmailUrl.substring(0, 80)}`);
+      console.log(`    → Post-email inputs: ${JSON.stringify(postEmailInfo.inputs)}`);
+      if (postEmailInfo.error) console.log(`    → Post-email error: "${postEmailInfo.error}"`);
       return false;
     }
+    console.log(`    → Found password input, typing...`);
     await passInput.click();
     await passInput.type(password, { delay: 30 });
     await bbPage.waitForTimeout(500);
 
-    const signInBtn = await bbPage.$('button:has-text("Continue"), button:has-text("Sign In"), button[type="submit"]');
-    if (signInBtn) await signInBtn.click();
-    else await bbPage.keyboard.press('Enter');
+    const signInBtn = await bbPage.$('button:has-text("Continue"), button:has-text("Sign In"), button:has-text("Log In"), button[type="submit"]');
+    if (signInBtn) {
+      console.log(`    → Clicking sign-in button...`);
+      await signInBtn.click();
+    } else {
+      await bbPage.keyboard.press('Enter');
+    }
     await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
     await bbPage.waitForTimeout(3000);
 
     const postUrl = bbPage.url();
-    const loginOk = !postUrl.includes('accounts.wsj.com/login') && !postUrl.includes('accounts.dowjones.com');
-    if (loginOk) console.log(`    ✓ WSJ login succeeded`);
-    else console.log(`    ✗ WSJ login uncertain (still on: ${postUrl.substring(0, 60)})`);
+    const loginOk = !postUrl.includes('/login') && !postUrl.includes('/signin');
+    if (loginOk) console.log(`    ✓ WSJ login succeeded (redirected to: ${postUrl.substring(0, 60)})`);
+    else {
+      // Check for error messages on the page
+      const loginError = await bbPage.evaluate(() => {
+        const err = document.querySelector('[class*="error"], [class*="alert"], [role="alert"]');
+        return err?.textContent?.trim();
+      });
+      console.log(`    ✗ WSJ login failed (still on: ${postUrl.substring(0, 80)})`);
+      if (loginError) console.log(`    → Login error message: "${loginError}"`);
+    }
     return loginOk;
   }
 
