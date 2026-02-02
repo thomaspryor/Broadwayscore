@@ -128,14 +128,6 @@ jobs:
           echo "Failed to push after $MAX_RETRIES attempts"
           exit 1
 
-      - name: Trigger reviews.json rebuild
-        if: steps.git-check.outputs.changes == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh workflow run "Rebuild Reviews Data" \
-            -f reason="Auto-triggered after Gather Review Data"
-
       - name: Rebuild reviews.json
         if: steps.git-check.outputs.changes == 'true'
         env:

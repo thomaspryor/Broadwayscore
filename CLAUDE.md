@@ -401,8 +401,8 @@ All automation runs via GitHub Actions - no local commands needed. See `.github/
 |----------|----------------------|----------------------|-------|
 | `rebuild-reviews.yml` | ❌ | ✅ | **PRIMARY sync** - daily 4 AM UTC + manual trigger |
 | `review-refresh.yml` | ✅ | ✅ | Weekly extraction + rebuild |
-| `gather-reviews.yml` | ✅ | ⚡ triggers rebuild | Parallel-safe, triggers `rebuild-reviews.yml` after commit |
-| `collect-review-texts.yml` | ✅ | ⚡ triggers rebuild | Nightly 2 AM UTC + manual, parallel-safe, triggers `rebuild-reviews.yml` after commit |
+| `gather-reviews.yml` | ✅ | ✅ | Rebuilds inline after commit |
+| `collect-review-texts.yml` | ✅ | ✅ | Nightly 2 AM UTC + manual. Single-job rebuilds inline; parallel triggers `rebuild-reviews.yml` after all jobs complete |
 | `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 
