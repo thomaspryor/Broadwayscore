@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges entertainment value and praises specific elements like choreography and performances, but consistently identifies significant structural and creative flaws that prevent a recommendation. | Gemini: The review highlights both positive and negative aspects of the show. It acknowledges the entertainment value and choreography but criticizes the book, song integration, and feminist messaging, leading to a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges entertainment value and praises specific elements like choreography and performances, but ultimately finds the show disappointing due to poor integration of songs, repetitive staging, and timid execution that fails both as feminist text and Spears tribute. | GPT-4o: The review acknowledges some entertaining aspects, particularly the choreography, but criticizes the show for its conventionality and lack of coherence, ultimately providing a mixed assessment. | Gemini: The review highlights both positive and negative aspects. It acknowledges the show is \"quite entertaining at times\" and praises the choreography, but criticizes the book, song integration, and overall timidity. This indicates a mixed experience, not strongly recommending or discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,26 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:44:26.250Z",
+    "scoredAt": "2026-02-02T18:47:59.206Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 58,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 62,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dtliExcerpt": "But this big, splashy show, which is quite entertaining at times, is hampered by a shambolic jumble of sisterhood 101 messaging and defanged fantasy revisionism.",
   "sources": [

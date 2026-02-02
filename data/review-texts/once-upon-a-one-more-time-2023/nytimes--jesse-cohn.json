@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds the show entertaining at times but consistently points to significant flaws in execution, messaging, and integration. The review balances positive elements (choreography, some performances) with substantial criticisms throughout, landing in mixed territory without a clear recommendation either way. | GPT-4o: The review acknowledges that the show is entertaining at times and highlights some positive aspects like choreography and performances, but overall criticizes the production for its conventionality and lack of coherence, leading to a mixed verdict. | Gemini: The review highlights both positive and negative aspects, describing the show as \"quite entertaining at times\" but also \"hampered by a shambolic jumble.\" This indicates a mixed experience, not strongly recommending or discouraging it.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges entertainment value and praises specific elements like choreography and some performances, but consistently criticizes the show's fundamental flaws in storytelling, song integration, and execution. The review concludes that the show 'comes up short' on multiple levels. | GPT-4o: The review acknowledges that the show is entertaining at times and highlights some positive aspects like the choreography and certain performances. However, it also points out significant flaws in the storytelling and execution, leading to a mixed overall impression. | Gemini: The review highlights both positive and negative aspects. It acknowledges the show is \"quite entertaining at times\" and praises the choreography, but criticizes the book, song integration, and feminist messaging, ultimately leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,14 +43,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:24:05.716Z",
+    "scoredAt": "2026-02-02T18:48:03.172Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "complete",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
   "ensembleData": {
     "claudeScore": 62,
@@ -74,7 +74,7 @@
   "previousLlmScore": 74,
   "textWordCount": 1087,
   "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/nytimes--jesse-cohn_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:44:17.120Z",
+  "textFetchedAt": "2026-02-02T17:00:53.680Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -86,14 +86,13 @@
   "fetchTier": 4,
   "textQuality": "truncated",
   "truncationSignals": [
-    "no_ending_punctuation"
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
   ],
   "textStatus": "truncated",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251007094145",
   "archiveOrgUrl": "http://web.archive.org/web/20251007094145/https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html",
   "duplicateTextOf": "nytimes--elizabeth-vincentelli.json",
-  "rescoreCompletedAt": "2026-02-02T14:24:05.716Z",
-  "wordCount": 1087,
-  "tierReason": "Full review text"
+  "rescoreCompletedAt": "2026-02-02T14:24:05.716Z"
 }

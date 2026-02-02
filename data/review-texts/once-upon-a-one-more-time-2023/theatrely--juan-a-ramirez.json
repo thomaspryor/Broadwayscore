@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly enjoys the show's commitment to fun over seriousness, praises standout performances, and gives an enthusiastic final recommendation, though notes some structural issues with character development. | GPT-4o: The review praises the show for its fun, energetic approach and strong performances, particularly highlighting its successful homage to Britney Spears. The critic's tone is enthusiastic, recommending the show for its entertainment value. | Gemini: The review is largely positive, highlighting the fun and entertainment value of the show, especially for fans of Britney Spears. While it mentions some minor flaws, the overall tone suggests a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the show's fun factor, choreography, and performances while noting structural issues with character development. The critic clearly recommends experiencing it for what it is - entertaining pop musical theater. | GPT-4o: The review is filled with positive language about the show's fun and energetic approach, with specific praise for the performances and choreography. The critic's tone is enthusiastic, suggesting a strong recommendation. | Gemini: The review is positive overall, highlighting the fun and empowering aspects of the show. While it mentions some minor flaws, the reviewer ultimately recommends seeing it for its entertainment value and choreography.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,12 +36,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:44:48.137Z",
+    "scoredAt": "2026-02-02T18:48:21.770Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,

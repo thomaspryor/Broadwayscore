@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review criticizes many elements (weak book, ugly costumes, lackluster second act) but highlights standout performances and moments, ending with a qualified positive comparison that suggests it's better than the terrible 'Bad Cinderella.' | GPT-4o: The review highlights numerous flaws in the production, including poor writing, ineffective choreography, and lackluster performances, with only brief moments of praise. The truncated text warning suggests caution, but the overall tone is negative. | Gemini: The review highlights both positive and negative aspects, such as the humor in some scenes and the lackluster second act. The truncated text makes it difficult to determine a final verdict, but the overall tone suggests a mixed reaction.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review finds individual bright spots (Guarini's performance, Simard's delivery, some book moments) but criticizes the writing, costumes, and overall execution. The final line suggests it's better than 'Bad Cinderella' but that's faint praise. | GPT-4o: The review highlights several issues with the show, such as weak writing, lackluster second act, and ineffective direction. While there are some moments of humor and standout performances, the overall tone suggests disappointment. The truncated text warning suggests caution, but the provided excerpts and tone lean towards a negative verdict. | Gemini: The review highlights both positive and negative aspects of the show. While criticizing the book and choreography, it also acknowledges some funny moments and a flicker of real gold, suggesting a mixed experience overall. The truncated text makes it difficult to determine the final verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,11 +40,11 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:35:41.370Z",
+    "scoredAt": "2026-02-02T18:48:25.822Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 61,
+    "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {

@@ -8,15 +8,15 @@
   "showScoreExcerpt": "“Simard is delicious; the rest of the show, if you turn off your brain, is merely yummy in a candy-coated way. That’s not nothing: ‘Once Upon a One More Time’ is a well-assembled and entertaining diversion...Musicals are capable of more ambitious roles than merely carrying Spears.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/once-upon-a-one-more-time-broadway",
   "originalScore": "3/5",
-  "assignedScore": 64,
+  "assignedScore": 65,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 64,
+    "score": 65,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 rating and language like 'entertaining diversion' but 'turn off your brain' and criticism that 'musicals are capable of more' suggests a mixed verdict that acknowledges entertainment value while noting significant limitations. | GPT-4o: The review highlights some positive aspects, such as being 'entertaining' and 'well-assembled', but also suggests it lacks ambition and depth. The original 3/5 rating and 'Flat' aggregator verdict support a mixed classification. | Gemini: The review calls the show \"entertaining\" and \"yummy in a candy-coated way\", indicating a positive, though not overwhelmingly enthusiastic, recommendation. The 3/5 rating also supports this classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 rating and language like 'entertaining diversion' paired with criticism that it requires turning off your brain indicates a mixed assessment - enjoyable but not particularly substantial or recommended. | GPT-4o: The review describes the show as 'entertaining' but also implies it lacks depth, suggesting a mixed reception. The original 3/5 rating supports a mixed classification, and the key quote indicates some positive aspects. | Gemini: The review calls the show \"entertaining\" and \"yummy,\" indicating a positive experience, but the need to \"turn off your brain\" and the comment about musicals being capable of more ambitious roles suggest reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,16 +37,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:44:58.631Z",
+    "scoredAt": "2026-02-02T18:48:29.459Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "3.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": 68,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
