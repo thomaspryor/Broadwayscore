@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-02T15:09:34.775Z",
+  "runDate": "2026-02-02T15:12:01.243Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "water-for-elephants-2024",
+    "showFilter": "suffs-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,68 +12,114 @@
   },
   "summary": {
     "processed": 7,
-    "failed": 6,
+    "failed": 8,
     "skipped": 0,
-    "successRate": "53.8%"
+    "successRate": "46.7%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 1
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 0,
+    "tier1Attempts": 8,
+    "tier1Success": 4,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 5,
-    "tier2Success": 3,
-    "tier3Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
     "tier3Success": 1,
-    "tier4Attempts": 6,
-    "tier4Success": 2,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 30,
+    "tier4Attempts": 19,
+    "tier4Success": 5,
+    "totalFailed": 8,
+    "scrapingBeeCreditsUsed": 4,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 4,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "water-for-elephants-2024/broadwaynews--brittani-samuel.json",
-    "water-for-elephants-2024/theatermania--david-gordon.json"
+    "suffs-2024/nytimes--jesse-green.json",
+    "suffs-2024/variety--aramide-tinubu.json",
+    "suffs-2024/vulture--helen-shaw.json",
+    "suffs-2024/ew--kristen-baldwin.json",
+    "suffs-2024/theatermania--jesse-green.json",
+    "suffs-2024/the-times--nancy-durrant.json",
+    "suffs-2024/washpost--peter-marks.json"
   ],
   "failed": [
-    "water-for-elephants-2024/observer--rex-reed.json",
-    "water-for-elephants-2024/timeout--adam-feldman.json",
-    "water-for-elephants-2024/wsj--charles-isherwood.json",
-    "water-for-elephants-2024/theatrely--olivia-clement.json",
-    "water-for-elephants-2024/thestage--lane-williamson.json"
+    "suffs-2024/chelsea-community-news--michael-musto.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/observer--rex-reed.json",
+    "suffs-2024/timeout--adam-feldman.json",
+    "suffs-2024/timeout--regina-robbins.json",
+    "suffs-2024/wsj--charles-isherwood.json",
+    "suffs-2024/talkinbroadway--matthew-murray.json",
+    "suffs-2024/usatoday--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-outsiders-2024/culturesauce--thom-geier.json"
+      "suffs-2024/ew--kristen-baldwin.json",
+      "suffs-2024/the-times--nancy-durrant.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "water-for-elephants-2024/theatermania--david-gordon.json"
+    "scrapingbee": [],
+    "brightdata": [
+      "suffs-2024/theatermania--jesse-green.json"
     ],
-    "brightdata": [],
     "archive": [
-      "water-for-elephants-2024/broadwaynews--brittani-samuel.json"
+      "suffs-2024/nytimes--jesse-green.json",
+      "suffs-2024/variety--aramide-tinubu.json",
+      "suffs-2024/vulture--helen-shaw.json",
+      "suffs-2024/washpost--peter-marks.json"
     ]
   },
   "failuresByOutlet": {
-    "Theatrely": {
+    "The Guardian": {
       "count": 1,
-      "domain": "theatrely.com",
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Observer": {
+      "count": 1,
+      "domain": "observer.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "USA Today": {
+      "count": 1,
+      "domain": "usatoday.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "suffs-2024/washpost--peter-marks.json",
+      "oldUrl": "https://www.washingtonpost.com/theater-dance/2024/04/19/suffs-broadway-review/",
+      "newUrl": "https://www.washingtonpost.com/entertainment/theater/2024/04/18/suffs-broadway-review/"
+    }
+  ]
 }
