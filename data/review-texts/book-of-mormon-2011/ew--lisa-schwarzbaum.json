@@ -9,7 +9,7 @@
   "bwwExcerpt": "A: Teaming with Avenue Q co-creator Robert Lopez (South Park creators Matt Stone and Trey Parker) to wrote a perfect book, music, and lyrics, they honor the traditions of great song-and-dance musical theater in all the best ways: Every detail of the production - choreographed with typical brilliance by Spamalot's Casey Nicholaw and codirected by Nicholaw and Parker - serves a purpose.",
   "showScoreExcerpt": "\"An exhilarating Broadway musical at once revolutionary and classic, funny and obscene, uncompromising in production standards and unafraid of just about anything else.\"",
   "originalScore": "B",
-  "assignedScore": 85,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "urlSource": "show-score",
@@ -23,13 +23,13 @@
   "dtliExcerpt": "Don’t expect to find any members of the Mormon faith protesting outside “The Book of Mormon,” a tuneful, unabashedly silly and absolutely uproarious new musical by Matt Stone and Trey Parker.",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 85,
-    "confidence": "low",
+    "score": 81,
+    "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 76,
+      "high": 86
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -38,7 +38,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic uses superlative language like 'exhilarating', 'revolutionary', 'done wonders', and describes it as addressing difficult issues with humor and high production standards. The B rating aligns with strong positive reception. | Gemini: The review is overwhelmingly positive, using words like \"exhilarating\" and \"hilarious.\" The critic's B rating also indicates a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses strongly positive language like 'exhilarating' and 'uncompromising in production standards' with the B rating and 'Up' aggregator verdict confirming a clear recommendation. | GPT-4o: The review uses highly positive language such as 'exhilarating', 'revolutionary', and 'uncompromising', indicating a strong recommendation. The original B rating also aligns with a positive assessment. | Gemini: The review uses the word \"exhilarating\" and describes the musical in a positive light, suggesting a recommendation. The B rating also indicates a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,36 +48,36 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:46:31.307Z",
+    "scoredAt": "2026-02-02T03:23:20.136Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 95,
-    "previousVersion": "3.0.0"
+    "previousScore": 85,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
-    "openaiScore": null,
-    "geminiScore": 80,
-    "claudeBucket": "Rave",
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 9,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "originalScoreNormalized": 85,
   "scoreExtractedFrom": "fullText",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 95,
-  "rescoreCompletedAt": "2026-01-28T23:33:35.191Z",
+  "rescoreCompletedAt": "2026-02-02T03:23:20.136Z",
   "contentTier": "complete",
   "wordCount": 690,
   "truncationSignals": [
     "no_ending_punctuation"
-  ],
-  "needsRescore": true
+  ]
 }

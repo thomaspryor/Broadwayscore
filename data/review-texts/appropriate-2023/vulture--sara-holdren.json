@@ -9,17 +9,17 @@
   "showScoreExcerpt": "“Neugebauer is doing fine work with the whole ensemble, and Paulson and Stoll provide a supercharged core.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the director's work and highlights strong central performances, suggesting a positive assessment, but the limited text makes it difficult to gauge the full verdict with certainty. | GPT-4o: The review highlights strong performances and effective direction, suggesting a positive experience. However, without the full text, the degree of enthusiasm is unclear, leading to a medium confidence level. | Gemini: The review excerpt praises the direction and performances, suggesting a positive but not overwhelmingly enthusiastic recommendation. The aggregator verdict also indicates a positive reception.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic delivers an extraordinarily detailed, intellectually engaged review that praises every aspect - writing, direction, and performances. The analysis is deeply appreciative of the play's complexity and craft, with no meaningful reservations expressed. | GPT-4o: The review is overwhelmingly positive, praising the direction, performances, and writing with a deep appreciation for the complexity and execution of the production. The critic's admiration for the play's ability to tackle difficult themes with nuance and depth indicates a strong recommendation. | Gemini: The review praises the performances and direction, highlighting the play's complexity and the cast's ability to make the characters relatable despite their flaws. While acknowledging the challenging subject matter, the critic ultimately recommends seeing the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:35.824Z",
+    "scoredAt": "2026-02-02T03:22:49.054Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dtliExcerpt": "In the sensitive hands of director Lila Neugebauer and her top-notch cast, these people are complicated and they’re blinkered, monstrous and pitiable, trying and failing, not individually hateful and collectively matured in a slow cooker of unexamined bias and malice.",
   "sources": [
@@ -70,9 +70,8 @@
   "bwwThumb": null,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 79,
-  "rescoreCompletedAt": "2026-01-28T23:31:34.279Z",
+  "rescoreCompletedAt": "2026-02-02T03:22:49.054Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 2169,
-  "needsRescore": true
+  "wordCount": 2169
 }

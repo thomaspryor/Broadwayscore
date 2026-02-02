@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating and language like 'powerful theatrical debate' and 'smart set' indicate clear recommendation. The critic appreciates both the writing and performances, describing Shanley's work as 'clever' and the conflict as well-constructed. | Gemini: The review is positive, highlighting the play's strengths and the performances. The 4/5 star rating also indicates a positive recommendation, though not a rave.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives 4/5 stars and concludes the revival 'succeeds without a doubt' despite raising some dramaturgical concerns about character balance. The positive verdict and star rating clearly indicate a recommendation. | GPT-4o: The review is largely positive, highlighting strong performances and effective direction. The critic's original 4/5 star rating aligns with a strong positive recommendation, despite some minor reservations about the play's balance. | Gemini: The critic gives the show 4 out of 5 stars and states that it \"succeeds without a doubt, but, okay, a few doubts aside\". This indicates a positive review with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:58.826Z",
+    "scoredAt": "2026-02-02T03:26:07.914Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 80,
-    "openaiScore": null,
+    "openaiScore": 82,
     "geminiScore": 78,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 79,
@@ -78,11 +79,10 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20240316135218",
   "archiveOrgUrl": "http://web.archive.org/web/20240316135218/https://nystagereview.com/2024/03/07/doubt-john-patrick-shanleys-prize-winning-play-in-a-blessed-revival/",
-  "rescoreCompletedAt": "2026-01-29T01:48:45.056Z",
+  "rescoreCompletedAt": "2026-02-02T03:26:07.914Z",
   "dateSource": "extracted-from-url",
   "_scoreFixedFrom": "4/5 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.707Z",
   "contentTier": "complete",
-  "wordCount": 955,
-  "needsRescore": true
+  "wordCount": 955
 }

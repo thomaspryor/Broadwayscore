@@ -9,15 +9,15 @@
   "bwwExcerpt": "Scott Ellis’ much-anticipated revival of John Patrick Shanley’s Pulitzer Prize-winning 2004 work “Doubt: A Parable,” now at the Roundabout Theatre Company’s recently renamed Todd Haimes Theatre, checks off all the previous boxes, for better and worse. Most importantly, though, it proves the case – beyond any doubt – what a well-structured theatrical work Shanley crafted.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the play as 'well-structured' and notes it 'checks off all the previous boxes,' but the qualifier 'for better and worse' suggests some reservations. Single excerpt limits confidence. | GPT-4o: The review acknowledges both positive and negative aspects but ultimately emphasizes the strength of the play's structure, suggesting a positive recommendation. The lack of full context and single excerpt warning suggest a conservative score within the Positive range. | Gemini: The review excerpt indicates that the production proves the value of the play, suggesting a positive but not overwhelmingly enthusiastic recommendation. The phrase \"checks off all the previous boxes, for better and worse\" implies some reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the play's structure and Amy Ryan's performance as 'superb,' while acknowledging some casting issues with Schreiber. Overall tone is appreciative of the revival's merits. | GPT-4o: The review acknowledges the strengths of the play's structure and some performances, but highlights significant casting issues with Schreiber, which affects the overall impact. The critic's doubts about the casting and the effectiveness of the production suggest a mixed reception. | Gemini: The review praises the play's structure and Amy Ryan's performance, but criticizes Liev Schreiber's casting. Overall, it's a positive assessment with reservations about one of the lead actors.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:57.932Z",
+    "scoredAt": "2026-02-02T03:25:51.906Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 69,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 76,
+    "claudeScore": 75,
+    "openaiScore": 65,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
@@ -84,10 +84,9 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T01:48:11.495Z",
+  "rescoreCompletedAt": "2026-02-02T03:25:51.906Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 827,
-  "needsRescore": true
+  "wordCount": 827
 }

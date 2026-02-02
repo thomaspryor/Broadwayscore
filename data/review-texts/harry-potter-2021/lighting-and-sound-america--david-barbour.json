@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses strongly positive language throughout, calling it a 'cracking good story' with 'breathtaking' magic and praising the 'airtight construction' that keeps audiences 'utterly engrossed.' The tone is clearly enthusiastic and recommendatory. | GPT-4o: The review is highly positive, emphasizing the engrossing story, strong character and narrative focus, and breathtaking stage magic. The critic's language suggests a strong recommendation to see the show. | Gemini: The review explicitly states the play is a \"cracking good story\" and praises the character and narrative. The reviewer also mentions the stage magic is breathtaking, indicating a positive experience overall.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic consistently praises the story construction, staging, performances, and technical elements, calling it a 'cracking good story' that keeps audiences 'utterly engrossed.' The review concludes by highlighting the show's emotional payoff as 'magical,' indicating strong recommendation. | GPT-4o: The review is overwhelmingly positive, praising the story, the staging, and the performances. The critic highlights the emotional depth and the effective use of special effects, indicating a strong recommendation to see the show. | Gemini: The review is largely positive, praising the story, staging, and performances. The truncated text makes it difficult to determine the final verdict with certainty, but the overall tone suggests a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,15 +39,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:01:40.936Z",
+    "scoredAt": "2026-02-02T03:29:04.872Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
+    "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 80,
     "claudeBucket": "Positive",
@@ -74,11 +74,10 @@
   "fetchTier": 1,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 88,
-  "rescoreCompletedAt": "2026-02-01T15:07:30.413Z",
+  "rescoreCompletedAt": "2026-02-02T03:29:04.872Z",
   "contentTier": "complete",
   "wordCount": 1672,
   "truncationSignals": [
     "no_ending_punctuation"
-  ],
-  "needsRescore": true
+  ]
 }

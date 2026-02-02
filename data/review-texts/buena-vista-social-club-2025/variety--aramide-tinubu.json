@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite minor reservations about narrative cohesion, the critic uses superlative language calling it 'the most intoxicating and rapturous show of the Broadway season' and 'transcendent,' indicating strong enthusiasm and recommendation. | GPT-4o: The review describes the show as 'the most intoxicating and rapturous show of the Broadway season,' indicating a strong recommendation. Despite noting it sometimes feels more like a concert, the overall tone is highly enthusiastic and positive. | Gemini: The review is overwhelmingly positive, calling the show \"intoxicating and rapturous.\" While it notes that it sometimes feels more like a concert, the overall tone is a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite noting structural flaws (feels like a concert rather than cohesive musical), the critic calls it 'the most intoxicating and rapturous show of the Broadway season' and describes it as 'transcendent' when it works, indicating strong positive recommendation. | GPT-4o: The review describes the show as 'intoxicating and rapturous,' suggesting a highly enthusiastic recommendation. Despite minor reservations about its structure, the overall tone is overwhelmingly positive. | Gemini: The review is overwhelmingly positive, calling the show \"intoxicating and rapturous.\" While it notes that it sometimes feels more like a concert, the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,12 +42,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:57:30.492Z",
+    "scoredAt": "2026-02-02T03:24:11.599Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
@@ -105,8 +105,7 @@
   "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20250506000250",
   "archiveOrgUrl": "http://web.archive.org/web/20250506000250/https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/",
-  "rescoreCompletedAt": "2026-02-01T19:57:37.353Z",
+  "rescoreCompletedAt": "2026-02-02T03:24:11.599Z",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (67 words)",
-  "needsRescore": true
+  "contentTierReason": "Short text (67 words)"
 }

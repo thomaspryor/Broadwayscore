@@ -9,15 +9,15 @@
   "bwwExcerpt": "Even then, at the very least, you will be unbearably grateful to have heard the clarion, celestial voices of the wonderful Kelli O’Hara, in her finest stage performance to date as the naïve secretary Kirsten Arnesen, and the sublime Brian D’Arcy James as the more worldly PR man Joe Clay, who fall in love with each other and the bottle.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear praise for the lead performances with highly positive language ('clarion, celestial voices', 'wonderful', 'sublime', 'finest stage performance'), but as only one curated quote is available, I'm scoring conservatively in the lower positive range. | GPT-4o: The excerpt praises the performances of the lead actors, suggesting a positive experience, but the lack of a full review and the single excerpt warning necessitate a conservative score within the Positive range. | Gemini: The review excerpt focuses heavily on praising the performances of the two leads, suggesting a positive experience driven by their talent. While the excerpt doesn't explicitly recommend the show overall, the strong praise for the actors indicates a positive leaning.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the questionable premise of musicalizing this material and notes casting age issues, but ultimately recommends the show based on stellar performances and emotional impact, calling it moving despite reservations. | GPT-4o: The review praises the performances of the lead actors, the music, and the production quality, indicating a strong recommendation despite some initial skepticism about the adaptation. | Gemini: The review expresses reservations about the musicalization of the source material but ultimately recommends the show due to the performances of the leads and the quality of the music. The critic states that you will be moved.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:23.702Z",
+    "scoredAt": "2026-02-02T03:25:13.636Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 79,
-    "geminiScore": 78,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -84,10 +84,9 @@
     "no_ending_punctuation"
   ],
   "sourceMethod": "scrapingbee",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.693Z",
+  "rescoreCompletedAt": "2026-02-02T03:25:13.636Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 561,
-  "needsRescore": true
+  "wordCount": 561
 }

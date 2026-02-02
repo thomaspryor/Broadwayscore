@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"What it's all about: 'murder, greed, corruption, violence, exploitation, adultery and treachery.' Of course what it's also about is sensational dancing, singing, acting...and, fun! No razzle-dazzle mechanical props, just the razzle-dazzle of a company of gifted performers delivering two hours and twenty minutes of show-stopping numbers.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chicago",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 92,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 89,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses highly positive language like 'sensational' and 'show-stopping numbers' while emphasizing the fun and quality of performances, indicating strong enthusiasm for the production. | GPT-4o: The review highlights the sensational aspects of the production, emphasizing the talented performers and the engaging nature of the show, suggesting a strong recommendation. | Gemini: The review highlights the sensational dancing, singing, and acting, indicating a positive experience, even if it's a revival.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review is overwhelmingly positive with explicit 'must-see' language, praising the production as 'in terrific shape' with 'superb' performances and calling it 'a heartening experience' that 'should not be missed.' | GPT-4o: The review is overwhelmingly positive, praising the production, performances, and overall experience. The critic emphasizes that it 'absolutely should not be missed,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the production's energy, talent, and dedication to the art of theatre. The concluding statement explicitly recommends seeing the show, solidifying its \"Rave\" classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:56:21.797Z",
+    "scoredAt": "2026-02-02T03:25:01.678Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 78,
+    "openaiScore": 95,
+    "geminiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "geminiBucket": "Rave",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "dtliExcerpt": "\"What it's all about: 'murder, greed, corruption, violence, exploitation, adultery and treachery.' Of course what it's also about is sensational dancing, singing, acting...and, fun! No razzle-dazzle mechanical props, just the razzle-dazzle of a company of gifted performers delivering two hours and twenty minutes of show-stopping numbers.\"\n\nRead more",
   "mergedFrom": [
@@ -71,8 +71,7 @@
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 87,
-  "rescoreCompletedAt": "2026-01-29T01:44:51.630Z",
+  "rescoreCompletedAt": "2026-02-02T03:25:01.678Z",
   "contentTier": "complete",
-  "wordCount": 1112,
-  "needsRescore": true
+  "wordCount": 1112
 }

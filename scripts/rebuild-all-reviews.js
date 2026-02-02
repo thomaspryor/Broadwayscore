@@ -643,12 +643,13 @@ function getBestScore(data) {
     }
   }
 
-  // Priority 3: LLM score (low confidence or needs review - fallback when no thumb)
+  // Priority 3: LLM score (low confidence, needs review, or excerpt-only downgrade - fallback when no thumb)
   if (data.llmScore && data.llmScore.score) {
     const confidence = data.llmScore.confidence;
     const needsReview = data.ensembleData?.needsReview;
+    const isExcerptOnly = !(data.fullText && data.fullText.trim().length > 100);
 
-    if (confidence === 'low') {
+    if (confidence === 'low' || isExcerptOnly) {
       return { score: data.llmScore.score, source: 'llmScore-lowconf' };
     }
     if (needsReview) {

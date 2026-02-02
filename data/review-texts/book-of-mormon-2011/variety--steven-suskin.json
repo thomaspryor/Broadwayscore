@@ -16,7 +16,7 @@
   "bwwThumb": null,
   "llmScore": {
     "score": 93,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 88,
       "high": 98
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'raucously funny' and stating it 'surpasses' Tony winners 'handily.' The comparison to 'The Producers' with the added praise that Mormon has 'better songs' signals exceptional enthusiasm. | GPT-4o: The review is overwhelmingly positive, comparing the show favorably to major hits like 'The Producers' and stating it surpasses Tony winners 'Spamalot' and 'Avenue Q.' The language used is enthusiastic and indicates a must-see production. | Gemini: The review is overwhelmingly positive, stating that the show surpasses previous Tony winners and is unlike anything Broadway has seen since \"The Producers\" but with better songs. This indicates a very strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it exceptional compared to a previous Broadway hit and praising every element - songs, staging, and cast - with unqualified enthusiasm. | GPT-4o: The review is overwhelmingly positive, comparing the show favorably to a classic like 'The Producers' and praising every aspect from songs to staging to cast. The tone suggests an enthusiastic recommendation. | Gemini: The review uses highly positive language like \"enhances the hilarity,\" \"expert staging,\" and \"blissfully good,\" and compares the show favorably to \"The Producers,\" indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:13.386Z",
+    "scoredAt": "2026-02-02T03:23:29.504Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "3.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 92,
     "openaiScore": 95,
-    "geminiScore": 95,
+    "geminiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 7,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -78,6 +78,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20120122025650/http://www.variety.com/review/VE1117944886.html?nid=2854",
   "contentTier": "complete",
   "wordCount": 689,
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:23:29.504Z"
 }

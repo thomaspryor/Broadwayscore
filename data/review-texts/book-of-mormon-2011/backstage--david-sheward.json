@@ -8,21 +8,21 @@
   "fullText": "Popular Searches: listing, casting, acting, voiceover\n\nSave | E-mail | Print | Most Popular| RSS| Reprints\n\n-->\n \n -->\n \n \n \n \n \n \n \n \n \n \n \n \n \n More |\n \n -->\n \n \n \n \n \n \n \n \n \n \n Tweet\n\nSave | E-mail | Print | Most Popular| RSS| Reprints\n\n-->\n \n -->\n \n \n \n \n \n \n \n \n \n \n \n \n \n More |\n \n -->\n \n \n \n \n \n \n \n \n \n \n Tweet\n\nView Other Blogs &raquo; Visit Unscripted &raquo;\n\nWeek ending Jan 16, 2012.\n Credit: The Broadway League\n\nBackstage - Acting Resources | Search Casting Calls | Acting Talent Search | Call Sheet | Acting Advice Columns | News & Features | About Back Stage\n Acting Community Information | Actor/Actress Message Board | Professional Acting Resources | Advertising Information | Auditions and Casting FAQ \n Customer Service | Contact Back Stage | Acting and Casting Newsletter | Entertainment News Site Map | Casting and Auditions RSS | Acting Magazine Subscription\n\n© 2012 Back Stage. All rights reserved. Terms of Use | Privacy Policy",
   "bwwExcerpt": "the sharp-edged book and fun score by Parker, Stone, and Lopez offer a screamingly funny yet sharply insightful full-length take on religion in general and Mormonism in particular. There are also pointed but loving tributes to musical comedy conventions, shockingly vulgar humor, and that rarity on Broadway these days: topical and effective satire.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 61,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be website navigation/header text rather than actual review content, making it impossible to determine the critic's recommendation about any show. | GPT-4o: The text provided is not a review but rather a list of links and options. Without evaluative content, the review is assumed to be mixed due to lack of information. | Gemini: There is no review text provided, so I am assuming it is a negative review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt contains strongly positive language like 'screamingly funny,' 'sharply insightful,' and 'effective satire,' suggesting clear enthusiasm. However, with only one curated excerpt available, I score conservatively within the positive range. | GPT-4o: The review excerpt praises the show for its humor, insight, and effective satire, indicating a strong positive reaction. The use of 'screamingly funny' and 'sharply insightful' suggests a high level of enthusiasm, though the single excerpt warning suggests a conservative score within the Rave range. | Gemini: The review highlights the show's humor and insightful commentary, suggesting a positive experience. Given the single excerpt warning, I'm scoring conservatively within the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:46:02.384Z",
+    "scoredAt": "2026-02-02T03:23:12.192Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 62,
-    "geminiScore": 40,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Negative",
-    "scoreDelta": 22,
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
@@ -86,13 +86,12 @@
     "Word count too low: 138 (min: 300)",
     "Show title not found in text"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:51.661Z",
+  "rescoreCompletedAt": "2026-02-02T03:23:12.192Z",
   "contentTier": "truncated",
   "wordCount": 138,
   "isFullReview": false,
   "textWordCount": 138,
   "textQuality": "truncated",
   "textStatus": "truncated",
-  "showNotMentioned": true,
-  "needsRescore": true
+  "showNotMentioned": true
 }

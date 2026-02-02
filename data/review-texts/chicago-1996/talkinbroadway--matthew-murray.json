@@ -38,7 +38,7 @@
   "sourceMethod": "brightdata",
   "llmScore": {
     "score": 94,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 89,
       "high": 99
@@ -52,7 +52,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic uses explicitly enthusiastic language calling it 'heartening', 'life-affirming', and states it 'absolutely should not be missed' while celebrating its 'glory and genius'. | Gemini: The review uses extremely positive language like \"heartening experience,\" \"life-affirming dedication,\" and \"should not be missed,\" indicating a rave review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses unambiguously enthusiastic language throughout, calling it a 'heartening experience' and 'life-affirming' that 'absolutely should not be missed,' with praise for nearly every element of the production. | GPT-4o: The review is overwhelmingly positive, highlighting the production's superb condition, top-flight talent, and its status as a tribute to the magic of theatre. The critic explicitly states it 'absolutely should not be missed,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the production's energy, talent, and dedication to the art of theatre. The critic explicitly states that the show \"should not be missed,\" indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -62,32 +62,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:56:43.474Z",
+    "scoredAt": "2026-02-02T03:25:07.690Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 90,
-    "previousVersion": "3.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": null,
-    "geminiScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
-  "rescoreCompletedAt": "2026-01-29T01:45:07.945Z",
+  "rescoreCompletedAt": "2026-02-02T03:25:07.690Z",
   "contentTier": "complete",
   "wordCount": 1112,
-  "duplicateTextOf": "curtainup--elyse-sommer.json",
-  "needsRescore": true
+  "duplicateTextOf": "curtainup--elyse-sommer.json"
 }

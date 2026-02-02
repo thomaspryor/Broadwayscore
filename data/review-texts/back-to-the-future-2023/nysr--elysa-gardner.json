@@ -7,7 +7,7 @@
   "publishDate": "August 3, 2023",
   "showScoreExcerpt": null,
   "bwwExcerpt": "theme park ride with songs causing sensory overload and auditory assault",
-  "assignedScore": 44,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "archivePath": "data/archives/reviews/back-to-the-future-2023/nysr--elysa-gardner_2026-02-01.html",
   "textFetchedAt": "2026-02-01T15:08:39.103Z",
@@ -19,17 +19,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:57.852Z",
+    "scoredAt": "2026-02-02T03:22:52.609Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 55,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "bwwThumb": "Down",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 39,
-  "rescoreCompletedAt": "2026-02-01T17:31:46.069Z",
+  "rescoreCompletedAt": "2026-02-02T03:22:52.609Z",
   "garbageFullText": "The page you are looking for no longer exists. Perhaps you can return back to the homepage and see if you can find what you are looking for. Or, you can try finding it by using the search form below. ★★★★☆ Playwright Simon Stephens and tech wizards concoct the world’s first mixed reality play ★★★☆☆ Ian McKellen is among the performers appearing virtually in this one-act play by Simon Stephens ★★★☆☆ Erica Schmidt’s world premiere dramedy skewers a self-absorbed filmmaker and the people who love him ★★★☆☆ Hamish Linklater, Miriam Silverman, and Dylan Baker are among the stars of Erica Schmidt's world premiere play riffing on show business and marriage ★★★★☆ A new production of the Tony-nominated musical comedy goes to the head of the class ★★★★☆ Lesley Manville and Mark Strong have disturbingly good chemistry as theater’s most famous twice-related couple ★★★★★ Laurie Metcalf and Micah Stock star in Samuel D. Hunter's acclaimed drama, previously seen at Steppenwolf Theatre Company ★★★★★ Bess Wohl takes inspiration from her mother’s life for her clever, decade-jumping memory play ★★★★★ Joshua Henry gives what’s destined to be a Tony-winning performance in this much-needed revival ★★★★☆ Jonathan Groff gives a once-in-a-lifetime performance as the Grammy-winning “Beyond the Sea” singer Copyright © 2026 • New York Stage Review • .",
   "garbageReason": "Error/404 page: \"The page you are looking for\"",
   "garbageFixedAt": "2026-01-29T22:45:22.682Z",
@@ -82,11 +82,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.804Z"
   },
   "llmScore": {
-    "score": 44,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -97,7 +97,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The 2/5 star rating and harsh language describing the show as a 'theme park ride' causing 'sensory overload and auditory assault' clearly indicates a negative recommendation. | Gemini: The review uses strongly negative language like \"sensory overload\" and \"auditory assault\", and the 2/5 star rating confirms a negative assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic gives 2/5 stars and consistently criticizes the production as sensory overload with lackluster songs, comparing it unfavorably to theme parks and suggesting cheaper alternatives like streaming the film. | GPT-4o: The critic's 2/5 star rating and the suggestion that a theme park visit might be a better use of money indicate a clear negative verdict. The review criticizes the production's sensory overload and lackluster music, reinforcing the negative assessment. | Gemini: The critic clearly does not recommend the show, calling it a \"theme park ride with songs\" and suggesting alternatives like streaming the movie or going to Six Flags. The 2/5 star rating also indicates a negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -106,18 +106,19 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": null,
+    "claudeScore": 40,
+    "openaiScore": 40,
     "geminiScore": 45,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "contentTier": "needs-rescrape",
   "wordCount": 0,
@@ -137,6 +138,5 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "archiveOrgTimestamp": "20240713224401",
-  "archiveOrgUrl": "http://web.archive.org/web/20240713224401/https://nystagereview.com/2023/08/03/back-to-the-future-a-sensory-assault-with-songs/",
-  "needsRescore": true
+  "archiveOrgUrl": "http://web.archive.org/web/20240713224401/https://nystagereview.com/2023/08/03/back-to-the-future-a-sensory-assault-with-songs/"
 }

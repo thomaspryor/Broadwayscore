@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and enthusiastic language about the show crackling with energy and having 'high-grade theatrical imagination' clearly indicates a strong positive recommendation, despite some setup about the franchise's commercial expansion. | GPT-4o: The review is highly positive, highlighting the impressive special effects and theatrical imagination. The critic's 4/5 star rating aligns with a strong positive recommendation. | Gemini: The critic gives the show 4 out of 5 stars and describes it as an 'extravaganza' that 'crackles and snaps and vibrates the senses'. The review is overwhelmingly positive, focusing on the theatrical imagination and special effects.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and effusive praise throughout, culminating in a Tony Award prediction, clearly indicates strong recommendation despite minor reservations about accessibility for newcomers. | GPT-4o: The review is filled with praise for the production's special effects, stagecraft, and performances, culminating in a strong recommendation. The original 4/5 star rating aligns with a high Positive score. | Gemini: The critic gives the show 4 out of 5 stars and states that the audience will be 'thrilled' and 'enthralled'. While acknowledging the show's special effects, he emphasizes the 'high-grade theatrical imagination' and 'supreme stagecraft', indicating a positive overall experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,17 +40,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:02:59.423Z",
+    "scoredAt": "2026-02-02T03:29:21.354Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 80,
     "openaiScore": 82,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
@@ -81,10 +81,9 @@
   "fetchTier": 4,
   "archiveOrgTimestamp": "20240731102248",
   "archiveOrgUrl": "http://web.archive.org/web/20240731102248/https://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/",
-  "rescoreCompletedAt": "2026-02-01T15:08:15.295Z",
+  "rescoreCompletedAt": "2026-02-02T03:29:21.354Z",
   "_scoreFixedFrom": "4/4 stars",
   "_scoreFixedAt": "2026-01-31T23:10:41.710Z",
   "contentTier": "complete",
-  "wordCount": 1041,
-  "needsRescore": true
+  "wordCount": 1041
 }

@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"If the result is an unwieldy but rousing hot mess with outsize ambitions, maybe now we know how its chess prodigies feel.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chess-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The phrase 'unwieldy but rousing hot mess' captures both criticism and praise - acknowledging flaws while finding energy and ambition. The single excerpt limitation requires conservative scoring within the mixed range. | GPT-4o: The excerpt describes the production as 'unwieldy' and a 'hot mess,' which suggests significant flaws, but also 'rousing' and ambitious, indicating some redeeming qualities. This points to a mixed review with both positive and negative elements. | Gemini: The review calls the show a \"rousing hot mess\", which implies it is enjoyable despite its flaws. Given the single excerpt warning, I am scoring conservatively.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges strong vocal performances and entertaining moments but consistently points to fundamental story problems, excessive runtime, and calls it a 'hot mess' - neither recommending nor discouraging attendance. | GPT-4o: The review acknowledges the production's ambitious and entertaining elements, particularly the performances and music, but also highlights significant flaws in the story and execution. The overall tone suggests a mixed experience with both strengths and weaknesses. | Gemini: The review acknowledges the show's flaws, particularly the convoluted plot, but praises the performances and the overall experience as a \"rousing hot mess with outsize ambitions.\" This suggests a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,16 +38,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:40:20.099Z",
+    "scoredAt": "2026-02-02T03:24:56.855Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 62,
+    "openaiScore": 65,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
@@ -63,8 +63,7 @@
   "contentTier": "excerpt",
   "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
-  "rescoreCompletedAt": "2026-02-01T14:53:38.380Z",
-  "needsRescore": true,
+  "rescoreCompletedAt": "2026-02-02T03:24:56.855Z",
   "previousLlmScore": 64,
   "isFullReview": true,
   "textWordCount": 901,

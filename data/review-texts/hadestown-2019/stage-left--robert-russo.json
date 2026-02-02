@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'breathtaking', 'thrilling', and comparing it favorably to Hamilton. The review is unambiguously enthusiastic despite being truncated. | GPT-4o: The review is overwhelmingly positive, using phrases like 'breathtaking', 'exquisitely crafted', and 'thrilling', indicating a strong recommendation. The critic compares it favorably to 'Hamilton' and emphasizes its unique and compelling nature. | Gemini: The review is overwhelmingly positive, using phrases like \"breathtaking\", \"exquisitely crafted\", and comparing it favorably to \"Hamilton\". The critic clearly believes this is an exceptional and unmissable production.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite the truncation warning, the review clearly concludes with 'This musical triumph is a must-see' and consistently uses superlative language like 'breathtaking,' 'exquisitely crafted,' and comparing it favorably to Hamilton throughout. | GPT-4o: The review is overwhelmingly positive, describing 'Hadestown' as 'breathtaking', 'exquisitely crafted', and 'a triumph of craft and imagination'. The critic explicitly calls it a 'must-see', which strongly indicates a rave recommendation. | Gemini: Despite the truncated text warning, the review contains overwhelmingly positive language, including phrases like \"breathtaking\", \"exquisitely crafted\", \"musical triumph\", and \"must-see\". The comparison to Hamilton and the explicit recommendation solidify the \"Rave\" classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,17 +38,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:02:02.428Z",
+    "scoredAt": "2026-02-02T03:27:20.193Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 95,
-    "previousVersion": "3.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 95,
     "openaiScore": 95,
-    "geminiScore": 95,
+    "geminiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
@@ -97,6 +97,6 @@
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:27:20.193Z"
 }

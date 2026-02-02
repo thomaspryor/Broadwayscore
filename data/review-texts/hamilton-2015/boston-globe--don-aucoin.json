@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses consistently superlative language including 'stylish and electrifying,' 'brilliantly staged,' and 'dynamic choreography,' with no reservations expressed about the production quality or recommendation to see it. | GPT-4o: The review is filled with enthusiastic praise for the show's innovative fusion of musical styles and its contemporary relevance, describing it as 'stylish and electrifying' and 'brilliantly staged.' The language used suggests a strong recommendation. | Gemini: The review is overwhelmingly positive, using words like \"stylish and electrifying\" and praising the staging and choreography. The critic clearly recommends seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses powerfully positive language throughout ('stylish and electrifying,' 'brilliantly staged,' 'exhilarating') and concludes that the show 'proves more than able to carry' the weight of enormous expectations, indicating this is a must-see theatrical event. | GPT-4o: The review is overwhelmingly positive, highlighting the show's stylish and electrifying nature, brilliant staging, and vivid performances. The critic emphasizes the show's ability to meet high expectations and its exhilarating impact, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the show's energy, staging, and performances. While not quite a 'rave,' it strongly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:52.896Z",
+    "scoredAt": "2026-02-02T03:27:44.738Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 94,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
-    "geminiScore": 80,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -87,8 +87,7 @@
   "fetchTier": 3,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 94,
-  "rescoreCompletedAt": "2026-01-29T01:56:18.389Z",
+  "rescoreCompletedAt": "2026-02-02T03:27:44.738Z",
   "contentTier": "complete",
-  "wordCount": 804,
-  "needsRescore": true
+  "wordCount": 804
 }

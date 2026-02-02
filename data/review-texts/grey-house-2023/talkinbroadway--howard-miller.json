@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 76,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the cast's commitment, direction, and design work as the production's 'greatest strength,' indicating a positive assessment despite the truncated text that may contain fuller evaluation. | Gemini: The review highlights the strengths of the production, including the cast, direction, and design, suggesting a positive experience despite potential post-performance discussions about its meaning.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the cast, direction, and design team extensively, highlighting the production's atmospheric achievements and 'disquietude' as its defining strength, despite acknowledging unanswered questions. | GPT-4o: The review highlights the strong mood and direction of the production, appreciating the performances and design elements. While it notes unanswered questions, it ultimately appreciates the overall atmosphere, suggesting a positive experience. | Gemini: The review highlights the production's strengths in creating a consistent mood and praises the cast, direction, and design. While acknowledging unanswered questions, the overall tone suggests a positive experience, making it a recommended show with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:35.419Z",
+    "scoredAt": "2026-02-02T03:26:31.304Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
+    "openaiScore": 74,
     "geminiScore": 75,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 78,
@@ -89,10 +90,9 @@
   ],
   "fetchTier": 3,
   "sourceMethod": "brightdata",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.711Z",
+  "rescoreCompletedAt": "2026-02-02T03:26:31.304Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "contentTier": "complete",
-  "wordCount": 639,
-  "needsRescore": true
+  "wordCount": 639
 }

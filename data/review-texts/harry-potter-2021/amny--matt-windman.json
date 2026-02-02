@@ -8,18 +8,18 @@
   "fullText": "‘Harry Potter and the Cursed Child, Parts One and Two’ plays an open run at the Lyric Theatre. 214 W. 43rd St., harrypottertheplay.com.\n\n“The boy who lived” has made it to New York City with “Harry Potter and the Cursed Child, Parts One and Two,” an unexpected bonus chapter in the extremely popular “Harry Potter” series. Unlike the original seven books by J.K. Rowling and their subsequent film adaptations, it takes the form of an elaborate stage spectacle.\n\nThe play comes to Broadway after premiering in London two years ago. To suit the show, the Lyric Theatre in Times Square has been meticulously renovated to resemble a traditional playhouse.\n\nWritten by Jack Thorne — and based on a story by Rowling, Thorne and director John Tiffany — the freewheeling script resembles a polished piece of “Harry Potter” fan fiction inspired by “Back to the Future Part II.” Some fans may find it to be derivative in nature, but the play still makes for a rousing adventure narrative.\n\nSet approximately two decades after the Battle of Hogwarts, it picks up after the epilogue of “Harry Potter and the Deathly Hallows,” in which Harry (Jamie Parker), Hermione (Noma Dumezweni), Ron (Paul Thornley), Ginny (Poppy Miller) and Draco (Alex Price) watch their children board the Hogwarts Express at Platform 9 3⁄4.\n\nWhereas Harry and Draco were bitter rivals during their school days, Harry’s son Albus (Sam Clemmett) and Draco’s son Scorpius (Anthony Boyle) are close friends who both have strained relationships with their fathers. They set out to improve upon the past by using an illegal Time-Turner to travel in time to save Harry’s classmate Cedric Diggory from death at the hands of He Who Must Not Be Named, which unleashes severe unintended consequences upon the world.\n\nThere are return visits from characters both major and minor — living and dead. Even Moaning Myrtle, guardian of the girls’ bathroom, makes a showstopping cameo.\n\nThe countless special effects — both old-fashioned and high-tech in nature — are stunning, such as when Dementors levitate over the audience (think “Spider-Man”) and when the students morph into adults using Polyjuice Potion.\n\nAside from being able to easily grasp the numerous references in the dialogue, a theatergoer with no prior “wizarding” experience should still be able to have a great time — and may even find the show more enthralling than would a longtime fan who already knows the “Harry Potter” universe inside and out.",
   "bwwExcerpt": "Aside from being able to easily grasp the numerous references in the dialogue, a theatergoer with no prior \"wizarding\" experience should still be able to have a great time - and may even find the show more enthralling than would a longtime fan who already knows the \"Harry Potter\" universe inside and out.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic indicates audiences will 'have a great time' and find it 'enthralling,' but with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review suggests that the show is enjoyable even for those unfamiliar with the 'Harry Potter' universe, indicating a positive recommendation. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review suggests that even those unfamiliar with Harry Potter can enjoy the show, indicating a positive experience, but the single excerpt and smaller outlet size suggest a more conservative score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging the derivative nature that 'some fans may find' problematic, the critic emphasizes the show's strengths including 'stunning' effects, 'rousing adventure narrative,' and broad appeal to both fans and newcomers who can 'have a great time.' | GPT-4o: The review highlights the play as a 'rousing adventure narrative' with 'stunning' special effects and suggests that even those unfamiliar with the Harry Potter universe will enjoy it, indicating a strong recommendation. | Gemini: The review states that the play \"still makes for a rousing adventure narrative\" and that even those unfamiliar with the Harry Potter universe can have a \"great time.\" While it mentions some fans might find it derivative, the overall tone is positive, suggesting it's worth seeing, especially for newcomers.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:58:36.923Z",
+    "scoredAt": "2026-02-02T03:28:45.800Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 77,
-    "geminiScore": 75,
+    "openaiScore": 82,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -64,7 +64,6 @@
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "isFullReview": true,
@@ -84,5 +83,6 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "archiveOrgTimestamp": "20250531201938",
-  "archiveOrgUrl": "http://web.archive.org/web/20250531201938/https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1-18207087/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250531201938/https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1-18207087/",
+  "rescoreCompletedAt": "2026-02-02T03:28:45.800Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Grey House is a horror play that works best when it leans into its B-movie sensibilities and stops trying to be something more profound than it is.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,14 +17,14 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Grey House is a horror play that works best when it leans into its B-movie sensibilities and stops trying to be something more profound than it is.",
   "llmScore": {
-    "score": 63,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review suggests the show has merit when it embraces its horror/B-movie nature but implies it fails when attempting deeper meaning, indicating mixed results rather than a clear recommendation. | GPT-4o: The review suggests that the play has strengths when it embraces its genre but implies shortcomings when it attempts to be more profound, indicating a mixed reception. | Gemini: The review suggests the play has positive aspects when it embraces its B-movie nature, but also implies it falters when it aims for deeper meaning, resulting in a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the cast commitment, direction, and design team extensively, highlighting the production's atmospheric strengths and craft elements despite acknowledging unanswered questions in the plot. | GPT-4o: The review highlights the production's strengths in creating a consistent mood and praises the cast and direction, suggesting a positive experience despite some unanswered questions. The tone is appreciative of the production's atmosphere, indicating a recommendation. | Gemini: The review highlights the show's strengths in creating a consistent mood and praises the cast, direction, and design, suggesting a positive experience despite potential ambiguity in the plot.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,31 +42,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:25:39.599Z",
+    "scoredAt": "2026-02-02T03:26:34.640Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 63,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "needsRescore": true,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 63,
   "textWordCount": 661,
@@ -102,5 +101,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "brightdata"
+  "sourceMethod": "brightdata",
+  "rescoreCompletedAt": "2026-02-02T03:26:34.640Z"
 }

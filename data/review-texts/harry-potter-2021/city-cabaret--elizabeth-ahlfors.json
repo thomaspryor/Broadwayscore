@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges entertainment value and 'slick production values' but emphasizes that enjoyment depends heavily on prior Potter knowledge, with noted issues like 'too much repetition' that would benefit from trimming. | GPT-4o: The review suggests that while the production is entertaining and visually impressive, it may not be accessible to newcomers and suffers from issues like repetition. This indicates a mixed recommendation, with enjoyment dependent on familiarity with the source material. | Gemini: The review suggests enjoyment for fans, but notes repetition and the need for trimming, indicating a positive but not rave recommendation. The single excerpt and truncated nature of the text warrants a score in the middle of the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review splits audiences - recommending it as 'a treat' for Potter fans while warning newcomers will face complications, plus notes issues like 'too much repetition' that hurt the overall experience. | GPT-4o: The review suggests that fans of the source material will enjoy the production, but newcomers may struggle. It praises the production values but notes issues with repetition and pacing, indicating a mixed reception. | Gemini: The review suggests enjoyment for fans, but notes issues with repetition, indicating a positive but not rave recommendation. The single excerpt and truncated text warning suggest a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,12 +39,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T23:59:13.781Z",
+    "scoredAt": "2026-02-02T03:28:49.775Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -94,11 +94,10 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250320111246/https://www.citycabaret.com/harry-potter-and-the-cursed-child.html",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 69,
-  "rescoreCompletedAt": "2026-02-01T15:06:29.427Z",
+  "rescoreCompletedAt": "2026-02-02T03:28:49.775Z",
   "contentTier": "complete",
   "wordCount": 743,
   "truncationSignals": [
     "no_ending_punctuation"
-  ],
-  "needsRescore": true
+  ]
 }

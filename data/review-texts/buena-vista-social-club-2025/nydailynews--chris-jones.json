@@ -7,7 +7,7 @@
   "publishDate": "March 19, 2025",
   "dtliExcerpt": "The question of the night is the choice between selling out their souls to the vapid American tourists at the Tropicana nightclub (bad) or singing for their own people on the wrong side of the tracks (good). They try to make both work even as this relentlessly preachy show wants them to learn to pay more attention to their backup singers.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textFetchedAt": "2026-01-30T20:01:11.578Z",
@@ -15,14 +15,14 @@
   "archivePath": "data/archives/reviews/buena-vista-social-club-2025/nydailynews--chris-jones_2026-01-30.html",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic describes the show as 'relentlessly preachy' which is clearly negative language, and the aggregator context confirms a 'Flat' verdict. However, with only one excerpt available, I'm scoring conservatively within the negative range. | GPT-4o: The review excerpt suggests a mixed opinion, noting the show as 'relentlessly preachy', which indicates criticism, but also acknowledges the characters' efforts to balance their choices, suggesting some redeeming qualities. | Gemini: The review excerpt presents a conflict within the show and criticizes its preachy nature, suggesting a mixed assessment. The phrase 'They try to make both work' indicates an attempt at something that isn't fully successful.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges significant story problems ('predictably moralistic', 'relentlessly preachy') but clearly recommends the show for its exceptional music, dance, and performances, calling it 'a consistent pleasure'. | GPT-4o: The review acknowledges the show's predictable and moralistic story but praises the music, dance, and performances, indicating that these elements make it a pleasurable experience despite its flaws. | Gemini: The review acknowledges flaws in the story and its moralistic approach, but ultimately recommends the show due to the quality of the music, dance, and performances. The critic states it's a 'consistent pleasure' despite the lack of surprises.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,34 +40,34 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:55:33.369Z",
+    "scoredAt": "2026-02-02T03:24:00.107Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 35,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 62,
-    "geminiScore": 62,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 72,
-  "rescoreCompletedAt": "2026-02-01T17:32:54.383Z",
+  "rescoreCompletedAt": "2026-02-02T03:24:00.107Z",
   "garbageFullText": "Subscribers are entitled to 10 gift sharing articles each month. These can be shared with friends and family who are not subscribers. Subscribe now! or Sign in to your account. Jukebox Broadway musicals need conflict and the evil suits at Capitol Records are a perennial villain for artists who just want to be themselves. In “Buena Vista Social Club,” the venerable label even gets slapped with the ultimate slur, “Capitalist Records,” notwithstanding its long association with Cuban artists and, frankly, the strong interest of many of the mid-20th century Havana greats in finding stateside success in the entertainment business and avoiding the cultural chill of what here is a very sanitized version of the Castro revolution. That’s not too surprising given that the new Broadway musical “Buena Vista Social Club” is written by Marco Ramirez from the point of view not of the famous South Florida conservative Cuban expats but younger, progressive Cuban-Americans more interested in the “purer” musicians who stayed on the island. This Broadway transfer from the Atlantic Theater Company to the Gerald Schoenfeld Theatre is, of course, based on the group of great and mostly older Cuban artists recorded on the Grammy Award-winning 1997 studio album in Havana, as produced by Ry Cooder, and also on the related 1999 Wim Wenders documentary of the same name. The titular social club was in the Buenavista quarter of Havana, at its peak in the 1940s and early 1950s and once the go-to, prerevolutionary place for hot dance music genres like son Cubano, bolero and the venerable social form known as danzón, as fun to watch on a Broadway stage in 2025 as in a Havana or Miami nightery more than half a century ago. The show flits back and forth between the 1950s and the 1990s, when most of the 1950s artists were still very much alive. Scenes in the first era follow the careers of a talented pair of young Cuban sisters, played by Isa Antonetti and Ashley De La Rosa, who have to make a variety of moral decisions, including whether or not to leave the island. The question of the night is the choice between selling out their souls to the vapid American tourists at the Tropicana nightclub (bad) or singing for their own people on the wrong side of the tracks (good). They try to make both work even as this relentlessly preachy show wants them to learn to pay more attention to their backup singers. By the 1990s scenes, one of the sisters (the one who left Cuba) is dead and the older survivor, Omara Portuondo (Natalie Venetia Belcon), is being courted by a young producer (played by Justin Cunningham). In this mostly fictional version, the reclusive Omara has to decide whether or not to come back from retirement and record with her old colleagues from the fervent Cuban years, thus confronting those ghosts. You can probably guess where she ends up. The story is predictably moralistic and, frankly, more worried about conforming to contemporary mores than accurately representing what was going on in Cuba in the 1950s, dramatically speaking anyway. Still, few people in the house are there for the story. They bought tickets to hear the great music and watch the thrilling dance, here rendered as an ebullient social form with balletic flourishes, as skillfully crafted by co-choreographers Patricia Delgado and Justin Peck. Bravura performances flow to the ear and eye from pretty much the entire company. Much of the onstage band is made up of old-school Cuban musicians, doing their sophisticated yet seemingly effortless thing, essaying semifictionalized real-life figures, such as the charismatic singer Ibrahim Ferrer (Mel Semé), the singer-guitarist Compay Segundo (the dryly laconic Julio Monge), the pianist Rubén González (Jainardo Batista Sterling) and the tres player Eliades (Renesito Avich), among others. For many in the audience, including me, when combined with arrangements and musical direction of this quality (Marco Paguia gets the main credit), that’s enough to make the show a consistent pleasure, notwithstanding the lack of any bona fide surprises. As today’s Broadway goes, “Buena Vista” is a modestly scaled show. The company of dancers is smaller than some might expect, although still mighty in execution. Given the roots of this material in the social contexts of the music and dance it celebrates, and the implicit disdain for the “Guys and Dolls”-like version of Cuban midcentury showbiz, that’s probably just as well. As conceived and directed by Saheem Ali, the show concentrates on celebrating the musical artistry of performers and, despite the improvisational nature of this material does not overstay its welcome, bopping along at a swift two hours, even with an intermission to catch your breath. Subscribers are entitled to 10 gift sharing articles each month. These can be shared with friends and family who are not subscribers. Subscribe now! or Sign in to your account. Three homeless people found dead on NYC streets as deep freeze grips city Natasha Lyonne reveals she has relapsed after nearly 20 years of sobriety Guy Fieri debuts bold ‘new look’ to celebrate his 58th birthday Off-duty NYPD employee arrested for grabbing man’s crotch without consent Missing Long Island teen may have traveled to NYC to meet online friend LGBTQ TikTok star found beaten to death in Thai forest; suspect arrested RICHARD JOHNSON: Mark Epstein has ‘medical evidence his brother was killed’ David Harbour and Lily Allen sell Brooklyn townhouse for $7M amid ugly split FDNY union throws support behind family of retired lieutenant shot to death by NYPD cops at Brooklyn hospital Bill Madden: After early fan anger, David Stearns adds big pieces to rebuild Mets Bronx man sentenced for sexually assaulting girlfriend’s wheelchair-bound daughter ICE begins scooping up Maine residents in ‘Operation Catch of the Day’ Ex-CEO of Paul Newman charity for sick kids embezzled millions: DA Precinct poacher walks into the 23, strolls out wearing NYPD uniform and carrying cuffs",
   "garbageReason": "Paywall/subscription prompt: \"Subscribers\"",
   "garbageFixedAt": "2026-01-29T22:45:22.717Z",
@@ -84,6 +84,5 @@
   "archiveOrgTimestamp": "20250605071547",
   "archiveOrgUrl": "http://web.archive.org/web/20250605071547/https://www.nydailynews.com/2025/03/19/broadway-review-buena-vista-social-club-is-fast-paced-celebration-of-old-time-cuban-music/",
   "contentTier": "complete",
-  "wordCount": 749,
-  "needsRescore": true
+  "wordCount": 749
 }

@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic calls it a 'slog,' criticizes the staging as a 'concert' format, mocks the direction and book, and uses phrases like 'board all right' (pun on bored). Despite praise for Christopher's vocals, the overall assessment is clearly negative. | GPT-4o: The review is overwhelmingly negative, criticizing the staging, direction, and book, while only briefly praising one actor's performance. The overall tone suggests the production is a failure and not worth seeing. | Gemini: The review is overwhelmingly negative, describing the production as a \"flop,\" \"impenetrable,\" and a \"three-hour slog.\" While praising Christopher's performance, the overall assessment is that the show is not worth seeing.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic explicitly states the show is not worth time or money, calls it a 'slog through Siberia,' and describes it as 'high-pitched disappointment' while criticizing nearly every aspect from direction to performances. | GPT-4o: The review is overwhelmingly negative, criticizing the production's staging, direction, and performances, while explicitly stating that the show is not worth attending. The critic describes the experience as a 'high-pitched disappointment' and suggests avoiding it. | Gemini: The review is overwhelmingly negative, citing issues with the set, staging, book, and performances. While acknowledging some redeeming qualities in the music and Christopher's performance, the overall assessment is that the show is a disappointment and not worth the ticket price.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:05.921Z",
+    "scoredAt": "2026-02-02T03:24:49.154Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -78,11 +78,10 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251205130608/https://nypost.com/2025/11/16/entertainment/chess-review-lea-michele-leaves-you-cold-in-cold-war-musical-revival-on-broadway/",
   "contentTier": "complete",
   "wordCount": 824,
-  "rescoreCompletedAt": "2026-02-01T17:34:19.493Z",
+  "rescoreCompletedAt": "2026-02-02T03:24:49.154Z",
   "isFullReview": true,
   "textWordCount": 824,
   "textQuality": "full",
   "truncationSignals": [],
-  "textStatus": "complete",
-  "needsRescore": true
+  "textStatus": "complete"
 }

@@ -20,7 +20,7 @@
   ],
   "llmScore": {
     "score": 60,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 55,
       "high": 65
@@ -34,7 +34,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges compelling elements around important themes but finds the musical 'shakily constructed' with 'misfiring elements' and characters that 'seem insubstantial,' indicating a production with merit but too many problems to recommend. | Gemini: The review highlights both positive and negative aspects of the show, indicating a mixed reaction. While the subject matter is compelling, the execution is described as uneven and shakily constructed, leading to a 'Mixed' classification.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review identifies compelling source material but finds the execution fundamentally flawed with 'misfiring elements,' structural problems, and underdeveloped characters, making no clear recommendation to see it. | GPT-4o: The review highlights numerous issues with the production, including its uneven staging, lack of compelling character development, and ineffective comedic elements. The critic expresses disappointment with the execution and suggests that the show fails to make a strong case for its historical subjects. | Gemini: The review highlights both positive and negative aspects of the show, indicating a mixed recommendation. While it acknowledges the importance of the themes and some compelling moments, it also criticizes the staging, construction, and character development.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,31 +44,31 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:08:53.139Z",
+    "scoredAt": "2026-02-02T03:28:31.813Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": null,
+    "openaiScore": 46,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 31,
-  "rescoreCompletedAt": "2026-02-01T15:04:04.694Z",
+  "rescoreCompletedAt": "2026-02-02T03:28:31.813Z",
   "contentTier": "complete",
-  "wordCount": 2064,
-  "needsRescore": true
+  "wordCount": 2064
 }

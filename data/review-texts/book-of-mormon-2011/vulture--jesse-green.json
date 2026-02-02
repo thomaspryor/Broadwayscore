@@ -6,7 +6,7 @@
   "url": "https://www.vulture.com/2019/12/re-reviewing-the-book-of-mormon-and-hamilton-in-2019.html",
   "publishDate": "2011-03-24",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 63,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "archivePath": "data/archives/reviews/book-of-mormon-2011/vulture--jesse-green_2026-02-01.html",
@@ -16,11 +16,11 @@
   "scoreConfidence": "medium",
   "showScoreExcerpt": "\"The Book of Mormon, arriving after months of hype, somehow delivers even more than its ridiculously felicitous advance buzz promised: It’s an often uproarious, spiritually up-tempo satire not just of Mormonism, and not just religion in general, but of (no kidding) Occidental civilization itself.\"",
   "llmScore": {
-    "score": 61,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges loving the show originally and praises specific elements like the opening number, but concludes the Uganda sequences are 'grimly unfunny' and calls out problematic racism that has become more apparent over time. | Gemini: The review praises the first part of the show as hilarious and well-performed, but criticizes the Uganda sequences as unfunny and racist, indicating a mixed experience overall.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges loving both shows originally but finds significant flaws upon revisiting - Mormon's 'grimly unfunny' racism and Hamilton's casting issues and hollowed-out audience experience. Neither strongly recommended nor discouraged. | GPT-4o: The review reflects a mixed opinion on both shows. While the critic acknowledges the initial impact and strengths of both productions, they express significant reservations about how The Book of Mormon has aged, particularly its racial insensitivity. The review of Hamilton also notes a decline in energy and audience engagement over time. The overall tone suggests appreciation for past achievements but disappointment with current iterations. | Gemini: The review expresses disappointment in both shows, noting that The Book of Mormon hasn't aged well due to its racist jokes and that Hamilton has lost some of its original impact due to casting changes and a shift in audience dynamics. While acknowledging the shows still have redeeming qualities, the overall tone is mixed, suggesting they are not as impactful as they once were.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,32 +41,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:27.701Z",
+    "scoredAt": "2026-02-02T03:23:33.149Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 35,
-    "previousVersion": "5.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "sources": [
     "reviews-json-stub",
     "web-search"
   ],
-  "rescoreCompletedAt": "2026-02-01T17:32:23.456Z",
+  "rescoreCompletedAt": "2026-02-02T03:23:33.149Z",
   "contentTier": "excerpt",
   "wordCount": 0,
   "previousUrl": "https://www.vulture.com/2011/03/book-of-mormon-broadway-review.html",
@@ -90,6 +91,5 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "archiveOrgTimestamp": "20250714074559",
-  "archiveOrgUrl": "http://web.archive.org/web/20250714074559/https://www.vulture.com/2019/12/re-reviewing-the-book-of-mormon-and-hamilton-in-2019.html",
-  "needsRescore": true
+  "archiveOrgUrl": "http://web.archive.org/web/20250714074559/https://www.vulture.com/2019/12/re-reviewing-the-book-of-mormon-and-hamilton-in-2019.html"
 }

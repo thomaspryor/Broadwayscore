@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“ ‘Back to the Future’ simply tries to hold up its plutonium-weight source material.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/back-to-the-future-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review describes the show as a faithful but uninspired translation that lacks commentary, with the critic noting it feels like an amusement park ride - neither particularly positive nor negative. | Gemini: The review focuses on the show's reliance on the original movie and its set pieces, suggesting a lack of originality or commentary. It neither strongly recommends nor discourages seeing it, indicating a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges technical competence but criticizes the show for being too faithful to the source material without adding meaningful commentary or depth, describing it as impressive but not compelling. | GPT-4o: The review highlights the show's fidelity to the original film without offering new insights or depth, suggesting it is more of a spectacle than a compelling adaptation. The truncated nature of the text leaves room for potential positive conclusions, but the overall tone suggests a lack of strong recommendation. | Gemini: The review acknowledges the spectacle and faithful recreation but criticizes the lack of originality and deeper exploration of themes. The truncated text makes it difficult to determine a definitive recommendation, but the overall tone suggests a mixed reaction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:33.952Z",
+    "scoredAt": "2026-02-02T03:23:09.451Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 49,
-    "previousVersion": "3.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 58,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwExcerpt": "What Back to the Future does deliver instead of commentary on the original is a beat-by-beat translation of its set pieces. The DeLorean arrives onstage at the same time as Bart’s Doc, and actor and car split the entrance applause. When Marty gets inside and guns for 88 miles per hour, the screens around the stage blur behind him. (I felt right back in that Universal Studios amusement-park ride.",
   "sources": [
@@ -68,9 +69,8 @@
   "bwwThumb": "Meh",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 36,
-  "rescoreCompletedAt": "2026-01-28T23:33:09.121Z",
+  "rescoreCompletedAt": "2026-02-02T03:23:09.451Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 1538,
-  "needsRescore": true
+  "wordCount": 1538
 }

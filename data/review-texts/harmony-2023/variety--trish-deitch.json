@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges significant character flaws calling them 'hackneyed' but balances this with praise for the vocal performances and Manilow's songwriting ability, indicating a mixed assessment. | GPT-4o: The review highlights some positive aspects, such as the beautiful voices and Manilow's ability to write a good love song, but criticizes the characters as hackneyed. This suggests a mixed reception with some redeeming qualities. | Gemini: The review highlights both positive and negative aspects, such as beautiful voices but hackneyed characters, indicating a mixed overall impression.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review identifies significant character flaws (hackneyed characters) but acknowledges positive elements (beautiful voices, good love songs), indicating a mixed assessment without a clear recommendation either way. | GPT-4o: The review notes that while the characters are hackneyed, the voices are beautiful and Manilow can write a good love song. This suggests a mixed reception with some positive elements. | Gemini: The review highlights both positive and negative aspects, such as beautiful voices but hackneyed characters, indicating a mixed experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:11:55.131Z",
+    "scoredAt": "2026-02-02T03:28:42.684Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 50,
-    "previousVersion": "5.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -76,13 +76,12 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251205000834",
   "archiveOrgUrl": "http://web.archive.org/web/20251205000834/https://variety.com/2023/legit/reviews/harmony-review-barry-manilow-broadway-1235790164/",
-  "rescoreCompletedAt": "2026-02-02T00:11:55.131Z",
+  "rescoreCompletedAt": "2026-02-02T03:28:42.684Z",
   "contentTier": "complete",
   "wordCount": 483,
   "isFullReview": false,
   "textWordCount": 86,
   "textQuality": "excerpt",
   "truncationSignals": [],
-  "textStatus": "partial",
-  "needsRescore": true
+  "textStatus": "partial"
 }

@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the Broadway adaptation as a 'stunning makeover' of the original film, highlighting improved storytelling, non-stop laughs, and excellent production values across all departments. | GPT-4o: The review describes the musical as a stunning makeover with non-stop laughs and praises the design, costumes, and orchestrations, indicating a highly enthusiastic recommendation. | Gemini: The review indicates that the musical is an improvement over the original movie, with a cleaner storyline and non-stop laughs, suggesting a positive experience. The reviewer also notes the show's potential for a long run.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic clearly recommends the show, praising the transformation from a 'so-so' movie into a stunning Broadway production with non-stop laughs and predicting a long shelf-life. | GPT-4o: The review praises the musical for its stunning makeover, nonstop pace, and fantastic production elements, indicating a strong recommendation. | Gemini: The review indicates that the musical is a significant improvement over the original movie, with a cleaner storyline, clearer characters, and non-stop laughs. The reviewer highlights the show's potential for a long run and praises various aspects of the production, indicating a positive overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,12 +41,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:39.866Z",
+    "scoredAt": "2026-02-02T03:25:42.859Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
@@ -81,13 +81,12 @@
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
-  "rescoreCompletedAt": "2026-02-02T00:42:39.866Z",
+  "rescoreCompletedAt": "2026-02-02T03:25:42.859Z",
   "contentTier": "complete",
   "wordCount": 866,
   "isFullReview": false,
   "textWordCount": 82,
   "textQuality": "partial",
   "truncationSignals": [],
-  "textStatus": "partial",
-  "needsRescore": true
+  "textStatus": "partial"
 }

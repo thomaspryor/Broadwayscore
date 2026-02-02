@@ -18,7 +18,7 @@
   "showScoreExcerpt": "The show is a love letter to the theater itself, and to the particular kind of madness that drives people to put on shows in the first place.",
   "llmScore": {
     "score": 76,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 71,
       "high": 81
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic appreciates the show's concept, praises the lead performances as played 'to the hilt,' and describes positive elements like the excellent three-piece band and comedy timing. While there are some reservations about resolving the central tension of the premise, the overall tone is appreciative and recommending. | Gemini: The review describes the show as funny and enjoyable, highlighting the performances of the leads. While it acknowledges some shortcomings, the overall tone suggests a positive experience, leading to a recommendation with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite noting the show feels padded and runs too long, the critic praises the lead performances as 'wonderful' with 'indisputable chemistry' and calls it 'very often funny.' The aggregator excerpt confirms this is ultimately a love letter to theater. | GPT-4o: The review highlights strong performances and comedic elements, but also notes issues with pacing and some jokes falling flat. The truncated text suggests a potentially more positive conclusion that isn't visible, leading to a mixed but cautiously optimistic score. | Gemini: The review praises the performances of Rannells and Gad and their chemistry, but notes that the show feels padded and that some of the humor falls flat. The truncated nature of the review makes it difficult to determine the overall recommendation, but the positive comments outweigh the negative ones.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:18.329Z",
+    "scoredAt": "2026-02-02T03:26:52.199Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
+    "openaiScore": 65,
     "geminiScore": 75,
     "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "previousUrl": "https://www.vulture.com/2023/10/gutenberg-the-musical-broadway-review.html",
   "urlDiscoveredAt": "2026-02-01T19:00:15.697Z",
@@ -86,8 +87,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250225084951",
   "archiveOrgUrl": "http://web.archive.org/web/20250225084951/https://www.vulture.com/article/theater-review-gutenberg-the-musical-broadway.html",
-  "rescoreCompletedAt": "2026-02-01T20:00:33.152Z",
+  "rescoreCompletedAt": "2026-02-02T03:26:52.199Z",
   "contentTier": "complete",
-  "contentTierReason": "Full review text",
-  "needsRescore": true
+  "contentTierReason": "Full review text"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 60,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the musical's strengths (infectious score) but emphasizes fundamental structural problems that persist after decades and multiple rewrites, suggesting it never fully succeeds as theater. | Gemini: The review acknowledges the infectious score but also points out the ongoing struggle with the story, suggesting a mixed experience. The phrase 'still struggles' indicates that the issues haven't been resolved.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Despite extensive criticisms of the book and some performances, the critic acknowledges the production's strengths (Tveit and Christopher's performances, the score, slick staging) and ends with a neutral invitation to readers to decide for themselves, suggesting qualified worth rather than a clear recommendation or dismissal. | GPT-4o: The review highlights significant flaws in the production, such as a problematic book and uneven performances, but also acknowledges strong performances by Aaron Tveit and Nicholas Christopher that make the show watchable. The truncated nature of the text suggests caution, but the overall tone leans towards mixed with some positive elements. | Gemini: Despite the many issues the reviewer has with the show's book and some performances, they highlight strong performances and the score's appeal, suggesting it's worth seeing for those elements. The truncated text makes it difficult to be more confident, but the overall tone leans positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,30 +45,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:39:40.417Z",
+    "scoredAt": "2026-02-02T03:24:45.517Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 60,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": null,
-    "geminiScore": 62,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "needsRescore": true,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 60,
   "textWordCount": 1327,
@@ -89,5 +89,6 @@
     "possible_mid_word_cutoff"
   ],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-02T03:24:45.517Z"
 }

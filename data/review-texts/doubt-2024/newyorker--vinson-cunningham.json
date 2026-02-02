@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"At its best, 'Doubt' is about formality.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/doubt-a-parable",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 76,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/doubt-2024/newyorker--vinson-cunningham_2026-01-29.html",
@@ -28,14 +28,14 @@
   "archiveOrgTimestamp": "20250725135255",
   "archiveOrgUrl": "http://web.archive.org/web/20250725135255/https://www.newyorker.com/magazine/2024/03/18/john-patrick-shanley-wrestles-with-god-and-destiny",
   "llmScore": {
-    "score": 63,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -43,7 +43,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review provides thoughtful analysis of Shanley's work and describes the productions, but offers no clear verdict on whether to see either show. The tone is appreciative but analytical rather than evaluative. | GPT-4o: The review provides a detailed context about Shanley's work and style but lacks a clear verdict on the current production. The mention of Shanley's plays being 'perfect examples of the form' suggests some appreciation, but without explicit recommendation or critique of the specific production, the overall tone remains mixed. | Gemini: The review describes Shanley's playwriting style and sets up the premise of \"Doubt\" but does not explicitly recommend or discourage seeing the production. The description is evaluative but doesn't offer a clear verdict, leaning towards a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is appreciative and analytical, praising Shanley's theatrical craft and the performances, particularly highlighting the playwright's skill with dialogue and character work, though it reads more as thoughtful analysis than enthusiastic endorsement. | GPT-4o: The review provides a detailed analysis of Shanley's work and highlights the strengths of the plays, such as the meaningful duets and the exploration of deep themes. While it does not explicitly rave about the production, it acknowledges the brilliance in Shanley's plays, suggesting a positive recommendation. | Gemini: The review is largely descriptive, but the critic highlights the play's strengths and meaningful duets, suggesting it's worth seeing despite not being a rave. The critic also discusses the new play, \"Brooklyn Laundry\", in a positive light.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,30 +53,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:19.274Z",
+    "scoredAt": "2026-02-02T03:25:59.790Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "3.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "complete",
   "wordCount": 1327,
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:25:59.790Z"
 }

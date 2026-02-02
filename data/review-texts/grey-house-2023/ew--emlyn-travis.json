@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review text is severely truncated, showing only website navigation elements. However, the critic's original B rating suggests a mixed-to-positive assessment, placing it in the lower mixed range. | GPT-4o: The original rating of 'B' from the critic suggests a positive review with some reservations. However, the review text provided is truncated and does not contain evaluative content, leading to a medium confidence level. | Gemini: The critic gave the show a 'B' rating, which translates to a positive, but not rave, review. This indicates a recommendation with some reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review highlights genuine successes (subverting expectations, haunting story) but concludes with a significant flaw that the mystery doesn't provide enough clues for full comprehension. The B rating and mixed aggregator verdicts support this classification. | GPT-4o: The review acknowledges the play's success in subverting genre expectations and creating a compelling story, indicating a positive impression despite some reservations about the clarity of the narrative. | Gemini: The review highlights the show's success in subverting genre expectations and creating a haunting story, but notes that the mystery doesn't provide all the necessary clues, suggesting a positive but not overwhelmingly enthusiastic recommendation. The B rating also points to a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:24:29.856Z",
+    "scoredAt": "2026-02-02T03:26:27.757Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
+    "claudeScore": 62,
     "openaiScore": 75,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -89,12 +89,11 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250501143219",
   "archiveOrgUrl": "http://web.archive.org/web/20250501143219/https://ew.com/theater/theater-reviews/grey-house-review-laurie-metcalf-millicent-simmonds-delight-in-haunting-play/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.709Z",
+  "rescoreCompletedAt": "2026-02-02T03:26:27.757Z",
   "contentTier": "complete",
   "wordCount": 1104,
   "isFullReview": true,
   "textWordCount": 1104,
   "textQuality": "partial",
-  "textStatus": "partial",
-  "needsRescore": true
+  "textStatus": "partial"
 }

@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges both failures and successes of the production, specifically recommending only Part 2 while suggesting to skip Part 1, indicating a qualified and uneven recommendation. | GPT-4o: The review acknowledges both the strengths and weaknesses of the production, suggesting that while there are moments of impressive stagecraft, there are also parts that feel mundane and clunky. The recommendation to skip Part 1 indicates a mixed view. | Gemini: The critic recommends seeing Part 2, even suggesting skipping Part 1. This indicates a positive, but not rave, assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly recommends skipping half the show while acknowledging both wonderful stagecraft and fundamental script problems, landing squarely in mixed territory with a qualified recommendation. | GPT-4o: The review acknowledges the production's impressive special effects and the joy it brings to fans, but criticizes its clunky exposition and suggests skipping Part 1. The overall tone is mixed, highlighting both strengths and weaknesses. | Gemini: The critic ultimately recommends seeing part 2 of the play, despite acknowledging flaws and suggesting skipping part 1. The recommendation is qualified, but still positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,12 +39,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:03:46.558Z",
+    "scoredAt": "2026-02-02T03:29:33.776Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
@@ -94,8 +94,7 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250429040653/https://slate.com/culture/2018/04/harry-potter-and-the-cursed-child-on-broadway-reviewed.html",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 59,
-  "rescoreCompletedAt": "2026-02-01T15:08:45.184Z",
+  "rescoreCompletedAt": "2026-02-02T03:29:33.776Z",
   "contentTier": "complete",
-  "wordCount": 1442,
-  "needsRescore": true
+  "wordCount": 1442
 }

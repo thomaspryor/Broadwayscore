@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 89,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,7 +35,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic expresses willingness to watch even more of a 3.5-hour show, indicating exceptional engagement and enthusiasm that clearly signals a rave recommendation. | GPT-4o: The quote expresses a strong desire to continue watching the show beyond its lengthy runtime, indicating a highly positive experience. However, due to the single excerpt warning, the confidence is medium. | Gemini: The critic states they would gladly stay longer to watch the story continue, indicating a positive experience, but the length of the show suggests a reservation. Given that this is a single excerpt, the score is placed in the middle of the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is overwhelmingly positive, praising every major performance and directorial choice, with the critic expressing they would 'gladly stay longer' - a clear enthusiastic endorsement that places this firmly in rave territory. | GPT-4o: The review is overwhelmingly positive, highlighting the depth and layers added to the production, the compelling performances, and the transformative nature of the play. The critic expresses a strong desire to continue watching, indicating a highly enthusiastic recommendation. | Gemini: The critic explicitly states they would gladly stay longer to watch the story continue, indicating a strong positive recommendation. The review praises the performances and direction, further solidifying this assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,21 +45,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T01:00:18.867Z",
+    "scoredAt": "2026-02-02T03:25:48.250Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "openaiScore": 95,
+    "geminiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -69,7 +69,6 @@
   },
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,
   "textWordCount": 774,
@@ -90,5 +89,6 @@
     "no_ending_punctuation"
   ],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-02T03:25:48.250Z"
 }

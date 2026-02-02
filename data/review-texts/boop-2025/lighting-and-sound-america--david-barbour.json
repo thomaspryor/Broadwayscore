@@ -9,7 +9,7 @@
   "showScoreExcerpt": "â..such lively, lighthearted funâ¦you might as well sit back and surrender.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/boop-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 80,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/boop-2025/lighting-sound-america--david-barbour_2026-01-27.html",
@@ -28,11 +28,11 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 78,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -43,7 +43,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite criticizing the weak plot, the critic uses ironic praise in the opening to highlight numerous positive elements (laughs, tunes, staging, design, performances) and suggests audiences will 'have to make do' with these abundant pleasures, indicating a clear recommendation despite flaws. | Gemini: The review is overwhelmingly positive, praising the staging, design, and performances. While it acknowledges the plot's weaknesses, the overall tone suggests the show is worth seeing for its entertainment value.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging significant plot weaknesses, the critic praises the performances, design, and entertainment value, concluding it's 'surprisingly sophisticated and filled with an unquenchable spirit of fun.' | GPT-4o: The review highlights the show's lively and entertaining nature, praising performances, staging, and design. Despite noting plot weaknesses, the overall tone is positive, suggesting it's worth seeing for its fun and energy. | Gemini: Despite acknowledging plot frailties, the review highlights the show's fun, lively nature and strong performances, suggesting a positive, albeit reserved, recommendation. The truncated text makes it difficult to be more definitive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,32 +53,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:15:38.602Z",
+    "scoredAt": "2026-02-02T03:23:44.078Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 77,
-  "rescoreCompletedAt": "2026-01-28T23:35:16.187Z",
+  "rescoreCompletedAt": "2026-02-02T03:23:44.078Z",
   "textQualityOverride": "batch-fix-2026-01-30",
   "contentTier": "complete",
-  "wordCount": 1244,
-  "needsRescore": true
+  "wordCount": 1244
 }

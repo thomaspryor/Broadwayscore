@@ -72,7 +72,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening with complex analysis, the critic delivers clear praise calling it 'sensational,' 'just great,' 'joyful and funny,' with Hamilton as 'eminently likable.' The enthusiastic tone and strong positive language place this firmly in rave territory. | GPT-4o: The review is overwhelmingly positive, describing the show as 'sensational' and 'great', with no significant criticisms. The critic emphasizes the show's wit, complexity, and entertainment value, suggesting it is a must-see production. | Gemini: The review is overwhelmingly positive, calling the show \"great\" and praising Miranda's performance. While the reviewer acknowledges complexity and draws comparisons to other musicals, the overall tone is enthusiastic and recommends seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite acknowledging some structural flaws, the critic calls Hamilton 'sensational,' 'great,' 'beautiful and moving,' and describes it as fulfilling Miranda's ambitious vision. The enthusiastic tone and clear recommendation place this firmly in rave territory. | GPT-4o: The review is overwhelmingly positive, praising the complexity, wit, and innovation of the production. The critic describes it as sensational and great, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the show \"great\" and praising Miranda's ambition. While it notes some flaws, the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -82,12 +82,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:03:52.370Z",
+    "scoredAt": "2026-02-02T03:28:28.323Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
@@ -114,10 +114,9 @@
   "bwwThumb": null,
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 90,
-  "rescoreCompletedAt": "2026-02-01T15:03:18.925Z",
+  "rescoreCompletedAt": "2026-02-02T03:28:28.323Z",
   "contentTier": "complete",
   "wordCount": 1566,
   "wrongProduction": true,
-  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Public Theater. Reusable if off-Broadway show entry is created.",
-  "needsRescore": true
+  "wrongProductionNote": "Off-Broadway/pre-Broadway run at Public Theater. Reusable if off-Broadway show entry is created."
 }

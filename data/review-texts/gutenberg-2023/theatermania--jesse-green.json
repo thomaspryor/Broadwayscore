@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a loving parody of terrible musicals, but it's also genuinely touching in its portrayal of two dreamers who refuse to give up on their vision.",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 59,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a loving parody of terrible musicals, but it's also genuinely touching in its portrayal of two dreamers who refuse to give up on their vision.",
   "llmScore": {
-    "score": 58,
-    "confidence": "high",
+    "score": 59,
+    "confidence": "medium",
     "range": {
-      "low": 53,
-      "high": 63
+      "low": 54,
+      "high": 64
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: This appears to be a website error message rather than an actual review, making it impossible to assess the critic's recommendation. | Gemini: The review text is a placeholder message indicating that the review is unavailable. Therefore, it's impossible to determine the critic's recommendation, but it defaults to mixed.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a website error message or navigation text rather than an actual review, providing no critical assessment of any production. | GPT-4o: The text provided does not contain any evaluative content about a specific Broadway show. The lack of review content makes it impossible to determine a clear recommendation, resulting in a mixed classification with low confidence. | Gemini: The review text is a placeholder indicating the review is missing, so it's impossible to give a proper score. I'm defaulting to the lowest end of 'Mixed' as a placeholder.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:37:28.926Z",
+    "scoredAt": "2026-02-02T03:26:42.770Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "5.0.0"
+    "previousScore": 58,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": null,
+    "openaiScore": 62,
     "geminiScore": 55,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
@@ -103,6 +104,6 @@
     "Word count too low: 42 (min: 300)",
     "Show title not found in text"
   ],
-  "needsRescore": true,
-  "rescoreReason": "text-cleaning bug destroyed fullText during scoring"
+  "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
+  "rescoreCompletedAt": "2026-02-02T03:26:42.770Z"
 }

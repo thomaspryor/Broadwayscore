@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"There are plenty of joys and sorrows to play even in a straightforward cautionary tale.\"",
@@ -18,14 +18,14 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The quote suggests potential in the material but implies it's being treated too simply. Combined with BroadwayWorld's 'Flat' verdict, this indicates a lukewarm assessment, though the severely limited text makes confidence low. | GPT-4o: The quote suggests a balance of positive and negative elements, indicating a mixed reception. The mention of 'joys and sorrows' implies that while there are enjoyable aspects, there are also drawbacks, aligning with a mixed verdict. | Gemini: The provided quote suggests that the show has both positive and negative aspects, indicating a mixed review. The phrase \"joys and sorrows to play\" implies that there are redeeming qualities, but the \"straightforward cautionary tale\" suggests a lack of depth or originality.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises O'Hara's transcendent performance and Guettel's gorgeous score, but finds significant flaws in the shallow characterization, predictable plot, and uneven dramatic structure that prevent full recommendation. | GPT-4o: The review praises the performances, particularly O'Hara's, and the musical score, while acknowledging some shortcomings in the depth of the male lead's character and the predictability of the plot. Overall, the critic finds enough merit in the performances and music to recommend the show, albeit with some reservations. | Gemini: The review praises O'Hara's performance and the score, but criticizes the plot and the depth of the male lead. The final line suggests it's worth seeing for the performances despite the flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,32 +43,31 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:52:26.776Z",
+    "scoredAt": "2026-02-02T03:25:28.613Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 71,
-    "previousVersion": "3.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 62,
+    "claudeScore": 62,
+    "openaiScore": 78,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "excerpt",
   "wordCount": 0,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 71,
   "isFullReview": true,
@@ -93,5 +92,6 @@
   "textQuality": "full",
   "truncationSignals": [],
   "textStatus": "complete",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-02T03:25:28.613Z"
 }

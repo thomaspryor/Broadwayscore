@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 80,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic's 4/5 star rating clearly indicates a positive recommendation, supported by the mention of 'considerable acclaim' for the production. | Gemini: The review gives the show 4 out of 5 stars, indicating a positive recommendation. The phrase \"considerable acclaim\" further supports this classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives 4/5 stars and concludes with a positive recommendation despite acknowledging flaws. The review praises performances, direction, and entertainment value while noting script weaknesses and simplified treatment of serious themes. | GPT-4o: The review provides a generally positive assessment of the production, highlighting strong performances and direction, despite noting some flaws in the script. The original 4/5 star rating aligns with a strong positive recommendation. | Gemini: The critic gives the show 4 out of 5 stars and ultimately calls it a 'rewarding experience' despite some flaws. This indicates a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:10:13.543Z",
+    "scoredAt": "2026-02-02T03:28:36.008Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 50,
@@ -82,9 +83,8 @@
   ],
   "fetchTier": 1,
   "sourceMethod": "playwright",
-  "rescoreCompletedAt": "2026-02-01T15:04:40.858Z",
+  "rescoreCompletedAt": "2026-02-02T03:28:36.008Z",
   "dateSource": "extracted-from-url",
   "contentTier": "complete",
-  "wordCount": 721,
-  "needsRescore": true
+  "wordCount": 721
 }

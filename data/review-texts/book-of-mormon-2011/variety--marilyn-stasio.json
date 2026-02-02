@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This profane, scatological and bitingly satirical musical from the creators of 'South Park' is also sweet, generous and touching in all the right places.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,14 +18,14 @@
   "showScoreExcerpt": "This profane, scatological and bitingly satirical musical from the creators of 'South Park' is also sweet, generous and touching in all the right places.",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
+    "score": 43,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 38,
+      "high": 48
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite acknowledging the show's profane content, the critic emphasizes positive qualities like 'sweet, generous and touching,' indicating a clear recommendation. | GPT-4o: The review uses highly positive language to describe the musical as both satirical and touching, indicating a strong recommendation. | Gemini: The review highlights both the edgy and the heartwarming aspects of the musical, suggesting a positive experience with some reservations due to its potentially offensive content.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review acknowledges impressive visual and technical elements but criticizes fundamental storytelling weaknesses. The additional context about South Park creators suggests this may be truncated text from a different review entirely. | GPT-4o: The review criticizes the plot as threadbare and repetitive, suggesting that the visual elements are wasted on it. The overall tone indicates disappointment, with little redeeming value mentioned for the production. | Gemini: The review clearly states that the visual elements are wasted on a poor plotline and criticizes the acting and script. The overall tone is negative, indicating a lack of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +43,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:58:40.800Z",
+    "scoredAt": "2026-02-02T03:23:26.233Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Negative"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 196,
@@ -107,5 +107,6 @@
   ],
   "showNotMentioned": true,
   "contentTier": "truncated",
-  "contentTierReason": "Short text (196 words)"
+  "contentTierReason": "Short text (196 words)",
+  "rescoreCompletedAt": "2026-02-02T03:23:26.233Z"
 }

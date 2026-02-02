@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic finds the production mediocre overall ('serviceable score,' 'competent cast') and critiques it as a 'lost opportunity,' but acknowledges the 'often thrilling stage design and special effects' redeem it somewhat. | Gemini: While the review points out shortcomings in the score, choreography, and cast, it ultimately suggests the stage design and special effects, particularly the DeLorean, make the show worthwhile.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review criticizes the musical as a missed opportunity that relies too heavily on nostalgia and technical spectacle, but acknowledges the impressive design work and some appealing musical moments. The truncated text and aggregator context suggesting 'Up' prevents a lower score. | GPT-4o: The review highlights the impressive stage design and special effects as redeeming features, despite some criticisms about the lack of innovation in the adaptation. The positive aspects, particularly the design team's efforts, suggest a recommendation, but the truncated text and mixed elements lower the confidence. | Gemini: Despite reservations about the score and choreography, the review praises the stage design and special effects, particularly the DeLorean. The performances are described as competent, and the overall experience is likened to a thrilling theme park ride, suggesting a positive, albeit qualified, recommendation. The truncated text makes it difficult to be certain of the final verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,26 +39,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:15.595Z",
+    "scoredAt": "2026-02-02T03:22:57.841Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "openaiScore": 74,
+    "geminiScore": 79,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "sources": [
     "bww-roundup"
@@ -101,6 +102,5 @@
   "textQualityOverride": "junk-strip-2026-01-30",
   "contentTier": "complete",
   "wordCount": 2193,
-  "rescoreCompletedAt": "2026-02-01T17:31:51.087Z",
-  "needsRescore": true
+  "rescoreCompletedAt": "2026-02-02T03:22:57.841Z"
 }
