@@ -234,7 +234,7 @@ data/
 - `scripts/discover-new-shows.js` - Broadway.org show discovery (daily), enriches dates from IBDB
 - `scripts/lib/deduplication.js` - Centralized show deduplication (9 checks)
 - `scripts/lib/review-normalization.js` - Outlet/critic name normalization
-- `scripts/lib/text-cleaning.js` - Centralized text cleaning (HTML entity decoding, junk stripping)
+- `scripts/lib/text-cleaning.js` - Centralized text cleaning (HTML entity decoding, cross-reference stripping, junk stripping)
 - `scripts/lib/content-quality.js` - Text quality classification + garbage detection
 - `scripts/lib/ibdb-dates.js` - IBDB date lookup module (preview, opening, closing dates)
 - `scripts/enrich-ibdb-dates.js` - Standalone IBDB date enrichment (`--dry-run`, `--verify`, `--force`, `--show=SLUG`)
@@ -283,7 +283,7 @@ Review-text directories use **versioned show IDs** matching `shows.json` (e.g., 
 
 **Outlet-critic concatenation handling:** `normalizeOutlet()` automatically strips critic names from concatenated outlet IDs (e.g., `variety-frank-rizzo` → `variety`, `new-york-magazinevulture-sara-holdren` → `vulture`). This catches upstream data sources that merge outlet and critic names.
 
-**First-name prefix dedup:** `gather-reviews.js` checks if an incoming critic's name is a first-name prefix of an existing critic at the same outlet (e.g., incoming "Jesse" at nytimes matches existing "Jesse Green"). Merges into the existing file instead of creating a duplicate.
+**First-name prefix dedup:** `gather-reviews.js` checks if an incoming critic's name is a first-name prefix of an existing critic at the same outlet (e.g., incoming "Jesse" at nytimes matches existing "Jesse Green"). Merges into the existing file instead of creating a duplicate. `rebuild-all-reviews.js` also has prefix dedup as a safety net when building reviews.json, skipping entries where one critic key is a prefix of another at the same outlet.
 
 ### Review Data Quality
 
@@ -462,7 +462,7 @@ Archives stored in `data/aggregator-archive/`. Extraction scripts: `scripts/extr
 
 Unlike aggregators (which collect reviews from many outlets), outlet-specific scrapers target a single publication to fill coverage gaps:
 
-- **NYSR** (nystagereview.com) - WordPress REST API (`/wp-json/wp/v2/posts?categories=1`). Script: `scripts/scrape-nysr-reviews.js`. Fetches full text + star ratings for all Broadway reviews. Star ratings are in `excerpt.rendered`, not content body. Cross-reference lines (`[Read X's ★★★★☆ review here.]`) are stripped to prevent rating cross-contamination.
+- **NYSR** (nystagereview.com) - WordPress REST API (`/wp-json/wp/v2/posts?categories=1`). Script: `scripts/scrape-nysr-reviews.js`. Fetches full text + star ratings for all Broadway reviews. Star ratings are in `excerpt.rendered`, not content body. Cross-reference lines (`[Read X's ★★★★☆ review here.]`) are stripped at three levels: (1) `scrape-nysr-reviews.js` at scrape time, (2) `text-cleaning.js:stripCrossReferences()` in `cleanText()`, (3) `rebuild-all-reviews.js:extractExplicitRating()` before star extraction.
 
 ### Shared Title Matching
 
