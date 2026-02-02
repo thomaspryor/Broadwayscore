@@ -81,6 +81,10 @@ jobs:
             git diff --stat data/reviews.json
           fi
 
+      - name: Check for large files
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/check-file-sizes
+
       - name: Commit and push changes
         if: steps.changes.outputs.has_changes == 'true'
         run: |

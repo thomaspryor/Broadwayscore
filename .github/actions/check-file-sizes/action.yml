@@ -1,0 +1,26 @@
+name: 'Check File Sizes'
+description: 'Block commits containing unexpectedly large files (e.g., SQLite DB, binaries)'
+runs:
+  using: 'composite'
+  steps:
+    - name: Block large files before commit
+      shell: bash
+      run: |
+        # Find files >5MB in data/ that aren't archives, known large JSON, or HTML
+        LARGE=$(find data/ -type f -size +5M \
+          ! -path 'data/archives/*' \
+          ! -path 'data/aggregator-archive/*' \
+          ! -name 'master-review-list.json' \
+          ! -name 'llm-scoring-runs.json' \
+          ! -name 'llm-scoring-garbage-skips.json' \
+          ! -name '*.html' \
+          2>/dev/null || true)
+        if [ -n "$LARGE" ]; then
+          echo "::error::Large files detected that should not be committed:"
+          echo "$LARGE"
+          echo ""
+          echo "If this is data/broadway.db, it should be in .gitignore."
+          echo "If this is a new legitimate data file, add it to the exclusion list in .github/actions/check-file-sizes/action.yml"
+          exit 1
+        fi
+        echo "File size check passed"
