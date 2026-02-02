@@ -63,14 +63,14 @@
   "sourceMethod": "brightdata",
   "bwwExcerpt": "In its original extended run at the Lortel Theatre earlier this year, Oh, Mary! drew packed houses that one night included Steven Spielberg, Sally Field and Tony Kushner, respectively the director, co-star and screenwriter of Lincoln. The widely circulated backstage photo of the group with Escola in...",
   "archivePath": "data/archives/reviews/oh-mary-2024/hollywood-reporter--david-rooney_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T05:03:21.654Z",
+  "textFetchedAt": "2026-02-02T06:36:25.601Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "Insufficient text extracted: 0 chars"
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
     },
     {
       "tier": 2,
