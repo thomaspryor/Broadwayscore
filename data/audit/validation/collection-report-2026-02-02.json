@@ -1,95 +1,124 @@
 {
-  "runDate": "2026-02-02T15:10:38.319Z",
+  "runDate": "2026-02-02T15:14:05.831Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "uncle-vanya-2024",
+    "showFilter": "stereophonic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 9,
+    "processed": 9,
+    "failed": 8,
     "skipped": 0,
-    "successRate": "47.1%"
+    "successRate": "52.9%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 2,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 2,
-    "archive": 2
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archive": 5
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 6,
+    "tier1Attempts": 8,
+    "tier1Success": 3,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
+    "tier2Attempts": 7,
     "tier2Success": 2,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
-    "tier4Attempts": 10,
-    "tier4Success": 6,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 41,
+    "tier3Attempts": 4,
+    "tier3Success": 1,
+    "tier4Attempts": 22,
+    "tier4Success": 7,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 32,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "uncle-vanya-2024/variety--bob-verini.json",
-    "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
-    "uncle-vanya-2024/theatermania--jesse-green.json",
-    "uncle-vanya-2024/dailybeast--tim-teeman.json",
-    "uncle-vanya-2024/digital-journal--markos-papadatos.json",
-    "uncle-vanya-2024/exeunt-nyc--cameron-kelsall.json",
-    "uncle-vanya-2024/shelby-star-patrick-ryan--patrick-ryan.json",
-    "uncle-vanya-2024/usatoday--patrick-ryan.json"
+    "stereophonic-2024/hollywood-reporter--david-rooney.json",
+    "stereophonic-2024/nytg--allison-considine.json",
+    "stereophonic-2024/nytimes--naveen-kumar.json",
+    "stereophonic-2024/vulture--helen-shaw.json",
+    "stereophonic-2024/broadwaynews--brittani-samuel.json",
+    "stereophonic-2024/ew--dalton-ross.json",
+    "stereophonic-2024/guardian--adrian-horton.json",
+    "stereophonic-2024/theatermania--jesse-green.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json"
   ],
   "failed": [
-    "uncle-vanya-2024/vulture--helen-shaw.json",
-    "uncle-vanya-2024/deadline--greg-evans.json",
-    "uncle-vanya-2024/new-york-sun--elysa-gardner.json",
-    "uncle-vanya-2024/observer--rex-reed.json",
-    "uncle-vanya-2024/thewrap--robert-hofler.json",
-    "uncle-vanya-2024/timeout--adam-feldman.json",
-    "uncle-vanya-2024/wsj--unknown.json",
-    "uncle-vanya-2024/ap--mark-kennedy.json",
-    "uncle-vanya-2024/thestage--nicole-serratore.json"
+    "stereophonic-2024/variety--aramide-tinubu.json",
+    "stereophonic-2024/deadline--greg-evans.json",
+    "stereophonic-2024/observer--jesse-green.json",
+    "stereophonic-2024/timeout--adam-feldman.json",
+    "stereophonic-2024/wsj--charles-isherwood.json",
+    "stereophonic-2024/theatrely--juan-a-ramirez.json",
+    "stereophonic-2024/ap--mark-kennedy.json",
+    "stereophonic-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
     "playwright": [
-      "uncle-vanya-2024/digital-journal--markos-papadatos.json",
-      "uncle-vanya-2024/exeunt-nyc--cameron-kelsall.json",
-      "uncle-vanya-2024/shelby-star-patrick-ryan--patrick-ryan.json"
+      "stereophonic-2024/ew--dalton-ross.json",
+      "stereophonic-2024/guardian--adrian-horton.json"
     ],
     "browserbase": [],
     "scrapingbee": [
-      "uncle-vanya-2024/usatoday--patrick-ryan.json"
+      "stereophonic-2024/theatermania--jesse-green.json",
+      "stereophonic-2024/usatoday--charles-isherwood.json"
     ],
     "brightdata": [
-      "uncle-vanya-2024/theatermania--jesse-green.json",
-      "uncle-vanya-2024/dailybeast--tim-teeman.json"
+      "stereophonic-2024/variety--aramide-tinubu.json"
     ],
     "archive": [
-      "uncle-vanya-2024/variety--bob-verini.json",
-      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
+      "stereophonic-2024/hollywood-reporter--david-rooney.json",
+      "stereophonic-2024/nytg--allison-considine.json",
+      "stereophonic-2024/nytimes--naveen-kumar.json",
+      "stereophonic-2024/vulture--helen-shaw.json",
+      "stereophonic-2024/broadwaynews--brittani-samuel.json"
     ]
   },
   "failuresByOutlet": {
-    "Vulture": {
+    "Observer": {
       "count": 1,
-      "domain": "vulture.com",
+      "domain": "observer.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
       "hasCredentials": true,
       "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Theatrely": {
+      "count": 1,
+      "domain": "theatrely.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "stereophonic-2024/guardian--adrian-horton.json",
+      "oldUrl": "https://www.theguardian.com/stage/2024/oct/16/stereophonic-review-broadway-david-adjmi",
+      "newUrl": "https://www.theguardian.com/stage/2024/apr/19/stereophonic-play-review-broadway"
+    }
+  ]
 }
