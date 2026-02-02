@@ -1,37 +1,37 @@
 {
-  "updatedAt": "2026-02-02T03:41:48.375Z",
+  "updatedAt": "2026-02-02T03:51:32.577Z",
   "processed": 2,
-  "failed": 4,
-  "successRate": "33.3%",
+  "failed": 1,
+  "successRate": "66.7%",
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 2,
+    "playwright": 0,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 0
+    "brightdata": 1,
+    "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-02-02T03:37:33.300Z",
+      "t": "2026-02-02T03:49:40.892Z",
       "event": "bb-session",
-      "session": "7630a35b",
-      "url": "https://variety.com/2023/legit/reviews/spamalot-review-broadway-2023-1235792687/"
+      "session": "eb085c2b",
+      "url": "https://www.nytimes.com/2025/11/16/theater/chess-review-lea-michele-broadway.htm"
     },
     {
-      "t": "2026-02-02T03:40:25.245Z",
-      "event": "bb-session",
-      "session": "cdebc637",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/spamalot-broadway-st-"
+      "t": "2026-02-02T03:50:24.569Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770004191249\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAgAYpw2a8ymcALPe1oA==&cid=fdcBq~INS_ggW4gRo2a77lr2ele7qGkVh5fPsHZj~saFuYiIiJDZGP7s5qnH9jcFsFYSLG~lYTYZNViUu43VGizzxwUnCqGo5ClKayPe55XeeoUeU4SxW0x8vpcaasVY&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770004191249\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770004191249\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAgAYpw2a8ymcALPe1oA==&cid=fdcBq~INS_ggW4gRo2a77lr2ele7qGkVh5fPsHZj~saFuYiIiJDZGP7s5qnH9jcFsFYSLG~lYTYZNViUu43VGizzxwUnCqGo5ClKayPe55XeeoUeU4SxW0x8vpcaasVY&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770004191249\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    28 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770004191249\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAgAYpw2a8ymcALPe1oA==&cid=fdcBq~INS_ggW4gRo2a77lr2ele7qGkVh5fPsHZj~saFuYiIiJDZGP7s5qnH9jcFsFYSLG~lYTYZNViUu43VGizzxwUnCqGo5ClKayPe55XeeoUeU4SxW0x8vpcaasVY&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770004191249\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     },
     {
-      "t": "2026-02-02T03:41:05.842Z",
+      "t": "2026-02-02T03:50:51.696Z",
       "event": "bb-session",
-      "session": "70fee88f",
-      "url": "https://www.wsj.com/articles/spamalot-review-king-arthur-monty-python-broadway-e"
+      "session": "995c96a5",
+      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
     },
     {
-      "t": "2026-02-02T03:41:28.206Z",
+      "t": "2026-02-02T03:51:11.911Z",
       "event": "bb-login-uncertain",
       "domain": "wsj.com"
     }
