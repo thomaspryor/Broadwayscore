@@ -64,5 +64,34 @@
   },
   "contentTier": "excerpt",
   "wordCount": 0,
-  "url": "https://www.washingtonpost.com/theater-dance/2023/06/22/one-more-time-broadway-spears/"
+  "url": "https://www.washingtonpost.com/theater-dance/2023/06/22/one-more-time-broadway-spears/",
+  "fullText": "‘Once Upon a One More Time,’ a sassy fairy-tale extravaganza featuring the Spears songbook, is a storybook mess NEW YORK — You don’t have to wait for the first AI musical. It’s here. Well, the artificial part, anyway. The ingredients of “Once Upon a One More Time” — various fairy tales, a bunch of Britney Spears songs, a how-to-strut-and-tut manual — may very well have been fed into a computer and reformulated by Chatbot GPT. For all I know, the musical might unfold in a different, random sequence of songs, words and dance every night at the Marquis Theatre, where it had its official Broadway opening Thursday.",
+  "isFullReview": false,
+  "textWordCount": 107,
+  "archivePath": "data/archives/reviews/once-upon-a-one-more-time-2023/washpost--peter-marks_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:02:53.520Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 107 (min: 300)"
+  ]
 }
