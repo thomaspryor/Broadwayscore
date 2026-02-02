@@ -73,18 +73,12 @@
   "isFullReview": false,
   "textWordCount": 82,
   "archivePath": "data/archives/reviews/an-enemy-of-the-people-2024/variety--daniel-d--8217-addario_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T01:20:58.892Z",
+  "textFetchedAt": "2026-02-02T02:17:22.510Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "404 - Page not found"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],
