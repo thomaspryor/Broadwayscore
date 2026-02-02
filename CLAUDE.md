@@ -532,6 +532,18 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 
 **Known date corrections:** Harry Potter opens 2018-04-22 (not 2021 post-COVID reopen).
 
+**Wrong-production prevention guards (Feb 2026):** Three layers prevent wrong-production/wrong-show content from entering the corpus:
+
+1. **`gather-reviews.js`** — `production-verifier.js` checks review text against show metadata at intake time. Only runs for reviews entering via aggregator sources (DTLI, BWW, Show Score, etc.).
+
+2. **`scrape-playbill-verdict.js`** — Two guards:
+   - Title filter (`isNotBroadway()`) rejects streaming/TV keywords: "apple tv", "netflix", "hulu", "disney+", "streaming", "amazon prime", "tv series", "tv show"
+   - URL year check: extracts year from review URL, compares to show opening year. Skips if gap > 3 years before or 2 years after opening. Catches TV series reviews (e.g., 2021 Schmigadoon! Apple TV+ vs 2026 Broadway) and old off-Broadway productions.
+
+3. **`collect-review-texts.js`** — Post-scrape date check in `updateReviewJson()`: after successfully scraping fullText, extracts year from URL, compares to show opening year. Auto-flags `wrongProduction: true` with explanatory note if gap exceeds ±3/+2 years. Uses `_showsJsonCache` for efficient shows.json lookups.
+
+**Year gap thresholds:** `urlYear < showYear - 3` or `urlYear > showYear + 2`. The asymmetric window accounts for pre-opening press (reviews up to 3 years before) and post-opening coverage (up to 2 years after). URL year extraction uses `/\/((?:19|20)\d{2})\//` pattern restricted to plausible years (avoids matching article IDs like `/6910/`).
+
 ## Subscription Access for Paywalled Sites
 
 | Site | GitHub Secret Names |
