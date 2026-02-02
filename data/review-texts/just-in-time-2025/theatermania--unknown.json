@@ -12,7 +12,7 @@
   "assignedScore": 78,
   "llmScore": {
     "score": 78,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 73,
       "high": 83
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises Groff's performance and the show's authentic emotional core, with language like 'brilliance' and 'eloquent tribute' indicating clear appreciation, though limited excerpts prevent full assessment of any reservations. | GPT-4o: The review highlights the energy, charisma, and passion of Groff, as well as the brilliance and heartfelt nature of the production, indicating a strong recommendation. | Gemini: The review highlights Groff's performance and the show's genuine feeling, suggesting a positive experience despite being a jukebox bio-musical, which often receives mixed reviews.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt is highly positive about Groff's performance and the show's emotional authenticity, but as a single curated quote, I'm scoring conservatively within the positive range. | GPT-4o: The review highlights Groff's energy and charisma, and praises the show's originality and heartfelt nature. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review highlights Groff's performance and the show's genuine feel, suggesting a positive experience despite being a jukebox bio-musical, which often receives mixed reviews.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:48:37.754Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:15:28.249Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 90,
+    "openaiScore": 79,
     "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

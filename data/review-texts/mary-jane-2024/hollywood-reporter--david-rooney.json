@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McAdams brings naturalistic authenticity and emotional intelligence to her stage debut, anchoring Amy Herzog's tender, observant drama about a single mother caring for her disabled son.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,59 +18,53 @@
   "showScoreExcerpt": "McAdams brings naturalistic authenticity and emotional intelligence to her stage debut, anchoring Amy Herzog's tender, observant drama about a single mother caring for her disabled son.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "naturalistic authenticity and emotional intelligence",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "tender, observant drama",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "anchoring",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Consistent positive language praising both McAdams' performance and Herzog's writing with no caveats, indicating a clear recommendation despite brief format.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses clearly positive language praising McAdams' performance and Herzog's writing with terms like 'authenticity,' 'emotional intelligence,' 'tender,' and 'observant,' indicating a solid recommendation. | GPT-4o: The review praises McAdams' performance and describes the drama as tender and observant, indicating a positive recommendation. However, the text is truncated, so the full verdict is not clear. | Gemini: The review highlights McAdams' performance and describes the drama as 'tender' and 'observant,' indicating a positive overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:04:04.617Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2337,
-    "outputTokens": 301,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:17:05.226Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

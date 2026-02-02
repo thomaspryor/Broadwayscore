@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 77,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses positive language like 'absorbing' and calls it 'a new way to see an old dream,' suggesting recommendation despite some visual tension concerns. | GPT-4o: The review highlights the absorbing nature of the revival and the innovative use of visuals, suggesting a positive experience. However, the lack of a full review and explicit recommendation results in a medium confidence level. | Gemini: The review describes the revival as \"absorbing\" and a \"new way to see an old dream,\" suggesting a positive, albeit not overwhelmingly enthusiastic, recommendation. The truncated text makes it difficult to be more confident.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds the revival 'absorbing' and praises the innovative use of screens as 'a new way to see an old dream' rather than dismissing it as gimmicky, indicating a positive recommendation despite only having one excerpt. | GPT-4o: The review highlights the absorbing nature of the revival and its innovative approach, suggesting a positive experience. However, due to the single excerpt and text quality warning, the confidence is medium and the score is conservatively placed in the middle of the Positive range. | Gemini: The review describes the revival as \"absorbing\" and a \"new way to see an old dream,\" indicating a positive, though perhaps not overwhelmingly enthusiastic, recommendation. The focus on the unique staging suggests it's worth seeing for that aspect alone.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:54:47.410Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:11:24.306Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 77,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

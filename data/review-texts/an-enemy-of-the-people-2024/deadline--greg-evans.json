@@ -6,17 +6,17 @@
   "url": "https://deadline.com/2024/03/enemy-of-the-people-broadway-review-1235860766/",
   "publishDate": "March 18, 2024",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 80,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 89,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 75,
+      "high": 85
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -25,7 +25,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic explicitly calls this 'one of the best play revivals of the current season' and uses strong positive language like 'taut and exactingly directed,' indicating a clear rave recommendation. | GPT-4o: The review strongly praises the production as one of the best of the season, indicating a must-see recommendation. The positive comparison to other notable productions further supports a high score within the Rave bucket. | Gemini: The review excerpt explicitly states that the production is one of the best revivals of the season, indicating a strong positive recommendation. The comparison to other well-regarded productions further reinforces this assessment.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic explicitly calls this 'one of the best play revivals of the current season' and praises the 'taut and exactingly directed production,' but given the single excerpt warning and potential for cherry-picking, I score conservatively within the positive range. | Gemini: The review excerpt states that the production is \"one of the best play revivals of the current season to date\", indicating a positive recommendation. Given that it's a single excerpt, I'm scoring it in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -35,27 +35,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:13:41.699Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:36:39.856Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "3.0.0"
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 82,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dtliExcerpt": "But have no doubt: Audiences on any every night of this limited 16-week run at Circle in the Square will witness a taut and exactingly directed production. Sam Gold’s An Enemy Of The People is one of the best play revivals of the current season to date, right up there with Purlie Victorious, besting Doubt and even Gold’s own, shakier Macbeth starring Daniel Craig in 2022.",
   "sources": [

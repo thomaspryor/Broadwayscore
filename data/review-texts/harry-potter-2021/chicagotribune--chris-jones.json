@@ -18,64 +18,48 @@
     "score": 92,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
+      "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 92
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a must-see, totally enveloping, thoroughly thrilling chance to experience the global power of shared storytelling at its most robust",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "a feast of epic theatricality in celebration of the imagination",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "why 'Harry Potter and the Cursed Child' will be on Broadway for years, if not decades",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic uses unqualified superlatives like 'must-see,' 'thoroughly thrilling,' and 'feast of epic theatricality' while predicting the show will run for 'years, if not decades' - clear rave territory with only minor notes about audience engagement being slightly less than London.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'a must-see' and predicting it 'will be on Broadway for years, if not decades.' The review is filled with praise for the theatrical magic, performances, and emotional depth. | Gemini: The review contains overwhelmingly positive language, calling the show a \"must-see\" and a \"feast of epic theatricality.\" The critic clearly recommends seeing the show.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:06:13.188Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3953,
-    "outputTokens": 387,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:59:06.880Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 87,

@@ -16,37 +16,21 @@
   "bwwThumb": null,
   "llmScore": {
     "score": 43,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 35.5,
-      "high": 50.5
+      "low": 38,
+      "high": 48
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "its approach misses the central thrust of Hinton's story",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "I suspect that a lot of people will like The Outsiders more than I did",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "I suspect that a lot of people will like The Outsiders more than I did.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Critic acknowledges others may enjoy it but fundamentally disagrees with the adaptation's approach to the source material, suggesting personal disappointment without clear recommendation. | GPT-4o-mini: The review indicates a clear disappointment with the show's interpretation of the source material, leading to a negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic explicitly states the production fundamentally fails to capture the essence of the source material, while acknowledging others may disagree - this is a clear negative assessment. | GPT-4o: The critic expresses a personal disappointment with the production, suggesting that it fails to capture the essence of the source material, indicating a negative recommendation. | Gemini: The critic explicitly states that others will like it more than they did, indicating a mixed reaction. The phrase \"misses the central thrust\" suggests a significant flaw, but not a complete dismissal.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,20 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:08:50.439Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:11:16.432Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 43,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 45,
     "openaiScore": 40,
-    "scoreDelta": 5,
+    "geminiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "designation": "Recommended",
   "contentTier": "truncated",

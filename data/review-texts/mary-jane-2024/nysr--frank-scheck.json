@@ -12,13 +12,13 @@
     "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "assignedScore": 79,
+  "assignedScore": 80,
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating combined with praise for the 'beautifully calibrated production,' 'superb performances,' and McAdams as a 'warm, winning presence' clearly indicates a positive recommendation, despite minor criticism about vocal projection. | GPT-4o: The review highlights the play's subtlety and emotional impact, praising the performances and the production's execution. Despite mentioning some potential tedium and vocal projection issues, the overall tone is positive, aligning with the original 4/5 star rating. | Gemini: The critic gives the play 4/5 stars and describes it as 'heartbreaking' and 'beautifully calibrated'. While noting some issues with McAdams' vocal projection, the overall tone is positive, suggesting a recommendation with minor reservations. The truncated text makes the confidence medium.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives 4/5 stars and uses consistently positive language throughout - 'subtly artful drama', 'beautifully calibrated production', 'superb performances' - with only minor criticism about McAdams' vocal projection. The overall assessment is clearly recommending. | Gemini: The critic gives the play 4/5 stars and describes the production as \"beautifully calibrated\" with \"superb performances.\" While noting McAdams' vocal projection issues, the overall tone is positive, suggesting a recommendation despite minor flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,25 +39,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:56:15.058Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:17:44.893Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 80,
-    "openaiScore": 78,
+    "openaiScore": null,
     "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text"

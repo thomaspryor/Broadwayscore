@@ -12,7 +12,7 @@
   "assignedScore": 76,
   "llmScore": {
     "score": 76,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 71,
       "high": 81
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges the show is challenging but finds genuine value in its emotional depth and human connection themes, suggesting a thoughtful recommendation. | GPT-4o: The review describes the play as both 'upsetting and soothing' and 'difficult to sit through,' indicating a mixed experience. The mention of consolation suggests some redeeming qualities, but the overall tone is neither strongly positive nor negative. | Gemini: The review acknowledges the difficulty of the subject matter but ultimately finds something consoling and worthwhile in the experience, suggesting a positive but not overwhelmingly enthusiastic recommendation.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges the challenging nature of the work but finds meaningful value in it, describing it as 'consoling' and appreciating its thoughtful qualities and human connection themes. | Gemini: The review acknowledges the difficulty of the subject matter but ultimately finds something consoling and thoughtful in the production, suggesting a qualified recommendation. The single excerpt and lack of a rating tempers the score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:20.275Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:18:55.399Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 65,
+    "openaiScore": null,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 11,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

@@ -9,7 +9,7 @@
   "bwwExcerpt": "n and Jonathan Clay and Zach Chance (better known as the band Jamestown Revival) proves a perfectly respectable effort with many laudable elements. What it mostly seems to lack is a reason for being. Elisabeth Vincentelli, The Washington Post: And therein lies the problem: The show overexplains everything, all the time. Hinton knew exactly how much to say and when — the paperback edition of “The Outsiders” is just 180 concise, evocative pages that let us discover things along with Ponyboy. Here, both the book and the songs tend to underestimate the audience’s intelligence. (This is surprising coming from Rapp, who is usually not afraid of ambiguity.) Matt Windman, amNY: At its best, “The Outsiders”(which is directed by Danya Taymor, “Pass Over”) is fresh and rambunctious, with an attractive period country-pop score by Jamestown Revival (Jonathan Clay and Zach Chance) and Justine Levine (with plainspoken lyrics and pulsating music reminiscent of Jason Robert Brown), well-executed choreo",
   "showScoreExcerpt": "\"...has great visual touches but falters when the characters open their mouths\"",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
@@ -19,8 +19,8 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
       "low": 58,
       "high": 68
@@ -28,58 +28,43 @@
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
-      "music": 35,
-      "performances": 70,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "So yes, 'The Outsiders' is compelling from a visual standpoint. It's when the characters open their mouths that it falters.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The big fight that takes place toward the end of the new show 'The Outsiders' ranks as one of the most impactful (literally) moments of this, or any, Broadway season.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Similar inventiveness is on display throughout, albeit on a smaller scale",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises the direction and visual elements highly but clearly states the show 'falters' when characters speak, indicating significant problems with book and music that undermine the strong production values.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review praises the staging, fight choreography, and visual inventiveness but criticizes the book and dialogue as weak, creating a clear mixed assessment where strengths and weaknesses are balanced. | GPT-4o: The review highlights impressive elements like the impactful fight scene and inventive choreography, but criticizes the show's dialogue and a key scene's execution. The mixed assessment of visual and narrative aspects suggests a balanced view. | Gemini: The review praises the visual and technical aspects of the show, particularly the fight choreography and set design. However, it criticizes the book and dialogue, resulting in a mixed overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:24:02.903Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2891,
-    "outputTokens": 383,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:12:14.120Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 55,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 54,

@@ -8,71 +8,56 @@
   "dtliExcerpt": "In any case, the immensely cheering if not altogether surprising news is that “Harry Potter and the Cursed Child” 2.0 (or do I mean “.5”?) is every bit as rewarding as the original version.",
   "showScoreExcerpt": "\"Every bit as rewarding as the original version. My lack of surprise derives from the theatrical expertise, on every level, evinced by the creators of the two-part version...Potterheads may notice where subplots have been trimmed or eliminated, but the many-tentacled narrative remains virtually the same...And the production retains virtually all of the original’s bedazzlements, from wand battles to levitating Dementors, to quicksilver character transformations.\"",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 80,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 83,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 86
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "every bit as rewarding as the original version",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a theatrical accomplishment of a very rare order",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the production retains virtually all of the original's bedazzlements",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic calls the show 'every bit as rewarding as the original' and 'a theatrical accomplishment of a very rare order' with consistent praise for the adaptation, effects, and storytelling despite minor concerns about density.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening concerns about the shortened format, the critic concludes the show is 'every bit as rewarding as the original' and calls it 'a theatrical accomplishment of a very rare order' with effects that are 'wonderfully executed.' | GPT-4o: The review is overwhelmingly positive, praising the production as a 'theatrical accomplishment of a very rare order' and highlighting the successful adaptation of the show into a single part without losing its essence. The critic's concerns were addressed, and the show is described as rewarding and expertly crafted. | Gemini: The review explicitly states the new version is \"every bit as rewarding as the original.\" While it notes some minor drawbacks like requiring more concentrated attention, the overall tone is positive and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:06:00.811Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3259,
-    "outputTokens": 344,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:58:46.215Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 83,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 80,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/broadwaynews--charles-isherwood_2026-01-30.html",
   "textFetchedAt": "2026-01-30T16:01:14.365Z",

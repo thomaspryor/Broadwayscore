@@ -10,64 +10,56 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 33,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 33,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 25.5,
-      "high": 40.5
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 23,
-      "music": 25,
+      "book": null,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "forgoes the basic mechanics of a successful musical: a coherent book and catchy score",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "gambles on name recognition and nostalgia but forgoes the basic mechanics",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "forgoes the basic mechanics of a successful musical",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic directly states the musical lacks fundamental elements of success - a coherent book and catchy score - indicating a clear negative assessment. | GPT-4o-mini: The review strongly criticizes the show's lack of essential musical elements, indicating a clear rejection of the production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic explicitly states the show lacks fundamental musical theater elements (coherent book and catchy score), comparing it unfavorably to another failed show. However, with only one excerpt available, I'm scoring conservatively within the negative range. | GPT-4o: The review criticizes the show for lacking essential elements of a successful musical, suggesting it fails to deliver a satisfying experience. The comparison to a previous production also implies a negative outcome. | Gemini: The review explicitly states the musical lacks key elements of a successful musical, indicating a negative assessment. The comparison to Rocky, another show at the same theater, further reinforces the negative sentiment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:12:28.724Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:03.185Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 33,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 30,
-    "scoreDelta": 5,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

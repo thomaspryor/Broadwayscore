@@ -7,19 +7,19 @@
   "publishDate": "April 11, 2024",
   "dtliExcerpt": "While all the production’s elements seem to be in place — the cast, even when its acting chops falter, is, musically, a full-throated and easy-to-like ensemble — The Outsiders often feels like a musical that wants to hang with the grown-ups while unable to leave behind its adolescent earnestness and self-involvement.",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 60,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T05:12:02.405Z",
   "dtliThumb": "Meh",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:07:01.693Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:08:08.126Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 57,
-    "previousVersion": "2.0.0"
+    "previousScore": 59,
+    "previousVersion": "5.0.0"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/the-outsiders-2024/deadline--greg-evans_2026-01-27.html",
@@ -124,11 +124,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.823Z"
   },
   "llmScore": {
-    "score": 59,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -139,7 +139,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges positive elements (cast is 'full-throated and easy-to-like') but the overall tone suggests the show doesn't fully succeed, with criticism about immaturity and self-involvement being the dominant verdict. | GPT-4o: The review acknowledges some positive aspects, particularly the musical performance of the cast, but overall suggests the production struggles with maturity and self-involvement. The 'flat' aggregator verdict supports a mixed classification. | Gemini: The review highlights both positive aspects (musically strong cast) and negative aspects (adolescent earnestness), suggesting a mixed experience overall. The aggregator verdict also suggests a flat response.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges positive elements (strong musical cast) but delivers a clear criticism about the show's inability to achieve maturity. The 'wants to hang with grown-ups but can't' metaphor suggests fundamental limitations despite technical competence. | GPT-4o: The review acknowledges the strengths of the cast but criticizes the musical's inability to mature beyond its earnestness. The tone suggests a balance of positive and negative elements, fitting a mixed verdict. | Gemini: The review highlights both positive aspects (musically strong cast) and negative aspects (adolescent earnestness). The overall tone suggests a mixed reaction, leaning towards neither a strong recommendation nor a strong discouragement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -149,7 +149,7 @@
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 58,
+    "openaiScore": 60,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",

@@ -9,64 +9,56 @@
   "bwwExcerpt": "As Tamara, Eden Espinosa gets to once again use the siren-like belt and the mix of might and vulnerability she deployed during several stints as Elphaba in “Wicked” — this time while sporting a platinum-blonde bob that makes her look like 1990s-era Madonna (a noted Lempicka fan, naturally). Granted, the vocal showcases she is provided by composer Matt Gould and lyricist Carson Kreitzer — who collaborated on the book, brd on Ms. Kreitzer’s concept — are seldom as tuneful as they are flamboyant.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 59,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 47.5,
-      "high": 70.5
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 50,
-      "performances": 74,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Eden Espinosa gets to once again use the siren-like belt and the mix of might and vulnerability she deployed during several stints as Elphaba",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the vocal showcases she is provided... are seldom as tuneful as they are flamboyant",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the vocal showcases she is provided by composer Matt Gould and lyricist Carson Kreitzer... are seldom as tuneful as they are flamboyant.",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review praises Espinosa's performance and vocal abilities but criticizes the music as lacking tunefulness despite being flamboyant, creating a mixed assessment with no clear recommendation. | GPT-4o-mini: The review highlights strong performances but critiques the music quality, leading to a mixed recommendation overall. | Note: Models differed by 13 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt praises Espinosa's performance but criticizes the music as lacking tunefulness despite being flamboyant. Single excerpt warning and aggregator context suggesting negative verdict requires conservative scoring. | GPT-4o: The review highlights Eden Espinosa's strong performance but notes that the musical numbers are more flamboyant than tuneful, suggesting a mixed impression. The single excerpt and aggregator context suggest a conservative score within the mixed range. | Gemini: The review praises Espinosa's performance but notes the music is not very tuneful. Given the single excerpt and aggregator context, a mixed score seems appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:05:50.947Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:22.935Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 59,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 65,
-    "scoreDelta": 13,
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Down",
   "dateUnknown": true,

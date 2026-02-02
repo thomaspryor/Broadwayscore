@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite the truncation warning, the review concludes with clear positive assessment, giving an A- grade, praising the performances as 'tremendous,' and stating audiences 'will not be disappointed' - indicating strong recommendation. | GPT-4o: Despite the truncated text warning, the review is overwhelmingly positive about the performances, direction, and staging. The critic notes that fans will not be disappointed, indicating a strong recommendation. | Gemini: Despite the truncated text, the review concludes with a positive statement about the actors and the overall experience, suggesting a recommendation. The A- grade further supports this classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is highly positive throughout, praising the performances, direction, staging, and relevance. The critic gives an A- grade and clearly recommends it, saying audiences 'will not be disappointed' and calling the actors 'tremendous.' | GPT-4o: The review highlights strong performances, particularly from Jeremy Strong and Michael Imperioli, and praises the production's staging and relevance. Although the text is truncated, the positive tone and aggregator context suggest a strong recommendation. | Gemini: The review is positive, highlighting the strong performances and the play's relevance. The truncated text makes it difficult to be certain of a rave, but the overall tone is clearly positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,12 +40,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:13:45.621Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:36:56.096Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
-    "previousVersion": "3.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 82,

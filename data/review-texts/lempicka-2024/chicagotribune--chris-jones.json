@@ -10,74 +10,58 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 38,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "low",
     "range": {
-      "low": 32,
-      "high": 44
+      "low": 47,
+      "high": 57
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
-      "music": 45,
-      "performances": 50,
-      "direction": 30
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This potentially appealing show would have sat more easily as a feminist, non-musical drama in a less pressured space",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "These are among the most overwrought and uncentered performances of the Broadway musical season so far",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "the scattered book simply repels most of them",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic finds fundamental flaws in the book, direction, and concept while acknowledging some talented performers trapped in poor material, making it difficult to recommend despite recognizing potential.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic finds fundamental flaws in the production, calling it 'chaotically conflicted' with 'overwrought and uncentered performances' and a 'clunky bio-musical' that fails to justify its existence as a Broadway show. | Gemini: The review highlights both positive and negative aspects of the show. While praising Iman's performance and some of Gould's score, it criticizes the overwrought performances, clunky book, and the show's attempt to shove de Lempicka through modern filters. The overall tone suggests a mixed experience with some redeeming qualities.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:24:53.694Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3481,
-    "outputTokens": 349,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:43.677Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 45,
-    "scoreDelta": 7,
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 42,

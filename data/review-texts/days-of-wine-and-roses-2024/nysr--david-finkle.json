@@ -10,40 +10,29 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 65,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 65,
-    "confidence": "medium",
+    "score": 81,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 76,
+      "high": 86
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "One strength of the 90-minute intermissionless piece",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "its refusal to offer any easy explanation of addiction's origins",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The excerpt shows appreciation for the play's thematic approach and structure, but the text cuts off mid-sentence making it impossible to assess the critic's overall recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives 4/5 stars and consistently praises the performances, direction, score, and overall production quality. Despite the somber subject matter, the review is filled with superlatives about the leads' performances and Guettel's score. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and score. The critic highlights the demanding roles and the actors' ability to reach impressive levels, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,20 +41,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:15:15.832Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:01.162Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
+    "claudeScore": 80,
     "openaiScore": null,
-    "scoreDelta": 0,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 65,

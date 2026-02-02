@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 75,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 75,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The explicit phrase 'It's worth the wait' indicates a positive recommendation, praising both McAdams' performance and Herzog's directorial choices, though the excerpt is limited. | GPT-4o: The review highlights a significant moment in the play that is described as 'worth the wait,' suggesting a positive experience despite any earlier reservations. The lack of a full review text and explicit rating results in a medium confidence level. | Gemini: The phrase \"worth the wait\" suggests a positive recommendation, though the setup implies some reservations or slow pacing.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt describes effective dramatic structure and concludes with clear positive language ('worth the wait'), indicating a recommendation despite being only a single curated quote. | GPT-4o: The review highlights a positive aspect of the play, noting that the payoff is 'worth the wait,' suggesting a recommendation despite any earlier reservations. The lack of a full review and the single excerpt caution a conservative score within the Positive range. | Gemini: The review excerpt indicates that the play has a powerful moment that is worth waiting for, suggesting a positive but not overwhelmingly enthusiastic recommendation. The single excerpt and lack of a clear rating temper the enthusiasm.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,14 +36,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:25.947Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:19:26.286Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 75,
+    "openaiScore": 76,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",

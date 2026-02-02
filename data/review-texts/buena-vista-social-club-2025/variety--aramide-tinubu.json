@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Though the show occasionally feels more like a concert than a cohesive musical, when it works, it's transcendent — a celebration of Cuban music that pulses with life and passion.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,38 +17,22 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though the show occasionally feels more like a concert than a cohesive musical, when it works, it's transcendent — a celebration of Cuban music that pulses with life and passion.",
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 76,
+      "high": 86
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 95,
+      "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the most intoxicating and rapturous show of the Broadway season",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "like stepping into a heady world of the senses, of heightened emotions, and of passionate music and dance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "intoxicating and rapturous",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Calling it 'the most intoxicating and rapturous show of the Broadway season' is unqualified superlative praise that signals a clear rave recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite minor reservations about narrative cohesion, the critic uses superlative language calling it 'the most intoxicating and rapturous show of the Broadway season' and 'transcendent,' indicating strong enthusiasm and recommendation. | GPT-4o: The review describes the show as 'the most intoxicating and rapturous show of the Broadway season,' indicating a strong recommendation. Despite noting it sometimes feels more like a concert, the overall tone is highly enthusiastic and positive. | Gemini: The review is overwhelmingly positive, calling the show \"intoxicating and rapturous.\" While it notes that it sometimes feels more like a concert, the overall tone is a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,33 +41,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:57:37.353Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2396,
-    "outputTokens": 342,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:57:30.492Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2024/legit/reviews/buena-vista-social-club-review-broadway-1236244064/",
   "urlDiscoveredAt": "2026-02-01T18:42:51.521Z",

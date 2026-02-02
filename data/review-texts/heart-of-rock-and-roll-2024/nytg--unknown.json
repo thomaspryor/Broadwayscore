@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 77,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 77,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite not being the target demographic, the critic explicitly states they had a 'great time' for the full duration, indicating a positive recommendation though the limited excerpt prevents a higher confidence assessment. | GPT-4o: The critic expresses having a 'great time' which suggests a positive experience, despite not being particularly interested in the show's nostalgic elements or the lead actor's appearance. The lack of a full review text adds some uncertainty, but the positive tone is clear. | Gemini: The reviewer explicitly states they had a \"great time,\" indicating a positive experience and a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly states they had a 'great time' despite not being the target demographic, indicating a positive recommendation. However, scoring conservatively due to single excerpt warning. | GPT-4o: The critic expresses a personal enjoyment of the show, indicating a positive experience despite not being a fan of the era or the actor. The single excerpt suggests a recommendation, but the lack of full context warrants a conservative score within the positive range. | Gemini: The critic states they had a \"great time,\" indicating a positive experience. However, the initial disclaimer suggests some reservations or lack of personal connection to the subject matter.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:46:51.276Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:41:06.428Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "claudeScore": 73,
+    "openaiScore": 77,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

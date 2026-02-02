@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The jukebox musical built around Huey Lewis and the News hits is a crowd-pleasing throwback that doesn't quite find its groove until the second act.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The jukebox musical built around Huey Lewis and the News hits is a crowd-pleasing throwback that doesn't quite find its groove until the second act.",
   "needsScoring": true,
   "llmScore": {
-    "score": 65,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 72
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -30,42 +30,41 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 60
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "crowd-pleasing throwback",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "doesn't quite find its groove until the second act",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Mixed signals with positive audience appeal but significant pacing issues in first act suggest qualified, lukewarm recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review describes it as 'crowd-pleasing' but notes significant pacing issues in the first act, indicating a lukewarm assessment that neither strongly recommends nor discourages. | GPT-4o: The review acknowledges the musical as a crowd-pleaser but notes it only finds its groove in the second act, indicating a mixed reception with some positive elements. | Gemini: The review indicates the show is \"crowd-pleasing\" which suggests a positive experience, but the reservation about the first act keeps it from being a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:57:53.037Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2336,
-    "outputTokens": 273,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:17.835Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

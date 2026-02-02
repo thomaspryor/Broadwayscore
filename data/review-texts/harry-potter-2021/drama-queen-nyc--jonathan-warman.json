@@ -8,73 +8,57 @@
   "fullText": "Has one of your appliances not been working? In the end, you’ll have to take action with the old appliance. If it fails, you won’t be in a position to get it replaced. The only drawback is that you could be injured if you try to haul away the appliance on your own. Hiring a professional to help you tackle this daunting project is recommended. Appliances will be very heavy, and carrying them on your own will not be an easy task. While DIY strategies can benefit you, we advise joining our cost-effective services. We’ll take care of your issue right away. If you’re looking to get rid of an old appliance, contact our office. We’ll take the stuff from your home right away. We can provide appliance pick-up and disposal services within your area. We’ll handle the heavy lifting so you can relax, unwind, and be secure. Our junk removal specialists will take care of it for you. Follow the step below to benefit from our services to remove appliances. If you choose to dispose of your microwave, you must ensure it is handled correctly. It is never a good idea to throw the item in the garbage. It is important to recognize that microwaves comprise myriad substances like glass, plastic, and even metal. In addition, microwaves are going to contain electronic components that are harmful to the planet. You shouldn’t harm the environment by dumping your microwave in a nearby garbage dump. Instead, dispose of it using an environmentally friendly method. In many instances, you can reuse or donate the microwave. Our junk removal experts can help you achieve your goals. Get professional help. It’s always recommended to recycle those old devices. It takes many resources to mine materials and makes new metals. The environment is usually damaged to create new metals. Recycling metals are much better. This way, you’re doing your part in protecting the planet. Recycling small appliances is ideal for doing this. When you reuse your old appliances, it will help aid manufacturers in getting the necessary materials without needing to mine more resources. Contact us at our office as we can assist you with recycling your small appliances. It’s a good thing that the majority of appliances can be reused. For example, recycle your microwave, oven washer, dryer, refrigerator, and toaster. Additionally recycling, you can recycle bigger appliances. Before doing that, it is recommended to dismantle the old appliances. It is safe to sleep knowing that we’re going to help you. We’ve been helping people recycle old appliances for a long period, and we’re now ready to do it again. Call our office if you’re ready to get rid of your old fridge or oven. We can take items regardless of dimensions or weight. Make sure you get rid of old appliances by various techniques. Certain methods perform better than others. Try using the methods mentioned below. In the beginning, you can consider donating the old appliance. Don’t throw it in the garbage if it’s still working well. Doing so would be a waste. Instead, allow someone else to use your old appliance. You can perform a noble act by donating the appliance to a family member or a person in need. If you haven’t been able to give away the old appliance, recycle it. Recycling is beneficial because it helps protect the natural environment. If you’re determined to protect Mother Nature, recycle your old device. After that, you can dispose of the items and reuse them for other purposes. Remember that most old appliances can be recycled. If you’re operating an appliance that’s still functioning, sell it. There’s a good chance that someone would be delighted to have it. If you offer a reasonable price, you’ll know someone will show up to take it away. In addition, you’ll be adding money into your pockets. It is possible to sell the appliance on the street or online. Contact us if you require help getting rid of your old appliance. We can take many appliances, such as fans, freezers, space heaters, dishwashers, and air conditioners. If you have any other junk removal service please check out other services. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
   "showScoreExcerpt": "\"You need somebody adept in theatrical magic to make this dazzle...and Tiffany fits the bill perfectly...He isn't shy about going big and high-tech...As Albus, Clemmett gives a marvelously shaded performance, capturing both his pain and youthful sense of wonder. Scorpius is a much more colorful character, and Boyle goes deliciously over-the-top without ever losing this emotional thread of this lonely boy. Jennings gives his usual excellent all...Recommended.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 77,
   "source": "show-score",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Recommended",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Tiffany fits the bill perfectly",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "marvelously shaded performance",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Clear explicit recommendation with consistent praise for director and lead performances, particularly strong endorsement of technical elements and acting.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The excerpt contains clear praise for performances and direction, ending with an explicit 'Recommended' verdict. However, given the single excerpt warning and possibility of cherry-picking, scored conservatively within the positive range. | Gemini: The review uses the explicit recommendation \"Recommended.\" and praises the direction and performances, indicating a positive overall assessment.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:06:55.298Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2417,
-    "outputTokens": 295,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:00:09.628Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 85,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/drama-queen-nyc--jonathan-warman_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:26:17.313Z",

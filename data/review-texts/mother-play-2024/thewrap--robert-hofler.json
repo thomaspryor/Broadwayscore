@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Tina Landau directs. Her sure hand navigates the play’s many moods — hilarious one moment, tragic the next.",
@@ -19,67 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it is really a very funny play",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Keenan-Bolger is simply brilliant",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Her sure hand navigates the play's many moods — hilarious one moment, tragic the next",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review praises performances consistently (calling Keenan-Bolger 'simply brilliant' and praising Lange's excellence), finds the play 'very funny,' and commends the direction's navigation of complex moods, with only minor reservations about one performance being 'too flamboyant.'",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with context about the source material, the critic clearly enjoys the production, praising all three lead performances (especially calling Keenan-Bolger 'simply brilliant') and noting the play is 'really a very funny play' with excellent direction. | GPT-4o: The review praises the performances, especially Keenan-Bolger's, and describes the play as 'very funny' despite its serious themes. The critic's positive remarks about the direction and performances indicate a strong recommendation. | Gemini: The review highlights strong performances, especially Keenan-Bolger's, and praises the play's humor and direction, but also notes some potential issues with Parsons' flamboyance. Overall, it leans towards a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:40:25.379Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3179,
-    "outputTokens": 363,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:32.276Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 80,
-    "scoreDelta": 15,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 73,

@@ -14,7 +14,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 62,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 57,
       "high": 67
@@ -22,51 +22,43 @@
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "certainly predictable, a dose of 1980s nostalgia with a by-the-numbers plot",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "But for what it is, the show has its moments",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "Lorin Latarro's choreography rocks, and hops, and sometimes completely flips",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Mixed review that criticizes the predictable plot but praises performances and choreography, with the excerpt cutting off mid-sentence limiting full assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes predictability but acknowledges positive elements like performances and choreography. The phrase 'has its moments' is classic mixed-verdict language, suggesting neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the show's predictability and conventional plot but highlights positive aspects like performances and choreography. The phrase 'has its moments' suggests a mixed verdict, with some enjoyable elements despite overall predictability. | Gemini: The review acknowledges predictability but also highlights positive aspects like performances and choreography, suggesting a mixed experience. The phrase \"has its moments\" indicates a middle-ground recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:26.524Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:40:57.794Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "fullText added after excerpt-based scoring",

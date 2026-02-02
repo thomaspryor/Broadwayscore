@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Still, despite its imperfections, “Mother Play” is a genuinely engaging examination of a family trying to find equilibrium. It honors the glimmers and low points of mothering and explains why, in some cases, the role is transposed onto those who were never called to it in the first place.",
@@ -21,38 +21,22 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 45,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 55
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 40,
+      "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 50
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a bitter, disillusioned woman, Phyllis (Jessica Lange), who feels duped by the circumstances of her life",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "showcases how Phyllis' resentments trickle into her relationships with her two children",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "roach-infested basement apartment",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This appears to be a plot summary rather than a critical review, providing character descriptions and story setup without evaluative language or recommendation signals.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges 'two major missteps' and calls parts 'overlong and dull,' but concludes positively with 'genuinely engaging' and praises how it 'honors' the complexities of motherhood, indicating a clear recommendation despite reservations. | GPT-4o: The review acknowledges some flaws in the production, such as predictability and a dull scene, but overall describes the play as engaging and insightful, indicating a positive recommendation despite reservations. | Gemini: The review acknowledges flaws but ultimately calls the play \"genuinely engaging,\" indicating a positive recommendation. The additional context from the aggregator reinforces this.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -61,27 +45,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:40:31.038Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2684,
-    "outputTokens": 342,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:42.094Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 58,
-    "scoreDelta": 4,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 60,

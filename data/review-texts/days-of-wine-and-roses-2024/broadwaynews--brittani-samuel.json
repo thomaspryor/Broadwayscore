@@ -7,64 +7,56 @@
   "publishDate": "January 29, 2024",
   "fullText": "The new musical from “Light in the Piazza” creators Adam Guettel and Craig Lucas is a shallow exploration of intoxicating love. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Days of Wine and Roses.” On the surface, “Days of Wine and Roses” — adapted from the 1962 eponymous film — has the fixings of a perfect theater cocktail: one part tragic love story, two parts beguiling lead actors, a shot of 1950s nostalgia and a jazz-inspired score slathered around the rim. But this musical — a passion-lacking passion project from collaborators Adam Guettel and Craig Lucas — doesn’t go down easy. And while you may exit Studio 54 shaken by the work, you won’t be stirred. That’s because for a story that reportedly centers romance and alcohol addiction, these two core themes get the least amount of developmental attention. It’s absurd how quickly Guettel and Lucas demand we invest in the primary love story between main characters Kirsten (Kelli O’Hara) and Joe (Brian d’Arcy James). Up until their meeting, Kirsten has resisted alcohol, preferring a bite of chocolate to a swig of cordial. But book writer Lucas has her abandon that resolve at breakneck speed when Joe orders her a cocoa-laden Brandy Alexander. Lucas’ script delivers wispy hints of why the two get on so well (both have lost parents, both feel a bit adrift in life) and why alcohol is such a persistent vice (he is a Korean war veteran, she longs for excitement beyond domestic life), but it grows increasingly difficult to empathize with the couple’s explosive unraveling when we were only brief witnesses to their purported union. Guettel reportedly adapted the role of Kirsten with O’Hara in mind, but the Tony-winning performer’s impressive leaps to her operatic register do nothing to serve this score. O’Hara’s beloved but overworked soprano brings ill-suited dramatic heft and sentimentality to songs that are, in actuality, very conversational. Under Michael Grief’s apt direction, she and James do a fine job playing co-dependent counterparts, but an entire production cannot rest on the laurels of chemistry alone. Like a good drink, there’s got to be some depth.",
   "originalScore": null,
-  "assignedScore": 37,
+  "assignedScore": 44,
   "dtliThumb": "Meh",
   "source": "dtli",
   "llmScore": {
-    "score": 37,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 30.5,
-      "high": 43.5
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 28,
-      "music": 43,
-      "performances": 63,
-      "direction": 55
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this musical — a passion-lacking passion project from collaborators Adam Guettel and Craig Lucas — doesn't go down easy",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "while you may exit Studio 54 shaken by the work, you won't be stirred",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "an entire production cannot rest on the laurels of chemistry alone. Like a good drink, there's got to be some depth",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic finds fundamental flaws in the musical's structure and development, calling it 'shallow' and criticizing the rushed character development and lack of depth, despite acknowledging some solid performances. | GPT-4o-mini: The review expresses significant disappointment in the script and overall execution, indicating a clear lack of recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically critiques the show's fundamental flaws - rushed character development, poor score-performer match, and lack of emotional depth. While acknowledging some positive elements like chemistry and direction, the overall assessment is clearly negative with no recommendation to see it. | GPT-4o: The review consistently highlights the lack of depth and emotional engagement in the production, criticizing the development of core themes and the suitability of the performances. The tone suggests disappointment and a lack of recommendation. | Gemini: The review points out flaws in the story and score, but praises the actors' chemistry and direction. The overall impression is that the show has some redeeming qualities but is ultimately flawed.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:45:38.834Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:19.988Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 37,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 35,
-    "scoreDelta": 3,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "dtliExcerpt": "Though the material hinges on a turbulent relationship and a harmful disease, fans of Broadway A-listers will delight in watching O’Hara and James throw themselves into the heavy material for nearly two hours.",
   "sources": [

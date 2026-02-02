@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The junk food analogy suggests enjoyable but lightweight entertainment. The phrase 'fun time' indicates a positive experience despite acknowledging it's not memorable or substantial. | GPT-4o: The review suggests that while the show may not be memorable, it provides an enjoyable experience, indicating a positive recommendation with some reservations. | Gemini: The review compares the show to 'junk food', implying it's enjoyable in the moment, even if not particularly substantial or memorable. This suggests a positive, but not rave, recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The junk food analogy suggests enjoyable but forgettable entertainment, which is a mild positive recommendation for a fun theatrical experience. | GPT-4o: The review suggests that while the show may not be memorable, it provides an enjoyable experience, indicating a positive recommendation with some reservations. | Gemini: The review compares the show to 'junk food,' suggesting it's enjoyable in the moment but not particularly memorable. This indicates a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,10 +36,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:46:57.218Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:41:41.305Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 72,

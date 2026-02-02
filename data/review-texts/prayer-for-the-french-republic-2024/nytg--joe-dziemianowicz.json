@@ -9,71 +9,56 @@
   "bwwExcerpt": "Harmon is the talented playwright of Significant Other, about the frailty of friendship; Admissions, about race and privilege; and Bad Jews, about family legacies. He digs deeper than ever in Prayer for the French Republic and strikes pure gold. It’s a plus-size play about big social issues that impresses in large structural ways as well as small moments.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
+    "score": 93,
     "confidence": "high",
     "range": {
       "low": 88,
-      "high": 95
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 94,
+      "book": null,
       "music": null,
-      "performances": 89,
-      "direction": 91
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "gripping, airtight play is a dramatic triumph",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "He digs deeper than ever in Prayer for the French Republic and strikes pure gold",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Directed with airtight elegance for Manhattan Theatre Club by David Cromer",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review opens with 'dramatic triumph' in the headline and consistently uses superlatives like 'strikes pure gold' and 'airtight elegance' throughout, with no meaningful criticisms of the production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review opens with 'dramatic triumph' and five-star rating, consistently uses superlative language like 'strikes pure gold' and 'airtight elegance,' with no meaningful reservations expressed throughout. | GPT-4o: The review is overwhelmingly positive, describing the play as a 'dramatic triumph' and praising its direction, acting, and writing. The critic's use of 'five-star review' and 'strikes pure gold' indicates a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the play a \"dramatic triumph\" and stating that Harmon \"strikes pure gold.\" The critic praises the direction, acting, and writing, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:53:18.223Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3049,
-    "outputTokens": 349,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:24.151Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“It’s a plus-size play about big social issues that impresses in large structural ways as well as small moments...so this ‘Prayer’ will likely always be relevant. That’s a dramatic triumph – and a scorching reality.”",

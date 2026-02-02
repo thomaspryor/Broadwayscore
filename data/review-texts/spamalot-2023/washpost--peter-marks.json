@@ -9,71 +9,56 @@
   "showScoreExcerpt": "“This new ‘Spamalot’ arrives, beefed up, gussied up and yes, even funnier than in its birthing engagement earlier this year...the revival of the Tony-winning musical by Python great Eric Idle, with John Du Prez, brings joy to a land desperately short of guffaws and chuckles and snickers and giggles.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 90,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 90,
+    "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 88
+      "low": 85,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 80,
-      "music": 75,
-      "performances": 90,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "gloriously, patently hilarious, two-hour strut-upon-the-stage",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "brings joy to a land desperately short of guffaws and chuckles and snickers and giggles",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "even funnier than in its birthing engagement earlier this year at the Kennedy Center",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic uses enthusiastic language throughout ('gloriously hilarious,' 'brings joy'), praises the cast extensively, and explicitly states this Broadway version is 'even funnier' than the previous production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses consistently enthusiastic language throughout, calling it 'gloriously, patently hilarious' and praising the cast extensively. The review celebrates the show's return to Broadway and recommends it as bringing 'joy to a land desperately short of guffaws.' | GPT-4o: The review is overwhelmingly positive, describing the show as 'gloriously, patently hilarious' and highlighting the performances and direction as exceptional. The critic's enthusiasm and the description of the production as bringing 'joy to a land desperately short of guffaws' indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the humor and performances. While it mentions the need for some prior appreciation of Python humor, the overall tone is enthusiastic and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:10:10.013Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3346,
-    "outputTokens": 366,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:56.354Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,

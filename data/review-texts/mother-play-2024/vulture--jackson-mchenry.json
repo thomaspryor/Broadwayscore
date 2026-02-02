@@ -9,71 +9,56 @@
   "showScoreExcerpt": "\"Her script assembles the contradictions...but it doesn’t provide a route through them.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mother-play-broadway",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 52,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 48,
-      "high": 58
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "That cleverness, however, has a domineering quality",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Her title, like many theatrical matriarchs, is awfully hard to live up to, which is also what Mother Play struggles to do",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "There's already wit and bite to the phrase 'mother play'",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The review acknowledges the play's clever concept and Vogel's theatrical pedigree but concludes that the production 'struggles' to live up to its ambitious title, suggesting fundamental execution problems.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the play's clever concept and Lange's compelling performance but concludes that the play 'struggles' to live up to its promising title and concept, with the script failing to provide a clear path through its contradictions. | GPT-4o: The review highlights both strengths and weaknesses, noting the cleverness of the title and Lange's performance but also mentioning that the play struggles to live up to its potential and lacks a clear route through its contradictions. | Gemini: The review highlights both strengths and weaknesses, particularly with Lange's performance and the script itself. The critic acknowledges moments of brilliance but ultimately finds the play struggles to live up to its potential.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:40:36.168Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2586,
-    "outputTokens": 352,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:45.887Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 50,
-    "scoreDelta": 8,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwExcerpt": "As Phyllis, Lange has to carry the play, which she manages to do in fits and starts. What she can do is cast a spell. In a wonderful, wordless sequence when Phyllis has been abandoned by both Carl and Martha, she putters around an empty apartment, devoid of purpose but retaining the posture of a woman raised to be watched, finding humor and subtle tragedy in the way she slathers hot sauce on a microwaved dinner.",
   "bwwThumb": "Up",

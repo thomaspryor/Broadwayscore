@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,38 +21,22 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "high",
     "range": {
       "low": 70,
-      "high": 85
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "keeps the play riveting",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "vigor with which Harmon considers every side",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "nobody emerges unscathed",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises the play as 'riveting' with vigorous examination of complex themes, suggesting strong appreciation for the writing's intellectual rigor and dramatic impact.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The word 'riveting' indicates strong engagement and the praise for the playwright's vigorous exploration suggests recommendation, but with only one excerpt available, I'm scoring conservatively in the lower positive range. | GPT-4o: The review highlights the play's ability to engage the audience through its vigorous exploration of themes, suggesting a positive experience. However, the lack of full context and the warning about curated excerpts necessitate a conservative score within the Positive range. | Gemini: The review excerpt indicates the play is \"riveting,\" which suggests a positive experience. Given it's a single excerpt, I'm scoring it conservatively within the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -61,19 +45,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:12:02.222Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2340,
-    "outputTokens": 312,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:32.679Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

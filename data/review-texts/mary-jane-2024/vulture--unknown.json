@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows the critic acknowledging potential pitfalls but concluding that the lead actress successfully navigates them, suggesting a positive assessment despite challenges. | GPT-4o: The review acknowledges potential pitfalls in the production's tone but ultimately praises Rachel McAdams' performance, suggesting that the show is worth seeing primarily due to her strong portrayal. The lack of a clear, strong recommendation lowers the confidence slightly. | Gemini: The review excerpt highlights a key aspect of the play and praises the actress's performance, suggesting a positive experience overall, but the initial concern about tonal balance implies some reservations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises McAdams' performance as meeting the demanding requirements of the role, suggesting positive assessment, but with only one cherry-picked quote available, scoring conservatively within positive range. | GPT-4o: The review acknowledges potential pitfalls in tone but ultimately praises Rachel McAdams' performance, suggesting a positive view of the production. The lack of a full review text and the single excerpt warning suggest a conservative score within the Positive range. | Gemini: The review excerpt focuses on a positive aspect of the production (Rachel McAdams' performance), suggesting a positive but potentially reserved recommendation. The single excerpt and lack of overall context warrant a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:36.444Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:20:11.103Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 75,
+    "claudeScore": 73,
+    "openaiScore": 76,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

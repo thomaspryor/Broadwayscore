@@ -9,71 +9,55 @@
   "bwwExcerpt": "Yet while Harmon does nod towards a more universal meaning to “never again,” when Patrick notes at the play’s conclusion that he is “rooting for all the wanderers of the world,” Prayer does not ultimately have room to carry the horrors in Gaza alongside more specifically Jewish concerns. You might argue that’s not what this play is about — but how can we leave it outside? It is hard not to feel discomfort in abstractly pondering “Could it happen here?” when we see, right now, what is happening t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 70,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "That pivotal casting error leaves Prayer without a center, but there is still heart in its individual threads",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Cromer's typically precise direction invariably finds the individual behind the ideas – every character seems, under his imperceptible hand, fully rounded",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It is hard not to feel discomfort in abstractly pondering 'Could it happen here?' when we see, right now, what is happening there",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic appreciates the play's intellectual depth, direction, and most performances, but identifies significant problems with central casting and questions the work's relevance given current events, resulting in qualified praise without clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic identifies significant flaws (Edwards' miscast performance leaving the play 'without a center') but praises individual performances, direction, and acknowledges the play's emotional impact and relevance, resulting in a genuinely mixed assessment. | Gemini: The review acknowledges flaws, particularly the casting, but still finds heart and value in the play's exploration of complex themes and strong performances. It's a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:53:54.173Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4084,
-    "outputTokens": 385,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:26.135Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 50,
-    "scoreDelta": 2,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "It would be a tall order to expect Prayer, a play written and programmed prior to these cascading events, to fully meet the complexity and horror of our current moment. But nor can it escape that context, arriving when it has.",

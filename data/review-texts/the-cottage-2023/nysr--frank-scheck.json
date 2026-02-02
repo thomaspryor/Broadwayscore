@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Down",
   "originalScore": "3/5 stars",
-  "assignedScore": 58,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 58,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 62
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "To be fair, The Cottage is funny, often very funny",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the humor is so devoid of reality that the laughs become increasingly strained",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It's hard to see exactly who The Cottage is for",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic acknowledges the strong performances and direction but finds the material fundamentally flawed and questions its relevance, resulting in a qualified mixed reaction with no clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and mixed tone indicate a qualified recommendation - the critic acknowledges it's funny and well-executed but questions its necessity and appeal, calling it 'wholly artificial' and wondering 'who The Cottage is for.' | GPT-4o: The review acknowledges the humor and the strong performances, but criticizes the play for being outdated and lacking depth. The original 3/5 star rating aligns with a mixed assessment. | Gemini: The review acknowledges the play's flaws and artificiality but ultimately states that it is funny and well-directed, with strong performances. The 3/5 star rating also indicates a positive, but not rave, assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:16:32.342Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3435,
-    "outputTokens": 340,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:40.670Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 30,
-    "scoreDelta": 5,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dateSource": "extracted-from-url",
   "originalScoreNormalized": 60,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McAdams brings a remarkable vulnerability and strength to Alex, a mother caring for her chronically ill son, in this deeply moving production.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "McAdams brings a remarkable vulnerability and strength to Alex, a mother caring for her chronically ill son, in this deeply moving production.",
   "needsScoring": true,
   "llmScore": {
-    "score": 75,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 85
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "remarkable vulnerability and strength",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "deeply moving production",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong praise for lead performance and emotional impact suggests positive recommendation, but extremely brief excerpt limits confidence in overall assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises McAdams' performance as 'remarkable' and calls the production 'deeply moving,' indicating a positive recommendation, though the brief excerpt limits confidence in the full scope of the critic's assessment. | GPT-4o: The review highlights a 'deeply moving production' and praises McAdams' performance, suggesting a strong recommendation. | Gemini: The review uses positive language like \"remarkable\" and \"deeply moving,\" indicating a positive experience and recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:03:59.983Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2329,
-    "outputTokens": 239,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:17:02.328Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

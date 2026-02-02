@@ -10,71 +10,58 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 72,
-    "confidence": "high",
+    "score": 74,
+    "confidence": "medium",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the two-part play is great children's theater",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It doesn't take many speeches like that to bog down an already long show",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "These three actors and others in the production give fine performances, but in a Broadway season replete with great acting it's difficult to see any of them being singled out come Tony time",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite structural criticisms and pacing issues, the critic calls it 'great children's theater' with praise for direction, design choices, and performances, indicating a qualified positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening criticisms about accessibility and some production elements, the critic calls it 'great children's theater' and praises the low-tech approach, performances, and theater redesign, indicating a clear recommendation for its intended audience. | GPT-4o: The review strongly suggests that the show is not worth seeing unless you are already a fan of the Harry Potter series, and even then, it criticizes the production for being confusing and overly long. The critic's recommendation to skip the show is clear and unambiguous. | Gemini: The review ultimately recommends the show as \"great children's theater\" despite some reservations about the writing and set design. The critic praises the performances and redesign of the theater.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:09:31.997Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3850,
-    "outputTokens": 359,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:05:40.579Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 73,
+    "openaiScore": 40,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Positive",
+    "scoreDelta": 35,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Outlier openai chose Negative, 2+ buckets from majority"
+    ],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "sources": [
     "bww-roundup"

@@ -8,37 +8,26 @@
   "fullText": "Parenting inspires varying schools of thought. While some relish the tasks of caretaking, others speak candidly about the hardships of child-rearing, sharing the true realities of motherhood that have been glamorized over time. In “Mary Jane,” the 2017 play written by Amy Herzog and making its Broadway debut under Anne Kauffman’s direction, viewers witness both a young mother’s joy and her anguish as she works around the clock to keep her disabled toddler alive.",
   "dtliExcerpt": "By the time the final curtain on “Mary Jane” drops, the audience is fully immersed in the titular character’s experiences. McAdams masters her portrayal of a determined caregiver continually sitting in the uncertainty of worry, despite constantly leaning toward positivity.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 73,
+      "high": 83
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "viewers witness both a young mother's joy and her anguish",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "making its Broadway debut under Anne Kauffman's direction",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This appears to be a plot summary rather than an evaluative review, providing no clear critical judgment or recommendation about the production's quality.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises McAdams' performance as 'mastered' and notes the lasting impact on audiences, indicating a positive recommendation despite limited excerpted text. | GPT-4o: The review highlights the lasting impact of the play and praises McAdams' performance, indicating a strong recommendation. | Gemini: The review highlights McAdams' masterful portrayal and the play's lasting impact, indicating a positive recommendation despite the difficult subject matter.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,27 +36,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:33:06.391Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2426,
-    "outputTokens": 279,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:38.775Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "showScoreExcerpt": "“ 'Mary Jane' stays with viewers long after they leave the theater. \"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",
@@ -95,8 +85,7 @@
   "archiveOrgUrl": "http://web.archive.org/web/20260105081140/https://variety.com/2024/legit/reviews/mary-jane-broadway-review-rachel-mcadams-1235978406/",
   "contentTier": "complete",
   "wordCount": 694,
-  "rescoreCompletedAt": "2026-02-01T15:33:06.391Z",
-  "needsRescore": true,
+  "rescoreCompletedAt": "2026-02-02T00:19:38.775Z",
   "isFullReview": false,
   "textWordCount": 74,
   "textQuality": "excerpt",

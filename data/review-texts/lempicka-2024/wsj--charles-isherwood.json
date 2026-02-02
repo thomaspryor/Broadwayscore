@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"Visually, the show is a hodgepodge.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/lempicka-broadway",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 44,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/lempicka-2024/wsj--charles-isherwood_2026-01-29.html",
@@ -31,38 +31,22 @@
     "Word count too low: 103 (min: 300)"
   ],
   "llmScore": {
-    "score": 50,
+    "score": 44,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 45
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "all visible brushstrokes, a neatly constructed but surprisingly conventional show",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "turns the wild, imperious and wayward woman into a fairly standard-issue heroine",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "surprisingly conventional show",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review criticizes the show as conventional and predictable, reducing a fascinating historical figure to standard musical theater tropes, with visible structural problems. | GPT-4o-mini: The review expresses significant reservations about the show's conventionality and characterization, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic uses clearly negative language like 'unhappily' and 'surprisingly conventional,' describing the show as reducing a complex figure to a 'standard-issue heroine.' The additional context calling it 'a hodgepodge' reinforces the negative assessment. | GPT-4o: The review criticizes the show for being conventional and visually disorganized, indicating a lack of recommendation. | Gemini: The review describes the show as \"neatly constructed but surprisingly conventional,\" suggesting a mixed reaction. The critic points out flaws and missed opportunities, indicating it's not a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -71,20 +55,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:26.396Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:37.129Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "contentTier": "invalid",
   "wordCount": 103

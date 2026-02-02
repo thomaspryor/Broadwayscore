@@ -10,45 +10,29 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 59,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 53,
-      "high": 65
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 43,
+      "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "technical marvel that hits all the right nostalgia buttons",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "soulless songs that are more obligatory than earned",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "you can't escape the feeling that they're just running down the clock",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Mixed review praising technical aspects and nostalgia appeal while criticizing weak songwriting, with overall tone suggesting lukewarm recommendation. | GPT-4o-mini: The review acknowledges technical achievements and nostalgia but criticizes the music as lacking depth, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the spectacular stagecraft and some performances but criticizes the score as 'soulless' and says the show 'sputters to a halt' during songs, concluding it's running down the clock rather than truly succeeding. | GPT-4o: The review highlights impressive technical achievements and some standout performances, but criticizes the musical's songs and overall execution. The positive aspects are counterbalanced by significant reservations, leading to a mixed verdict. | Gemini: The review is mostly positive, highlighting the impressive stagecraft and performances, but criticizes the songs as \"soulless\" and \"obligatory.\" This suggests a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,20 +41,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:13:07.285Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:16.385Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 59,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 60,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 59,

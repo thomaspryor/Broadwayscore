@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 47,
+  "assignedScore": 45,
   "llmScore": {
-    "score": 47,
-    "confidence": "high",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 42,
-      "high": 52
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic acknowledges strong talent but clearly states the material is inadequate, suggesting the show doesn't merit recommendation despite good performances. However, confidence is medium due to limited excerpt. | GPT-4o: The quote suggests that the talents involved are wasted on the material, indicating a lack of recommendation. However, without the full context, the confidence is medium. | Gemini: The review explicitly states that the talent involved would be better used on something else, indicating a negative assessment of the current production.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic acknowledges the talent of the performers and creative team but suggests the material itself is inadequate, indicating a mixed assessment where execution exceeds the quality of the source material. | GPT-4o: The excerpt suggests that the critic feels the talent involved is wasted on the material, implying a negative view of the production itself. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Negative range. | Gemini: The critic clearly states that the talent involved is wasted on the material, indicating a negative overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:54:41.872Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:10:10.983Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 47,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 50,
+    "claudeScore": 60,
+    "openaiScore": 45,
     "geminiScore": 45,
-    "claudeBucket": "Negative",
+    "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

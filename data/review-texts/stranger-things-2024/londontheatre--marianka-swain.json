@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 92,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "five-star review",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "totally awe-inspiring",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "it's a must-see not just for superfans, but for anyone excited by boundary-pushing theatre",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Five-star review with unqualified praise including 'totally awe-inspiring', 'must-see', and 'spectacular fashion' indicates a clear rave recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Five-star review with explicit 'must-see' recommendation and praise as 'totally awe-inspiring' and 'astounding show' that 'feels like a new chapter in theatre.' | GPT-4o: The review is overwhelmingly positive, describing the show as 'awe-inspiring' and 'astounding,' with explicit 'must-see' language indicating a strong recommendation. | Gemini: The review uses extremely positive language such as \"totally awe-inspiring\", \"must-see\", and \"astounding show\", clearly indicating a rave review.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:13:08.159Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2496,
-    "outputTokens": 325,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:16.252Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "designation": "Recommended",
   "rescoreReason": "scored on brief excerpt, now has fullText",

@@ -16,66 +16,51 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 78,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 72,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "you can really go to this as not a fan and still have a very enjoyable time at the theatre",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "around five hours of really astonishing on-stage magic",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "some well-drawn paternally-themed and past-tragedy drama",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Clear positive recommendation emphasizing broad appeal and 'astonishing' production values, though language is measured rather than ecstatic.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show, emphasizing it's enjoyable for both Potter fans and newcomers, and praises the 'astonishing on-stage magic' and well-drawn drama, though the tone is more measured than enthusiastic. | GPT-4o: The review highlights the show's ability to entertain both fans and newcomers with 'astonishing on-stage magic' and 'well-drawn drama,' indicating a strong positive recommendation. | Gemini: The review states that even non-fans can have an enjoyable time, and highlights the 'astonishing on-stage magic'. This indicates a positive, but not rave, recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:06:34.205Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2432,
-    "outputTokens": 331,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:59:29.158Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 79,

@@ -9,71 +9,55 @@
   "bwwExcerpt": "The most fatal issue, though, is the show’s central focus on Tamara’s dueling loves: stiff husband Tadeusz and free-wheeling Rafaela. This dilemma takes up most of the narrative real estate, but proves deathly dull. Despite the heavenly-voiced Samonsky’s best efforts, Tadeusz is a wet blanket whose constant moaning sucks the energy out of every scene. And while Iman could never be anything but riveting on stage, Rafaela is thinly-sketched and never takes on compelling internal life.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 60,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 48,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 52
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
-      "music": 65,
-      "performances": 70,
-      "direction": 55
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Messy and maddening, new musical Lempicka has all the pedigree for something groundbreaking but never finds its own distinctive form",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "more often falling into genericism and cliché",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The most fatal issue, though, is the show's central focus on Tamara's dueling loves: stiff husband Tadeusz and free-wheeling Rafaela. This dilemma takes up most of the narrative real estate, but proves deathly dull",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Despite praising individual elements like performances and some musical numbers, the critic identifies fundamental structural problems with the book and finds the central emotional conflict 'deathly dull,' making this more negative than positive overall.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review acknowledges strong elements (Chavkin's direction, some musical numbers, design work) but consistently returns to fundamental flaws in the book, character development, and tonal confusion. The critic finds it lacking specificity and focus despite its potential. | Gemini: The review points out both strengths (energetic score, Espinosa's performance) and weaknesses (hurried book, tonal confusion, dull love story). The overall impression is that the show has potential but doesn't quite deliver, placing it in the Mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:26:27.483Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3761,
-    "outputTokens": 413,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:35.861Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 40,
-    "openaiScore": 40,
-    "scoreDelta": 0,
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "Messy and maddening, new musical Lempicka has all the pedigree for something groundbreaking but never finds its own distinctive form.",

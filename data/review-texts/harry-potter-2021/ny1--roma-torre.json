@@ -8,73 +8,58 @@
   "fullText": "It's been called the \"Hamilton\" of the United Kingdom, and it's now on Broadway. \"Harry Potter and the Cursed Child\" continues to work its special magic on the live stage, shattering box office records as it casts its undeniable spell on hordes of delighted Muggles. So sure of its success on Broadway, the producers spent millions renovating the Lyric Theatre where Spider-Man once flew. And how convenient, as the \"Harry Potter\" designers were able to rig some incredible flying effects of their own. But while the show is packed with many more dazzling tricks and illusions, it's the story, conceived by author J.K. Rowling with director John Tiffany and playwright Jack Thorne, that's drawing fans to this eighth installment in the popular series. Clocking in at more than five hours, the plot-heavy two-part drama features dozens of familiar characters from the novels — the living and dead — as time travel figures prominently. I will say no more about the story except that it takes place 19 years later. Harry, Hermione, and Ron are now 37 years old, with children of their own attending Hogwarts, and we find Harry's celebrity status is both a boon and burden to his family. The large bravura cast is led by the seven principal actors from the London production. Jamie Parker's Harry, with his trademark glasses, is the moral center, and Paul Thornley as ginger Ron provides the comic relief. Hermione is played by Norma Dumezweni. The dynamic is still perfectly matched, with the irresistible chemistry featured in the books and films. As in the books, the play takes a dark turn with strong psychological overtones. Tiffany is a wizard himself, navigating the emotional terrain with his own theatrical magic. Alongside his longtime collaborator Steven Hoggett as movement director, and the genius design team, they have crafted a stunningly immersive and moving experience. As much as I truly enjoyed the production, I should point out the British accents might be a little hard to make out at times. And if contemplating whether to take a child, consider that a working knowledge of the books or films is highly recommended. That's pretty true for us adult Muggles as well.",
   "showScoreExcerpt": "\"While the show is packed with many more dazzling tricks and illusions, it's the story that's drawing fans to this eighth installment in the popular series...As in the books, the play takes a dark turn with strong psychological overtones. Tiffany is a wizard himself, navigating the emotional terrain with his own theatrical magic. Alongside his longtime collaborator Steven Hoggett, and the genius design team, they have crafted a stunningly immersive and moving experience.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 80,
   "source": "show-score",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 82,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 78,
+      "low": 75,
       "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "stunningly immersive and moving experience",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "As much as I truly enjoyed the production",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "continues to work its special magic on the live stage",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic clearly enjoyed the production with strong praise for direction, design, and performances, though minor caveats about accents and accessibility keep it from being a rave.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly enjoyed the production, praising the story, performances, direction, and design as 'stunningly immersive and moving,' but notes practical reservations about accents and requiring prior knowledge of the source material. | GPT-4o: The review is overwhelmingly positive, highlighting the show's magical effects, strong performances, and immersive experience. The minor critique about accents and familiarity with the source material does not significantly detract from the overall enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, highlighting the magic, dazzling tricks, and immersive experience. The critic mentions enjoying the production but notes the accents might be difficult and recommends familiarity with the books/films, indicating a recommendation with minor reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:37:02.222Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2803,
-    "outputTokens": 320,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:02:33.187Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

@@ -10,81 +10,59 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": "2 stars",
-  "assignedScore": 35,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 35,
-    "confidence": "low",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 30,
-      "high": 40
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
-      "music": 15,
-      "performances": 65,
-      "direction": 30
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "doesn't have much going for it in the way of tuneful songs, show-stopping dances or enthralling storytelling",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "a bloated gizmo nobody asked for that... never justifies its perplexing existence as a stage musical",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "the musical left me cold and uninvolved. It made me want to go back… to the movie!",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic systematically dismantles the musical while calling it a 'bloated gizmo nobody asked for' and concluding it left them 'cold and uninvolved,' with only isolated praise for specific performances.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic gives 2 stars and delivers a consistently negative assessment, calling it a 'bloated gizmo nobody asked for' with 'awful' songs and criticizing most elements while acknowledging only minor positives like one actor's performance. | GPT-4o: The critic's 2-star rating and the review's focus on the lack of heart, poor songs, and overall disappointment with the adaptation strongly indicate a negative verdict. The critic explicitly states that the musical fails to engage, despite some enjoyable moments. | Gemini: The review highlights both positive and negative aspects. While praising the DeLorean effects and Casey Likes' performance, it criticizes the songs, the necessity of the musical adaptation, and Roger Bart's portrayal of Doc Brown. The overall tone suggests a mixed experience, leaning towards lukewarm.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
-    },
-    "humanReviewOverride": {
-      "previousConfidence": "high",
-      "reason": "LLM Pan (25) too harsh for Meh review. Override to thumb-based 60.",
-      "appliedAt": "2026-02-01T17:37:53.670Z"
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:31:41.501Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3752,
-    "outputTokens": 378,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:43.441Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 35,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
-    "scoreDelta": 0,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (25 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 25,

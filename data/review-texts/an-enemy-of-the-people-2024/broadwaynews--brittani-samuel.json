@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: While the critic praises Jeremy Strong's performance and Herzog's adaptation, they criticize the overall production for lacking the ferocity Ibsen demanded, calling performances 'largely blasé and unbalanced' with 'tepidness' throughout. | GPT-4o: The review highlights a strong performance by Jeremy Strong but criticizes the overall production for lacking the ferocity and risk expected from Ibsen's work. The critic expresses disappointment with the production's execution despite some ambitious attempts. | Gemini: The review highlights both positive and negative aspects of the production. While Jeremy Strong's performance is praised, the overall atmosphere is described as tepid and unbalanced. The reviewer also mentions bizarre attempts to modernize the story, leading to a mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review praises Strong's performance and Herzog's adaptation but criticizes Gold's direction as tepid and disappointing, with the critic explicitly stating their 'biggest disappointment' about the production's lack of ferocity and risk. | GPT-4o: The review highlights some strong elements, particularly Jeremy Strong's performance, but criticizes the overall production for lacking the ferocity and risk expected from the play. The critic's disappointment with the production's tepidness and the reliance on gimmicks suggests a mixed reception. | Gemini: The review praises Jeremy Strong's performance but criticizes the overall tepidness and unbalanced performances. The reviewer also mentions bizarre and cheapening gimmicks, suggesting a mixed experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,12 +36,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:13:38.893Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:36:25.444Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 57,
-    "previousVersion": "3.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,

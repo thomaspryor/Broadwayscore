@@ -8,37 +8,26 @@
   "bwwExcerpt": "“Prayer for the French Republic” addresses, with nuance, detail and understated passion, the tensions and the connections between history and current events. While it tells of a particular family, it illuminates the troubles of all people caught up in the turbulent tides of history—as everyone in a sense is—even if some face graver danger than others.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "addresses, with nuance, detail and understated passion",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "illuminates the troubles of all people caught up in the turbulent tides of history",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review praises the play's sophisticated handling of complex themes with 'nuance, detail and understated passion,' indicating strong appreciation for the writing and thematic depth. | GPT-4o-mini: The review praises the nuanced storytelling and its relevance, indicating a strong recommendation despite a lack of explicit enthusiasm.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt emphasizes positive qualities like 'nuance,' 'detail,' and 'understated passion,' suggesting appreciation for the production's thoughtful handling of its subject matter. However, confidence is medium due to limited text available. | GPT-4o: The review highlights the play's nuanced and passionate handling of complex themes, suggesting a positive reception. However, the lack of a full review and explicit recommendation lowers confidence slightly. | Gemini: The review uses positive language like \"nuance\", \"detail\", and \"understated passion\", suggesting a positive overall assessment despite the limited text available.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,20 +36,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:20.805Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:13.444Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“ 'Prayer for the French Republic' addresses, with nuance, detail and understated passion, the tensions and the connections between history and current events.\"",

@@ -10,42 +10,26 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 67,
+  "assignedScore": 70,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 67,
-    "confidence": "high",
+    "score": 70,
+    "confidence": "low",
     "range": {
-      "low": 60.5,
-      "high": 73.5
+      "low": 65,
+      "high": 75
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
-      "music": 45,
+      "music": null,
       "performances": null,
-      "direction": 73
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "underwhelming song or misfires a gag",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "the production's hyperactivity and spectacle can draw you back in",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Props sizzle with pyrotechnics and Finn Ross's video designs zip",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review presents a mixed assessment praising the spectacular production values and technical elements while acknowledging significant weaknesses in songs and comedy, suggesting a show that relies on spectacle to compensate for creative shortcomings. | GPT-4o-mini: The review highlights both impressive production elements and significant flaws, leading to a mixed recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The review praises the spectacular technical elements and DeLorean effects while criticizing weak songs, dated politics, and lack of fresh writing. The verdict suggests it works for fans but has clear limitations. | Gemini: The review highlights impressive visuals and nostalgic appeal, but notes dated aspects and underwhelming songs. It's recommended for fans of the movie despite its flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +38,27 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:12:33.740Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:25.663Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 67,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 68,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 67,

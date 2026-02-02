@@ -10,71 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 82,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Prayer For The French Republic is a must see for anyone who's interested in deepening their understanding of the Jewish experience through the ages",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It makes for powerful theater that's as entertaining as it is enlightening. And it's all terrifically enhanced by a sublime ensemble performing with absolute authenticity",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "While there is much to applaud, the play is not without flaws",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The 4/5 star rating combined with explicit 'must see' recommendation and extensive praise for performances, direction, and emotional impact clearly places this in the positive range despite minor structural criticisms.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite acknowledging flaws like pacing and runtime issues, the critic explicitly calls it a 'must see' and praises it as 'powerful theater that's as entertaining as it is enlightening' with a 4/5 star rating. | Gemini: Despite mentioning flaws, the critic gives the show 4 out of 5 stars and explicitly calls it a \"must see\", indicating a strong positive recommendation. The reservations are noted, but the overall tone is enthusiastic.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:53:12.344Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3986,
-    "outputTokens": 371,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:06.607Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 88,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 87,

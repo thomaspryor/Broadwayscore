@@ -6,16 +6,16 @@
   "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-ny-broadway-and-juliet-review-20221118-mtb3hrq7jrci5hprgdilaqpop4-story.html",
   "publishDate": "November 17, 2022",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 75,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:54:01.892Z",
   "llmScore": {
-    "score": 77,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges the show's entertainment value and crowd-pleasing elements but critiques it as unsubtle, lacking complex thinking, and hitting progressive buttons without impact. The tone is analytical rather than recommending. | GPT-4o: The review highlights the show's charm, engaging performances, and its appeal to a younger demographic, despite noting its lack of depth. The overall tone suggests it's an enjoyable experience worth seeing. | Gemini: The review acknowledges the show's flaws and unsubtlety, but ultimately suggests it's an enjoyable experience, especially for its target demographic. The critic highlights the engaging leads and the clever shift in the jukebox musical aesthetic, indicating a positive, albeit qualified, recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite calling it 'stunningly unsubtle' and criticizing the book as 'only very modestly witty,' the critic acknowledges it as effective entertainment with strong performances and concludes audiences are 'having a predictably good time,' indicating a recommendation despite flaws. | GPT-4o: The review highlights the show's engaging performances, clever targeting of a younger demographic, and its fun, empowering vibe. While acknowledging some lack of depth and wit, the overall tone suggests it's an enjoyable experience for its intended audience. | Gemini: The review acknowledges the show's flaws and unsubtlety, but highlights the engaging performances and clever targeting of a younger demographic, suggesting it's an enjoyable experience despite its shortcomings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,27 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:15:40.617Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:57:46.211Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 69,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 72,
     "openaiScore": 78,
     "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 16,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textFetchedAt": "2026-01-30T18:28:19.730Z",
   "textFetchMethod": "playwright",

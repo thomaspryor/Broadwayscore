@@ -9,15 +9,15 @@
   "bwwExcerpt": "As with his recent Broadway success, “Gutenberg!,” director Gordon Greenberg takes his job seriously, keeping the show moving as a fleet pace. Better still, he also never makes the show too serious, ensuring that its tongue remains firmly planted in one cheek or another almost the whole time.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -25,48 +25,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "takes his job seriously, keeping the show moving as a fleet pace",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "never makes the show too serious, ensuring that its tongue remains firmly planted in one cheek",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "director Gordon Greenberg takes his job seriously",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review praises the director's skill and pacing while noting the show maintains appropriate comedic tone, but this appears to be a brief excerpt lacking overall assessment. | GPT-4o-mini: The review expresses positive sentiments about the direction and pacing of the show, indicating a strong recommendation despite not addressing other components.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the director's work and pacing, calling his previous show a 'Broadway success,' but with only one curated quote available, I'm scoring conservatively in the lower positive range. | GPT-4o: The review excerpt praises the director's ability to keep the show engaging and light-hearted, suggesting a positive experience. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review praises the director's work, indicating a positive experience. However, due to the limited text and single excerpt, the score is placed conservatively within the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:11.873Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:40:06.122Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 73,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 77,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 77,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'squeezes every drop of talent' suggests the director maximizes the cast's abilities, which is positive praise, though this excerpt alone doesn't provide a complete verdict. | GPT-4o: The excerpt highlights the director's effective use of a talented cast, suggesting a positive view of the production. However, without the full context, the confidence is medium. | Gemini: The phrase \"squeezes every drop of talent\" suggests a positive experience, indicating the show is worth seeing. Without the full review, it's difficult to gauge the strength of the recommendation, but it leans towards positive.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'squeezes every drop of talent' suggests the director maximized the cast's abilities, which is positive praise. However, with only one excerpt available, this could be cherry-picked from a more mixed review, so scoring conservatively within the positive range. | GPT-4o: The excerpt praises the director's ability to maximize the talent of the cast, suggesting a positive view of the production. However, due to the single excerpt and lack of a full review, the score is placed conservatively in the middle of the Positive range. | Gemini: The review excerpt praises the director and cast, suggesting a positive experience, but the lack of full text and the single excerpt warning necessitates a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,14 +36,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:53:46.096Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:46:10.614Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 80,
+    "claudeScore": 72,
+    "openaiScore": 77,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",

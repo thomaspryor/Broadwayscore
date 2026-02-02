@@ -9,15 +9,15 @@
   "bwwExcerpt": "This sporadically fun musical from - where else! - Great Britain with a loony book by David West Read suggests this idea is somehow very feminist; that taking a dagger for your poisoned man is the ultimate failure of the Bechdel test. A bit self-righteous coming from a show that includes \"I Kissed a Girl and I Liked It\" by Katy Perry, dontcha think? The key to enjoying yourself at \"& Juliet\" - and it is, indeed, an empty-headed good time - is to ignore the plot entirely a",
   "bwwRoundupUrl": null,
   "bwwThumb": null,
-  "assignedScore": 63,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 63,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show is fun and entertaining but criticizes the plot, writing, and repetitive music. The review suggests it's enjoyable if you ignore the story and treat it like a concert, indicating a qualified, lukewarm recommendation. | GPT-4o: The review acknowledges some fun and enjoyable aspects, particularly the cast and music, but criticizes the plot and jokes, suggesting the show is not fully successful. The tone is neither fully positive nor negative, indicating a mixed verdict. | Gemini: The review highlights both positive and negative aspects. It acknowledges the show as an \"empty-headed good time\" if you ignore the plot, but criticizes the plot, music, and humor. This suggests a mixed experience, leaning towards a lukewarm recommendation.",
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the show is fun and entertaining ('sporadically fun', 'empty-headed good time') but criticizes the plot, writing, and shallow use of pop songs. The recommendation to 'ignore the plot entirely and pretend you're at a concert' suggests qualified enjoyment rather than genuine recommendation. | Gemini: The review acknowledges some fun aspects, particularly the music and performances, but criticizes the plot and writing. It suggests enjoying it as a concert experience, indicating a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:16:25.729Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:58:34.632Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 49,
-    "previousVersion": "3.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": null,
     "geminiScore": 62,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "dtliExcerpt": "This sporadically fun musical from — where else! — Great Britain with a loony book by David West Read suggests this idea is somehow very feminist; that taking a dagger for your poisoned man is the ultimate failure of the Bechdel test.",
   "sources": [

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a powerhouse performance as a single mother caring for her chronically ill son in this emotionally devastating Broadway drama.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "Rachel McAdams gives a powerhouse performance as a single mother caring for her chronically ill son in this emotionally devastating Broadway drama.",
   "needsScoring": true,
   "llmScore": {
-    "score": 50,
-    "confidence": "low",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 75
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "powerhouse performance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "emotionally devastating",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "This excerpt only praises McAdams' performance without evaluating the show itself or providing any recommendation signal.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review highlights a 'powerhouse performance' and describes the drama as 'emotionally devastating' in what appears to be a positive context, but the brief excerpt limits confidence in the overall assessment. | GPT-4o: The review highlights a 'powerhouse performance' and describes the play as 'emotionally devastating,' indicating a strong positive recommendation. | Gemini: The review highlights a strong performance and describes the drama as emotionally devastating, suggesting a positive but potentially difficult viewing experience. The lack of further details or reservations keeps it from being a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:04:08.617Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2329,
-    "outputTokens": 263,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:17:30.483Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

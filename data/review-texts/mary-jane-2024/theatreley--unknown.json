@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 75,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The quote suggests appreciation for the show's emotional depth and human authenticity, but with only one excerpt available, the full critical verdict remains unclear. | GPT-4o: The excerpt suggests a nuanced portrayal that might appeal to some but doesn't clearly indicate a strong recommendation. The tone is neither overtly positive nor negative, suggesting a mixed impression. | Gemini: The quote suggests a positive portrayal and human connection, indicating a recommendation, though the lack of full context makes it difficult to assess the strength of the recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt suggests appreciation for the show's emotional depth and humanity, but with only one curated quote available, the full critical verdict remains unclear. | GPT-4o: The excerpt suggests a deep, human portrayal, which indicates a positive view of the production. However, the lack of a full review and the single excerpt warning suggest scoring conservatively within the positive range. | Gemini: The single quote suggests a positive assessment of the character's portrayal, but without more context, it's difficult to gauge the overall recommendation. I'm placing it in the Positive bucket with a conservative score due to the limited information.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:23.202Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:19:00.409Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 65,
+    "claudeScore": 72,
+    "openaiScore": 76,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

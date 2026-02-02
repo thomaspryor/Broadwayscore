@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "The show feels like comfort food — familiar, warm and satisfying, even if it's not particularly challenging or groundbreaking.",
@@ -19,69 +19,52 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 52,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 48,
-      "high": 56
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 50,
-      "performances": 70,
-      "direction": 45
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Never hilarious, the revival stalls out at pleasant",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "director Josh Rhodes' fun-enough staging has a decent number of giggles",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "It's yet another missed opportunity for the revival to be something at least a little different",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic finds the revival pleasant but disappointing, praising individual performances while criticizing the lack of freshness and missed opportunities for improvement.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds the revival 'fun-enough' with 'a decent number of giggles' but criticizes it as less fresh than the original and notes multiple missed opportunities, landing squarely in neither recommend nor discourage territory. | GPT-4o: The review acknowledges some enjoyable performances and moments of humor but overall suggests the revival lacks the freshness and excitement of the original, resulting in a pleasant but unremarkable experience. | Gemini: The review acknowledges some enjoyable aspects, particularly the performances of certain cast members like Ethan Slater and Michael Urie, and the inherent humor of the source material. However, it also criticizes the production for not being as fresh or exciting as the original, and for a lackluster set design. The overall tone suggests a lukewarm reception, placing it in the 'Mixed' category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:08:51.756Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3314,
-    "outputTokens": 331,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:54.774Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 35,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (37 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "garbageFullText": "The show feels like comfort food — familiar, warm and satisfying, even if it's not particularly challenging or groundbreaking.",
   "garbageReason": "No theater-related keywords found",

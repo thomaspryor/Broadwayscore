@@ -9,71 +9,56 @@
   "bwwExcerpt": "“Mother Play” is not as great as plays Paula Vogel has written in the past – perhaps not as great as she might be able to make it in time – but under Tina Landau’s direction, it is a mesmerizing production, albeit not always easy to watch. That’s not only because of the fully-invested acting, but also because of the fully-infested sets (thanks to projection designer Shawn Duan.)",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 58,
+      "book": null,
       "music": null,
-      "performances": 82,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "not as great as plays Paula Vogel has written in the past",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "it is a mesmerizing production",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "fully-invested acting",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite criticizing the script compared to Vogel's previous work, the critic calls it a 'mesmerizing production' with strong praise for acting and direction, indicating qualified recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with comparative criticism, the critic calls it a 'mesmerizing production' and praises the acting and technical elements, indicating a positive but not enthusiastic recommendation. | GPT-4o: The review acknowledges the production's mesmerizing quality under Tina Landau's direction, despite not being as great as previous works by Paula Vogel. The positive elements like direction and acting suggest a recommendation, though with some reservations. | Gemini: The review states the play isn't Vogel's best but calls it a \"mesmerizing production,\" indicating a positive but not rave recommendation. The \"not always easy to watch\" suggests reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:39:53.191Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2396,
-    "outputTokens": 323,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:58.079Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",

@@ -7,7 +7,7 @@
   "publishDate": "2025-04-22",
   "bwwExcerpt": "he curious to make it last and pay off? Only time will tell, just as only time will determine its chances to attract a whole new generation to the joys of live theater. Stranger things have happened. Emlyn Travis, Entertainment Weekly: Immersive, heartfelt, and exhilarating, First Shadow is a must-see spectacle for the Stranger Things obsessive as much as it is for the theater aficionado who wants to see the medium pushed to new heights. Dan Rubins, Slant Magazine: Viewers of the series know that Henry will eventually become the demonic Vecna, ruler of the Upside Down and the monsters within, and how this backstory plays out since The First Shadow is ultimately an evening-long adaptation of a flashback sequence from season four. Most of the plot twists will be retrodden territory for Netflix viewers, and as such, when it comes to the story, the play’s fan service lies mostly in the recreation of iconic images from the series and in the supporting cast laying Easter eggs. Robert Hofler,",
   "originalScore": "B+",
-  "assignedScore": 92,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway-20241120",
@@ -19,18 +19,13 @@
   "dtliExcerpt": "Immersive, heartfelt, and exhilarating, First Shadow is a must-see spectacle for the Stranger Things obsessive as much as it is for the theater aficionado who wants to see the medium pushed to new heights. It does a phenomenal job of not only fleshing out a complicated character, but also providing context for the extreme lengths that Henry goes to in the TV series.",
   "dtliThumb": "Up",
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:39:32.952Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2389,
-    "outputTokens": 333,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:10.074Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "designation": "Must_See",
   "showScoreExcerpt": null,
@@ -92,40 +87,24 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "llmScore": {
-    "score": 92,
+    "score": 89,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 88
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "must-see spectacle",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Immersive, heartfelt, and exhilarating",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "does a phenomenal job",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review uses unqualified superlatives ('must-see', 'phenomenal', 'exhilarating') and explicitly calls it a must-see for multiple audiences with no reservations.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review uses explicit must-see language and calls it 'immersive, heartfelt, and exhilarating' while praising it for pushing theater to 'new heights.' The B+ rating and aggregator context confirm strong positive reception. | GPT-4o: The review uses strong, enthusiastic language such as 'must-see spectacle' and 'exhilarating', indicating a highly positive recommendation. The original rating of B+ aligns with a strong positive to rave classification. | Gemini: The review uses strong positive language like \"must-see spectacle\" and \"pushed to new heights,\" indicating a rave review. The B+ rating from Entertainment Weekly further supports this classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
@@ -133,12 +112,12 @@
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 95,
-    "geminiScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 7,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

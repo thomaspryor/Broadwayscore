@@ -9,42 +9,26 @@
   "showScoreExcerpt": "\"Given the year the play is set, these developments seem more a matter of pandering to contemporary ideas than anything else. But linear logic is not a hallmark of farce, good, bad or, as in this case, indifferent.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
   "originalScore": null,
-  "assignedScore": 39,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 39,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 33,
-      "high": 45
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 33,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "as in this case, indifferent",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "linear logic is not a hallmark of farce, good, bad or",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "pandering to contemporary ideas",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic explicitly calls the farce 'indifferent' and criticizes it for pandering, indicating a clear negative assessment despite acknowledging genre conventions. | GPT-4o-mini: The review expresses clear dissatisfaction with the play's execution and thematic choices, indicating a negative overall impression.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls the show 'indifferent' and criticizes pandering and lack of logic, but with only one excerpt available, this could be cherry-picked from a longer mixed review. | GPT-4o: The review excerpt describes the play as 'indifferent,' suggesting a neutral stance. The lack of enthusiasm and the critique of pandering to contemporary ideas indicate a mixed assessment. | Gemini: The review excerpt suggests the play is \"indifferent,\" which falls into the mixed category. The single excerpt and lack of full context make it difficult to assess a stronger positive or negative leaning.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:20:25.439Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:01:23.995Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 39,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 40,
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0

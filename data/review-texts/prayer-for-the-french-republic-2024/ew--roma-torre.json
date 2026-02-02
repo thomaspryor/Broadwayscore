@@ -9,64 +9,56 @@
   "bwwExcerpt": "The production is directed with great heart and welcome humor by David Cromer. It makes for powerful theater that’s as entertaining as it is enlightening. And it’s all terrifically enhanced by a sublime ensemble performing with absolute authenticity.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 87,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 80.5,
-      "high": 93.5
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 89,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "makes for powerful theater that's as entertaining as it is enlightening",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "sublime ensemble performing with absolute authenticity",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "directed with great heart and welcome humor",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Consistently strong praise for direction and performances with powerful language like 'sublime' and 'absolute authenticity' indicates clear positive recommendation. | GPT-4o-mini: The review expresses strong praise for the direction and performances, indicating a clear recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This excerpt only provides a neutral observation about the transfer from Off Broadway without indicating whether the critic views this change positively or negatively. The truncated nature and lack of clear evaluative language makes a definitive assessment impossible. | GPT-4o: The excerpt suggests a comparison between the Broadway and Off-Broadway versions, implying changes that might not fully capture the original's intimacy. Without a clear recommendation or criticism, it suggests a mixed reception. | Gemini: The review excerpt suggests the Broadway transfer is different and potentially less successful than the Off-Broadway version, indicating a mixed assessment. Without more context, it's difficult to determine a stronger recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:18.582Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:25.471Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 87,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 88,
-    "scoreDelta": 3,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

@@ -9,7 +9,7 @@
   "bwwExcerpt": "With an exuberant band, Just in Time rides easy on Groff’s waves of showman charisma while paying tribute to the era-specific music and other singers, especially the women in Darin’s life who inspired his performance, starting with Michele Pawk as a parental figure with a vaudevillian past. The book seamlessly weaves in how other stars like Connie Francis (a blazing, must-see Gracie Lawrence) and Sandra Dee (a commanding Erika Henningsen), the latter of whom witnessed his fallible humanity, were integral to his life.",
   "showScoreExcerpt": "\"With an exuberant band, Just in Time rides easy on Groffâs waves of showman charisma while paying tribute to the era-specific music and other singers, especially the women in Darinâs life who inspired his performance\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.newyorktheatreguide.com/reviews/just-in-time-broadway-review-jonathan-groff-bobby-darin",
@@ -17,67 +17,51 @@
   "textFetchedAt": "2026-01-25T04:14:02.718Z",
   "sourceMethod": "bww-roundup",
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 72,
-      "music": 80,
-      "performances": 85,
-      "direction": 82
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Just in Time doesn't aim to reinvent the jukebox bio-musical wheel, but it deploys something fresh to its audience anyway",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "The meta-theatricality of Just in Time, exemplified by Alex Timbers's direction and Jonathan Groff's performance, injects freshness into the jukebox bio-musical",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Gracie Lawrence practically melts into the era and role of singer Connie Francis, rendering an unmissable Broadway performance",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Review consistently praises performances, direction, and production design with specific positive recommendations for individual artists, while acknowledging the show works within familiar bio-musical conventions but executes them well.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review consistently praises Groff's performance, the staging design, and supporting cast with terms like 'exuberant,' 'blazing, must-see,' and 'unmissable Broadway performance,' while acknowledging it doesn't break new ground in the bio-musical format. | Gemini: The review is generally positive, highlighting Groff's performance and the immersive staging. It acknowledges the show doesn't reinvent the genre but offers a fresh take, suggesting a recommendation with some reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:24:02.701Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3824,
-    "outputTokens": 390,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:13.437Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 88,
-    "scoreDelta": 10,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "designation": "Must_See",
   "sources": [

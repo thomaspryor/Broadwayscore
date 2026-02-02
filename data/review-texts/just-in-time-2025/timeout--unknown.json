@@ -12,7 +12,7 @@
   "assignedScore": 81,
   "llmScore": {
     "score": 81,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 76,
       "high": 86
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is overwhelmingly positive with enthusiastic language like 'helluva good time,' 'dazzling,' 'radiant,' and describes an engaging, entertaining experience that clearly recommends seeing the show. | GPT-4o: The review is highly positive, emphasizing the enjoyment and emotional engagement of the show. The language used is enthusiastic and suggests a strong recommendation to see the production. | Gemini: The review is overwhelmingly positive, highlighting the entertainment value and Jonathan Groff's performance. The phrase \"helluva good time\" indicates a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review opens with strong enthusiasm ('helluva good time') and consistently praises the production with phrases like 'dazzling rush,' 'radiant,' and 'so well diverted and amused,' indicating a strong positive recommendation. | GPT-4o: The review describes the show as a 'helluva good time' and praises the staging and performances, indicating a strong positive recommendation. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review uses very positive language, calling the show a \"helluva good time\" and praising the performance and direction. The critic describes the experience as diverting and amusing, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:48:43.961Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:16:03.607Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 81,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 92,
+    "openaiScore": 82,
     "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

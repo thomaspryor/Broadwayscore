@@ -9,7 +9,7 @@
   "showScoreExcerpt": "“...with the frequent breaking of the fourth wall and the milking of some meta moments, you wonder what exactly the show’s aiming to be: a self-aware joke for fans or a thrill ride with sincerity.”",
   "bwwExcerpt": "In a story that hearkens back to 1955, you could wish this musical’s creators had considered what made musical theater so great in that golden era. Perhaps they might have crafted something more fresh and tuneful, with goosebump moments that come not from hydraulics but from theatrical know-how. Sometimes looking at the past with fresh eyes can lead to a new road forward, but with “Back to the Future,” time just stands still.",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 61,
   "source": "show-score",
   "textFetchedAt": "2026-01-25T13:52:34.860Z",
   "textFetchMethod": "playwright",
@@ -18,62 +18,52 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 48,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 43,
-      "high": 53
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 38,
-      "music": 45,
-      "performances": 50,
-      "direction": 50
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "for others seeking re-imaginings more than repeats, 'Back to the Future' will seem more fitting for a theme park than Broadway",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "this musical trip is on auto-pilot with conventional musical tropes and an exposition-crammed narrative that rarely veers from the film",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Sometimes looking at the past with fresh eyes can lead to a new road forward, but with 'Back to the Future,' time just stands still",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic finds the production technically impressive but fundamentally lacking in theatrical imagination, describing it as better suited for a theme park than Broadway with derivative performances and uninspired material. | GPT-4o-mini: The review expresses significant disappointment with the production's reliance on spectacle over substance, indicating a hard recommendation against it despite some redeeming qualities in performances and design.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic expresses uncertainty about the show's purpose and effectiveness, questioning its coherence between meta-humor and genuine thrills, which indicates ambivalence rather than clear recommendation. | GPT-4o: The review suggests uncertainty about the show's direction and purpose, indicating a mixed reception. The critic questions the show's intent, which implies it may not fully succeed in its execution. | Gemini: The review questions the show's aim and suggests it might be more for fans than a universally appealing experience, indicating a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:33:01.973Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:19.551Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 48,
-    "scoreDelta": 0,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (48 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",

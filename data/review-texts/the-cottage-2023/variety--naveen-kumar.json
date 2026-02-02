@@ -10,44 +10,28 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 32,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "“...this comedy of manners by the playwright Sandy Ruskin is so thoroughly old-fashioned that it may come as a surprise it’s not based — like so many Broadway outings lately are — on existing material. Which is not to say that any part of it feels original.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
   "llmScore": {
-    "score": 32,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 28,
-      "high": 38
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 40
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This is a paint-by-numbers sex farce",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "any part of it feels original",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "familiar, superficial and fleeting",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic systematically dismantles the play as unoriginal, formulaic, and superficial, with only a brief acknowledgment of the lavish production failing to redeem the fundamental flaws.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic consistently criticizes the show as unoriginal, paint-by-numbers, and superficial, with pleasures that are 'fleeting' rather than substantial, indicating clear disappointment without recommendation. | GPT-4o: The review criticizes the play for being unoriginal and superficial, with pleasures that are fleeting. The tone is dismissive, indicating a negative recommendation. | Gemini: The review uses phrases like \"paint-by-numbers sex farce\" and \"familiar, superficial and fleeting\" to describe the play, indicating a negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,27 +40,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:17:23.756Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2487,
-    "outputTokens": 323,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:01:15.722Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 32,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,

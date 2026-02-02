@@ -7,16 +7,16 @@
   "publishDate": "November 17, 2022",
   "dtliExcerpt": "Allow Juliet to reintroduce herself. Or rather, let Anne Hathaway do it for her. No, not the Oscar-winning actress known for “The Devil Wears Prada.” The Anne Hathaway I’m referring to is William…",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:02:05.738Z",
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing the book as 'lackluster' and calling it a 'part-failed feminist retelling,' the reviewer concludes it's 'pure entertainment' and recommends it for the fun factor and strong performances, particularly praising Lorna Courtney. | GPT-4o: The review acknowledges several flaws, such as the lackluster book and unoriginal choreography, but ultimately emphasizes the show's entertainment value and fun, recommending it despite its shortcomings. | Gemini: The review acknowledges flaws in the plot and choreography, but ultimately concludes that the show is pure entertainment and fun, making it a positive recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges significant flaws (lackluster book, shallow characters, unoriginal choreography) but concludes it's 'pure entertainment' and makes up for deficiencies with fun factor. | GPT-4o: The review acknowledges flaws in the script and execution but emphasizes the entertainment value and fun of the production. The critic appreciates the performances and the musical's ability to entertain, suggesting a positive recommendation with some reservations. | Gemini: The review acknowledges flaws in the book and choreography but ultimately concludes that the show is pure entertainment and fun, making it a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +37,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:15:36.029Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:57:42.090Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 62,
     "openaiScore": 78,
     "geminiScore": 78,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/and-juliet-2022/broadwaynews--brittani-samuel_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:24:15.245Z",

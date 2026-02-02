@@ -8,44 +8,28 @@
   "fullText": "When last we saw Harry Potter in J.K. Rowling's novels, he and his wife Ginny were just about to send their younger son off to Hogwarts School of Witchcraft and Wizardry. And that's where we find him at the beginning of this five-hour, two-part drama which transferred to Broadway after rave reviews in London's West End. That younger son, Albus Severus Potter (Sam Clemmett) is nervous: He has a feeling wizard school isn't for him. Still, Albus tries. For example, he follows his father's directive to try to make friends, but winds up cavorting with the son of Harry's arch enemy, Scorpius Malfoy (whose gawky kindness is a surprisingly delightful addition to Hogwarts). At every turn, Albus finds his peers comparing him unfavorably to Harry, the boy who saved the world. The general mismatch between who Albus is and who he is expected to be sets off a time-travel misadventure that leads to a dark, authoritarian place with a fascist leader. I can't say much more here without revealing the plot's many secrets and surprise cameos. But just know that the gang's back together, and Harry (Jamie Parker), Hermione (Noma Dumezweni) and Ron (Paul Thornley) are just as delightful as they ever were. The result is thrilling, thanks in part to enchanting stagecraft — including flying wizards, glowing wands and fantastic spell-casting duels. But there are also events on stage that seem impossible, and effects that are simply astonishing. But the reason this show is magical is not just due to theater wizardry. It's also because the themes at its heart are moving ones. It explores the relationships between fathers and their children; sons, mainly, but also a daughter. It explores the futile wish to change the past. And it speaks about the curse of loneliness, and about how the only way to reverse it is friendship. Harry Potter and the Cursed Child by Jack Thorne, based on a story by J.K. Rowling, Jack Thorne and John Tiffany. Directed by Jack Thorne at the Lyric Theatre. Open run.",
   "showScoreExcerpt": "\"The gang's back together, and Harry, Hermione, and Ron are just as delightful as they ever were...The result is thrilling, thanks in part to enchanting stagecraft...There are events on stage that seem impossible, and effects that are simply astonishing...But the reason this show is magical is not just due to theater wizardry. It's also because the themes at its heart are moving ones.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "show-score",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 82,
-      "direction": 88
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The result is thrilling, thanks in part to enchanting stagecraft",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "effects that are simply astonishing",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the reason this show is magical is not just due to theater wizardry. It's also because the themes at its heart are moving ones",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Consistently enthusiastic language about stagecraft, effects, performances, and thematic depth with no meaningful reservations expressed.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the performances, stagecraft, and thematic depth, calling it 'thrilling' and 'magical' with 'astonishing' effects and 'moving' themes, clearly recommending the show. | Gemini: The review highlights the thrilling stagecraft and moving themes, indicating a positive experience and recommendation, despite not being a 'rave'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,27 +38,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:37:36.657Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2807,
-    "outputTokens": 332,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:07:11.076Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

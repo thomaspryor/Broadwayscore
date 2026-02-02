@@ -9,15 +9,15 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 89,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 89,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses superlative language comparing Groff to Hugh Jackman as 'Broadway's greatest showman' and calls the show 'the slickest attraction in town' - clear enthusiastic praise despite limited excerpt. | GPT-4o: The review text uses highly enthusiastic language, comparing Jonathan Groff to Hugh Jackman and describing the show as the 'slickest attraction in town,' indicating a strong recommendation. | Gemini: The review excerpt praises Jonathan Groff and calls the show a 'slick attraction,' suggesting a positive recommendation despite the limited context.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The comparison to Hugh Jackman as 'Broadway's greatest showman' and describing the show as 'the slickest attraction in town' indicates strong praise, but with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The excerpt suggests a highly positive view of Jonathan Groff's performance, comparing him favorably to a well-known Broadway star. The language is enthusiastic, indicating a strong recommendation, though the single excerpt warning suggests a conservative score within the 'Rave' bucket. | Gemini: The review excerpt is positive, praising Jonathan Groff and the show. The phrase 'slickest attraction' suggests a positive experience, but without the full review, I'm scoring it conservatively within the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:48:28.754Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:14:24.449Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
+    "claudeScore": 76,
+    "openaiScore": 88,
     "geminiScore": 75,
-    "claudeBucket": "Rave",
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

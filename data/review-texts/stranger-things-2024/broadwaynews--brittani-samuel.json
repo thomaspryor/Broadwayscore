@@ -7,16 +7,16 @@
   "publishDate": "April 23, 2025",
   "dtliExcerpt": "Three hours in the “Stranger Things: The First Shadow” universe passes in a blink. By the end, you’re convinced they’ve pulled off another trick: an exorbitant spectacle wrapped around the scrappy, gushy heart of the original.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T22:02:29.296Z",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 86
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -24,48 +24,41 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Three hours in the \"Stranger Things: The First Shadow\" universe passes in a blink",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "you're convinced they've pulled off another trick",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "an exorbitant spectacle wrapped around the scrappy, gushy heart of the original",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic expresses clear admiration for the production's ability to maintain engagement over three hours and successfully capture the essence of the source material through spectacular production values.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the show's ability to make three hours feel brief and successfully capture the original's heart, indicating a positive experience despite being only one curated quote. | GPT-4o: The excerpt suggests an engaging and enjoyable experience, highlighting the spectacle and heart of the production. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review excerpt indicates a positive experience, suggesting the show is engaging and well-executed. The phrase 'pulled off another trick' implies a successful adaptation and enjoyable spectacle.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:14:12.923Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2356,
-    "outputTokens": 309,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:57.869Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 79,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
   "archivePath": "data/archives/reviews/stranger-things-2024/broadwaynews--brittani-samuel_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:28:40.272Z",
   "sourceMethod": "scrapingbee",

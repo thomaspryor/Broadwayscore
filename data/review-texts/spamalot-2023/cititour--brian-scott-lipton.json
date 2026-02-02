@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 89,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 88,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 95,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The real star of the show is the divine Leslie Rodriguez Kritzer as the Lady of the Lake in what deserves to be a Tony Award-winning turn",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "she is both consistently hilarious and vocally spectacular, stealing every spotlight that is shone on her",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "if Broadway could just can this dynamic diva, that would be worth all the Spam in the world",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Ecstatic praise for the lead performance with superlatives like 'divine,' 'Tony Award-winning,' and 'vocally spectacular,' but focuses exclusively on one performer without evaluating the overall show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The excerpt shows unrestrained enthusiasm for the lead performance with phrases like 'divine', 'Tony Award-winning turn', and 'worth all the Spam in the world', but single excerpt warning requires conservative scoring within the rave range. | GPT-4o: The excerpt is highly positive about Leslie Rodriguez Kritzer's performance, suggesting it is a standout element of the show. The mention of a Tony Award-winning turn and the enthusiastic tone indicate a strong recommendation, though the single excerpt warning suggests a conservative score within the rave range. | Gemini: While the review focuses heavily on Leslie Rodriguez Kritzer's performance, the enthusiastic praise and the statement that she's 'worth all the Spam in the world' suggests a positive, albeit potentially conditional, recommendation. The single excerpt and focus on one performer warrant a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:08:29.018Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2413,
-    "outputTokens": 375,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:22.447Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 94,

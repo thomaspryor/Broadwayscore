@@ -17,64 +17,49 @@
     "score": 95,
     "confidence": "high",
     "range": {
-      "low": 92,
-      "high": 98
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 90,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 95
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "A triumph of epic proportions",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It's some kind of miracle",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "a marvel of stagecraft that will soon be the stuff of legend",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Unqualified rave with superlatives like 'triumph,' 'miracle,' and 'legend' throughout, praising both story and stagecraft with no reservations.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite being a single excerpt, the language is unambiguously rapturous with superlatives like 'triumph of epic proportions,' 'marvel of stagecraft,' and calling it 'some kind of miracle' - clearly a rave review. | GPT-4o: The review uses extremely positive language, calling the play a 'triumph' and 'some kind of miracle', indicating a strong recommendation. The critic describes the production as a marvel and a continuation of the saga, suggesting it exceeds expectations. | Gemini: The review uses extremely enthusiastic language like \"triumph of epic proportions\", \"marvel of stagecraft\", and \"some kind of miracle\", indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:08:40.792Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2410,
-    "outputTokens": 294,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:03:42.991Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 95,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 97,
+    "claudeScore": 95,
     "openaiScore": 95,
-    "scoreDelta": 2,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/rolling-stone--peter-travers_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:35:33.127Z",

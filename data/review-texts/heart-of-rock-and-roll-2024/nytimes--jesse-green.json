@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The jukebox musical 'The Heart of Rock & Roll,' built around the hits of Huey Lewis and the News, is energetic and well-performed but feels more like a concert than a cohesive story.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "The jukebox musical 'The Heart of Rock & Roll,' built around the hits of Huey Lewis and the News, is energetic and well-performed but feels more like a concert than a cohesive story.",
   "needsScoring": true,
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
       "low": 58,
-      "high": 66
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
+      "book": null,
       "music": null,
-      "performances": 75,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "energetic and well-performed",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "feels more like a concert than a cohesive story",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review praises energy and performances but criticizes the fundamental theatrical structure, suggesting a show that works on some levels but fails as cohesive musical theater.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges positive elements (energetic, well-performed) but identifies a fundamental structural flaw that prevents full recommendation. | GPT-4o: The review acknowledges the energy and performance quality but criticizes the lack of a cohesive story, suggesting a mixed impression overall. | Gemini: The review acknowledges positive aspects like energy and performance but ultimately finds the show lacking in a cohesive narrative, suggesting a mixed experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:57:57.978Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2348,
-    "outputTokens": 278,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:41:13.208Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

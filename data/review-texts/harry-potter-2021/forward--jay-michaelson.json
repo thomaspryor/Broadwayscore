@@ -7,73 +7,57 @@
   "publishDate": "April 22, 2018",
   "showScoreExcerpt": "\"Underneath all of the whimsy, cuteness, and nostalgia, this play is dark...Filled with action, humor, and adventure. The magic of the wizarding world is conveyed by a truly amazing combination of choreography, set design, and old-fashioned magic tricks...Not everything is perfect...But there were many times when I gaped in amazement, choked up, laughed, cheered, and felt the warmth of old friends I thought I'd never see again...A spectacle, but it's also a courageous work of art.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "show-score",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 72,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The amazing, bar-raising production of \"Harry Potter and the Cursed Child\" is unlike anything I've seen on Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "It's a spectacle, but it's also a courageous work of art",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The play is far too long and meandering; It seems to end at least twice, only to cook up a new plot out of the embers of the old one",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite noting significant flaws like length and plot issues, the critic calls it 'amazing' and 'bar-raising,' praises the production values extensively, and concludes it's 'a courageous work of art' that reminded him what he loved about Harry Potter.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges significant flaws (too long, meandering, plot holes) but concludes positively, calling it 'a courageous work of art' and describing many moments of amazement and emotional engagement. | Gemini: The review is largely positive, highlighting the play's spectacle and emotional impact, but acknowledges flaws like length and plot holes. The critic ultimately recommends seeing it, making it a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:07:11.856Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4370,
-    "outputTokens": 399,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:00:52.404Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 80,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/forward--jay-michaelson_2026-01-30.html",
   "textFetchedAt": "2026-01-30T16:06:10.856Z",

@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite critiques of the adaptation being 'agitprop' and some directorial choices, the review praises Strong's performance as 'wonderful' and notes Herzog's writing as 'a vast improvement' over her previous Ibsen adaptation, indicating an overall positive recommendation. | GPT-4o: The review highlights strong performances, particularly by Jeremy Strong, but criticizes the production for being less dramatic than real-life events and turning the play into 'agitprop.' The tone suggests a mix of appreciation for certain elements and disappointment with the overall execution. | Gemini: The review highlights Jeremy Strong's performance as a major positive and acknowledges the play's relevance. While it points out some issues with the adaptation, the overall tone suggests a recommendation, albeit with reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises Strong's performance highly and finds the production an improvement over the director's previous work, though critiques the agitprop approach and some modernizations. | GPT-4o: The review highlights strong performances, particularly by Jeremy Strong, and some creative elements, but criticizes the production for being less dramatic than real-life events and turning the play into agitprop. The mixed tone suggests it has its moments but is not a strong recommendation. | Gemini: The review praises Jeremy Strong's performance and notes improvements over Herzog's previous adaptation, but also criticizes the play for being too much like 'agitprop'. Overall, it's a positive review with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,21 +40,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:14:37.405Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:39:09.076Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 71,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 65,
+    "openaiScore": 68,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

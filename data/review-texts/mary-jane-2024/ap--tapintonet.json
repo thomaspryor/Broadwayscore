@@ -10,18 +10,18 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MARY-JANE-2024",
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,26 +29,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 72
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "brimming with hope, magic and humanity",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this audience was glad to see more",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "these are minor observations",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: Despite noting some minor staging issues, the critic concludes positively with strong descriptors like 'brimming with hope, magic and humanity' and observes audience enthusiasm, indicating a clear recommendation. | GPT-4o-mini: The review expresses a clear positive sentiment about the show while noting minor issues, leading to a strong recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly states 'It's worth the wait' and praises both the performance and directorial choices, indicating a positive recommendation despite limited text available. | GPT-4o: The review suggests that the play's power lies in its unexpected moments and that the payoff is satisfying, indicating a positive recommendation. However, the lack of a full review and the emphasis on the delayed climax suggest some reservations. | Gemini: The review highlights a specific moment as being \"worth the wait,\" indicating a positive, though perhaps not overwhelmingly enthusiastic, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,20 +41,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:08:07.699Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:16:44.810Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

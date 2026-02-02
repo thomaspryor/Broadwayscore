@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"Squeeze your memories into spandex and get ready to turn back the clock.\"",
@@ -18,60 +18,52 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 64,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 72,
-      "performances": 77,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The saving grace of The Heart of Rock and Roll",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "the talent of its cast, which is chock-full of pros",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "For some members of Generation X, what this show offers will be more than enough",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review frames the cast as a 'saving grace,' implying the show needs saving, but praises performances and songs while offering a qualified recommendation for a specific demographic. | GPT-4o-mini: The review highlights strong performances and humor but lacks enthusiasm for the overall production, suggesting a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This single quote appears to be describing the show's premise rather than offering critical evaluation. With only this excerpt and aggregator context suggesting 'Flat', I cannot determine a clear verdict. | GPT-4o: The provided quote suggests a nostalgic and potentially fun experience, but lacks a clear recommendation or critique. The aggregator context indicates a flat verdict, supporting a mixed classification. However, due to the limited text, confidence is low. | Gemini: The provided quote suggests a nostalgic and potentially fun experience, but lacks a clear recommendation. The aggregator verdict being 'Flat' further supports a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:12:47.077Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:06.636Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "scoreDelta": 3,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

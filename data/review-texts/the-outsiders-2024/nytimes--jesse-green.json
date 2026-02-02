@@ -18,64 +18,48 @@
     "score": 76,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 79
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 70,
-      "performances": 82,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the musical version of 'The Outsiders' that opened on Thursday has been made with so much love and sincerity it survives with most of its heart intact",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Many stunning things are happening on the stage of the Bernard B. Jacobs Theater — and from the sobs I heard the other night, in the audience, too",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "they're still achievements, and a show need not be for the ages to be for the moment. In that sense it's fair, citing Frost, to call it golden",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite acknowledging structural problems and some compromises, the critic clearly admires the production's sincerity, emotional impact, design work, and performances, concluding it's 'golden' for the moment.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Green acknowledges significant structural problems and compromises but ultimately finds the show succeeds through sincerity, strong design, and faithful service to the source material. He calls it 'golden' and states 'a show need not be for the ages to be for the moment.' | Gemini: The critic acknowledges flaws in the musical's structure and pacing but ultimately finds it a sincere and effective adaptation, praising the performances, direction, and design elements. The review concludes that despite its issues, the show has achievements and is worth seeing for the moment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:22:42.277Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4148,
-    "outputTokens": 406,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:10:04.524Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 60,
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "designation": "Critics_Pick",
   "rescoreReason": "fullText added after excerpt-based scoring",

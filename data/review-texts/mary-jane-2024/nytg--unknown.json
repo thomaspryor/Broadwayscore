@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 78,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses positive descriptors like 'clear-eyed,' 'compassionate,' and praises both the playwright's dialogue and the cast's performances, indicating a recommendation despite the limited excerpt. | GPT-4o: The review highlights the strengths of the play, such as its clear-eyed and compassionate nature, and praises the director and cast for their execution. While the text is truncated, the positive language suggests a recommendation. | Gemini: The review highlights the positive aspects of the play, such as the clear-eyed and compassionate nature of the story, the fine-tuned dialogue, and the cast's performance. While there isn't an explicit recommendation, the overall tone suggests a positive experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt uses positive evaluative language about the script and performances, but with only one curated quote available, I'm scoring conservatively within the positive range. | GPT-4o: The review excerpt praises the play's clarity, compassion, and humor, as well as the effective direction and performances, indicating a positive recommendation. However, due to the single excerpt and lack of a full review, the confidence is medium. | Gemini: The review highlights the positive aspects of the play, such as the clear-eyed and compassionate nature of the story, the quality of the dialogue, and the cast's performance. However, due to the limited text available, a more conservative score is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:14.494Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:18:02.566Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
+    "claudeScore": 76,
+    "openaiScore": 77,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

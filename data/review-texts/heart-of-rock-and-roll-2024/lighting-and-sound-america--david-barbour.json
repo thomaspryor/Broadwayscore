@@ -9,42 +9,26 @@
   "showScoreExcerpt": "Stop the presses! The headline news of the day is The Heart of Rock and Roll is...not bad.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 72,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 60,
+    "score": 72,
     "confidence": "medium",
     "range": {
-      "low": 50,
-      "high": 70
+      "low": 67,
+      "high": 77
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Stop the presses! The headline news of the day is The Heart of Rock and Roll is...not bad.",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "The Heart of Rock and Roll is...not bad.",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "Stop the presses!",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic uses dramatic language ('Stop the presses!') to set up what turns out to be faint praise ('not bad'), suggesting modest surprise at the show's competence rather than enthusiasm. | GPT-4o-mini: The review indicates a lukewarm response, suggesting the show is acceptable but not particularly strong or compelling.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with strong criticism of the jukebox musical format, the critic's actual verdict on this specific show is that it's 'not bad,' which represents a positive assessment given their stated dim view of the genre. | GPT-4o: The review opens with a negative view of the jukebox musical format but acknowledges that this particular production is 'not bad', suggesting a mixed but not entirely negative assessment. | Gemini: Despite the critic's general dislike of jukebox musicals, they state that this particular show is \"not bad,\" indicating a mild recommendation. The initial setup is negative, but the ultimate assessment is positive, albeit with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:24:25.885Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:40:18.193Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 60,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 55,
-    "scoreDelta": 10,
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,

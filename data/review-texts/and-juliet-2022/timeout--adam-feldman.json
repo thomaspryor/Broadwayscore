@@ -7,66 +7,58 @@
   "publishDate": "November 17, 2022",
   "showScoreExcerpt": "\"Its title notwithstanding, '& Juliet' barely takes time to define its heroine; it puts her at the center of the story and then makes her its least interesting character.\"",
   "originalScore": "3/5",
-  "assignedScore": 64,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T22:47:00.000Z",
   "bwwExcerpt": "\"Keep it light, keep it tight, keep it fun, and then we're done!\" That's the pithy advice that the indignant 16th-century housewife Anne Hathaway (Betsy Wolfe) imparts to her neglectful husband, William Shakespeare (Stark Sands), as a way to improve his play Romeo and Juliet, which she considers too much of a downer. It is also the guiding ethos of the new Broadway jukebox musical & Juliet, a quasi-Elizabethan romp through the chart-toppers of Swedish songwriter-producer Max Martin.",
   "llmScore": {
-    "score": 64,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 73
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 50,
-      "music": 74,
-      "performances": 69,
-      "direction": 60
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "& Juliet gives audiences what they want from it: all those hits, baby, one more time.",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "though often entertaining, also feels pretty disposable",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It is what it is: It gives you the hooks and it gets the ovations.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The 3/5 star rating and balanced critique praising the music and some performances while criticizing the weak book and disposable nature suggests a qualified, mixed recommendation. | GPT-4o-mini: The review expresses a mix of appreciation for the music and performances while highlighting significant flaws in the story and character development, leading to a qualified recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 rating and phrase 'it is what it is' suggests competent but unexceptional entertainment that neither strongly recommends nor discourages attendance. | GPT-4o: The review describes the show as 'diverting' and 'synthetic,' suggesting it meets expectations without exceeding them. The original 3/5 rating and the aggregator's 'flat' verdict indicate a mixed reception. | Gemini: The review, despite the comparisons to other shows, indicates that it delivers what is expected and gets ovations, suggesting a positive, albeit not overwhelmingly enthusiastic, experience. The 3/5 rating also supports this.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:30:18.037Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:59:23.895Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 60,
-    "scoreDelta": 8,
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "textFetchedAt": "2026-01-25T13:47:51.649Z",
   "textFetchMethod": "playwright",

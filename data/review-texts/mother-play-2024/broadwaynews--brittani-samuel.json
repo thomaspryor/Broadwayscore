@@ -7,42 +7,26 @@
   "publishDate": "April 26, 2024",
   "fullText": "Vogel’s nuanced exploration of her own family sets the stage for a profound and humorous new American play.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Mother Play.”\n\nPaula Vogel may be playwriting royalty, but if her latest work “Mother Play” is any indication, she has not lost sight of the instruction in the first half of her job title: play. In this new, often funny mashup between a memory play and an apartment tragedy (Vogel calls it “a play in five evictions”), the dramatist turns her typically insightful lens on her own family. The work is largely autobiographical about her complicated mother and her intermittently successful attempts to care for and accept her queer children, Carl (Jim Parsons) and Martha (Celia Keenan-Bolger). Phyllis (Jessica Lange) is the play’s booze-bolstered matriarch.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Vogel's nuanced exploration of her own family sets the stage for a profound and humorous new American play",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "she has not lost sight of the instruction in the first half of her job title: play",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "turns her typically insightful lens on her own family",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review consistently praises Vogel's writing as 'nuanced,' 'profound,' 'humorous,' and 'insightful' with appreciation for the autobiographical approach, indicating clear positive recommendation despite being an excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review opens with praise calling it 'profound and humorous' and notes Vogel's 'typically insightful lens,' with the additional context suggesting emotional resonance, indicating a clear recommendation. | GPT-4o: The review highlights the play's humor and emotional depth, suggesting it is worth seeing. However, the lack of explicit strong praise or must-see language keeps it from a higher score. | Gemini: The review uses positive language like \"profound and humorous\" and highlights the play's emotional impact, suggesting a recommendation despite potential reservations. The additional context reinforces this with the phrase \"hits the emotional beats.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,27 +35,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:39:01.932Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2521,
-    "outputTokens": 364,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:29.814Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Paula Vogel may be playwriting royalty, but if her latest work “Mother Play” is any indication, she has not lost sight of the instruction in the first half of her job title: play. In this new, often funny mashup between a memory play and an apartment tragedy (Vogel calls it “a play in five evictions”), the dramatist turns her typically insightful lens on her own family.",
   "sources": [

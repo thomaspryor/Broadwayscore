@@ -20,66 +20,48 @@
     "score": 62,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 70,
-      "performances": 65,
-      "direction": 55
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this Spamalot seems content to play it safe",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Leslie Rodriguez Kritzer as the Lady of the Lake... wrings laughs out of every corner of her several songs",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "if, sometimes, the best reason to revive a musical is simply to introduce old jokes to a new generation, this may be a Spamalot most enjoyed by those discovering the material",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The critic finds the revival faithful but safe, with standout performances from Kritzer and mixed results from the ensemble, ultimately suggesting it works best for newcomers to the material rather than as essential theater.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic finds the revival dated and safe, with uneven performances that don't coalesce, but acknowledges it may work for new audiences discovering the material. The tone is analytical rather than dismissive, settling on qualified appreciation rather than recommendation. | Gemini: The review highlights both positive and negative aspects. While praising Kritzer's performance and some individual moments, it criticizes the lack of cohesion and the dated humor. The overall impression is that the show has its moments but doesn't fully succeed.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:09:32.634Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3907,
-    "outputTokens": 375,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:47:56.416Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 50,
-    "openaiScore": 50,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 0,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (50 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 50,

@@ -11,13 +11,13 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "https://www.thewrap.com/real-women-have-curves-broadway-review-latinas-take-cover-to-break-free/",
-  "assignedScore": 77,
+  "assignedScore": 79,
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt emphasizes significant improvements over the source material with phrases like 'vast improvement' and 'great narrative precision', indicating a positive assessment, though limited text prevents higher confidence. | GPT-4o: The review highlights the musical's narrative precision and improvement over the original screenplay, suggesting a positive reception. However, without a full verdict, the confidence is medium. | Gemini: The review highlights the musical's improvement over the source material, suggesting a positive experience. While it doesn't explicitly recommend seeing it, the praise for the book implies a worthwhile adaptation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic clearly recommends the show despite acknowledging its slow start, praising its creativity, performances, direction, and calling it a 'crazy directorial scheme that pays off' with consistently positive language about the production elements. | GPT-4o: The review is highly enthusiastic about the production, praising its originality, the performances, and the direction. The critic compares it to a Hitchcock masterpiece and highlights the show's unique and compelling narrative, suggesting it is a standout on Broadway. | Gemini: The review is overwhelmingly positive, highlighting the show's weirdness, humor, and the quality of the music and direction. While it mentions a slow start, the overall assessment is that it's a worthwhile and unique theatrical experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,29 +38,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:53:25.780Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:23:35.650Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 80,
-    "geminiScore": 75,
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "fullText": "The star of this show is a mummy that goes on a most twisted, tune-filled journey The makers of the outrageous new musical “Dead Outlaw” give us the equivalent of what Alfred Hitchcock did in “Psycho” when his star Janet Leigh gets killed 40 minutes into the movie. The bumbling outlaw Elmer “Missouri” McCurdy can’t rob trains or blow up bank safes with any success, but he tries and tries. And then he’s shot dead by gunfire less than halfway through the 100-minute “Dead Outlaw.” Where is a show supposed to go from there? Frankly, that’s where this wild ‘n’ crazy roller-coaster ride of a musical goes wonderfully off the tracks. “Dead Outlaw” had its world premiere last season Off Broadway, and promptly won the New York Drama Critics’ Circle award for best musical. On Sunday, it reopened uptown at the Longacre Theatre, where it’s now the weirdest, funniest and saddest show on Broadway. Clearly, it takes a while to fall in love with Elmer McCurdy, and our love affair with him doesn’t really begin until he’s mummified. Is it love or is it pity? Since he’s a miserable failure alive as a crook, there’s a decidedly slow-burn to the narrative. Itamar Moses’ book is mildly clever, with much of the action told by a singing narrator (Jeb Brown). David Yazbek and Erik Della Penna’s score swerves from country to rock to bluegrass, all of it strung together by s–tkicking orchestrations. Especially effective is Durand’s tendency, when he sings, to resemble either a country angel or a young Jerry Lee Lewis. However, McCurdy is such a loud loser on every level that his over-the-top act begins to grow stale rather fast. Only half an hour into “Dead Outlaw” and you might be ready to give him the hook, and that’s when the sly makers of this musical beat you to it. They kill off this creep with a shotgun. It’s the moment when “Dead Outlaw” goes from merely quirky to downright bonkers. It’s also when we begin to feel sorry for Elmer. No longer alive, McCurdy is now a traveling-show mummy, billed as “The Bandit Who Wouldn’t Give Up,” that makes its way across the country in a variety of venues. I’ve buried the lede: “Dead Outlaw” tells a true story. Unlike Janet Leigh in “Psycho,” Durand doesn’t leave the stage after McCurdy is murdered in 1911. Embalmed with arsenic, the corpse stands in an open coffin for all to see. No family member claims the body, but passers-by are so intrigued they begin to pay money to gawk. His eyes open, Durand moves only occasionally, usually to illustrate some state of mind that the narrator gives the dead body. (If ever Durand blinks, I missed it.) If you don’t identify with this reprobate when he’s living, you will feel great compassion for him when he’s dead. Suddenly famous, the dead McCurdy gets passed from one sleazeball impresario to another. In the 1970s, the mummified stiff continues to attract voyeurs in an amusement park spook house in Long Beach, California. Discovered by crewmembers of the TV series “The Six Million Dollar Man” — you can’t make this stuff up — McCurdy’s body finally ends up on the autopsy table of Los Angeles’ chief coroner Thomas Noguchi in 1976. It’s here that Yazbek and Della Penna switch gears, writing a lounge song for the famous “coroner to the stars,” played to sleazy perfection by Thom Sesma. The tune manages to link Marilyn Monroe, Natalie Wood and Sharon Tate to the mummy in question. Yes, America is a land of the strange, the cruel, the downright sick. And the song is truly delightful. Yazbek never repeats himself. His Broadway career started with “The Full Monty” in 2000, and along the way he has written a couple of great scores (the Tony-winning “Band’s Visit” and the wrongfully ignored “Women on the Verge of a Nervous Breakdown”) that bear no resemblance to his work on “Dead Outlaw,” except for the fact that he’s once again operating in top form. Right from the start, David Comer’s direction knocks us off center. Take his use of Arnulfo Maldonaldo’s scenic design. At first glance, the set doesn’t amount to much more than a big box that houses the show’s five band members. It leaves almost no room for the actors to perform, so Comer relegates them to odd spaces on the peripheries of the stage: on top of the box or off to the sides, almost in the wings. Cramer also keeps the lights very low. In these early moments, Heather Gilbert’s dim lighting lets us know that nothing good is about to happen. It’s all a crazy directorial scheme that pays off when Durand’s life in crime goes south, and the box wanders all over the stage, seemingly pushed by the actors. Like McCurdy’s corpse on Noguchi’s table, you have to see it to believe it. On this strange journey, Dashiell Eaves and Julia Knitel bring an inspired loopiness to a variety of characters.",
@@ -80,5 +81,6 @@
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "partial",
-  "sourceMethod": "playwright"
+  "sourceMethod": "playwright",
+  "rescoreCompletedAt": "2026-02-02T00:23:35.650Z"
 }

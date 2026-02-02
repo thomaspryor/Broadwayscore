@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "g. Naveen Kumar, The Washington Post: The non-musical show... is a chaotic fire hose of fan-service with enough sensory stimulation to make even the most experienced gamer want to puke just a little. Charles Isherwood, The Wall Street Journal: The production is technically impressive in all respects, but when the sinister Dr. Brenner (Alex Breaux)—Matthew Modine in the series—made his ominous appearance at the close of the first act, I fantasized about pulling him aside to ask for a sedative. Although in truth the show itself was already soporific enough. Adam Feldman, Time Out New York: When Daldry and Martin bring the show's best elements together—McCartney’s acting, Miriam Buether’s sets, Brigitte Reiffenstuel’s costumes, Jon Clark’s lighting, Paul Arditti’s sound, the production group 59’s video design and effects—the production is like a breathtaking theme-park ride. And as with a roller coaster, there are longueurs as the show chugs up to where it needs to be to deliver the next",
   "originalScore": null,
-  "assignedScore": 46,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway-20241120",
@@ -16,60 +16,52 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 46,
-    "confidence": "medium",
+    "score": 41,
+    "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 57
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 70,
-      "direction": 63
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "chaotic fire hose of fan-service with enough sensory stimulation to make even the most experienced gamer want to puke just a little",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "technically impressive in all respects",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the production is like a breathtaking theme-park ride",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Mixed signals with technical praise and impressive production elements balanced against criticism of chaotic pacing and soporific storytelling, suggesting conditional recommendation based on audience preferences. | GPT-4o-mini: The review expresses significant disappointment with the overall experience, describing it as chaotic and soporific, despite acknowledging some technical merits. | Note: Models differed by 12 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic explicitly calls the show 'soporific' (sleep-inducing) and fantasizes about needing sedatives to get through it, clearly indicating they found it boring and unengaging despite technical proficiency. | GPT-4o: The review describes the show as 'soporific', indicating it is dull and unengaging, despite technical impressiveness. This aligns with a negative recommendation. | Gemini: The critic uses negative language like 'sinister,' 'ominous,' and 'soporific,' indicating a negative assessment of the production despite acknowledging its technical impressiveness.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:51:55.330Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:04.081Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 46,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
+    "claudeScore": 42,
     "openaiScore": 40,
-    "scoreDelta": 12,
+    "geminiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "dtliThumb": "Down",
   "dtliExcerpt": "The production is technically impressive in all respects, but when the sinister Dr. Brenner (Alex Breaux)—Matthew Modine in the series—made his ominous appearance at the close of the first act, I fantasized about pulling him aside to ask for a sedative. Although in truth the show itself was already soporific enough.",

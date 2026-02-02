@@ -14,59 +14,51 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 89,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 93
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Thoroughly rewarding and accomplished, both in conception and execution",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Even Potter-phobes could be seduced by both the tale itself and the production's technical brilliance",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The production's five-hour-plus expanse flashes by in what seems like half the time",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Consistently glowing language throughout with superlatives like 'thoroughly rewarding,' 'technical brilliance,' and 'awe-inspiring fluidity,' plus the claim that even skeptics would be won over indicates strong recommendation. | GPT-4o-mini: The review expresses strong enthusiasm and praise for the production's execution and emotional depth, indicating a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being a single excerpt, the language is consistently enthusiastic with phrases like 'thoroughly rewarding,' 'thrilling,' 'awe-inspiring fluidity,' and noting it could seduce even skeptics, indicating a strong positive recommendation. | GPT-4o: The review uses highly positive language, describing the play as 'thoroughly rewarding,' 'thrilling,' and 'moving and sophisticated.' The critic praises the production's technical brilliance and the director's skill, indicating a strong recommendation. | Gemini: The review uses very positive language, such as \"thoroughly rewarding\", \"accomplished\", and \"thrilling\". While the single excerpt makes it difficult to be certain, the overall tone suggests a positive recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:24:44.977Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:00:33.473Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "scoreDelta": 2,
+    "geminiScore": 78,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/financial-times-uk--charles-isherwood_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:33:52.211Z",

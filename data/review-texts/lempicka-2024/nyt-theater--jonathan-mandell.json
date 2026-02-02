@@ -9,71 +9,56 @@
   "bwwExcerpt": "In any case, the show’s oft-mentioned fusion of humanity with machinery suddenly struck me as a clarifying metaphor for my mixed reaction to “Lempicka,” which opened on Broadway tonight at the Longacre. Carson Kreitzer, who conceived of the musical and co-wrote the libretto with Matt Gould, has created some artful lyrics for Gould’s music. Director Rachel Chavkin oversees some precisely calibrated moments. Naturally gifted cast members give polished performances, most notably Eden Espinosa in th",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 58,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 62
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 50,
-      "performances": 75,
-      "direction": 55
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the songs and scenes ultimately add up to an almost mechanical-feeling sameness, loud and overwhelming",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Naturally gifted cast members give polished performances, most notably Eden Espinosa in the title role, and especially Amber Iman as Rafaela",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "And if it were the only song that built to full-out belting, it would not just stand out more; 'Lempicka' would be a better musical",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic acknowledges strong performances and some effective moments but finds the overall musical suffers from sameness and structural issues, creating a mixed experience without a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges strong performances and artful moments but finds the overall production mechanically repetitive and overwhelming, with only certain songs and scenes standing out as genuinely fresh or effective. | GPT-4o: The review acknowledges some strong elements like the cast performances and certain songs, but overall describes the show as lacking variety and feeling mechanical. The critic's reaction is mixed, appreciating some aspects while finding the overall execution lacking. | Gemini: The review highlights both positive and negative aspects of the show. While praising the cast and some individual moments, it ultimately finds the overall experience repetitive and overwhelming, leading to a mixed classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:25:35.068Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3845,
-    "outputTokens": 383,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:19.662Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "scoreDelta": 7,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "scored on brief excerpt, now has fullText",

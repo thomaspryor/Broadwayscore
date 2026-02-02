@@ -9,66 +9,58 @@
   "showScoreExcerpt": "Concerts disguised as musicals annoy me.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/buena-vista-social-club",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": null,
   "textFetchedAt": "2026-01-27T05:19:43.907Z",
   "fetchMethod": "playwright",
   "llmScore": {
-    "score": 74,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 67.5,
-      "high": 80.5
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 40,
-      "music": 84,
-      "performances": 53,
-      "direction": 78
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It is worth seeing and supporting for its defiance of conventions and the bold, unique contribution it makes to the musical the world",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The weakness of the plot hindered my enjoyment",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "What saved Buena Vista Social Club for me was the storytelling elements embedded in the staging and choreography",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Despite significant criticisms of the plot and acting, the reviewer explicitly recommends seeing it for its unique contribution and artistic boldness, with strong praise for music and staging. | GPT-4o-mini: The review highlights strong musical elements and unique contributions while acknowledging significant weaknesses in the plot, leading to a positive overall recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite significant criticisms of plot weakness and character relationships, the critic explicitly recommends seeing the show, praising its music, staging, and bold approach to musical theater conventions. | GPT-4o: The critic acknowledges weaknesses in plot and character relationships but ultimately recommends the show for its unique musical and staging elements. The overall tone is positive, highlighting the show's defiance of conventions and its bold contribution to musical theater. | Gemini: Despite criticisms of the plot and acting, the reviewer ultimately recommends the show for its unique staging, choreography, and music, calling it \"exciting\" and a \"bold, unique contribution.\"",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:38:44.020Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:56:48.180Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 74,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Concerts disguised as musicals annoy me.\n\nRead more",
   "mergedFrom": [

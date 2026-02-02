@@ -10,66 +10,56 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 66,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 66,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 75
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 70
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The show is lavish and, as directed by John Rando (Urinetown, Mr. Saturday Night), never slows down",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "The whole thing is basically a big, flashy, speeding car, but it's apt for today's Broadway",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "it combines a familiar title, a sampling of hit songs, and some slick special effects, while vaguely touching on the fantasy",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges positive production elements like lavish staging and John Rando's energetic direction, but the tone suggests formulaic commercial theater rather than genuine artistic merit, with phrases like 'big, flashy, speeding car' and 'apt for today's Broadway' carrying subtle skepticism about substance over spectacle. | GPT-4o-mini: The review highlights strong direction and a flashy production but lacks a clear recommendation, suggesting a mixed-positive sentiment overall.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the show's entertainment value and production quality while suggesting it's commercial but well-executed. However, with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review describes the show as 'lavish' and 'never slows down,' suggesting an entertaining production. However, the mention of it being 'a big, flashy, speeding car' implies some reservations, leading to a positive but not overwhelmingly enthusiastic score. | Gemini: The review describes the show as \"lavish\" and \"flashy\" and \"apt for today's Broadway\", suggesting a positive, albeit somewhat qualified, recommendation. The aggregator context also indicates a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:11:52.509Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:44.933Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 66,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 70,
-    "scoreDelta": 8,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (66 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "excerpt",

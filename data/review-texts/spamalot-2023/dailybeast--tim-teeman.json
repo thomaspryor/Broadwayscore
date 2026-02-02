@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Spamalot, first seen on Broadway in 2005, is back—and the good news is the really good silly bits of this parody of Arthurian legend are just as good-silly as they always were. But the bits that felt dated have only become more dated; one a song about Jews running Broadway at this moment sounds not just dated but also weird in this politically vexed moment (especially with a huge, glittering Star of David), the other is a rousing hymn to gay pride for Sir Lancelot (Taran Killam), which is discordantly beamed in from another era.",
@@ -19,67 +19,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 75,
+      "low": 72,
       "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 72,
-      "music": 76,
-      "performances": 85,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Spamalot's expertly written and performed silliness is endless, beguiling, and winning, and so well-done that—despite the gay and Jewish clunkers of songs—the musical remains a daffy, rollicking night out",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the really good silly bits of this parody of Arthurian legend are just as good-silly as they always were",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "But the bits that felt dated have only become more dated",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Despite acknowledging dated elements and problematic songs, the critic concludes it 'remains a daffy, rollicking night out' with 'expertly written and performed silliness' that is 'endless, beguiling, and winning.'",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite acknowledging dated and cringeworthy elements, the critic ultimately recommends the show as 'winning' and 'a daffy, rollicking night out,' praising the performances and silly humor throughout. | Gemini: The review acknowledges dated and potentially offensive elements but ultimately concludes that the show's silliness and performances make it a worthwhile and enjoyable experience. The critic uses positive language like \"beguiling\" and \"winning\" to describe the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:08:35.273Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4039,
-    "outputTokens": 402,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:36.884Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
-    "scoreDelta": 3,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 57,

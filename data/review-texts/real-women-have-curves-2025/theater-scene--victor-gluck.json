@@ -9,15 +9,15 @@
   "showScoreExcerpt": "Not only a joyous entertainment, it is also a moving tribute to the immigrant experience.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/real-women-have-curves-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
-    "confidence": "low",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 88
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,19 +27,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "joyous entertainment",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "moving tribute",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong positive language with 'joyous' and 'moving tribute' suggests clear recommendation, but extremely brief excerpt limits confidence in score precision.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The quote uses clearly positive language ('joyous entertainment', 'moving tribute') suggesting recommendation, but with only one excerpt available, I score conservatively in the positive range. | GPT-4o: The excerpt describes the show as both 'joyous entertainment' and 'a moving tribute,' suggesting a highly positive view. However, due to the single excerpt warning, the score is placed conservatively within the Rave range. | Gemini: The review excerpt indicates a positive experience, describing the show as both joyous and moving. Given that this is the only excerpt, a score in the middle of the 'Positive' range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:03:32.781Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2320,
-    "outputTokens": 270,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:31.246Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
+    "claudeScore": 76,
     "openaiScore": 90,
-    "scoreDelta": 5,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 88,

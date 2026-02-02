@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 28,
+  "assignedScore": 44,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 28,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 25,
-      "high": 32
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 15,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 45
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the real villain ain't Vecna — it's the writing",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "you're waterboarded by the stagecraft",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "a throwaway play",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic systematically demolishes the play despite acknowledging some impressive technical elements, calling it 'monstrous,' 'nauseating,' and a 'throwaway' with terrible writing that pads a 20-minute concept into three torturous hours.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic finds the production technically impressive but fundamentally flawed, calling it 'monstrous,' 'nauseating,' and criticizing the writing as the real villain while describing audiences literally fleeing the theater. | GPT-4o: The review is overwhelmingly negative, criticizing the writing, pacing, and overuse of special effects. The critic describes the play as a 'throwaway' and the experience as 'nauseating,' indicating a strong recommendation to avoid the show. | Gemini: The review is overwhelmingly negative, criticizing the writing, length, and overuse of special effects. The reviewer explicitly states the play is a \"throwaway\" and the writing is the real villain.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:13:15.151Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2775,
-    "outputTokens": 339,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:39.407Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 28,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "dtliExcerpt": "Nothing is left unscathed. Jump-scare noises blow out your eardrums. Blinding lights and raining sparks make you crave Anna Wintour’s indoor sunglasses. And there’s so much billowing haze that on the evening I attended, a family in the front row sprinted up the aisle after five minutes as though their house had caught fire.",
   "sources": [

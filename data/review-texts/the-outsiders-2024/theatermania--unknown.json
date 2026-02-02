@@ -10,13 +10,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 93,
+  "assignedScore": 91,
   "llmScore": {
-    "score": 93,
+    "score": 91,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite limited text, the superlative language ('giddily thrilling', 'one of the greatest performances I've ever seen') indicates extremely strong enthusiasm and recommendation. | GPT-4o: The review uses highly enthusiastic language, describing the production as 'giddily thrilling' and praising Scherzinger's performance as one of the greatest the critic has ever seen, indicating a strong recommendation. | Gemini: The review uses extremely positive language, calling the revival 'giddily thrilling' and Scherzinger's performance one of the greatest the reviewer has ever seen. This indicates a Rave classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language ('giddily thrilling', 'one of the greatest performances I've ever seen') indicating an enthusiastic must-see recommendation despite having only a single excerpt. | GPT-4o: The critic describes the revival as 'giddily thrilling' and praises Scherzinger's performance as one of the greatest they've seen, indicating a strong positive reaction. The lack of full context suggests a conservative score within the 'Rave' bucket. | Gemini: The review uses extremely strong positive language, calling the revival \"giddily thrilling\" and Scherzinger's performance \"one of the greatest performances I've ever seen.\" This clearly indicates a Rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,19 +37,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:54:44.383Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:10:26.647Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 93,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
+    "openaiScore": 90,
     "geminiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

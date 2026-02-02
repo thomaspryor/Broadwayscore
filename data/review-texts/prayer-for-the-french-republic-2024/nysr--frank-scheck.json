@@ -9,71 +9,56 @@
   "bwwExcerpt": "The performances by the ensemble, both veterans and newcomers, are exemplary, with Aidem perhaps the standout as the mother desperately trying to hold everything together in the face of eternal forces. Only Edwards seems a bit out of place, and not only because of his celebrity relative to the rest of the cast. But his performance may sharpen as the run goes on.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": "5/5 stars",
-  "assignedScore": 88,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 88,
+    "score": 93,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 90
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "★★★★★ What you'll get instead is a superb drama that only seems to have gained in power and intensity with this Broadway transfer",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Prayer for the French Republic earns its didacticism thanks to its well-drawn characterizations, beautifully written dialogue, and powerful situations",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Prayer for the French Republic proves that straight plays can still pack a wallop on Broadway",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Five-star review with consistent praise for the drama's power, performances, direction, and writing, despite acknowledging it's heavy subject matter and some speechifying.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars and uses clearly enthusiastic language like 'superb drama,' 'exemplary performances,' and 'pack a wallop,' while acknowledging it as a significant Broadway achievement despite being a straight play without big stars. | GPT-4o: The review is overwhelmingly positive, awarding a 5/5 star rating and praising the play's powerful drama, skilled narrative, and exemplary performances. The critic's language and the original rating strongly indicate a rave recommendation. | Gemini: The critic gave the play a 5/5 star rating and described it as a 'superb drama'. The review is overwhelmingly positive, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:53:05.748Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3624,
-    "outputTokens": 367,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:52.188Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 90,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",

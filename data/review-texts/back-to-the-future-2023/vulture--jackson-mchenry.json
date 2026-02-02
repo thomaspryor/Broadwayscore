@@ -9,66 +9,55 @@
   "showScoreExcerpt": "“ ‘Back to the Future’ simply tries to hold up its plutonium-weight source material.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/back-to-the-future-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": 49,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 49,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 37.5,
-      "high": 60.5
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 43,
-      "music": 48,
-      "performances": 55,
-      "direction": 50
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it's impressive as a meticulous stage-to-screen translation of a vibe but less compelling in and of itself",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "If this is the future arriving on Broadway, it looks way too much like another medium's past",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The stagecraft is well managed",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges technical competence but fundamentally criticizes the adaptation as uninspired, overly faithful, and missing opportunities for deeper commentary, ultimately questioning its value as theater. | GPT-4o-mini: The review expresses a mix of appreciation for the production's stagecraft and performances but ultimately criticizes its lack of depth and originality, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review describes the show as a faithful but uninspired translation that lacks commentary, with the critic noting it feels like an amusement park ride - neither particularly positive nor negative. | Gemini: The review focuses on the show's reliance on the original movie and its set pieces, suggesting a lack of originality or commentary. It neither strongly recommends nor discourages seeing it, indicating a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:33:09.121Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:33.952Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 49,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 55,
-    "scoreDelta": 13,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (49 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "bwwExcerpt": "What Back to the Future does deliver instead of commentary on the original is a beat-by-beat translation of its set pieces. The DeLorean arrives onstage at the same time as Bart’s Doc, and actor and car split the entrance applause. When Marty gets inside and guns for 88 miles per hour, the screens around the stage blur behind him. (I felt right back in that Universal Studios amusement-park ride.",
   "sources": [

@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The use of 'beautiful play' indicates clear appreciation and recommendation, though the excerpt is limited and focused on description rather than explicit recommendation language. | GPT-4o: The review excerpt describes the play as 'beautiful,' which suggests a positive impression. However, without more context or a clear recommendation, the confidence is medium. | Gemini: The phrase \"beautiful play\" suggests a positive sentiment, but the lack of further context and the truncated nature of the text indicate a recommendation with reservations rather than a rave.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The word 'beautiful' suggests positive sentiment, but with only one excerpt available, this could be cherry-picked and may not represent the full review verdict. | GPT-4o: The excerpt describes the play as 'beautiful', suggesting a positive view. However, due to the single excerpt warning and lack of explicit recommendation, the score is conservatively placed in the middle of the Positive range. | Gemini: The phrase \"beautiful play\" suggests a positive sentiment. Given the single excerpt and lack of explicit recommendation, a score in the lower end of the positive range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:11.529Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:17:27.133Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 75,
+    "claudeScore": 72,
+    "openaiScore": 77,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

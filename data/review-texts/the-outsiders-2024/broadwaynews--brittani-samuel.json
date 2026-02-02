@@ -7,72 +7,57 @@
   "publishDate": "April 12, 2024",
   "dtliExcerpt": "Despite picture-perfect staging and a passionate cast of triple threats, “The Outsiders” coasts only on Golden-Age appeals — its traditional structure, its beautiful, big-feeling people and its aimless wanderlust.",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T22:02:31.876Z",
   "llmScore": {
-    "score": 48,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 42,
-      "high": 54
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 65,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a tame rendering of the American novel",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "take creative (but unfortunately, not comprehensive) liberty",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "They are broken in some ways, deeply caring in others and wildly attractive",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds the adaptation 'tame' and criticizes the writers for not taking comprehensive creative liberties, while praising character portrayal and performances, resulting in a mixed-negative assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges positive elements like 'picture-perfect staging and a passionate cast' but concludes the show 'coasts' and calls it a 'tame rendering,' suggesting it doesn't fully succeed despite its strengths. | GPT-4o: The review acknowledges the strengths in staging and casting but criticizes the adaptation for being tame and not comprehensive. The overall tone suggests mixed feelings, with positive elements overshadowed by significant reservations. | Gemini: The review highlights positive aspects like staging and cast performance but ultimately suggests the show relies too heavily on familiar tropes without offering substantial depth, indicating a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:21:50.889Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2593,
-    "outputTokens": 340,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:07:46.986Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/the-outsiders-2024/broadwaynews--brittani-samuel_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:25:28.829Z",

@@ -8,18 +8,18 @@
   "dtliExcerpt": "And Strong grabs that sudden intimate connection like a man holding on to bucking steer, falling ever deeper into his character’s abyss. It is a sight to see. Strong is one of the great American actors of his generation. And Imperioli is no slouch either. He’s as live and present as anyone could ask.",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: High praise for the lead performances with vivid, enthusiastic language, though limited excerpt makes it difficult to assess overall production recommendation. | GPT-4o: The review praises the performances of the actors, describing them as a 'sight to see' and highlighting their skill and presence. This indicates a strong positive recommendation. | Gemini: The review excerpt praises the performances of the actors, particularly Jeremy Strong, indicating a positive experience and recommendation. The aggregator context also suggests a positive reception.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The excerpt praises two lead performances enthusiastically, calling Strong 'one of the great American actors of his generation' and noting both actors are compelling to watch. However, with only one excerpt available, this could be cherry-picked praise from a more mixed review. | Gemini: The review excerpt focuses on the strength of the performances, particularly Jeremy Strong's, suggesting a positive experience, but the limited text and single excerpt warrant a score in the middle of the 'Positive' range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +40,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:14:01.818Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:37:28.981Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 82,
+    "openaiScore": null,
     "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

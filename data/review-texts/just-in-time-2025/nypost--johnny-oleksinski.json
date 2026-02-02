@@ -10,73 +10,58 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "showScoreExcerpt": "â 'Just in Time' is a wallop of joy, though. And while it doesnât shy away from Darinâs heart struggles, anatomically and romantically, the musical is never gloomy.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/just-in-time-broadway",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 78,
-      "music": 85,
-      "performances": 92,
-      "direction": 90
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Just in Time is a wallop of joy",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "One of the most wondrous of the season",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "One of its most enjoyable shows has arrived just in time",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic calls this 'one of the most wondrous of the season' and 'a wallop of joy,' praising Groff's performance, Timbers' direction, and the overall production with sustained enthusiasm throughout.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'one of the most wondrous of the season,' 'a wallop of joy,' and 'one of its most enjoyable shows,' with clear enthusiasm for both the production and Groff's performance. | GPT-4o: The review is overwhelmingly positive, praising the production as 'one of the most wondrous of the season' and highlighting the 'magic' created by the director and star. The critic describes the show as a 'wallop of joy' and 'a fantastic party,' with strong performances and innovative staging, leading to a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and overall experience. The critic uses strong language like \"wondrous,\" \"magic,\" and \"wallop of joy,\" indicating a strong recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:23:38.847Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3469,
-    "outputTokens": 339,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:14:28.891Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 88,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dtliExcerpt": "The audience is situated in a sumptuously imagined, sparkling silver nightclub with multiple stages and a brilliant band in back. Groff spiritedly darts around the room, jumping on tables and dancing with ticket-buyers like the consummate host. The actor, bursting with charisma, sweeps away the old radio static from Darin’s classics like “Mack the Knife,” “Dream Lover” and “Beyond the Sea” with his silky tenor.",
   "sources": [

@@ -10,73 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 60,
+    "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "little more than a summertime distraction",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "luxurious casting and ultra-polished design",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "would seem like little more than a summer stock import",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic acknowledges strong production values and casting but dismisses the overall experience as lightweight entertainment, suggesting conditional appreciation rather than genuine recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic describes it as merely a 'distraction' even at its best, but acknowledges strong casting and design elements. The tone is lukewarm rather than negative. | GPT-4o: The review suggests that the show is not particularly impactful or essential, describing it as a 'summertime distraction.' The mention of 'considerable best' implies some positive aspects, but overall, it seems to lack significant praise, aligning with a mixed verdict. | Gemini: The review suggests the show is only a 'summertime distraction' even at its best, implying it's not a must-see, but the mention of 'luxurious casting and ultra-polished design' indicates some redeeming qualities, placing it in the Mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:15:53.087Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2363,
-    "outputTokens": 313,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:03.584Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 45,
-    "scoreDelta": 7,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (49 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 49,

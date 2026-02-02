@@ -8,7 +8,7 @@
   "fullText": "Dissent is necessary to democracy, sure. But how much does it cost?\n\nThat’s the fundamental question posed by Henrik Ibsen’s “An Enemy of the People” — and, in highly dramatic fashion, by the preview I attended of its latest Broadway revival.\n\nAt that performance, on Thursday, just as the play reached its climax in a raucous town meeting — and as Jeremy Strong, as the town’s crusading doctor, was trying to warn his community about an environmental disaster — members of a climate protest group secreted in the audience at Circle in the Square interrupted the action with dissent of their own.\n\nWhat exactly were they dissenting from?\n\nSurely not the Ibsen, which aligns closely with their views and is a distant source of them. (The play was first performed, as “En Folkefiende,” in 1883.) Nor does it make sense that they would object to Sam Gold’s crackling and persuasive production, which drove those views home despite having to regroup once the protesters were ejected.\n\nAfter all, “An Enemy of the People,” adapted and sharpened by the playwright Amy Herzog, and starring Strong as Dr. Thomas Stockmann, is a protest already: a bitter satire of local politics that soon reveals itself as a slow-boil tragedy of human complacency.\n\nHow the satire becomes the tragedy is central to the power of Ibsen’s dramatic construction, overriding its occasional plot contrivances. To emphasize the transition, Gold begins with the warmth of gaslight and candlelight camaraderie. (The superb and varied lighting is by Isabella Byrd.) Dr. Stockmann’s home (by the design collective called dots) looks like a low-walled barge on smooth water, decorated with Norwegian blue-plate patterns. Before anyone speaks, a folk song is sung and a maid sleeps at her sewing.\n\nWith modesty and steadiness as the givens of this world, the doctor naturally does not expect to be heralded as a hero when he determines that the water supply to the town’s new spa is polluted with potentially fatal pathogens. But he does expect to be heeded.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "dtliExcerpt": "It’s too weak to say that this conspiracy of inaction makes “An Enemy of the People” relevant; its issues and ours are not similar but identical. And not just its issues. Its characters, too, are contemporary: doppelgängers of our own vicious demagogues, cowed editors, greasy both-sides-ists and defanged idealists.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "dtliUrl": null,
@@ -21,11 +21,11 @@
   ],
   "bwwThumb": null,
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises Gold's 'crackling and persuasive' production and notes it 'drove those views home despite having to regroup.' However, the text is truncated, preventing assessment of the full critical verdict. | GPT-4o: The review describes the production as 'crackling and persuasive,' indicating a positive assessment. Despite the interruption by protesters, the production's ability to convey its themes effectively is highlighted, suggesting a recommendation. | Gemini: The review praises the production as 'crackling and persuasive' and notes its power, indicating a positive experience. However, the truncated text and focus on the interruption make it difficult to gauge the full extent of the recommendation, leading to a slightly lower score within the positive range.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic calls Gold's production 'crackling and persuasive' and praises specific elements like lighting and design, indicating a positive assessment despite the truncated text cutting off mid-review. | GPT-4o: The review praises the production as 'crackling and persuasive' and highlights the power of the dramatic construction and the quality of the performances and staging. Despite the interruption by protesters, the production is described as effectively delivering its message, indicating a strong recommendation. | Gemini: The review praises the production as \"crackling and persuasive\" and notes that it \"drove those views home.\" While the review is truncated, the positive language suggests a recommendation, though perhaps with reservations due to the interruption.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,27 +46,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:14:19.576Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:38:29.269Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 50,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
+    "openaiScore": 88,
     "geminiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "complete",
   "wordCount": 359

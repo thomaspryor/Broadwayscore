@@ -8,37 +8,26 @@
   "showScoreExcerpt": "\"...Herzog’s play shines like a candle in the dark.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",
   "originalScore": "5/5",
-  "assignedScore": 84,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 84,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 82,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Herzog's play shines like a candle in the dark",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Herzog’s play shines like a candle in the dark.",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The metaphor 'shines like a candle in the dark' suggests the play stands out positively against its surroundings, indicating clear praise despite the very limited excerpt. | GPT-4o-mini: The phrase indicates strong appreciation for the play, suggesting a positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5/5 rating combined with the poetic praise 'shines like a candle in the dark' indicates strong enthusiasm. The aggregator context confirms positive reception. | GPT-4o: The critic's original 5/5 rating strongly indicates a rave review. The quote suggests a highly positive evaluation, describing the play as a standout work. | Gemini: The critic's 5/5 rating and the phrase \"shines like a candle in the dark\" indicate a rave review and a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,20 +36,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:22:19.307Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:29.334Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 84,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "dtliExcerpt": "All are rendered in lovely detail by Herzog and the five women of the cast, directed by Anne Kauffman with characteristic attention to the importance of offhand nuance.",
   "sources": [

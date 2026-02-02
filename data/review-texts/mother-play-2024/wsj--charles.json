@@ -8,65 +8,57 @@
   "fullText": null,
   "dtliExcerpt": "But while the final scene—Phyllis, in a nursing home, repeatedly wails, “I want to go home,” and fails to recognize Martha as her daughter—has a piercing sadness as Ms. Lange’s performance reaches a rending climax, too much of “Mother Play” feels evanescent, more a personal exercise in exorcising ghosts than a play that resonates on deeper levels.",
   "originalScore": null,
-  "assignedScore": 49,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/mother-play/",
   "llmScore": {
-    "score": 49,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 37.5,
-      "high": 60.5
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 43,
+      "book": null,
       "music": null,
-      "performances": 74,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "has a piercing sadness as Ms. Lange's performance reaches a rending climax",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "too much of \"Mother Play\" feels evanescent, more a personal exercise in exorcising ghosts than a play that resonates on deeper levels",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "too much of 'Mother Play' feels evanescent",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Despite praising Lange's powerful performance, the critic fundamentally dismisses the play as a self-indulgent exercise that fails to achieve theatrical resonance. | GPT-4o-mini: The review expresses mixed feelings, praising the performance while criticizing the script's depth, leading to a conditional recommendation. | Note: Models differed by 13 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges powerful moments (Lange's 'rending climax' with 'piercing sadness') but ultimately finds the play lacking in broader resonance and feeling more like a 'personal exercise' than substantive theater. | GPT-4o: The review acknowledges a powerful performance by Ms. Lange, but overall suggests the play lacks depth and feels more like a personal exercise, indicating a mixed reception. | Gemini: The review highlights a powerful final scene but ultimately suggests the play doesn't resonate deeply enough, indicating a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:15:35.411Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:54.302Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 49,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 55,
-    "scoreDelta": 13,
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "showScoreExcerpt": "\"...a funny and affecting but slight and fragmentary drama depicting Ms. Lange’s Phyllis\"",
   "sources": [

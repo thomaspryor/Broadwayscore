@@ -8,19 +8,19 @@
   "showScoreExcerpt": "“The musical has been staged in lavish style...And the DeLorean, with its glowing neon trim, has been glamorized effectively...But the musical as a whole never achieves liftoff, or even the stage equivalent of 88 miles an hour. It cruises along in a low gear for almost three hours.”",
   "bwwExcerpt": "In the unlikely event that I find myself inside a plutonium-fueled DeLorean—I suppose today it would be a Tesla—capable of transporting me to the past, and thus enabling me to alter my future, fairly high on the list of life changes I’d consider would be somehow avoiding having to view the sluggish slog that is the stage adaptation of “Back to the Future.”",
   "originalScore": null,
-  "assignedScore": 15,
+  "assignedScore": 44,
   "source": "show-score",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 15,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 10,
-      "high": 20
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -28,46 +28,38 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "sluggish slog that is the stage adaptation of 'Back to the Future'",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "fairly high on the list of life changes I'd consider would be somehow avoiding having to view",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "sluggish slog that is the stage adaptation",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic uses extremely harsh language calling the show a 'sluggish slog' and expresses they would time travel to avoid seeing it, indicating an unqualified rejection. | GPT-4o-mini: The review expresses a strong aversion to the production, indicating it is a tedious experience and suggesting avoidance.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Despite acknowledging production values, the critic clearly states the show fails to achieve momentum and 'cruises along in a low gear,' indicating a negative recommendation. | GPT-4o: The review highlights the production's failure to engage or excite, despite its lavish staging, suggesting a negative overall assessment. | Gemini: The review highlights lavish staging but ultimately states the musical fails to take off, indicating a negative assessment despite some positive aspects.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:33:14.194Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:37.139Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 15,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 15,
-    "openaiScore": 15,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/back-to-the-future-2023/wsj--charles-isherwood_2026-01-27.html",
   "textFetchedAt": "2026-01-27T05:45:46.406Z",

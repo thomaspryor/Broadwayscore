@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating combined with enthusiastic language like 'wild and wonderful ways', 'dynamite', 'absolutely slays' and vivid positive descriptions indicates a strong positive recommendation despite some reservations. | GPT-4o: The review is highly positive, highlighting the show's unique and entertaining qualities, and the original rating of 4/5 stars supports a strong positive classification. | Gemini: The review is overwhelmingly positive, using terms like \"wild and wonderful.\" The 4/5 star rating further supports a positive classification. While it describes the show as a \"candy-colored glitter bomb,\" this seems to be intended as a positive description of the show's aesthetic and energy.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and enthusiastic language like 'dynamite,' 'absolutely slays,' and 'wild and wonderful ways' indicate strong recommendation despite some reservations typical of jukebox musicals. | GPT-4o: The review is highly positive, with a 4/5 star rating and enthusiastic language describing the show as a 'candy-colored glitter bomb' and highlighting the strong performances and unique concept. | Gemini: The critic gives the show 4 out of 5 stars and describes it as 'wild and wonderful,' indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:16:42.744Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:58:46.491Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
-    "previousVersion": "3.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 80,

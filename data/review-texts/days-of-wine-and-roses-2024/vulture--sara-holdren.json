@@ -9,64 +9,55 @@
   "showScoreExcerpt": "\"...the show evokes a specific kind of quietly disheartened sigh.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/days-of-wine-and-roses-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 50,
-      "music": 73,
-      "performances": 85,
-      "direction": 53
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "So why, with such a radiant double center, does Days of Wine and Roses feel constrained, a little narrow and flat?",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It's the sound of great talents put in the service of material that will almost expand to accommodate them, but not quite",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "O'Hara and James are capable of leaving us not simply pensive, but elated and shattered, if they had a show that would let them",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic praises the stellar performances and music but finds the material constrained and overly didactic, ultimately expressing disappointment that such talented performers weren't given better material to work with. | GPT-4o-mini: While the performances of O'Hara and James are highly praised, the review expresses significant concerns about the material and direction, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic praises the stellar performances and vocal talents of O'Hara and James but ultimately finds the material limiting and didactic, describing it as 'great talents put in the service of material that will almost expand to accommodate them, but not quite.' | Gemini: The review praises the performances of O'Hara and James but finds the material somewhat lacking, resulting in a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:46:27.047Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:18.930Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 62,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "bwwExcerpt": "Of course, there is a perspective from which too much grousing about Days of Wine and Roses feels unkind: Lucas has been sober for 19 years, Guettel went through his own journey to sobriety more recently, and O’Hara has told the story of a woman thanking her after the show and whispering, in parting, “23 years.” If the show—if any show—strikes someone, somewhere, for some reason, to the heart, well, so shines a good deed in a weary world. And yet… I hunger for more. O’Hara and James are capable",
   "bwwThumb": "Meh",

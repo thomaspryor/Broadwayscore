@@ -10,44 +10,28 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "showScoreExcerpt": "“ ‘The Cottage’ is about Sylvia opening her eyes to her relationships with men. But the moment that sticks out is the hilarious sight of Sylvia plugging her nose with an old-timey phone receiver. Moments like that make ‘The Cottage’ a Broadway funhouse.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 82,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Read our four-star review",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it largely hits the mark",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "make The Cottage a Broadway funhouse",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Four-star review with consistent praise for performances, direction, and comedy despite acknowledging some momentum dips - clear positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review opens by stating it's a four-star review and consistently praises the comedy, cast performances, and direction. While noting some momentum dips, the overall assessment is positive with strong recommendation language like 'Broadway funhouse' and enthusiastic praise for the ensemble. | GPT-4o: The review is filled with praise for the comedic elements and performances, highlighting the play's success in delivering humor. Despite minor criticisms about pacing, the overall tone is very positive, recommending the show as a fun and entertaining experience. | Gemini: The review is generally positive, highlighting the comedic elements and the performances of the cast. While it mentions some dips in momentum, the overall tone suggests that the play is entertaining and worth seeing for a lighthearted experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,27 +40,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:16:43.747Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3244,
-    "outputTokens": 304,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:48.350Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "The Cottage is an airy — and gassy — comedy about cheating. Sandy Rustin wrote the play with a single-minded mission — to keep you in stitches — and it largely hits the mark.",
   "sources": [

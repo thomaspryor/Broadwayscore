@@ -9,71 +9,56 @@
   "showScoreExcerpt": "\"Itâs another magnificent performance â kind-eyed, honey-voiced and all but irresistible.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/just-in-time-broadway",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 91,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 91,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 86,
+      "high": 96
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 78,
-      "music": 85,
-      "performances": 95,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's another magnificent performance — kind-eyed, honey-voiced and all but irresistible",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the production fizzes with class and delight like a coupe of champagne",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Anyone who appreciates Groff's sterling emotional clarity should consider 'Just in Time' required viewing",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic delivers enthusiastic praise for Groff's performance and the production design, calls it 'required viewing,' and uses superlatives like 'magnificent' and 'irresistible' throughout.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlatives throughout ('magnificent performance,' 'irresistible,' 'required viewing') and describes the production as setting itself 'apart from even its most successful predecessors,' indicating this is a must-see show that exceeds expectations. | GPT-4o: The review is overwhelmingly positive, highlighting the magnificent performance of Jonathan Groff, the immersive and charming production, and the exceptional direction and design. The critic's language is enthusiastic and strongly recommends the show as essential viewing. | Gemini: The review is overwhelmingly positive, praising Groff's performance, the immersive staging, and the overall charm of the production. The critic explicitly recommends it for fans of Groff.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:24:43.256Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3728,
-    "outputTokens": 368,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:16:36.729Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
+    "claudeScore": 89,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dtliExcerpt": "“Just in Time” travels the familiar narrative road of an artist’s rise and fall, but immersive swank and charming personality set this bio-musical apart from even its most successful predecessors. (“Jersey Boys,” watch your tail.) Staged nightclub-style by director Alex Timbers — with seating on three sides plus cabaret two-tops down front — the production fizzes with class and delight like a coupe of champagne. That warm and heady feeling? It’s secondhand intoxication from the joy Groff radiates in his element.",
   "sources": [

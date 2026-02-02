@@ -12,13 +12,13 @@
     "nysr-api"
   ],
   "originalScore": "2/5 stars",
-  "assignedScore": 41,
+  "assignedScore": 44,
   "llmScore": {
-    "score": 41,
-    "confidence": "medium",
+    "score": 44,
+    "confidence": "high",
     "range": {
-      "low": 36,
-      "high": 46
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite the strong leads, the critic consistently criticizes the director's gimmicky approach, poor ensemble casting, and overall execution, with the final metaphor clearly condemning the production as messy and ill-conceived. | GPT-4o: The review criticizes the production's direction, adaptation, and execution, describing it as 'messy and ill-conceived'. The original rating of 2/5 stars supports a negative classification, though the truncated text warning suggests caution. | Gemini: The review is mixed, praising the leads but criticizing the adaptation and direction. The truncated text and the 2/5 star rating suggest a negative leaning, but the positive comments about the actors prevent a fully negative classification.",
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: Despite the 2/5 rating and harsh criticism of the direction and gimmickry, the critic acknowledges Strong's excellence and calls the text complete, indicating a negative but not devastating assessment. | Gemini: Despite Strong's performance, the review is largely negative, criticizing the director's choices and the overall production. The truncated text and the 2/5 star rating suggest a negative assessment, even if the final verdict is missing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,25 +39,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:52:45.974Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:37:56.088Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 41,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 62,
+    "openaiScore": null,
+    "geminiScore": 45,
     "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 22,
+    "geminiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text"

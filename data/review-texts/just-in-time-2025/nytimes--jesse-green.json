@@ -9,7 +9,7 @@
   "bwwExcerpt": "By the time of his death, at 37, in 1973, the show’s final descent into lugubrious eulogy — “He finished six years of grammar school in four years and got a scholarship medal besides,” Nina says — has swamped its early buoyancy with platitudes. Yet Groff is still swimming, right to the end. Dismayed as I was to endure so much else, I have to admit he’s giving one of Broadway’s best performances. So who’s sorry now?",
   "showScoreExcerpt": "\"Dismayed as I was to endure so much else, I have to admit heâs giving one of Broadwayâs best performances.\"",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 64,
   "source": "dtli",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.nytimes.com/2025/04/26/theater/just-in-time-review-darin-groff.html",
@@ -22,69 +22,52 @@
   "archivePath": "data/archives/reviews/just-in-time-2025/nytimes--jesse-green_2026-01-30.html",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 45,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 35,
-      "high": 60
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 65,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "When Jonathan Groff says \"I'm a wet man,\" he means it",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "It's a warning to the 22 audience members seated at cabaret tables in the middle of the action that they may want to don raincoats",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "sweating and spitting, a-splishin' and a-splashin'",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This excerpt focuses on a specific physical aspect of Groff's performance without clear evaluative language, making it impossible to determine the critic's overall recommendation from this brief opening passage.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Critic explicitly states dismay with most of the show while acknowledging Groff delivers 'one of Broadway's best performances.' The mixed sentiment of enduring disappointment despite outstanding lead work places this in mixed territory. | GPT-4o: The review acknowledges significant issues with the production, particularly in its later parts, but highlights Jonathan Groff's performance as a standout element. This suggests a mixed overall impression, with notable positive aspects. | Gemini: The review highlights a standout performance by Jonathan Groff, but also notes that the show has flaws. While the critic was \"dismayed to endure so much else\", they still acknowledge Groff's performance as one of Broadway's best, indicating a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:24:09.249Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2407,
-    "outputTokens": 359,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:21.436Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 95,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
     "scoreDelta": 13,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (89 → Up) conflicts with aggregator thumbs (Flat)"
-    ]
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "scoreSource": "extracted-strong-negative",
   "scoreConfidence": "medium",

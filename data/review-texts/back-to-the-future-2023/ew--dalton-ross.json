@@ -8,24 +8,19 @@
   "showScoreExcerpt": "“Frenetically paced, relentlessly comedic and visually chaotic, “Back to the Future: The Musical” is aimed squarely at middle America...But the show still misses opportunity after opportunity to make people actually feel.”",
   "bwwExcerpt": "Unfortunately, unlike the DeLorean, Back to the Future: The Musical itself never quite hits 88 miles an hour. But while the rest of the production is content to play it safe and steady, give Bart credit for always putting the pedal to the metal. After all, if you're going to throw a time machine onto a Broadway stage, why not do it with some style? Grade: B",
   "originalScore": "B",
-  "assignedScore": 72,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "archivePath": "data/archives/reviews/back-to-the-future-2023/ew--dalton-ross_2026-02-01.html",
   "textFetchedAt": "2026-02-01T14:43:56.608Z",
   "sourceMethod": "playwright",
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:31:24.156Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2387,
-    "outputTokens": 311,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:30.401Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "bwwThumb": "Up",
   "garbageFullText": "​ Page Not Found This is not the page you are looking for. We hope you can go about your business by using our menu or search option. By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. Accept All Cookies",
@@ -85,53 +80,37 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "llmScore": {
-    "score": 72,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 82,
-      "direction": 65
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "never quite hits 88 miles an hour",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "give Bart credit for always putting the pedal to the metal",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Grade: B",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "A B grade with mixed signals - production plays it safe but lead performance is praised for energy and commitment, landing in qualified positive territory.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B grade and closing sentiment about doing it 'with some style' indicate a positive recommendation despite noting the production 'never quite hits 88 miles an hour' and 'plays it safe.' | GPT-4o: The original rating of B suggests a positive but not enthusiastic recommendation. The review acknowledges some shortcomings but also credits the production for its style, indicating a recommendation with reservations. | Gemini: The critic gives the show a 'B' grade, indicating a positive but not rave review. The phrase 'play it safe and steady' suggests reservations, but the overall tone is positive.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 75,
     "openaiScore": 75,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

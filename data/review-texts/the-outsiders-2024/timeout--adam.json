@@ -7,7 +7,7 @@
   "publishDate": "April 11, 2024",
   "dtliExcerpt": "I suspect that a lot of people will like The Outsiders more than I did. But to me, its approach misses the central thrust of Hinton’s story.",
   "originalScore": 80,
-  "assignedScore": 59,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/the-outsiders/ -->",
@@ -34,60 +34,52 @@
   "scoreConfidence": "medium",
   "extractedRating": "3/5",
   "llmScore": {
-    "score": 59,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 50.5,
-      "high": 67.5
+      "low": 73,
+      "high": 83
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 48,
-      "music": 58,
-      "performances": 73,
-      "direction": 68
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I suspect that a lot of people will like The Outsiders more than I did",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "There are beautiful moments; the yearning 'Great Expectations' reaches out and grabs you by the heart",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this sanitization makes the musical feel oddly superficial. It approaches its subjects from the outside",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The 3/5 star rating combined with mixed critique - praising staging and some performances while criticizing the book's approach and music's limitations - indicates a qualified, lukewarm recommendation. | GPT-4o-mini: The review presents a mix of strong moments and significant criticisms, leading to a conditional recommendation rather than a clear endorsement.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt suggests fundamental storytelling problems, but the critic's own 80 rating contradicts this negative assessment. With only this critical fragment available, the verdict remains unclear. | GPT-4o: The original rating of 80 suggests a positive review, despite the critique about the approach missing the story's central thrust. The score indicates the critic found enough merit to recommend the show, albeit with some reservations. | Gemini: The critic's original rating is 80, placing it in the positive bucket. The quote suggests a reservation, so the score is slightly lowered within the bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:10.066Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:11:20.356Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 59,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 55,
-    "scoreDelta": 7,
+    "claudeScore": 60,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "sources": [
     "dtli",

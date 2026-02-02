@@ -9,7 +9,7 @@
   "showScoreExcerpt": "“With a cast directed to exaggerate every joke, gesture and facial expression – only the always reliable Roger Bart, who plays the eccentric genius inventor Doc Brown, has the chops and instincts to nail the over-the-topness...With a show like ’Back To The Future: The Musical,’ comparisons are, like resistance, futile. And your kids are gonna love it.”",
   "bwwExcerpt": "Still, nothing on stage here measures up to the screen version, except the obvious: The live special effects, most notably a final sequence in which 1955 Doc climbs to the top of that clock tower during a lightning storm, with Marty speeding the DeLorean through town. The lighting and video projections that have so far provided some amusement come to fruition here, and Back To The Future: The Musical finally and fully justifies its transition from screen to stage.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 69,
   "source": "show-score",
   "textFetchedAt": "2026-01-25T13:50:33.521Z",
   "textFetchMethod": "playwright",
@@ -18,60 +18,51 @@
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 53.5,
-      "high": 70.5
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
-      "music": 48,
-      "performances": 68,
-      "direction": 55
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Back To The Future gradually settles in to an enjoyable-enough thrill park ride",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "bombastically intent on justifying its existence that it bullies away whatever warm nostalgia we might have for the movie",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "And your kids are gonna love it",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The reviewer finds the show 'enjoyable-enough' but criticizes the overacting, generic music, and failure to capture the film's charm, settling on a qualified middle-ground recommendation. | GPT-4o-mini: The review expresses mixed feelings, highlighting some enjoyable aspects but ultimately suggesting that the production doesn't live up to its source material.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic acknowledges the show has significant problems (bombastic direction, lackluster music, overacting) but finds it becomes 'enjoyable-enough' and praises the final 20 minutes as justifying the stage adaptation. This is classic mixed territory - neither a recommendation nor a pan. | Gemini: The review is mixed, but ultimately leans positive. While the critic notes several flaws, they also acknowledge enjoyable aspects, particularly the special effects and the final sequence. The phrase \"enjoyable-enough thrill park ride\" suggests a qualified recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:31:41.509Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:22.797Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",

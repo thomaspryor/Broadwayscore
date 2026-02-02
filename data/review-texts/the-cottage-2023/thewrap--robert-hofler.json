@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 15,
+  "assignedScore": 18,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "Yes, there is a world of lousy theater beyond New York City, and “The Cottage,” which opened Monday on Broadway at the Hayes Theatre, is destined for it.",
@@ -19,67 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 15,
+    "score": 18,
     "confidence": "high",
     "range": {
-      "low": 10,
-      "high": 25
+      "low": 13,
+      "high": 23
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 10,
+      "book": null,
       "music": null,
-      "performances": 45,
-      "direction": 20
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Sitting through this forced, unfunny take on British sex comedies of yore",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "destined for it [the world of lousy theater beyond New York City]",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "Cooper manages to give the production's one understated performance",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The critic savagely pans the show as 'forced, unfunny' and 'destined for lousy theater,' with only minimal praise for one performance amid overwhelming negativity about the script and direction.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: The critic delivers an overwhelmingly negative assessment, calling it 'forced, unfunny,' 'inept,' and comparing it unfavorably to another failed show while suggesting it belongs in 'the world of lousy theater.' | GPT-4o: The review is overwhelmingly negative, describing the play as 'forced' and 'unfunny' with a comparison to a past failure. The critic suggests the show is destined for failure beyond New York, indicating a strong recommendation to avoid. | Gemini: The review is overwhelmingly negative, describing the play as \"forced, unfunny\" and comparing it unfavorably to other poorly received productions. The critic clearly does not recommend seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:17:19.170Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3008,
-    "outputTokens": 348,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:01:12.571Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 15,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": null,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 15,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Pan"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,

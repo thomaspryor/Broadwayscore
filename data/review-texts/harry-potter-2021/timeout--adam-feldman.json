@@ -21,12 +21,12 @@
   "scoreConfidence": "medium",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:05:57.980Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:05:44.350Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 100,
-    "previousVersion": "3.0.0"
+    "previousScore": 95,
+    "previousVersion": "5.0.0"
   },
   "designation": "Recommended",
   "sources": [
@@ -113,7 +113,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5/5 rating combined with superlative language like 'triumph of theatrical magic,' 'state-of-the-art,' and 'awestruck, spellbound, and deeply satisfied' clearly indicates an enthusiastic must-see recommendation. | GPT-4o: The review uses highly enthusiastic language, describing the production as a 'triumph' and 'state-of-the-art adventure' that leaves the audience 'awestruck' and 'deeply satisfied'. The original 5/5 rating further supports a 'Rave' classification. | Gemini: The review uses extremely positive language like \"triumph of theatrical magic\", \"awe-struck, spellbound, and deeply satisfied\", and the original rating was 5/5, indicating a rave review.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5/5 rating combined with superlative language like 'triumph of theatrical magic', 'state-of-the-art', and 'awestruck, spellbound, and deeply satisfied' indicates an unequivocal rave recommendation. | GPT-4o: The review uses highly enthusiastic language, describing the production as a 'triumph' and leaving the audience 'awestruck, spellbound, and deeply satisfied.' The original 5/5 rating further supports a 'Rave' classification. | Gemini: The review uses extremely positive language like \"triumph of theatrical magic\" and \"awestruck, spellbound, and deeply satisfied,\" indicating a rave review. The 5/5 rating from the critic further supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,

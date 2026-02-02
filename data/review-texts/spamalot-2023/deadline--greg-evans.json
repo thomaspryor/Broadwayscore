@@ -6,64 +6,56 @@
   "url": "https://deadline.com/2023/11/spamalot-broadway-review-1235612888/",
   "publishDate": "November 16, 2023",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 76,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 87,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 80.5,
-      "high": 93.5
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 89,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Perfectly cast and splendidly performed",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the revival has lost none of the smart-dumb charm",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "placing the irresistible goings-on front and center",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Consistently positive language with strong praise for casting, performances, and direction, plus explicit statement that the revival maintains the original's charm without any caveats or criticisms. | GPT-4o-mini: The review expresses strong enthusiasm for the performances and direction, indicating a clear recommendation to see the show.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds the show 'most satisfying' and praises its successful adaptation and consistent humor delivery, indicating a positive recommendation, though the limited excerpt prevents a higher confidence rating. | GPT-4o: The review excerpt highlights a positive aspect of the production, specifically its ability to deliver humor effectively, even for familiar audiences. The lack of full text introduces some uncertainty, but the aggregator context supports a positive interpretation. | Gemini: The quote indicates a positive experience, suggesting the show is well-executed and enjoyable. The aggregator verdicts also point towards a positive reception.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:27.589Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:40.531Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 87,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 88,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwExcerpt": "All the dancing, singing and questing unfolds on a clever, attractive set designed by Paul Tate dePoo III, whose projections – many seemingly inspired by Terry Gilliam’s instantly recognizable Python style of animation – play a crucial role in the production. Some of the effects are of a decidedly (and intentionally) DIY nature, like the catapulted (or, really, just tossed) cow or the bloodthirsty bunny, but all work terrifically within the show’s self-aware approach.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",

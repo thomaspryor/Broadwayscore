@@ -12,7 +12,7 @@
   "source": "dtli",
   "llmScore": {
     "score": 44,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 39,
       "high": 49
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic calls the adaptation 'a lost cause' and criticizes the production's 'neutered state' and 'performativity,' indicating clear disapproval despite acknowledging fine performances from the cast. | GPT-4o: The review criticizes the adaptation as a 'lost cause' and highlights numerous flaws, such as the production's lack of dramatic dynamism and unnecessary concessions for likability. Despite acknowledging fine performances, the overall tone is negative, discouraging attendance. | Gemini: The review is largely negative, criticizing the adaptation, direction, and overall impact. While praising the cast's performances, the core issues with the production lead to a negative assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite acknowledging fine performances from the cast, the critic finds fundamental flaws in Herzog's adaptation, calling it 'a lost cause' and criticizing the direction, character development, and production choices as misguided. | GPT-4o: The review criticizes the adaptation as a 'lost cause' and highlights flaws in direction and character development, suggesting the production fails to deliver a compelling experience. Despite acknowledging fine performances, the overall tone is negative. | Gemini: The review highlights issues with the adaptation and direction, but praises the cast performances. The overall tone suggests a flawed production with some merit, placing it in the Mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,27 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:14:33.322Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:38:56.575Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
-    "previousVersion": "3.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 45,
-    "geminiScore": 45,
+    "geminiScore": 62,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 3,
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "dtliExcerpt": "Strong seemed to remain in character, even asking for the protesters to be allowed to speak as Imperioli and others, also in character, helped kick them out. The tension in his sulky disposition at that moment – half commitment, half actual anguish – proved to be the most incendiary comment on performativity, idealism, and action of the night.",
   "sources": [

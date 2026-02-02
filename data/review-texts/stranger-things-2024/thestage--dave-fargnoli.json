@@ -23,57 +23,49 @@
     "score": 79,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 84
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "audacious, exhilarating and relentlessly inventive",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "extraordinary, gripping spectacle",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "never quite matches the series' charming mix of nostalgia, hope and horror",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Strong praise for technical achievements and overall spectacle ('extraordinary', 'gripping', 'exhilarating') with only minor criticism about not matching the source material, indicating clear recommendation despite reservations. | GPT-4o-mini: The review highlights the production's visual achievements and overall excitement, but notes it lacks the subtlety and charm of the original series, leading to a strong but qualified recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses strongly positive language like 'audacious, exhilarating' and 'extraordinary, gripping spectacle' while acknowledging it doesn't quite match the series' quality. The overall tone is clearly recommending despite reservations. | GPT-4o: The review describes the show as 'audacious, exhilarating and relentlessly inventive' and concludes with 'an extraordinary, gripping spectacle,' indicating a strong positive recommendation despite some minor reservations. | Gemini: The review is largely positive, calling the show \"audacious, exhilarating and relentlessly inventive\" and a \"gripping spectacle,\" but notes that it doesn't quite match the series' charm. This indicates a positive but not rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T22:39:50.358Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:16.441Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [

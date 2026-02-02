@@ -8,71 +8,56 @@
   "bwwExcerpt": "Off Broadway, Patrick was played by the canny and empathetic actor Richard Topol. Currently, the part belongs to Anthony Edwards (of TV’s E.R.), who has a wry, befuddled quality that works in group scenes, but leaves him unfocused in monologues directed to the audience. Still, if Prayer’s frame has grown wobbly, the central story remains vibrant and confidently driven by three outstanding women from the original cast: the fierce-willed Aidem; Francis Benhamou as Marcelle’s brilliant but bipolar",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 65
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the central story remains vibrant and confidently driven by three outstanding women from the original cast",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "if Prayer's frame has grown wobbly",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Harmon's play seems uncannily prophetic after the atrocities of October 7",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic praises the play's relevance and strong female performances while noting some production issues, particularly with the narrator role, resulting in a qualified positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting some weaknesses (wobbly frame, unfocused lead performance), the critic praises the play's relevance, passionate argument, and outstanding performances, indicating a clear recommendation. | GPT-4o: The review acknowledges some issues, such as the unfocused performance of Anthony Edwards and the wobbly frame, but ultimately praises the play's vibrant central story and strong performances by key cast members, indicating a positive recommendation with some reservations. | Gemini: The review highlights strong performances and a vibrant central story, but notes a 'wobbly' frame. This suggests a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:53:40.697Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3211,
-    "outputTokens": 339,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:46.157Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
-    "scoreDelta": 7,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

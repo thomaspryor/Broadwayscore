@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“The best thing about ‘The Cottage’ is the cottage, designed by someone with the name Paul Tate dePoo III. Everything else is more like the outhouse. Even as a lark, it’s beneath the standards of Broadway.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
   "originalScore": null,
-  "assignedScore": 20,
+  "assignedScore": 23,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 20,
+    "score": 23,
     "confidence": "medium",
     "range": {
-      "low": 10,
-      "high": 30
+      "low": 18,
+      "high": 28
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -25,48 +25,40 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 23
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Everything else is more like the outhouse",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "it's beneath the standards of Broadway",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "The best thing about 'The Cottage' is the cottage, designed by someone with the name Paul Tate dePoo III",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic explicitly states the show is 'beneath Broadway standards' and uses harsh imagery ('outhouse') to dismiss nearly everything except the set design. | GPT-4o-mini: The review is overwhelmingly negative, indicating a clear rejection of the production with only a slight positive note about the set design.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: The critic explicitly states the show is 'beneath the standards of Broadway' and uses the crude metaphor comparing it to an 'outhouse', indicating strong disapproval despite this being only one excerpt. | GPT-4o: The critic uses strong negative language comparing the show unfavorably to an outhouse and stating it is beneath Broadway standards, indicating a strongly negative view. | Gemini: The review is overwhelmingly negative, comparing the show to an outhouse and stating it's beneath Broadway standards. The single positive comment about the set design does not outweigh the overall negative sentiment.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:43.184Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:54.919Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 20,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 25,
-    "openaiScore": 15,
-    "scoreDelta": 10,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Pan"
   },
   "contentTier": "excerpt",
   "wordCount": 0

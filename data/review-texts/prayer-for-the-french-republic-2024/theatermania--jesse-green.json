@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Joshua Harmon's sprawling family drama about Jewish identity and antisemitism in France is both deeply personal and politically urgent, though it sometimes struggles under the weight of its ambitions.",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 59,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,53 +18,37 @@
   "showScoreExcerpt": "Joshua Harmon's sprawling family drama about Jewish identity and antisemitism in France is both deeply personal and politically urgent, though it sometimes struggles under the weight of its ambitions.",
   "needsScoring": true,
   "llmScore": {
-    "score": 68,
-    "confidence": "low",
+    "score": 59,
+    "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 75
+      "low": 54,
+      "high": 64
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "deeply personal and politically urgent",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "sometimes struggles under the weight of its ambitions",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review balances praise for the play's emotional resonance and relevance against criticism of its overambitious scope, suggesting a mixed but leaning positive assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be an error message rather than a review, making any evaluation impossible from the provided text. | GPT-4o: The text provided does not contain any evaluative content about a Broadway show. This suggests a placeholder or error, leading to a mixed classification with low confidence. | Gemini: The review text is a placeholder message indicating the review is missing. Without the actual review, it's impossible to determine a recommendation, so I'm placing it in the Mixed bucket with a low score and confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:11:57.609Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2339,
-    "outputTokens": 275,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:53.743Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
@@ -105,5 +89,20 @@
   "textIssues": [
     "Word count too low: 42 (min: 300)",
     "Show title not found in text"
-  ]
+  ],
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 55,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

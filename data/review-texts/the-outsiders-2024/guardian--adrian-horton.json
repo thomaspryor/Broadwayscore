@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "The production is the platonic ideal of a retro classic rebooted for Broadway, broadly appealing to audiences young and old (my showing was split between boomers and kids) but not particularly searing, recognizable but not terribly distinct, sincere and competent yet not resounding.",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
   "designation": null,
@@ -16,38 +16,22 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 59,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 50.5,
-      "high": 67.5
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 60
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "broadly appealing to audiences young and old",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "not particularly searing, recognizable but not terribly distinct",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "sincere and competent yet not resounding",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges the production's broad appeal and competence but repeatedly emphasizes what it lacks - distinctiveness, impact, and memorability - resulting in lukewarm recommendation. | GPT-4o-mini: The review indicates a competent but unremarkable production, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic describes the production as 'broadly appealing' and 'competent' but emphasizes it's 'not particularly searing' and 'not resounding,' indicating a lukewarm assessment that neither strongly recommends nor discourages attendance. | GPT-4o: The review describes the production as broadly appealing and competent but lacking in distinctiveness and impact. This suggests a mixed verdict, recognizing some positive elements but also significant limitations. | Gemini: The review uses contrasting phrases like \"broadly appealing\" but \"not particularly searing\", and \"sincere and competent yet not resounding\", indicating a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,20 +40,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:57:48.352Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:08:22.069Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 59,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 55,
-    "scoreDelta": 7,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0

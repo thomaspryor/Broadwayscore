@@ -8,64 +8,56 @@
   "bwwExcerpt": "With the inestimable assistance of Kata’s then-and-now set, Amith Chandrashaker’s lighting design, Daniel Kluger’s music and sound design and Sarah Laux’s spot-on costumes – to say nothing of Cromer’s direction, which easily matches his Tony-winning work on The Band’s Visit, Edwards and his castmates bring two distinct, if not always so dissimilar, eras to life, and they tell a sweeping story while conveying genuine intimacy. Prayer for the French Republic asks big questions – of history, of fam",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 89,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 82,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "winner of just about every Off Broadway award there is to be had",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "makes a smooth, nearly flawless transition to the Broadway stage",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "most of the original cast intact along with a big name TV star",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review emphasizes the show's award-winning pedigree and describes a 'nearly flawless transition' to Broadway, indicating clear positive recommendation despite being more descriptive than evaluative. | GPT-4o-mini: The review indicates a strong positive sentiment about the production's transition to Broadway and its accolades, suggesting a clear recommendation to see it.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The phrase 'all but miraculously' suggests exceptional achievement, and the review praises the production's ability to successfully tackle big, complex themes while maintaining intimacy. | GPT-4o: The review uses highly positive language, describing the production as answering big questions 'all but miraculously,' which indicates a strong recommendation. The aggregator context also supports a positive verdict. | Gemini: The review praises the cast and the storytelling, indicating a positive recommendation. The phrase \"all but miraculously, answers their call\" suggests a strong positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:37.983Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:18.072Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 87,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“...Edwards and his castmates bring two distinct, if not always so dissimilar, eras to life, and they tell a sweeping story while conveying genuine intimacy. ‘Prayer for the French Republic’ asks big questions – of history, of family, of identity – and, all but miraculously, answers their call.”",

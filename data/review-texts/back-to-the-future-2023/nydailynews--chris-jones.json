@@ -8,7 +8,7 @@
   "showScoreExcerpt": "“Frenetically paced, relentlessly comedic and visually chaotic, “Back to the Future: The Musical” is aimed squarely at middle America...But the show still misses opportunity after opportunity to make people actually feel.”",
   "bwwExcerpt": "misses opportunity after opportunity to make people actually feel",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 59,
   "source": "show-score",
   "textFetchedAt": "2026-01-30T16:03:46.381Z",
   "textFetchMethod": "playwright",
@@ -17,67 +17,52 @@
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 42,
+    "score": 59,
     "confidence": "high",
     "range": {
-      "low": 38,
-      "high": 46
+      "low": 54,
+      "high": 64
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
-      "music": 45,
-      "performances": 55,
-      "direction": 40
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the show still misses opportunity after opportunity to make people actually feel",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "This thing just never breathes",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "represent the show's only major pleasures",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic systematically criticizes the show's lack of emotional depth, poor storytelling choices, and missed opportunities, with only isolated praise for Roger Bart's performance and the DeLorean car effect.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: While acknowledging some pleasures like Roger Bart's performance and the DeLorean effect, the critic fundamentally finds the show disappointing for failing to capture the emotional depth of the source material, calling it cartoonish and lacking truth. | GPT-4o: The review highlights several flaws in the production, such as lack of emotional connection and reliance on cliches, but acknowledges some entertaining elements like Roger Bart's performance and the DeLorean scene. This suggests a mixed experience with some redeeming qualities. | Gemini: The review highlights significant flaws, particularly the lack of emotional depth and reliance on cartoonish cliches. However, it acknowledges moments of appeal, especially Roger Bart's performance and the DeLorean scene, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:31:35.206Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3609,
-    "outputTokens": 331,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:37.696Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 45,
-    "scoreDelta": 7,
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 42,

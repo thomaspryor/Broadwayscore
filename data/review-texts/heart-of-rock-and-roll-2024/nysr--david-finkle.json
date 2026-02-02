@@ -9,64 +9,55 @@
   "bwwExcerpt": "So, give a round of applause to Jonathan A. Abrams, who (from a story by producer Tyler Mitchell and himself) dreamed up a plot in which to lodge the Huey Lewis and the News songs so’s a talented gaggle of singers and dancers can give Great White Way life to them. For added stage heat, choreographer Lorin Latarro grabs every opportunity for her multi-talented troupe to maximize the excitement with inexhaustible energy.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": "4/5 stars",
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 73,
+      "low": 75,
       "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
-      "performances": 82,
-      "direction": 83
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "talented gaggle of singers and dancers can give Great White Way life to them",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "grabs every opportunity for her multi-talented troupe to maximize the excitement with inexhaustible energy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "give a round of applause to Jonathan A. Abrams",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The review expresses clear enthusiasm for the performances and choreography with energetic positive language, though focuses more on execution than the underlying material quality. | GPT-4o-mini: The review expresses strong praise for the choreography and the energy of the performances, indicating a positive recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating and consistently positive language throughout ('nice surprise', 'talented gaggle', 'hunky-dory work') clearly indicate recommendation, with the critic appreciating the show's unpretentious entertainment value despite acknowledging it breaks no new ground. | Gemini: The review is overwhelmingly positive, highlighting the energetic performances, choreography, and the successful integration of Huey Lewis and the News songs into the storyline. The critic calls it a 'nice surprise' and praises various aspects of the production, indicating a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:01.208Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:40:55.005Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

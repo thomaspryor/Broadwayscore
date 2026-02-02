@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": "MEH",
   "dtliExcerpt": "Playwright Joshua Harmon seems to be aiming for the reach of Tony Kushner, using maximalist technique to deliver ideas that sprawl forward.",
@@ -19,38 +19,22 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 42,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "seems to be aiming for the reach of Tony Kushner, using maximalist technique",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "the three-hour runtime of 'Prayer for the French Republic' seems appropriate",
-        "sentiment": "positive",
-        "strength": 2
-      },
-      {
-        "quote": "it seeks to draw that history out",
-        "sentiment": "neutral",
-        "strength": 1
-      }
-    ],
-    "reasoning": "This appears to be an excerpt from a longer review that describes the play's ambitions and context but lacks clear evaluative language or recommendation signals.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic acknowledges the ambitious scope but clearly states the play fails to deliver compelling or nuanced storytelling despite having the setup to succeed. The truncated text cuts off mid-sentence, but the negative assessment is clear. | GPT-4o: The review criticizes the play for failing to deliver its story in a compelling or nuanced way, indicating a negative assessment. The lack of compelling storytelling suggests the critic does not recommend the production. | Gemini: The review states that the play does not tell its story in a compelling or nuanced manner, indicating a negative assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,29 +43,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:53:58.985Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2437,
-    "outputTokens": 326,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:44.532Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 40,
-    "scoreDelta": 2,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (41 → Down) conflicts with aggregator thumbs (Up)"
-    ]
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 41,

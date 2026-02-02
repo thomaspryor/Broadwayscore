@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“So transportive are the intoxicating Cuban music and spirited dance that it’s easy to forgive the show’s rather wispy and cliched book.”\n\nRead more",
   "llmScore": {
-    "score": 75,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes forgiveness of flaws due to strong musical and dance elements, indicating a positive recommendation despite acknowledged weaknesses in the book. | GPT-4o: The review highlights the positive aspects of the music and dance, suggesting they outweigh the weaker elements of the book. This indicates a recommendation, albeit with some reservations. | Gemini: The review highlights the positive aspects of the music and dance, suggesting that they outweigh the weaker book. The phrase \"easy to forgive\" indicates a recommendation despite flaws.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges significant flaws (wispy, cliched book) but uses 'easy to forgive' language suggesting the musical elements make it worth seeing. Single excerpt warning requires conservative scoring within positive range. | GPT-4o: The review highlights strong positive elements like the music and dance, suggesting a recommendation, but notes a significant flaw in the book. This indicates a positive review with reservations. | Gemini: The review indicates that the music and dance are strong enough to overcome the weak book, suggesting a positive but not rave recommendation. The phrase \"easy to forgive\" implies a reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,20 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:29:09.022Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:57:27.553Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 78,
+    "claudeScore": 72,
+    "openaiScore": 76,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

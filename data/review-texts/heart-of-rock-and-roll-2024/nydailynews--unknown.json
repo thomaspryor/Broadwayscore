@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 79,
+  "assignedScore": 78,
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite being excerpts only, the language clearly recommends the show with praise for the book, performances, and direction, positioning it as a potential sleeper hit. | GPT-4o: The review describes the show as a 'sleeper hit' with a 'witty book' and 'winning lead performances', indicating a strong positive recommendation. | Gemini: The review suggests the show is a potential 'sleeper hit' with a 'witty book' and 'winning lead performances,' indicating a positive overall assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls it a potential 'sleeper hit' with 'witty book' and 'winning performances,' indicating a positive recommendation. Single excerpt warning requires conservative scoring within positive range. | GPT-4o: The review describes the show as 'warm-hearted' and potentially a 'sleeper hit', indicating a positive reception. The mention of a 'witty book' and 'winning lead performances' further supports a positive recommendation, though the language suggests some reservations about the scale of the production. | Gemini: The review suggests the show is \"ideal fodder\" and a potential \"sleeper hit,\" indicating a positive, but not overwhelmingly enthusiastic, recommendation. The limited text and lack of a clear rating from the critic lead to a slightly lower confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:46:45.048Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:40:21.481Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 82,
+    "openaiScore": 79,
     "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

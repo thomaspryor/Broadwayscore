@@ -10,21 +10,21 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 58,
-    "confidence": "high",
+    "score": 74,
+    "confidence": "medium",
     "range": {
-      "low": 53,
-      "high": 63
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -32,7 +32,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be just the header/credits information with no actual review text or critical assessment of the production. | GPT-4o: The review text provided is truncated and lacks any evaluative content or clear verdict. Without further context or explicit recommendation, it is classified as mixed with low confidence. | Gemini: The review text is incomplete, making it impossible to determine the critic's recommendation. I am defaulting to a mixed score.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises Jessica Lange's nuanced central performance while noting issues with underwritten supporting parts. The text is truncated but the available content suggests a modest recommendation based on the lead performance. | GPT-4o: The review highlights strong performances, particularly by Lange, but suggests the play has underwritten parts and a complex central character. The text is truncated, leaving some ambiguity about the final verdict. | Gemini: The review focuses on Jessica Lange's performance, highlighting its nuance and complexity. While the other actors are mentioned, the emphasis on Lange's portrayal suggests a positive, albeit potentially qualified, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,26 +42,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:56:53.453Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:54:24.624Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 55,
-    "claudeBucket": "Mixed",
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "low-conf: prompt=3.0.0, delta=20, upgrading to V5 + 3 models",
   "previousLlmScore": 55,

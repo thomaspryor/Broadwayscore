@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,54 +21,53 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 70
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "funny and affecting",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "slight and fragmentary",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic finds the drama both emotionally engaging and entertaining but criticizes it as underdeveloped, suggesting a qualified positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt contains both positive descriptors ('funny and affecting') and negative qualifiers ('but slight and fragmentary'), indicating a mixed assessment. Given this is a single curated excerpt and may not represent the full verdict, I'm scoring conservatively within the mixed range. | GPT-4o: The review excerpt describes the drama as 'funny and affecting' but also 'slight and fragmentary,' indicating a mix of positive and negative elements. The lack of a full review and the warning about a single excerpt suggest a conservative approach, placing it in the middle of the Mixed range. | Gemini: The description of the play as \"funny and affecting\" suggests positive qualities, but the terms \"slight and fragmentary\" indicate significant drawbacks, leading to a mixed assessment. The limited excerpt makes a definitive positive or negative classification difficult.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:06:48.958Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2326,
-    "outputTokens": 244,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:38.468Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

@@ -11,13 +11,13 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "https://www.theatermania.com/news/review-prayer-for-the-french-republic-and-a-one-way-ticket-to-israel_1725360/",
-  "assignedScore": 75,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 75,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'beautiful production' and 'enhances' suggests positive assessment, but this is only a curated excerpt and may not reflect the full verdict of the review. | GPT-4o: The excerpt praises the director's enhancement of the script and describes the production as beautiful, suggesting a positive reception. However, the lack of a full review text and explicit recommendation lowers confidence. | Gemini: The quote indicates a positive assessment of the direction and production quality, suggesting a recommendation. However, without the full review, it's difficult to gauge the overall enthusiasm.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'beautiful production' and 'enhances' suggests positive sentiment, but with only one curated excerpt available, the full verdict is unclear and could be more or less enthusiastic. | GPT-4o: The excerpt praises the director's enhancement of the script, indicating a positive view of the production. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The quote indicates a positive assessment of the direction and production quality, suggesting a recommendation. However, with only one excerpt, it's difficult to gauge the overall sentiment fully, hence the score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,19 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:52:17.483Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:34:57.177Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 78,
+    "claudeScore": 72,
+    "openaiScore": 76,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

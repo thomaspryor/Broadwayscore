@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic explicitly states they found it 'mostly meh' and concludes audiences will 'leave feeling like you haven't really dented your appetite,' indicating neither recommendation nor strong discouragement despite acknowledging some entertaining elements. | Gemini: The review highlights both positive and negative aspects, with the critic ultimately feeling 'meh' despite enjoying the pop songs. The contrasting opinions of audience members further emphasize the mixed nature of the show.",
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic explicitly states they found it 'mostly meh' and describes it as having enjoyable elements (music, dancing, humor) but ultimately lacking substance and character development. The ending metaphor about leaving feeling like you haven't 'dented your appetite' reinforces this lukewarm assessment. | Gemini: The critic acknowledges the show's appeal to some audience members and its fun elements, but ultimately finds the story flimsy and the characters cartoonish, resulting in a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,12 +37,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:16:07.490Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:58:08.214Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 52,
-    "previousVersion": "2.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 58,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,19 +35,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "lighthearted jukebox musical",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "may indulge your 1980s nostalgia",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This extremely brief excerpt suggests conditional enjoyment ('may indulge') for a specific audience (nostalgia seekers), indicating a mild positive but qualified recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The phrase 'may indulge' suggests conditional appeal rather than strong recommendation, and the focus on nostalgia implies limited broader appeal. Single excerpt warning requires conservative scoring. | GPT-4o: The excerpt suggests a nostalgic appeal but lacks strong positive or negative language. Given the single excerpt warning, the review likely falls into a mixed category, with a conservative score due to potential cherry-picking. | Gemini: The phrase \"may indulge your 1980s nostalgia\" suggests a positive but not overwhelming experience. Given the limited text, a score in the middle of the positive range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,19 +45,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T19:57:48.460Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2328,
-    "outputTokens": 280,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:10.475Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

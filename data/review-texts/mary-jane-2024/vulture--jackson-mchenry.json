@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"McAdams works in ways that tend toward the understated, yet precisely observed.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 82,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 80
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "That gesture is typical of the understated yet gutting quality of this production of Mary Jane, which cuts the quotidian open to get to the bone of the existential",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Rachel McAdams turns out to be more than up for the task",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "McAdams is supported, like Mary Jane herself, by an ensemble of more than competent women",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic offers sustained praise for the production's emotional depth, McAdams' performance, and the ensemble work, with detailed appreciation for the script, direction, and design elements, indicating a clear positive recommendation despite the challenging subject matter.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the production's emotional depth, McAdams's performance as 'more than up for the task,' and the ensemble work, with appreciation for the director's vision and set design creating a powerful theatrical experience. | Gemini: The review is largely positive, praising McAdams' performance and the production's ability to find grace in a difficult situation. While acknowledging the potentially difficult subject matter, the critic ultimately recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:33:32.057Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4028,
-    "outputTokens": 375,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:07.723Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "scoreDelta": 7,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "sources": [
     "dtli",

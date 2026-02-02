@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Joshua Harmon's sprawling family drama about French Jews contemplating emigration is both overstuffed and underdeveloped, but it's anchored by a magnificent performance from Betsy Aidem.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,59 +18,53 @@
   "showScoreExcerpt": "Joshua Harmon's sprawling family drama about French Jews contemplating emigration is both overstuffed and underdeveloped, but it's anchored by a magnificent performance from Betsy Aidem.",
   "needsScoring": true,
   "llmScore": {
-    "score": 62,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
+      "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "overstuffed and underdeveloped",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "magnificent performance from Betsy Aidem",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "anchored by",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Strong criticism of the script balanced by high praise for the lead performance creates a mixed but slightly positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review presents clear structural criticisms ('overstuffed and underdeveloped') balanced by praise for a 'magnificent performance,' indicating a mixed assessment without a clear recommendation either way. | GPT-4o: The review highlights both negative aspects ('overstuffed and underdeveloped') and a positive element ('magnificent performance'), indicating a mixed reception with notable strengths. | Gemini: Despite being \"overstuffed and underdeveloped,\" the review highlights a \"magnificent performance,\" suggesting it's worth seeing for that reason alone.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:12:16.109Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2346,
-    "outputTokens": 299,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:48.200Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

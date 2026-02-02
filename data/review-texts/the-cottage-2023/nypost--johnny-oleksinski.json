@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "A lowbrow-highbrow mashup isn’t the worst idea, granted, but here it translates to “Shout til it’s funny.”",
@@ -21,67 +21,52 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 46
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 35
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Rustin's irksome writing, though, was a flea in my ear",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "What makes 'The Cottage' habitable is its game and mostly charming actors",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "that physical prop gag is funnier than any one line of dialogue in this entire witless play",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic harshly criticizes the script as 'irksome' and 'witless' while praising some performances, but the overwhelming negative assessment of the writing and direction outweighs the positive elements.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review concludes by calling the play 'witless' and criticizes the writing as 'irksome,' the energy as 'jarring,' and compares it unfavorably to better farces, clearly not recommending it despite praising some individual performances. | GPT-4o: The review criticizes the play's writing, direction, and overall comedic execution, describing it as 'witless' and 'irksome'. While the actors are praised, the negative aspects dominate, leading to a negative recommendation. | Gemini: The review praises the actors and set design but criticizes the writing and overall structure of the play. It acknowledges some funny moments but ultimately finds the play lacking in wit and charm, resulting in a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:16:26.630Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3421,
-    "outputTokens": 362,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:36.509Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 45,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 42,
+    "openaiScore": 48,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "contentTier": "complete",
   "wordCount": 665,

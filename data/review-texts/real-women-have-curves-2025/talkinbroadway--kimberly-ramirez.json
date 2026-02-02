@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"The show pulses with a distinctly chingona spirit–it is bold and defiantly optimistic despite relentlessly biased\"",
@@ -18,11 +18,11 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 70.5,
-      "high": 85.5
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,46 +32,38 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "gloriously championed body positivity",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "vibrant new musical",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "pulses with a distinctly chingona spirit–it is bold and defiantly optimistic",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The excerpt shows clear enthusiasm for the musical's themes and energy with phrases like 'gloriously championed' and 'bold and defiantly optimistic,' but the incomplete nature of the review makes scoring uncertain. | GPT-4o-mini: The review expresses strong positive sentiments about the musical's themes and spirit, indicating a clear recommendation despite some uncertainty.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The text is truncated but the available excerpt shows clear positive language ('pulses with spirit', 'bold and defiantly optimistic', 'vibrant new musical', 'gloriously championed') indicating a positive recommendation, though the incomplete nature prevents a higher confidence rating. | GPT-4o: The review text is truncated, and the provided excerpt suggests a vibrant and optimistic spirit but also hints at potential bias. Without a clear positive or negative verdict, it falls into the mixed category. | Gemini: The review uses positive language like \"vibrant\" and \"gloriously championed\" indicating a positive recommendation. The phrase \"bold and defiantly optimistic\" further supports this classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:48.568Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:27.191Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 80,
-    "scoreDelta": 5,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,

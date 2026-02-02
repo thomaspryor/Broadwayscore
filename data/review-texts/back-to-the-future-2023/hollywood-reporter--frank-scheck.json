@@ -9,73 +9,58 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "It’s a terrifically fun and amusing story that works nearly as well onstage as it did on film, although the original songs, as is so often the case with these adaptations, mainly come across as superfluous. Not that they’re all that bad, mind you.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 72
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 60,
+      "book": null,
       "music": null,
-      "performances": 55,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "weren't taking any chances",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "snagged a 2022 Olivier Award for Best New Musical",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "hard to tell whether it's tribute or appropriation",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This excerpt describes a safe but potentially unoriginal adaptation with concerning performance choices, suggesting mixed reception despite past awards.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening concerns about creative choices and derivative performances, the critic concludes it's 'terrifically fun' and 'works nearly as well onstage' - a clear positive recommendation with some reservations about originality. | GPT-4o: The review describes the production as fun and amusing, indicating a positive experience, though it notes that the original songs feel superfluous. This suggests a recommendation with some reservations. | Gemini: The review states the show is \"terrifically fun and amusing\" and works nearly as well as the film, indicating a positive recommendation, although the reviewer notes the songs are \"superfluous\".",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:31:29.426Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2452,
-    "outputTokens": 310,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:29:33.507Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "sources": [

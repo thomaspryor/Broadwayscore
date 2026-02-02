@@ -9,15 +9,15 @@
   "bwwExcerpt": "Unlike the lavish 1997 National Theatre production starring Ian McKellen, this staging is on the minimal side, with an effective revolving turntable set and a relatively small cast in which the understudies also play the townspeople in the pivotal climactic town hall meeting scene. Howard Shapiro, Philadelphia Inquirer: I couldn't help but think of an ATF agent named Peter Forcelli while I watched the super-charged Broadway revival of An Enemy of the People, Henrik Ibsen's play about a man who t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-2024",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 75,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review focuses on praising the clever staging innovations and Strong's intense performance, but this appears to be an excerpt focused on one aspect rather than a complete assessment. | GPT-4o: The review highlights a clever staging trick and praises Jeremy Strong's intense performance, suggesting a positive experience. However, the lack of explicit recommendation language and the focus on the production's setup rather than its overall impact results in a medium confidence level. | Gemini: The review focuses on a specific staging element and Jeremy Strong's performance, but lacks an overall recommendation. The description of the play's events suggests a potentially engaging experience, but the absence of a clear verdict places it in the 'Mixed' category.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the production as 'urgent and effective' and calls it a 'bracing revival' that successfully presents the classic as relevant today. While noting it's minimal compared to lavish past productions, the tone is clearly positive and recommending. | GPT-4o: The review highlights the production's clever staging and its urgent, effective presentation of Ibsen's work as relevant to contemporary issues. The critic's language is enthusiastic and suggests a strong recommendation. | Gemini: The review highlights the production's urgency and effectiveness in connecting the classic drama to contemporary issues, indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:13:58.963Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:37:14.579Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 74,
-    "geminiScore": 60,
+    "claudeScore": 78,
+    "openaiScore": 88,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 16,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

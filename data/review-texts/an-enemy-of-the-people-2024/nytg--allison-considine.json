@@ -14,7 +14,7 @@
   "dtliThumb": "Up",
   "llmScore": {
     "score": 79,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 74,
       "high": 84
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review consistently praises Strong's performance, the production's balance of historical and contemporary elements, and concludes with a positive recommendation for both seasoned and new theatregoers, though it's more appreciative than enthusiastic. | GPT-4o: The review is highly positive, emphasizing the relevance and impact of the production, the strong performances, and the unique staging elements. The critic highlights the skillful balance of historical and contemporary themes, and the audience's enthusiastic response supports a strong recommendation. | Gemini: The review highlights the play's relevance and the production's skillful balance of history and timeliness. The critic praises Strong's performance and the integration of Nordic elements, ultimately concluding that the message packs a punch.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review is consistently positive throughout, praising Strong's performance, Gold's direction, the innovative staging, and the production's balance of historical authenticity with contemporary relevance. The critic recommends it for both experienced and new audiences. | Gemini: The review highlights the play's relevance and the production's skillful balance of history and timeliness, praising Strong's performance and the integration of Nordic roots. While mentioning the unusual intermission, the overall tone is positive, suggesting it's worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:14:13.747Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:38:25.066Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 92,
+    "openaiScore": null,
     "geminiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dtliExcerpt": "This production of An Enemy of the People may be driven by star power, but its enduring message packs a punch for seasoned theatregoers and those new to Ibsen’s works. And audiences will be talking about the bar on stage for years to come.",
   "sources": [

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a visual feast with stunning costumes and sets that capture the Art Deco period beautifully, but the musical itself lacks the emotional depth needed to match its gorgeous surface.",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "The show is a visual feast with stunning costumes and sets that capture the Art Deco period beautifully, but the musical itself lacks the emotional depth needed to match its gorgeous surface.",
   "needsScoring": true,
   "llmScore": {
-    "score": 48,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 42,
-      "high": 55
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
-      "music": 35,
+      "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "visual feast with stunning costumes and sets",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "lacks the emotional depth needed to match its gorgeous surface",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong praise for production design is undermined by fundamental criticism that the musical lacks emotional depth, indicating beautiful packaging but hollow content.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges significant visual strengths but identifies a fundamental flaw in emotional depth, creating a balanced but ultimately lukewarm assessment. | GPT-4o: The review praises the visual elements but criticizes the lack of emotional depth, indicating a mixed reception. | Gemini: The review acknowledges the visual strengths but criticizes the lack of emotional depth, indicating a mixed opinion. It neither strongly recommends nor discourages seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:02:10.808Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2340,
-    "outputTokens": 282,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:40.194Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

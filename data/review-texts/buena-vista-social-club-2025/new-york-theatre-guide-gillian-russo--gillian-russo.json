@@ -30,61 +30,55 @@
   ],
   "textStatus": "partial",
   "sourceMethod": "playwright",
-  "assignedScore": 78,
+  "assignedScore": 79,
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 88,
-      "performances": 82,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Read our four-star review of Buena Vista Social Club",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the staging and music of Buena Vista are lush, vibrant, and celebratory",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "getting to hear their music live at the Linda Gross Theater now is a unique and worthwhile treat",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Four-star review with consistent praise for music, staging, and performances, though acknowledging plot predictability and pacing issues in Act 2.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review opens with a four-star rating and concludes with clear recommendation language calling it 'worthwhile.' Despite noting some rushed plot points and predictable elements, the critic praises the lush staging, vibrant music, and overall experience. | GPT-4o: The review highlights the lush, vibrant, and celebratory nature of the production, praising the music and choreography. Despite some rushed plot points, the critic describes the show as a 'unique and worthwhile treat,' indicating a strong recommendation. | Gemini: The review highlights the lush staging and vibrant music, calling it a 'unique and worthwhile treat'. While it mentions some rushed plot points, the overall tone is positive, recommending the show for its musical experience.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:41:30.983Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3171,
-    "outputTokens": 342,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:29.743Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "complete",
-  "contentTierReason": "Full review text"
+  "contentTierReason": "Full review text",
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

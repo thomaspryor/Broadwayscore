@@ -9,71 +9,55 @@
   "showScoreExcerpt": "“Though it’s surrounded by heavy clouds, Harmon’s play is plenty sharp and by no means gloomy...How much you respond to ‘Prayer’ may ultimately rest on your taste for such harangues. I admit to finding them hard to follow — not intellectually but emotionally. They leave me cold and a little suspicious.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/prayer-for-the-french-republic-broadway",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 65,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
+      "book": null,
       "music": null,
-      "performances": 70,
-      "direction": 65
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it has the shape of something profound and easily laudable, but inside that outline, though it doesn't shy away from gnarly questions, it often feels showy in its engagement with them",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Harmon's play is plenty sharp and by no means gloomy",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "these questions are still implicit in Prayer for the French Republic, and when we're able to hear them, the play is at its strongest",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic acknowledges the play's intelligence and sharp writing but finds it fundamentally showy and calculated, with structural problems that prevent full emotional engagement.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the play's intelligence and thematic relevance but finds it 'showy,' 'self-conscious,' and emotionally cold, with overwrought speeches that leave her 'suspicious.' Despite some strengths, the overall assessment is of a work that fails to fully engage. | Gemini: The review highlights both strengths and weaknesses. The critic points out the play's ambition and engagement with gnarly questions, but also finds it showy and emotionally cold. The historical scenes are described as rote, while the contemporary scenes are seen as verbose. Overall, the review doesn't strongly recommend or discourage seeing the play.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:54:11.833Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4475,
-    "outputTokens": 368,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:02.597Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 50,
-    "scoreDelta": 2,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "bwwExcerpt": "As a three-hour-and-two-intermission multigenerational family epic that’s Serious But Also Funny — and full of prolonged opportunities for actors to shout — it’s essentially purpose-built to win awards, and it has. Off Broadway, it nabbed Outstanding Play and Outstanding New Off-Broadway Play from the Drama Desk and Outer Critics Circle, respectively. It has the shape of something profound and easily laudable, but inside that outline, though it doesn’t shy away from gnarly questions, it often fe",
   "bwwThumb": "Meh",

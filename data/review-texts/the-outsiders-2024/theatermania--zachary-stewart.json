@@ -16,64 +16,48 @@
     "score": 62,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 68,
-      "music": 65,
-      "performances": 72,
-      "direction": 55
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "For the record, there is plenty that is right",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "this expensive and superfluous scenic effect exemplifies everything that is wrong with The Outsiders",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Frustratingly, Taymor has not figured out how to integrate this spectacle into her larger vision",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic acknowledges significant strengths in performances, music, and book improvements over the film, but expresses frustration with directorial choices and spectacle that doesn't serve the story, resulting in a qualified mixed response.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review acknowledges significant strengths (strong opening, good performances, better than the film) but ultimately finds the production disappointing due to misplaced priorities on spectacle over substance and uneven execution. | Gemini: The review highlights both positive and negative aspects of the production. While praising the score, choreography, and initial momentum, it criticizes the superfluous scenic effects and integration of spectacle. The overall tone suggests a mixed experience, leaning slightly towards positive due to the initial praise.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:23:01.423Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3650,
-    "outputTokens": 356,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:10:41.039Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 55,
-    "scoreDelta": 10,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/the-outsiders-2024/theatermania--zachary-stewart_2026-01-27.html",

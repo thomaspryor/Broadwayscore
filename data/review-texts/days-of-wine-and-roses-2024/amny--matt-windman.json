@@ -9,66 +9,56 @@
   "bwwExcerpt": "While the musical respects the film’s structure and setting (though the location is moved from San Francisco to New York City) and recycles much of the original dialogue, it proves to be one of the relatively few theatrical adaptations that expands upon its cinematic source material, as seen in how the score (which is grounded in mid-century jazz) artfully captures the characters’ circumstances (including the high-flying, euphoric rush of endless cocktails) and subsequent breakdowns and melancho",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 50,
-      "music": 73,
-      "performances": 87,
-      "direction": 55
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "So why, with such a radiant double center, does Days of Wine and Roses feel constrained, a little narrow and flat?",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "O'Hara and James are at the peak of their artistry",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "I hunger for more. O'Hara and James are capable of leaving us not simply pensive, but elated and shattered, if they had a show that would let them",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic praises the performances extensively but finds the material and direction disappointing, creating a mixed review that appreciates the talent while being frustrated by wasted potential. | GPT-4o-mini: While the performances of O'Hara and James are highly praised, the material and direction are seen as limiting, leading to a mixed recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic extensively praises the lead performances and vocal work but finds the material itself didactic and predictable, describing it as 'great talents put in the service of material that will almost expand to accommodate them, but not quite' - a classic mixed review structure. | GPT-4o: The review praises the performances and vocal talents of the leads but criticizes the material for feeling constrained and didactic. The positive elements are overshadowed by the show's inability to fully engage or expand beyond its limitations. | Gemini: The review praises the performances of O'Hara and James but finds the material somewhat lacking, leading to a recommendation with reservations. The critic highlights the vocal brilliance and chemistry of the leads but notes the show's constrained feeling and didactic message.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:45:32.984Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:16.043Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 62,
-    "scoreDelta": 0,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (62 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "Nineteen years after winning a Tony Award for the enchanting and sweeping score of “The Light in the Piazza,” Adam Guettel — the extremely gifted and adventurous composer and lyricist who also happens to be the grandson of legendary composer Richard Rodgers and son of Mary Rodgers (composer of “Once Upon a Mattress”) — has finally returned to Broadway with “Days of Wine and Roses,” another musically literate and individualized work that is far more acidic in sound and style.",
   "sources": [

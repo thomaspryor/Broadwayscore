@@ -9,71 +9,56 @@
   "showScoreExcerpt": "\"a portrait of an everyday saint, and a compelling one to boot.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 80,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 85,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 82,
-      "high": 88
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 88,
+      "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "this is one of Herzog's finest achievements and it provides McAdams with a most memorable Broadway debut",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "What was so affecting about Mary Jane in its 2017 premiere and remains so today is its understanding that Mary Jane's acceptance of her daily reality, her uncomplaining kindness, and her sheer tenaciousness, constitute a quiet sort of heroism",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "This time around, I found the final scene, between Mary Jane and Tenkei, slightly disappointing",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Despite minor reservations about the ending, the critic praises this as 'one of Herzog's finest achievements' with exceptional performances, particularly calling McAdams' debut 'most memorable,' and demonstrates deep emotional engagement with the material.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite minor reservations about the ending, the critic clearly recommends the show, calling it 'one of Herzog's finest achievements' and praising McAdams' performance extensively. The review is fundamentally positive throughout. | GPT-4o: The review describes the play as a compelling portrayal of heroism and highlights the strong performances and direction. Despite mentioning a slightly disappointing final scene, the overall tone is positive, emphasizing the play's emotional impact and the memorable debut of Rachel McAdams. | Gemini: The review is mostly positive, praising the performances and writing, but notes some disappointment with the final scene and a desire for a firmer resolution. The truncated text makes it difficult to be certain of the overall recommendation, but the aggregator excerpt and generally positive tone suggest a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:32:19.852Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3875,
-    "outputTokens": 403,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:17:08.924Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,

@@ -17,64 +17,48 @@
     "score": 62,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 25,
-      "music": 45,
-      "performances": 85,
-      "direction": 55
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "When Groff is singing and dancing (stunning choreography by Shannon Lewis), 'Just in Time' absolutely dazzles",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "when he or anybody else stops to recite dialogue from Leight and Oliver's book, 'Just in Time' simply deadens",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "even if Groff delivered a spot-on impersonation of Darin, 'Just in Time' would be a substandard bio-musical",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic praises Groff's exceptional performance and dancing but heavily criticizes the book, concept, and overall execution, creating a mixed experience that's hard to recommend despite standout elements.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic praises Jonathan Groff's exceptional performance and vocals enthusiastically, but heavily criticizes the book, dialogue, and overall concept. The review clearly states the show 'absolutely dazzles' when Groff performs but 'simply deadens' during dialogue scenes. | Gemini: The review praises Groff's performance and the musical numbers but criticizes the book and dialogue. This creates a mixed impression, indicating that the show has its moments but is not consistently strong.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:24:24.727Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3794,
-    "outputTokens": 386,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:50.753Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 85,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "dtliExcerpt": "When Groff is singing and dancing (stunning choreography by Shannon Lewis), “Just in Time” absolutely dazzles. It doesn’t matter if what’s happening on stage ever makes you think of Bobby Darin. But Groff doesn’t always sing and dance, and when he or anybody else stops to recite dialogue from Leight and Oliver’s book, “Just in Time” simply deadens. Since Timbers also receives a “developed by” credit here, he should have developed a completely different book.",
   "sources": [

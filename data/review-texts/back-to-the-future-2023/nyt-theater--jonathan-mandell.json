@@ -10,73 +10,55 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 65,
-    "confidence": "medium",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
-      "music": 60,
-      "performances": 65,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a nearly scene-by-scene re-creation of the 1985 movie on which it's based. This is in some ways a lost opportunity",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "it's the DeLorean that redeems this musical, far more than the serviceable score or familiar choreography or competent cast",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "often thrilling stage design and special effects",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic acknowledges production strengths (thrilling design/effects) but criticizes the adaptation as a missed opportunity with merely serviceable elements throughout.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic finds the production mediocre overall ('serviceable score,' 'competent cast') and critiques it as a 'lost opportunity,' but acknowledges the 'often thrilling stage design and special effects' redeem it somewhat. | Gemini: While the review points out shortcomings in the score, choreography, and cast, it ultimately suggests the stage design and special effects, particularly the DeLorean, make the show worthwhile.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:31:51.087Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2552,
-    "outputTokens": 357,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:15.595Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 0,
-    "scoreDelta": 0,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (0 → Down) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "sources": [
     "bww-roundup"

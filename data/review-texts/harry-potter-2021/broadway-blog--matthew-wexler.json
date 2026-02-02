@@ -15,59 +15,51 @@
   "scoreConfidence": "low",
   "llmScore": {
     "score": 89,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "unforgettable theatrical experience",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "staging is simply magical",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "An unforgettable theatrical experience",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Strong superlatives like 'unforgettable' and 'magical' suggest clear enthusiasm, but the excerpt is too brief to assess full critical perspective. | GPT-4o-mini: The review expresses strong enthusiasm and uses superlatives, indicating a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being a single excerpt, the language 'unforgettable' and 'magical' indicates strong enthusiasm, but conservatively scored within rave range due to limited text. | GPT-4o: The excerpt uses strong positive language, describing the experience as 'unforgettable' and the staging as 'magical,' indicating a highly enthusiastic recommendation. However, due to the single excerpt warning, the confidence is medium. | Gemini: The phrase \"unforgettable theatrical experience\" indicates a positive recommendation. Given that it's a single excerpt, I'm scoring it in the middle of the positive range.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:23:21.592Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:58:42.994Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "scoreDelta": 2,
+    "geminiScore": 78,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "excerpt",
   "wordCount": 0

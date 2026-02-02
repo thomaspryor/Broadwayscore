@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "In scene after scene, Lisa Loomer and Nell Benjamin’s book for the new musical “Real Women Have Curves” is a vast improvement on George LaVoo and Josefina Lopez’s screenplay, which is based on Lopez’s play. Where the 2002 film dawdles, the musical defines and drives with great narrative precision its timely tale of Latina immigrants who make dresses in a Los Angeles shop.",
@@ -18,62 +18,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 68,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 60.5,
-      "high": 75.5
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Great novels and great movies rarely translate into great musicals, much less very good ones",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Lisa Loomer and Nell Benjamin's book for the new musical 'Real Women Have Curves' is a vast improvement",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Great novels and great movies rarely translate into great musicals",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The excerpt shows praise for the book adaptation but opens with skepticism about novel-to-musical adaptations generally, with the text cutting off mid-sentence making assessment highly uncertain. | GPT-4o-mini: The review expresses skepticism about adaptations of great novels and movies but acknowledges that the book for this musical is an improvement, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly praises the musical as superior to its source material with positive language about narrative precision and improvement, indicating a recommendation despite limited excerpt text. | Gemini: The review highlights the improvement of the musical's book compared to the source material, suggesting a positive experience. The aggregator verdicts also point towards a positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:16:58.935Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:31.014Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 65,
-    "openaiScore": 70,
-    "scoreDelta": 5,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (68 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 68,

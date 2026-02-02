@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"An actorly, Broadway face-off between Jeremy Strong and Michael Imperioli\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 76,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite critiques about the adaptation being too sympathetic and missing opportunities for deeper moral complexity, the critic clearly states the production 'has much to recommend it' and praises Strong's performance, the staging concept, and the effectiveness of the in-the-round format. | GPT-4o: The review highlights the strong performances, particularly by Jeremy Strong, and the effective use of the theater's unique structure. While it notes some elements that could have been more challenging, the overall tone is positive and recommends the production. | Gemini: The review is largely positive, highlighting strong performances and the effective staging. While it notes some missed opportunities for deeper audience engagement, the overall recommendation is clear, making it a positive review with reservations.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the innovative staging, Strong's performance, and Imperioli's transformation, with appreciative language about how well the production uses its venue, though it's an incomplete excerpt that may be building to stronger conclusions. | Gemini: The review praises the staging and performances, indicating a positive experience overall. The critic highlights the effective use of the theater's structure and the strong performances of the actors.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:14:51.176Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:39:40.608Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 80,
+    "openaiScore": null,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,

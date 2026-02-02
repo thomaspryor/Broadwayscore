@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Even more surprising is that one of those shows, “The Heart of Rock and Roll,” which opened Monday night at the James Earl Jones Theatre, has turned out to be an underdog highlight of the season.",
@@ -20,38 +20,22 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 83,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 86
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
-      "music": 82,
-      "performances": 85,
-      "direction": 84
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "has turned out to be an underdog highlight of the season",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The show is hilarious, too",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It's perhaps the first time in my life that I've been happy to see a confetti cannon at curtain call",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic calls it an 'underdog highlight of the season,' praises it as 'hilarious' and 'a lot more fun' than other shows, and expresses genuine enthusiasm throughout with no significant reservations.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly recommends the show, calling it 'an underdog highlight of the season' and 'a lot more fun' than other Broadway offerings, while acknowledging it's lightweight entertainment. | Gemini: The critic expresses surprise and enjoyment, calling it an \"underdog highlight\" and \"hilarious.\" While not a rave, the review is clearly positive and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -60,27 +44,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:38:05.147Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3440,
-    "outputTokens": 350,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:40:35.897Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 83,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,

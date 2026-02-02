@@ -8,17 +8,17 @@
   "fullText": "Perhaps the most anticipated theatrical event of the season was last week’s opening of “Harry Potter and the Cursed Child, Parts One and Two.” This spell-binding new work is the product of three geniuses: the iconic J. K. Rowling (author of the original books), John Tiffany (the play’s profound director), and Jack Thorne (the playwright). Together they managed to create magic onstage in a way theatrical audiences have never seen before.\n\nPerhaps thanks to the 35 million dollar budget (a record for a play) and the massive cast of 40, or perhaps due to the demands of the fantastical source material, “Cursed Child” takes stage magic to an entirely new level. Even the theater itself — a newly renovated Lyric Theatre complete with “H” monograms, gold phoenixes, and several mini-gift stores, transports you to the wonderful world of Harry Potter.\n\nSadly, before I go any further, I must be upfront and I say I am bound by the Laws of Magic and forbidden to reveal any of the secrets of the play or even to discuss the plot. All I can say is that the play’s use of special effects and magic is unprecedented; you will never see a wire, or a trap door, or a body double. Objects disappear, actors seemingly teleport across the stage, wands produce spells, furniture flies, bodies are transfigured — all…\n\nTheater Critic. Vassar College alum, current PhD candidate at the CUNY Graduate Center.",
   "showScoreExcerpt": "\"Spell-binding...Takes stage magic to an entirely new level...The script is certainly not stellar...Some bizarre pacing issues...But these flaws are entirely with the script, in production there is so much magic that it is all too easy to get swept up and not even notice the problems in the writing...The extended choreographic transitions are unnecessary...But just as the magic saves any textual issues, the fantastic music gives the choreography a pass.\"",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 77,
   "source": "show-score",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 88,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,26 +26,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This spell-binding new work is the product of three geniuses",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "managed to create magic onstage in a way theatrical audiences have never seen before",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "takes stage magic to an entirely new level",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic uses superlative language like 'geniuses,' 'spell-binding,' and 'unprecedented' while emphasizing the groundbreaking nature of the theatrical magic, indicating strong enthusiasm despite being unable to discuss plot details.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite acknowledging script problems and pacing issues, the critic is clearly impressed by the production's magic and stagecraft, describing it as 'spell-binding' and praising unprecedented special effects that overcome textual weaknesses. | GPT-4o: The review is overwhelmingly positive about the production's ability to create unprecedented stage magic, despite some minor script issues. The critic describes the experience as 'spell-binding' and emphasizes the transformative nature of the production, indicating a strong recommendation. | Gemini: Despite script issues, the reviewer indicates that the production's magic and music are strong enough to overcome the flaws, making it worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,27 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:36:57.064Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2630,
-    "outputTokens": 343,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:01:57.164Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

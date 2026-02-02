@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review explicitly describes the performance as 'magic' and praises Scherzinger's grand performance, indicating strong enthusiasm and recommendation. | GPT-4o: The review uses highly positive language, describing the production as 'something like magic', which suggests a strong recommendation and places it in the 'Rave' category. | Gemini: The review excerpt uses positive language like \"grand extremes\" and \"something like magic,\" indicating a positive recommendation, even without the full context.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The phrase 'something like magic' is strong praise language typically reserved for exceptional productions, and the description of 'grand extremes' suggests an impressive spectacle that delivers on the show's ambitions. | GPT-4o: The review excerpt praises the production's grandeur and describes the result as 'something like magic,' indicating a highly positive impression. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The review excerpt is overwhelmingly positive, describing the performance and staging as \"magic\" and pushing each other to \"grand extremes.\" This suggests a recommendation, although the lack of full context warrants a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,10 +36,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:54:50.043Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:11:40.960Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,

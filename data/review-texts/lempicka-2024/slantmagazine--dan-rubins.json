@@ -10,74 +10,58 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 48,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 48,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 52
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 35,
-      "music": 55,
-      "performances": 60,
-      "direction": 40
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "overstuffed and tonally jumbled show",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "a show at war with itself",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "we end up seeing nothing but [brushstrokes]",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic finds significant structural and tonal problems with the musical, calling it 'overstuffed and tonally jumbled' and 'at war with itself,' despite acknowledging some strong individual moments and performances.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic finds merit in individual elements (music, some performances, certain scenes) but consistently criticizes the show's fundamental issues with tone, structure, and execution. The review neither recommends nor discourages attendance. | Gemini: The review highlights both strengths and weaknesses, describing the show as \"occasionally arresting but overstuffed and tonally jumbled.\" While praising certain musical moments and performances, it also criticizes the staging and overall execution. The phrase \"the story itself is worth telling\" suggests a mixed recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:26:15.753Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4148,
-    "outputTokens": 334,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:09.047Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 48,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 35,
-    "scoreDelta": 10,
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 30,

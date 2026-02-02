@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": 92,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 88,
-      "performances": 95,
-      "direction": 90
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "★★★★★ Amid all the celebrity hype on Broadway this season, Real Women Have Curves arrives with an outstanding cast of mostly unknowns, as incomparable as they are unlikely to star in a major Broadway musical.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Put it all together and you have one spicy Mexican feast of a show – as savory as a hot tamale, smooth as flan and irresistibly tasty as a deep-fried churro.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The best works don't just entertain us, they move our hearts and minds. This is the power of great theater.",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "5-star review with unqualified enthusiasm, calling it an 'outstanding' production that demonstrates 'the power of great theater' with superlative praise for all elements.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars and uses rapturous language throughout, calling it 'wonderfully entertaining,' praising the 'embarrassment of riches in talent,' and concluding with 'This is the power of great theater.' Clear rave recommendation. | GPT-4o: The review is overwhelmingly positive, highlighting the outstanding cast, the production's heart, humor, and originality, and its powerful message. The critic's 5/5 star rating and enthusiastic language strongly support a Rave classification. | Gemini: The critic gives the show 5/5 stars and uses overwhelmingly positive language, calling it 'wonderfully entertaining' and praising the cast, direction, and message. The review is filled with superlatives and enthusiastic recommendations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:02:57.724Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3939,
-    "outputTokens": 421,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:50.602Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 75,
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "dtliExcerpt": "Amid all the celebrity hype on Broadway this season, Real Women Have Curves arrives with an outstanding cast of mostly unknowns, as incomparable as they are unlikely to star in a major Broadway musical. They are performing their hearts out in a production that is all heart. It is also funny, touching, tuneful and refreshingly original packed with a timely message. Put it all together and you have one spicy Mexican feast of a show – as savory as a hot tamale, smooth as flan and irresistibly tasty as a deep-fried churro.",
   "sources": [

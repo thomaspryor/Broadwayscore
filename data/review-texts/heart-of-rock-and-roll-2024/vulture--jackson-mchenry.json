@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"The Heart of Rock and Roll is the funniest new musical of the season\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,36 +27,37 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The Heart of Rock and Roll is the funniest new musical of the season",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: While calling it 'the funniest new musical of the season' is strong praise, this appears to be only a headline or excerpt, making it impossible to gauge the critic's full assessment or any reservations they might have. | GPT-4o-mini: The review provides a strong positive sentiment by labeling the musical as the funniest of the season, indicating a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic explicitly states they 'had fun' and calls it 'the funniest new musical of the season,' indicating a positive recommendation despite noting second act issues and formulaic elements. | Gemini: The critic states they had fun, but notes issues with the second act and a rushed ending. This suggests a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:24:30.037Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:42:32.279Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwExcerpt": "To its credit, The Heart of Rock and Roll tries to get out before the buzz wears off. The second act lags and then accelerates around the point where Bobby’s choice between rock and cardboard gets obvious. While Abrams delights in adding new complications to the book, he seems to get bored of its circumstances about three quarters of the way through, and the show slams into its denouement at 90 miles per hour. There are a few lines of tossed-off explanation, right before the big finale, about wh",
   "bwwThumb": "Meh",

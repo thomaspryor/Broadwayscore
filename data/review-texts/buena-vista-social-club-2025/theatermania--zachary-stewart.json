@@ -9,65 +9,56 @@
   "dtliExcerpt": "The band takes the final bow in Buena Vista Social Club, the new musical at the Gerald Schoenfeld Theatre on Broadway—and that’s as it should be. The music is so good, the performances so alive, and the band so sexy that I frequently found myself wondering: Couldn’t this just be a concert?",
   "showScoreExcerpt": "\"The music is so good, the performances so alive, and the band so sexy\"",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 70,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T21:59:35.874Z",
   "llmScore": {
-    "score": 64,
-    "confidence": "high",
+    "score": 70,
+    "confidence": "low",
     "range": {
-      "low": 57.5,
-      "high": 70.5
+      "low": 65,
+      "high": 75
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 43,
-      "music": 85,
-      "performances": 80,
-      "direction": 75
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The music is so good, the performances so alive, and the band so sexy that I frequently found myself wondering: Couldn't this just be a concert?",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "A great work of musical drama it's not, but does that matter?",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "That thoroughly banal explanation still doesn't justify the mediocre book musical before us—a gorgeous night of sound and color that really could have just been a concert.",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic repeatedly praises the exceptional music and performances while explicitly calling the book 'mediocre' and questioning why it needed to be a book musical at all, resulting in a qualified mixed recommendation. | GPT-4o-mini: The review highlights strong music and performances but criticizes the book and overall structure, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic praises the music, performances, and production values extensively but criticizes the book as 'mediocre' and questions why it needed to be a musical at all rather than a concert. | Gemini: The review acknowledges flaws in the book but praises the production values, music, and performances. The truncated text makes it difficult to ascertain a strong recommendation, but the overall tone suggests a positive, albeit qualified, experience.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:38:51.425Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:57:02.611Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "scoreDelta": 3,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/buena-vista-social-club-2025/theatermania--zachary-stewart_2026-01-27.html",

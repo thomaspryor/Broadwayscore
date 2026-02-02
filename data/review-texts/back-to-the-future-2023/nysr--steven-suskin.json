@@ -7,7 +7,7 @@
   "publishDate": "August 3, 2023",
   "showScoreExcerpt": null,
   "bwwExcerpt": "The new musical import from London is built around the spectacle of that flying DeLorean; or at least, I imagine the show would be just another mediocre effort without the spectacular flying machine. The prop car, built by a company called",
-  "assignedScore": 77,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "archivePath": "data/archives/reviews/back-to-the-future-2023/nysr--steven-suskin_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:11:18.900Z",
@@ -17,12 +17,12 @@
   "sourceMethod": "bww-roundup",
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T04:05:38.480Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:30:01.189Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
@@ -88,11 +88,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.804Z"
   },
   "llmScore": {
-    "score": 77,
+    "score": 74,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -103,7 +103,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt describes the show as 'mediocre' but acknowledges spectacular elements. However, the text is heavily truncated and the 4/5 star rating suggests a more positive verdict than this excerpt indicates. | GPT-4o: The 4/5 star rating suggests a positive review, and the mention of the spectacle implies an entertaining element. However, the text hints at mediocrity without the flying machine, indicating some reservations. | Gemini: The critic's 4/5 star rating and the BroadwayWorld aggregator verdict suggest a positive leaning. However, the excerpt indicates the show is heavily reliant on spectacle, implying reservations about its overall quality.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic suggests the show relies heavily on spectacle to compensate for mediocre material, indicating mixed feelings. However, with only one truncated excerpt and a 4/5 star rating, the full verdict may be more positive than this fragment suggests. | GPT-4o: The review suggests that the show relies heavily on the spectacle of the flying DeLorean, implying that it might be mediocre without it. However, the 4/5 star rating indicates a positive overall impression, suggesting the spectacle is enough to recommend the show. | Gemini: The critic implies the show is worth seeing primarily for the spectacle, suggesting a positive but qualified recommendation. The 4/5 star rating also indicates a positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -112,13 +112,13 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 79,
-    "geminiScore": 75,
+    "claudeScore": 62,
+    "openaiScore": 76,
+    "geminiScore": 72,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 19,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

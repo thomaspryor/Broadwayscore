@@ -15,57 +15,49 @@
     "score": 94,
     "confidence": "high",
     "range": {
-      "low": 87.5,
-      "high": 100
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
-      "music": 95,
-      "performances": 93,
-      "direction": 89
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "★★★★★ A classic documentary on Afro-Cuban musical greats is transformed into a sparkling Broadway delight",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "What a joyful thing is Buena Vista Social Club... recaptures the magic of that reunion live and in person — and irresistibly, too",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "We're meant to swoon, and we do",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Five-star review with effusive praise throughout, using superlatives like 'joyful,' 'sparkling,' 'spectacular,' and 'irresistibly' while expressing clear emotional investment and recommendation. | GPT-4o-mini: The review is overwhelmingly positive, highlighting the joy, performances, and music, with no significant reservations expressed.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic awards 5/5 stars and uses ecstatic language throughout, calling it a 'sparkling Broadway delight' that 'recaptures the magic' with 'stunning' performances and describing the overall experience as joyful and irresistible. | GPT-4o: The review is overwhelmingly positive, describing the production as a 'sparkling Broadway delight' and highlighting the joy and emotional truth it conveys. The original 5/5 star rating further supports a 'Rave' classification. | Gemini: The critic gives the show 5/5 stars and uses overwhelmingly positive language such as \"sparkling Broadway delight\" and \"joyful thing.\" The review consistently praises the production and its ability to recapture the magic of the original film.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:38:14.464Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:53.354Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 94,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "textFetchedAt": "2026-01-25T14:20:14.124Z",
   "textFetchMethod": "playwright-stealth",

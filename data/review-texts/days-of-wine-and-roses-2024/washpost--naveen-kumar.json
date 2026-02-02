@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"There are plenty of joys and sorrows to play even in a straightforward cautionary tale.\"",
@@ -18,60 +18,52 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 71,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
-    "thumb": "Up",
+    "thumb": "Flat",
     "components": {
-      "book": 53,
-      "music": 85,
-      "performances": 80,
+      "book": null,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "strained union between this relatively mundane plot, not unlike a PSA about the dangers of alcoholism",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the score is a rich and undeniably gorgeous vehicle for the production's stars",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Fizzy and jazzy during the couple's soused courtship, delicate and melancholy in the aftermath",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Review excerpt shows clear divide between weak book (mundane, PSA-like) and strong music/performances (gorgeous, rich), suggesting mixed-positive overall assessment. | GPT-4o-mini: While the music and performances are praised, the mundane plot leads to a mixed recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The quote suggests potential in the material but implies it's being treated too simply. Combined with BroadwayWorld's 'Flat' verdict, this indicates a lukewarm assessment, though the severely limited text makes confidence low. | GPT-4o: The quote suggests a balance of positive and negative elements, indicating a mixed reception. The mention of 'joys and sorrows' implies that while there are enjoyable aspects, there are also drawbacks, aligning with a mixed verdict. | Gemini: The provided quote suggests that the show has both positive and negative aspects, indicating a mixed review. The phrase \"joys and sorrows to play\" implies that there are redeeming qualities, but the \"straightforward cautionary tale\" suggests a lack of depth or originality.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:35:21.145Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:26.776Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 71,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "excerpt",

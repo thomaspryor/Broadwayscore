@@ -9,64 +9,55 @@
   "bwwExcerpt": "To distract from this baffling tale, director Gordon Greenberg’s high-energy production throws a ton of pure adrenaline at the audience. At times, it works. An exuberantly silly bubble-wrap based dance number is a delight, and Tucker’s terrifying a cappella group “The Undertones'' delivers an impressive rendition of “Give Me The Keys.” (Tucker cues up that number with the opener, “5…6…Sweater vest!”). When it truly pops off, Lorin Latarro’s lunatic choreography is actually some of the sharpest o",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 25,
-    "confidence": "low",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "woven into the story with a looseness",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "makes Escape to Margaritaville seem downright Pulitzer-worthy",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: The critic uses heavy sarcasm comparing this show unfavorably to another notoriously poor musical, indicating this is even worse than an already bad show.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic finds significant issues with the book and story logic but praises specific elements like choreography, performances, and production moments. The tone is neither recommendation nor discouragement - more bemused observation of a flawed but occasionally entertaining show. | Gemini: The review highlights both positive and negative aspects. While criticizing the confusing plot and character motivations, it praises the high-energy production, choreography, and some specific scenes. This suggests a mixed experience with enjoyable moments amidst flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
-    },
-    "humanReviewOverride": {
-      "previousConfidence": "medium",
-      "reason": "LLM Pan (25) too harsh for Meh review. Override to thumb-based 60.",
-      "appliedAt": "2026-02-01T17:37:53.675Z"
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:12:12.618Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:41:55.721Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
+    "claudeScore": 62,
     "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "Huey Lewis’ discography is woven into the story with a looseness that makes Escape to Margaritaville seem downright Pulitzer-worthy.",

@@ -10,20 +10,20 @@
   "bwwExcerpt": "Contrary to its title, “Just in Time” is anything but timely, since the window of Darin’s relevancy has long gone. Even Darin himself admits in the show that by 1968 he was “yesterday’s news.” Just in time for what, we might ask? Do we really need a whole musical about a straight white man with a few hit songs in the 60s? For that matter, do we need multiple? This is in fact the second Bobby Darin musical (the other, “Dream Lover,” premiered in Australia in 2016), not to mention the Kevin Spacey-led biopic, “Beyond the Sea” from 2004. Does Bobby Darrin really merit this much attention?",
   "showScoreExcerpt": "âContrary to its title, âJust in Timeâ is anything but timely, since the window of Darinâs relevancy has long gone.â",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 44,
   "source": "dtli",
   "bwwThumb": "Meh",
   "bwwUrl": "https://variety.com/2025/legit/reviews/just-in-time-review-jonathan-groff-broadway-musical-1236379177/",
   "dtliThumb": "Down",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 25,
+    "score": 44,
     "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 35
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -31,55 +31,38 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It might be time to call it quits on biographical jukebox musicals",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "its many spawn have been mostly ill-conceived",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "To this less-than-honorable list we can now add 'Just in Time'",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic explicitly groups this show with a 'less-than-honorable list' of failed jukebox musicals and suggests the entire genre should end, indicating strong negative judgment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic dismisses the entire biographical jukebox musical trend, calls this production ill-conceived, questions its relevance and necessity, and provides no positive endorsement despite mentioning the star's talent. | GPT-4o: The review is overwhelmingly negative, criticizing the musical's concept, relevance, and execution. The critic questions the necessity of the production and its failure to provide a meaningful portrait of Bobby Darin. | Gemini: The review expresses disappointment with the musical, questioning its relevance and failing to provide a clear portrait of Bobby Darin. The critic implies that the musical is not worth the audience's time.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:24:30.223Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2457,
-    "outputTokens": 338,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:16:10.859Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
-    "scoreDelta": 2,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (41 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/just-in-time-2025/variety--christian-lewis_2026-02-01.html",
   "textFetchedAt": "2026-02-01T23:44:19.689Z",

@@ -9,7 +9,7 @@
   "dtliExcerpt": null,
   "showScoreExcerpt": "\"The glam, glossy, and tongue-in-cheek new jukebox musical '& Juliet' proposes an intriguing solution to the dilemma faced every year by high school English teachers who struggle over how to get their students interested in Shakespeare.\"",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "show-score",
   "dtliThumb": null,
   "designation": null,
@@ -21,11 +21,11 @@
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 76,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges entertaining elements like catchy songs and strong performances, but criticizes the book as 'tedious and didactic' with one-dimensional characters, resulting in a lukewarm assessment. | GPT-4o: The review acknowledges some flaws, such as the winding and didactic nature of the book, but overall highlights the show's entrancing qualities and catchy music, leading to a positive recommendation. | Gemini: The review highlights both positive and negative aspects, but ultimately leans towards a recommendation due to the 'entrancing' flare and catchy songs. The book is described as 'tedious and didactic,' indicating reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges the show's entertainment value and catchy songs but criticizes the book as 'tedious and didactic' with 'one-dimensional characterizations,' landing in mixed territory without a clear recommendation. | GPT-4o: The review acknowledges some flaws, such as the winding nature of the book and one-dimensional characterizations, but ultimately highlights the show's entrancing flair, catchy music, and strong performances, leading to a positive recommendation. | Gemini: The review highlights both positive and negative aspects, but ultimately leans towards a recommendation due to the 'entrancing' flare and catchy songs. The book is described as 'tedious and didactic,' but the performances are praised.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,20 +46,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:52:56.634Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:57:37.732Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 76,
+    "openaiScore": 78,
     "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

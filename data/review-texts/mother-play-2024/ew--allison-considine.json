@@ -9,42 +9,26 @@
   "bwwExcerpt": "The play works because of the cast’s incredible ability to play both young and old characters, and solemn and funny ones. In particular, Parsons’s humor shines as Carl, a quick-witted genius who holds the family together. One of the play’s throughlines is touch — or rather, the lack of it. Director Tina Landau beautifully incorporates moments of closeness and distance through careful staging. Average Rating: 75.4% { \"@context\":\"https://schema.org\", \"@type\":\"LiveBlogPosting\", \"@id\":\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": "B",
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
       "low": 72,
-      "high": 84
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 82,
+      "book": null,
       "music": null,
-      "performances": 80,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Vogel's nuanced exploration of her own family sets the stage for a profound and humorous new American play",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the dramatist turns her typically insightful lens on her own family",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "this new, often funny mashup between a memory play and an apartment tragedy",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Review establishes clear appreciation for Vogel's writing craft and the play's humor and insight, with positive framing throughout and no significant criticisms mentioned.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The B rating from Entertainment Weekly, positive descriptors like 'profound and humorous,' praise for the cast's 'incredible ability,' and the 75.4% average rating all indicate a clear positive recommendation. | Gemini: The critic gives the play a B, which indicates a positive review. The review praises the cast and direction, and while it acknowledges the play's autobiographical nature and complicated family dynamics, the overall tone is positive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +37,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:39:12.203Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2521,
-    "outputTokens": 342,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:52:48.318Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 78,
-    "scoreDelta": 0,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

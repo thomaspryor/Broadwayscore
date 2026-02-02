@@ -10,71 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 82,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 82,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 78,
+      "low": 75,
       "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
-      "music": 78,
-      "performances": 88,
-      "direction": 80
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "★★★★☆",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "You'll relish every second – and thank yourself for revisiting this silly romp",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "All of the replacements, smartly marshaled by director/choreographer Josh Rhodes for last spring's Kennedy Center revival, seem to be having the time of their lives",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Four-star review with enthusiastic praise for performances and direction, explicit recommendation to 'thank yourself for revisiting,' and consistent positive language throughout despite acknowledging juvenile humor.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating and consistent praise throughout indicates a strong positive recommendation. The critic celebrates the performances, particularly highlighting standout work from multiple cast members, and concludes by telling readers they'll 'thank yourself for revisiting this silly romp.' | Gemini: The critic gives the show 4/5 stars and uses positive language throughout the review, indicating a strong recommendation. The critic highlights the talented cast and enjoyable moments, solidifying the positive assessment.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:09:01.708Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3066,
-    "outputTokens": 352,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:47:23.645Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 84,

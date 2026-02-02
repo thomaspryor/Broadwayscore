@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'delivers on the thrill of spectacle' suggests a positive experience, but with very limited text available, the full critical assessment remains unclear. | GPT-4o: The review highlights the show's ability to deliver thrilling spectacle, suggesting a positive experience. However, without more context, the recommendation is cautious. | Gemini: The quote indicates a positive experience, highlighting the spectacle. Given the limited text, I'm placing it in the 'Positive' bucket with a moderate score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single excerpt suggests positive assessment of the show's spectacle, but limited text prevents higher confidence or score within positive range. | GPT-4o: The quote suggests a positive experience focusing on the spectacle of the production, indicating a recommendation to see it. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The single excerpt suggests a positive experience, highlighting the spectacle. Given the limited information, a score in the middle of the 'Positive' range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:44:11.581Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:31:11.259Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 75,
+    "claudeScore": 72,
+    "openaiScore": 77,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

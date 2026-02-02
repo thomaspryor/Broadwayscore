@@ -8,7 +8,7 @@
   "fullText": "The 1997 album that later became a hit documentary now reaches the stage in a play with thrilling music performances but a lacking script Was it restraint or oversight that resulted in Buena Vista Social Club taking nearly 30 years to reach Broadway? The project began as a 1997 album, a surprise smash that introduced a supergroup of veteran Cuban musicians, assembled to play classics from the 1940s; subsequent performances (and interviews with the participants) were chronicled in a hit 1999 documentary from Wim Wenders. Jumping all the way to 2025 for a Broadway production might initially seem akin to a splashy new musical covering the formation of third-wave ska. But maybe now is the right time to hand this material over to Broadway; many of the original musicians are sadly departed, and the stage show serves as a (mostly) non-cheesy tribute act. Accordingly, Buena Vista Social Club on Broadway has both an emotional charge and a refreshing lack of bombast compared with other productions attempting to replicate pop culture phenomena. The story is simple; even with a dual timeline approach, it’s over and done in about two hours, including intermission. In 1996, a producer gathers musicians including Ibrahim Ferrer (Mel Semé), Rubén González (Jainardo Batista Sterling), and Compay Segundo (Julio Monge) to work on an album paying tribute to the music of their youth, and hopes to recruit the retired and reluctant Omara Portuondo (Natalie Venetia Belcon) to sing with them. In late-1950s flashbacks, the Cuban revolution approaches and threatens to upend the lives of those same musicians in Havana, with a focus on the relationship between Omara (Isa Antonetti) and her sister Haydee (Ashley De La Rosa). Haydee wants the duo to sign a deal with Capitol Records and escape the country; Omara, on the other hand, is enticed by the tourist-free social clubs where her new musician friends play music for themselves – for the Cuban people. If that sounds more like a few juicy scenes than a full-on epic, well, you’re on to something; this Buena Vista Social Club is more involving than a typical concert, but substantially thinner than a truly great play, despite great production work all around. Arnuflo Maldonado’s scenic design smartly provides an elevated balcony that runs the full width of the stage, allowing more stylized, silhouetted images of some of the actors to coexist with the more brightly lit musical numbers down in center stage. In terms of human drama, the best moments use the double-cast actors to overlap in scenes with their younger selves, a technique that’s used perhaps too sparingly in a production that must rely on a fair measure of that continuity to keep straight who’s playing another version of who. The book hasn’t imposed too much plot on the material, to the point where the specifics of the turmoil in Cuba and how the characters actually feel about it are left vague. Fair enough that everyone wouldn’t be describing the details of political upheaval to each other all the time, but the show provides little context in what feels like a bid for universality. Buena Vista Social Club also lacks the advantage of songs written directly for this story; naturally, it draws from the famous record to use songs that predate the events of the 50s-set section. This means retrofitting the fictionalized versions of the musicians to these tunes, rather than relying on songs to express deeper characterization. What tunes, though, and what a thrill to see these particular live performances. Obviously there are plenty of venues for live music in New York and elsewhere, but the precise experience of watching actors, dancers and a full razor-sharp band all integrated on stage together is difficult to replicate. It also, admittedly, threatens to become the tourist attraction that Omara and the other musicians are so joyfully avoiding on principle; it’s hard to resist an eyeroll when narration triumphantly notes that the success of the Buena Vista Social Club album brought the group all the way to the Grammys, as if a US awards show is the pinnacle of achievement. But with so many Broadway musicals imitating the sounds and aesthetics of a gigantic, gleaming jukebox, the genuine exuberance of Buena Vista Social Club stands out pretty handily.",
   "dtliExcerpt": "If that sounds more like a few juicy scenes than a full-on epic, well, you’re on to something; this Buena Vista Social Club is more involving than a typical concert, but substantially thinner than a truly great play, despite great production work all around.",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textFetchedAt": "2026-01-25T14:16:19.926Z",
@@ -16,60 +16,51 @@
   "archivePath": "data/archives/reviews/buena-vista-social-club-2025/guardian--jesse-hassenger_2026-01-25.html",
   "sourceMethod": "dtli",
   "llmScore": {
-    "score": 69,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 63,
-      "high": 75
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 50,
-      "music": 83,
-      "performances": 75,
-      "direction": 73
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "more involving than a typical concert, but substantially thinner than a truly great play",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "What tunes, though, and what a thrill to see these particular live performances",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the genuine exuberance of Buena Vista Social Club stands out pretty handily",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic praises the musical performances and production values but finds the script thin and lacking in dramatic depth, resulting in qualified appreciation rather than strong recommendation. | GPT-4o-mini: The review highlights strong music and performances but criticizes the script and narrative depth, leading to a mixed-positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges significant flaws in the script and story but ultimately finds the musical performances thrilling and the production worthwhile, recommending it as standing out among Broadway shows despite its limitations. | Gemini: The review highlights both strengths (thrilling music performances, emotional charge, refreshing lack of bombast) and weaknesses (lacking script, thin plot). The overall tone suggests a positive experience despite the script issues, making it a 'worth seeing' recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:37:56.261Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:17.832Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 69,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 70,
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "showScoreExcerpt": null,
   "bwwExcerpt": null,

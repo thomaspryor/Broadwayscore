@@ -9,71 +9,55 @@
   "showScoreExcerpt": "\"Rachel McAdams soars in poignant slice-of-life play\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "show-score",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "carefully constructed and deeply affecting drama",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "It transcends both traps. Mary Jane is clear-eyed, compassionate, and leavened with humor",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "McAdams's star power is a magnet for many theatregoers. In her Broadway debut, she's a natural on stage",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review consistently praises the play's construction, performances, and emotional impact with phrases like 'deeply affecting,' 'transcends both traps,' and 'compelling portrait,' indicating a clear positive recommendation despite no explicit directive.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the play as 'deeply affecting,' transcending potential pitfalls, with strong performances and direction. The critic clearly recommends it while acknowledging its challenging subject matter. | Gemini: The review is overall positive, highlighting the strong performances and compelling story. While not a rave, it clearly recommends seeing the play.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:32:36.308Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3038,
-    "outputTokens": 364,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:17:59.319Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dtliExcerpt": "In less assured hands, the play could be a downer or familiar movie-of-the-week material. It transcends both traps. Mary Jane is clear-eyed, compassionate, and leavened with humor. Herzog (4000 Miles, 2023's Broadway adaptation of A Doll’s House) is known for her fine-tuned, lived-in dialogue. Director Anne Kauffman’s cast breathe life into the script beautifully.",
   "sources": [

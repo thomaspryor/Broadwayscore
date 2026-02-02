@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 75,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review critiques Scherzinger's acting ('could use a shade more vulnerability') but praises her vocal performance ('powerhouse pipes' in 'crowd-rousing solos'), indicating a balanced but ultimately mixed assessment with both flaws and strengths noted. | GPT-4o: The review highlights a strong performance in key musical numbers, suggesting a positive impression despite some reservations about the character portrayal. | Gemini: The review highlights a strong performance from the lead actress, specifically mentioning her 'powerhouse pipes' and 'crowd-rousing solos,' suggesting a positive experience despite a minor critique about vulnerability.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt offers mild criticism but emphasizes strong vocal performance in key numbers, suggesting overall positive assessment despite single excerpt limitation. | GPT-4o: The review highlights a strong performance in key musical numbers, suggesting a positive experience despite some reservations about the portrayal of vulnerability. The single excerpt suggests a generally positive view but lacks comprehensive context, leading to a conservative score within the Positive range. | Gemini: The review highlights Scherzinger's strong performance in key songs, suggesting a positive experience despite a minor critique about vulnerability. Given the single excerpt, a conservative score in the positive range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:54:38.388Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:09:50.110Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 72,
     "openaiScore": 74,
     "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

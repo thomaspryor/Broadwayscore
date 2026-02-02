@@ -10,76 +10,58 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Meh",
   "originalScore": "A",
-  "assignedScore": 72,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 72,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 55,
-      "music": 75,
-      "performances": 82,
-      "direction": 78
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it's a modestly scaled melodrama...with striking timeliness",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "The book for 'Real Women' really does tie itself into a pretzel trying to achieve its goal",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the audience is primed to enjoy their triumph, fictionally and formatively",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic appreciates the performances, direction, and cultural significance while clearly identifying significant book problems, ultimately finding it an enjoyable if flawed experience worth seeing.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives an 'A' rating and praises the performances, choreography, and celebratory nature of the show, while acknowledging the predictable plot. The review emphasizes the positive audience response and Broadway debut triumphs. | Gemini: Despite some reservations about the plot's believability, the review highlights the show's entertaining score, lively choreography, and celebration of oft-overlooked garment workers. The truncated text makes it difficult to assess the final verdict with complete certainty, but the overall tone suggests a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:02:04.158Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3464,
-    "outputTokens": 343,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:33.234Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (79 → Up) conflicts with aggregator thumbs (Flat)"
-    ]
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 79,

@@ -9,7 +9,7 @@
   "showScoreExcerpt": "“ ‘Back to the Future’ emerges, and continues to be regarded, as a funny, cult-classic romp. The musical adaptation... honors all these views at once and gives ‘Back to the Future’ the larger-than-life presentation it deserves.”",
   "bwwExcerpt": "It's an odd paradox, that Back to the Future assumes prior familiarity with the film such that the players need little introduction, while positing nearly every character as worthy of substantial exploration. Chalk it up, perhaps, to the fact that two of the movie's creators are involved: Bob Gale adapted the musical's book from his and Robert Zemeckis's screenplay, and",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 79,
   "source": "show-score",
   "archivePath": "data/archives/reviews/back-to-the-future-2023/nytg--gillian-russo_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:00:31.163Z",
@@ -17,60 +17,51 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 81,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 87
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 69,
-      "music": 76,
-      "performances": 87,
-      "direction": 85
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "gives Back to the Future the larger-than-life presentation it deserves",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "New York Theatre Guide's four-star review",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "A third of the score could have otherwise been cut",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Four-star review with strong praise for spectacle, design, and performances, despite criticisms of bloated score and character development. | GPT-4o-mini: The review expresses strong enthusiasm for the production's design and performances while noting some issues with the music, leading to a solid positive recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the spectacular design, strong performances, and successful adaptation while noting some pacing issues with the score. The critic clearly recommends the show despite minor flaws. | Gemini: The review is largely positive, highlighting the spectacle and performances. While it notes some issues with the songs and character development, the overall impression is that the show is worth seeing.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:32:23.714Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:30.030Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 81,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 80,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "designation": "Recommended",
   "bwwThumb": "Up",

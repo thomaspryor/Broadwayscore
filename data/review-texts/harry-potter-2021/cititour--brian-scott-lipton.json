@@ -15,59 +15,51 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 89,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 95
+      "low": 84,
+      "high": 94
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "breathtaking production",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "unlike anything seen on Broadway before",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "A breathtaking production",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Strong superlatives like 'breathtaking' and claims of uniqueness suggest high enthusiasm, but the extremely brief excerpt limits confidence in the full critical assessment. | GPT-4o-mini: The review expresses unqualified enthusiasm for the production, indicating a strong recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The excerpt describes the production as 'breathtaking' and claims the illusions are unprecedented on Broadway, indicating strong enthusiasm and recommendation. | GPT-4o: The review uses strong, enthusiastic language such as 'breathtaking' and 'unlike anything seen on Broadway before,' indicating a highly positive assessment of the production. | Gemini: The review excerpt describes the production as \"breathtaking\" and praises the illusions, indicating a positive recommendation, although the full context is missing.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:23:43.007Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:59:09.696Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "scoreDelta": 2,
+    "geminiScore": 75,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/cititour--brian-scott-lipton_2026-01-31.html",
   "textFetchedAt": "2026-01-31T23:18:55.897Z",

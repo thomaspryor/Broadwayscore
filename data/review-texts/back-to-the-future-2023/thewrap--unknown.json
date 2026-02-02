@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This excerpt only discusses technical staging elements positively but provides no overall verdict or recommendation about the show's quality or worth seeing. | GPT-4o: The excerpt focuses on a specific positive aspect of the production, but lacks a clear overall recommendation or critique of the show. With limited text and no explicit verdict, the classification remains uncertain. | Gemini: The review excerpt focuses solely on a technical aspect (the DeLorean and video design) without offering a clear overall assessment of the show's quality or whether it's worth seeing. This suggests a mixed or neutral stance, leaning towards mixed due to the positive description of the car's movement.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This single excerpt only describes one technical element positively but provides no overall verdict about the show's quality or whether it's worth seeing. The positive description of staging effects suggests some merit, but without context of the full review, a conservative mixed score is appropriate. | GPT-4o: The excerpt focuses on a specific aspect of the production (the DeLorean car and video designs) and describes it positively, but does not provide an overall assessment of the show. With only one excerpt available, the overall sentiment is unclear, leading to a conservative middle-range score within the Mixed bucket. | Gemini: With only one excerpt available, it's difficult to gauge the overall sentiment. The quote describes a positive aspect of the production (the DeLorean and video design), but without more context, it's safer to classify this as mixed.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:44:24.203Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:32:09.385Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 60,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 60,
-    "geminiScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 58,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -8,17 +8,17 @@
   "fullText": null,
   "showScoreExcerpt": "\"The stagecraft is astonishing...Jamie Harrison's illusions are breathtaking...The play is long but never boring.\"",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 74,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 74,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,26 +26,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 83
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The stagecraft is astonishing",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Jamie Harrison's illusions are breathtaking",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The play is long but never boring",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong praise for technical elements and entertainment value with superlative language ('astonishing', 'breathtaking') indicates clear positive recommendation despite brief excerpt. | GPT-4o-mini: The review highlights impressive stagecraft and engaging illusions, indicating a strong recommendation despite the play's length.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt shows clear praise for technical elements and entertainment value, suggesting a positive recommendation, but the single curated quote warning requires conservative scoring within the positive range. | GPT-4o: The review excerpt highlights the 'astonishing' stagecraft and 'breathtaking' illusions, suggesting a highly positive view. The comment that the play is 'long but never boring' further supports a strong recommendation. Despite the single excerpt warning, the language indicates a rave review. | Gemini: The review praises the stagecraft and illusions, and states the play is never boring, suggesting a positive experience, but the lack of a strong recommendation and the mention of length keeps it from being a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:23:54.820Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:59:21.723Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 73,
+    "openaiScore": 88,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

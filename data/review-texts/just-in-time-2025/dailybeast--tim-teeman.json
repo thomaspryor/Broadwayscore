@@ -7,74 +7,58 @@
   "publishDate": "April 26, 2025",
   "dtliExcerpt": "The show loses momentum, indeed becomes a lethargic drag, with its unfocused, dull examination of the marriage of Darin and Dee. Here, the show scratches the surface of a darker side to Darin—a cruel and thoughtless side—but it doesn’t dwell there.",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T23:35:00.000Z",
   "sourceMethod": "archive",
   "bwwExcerpt": "Groff makes clear the intention of Just in Time, indeed any show, at its end. “Doing this was when he (Darin) felt the most alive,” he says. “Honestly? Same. This can only happen in this room, right now, with you, and it’ll never happen quite the same way again.” That may read as hokey on the page, but Groff, Leight, and Oliver intend it as a final, heartfelt statement about the power of theater to connect.",
   "llmScore": {
-    "score": 68,
-    "confidence": "high",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 82,
-      "performances": 88,
-      "direction": 78
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's a lovely concert, but not a revelatory show about the life of Bobby Darin",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "All the numbers are well executed... Lawrence sings Francis' numbers with power and command",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the show loses momentum, indeed becomes a lethargic drag, with its unfocused, dull examination of the marriage of Darin and Dee",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic praises Groff's performance and the musical numbers while criticizing the book's lack of depth and focus, resulting in qualified appreciation rather than clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic praises Groff's performance and the musical numbers but criticizes the show's focus, pacing issues, and weak character development, particularly around the marriage storylines. | Gemini: The review highlights the show's strengths as a concert and the excellent performances, but notes its shortcomings in exploring Darin's life deeply. This suggests a positive but not overwhelmingly enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:23:06.233Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4134,
-    "outputTokens": 364,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:13:15.999Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 35,
-    "scoreDelta": 0,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "bwwThumb": "Meh",
   "showScoreExcerpt": null,

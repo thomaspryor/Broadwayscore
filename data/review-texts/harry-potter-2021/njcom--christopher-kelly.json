@@ -18,35 +18,19 @@
     "score": 92,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 88,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 95
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a magnificent treat — both an ingenious continuation of the Potter saga and a complete reinvention of it",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "I sat through this two-part, five-and-a-half-hour effort alternately awestruck and giddy",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "one of the most visually majestic, consistently surprising Broadway productions ever mounted",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Overwhelmingly enthusiastic review with superlatives throughout, describing the show as 'magnificent,' 'awestruck,' and 'one of the most visually majestic Broadway productions ever mounted' with no significant reservations.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic uses superlative language throughout ('magnificent treat', 'wonder', 'awestruck and giddy', 'splendid', 'most visually majestic') and explicitly states they would have been content to watch for another five-and-a-half hours, indicating an unqualified rave recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"magnificent treat,\" \"awestruck and giddy,\" and praising the show's visual majesty and emotional complexity. The critic clearly recommends seeing it, making it a Rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,27 +39,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:07:57.782Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3175,
-    "outputTokens": 346,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:02:25.551Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 93,
-    "openaiScore": 95,
-    "scoreDelta": 2,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 94,

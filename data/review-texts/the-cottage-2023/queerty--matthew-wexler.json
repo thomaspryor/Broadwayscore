@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 65,
-    "confidence": "medium",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,24 +28,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "having a great time with extramarital merriment, heavy drinking, and more cigarette smoking",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "politicizing of the queer community’s lack of moral decency",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "delivers a period farce set in 1923 pastoral England",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "GPT-4o-mini: The review hints at a fun and lively production but lacks strong endorsement or detailed praise, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single excerpt warning applies - this appears to be descriptive setup rather than evaluative content. The phrase 'having a great time' could indicate positive assessment, but without full context and given aggregator suggests 'Flat' verdict, scoring conservatively in mixed range. | GPT-4o: The excerpt suggests a light-hearted and entertaining tone, but lacks a clear recommendation or critique of the production itself. The use of 'having a great time' implies some enjoyment, but without further context, it is difficult to determine a strong positive or negative stance. | Gemini: The review excerpt describes the play's content as \"having a great time\" with certain elements, but it's difficult to gauge the overall recommendation based on this single excerpt. The BroadwayWorld aggregator verdict of \"Flat\" suggests a mixed or neutral reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:19:56.100Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:59.539Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 65,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 65,

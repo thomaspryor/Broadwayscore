@@ -10,74 +10,59 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 78,
-      "performances": 74,
-      "direction": 65
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "I've long loved this musical and I don't plan to abandon it as it ages out and becomes more needy",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Idle's comic genius remains entirely evident here and he and Du Prez came up with the kind of brassy, swirling score that screamed Big Night Out on Broadway",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "I wish the revival, directed and choreographed by Josh Rhodes, had more of an explicit and distinct point of view",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic expresses genuine affection for the material and praises the score and certain performances, but has significant reservations about the revival's execution and relevance to modern audiences.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: While Jones acknowledges significant issues with the revival (dated references, casting choices, production design), his enduring love for the show and recognition of Idle's comic genius indicate a recommendation, though with clear reservations about this particular production. | GPT-4o: The review acknowledges several flaws in the revival, such as the lack of a distinct point of view and issues with the set design, but ultimately expresses a long-standing affection for the musical and highlights the comic genius of Eric Idle. The critic's personal attachment to the show and the praise for certain performances suggest a recommendation despite reservations. | Gemini: The review expresses love for the musical despite some reservations about the revival's direction and staging. The critic acknowledges the show's enduring appeal and the cast's talent, leading to a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:08:24.111Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3446,
-    "outputTokens": 382,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:46:14.730Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 50,

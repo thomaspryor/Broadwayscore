@@ -9,66 +9,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 76,
+    "score": 44,
     "confidence": "medium",
     "range": {
-      "low": 67,
-      "high": 85
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 79
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "serves the material as well as possible",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "captured with palpable affection",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "received with a standing ovation",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review praises the director's affectionate treatment and notes audience enthusiasm with a standing ovation, but the phrase 'serves the material as well as possible' suggests limitations in the source material itself. | GPT-4o-mini: The review highlights strong direction and enthusiastic performances, indicating a clear recommendation despite a lack of detailed critique on other aspects.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic explicitly states feeling 'more patronized than entertained' which is a clear negative verdict, despite acknowledging some positive production elements. | GPT-4o: The review highlights some positive aspects, such as the set design, but ultimately suggests a lack of engagement with the production, indicating a mixed response. | Gemini: The review explicitly states the reviewer felt \"more patronized than entertained,\" indicating a negative experience despite mentioning a positive element like the set design. The overall tone suggests a lack of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:51.648Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:12.735Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (76 → Up) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 42,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "dtliExcerpt": "The production offers other crowd-pleasing elements, notable among them Arnulfo Maldonado’s typically vibrant set design. During the course of its roughly two hours, though, this real woman, at least, felt more patronized than entertained.",
   "sources": [

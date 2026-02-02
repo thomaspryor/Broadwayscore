@@ -9,62 +9,57 @@
   "dtliExcerpt": "Naturally, though, it’s Groff’s energy and charisma that anchor Just in Time. The brilliance of the show’s opening is that, by creating a staged-concert atmosphere from the start, it frees us from the need to compare him to Darin and instead foregrounds Groff’s own passion for telling his story. Groff even concludes the evening with an unexpectedly eloquent tribute to the evanescent yet transcendent power of theater. How rare it is for a jukebox bio-musical to feel like it comes genuinely from the heart.",
   "showScoreExcerpt": "âNaturally, though, itâs Groffâs energy and charisma that anchor Just in Time.â",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 60,
-    "confidence": "low",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 50,
-      "high": 70
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 75,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "itâs Groffâs energy and charisma that anchor Just in Time",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "This excerpt only praises one performer without providing broader context about the show's quality or any explicit recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The fragment suggests positive assessment of the lead performance, and aggregator indicates 'Up' verdict, but extremely limited text makes confident scoring impossible. | GPT-4o: The review highlights Groff's energy and charisma as a key strength of the production, suggesting a positive view. However, due to the limited text, the overall tone is not fully clear, leading to a medium confidence level. | Gemini: The review excerpt highlights Groff's performance as a key positive, suggesting a recommendation, but the word \"anchor\" implies that the show relies heavily on him, indicating a reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:24:13.846Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2329,
-    "outputTokens": 239,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:25.150Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 60,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/just-in-time-2025/theatermania--kenji-fujishima_2026-01-27.html",
   "textFetchedAt": "2026-01-27T05:05:34.313Z",

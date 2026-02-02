@@ -6,15 +6,15 @@
   "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/27/real-women-have-curves-broadway-musical/",
   "publishDate": "April 27, 2025",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 82,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 73.5,
-      "high": 90.5
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -24,24 +24,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "laugh-out-loud musical comedy with a massive dose of heart",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the creators pull off an impressive balancing act",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "relishing joy and humor amid striving and strife",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Strong positive language praising the show's emotional impact and creators' achievement, though excerpt lacks specific recommendation language or star rating. | GPT-4o-mini: The review expresses strong enthusiasm for the musical's humor and heart, indicating a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the show's successful execution with phrases like 'pull off an impressive balancing act' and describes it as 'laugh-out-loud' with 'a massive dose of heart.' However, with only one curated excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review praises the show as a 'laugh-out-loud musical comedy' with 'a massive dose of heart,' indicating strong enjoyment and recommendation. However, due to the single excerpt warning, the score is conservatively placed in the upper range of the Positive bucket. | Gemini: The review describes the show as a \"laugh-out-loud musical comedy with a massive dose of heart\" and says the creators \"pull off an impressive balancing act,\" indicating a positive recommendation despite the single excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,20 +34,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:18:45.291Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:25.507Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 85,
-    "scoreDelta": 7,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Don’t expect a taste of medicine beneath the heaping spoonfuls of sugar: It’s a laugh-out-loud musical comedy with a massive dose of heart. If that combination sounds unlikely, the creators pull off an impressive balancing act in relishing joy and humor amid striving and strife.",
   "sources": [

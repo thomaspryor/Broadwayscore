@@ -15,8 +15,8 @@
     "score": 81,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 87
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,24 +26,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "bona fide crowd pleaser",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a warm hug that pulls you into its generous bosom",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "could turn out to be a sleeper hit",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Strong positive language ('bona fide crowd pleaser', 'warm hug') with prediction of commercial success indicates clear recommendation despite being brief. | GPT-4o-mini: The review expresses strong positive sentiment, indicating a clear recommendation despite some uncertainty about its potential success.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and enthusiastic language like 'bona fide crowd pleaser' and 'sleeper hit' clearly indicate a positive recommendation, though the excerpt doesn't suggest the rapturous enthusiasm of a rave. | GPT-4o: The critic describes the show as a 'bona fide crowd pleaser' and a 'warm hug,' indicating a strong positive reception. The original rating of 4/5 supports a high score within the Positive bucket. | Gemini: The review uses very positive language like \"crowd pleaser\" and \"warm hug\", and predicts it could be a \"sleeper hit\", indicating a strong recommendation. The 4/5 rating also supports this.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,20 +36,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:17:50.708Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:43.334Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 81,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "In a time when immigrants are being actively dehumanized throughout the United States, Real Women Have Curves provides a vital counterpoint—partly by depicting the dreams and fears of immigrant workers in specific terms, but mostly just by being lovable. This show is a bona fide crowd pleaser: a warm hug that pulls you into its generous bosom. With a little luck, it could turn out to be a sleeper hit. Go now and get ahead of the curve.",
   "sources": [

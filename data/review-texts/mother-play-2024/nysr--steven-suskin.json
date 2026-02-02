@@ -10,74 +10,58 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 82,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 78,
+      "low": 75,
       "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Vogel's play and players merit a visit to the Helen Hayes",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "An accomplished playwright with something to say and an unconventional but effective way of saying it",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Mix 'em together, add a passel of dancing cucarachas (see below), what do you get? Paula Vogel's Mother Play",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The 4/5 star rating combined with consistent praise for all elements (playwright, direction, performances, design) and an explicit recommendation to visit culminates in a clear positive endorsement.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating and explicit final recommendation 'merit a visit' clearly indicate a positive assessment, despite detailed discussion of the play's heavy subject matter. | Gemini: The critic gives the play 4 out of 5 stars and states that it merits a visit. While not a rave, it is a clear recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:39:48.115Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3576,
-    "outputTokens": 361,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:54.180Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 60,
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 60,

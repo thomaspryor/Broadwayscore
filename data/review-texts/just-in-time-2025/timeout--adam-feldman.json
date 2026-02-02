@@ -9,64 +9,56 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 88,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 88,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 80.5,
-      "high": 95.5
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 85,
-      "performances": 93,
-      "direction": 89
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Just in Time is a helluva good time at the theater",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Staged in a dazzling rush by Alex Timbers",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the radiant sweetie Jonathan Groff, who gives the performance his considerable all",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Strong enthusiastic opening with superlative praise for performances and direction, plus emotional engagement description suggests clear recommendation despite excerpt limitation. | GPT-4o-mini: The review expresses strong enthusiasm and enjoyment, highlighting the performances and direction positively, indicating a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses highly enthusiastic language ('helluva good time', 'dazzling', 'radiant') and describes a thoroughly enjoyable experience with strong performances and staging, matching the 4/5 rating. | GPT-4o: The critic's rating of 4/5 and the enthusiastic language in the review excerpts suggest a strong recommendation. The description of the show as a 'helluva good time' and the praise for the performances and staging indicate a positive verdict. | Gemini: The review is overwhelmingly positive, using phrases like \"helluva good time,\" \"dazzling rush,\" and praising Jonathan Groff's performance. The 4/5 rating and aggregator consensus further support a positive classification.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:15:43.430Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:15:54.713Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 90,
-    "scoreDelta": 5,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 83,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Just in Time is a helluva good time at the theater. It’s not just that, but that’s the baseline. Staged in a dazzling rush by Alex Timbers, the show summons the spirit of a 1960s concert at the Copacabana by the pop crooner Bobby Darin—as reincarnated by one of Broadway’s most winsome leading men, the radiant sweetie Jonathan Groff, who gives the performance his considerable all. You laugh, you smile, your heart breaks a little, you swing along with the brassy band, and you’re so well diverted and amused that you may not even notice when the ride you’re on takes a few unconventional turns.",
   "sources": [

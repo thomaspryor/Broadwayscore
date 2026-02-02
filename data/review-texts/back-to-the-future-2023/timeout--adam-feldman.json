@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": 60,
-  "assignedScore": 36,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "The show is an efficient crowd-pleaser that hits its marks without transcending them. It's a solid, if unsurprising, adaptation that will satisfy fans of the film trilogy.",
@@ -20,60 +20,52 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 36,
+    "score": 41,
     "confidence": "medium",
     "range": {
-      "low": 27,
-      "high": 45
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 28,
+      "book": null,
       "music": null,
-      "performances": 40,
-      "direction": 40
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "What makes Back to the Future so confusing, aside from the general ineptness",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "If this is the future, please send it back",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "It's a solid, if unsurprising, adaptation that will satisfy fans of the film trilogy",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: Despite one moderate positive line, the review is dominated by harsh criticism including 'general ineptness' and a dismissive final recommendation to 'send it back.' | GPT-4o-mini: The review expresses significant disappointment with the adaptation's ineptness and confusion, leading to a clear negative recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic uses harsh language like 'general ineptness' and 'confusing' while concluding with a clear dismissive recommendation to 'send it back', indicating they do not recommend seeing this show. | GPT-4o: The review is strongly negative, highlighting confusion, ineptness, and a failure to understand the source material. The critic's original rating of 60 suggests a mixed review, but the provided text is overwhelmingly negative, indicating a strong disapproval. | Gemini: The review expresses disappointment with the show, criticizing its ineptness and comparing it unfavorably to other adaptations of cinematic IP. The final line is a clear indication of a negative recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T22:39:25.233Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:12.318Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 36,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 32,
-    "openaiScore": 40,
-    "scoreDelta": 8,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 42,
+    "openaiScore": 30,
+    "geminiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 20,

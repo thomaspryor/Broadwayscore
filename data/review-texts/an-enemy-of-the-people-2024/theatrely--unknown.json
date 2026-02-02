@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 61,
+  "assignedScore": 62,
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This excerpt focuses on one particularly compelling moment involving a protest disruption, praising the performative tension but lacks clear overall verdict language about the production as a whole. | GPT-4o: The excerpt highlights a specific moment that was impactful, suggesting some merit, but lacks a clear overall recommendation or enthusiasm, indicating a mixed review. | Gemini: The review excerpt focuses on a specific moment and its effectiveness, but lacks an overall recommendation. The absence of a clear positive or negative statement suggests a mixed assessment.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt describes a compelling moment with sophisticated analysis of performance and themes, suggesting appreciation for the production's depth, but this single curated quote provides insufficient context for the overall verdict. | GPT-4o: The excerpt highlights a specific moment that was impactful, suggesting the production has its moments. However, without a clear recommendation or criticism, the overall sentiment appears mixed. | Gemini: The review excerpt focuses on a specific moment and its impact, suggesting the show has noteworthy aspects but doesn't provide a clear overall recommendation. The single excerpt and lack of explicit recommendation language lead to a 'Mixed' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:43:33.189Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:39:04.490Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 61,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 60,
+    "claudeScore": 73,
+    "openaiScore": 62,
     "geminiScore": 62,
-    "claudeBucket": "Mixed",
+    "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

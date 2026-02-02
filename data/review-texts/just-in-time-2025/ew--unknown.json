@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 80,
+  "assignedScore": 79,
   "llmScore": {
-    "score": 80,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review concludes with strong positive language including 'exuberant bang', 'guaranteed to linger', and ends with the audience wanting to see it again, indicating a clear recommendation despite some noted flaws ('vapor forms'). | GPT-4o: The review concludes with a strong, enthusiastic recommendation, highlighting the show's lasting impact and the desire to see it again, which aligns with a 'Rave' classification. | Gemini: The review excerpt ends with a clear indication of wanting to see the show again, suggesting a positive and enthusiastic recommendation. The phrase 'guaranteed to linger' also points towards a positive experience.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The excerpt describes an 'exuberant' conclusion and audience desire to return, clearly positive language. However, with only one curated quote available, I'm scoring conservatively within the positive range. | GPT-4o: The review excerpt ends with a strong positive sentiment, suggesting the show is memorable and worth revisiting. The phrase 'When can I see it again?' indicates a high level of enthusiasm and recommendation. | Gemini: The review ends with a strong indication that the reviewer enjoyed the show and would see it again, placing it firmly in the positive bucket. The question \"When can I see it again?\" suggests a strong positive feeling.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,15 +36,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:48:25.128Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:13:44.457Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 90,
-    "geminiScore": 82,
+    "geminiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

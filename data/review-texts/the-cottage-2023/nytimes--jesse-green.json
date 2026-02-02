@@ -8,7 +8,7 @@
   "fullText": "Farce is the emergency that keeps emerging. That’s why it depends so much on doors: to admit fresh trouble and lock it in.\n\nAlas, the door in “The Cottage,” a mild farce by Sandy Rustin, works only partway. It lets people enter, yet doesn’t trap them; they can leave at any time — and never do. Even when a killer is coming, the characters merely dawdle.\n\nDawdling is the play’s difficulty as well; everyone talks in pseudofancy circles. The stunts and capers likewise have no danger in them. And Jason Alexander’s trick-filled production, which opened on Monday at the Helen Hayes Theater, cannot hide that the stakes are too low.\n\nFor Beau (Eric McCormack) and his sister-in-law, Sylvia (Laura Bell Bundy), those stakes are close to nonexistent. Theirs is, after all, a once-a-year tryst. And since each is already cheating merrily on a spouse, the initial problem — Sylvia wants a bigger commitment, but Beau is overbooked — does not seem very problematic.\n\nThe interruptions that then arrive with the dulling punctuality of a track coach grasping a stopwatch do not much complicate matters. The first is Beau’s pragmatic wife, Marjorie (Lilli Cooper); the second is her foppish lover, Clarke (Alex Moffat). Because Clarke is Beau’s brother and Sylvia’s husband, the impact of his affair is nullified within minutes as the adulteries cancel each other out.\n\nWhile you try to absorb the overneat crisscross symmetry of that setup, notice the cottage itself, a classic Cotswolds hideaway fully furnished with opportune dangers: a twisty staircase, a library ladder, a trapdoor window seat and alarming taxidermy. (The amusing set is by Paul Tate dePoo III.) With croony jazz (sound by Justin Ellington) and lovely Deco frocks (by Sydney Maresca) we are clearly in the 1920s. In a marcelled blond bob (by Tommy Kurzman), Sylvia looks simply smashing.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
   "dtliExcerpt": "But after all the temporizing and flatulating earlier, the last-minute arrival of a point seemed, well, beside the point. Had I laughed more than twice in the play’s previous 119 minutes, I might even have found it funny.",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Down",
   "dtliUrl": null,
@@ -21,67 +21,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 38,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 33,
-      "high": 43
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 45
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "works only partway. It lets people enter, yet doesn't trap them; they can leave at any time — and never do",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Dawdling is the play's difficulty as well; everyone talks in pseudofancy circles. The stunts and capers likewise have no danger in them",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Jason Alexander's trick-filled production...cannot hide that the stakes are too low",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic systematically dismantles the play's fundamental mechanics, describing weak stakes, ineffective farce structure, and production elements that cannot salvage poor material.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review criticizes fundamental structural problems (low stakes, dawdling pace, lack of danger) while acknowledging some positive elements like the set design and period atmosphere. The truncated ending limits confidence. | GPT-4o: The review criticizes the play for its lack of stakes and ineffective farce elements, suggesting it fails to engage or entertain as intended. The tone is predominantly negative, though the truncated text leaves some uncertainty. | Gemini: The review points out flaws in the play's writing and stakes, but also acknowledges some positive aspects like the set design and costumes, leading to a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:16:49.448Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2818,
-    "outputTokens": 368,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:51.667Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 40,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "complete",
   "wordCount": 329,

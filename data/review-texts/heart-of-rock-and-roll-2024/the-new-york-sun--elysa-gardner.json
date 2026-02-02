@@ -9,64 +9,56 @@
   "bwwExcerpt": "Strangely, these shortcomings become assets of a sort in “The Heart of Rock and Roll,” the new show now bringing the group’s repertoire to Broadway. Jukebox musicals, for all their contemptible elements, can be most irritating when they try too hard either to deify an artist or to find fresh wit and relevance in a popular repertoire. One of the reasons “Mamma Mia” became an enduring hit is that it steered clear of both these strategies, choosing instead to have giddy fun with what happens to be",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 60,
+    "score": 74,
     "confidence": "medium",
     "range": {
-      "low": 50,
-      "high": 70
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Jukebox musicals, for all their contemptible elements, can be most irritating when they try too hard",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "these shortcomings become assets of a sort",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "One of the reasons \"Mamma Mia\" became an enduring hit is that it steered clear of both these strategies",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The excerpt shows mixed sentiment about jukebox musicals in general and suggests this show avoids common pitfalls, but the incomplete nature and lack of clear evaluation makes scoring highly uncertain. | GPT-4o-mini: The review presents a mixed view, acknowledging both shortcomings and redeeming qualities, leading to a conditional recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic suggests the show's flaws actually work in its favor and compares it positively to the successful 'Mamma Mia', but the excerpt is truncated and represents only one curated quote, requiring conservative scoring. | GPT-4o: The review acknowledges shortcomings but suggests they become assets, indicating a mixed reception. The comparison to 'Mamma Mia' implies some positive elements, but the overall tone is not fully positive. | Gemini: The review suggests that the show's shortcomings paradoxically become assets, implying an enjoyable experience despite flaws. The reference to \"Mamma Mia\" as an enduring hit further suggests a positive, albeit potentially qualified, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:10.257Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:41:23.918Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 60,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 55,
-    "openaiScore": 65,
-    "scoreDelta": 10,
+    "claudeScore": 72,
+    "openaiScore": 62,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dateUnknown": true,

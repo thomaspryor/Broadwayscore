@@ -7,72 +7,57 @@
   "publishDate": "April 26, 2025",
   "fullText": "★★★★☆ Jonathan Groff gloriously pays tribute to Bobby Darin in this electric, cabaret-style showcase for his talents.\n\nThe star of the new musical at Broadway's Circle in the Square effectively sets the parameters right from the beginning: \"I'm Jonathan, I'll be your Bobby Darin tonight,\" Jonathan Groff self-effacingly informs the audience. And sure enough, the recent Tony Award-winner for Merrily We Roll Along, who doesn't really look or sound anything like his subject, makes no attempt to imitate Darin in the course of the show. Instead, he celebrates Darin's love of live performing and the incredible rapport that he had with his audiences. They're things that Groff shares with Darin to the max, and it's his sheer joy in putting them over is what makes Just in Time such a blast.\n\nBased on an original concept by Ted Chapin, the show is an obvious labor of love that its star has spent years developing. It gloriously succeeds in its goal of shining a light on Darin, largely forgotten these days despite such smash hits as Mack the Knife, Dream Lover, and Beyond the Sea, although the net effect is more a celebration of Groff than Darin.\n\nAnd that turns out to be just fine, since Groff is such an endlessly charming, charismatic and dynamic performer that he often makes the evening feel like a one-man show despite the fact that it has a large supporting cast. The musical isn't just a glorified theatrical concert. It's also a bio-musical in the same vein as Jersey Boys and Beautiful, with a book by Warren Leight and Isaac Oliver that covers many of the bases of Darin's life and career.\n\nWe're thus treated to scenes depicting his relationships with Connie Francis (a radiant Gracie Lawrence) and first wife Sandra Dee (Erika Henningsen), as well as the mother whom he adored (Michele Pawk, terrific) and sister (Emily Bergl) with whom he had a sometimes contentious relationship.\n\nMore interestingly, the evening chronicles the chameleon-like performer's frequent shifts in musical styles — from rock to pop to standards to folk — with numerous digressions along the way.\n\nHis outsized ambitions were fueled not only by his talent, but also his prophetic fatalism that he would die at an early age because of a heart weakened by recurring bouts with rheumatic fever in childhood. That sense of mortality permeates the musical.\n\nJust in Time succeeds greatly more as an experience than a cohesive musical, with Leight and Oliver's book eventually succumbing to typical bio-musical choppiness in its second act. Much of the writing, though, proves adept.\n\nIt's the staging and the star's performance that truly elevate the evening. Alex Timbers' limber, imaginative direction uses the space fantastically. Groff works the room like nobody's business, going from one end to the other, wandering into the aisles, and, at one point, standing atop one of the small tables which magically starts spinning.\n\nBut Just in Time is really all about Groff, who delivers the sort of magnetic star turn that instantly becomes Broadway legend. No, he's not really embodying Bobby Darin. He's just being Jonathan Groff, and that's more than enough.",
   "bwwExcerpt": "It’s the staging and the star’s performance that truly elevate the evening, however. Alex Timbers’ limber, imaginative direction uses the space fantastically, with a large stage at one end of the theater providing enough room for a terrific big band, another smaller one at the opposite side for more intimate interludes, and cabaret tables in the middle.",
-  "assignedScore": 82,
+  "assignedScore": 81,
   "source": "playwright-scraped",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 82,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
+      "book": null,
       "music": null,
-      "performances": 92,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Jonathan Groff gloriously pays tribute to Bobby Darin in this electric, cabaret-style showcase for his talents",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Groff delivers the sort of magnetic star turn that instantly becomes Broadway legend",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Just in Time succeeds greatly more as an experience than a cohesive musical, with Leight and Oliver's book eventually succumbing to typical bio-musical choppiness in its second act",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The 4/4 star rating combined with superlative praise for Groff's performance ('magnetic star turn that instantly becomes Broadway legend') and overall positive assessment ('such a blast', 'gloriously succeeds') outweighs the structural criticisms of the book.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 4/5 star rating and language like 'gloriously succeeds,' 'such a blast,' and describing Groff's 'magnetic star turn that instantly becomes Broadway legend' clearly indicate strong recommendation despite acknowledging some structural flaws in the second act. | GPT-4o: The review is overwhelmingly positive, highlighting Groff's performance as legendary and the production as a blast. The 4/5 star rating supports a strong recommendation. | Gemini: The review is overwhelmingly positive, praising Groff's performance and the overall experience. While it notes some flaws in the book, the critic clearly enjoyed the show and recommends it.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:23:44.984Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3046,
-    "outputTokens": 397,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:14:36.216Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 85,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 80,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "sourceMethod": "playwright",
   "sources": [

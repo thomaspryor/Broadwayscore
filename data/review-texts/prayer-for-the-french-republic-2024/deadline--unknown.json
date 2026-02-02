@@ -11,15 +11,15 @@
     "playbill-verdict"
   ],
   "playbillVerdictUrl": "https://deadline.com/2024/01/prayer-for-the-french-republic-broadway-review-1235696968/",
-  "assignedScore": 89,
+  "assignedScore": 77,
   "llmScore": {
-    "score": 89,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The phrase 'all but miraculously' indicates exceptional praise for a production that successfully tackles ambitious themes, suggesting a must-see recommendation. | GPT-4o: The phrase 'all but miraculously, answers their call' suggests a highly positive view of the production, indicating it successfully tackles complex themes, which implies a strong recommendation. | Gemini: The phrase \"all but miraculously, answers their call\" suggests a very high level of praise and a strong recommendation, placing it firmly in the Rave bucket.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The phrase 'all but miraculously' suggests strong praise for how the play handles complex themes, indicating a positive recommendation, though with only one excerpt available the full verdict remains uncertain. | GPT-4o: The excerpt uses strong, positive language suggesting the play successfully tackles complex themes, indicating a highly favorable view. However, due to the single excerpt warning, the confidence is medium. | Gemini: The review excerpt indicates a positive assessment, stating that the play \"answers their call\" after posing big questions. Given that it's a single excerpt, I'm scoring it conservatively within the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,25 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:52:14.329Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:33:21.392Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 78,
     "openaiScore": 90,
-    "geminiScore": 90,
-    "claudeBucket": "Rave",
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 2,
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

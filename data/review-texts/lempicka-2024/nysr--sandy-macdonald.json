@@ -9,71 +9,55 @@
   "bwwExcerpt": "Power-contralto Eden Espinosa strives mightily to keep Lempicka – an overstuffed, formulaic musical – in forward motion, to mixed effect. Despite the evident willingness of co-creators Carson Kreitzer and Matt Gould to play fast and loose with history, the show plugs along like a Bugatti (an emblematic subject of the Polish-born painter) in need of a lube job.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": "2/5 stars",
-  "assignedScore": 38,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 38,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 35,
-      "high": 42
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
-      "music": 30,
-      "performances": 65,
-      "direction": 35
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "overstuffed, formulaic musical",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "worth the overall tedium of admission",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Lempicka deserves – deserved – better",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The 2-star rating and phrases like 'overstuffed, formulaic' and 'overall tedium' indicate clear disappointment, with only scattered praise for individual performances unable to overcome fundamental flaws.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The 2/5 star rating and consistent criticism throughout ('overstuffed, formulaic', 'overall tedium', 'Lempicka deserves better') clearly indicate a negative recommendation despite praise for individual performances. | Gemini: The critic gives the show 2/5 stars, and the review is largely negative, describing the musical as \"overstuffed, formulaic\" and saying it \"plugs along like a Bugatti in need of a lube job.\" While praising some performances, the overall assessment is that the show is a disappointment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:25:28.144Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3497,
-    "outputTokens": 306,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:15.059Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 45,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "bwwThumb": "Down",
   "rescoreReason": "scored on brief excerpt, now has fullText",

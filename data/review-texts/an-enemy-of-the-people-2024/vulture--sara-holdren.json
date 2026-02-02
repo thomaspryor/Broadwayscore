@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Strong and Imperioli both bring a vigorous contemporary affect to the material.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 60,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 59,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be only the opening sentence of the review, providing setup information about a staging element but no evaluative content or verdict about the production's quality. | GPT-4o: The review text is truncated and lacks a clear verdict, making it difficult to determine the overall recommendation. The mention of a full bar being lowered suggests an unusual or noteworthy production element, but without further context, the tone remains ambiguous. | Gemini: The provided text is extremely truncated and offers no clear recommendation. Without further context, it's impossible to determine if the review is positive or negative, so I've classified it as mixed with a low confidence score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a heavily truncated review with only a descriptive opening sentence about a staging element. No evaluative language or critical verdict is present to determine the critic's recommendation. | GPT-4o: The review text is truncated and lacks a clear evaluative statement about the production. The description of a bar being lowered suggests an unusual staging choice but does not provide enough context to determine the critic's overall opinion. | Gemini: The review text is truncated, making it difficult to determine the overall recommendation. The provided sentence doesn't offer a clear positive or negative assessment, suggesting a mixed or neutral stance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:15:03.781Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:39:47.599Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 59,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 60,
-    "geminiScore": 58,
+    "geminiScore": 59,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

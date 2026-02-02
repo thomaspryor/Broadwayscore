@@ -9,18 +9,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 68,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 68,
+    "confidence": "low",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 63,
+      "high": 73
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt suggests approval of the production's editing choices, but with severely limited text and no clear recommendation, confidence is low. | GPT-4o: The excerpt highlights a positive change in the production, suggesting a thoughtful and improved adaptation. However, without a full verdict, the recommendation is cautious. | Gemini: The review excerpt suggests a positive change (trimming and intelligent editing), implying an improvement to the show. Without the full review, it's hard to gauge the enthusiasm, but the tone is generally positive.",
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The text is severely truncated, cutting off after just the opening paragraph about ticket demand. No actual review content or critical assessment is provided. | Gemini: The review focuses on the difficulty of getting tickets, implying the show is desirable and worth seeing if accessible. The tone suggests a positive experience awaits those who manage to attend.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T14:54:44.990Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:06:56.686Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 74,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 74,
+    "claudeScore": 60,
+    "openaiScore": null,
     "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "sources": [
     "bww-roundup",
@@ -71,8 +71,7 @@
   "contentTier": "excerpt",
   "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
-  "rescoreCompletedAt": "2026-02-01T14:54:44.990Z",
-  "needsRescore": true,
+  "rescoreCompletedAt": "2026-02-02T00:06:56.686Z",
   "previousLlmScore": 74,
   "fullText": "Democracy Dies in DarknessReview by Peter MarksI’m wondering if the wizarding world could come up with a charm that might give desperate Muggles a leg up on performance availability. Because an incantation may be the only way to scare up tickets to “Harry Potter and the Cursed Child,” now that it has officially opened on Broadway and Potterholics are going to be hitting the ticket-buying website refresh button so often they’ll be in danger of breaking keyboards and fingers.\n\n0 CommentsMost ReadOpinionMichael ShermerI’ve reported on UFO sightings for decades — and come to this conclusionJanuary 29, 2026Brianna TuckerIn Texas, Democrats narrow GOP’s U.S. House majority, land state Senate upset33 minutes agoSalvador RizzoDOJ misconduct complaint against D.C. federal judge dismissedEarlier todayNewsletterDailyToday’s HeadlinesThe most important news stories of the day, curated by Post editors, delivered every morning.Sign up\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice.",
   "isFullReview": true,

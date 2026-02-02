@@ -14,35 +14,19 @@
     "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 80,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "captivating portrait",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "delicious, delirious portrait of this largely unknown juggernaut",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "backed by enough talent to render",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review uses consistently positive language ('captivating', 'delicious, delirious') and praises the creative approach and performances, indicating a clear recommendation despite some complexity in the material.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses clearly positive language like 'captivating portrait,' 'voluptuous,' and 'delicious, delirious portrait' to describe the musical, indicating a strong recommendation despite noting it's a more nuanced form than typical Broadway fare. | GPT-4o: The review praises the musical's ability to create a captivating and nuanced portrayal, describing it as 'delicious' and 'delirious,' which indicates a strong recommendation. | Gemini: The review uses positive language like \"captivating portrait\" and \"delicious, delirious portrait,\" indicating a recommendation, although it also acknowledges the nuanced and potentially challenging nature of the subject matter.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,27 +35,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:24:48.350Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2568,
-    "outputTokens": 322,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:29.232Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "Ultimately, they scrape together a delicious, delirious portrait of this largely unknown juggernaut.",
   "sources": [

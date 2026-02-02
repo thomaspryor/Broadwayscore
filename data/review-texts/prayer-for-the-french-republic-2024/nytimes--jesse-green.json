@@ -20,66 +20,48 @@
     "score": 62,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 82,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "That this Manhattan Theater Club production, directed by David Cromer, remains mostly riveting is the result of the richness of Harmon's novelistic detail — and the exceptional skill of the principal actors in realizing it",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the play, for all its urgency, is already way too much. Running just over three hours, 'Prayer for the French Republic,' which opened on Tuesday at the Samuel J. Friedman Theater, is still not long enough to do justice to the multiple histories it wants to tell",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "By the third act, the arguments have stripped their gears completely, and the play ends in sentimental exhaustion",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic acknowledges the production remains 'mostly riveting' with exceptional performances and rich direction, but criticizes the script as overstuffed, too long, and structurally flawed, creating a qualified mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: While Green acknowledges the play is 'mostly riveting' with exceptional performances, he criticizes its excessive length, structural problems, and sentimental exhaustion. The review is neither a recommendation nor a dismissal, landing squarely in mixed territory. | Gemini: The review highlights both strengths (riveting moments, skilled actors) and weaknesses (too long, repetitive arguments, characters that don't contribute much). The overall tone suggests a mixed experience, leaning slightly positive due to the praise for acting and direction, but ultimately falling short of a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:53:27.766Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4140,
-    "outputTokens": 441,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:42.160Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 60,
-    "scoreDelta": 2,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (61 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/prayer-for-the-french-republic-2024/nytimes--jesse-green_2026-01-29.html",
   "textFetchedAt": "2026-01-29T01:38:16.713Z",

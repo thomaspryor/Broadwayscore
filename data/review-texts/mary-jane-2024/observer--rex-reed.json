@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a performance of such raw emotional power and authenticity that she transforms what could have been a depressing evening into something transcendent.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "Rachel McAdams gives a performance of such raw emotional power and authenticity that she transforms what could have been a depressing evening into something transcendent.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "low",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 90,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "performance of such raw emotional power and authenticity",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "transforms what could have been a depressing evening into something transcendent",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Extraordinary praise for McAdams' performance with transformative language suggests strong positive recommendation, but excerpt focuses solely on one element without broader show assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises McAdams' performance as transformative and transcendent, indicating a strong positive recommendation despite acknowledging the potentially challenging material. | GPT-4o: The review uses strong language to praise Rachel McAdams' performance, suggesting it elevates the entire production to a transcendent experience, indicating a must-see recommendation. | Gemini: The review highlights a transformative performance, suggesting a positive experience despite potential drawbacks.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:04:13.093Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2332,
-    "outputTokens": 280,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:18:24.031Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

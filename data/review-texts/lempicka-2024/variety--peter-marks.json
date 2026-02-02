@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical about Polish Art Deco painter Tamara de Lempicka is a visually stunning production that struggles to find its emotional core despite strong performances from Eden Espinosa and Amber Iman.",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,60 +18,38 @@
   "showScoreExcerpt": "The musical about Polish Art Deco painter Tamara de Lempicka is a visually stunning production that struggles to find its emotional core despite strong performances from Eden Espinosa and Amber Iman.",
   "needsScoring": true,
   "llmScore": {
-    "score": 58,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 52,
-      "high": 65
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "visually stunning production",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "struggles to find its emotional core",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "strong performances from Eden Espinosa and Amber Iman",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review presents a classic mixed verdict - praising the visual production and lead performances while criticizing the show's fundamental emotional connection, suggesting a beautiful but hollow experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls the show 'uneven' while acknowledging it's 'visually stunning' with 'strong performances,' indicating neither a clear recommendation nor dismissal but a mixed assessment with both positives and negatives. | GPT-4o: The review highlights strong performances and visual appeal but notes the production's struggle to find its emotional core, indicating a mixed reception. | Gemini: The review describes the musical as \"uneven\" despite being visually stunning and having strong performances, indicating a mixed assessment. The additional context reinforces this by stating it \"struggles to find its emotional core.\"",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:02:20.048Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2348,
-    "outputTokens": 322,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:04.931Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 58,
   "textWordCount": 875,
@@ -110,5 +88,21 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--frank-rizzo.json",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (94 words)"
+  "contentTierReason": "Short text (94 words)",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  },
+  "rescoreCompletedAt": "2026-02-02T00:28:04.931Z"
 }

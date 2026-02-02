@@ -10,71 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": "3/5 stars",
-  "assignedScore": 62,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 55
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "covers too much ground without providing enough emotional depth to overcome its familiarities",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "it's Lange who commands the evening, displaying the sort of star power and stage command that make her a Broadway diva",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "there aren't many amusing and moving moments along the way, thanks not only to the performers but also the universality of its themes",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The 3/5 star rating and mixed critique that praises performances (especially Lange) while criticizing the unfocused, self-indulgent script places this in qualified recommendation territory.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic gives 3/5 stars and explicitly states the play is 'unfocused and self-indulgent' while acknowledging 'many amusing and moving moments' and praising Jessica Lange's performance. This is a clear mixed review. | Gemini: The review acknowledges flaws in the play itself, calling it \"unfocused and self-indulgent\". However, it praises Jessica Lange's performance and states it's \"worth the price of admission\" to see her, indicating a positive, albeit qualified, recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:39:41.571Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3355,
-    "outputTokens": 365,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:39.772Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 76,

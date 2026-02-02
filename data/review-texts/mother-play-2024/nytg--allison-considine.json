@@ -9,71 +9,56 @@
   "bwwExcerpt": "The play works because of the cast’s incredible ability to play both young and old characters, and solemn and funny ones. In particular, Parsons’s humor shines as Carl, a quick-witted genius who holds the family together. One of the play’s throughlines is touch — or rather, the lack of it. Director Tina Landau beautifully incorporates moments of closeness and distance through careful staging. Average Rating: 75.4% { \"@context\":\"https://schema.org\", \"@type\":\"LiveBlogPosting\", \"@id\":\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 82,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's the perfect vehicle for Jessica Lange's return to Broadway",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Jessica Lange, best known for her Emmy Award-winning performance in the anthology series American Horror Story, is in her prime in Mother Play",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The play works because of the cast's incredible ability to play both young and old characters, and solemn and funny ones",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This is a clearly positive review that praises the lead performance as masterful, celebrates the cast's versatility, and highlights strong direction and design elements with no significant criticisms.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review consistently praises the performances, particularly Jessica Lange's 'masterful' work, and highlights strong direction and staging. While it doesn't use superlative language suggesting a rave, the positive assessment of cast, direction, and production design indicates a clear recommendation. | GPT-4o: The review highlights the play's strong performances, particularly Jessica Lange's, and praises the direction and staging. The overall tone is highly positive, with specific commendations for the cast's ability to portray a wide range of characters and emotions. The Show-Score rating of 87% further supports a strong recommendation. | Gemini: The review highlights strong performances and direction, indicating a positive experience, but doesn't express overwhelming enthusiasm, suggesting a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:39:58.786Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3125,
-    "outputTokens": 360,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:03.381Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "openaiScore": 95,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"Mother Play is all about the mother’s touch and what it means to mother and be mothered\"",

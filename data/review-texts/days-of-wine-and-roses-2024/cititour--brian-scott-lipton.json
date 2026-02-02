@@ -9,64 +9,56 @@
   "bwwExcerpt": "Even then, at the very least, you will be unbearably grateful to have heard the clarion, celestial voices of the wonderful Kelli O’Hara, in her finest stage performance to date as the naïve secretary Kirsten Arnesen, and the sublime Brian D’Arcy James as the more worldly PR man Joe Clay, who fall in love with each other and the bottle.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 88,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 92,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "unbearably grateful to have heard the clarion, celestial voices",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "in her finest stage performance to date",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the sublime Brian D'Arcy James",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The review uses rapturous language about the lead performances with superlatives like 'celestial,' 'sublime,' and 'finest stage performance to date,' indicating strong enthusiasm despite being performance-focused.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear praise for the lead performances with highly positive language ('clarion, celestial voices', 'wonderful', 'sublime', 'finest stage performance'), but as only one curated quote is available, I'm scoring conservatively in the lower positive range. | GPT-4o: The excerpt praises the performances of the lead actors, suggesting a positive experience, but the lack of a full review and the single excerpt warning necessitate a conservative score within the Positive range. | Gemini: The review excerpt focuses heavily on praising the performances of the two leads, suggesting a positive experience driven by their talent. While the excerpt doesn't explicitly recommend the show overall, the strong praise for the actors indicates a positive leaning.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:35.814Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:23.702Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": null,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 79,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

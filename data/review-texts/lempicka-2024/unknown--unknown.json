@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,13 +21,13 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 25,
-    "confidence": "low",
+    "score": 45,
+    "confidence": "medium",
     "range": {
-      "low": 15,
-      "high": 40
+      "low": 40,
+      "high": 50
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -35,19 +35,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "aggressively earnest",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "assertively bombastic",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic uses two strongly pejorative descriptors that suggest heavy-handed, overly serious execution without subtlety.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The descriptors 'aggressively earnest' and 'assertively bombastic' suggest criticism of the show's tone and approach, but with only one curated excerpt available, the full verdict is unclear. | GPT-4o: The excerpt suggests a mixed reaction, highlighting both earnestness and bombast, which can be seen as both positive and negative depending on context. The lack of a full review and single excerpt warning necessitate a conservative score within the Mixed range. | Gemini: The description of the musical as \"aggressively earnest and assertively bombastic\" suggests a negative assessment, indicating the reviewer likely does not recommend the show. Given that this is the only excerpt available, I'm scoring conservatively within the negative range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,19 +45,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:02:15.124Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2319,
-    "outputTokens": 268,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:56.490Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 62,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

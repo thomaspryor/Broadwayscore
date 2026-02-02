@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows appreciation for the performances and direction with positive language like 'lovely detail' and praise for the director's 'characteristic attention,' but the truncated nature makes the overall verdict uncertain. | GPT-4o: The review excerpt praises the detailed rendering by the cast and direction, suggesting a positive impression. However, without a clear verdict or rating, the confidence is medium. | Gemini: The review highlights the lovely detail and attention to nuance, suggesting a positive experience, but the lack of a strong recommendation or explicit praise keeps it from being a higher score. The truncated text makes it difficult to be more confident.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the performances and direction with positive language like 'lovely detail' and 'characteristic attention,' but with only one curated quote available, the full verdict is unclear and requires conservative scoring. | GPT-4o: The excerpt praises the detailed rendering by the cast and director, suggesting a positive view of the production. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The excerpt praises the performances, direction, and detail, suggesting a positive experience overall, but the lack of stronger language and the single excerpt warning warrant a score in the lower end of the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,15 +36,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:29.534Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:19:32.781Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
+    "claudeScore": 72,
     "openaiScore": 76,
-    "geminiScore": 72,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

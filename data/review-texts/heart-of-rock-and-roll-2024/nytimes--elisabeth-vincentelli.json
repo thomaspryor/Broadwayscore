@@ -9,42 +9,26 @@
   "bwwExcerpt": "“The Heart of Rock and Roll” is not going to be the subject of think pieces and graduate theses, but its easygoing good spirits are bolstered by solid craftsmanship, and it’d be silly to turn up our noses at that. “Have a good time,” Huey Lewis once sang, wisely quoting Curtis Mayfield. “’Cause it’s all right.” Jackson McHenry, Vulture: To its credit, The Heart of Rock and Roll tries to get out before the buzz wears off. The second act lags and then accelerates around the point where Bobby’",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "originalScore": null,
-  "assignedScore": 71,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 71,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 77
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 75
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "easygoing good spirits are bolstered by solid craftsmanship",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "it'd be silly to turn up our noses at that",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "not going to be the subject of think pieces and graduate theses",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The critic acknowledges the show's limitations but ultimately defends its value with praise for its craftsmanship and good spirits, suggesting a qualified recommendation. | GPT-4o-mini: The review expresses a generally positive sentiment about the show's craftsmanship and spirit, but lacks strong enthusiasm or a compelling reason to recommend it highly.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges script limitations but emphasizes that strong performances sustain the production, indicating a positive recommendation despite reservations. | GPT-4o: The review highlights the performances as a strong point, suggesting a positive view despite some reservations about the dialogue. The aggregator context supports a positive assessment. | Gemini: The review highlights the strength of the performances, suggesting a positive experience despite reservations about the dialogue. The aggregator verdicts also indicate a generally positive reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:10:44.266Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:41:09.082Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 71,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"While the dialogue has occasional pop, it’s the performances that keep the show rolling\"",

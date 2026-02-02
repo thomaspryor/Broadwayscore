@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 55,
-    "confidence": "low",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 45,
-      "high": 65
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,19 +35,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "undiminishing focus...a lot to take in",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "those of us bearing witness",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The fragment suggests the show is intense or overwhelming ('a lot to take in') with limited context to determine if this is positive intensity or negative excess.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single truncated excerpt suggests the show may be emotionally demanding or intense, but provides no clear recommendation either way. The phrase 'a lot to take in' could indicate either overwhelming quality or simply intensity. | GPT-4o: The excerpt suggests that the production may be overwhelming or intense, which can be interpreted as neither fully positive nor negative. The lack of a clear recommendation or discouragement leads to a mixed classification, but the single excerpt and text quality warning lower confidence. | Gemini: The single excerpt suggests the reviewer found the show overwhelming, indicating a mixed reaction rather than a positive or negative one. Given the limited context, I've scored it in the middle of the 'Mixed' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,19 +45,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:04:22.531Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2326,
-    "outputTokens": 273,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:35.968Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 55,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

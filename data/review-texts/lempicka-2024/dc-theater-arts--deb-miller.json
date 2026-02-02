@@ -14,66 +14,50 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 62,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
-      "music": 65,
-      "performances": 75,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Lempicka offers a theatrical manifestation of the revival of interest in a woman artist who embraced the avant-garde style of Art Deco",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "If only the sexualization of women and their nudity in art were not so standard",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Andrew Samonsky brings his masterfully controlled and outstanding voice",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This is an academic, descriptive review that praises individual performances and production elements but offers no clear recommendation and ends with pointed criticism about the show's treatment of women.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review provides detailed analysis with praise for individual performances (especially Beth Leavel's 'emotionally compelling performance') and production elements, but uses qualifying language like 'overly affected' choreography and notes the show's 'generally booming' nature as potentially problematic. The truncated ending and feminist critique suggest reservations about the show's approach to its subject matter. | Gemini: The review is largely descriptive, but the final line suggests a critique of the show's portrayal of women. Given the truncated nature of the review, it's difficult to ascertain a definitive recommendation, leading to a 'Mixed' classification.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:25:05.074Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4111,
-    "outputTokens": 356,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:12.507Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
+    "claudeScore": 62,
     "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "scored on brief excerpt, now has fullText",

@@ -9,37 +9,26 @@
   "showScoreExcerpt": "\"...it’s curious that, particularly in today's political environment, the show loops back to a relatively unquestioned idea about the meaning, value, and reality of the American dream.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/real-women-have-curves-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 59,
   "source": "show-score",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 50,
-    "confidence": "low",
+    "score": 59,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 54,
+      "high": 64
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "it's curious that...the show loops back to a relatively unquestioned idea",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "particularly in today's political environment",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The excerpt suggests mild criticism of the show's thematic approach as outdated or uncritical, but the limited text provides insufficient context for a confident assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt suggests conceptual criticism about the show's handling of the American dream theme, indicating reservations. However, with only this fragment and 'Flat' aggregator context, the full verdict remains unclear. | GPT-4o: The excerpt suggests a critical perspective on the show's thematic approach, indicating a lack of depth in addressing contemporary issues. The aggregator context of 'flat' supports a mixed reception. | Gemini: The review excerpt expresses a critical view of the show's thematic content, suggesting it doesn't fully engage with contemporary issues. This indicates a mixed reaction, as the reviewer finds the show's exploration of the American dream problematic.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,27 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:03:09.611Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2340,
-    "outputTokens": 290,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:08.722Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 50,
-    "scoreDelta": 5,
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dtliExcerpt": "For how much the show is about the characters’ status as immigrants or citizens, and how frequently they distinguish themselves from white Americans (from their treatment in society writ large to the justice system more specifically), it’s curious that, particularly in today's political environment, the show loops back to a relatively unquestioned idea about the meaning, value, and reality of the American dream. It’s like Real Women Have Curves can’t figure out which story to care about more: the one about a teen following her passion, or about the complexity of immigrants trying to make it in an America where their ambitions are sometimes kept out of reach.",
   "sources": [

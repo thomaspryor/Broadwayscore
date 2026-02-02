@@ -8,67 +8,59 @@
   "fullText": null,
   "bwwExcerpt": "The play - whose story is credited to Rowling, playwright Jack Thorne and director John Tiffany - has an emotional honesty that, like the books, never sinks into sentimentality and guarantees its endurance. At its essence is a story about parents and children, specifically fathers and sons, struggling to connect with a loved one they can't understand.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-indicator-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 79,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 80,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "has an emotional honesty that, like the books, never sinks into sentimentality and guarantees its endurance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "At its essence is a story about parents and children, specifically fathers and sons, struggling to connect",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "emotional honesty that, like the books, never sinks into sentimentality",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic praises the play's emotional authenticity and thematic depth, comparing it favorably to the beloved books and suggesting lasting value, indicating a clear positive recommendation despite the excerpt's brevity. | GPT-4o-mini: The review highlights emotional depth and connection in the story, indicating a strong recommendation despite the lack of specific praise for performances or direction.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the play's emotional honesty and suggests enduring quality, indicating a positive assessment. However, with only one curated excerpt available, I'm scoring conservatively in the lower positive range as this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the play's emotional honesty and enduring quality, suggesting a positive view. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt praises the play's emotional honesty and enduring quality, suggesting a positive overall assessment. However, due to the limited text, a score in the middle of the 'Positive' range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:27:55.696Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:04:16.180Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "mergedFrom": [
     {

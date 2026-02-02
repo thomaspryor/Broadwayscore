@@ -10,42 +10,26 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Up",
   "originalScore": "A",
-  "assignedScore": 88,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 88,
-    "confidence": "high",
+    "score": 93,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 92
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 90,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The play is a sensational, feminist twist on a classic British period drama that features knockout performances, melodramatic reveals, and some seriously outrageous one-liners",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "From the moment that Sylvia first flounces onstage until the curtain call, The Cottage is a fresh and fiercely fun play that's firing on all cylinders",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Grade: A",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "This is an enthusiastic positive review with consistent praise throughout and an explicit 'A' grade, calling the show 'sensational' and 'firing on all cylinders' with detailed appreciation for performances, direction, and script.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The A grade, combined with overwhelmingly positive language like 'knock-knock-knockout,' 'phenomenal,' 'stellar,' and 'comedy gold,' clearly indicates a rave review with enthusiastic recommendation. | GPT-4o: The review is overwhelmingly positive, highlighting the play's sensational twist, knockout performances, and comedic brilliance. The critic's original rating of 'A' and the use of phrases like 'firing on all cylinders' indicate a strong recommendation. | Gemini: The critic gives the show an 'A' grade and uses enthusiastic language to describe the play, such as 'sensational', 'knockout performances', and 'comedy gold'. Despite the truncated text, the overall tone is clearly positive and recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,27 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:16:06.070Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3685,
-    "outputTokens": 383,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:26.980Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 88,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 88,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 90,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "dtliExcerpt": "The play is a sensational, feminist twist on a classic British period drama that features knockout performances, melodramatic reveals, and some seriously outrageous one-liners. If home is where the heart is, then The Cottage is where the mind's deepest, darkest, and most salacious secrets go to fight and frolic in the fresh air.",
   "sources": [

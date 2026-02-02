@@ -9,71 +9,55 @@
   "bwwExcerpt": "Thirty or so years ago, Vogel told a reporter, “I like theater that makes me feel like it’s a healing.” That’s what “Mother Play” is, a balm that comes in cardboard boxes and packing tape. It honors the dead by making them alive again and nurtures the living by providing a place to put a daughter’s love and rage. Martha’s box is not Pandora’s. It’s just another way of organizing a life. Adam Feldman , TimeOut New York: Keenan-Bolger and Parsons are very good indeed in Mother Play, but there’",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 75,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 78
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
-      "performances": 82,
-      "direction": 68
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "That's what 'Mother Play' is, a balm that comes in cardboard boxes and packing tape. It honors the dead by making them alive again and nurtures the living by providing a place to put a daughter's love and rage.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "silliness has always been a signature of Vogel's work and, at least for me, sometimes a source of frustration. Reading her early plays, I have thought, Can't you be serious?",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "She is supported, sturdily, by Keenan-Bolger, who imbues Martha, a playwright like Vogel, with goodness, righteousness and a gift for plain speaking, and by Parsons, a born clown savvy enough to show the pain behind the buffoonery.",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review offers thoughtful praise for performances (especially Lange) and the play's emotional healing qualities, with some reservations about directorial choices and Vogel's tendency toward silliness, but concludes with appreciation for the work's compassionate vision.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the performances, particularly Lange's showcase role, and concludes that the play serves as meaningful 'healing' and a 'balm,' despite some concerns about excessive silliness in the direction. | Gemini: The review is generally positive, highlighting the play's emotional depth and healing qualities. While noting some potential silliness, the critic ultimately finds the play to be a compassionate and worthwhile experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:40:05.067Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3632,
-    "outputTokens": 470,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:17.782Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“Mother Play is a quieter show, softer and less shattering.\"",

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Joshua Harmon's ambitious family drama spans decades to explore the persistence of antisemitism in France, but the play's sprawling scope sometimes works against its emotional impact.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,55 +18,38 @@
   "showScoreExcerpt": "Joshua Harmon's ambitious family drama spans decades to explore the persistence of antisemitism in France, but the play's sprawling scope sometimes works against its emotional impact.",
   "needsScoring": true,
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 55,
+      "low": 58,
       "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 58,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "ambitious family drama",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "sprawling scope sometimes works against its emotional impact",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review acknowledges the play's ambition and important subject matter but identifies a significant structural flaw that undermines its effectiveness.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the play's ambition and scope but clearly identifies a significant structural flaw where the sprawling nature undermines emotional effectiveness. The tone suggests respect for the attempt but reservations about the execution. | GPT-4o: The review acknowledges the ambition and historical context of the play but notes that its scope can detract from its emotional impact, suggesting a mixed reception. | Gemini: The review acknowledges the play's ambition and scope but also notes that its sprawling nature detracts from its emotional impact, suggesting a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:12:06.524Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2336,
-    "outputTokens": 266,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:35:36.163Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 102,
@@ -105,5 +88,21 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--daniel-daddario.json",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (102 words)"
+  "contentTierReason": "Short text (102 words)",
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  },
+  "rescoreCompletedAt": "2026-02-02T00:35:36.163Z"
 }

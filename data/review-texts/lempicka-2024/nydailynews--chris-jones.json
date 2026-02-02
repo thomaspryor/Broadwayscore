@@ -8,40 +8,29 @@
   "dtliExcerpt": "Frankly, the show would have been far better if it had simply evoked a savvy and brilliant artist in this richest of European eras. Shoving de Lempicka so aggressively through today’s ideological and aesthetic filters, unconscious as the act may be, has the effect of nullifying her singular ambivalence and complexity.",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 37,
+  "assignedScore": 45,
   "dtliThumb": "Down",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 37,
+    "score": 45,
     "confidence": "high",
     "range": {
-      "low": 30.5,
-      "high": 43.5
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 40
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the show would have been far better if it had simply evoked a savvy and brilliant artist",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "has the effect of nullifying her singular ambivalence and complexity",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic expresses clear disappointment with the show's approach, arguing it fundamentally mishandles its subject matter and suggesting a better alternative direction. | GPT-4o-mini: The review expresses significant disappointment with the show's execution, indicating a clear negative sentiment towards its overall quality.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic argues the show would have been 'far better' with a different approach and criticizes it for 'nullifying' the complexity of its subject, indicating clear disappointment with the production choices, though the single excerpt limits confidence in the overall verdict. | GPT-4o: The review criticizes the production for failing to capture the complexity of its subject, suggesting it is disappointing. The aggregator context supports a negative interpretation, but the single excerpt warning suggests a conservative score within the negative range. | Gemini: The review states the show would have been 'far better' if it had taken a different approach, indicating disappointment with the current production. The aggregator verdict also suggests a negative reception.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,20 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T03:03:09.369Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:26.801Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 37,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 35,
-    "scoreDelta": 3,
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "contentTier": "excerpt",
   "wordCount": 0

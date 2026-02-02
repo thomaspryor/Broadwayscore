@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "“Like any play transferring to Broadway from an Off Broadway success, this ‘Prayer’ is a counterproposal to its earlier, smaller, and more intimate iteration.”",
@@ -18,67 +18,51 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 65,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 55,
+      "book": null,
       "music": null,
-      "performances": 72,
-      "direction": 60
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Harmon too often fails to make his characters into anything other than animated position papers",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "the show, when it hits its stride, captures both the galvanizing and the infuriating aspects of incessant intellectual combat",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "sometimes you can't go home",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic appreciates the play's intellectual ambitions and some performances (especially Robinette) but finds significant flaws in character development and feels this Broadway transfer has lost something essential from its Off-Broadway origins.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the play's ambitious ideas and praises specific performances (especially Robinette), but criticizes character inconsistencies, structural issues, and notes the production feels 'more tentative' than the original Off Broadway version. | Gemini: The review acknowledges both strengths and weaknesses. While praising certain aspects like the intellectual combat and Robinette's performance, it also criticizes character inconsistencies and the emotional manipulation. The truncated ending makes it difficult to ascertain a definitive recommendation, but the overall tone suggests a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:52:49.330Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4513,
-    "outputTokens": 356,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:33:39.930Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
+    "claudeScore": 62,
     "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 45,

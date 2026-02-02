@@ -9,73 +9,56 @@
   "bwwExcerpt": "The Cottage is at its best when at its lightest. A few philosophical tangents—Dierdre and Sylvia discussing “varying degrees” of love, Beau and Marjorie debating the merits of marriage (Beau: “In my opinion, faithfulness is an entirely separate matter from marriage”)—drag down the otherwise snap-crackle pace that director Jason Alexander (of TV’s Seinfeld) has established. And the intermission takes a bit of air out of the proceedings.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Up",
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 70,
+      "book": null,
       "music": null,
-      "performances": 82,
-      "direction": 78
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "★★★★☆",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The Cottage is at its best when at its lightest",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "A few philosophical tangents...drag down the otherwise snap-crackle pace",
-        "sentiment": "negative",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Four-star review with consistent praise for performances, design, and direction, though noting some pacing issues and philosophical tangents that slow things down.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and overall positive tone recommend the show, though the critic notes some pacing issues and philosophical tangents that drag down the proceedings. | GPT-4o: The review provides a generally positive assessment of the production, highlighting its entertaining elements and strong performances, despite noting some pacing issues. The original 4/5 star rating aligns with a strong positive recommendation. | Gemini: The critic gives the show 4 out of 5 stars, indicating a positive recommendation. While noting some pacing issues and philosophical tangents, the review praises the performances, set design, and humor, ultimately suggesting it's worth seeing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:16:38.260Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3487,
-    "outputTokens": 322,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:44.239Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 65,
-    "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (67 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 67,

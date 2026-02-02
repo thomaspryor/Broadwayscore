@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "And that, to less pleasing effect, is the feeling one gets from the messy new musical Lempicka, a portrait of the artist that tries to cram her into too small a frame, without the benefit of strong composition.",
@@ -20,38 +20,22 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 42,
+    "score": 41,
     "confidence": "medium",
     "range": {
-      "low": 33.5,
-      "high": 50.5
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
-      "performances": 60,
-      "direction": 30
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "sometimes falls flat into camp, especially when it skirts melodrama",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "I challenge you not to giggle",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Lempicka seems to have abandoned history entirely",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic finds fundamental problems with the show's tonal inconsistency, historical coherence, and unintentionally comedic moments that undermine serious material. | GPT-4o-mini: The review indicates significant issues with the show's execution, particularly in its handling of camp and melodrama, leading to a negative overall impression.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic describes the musical as sometimes falling flat, challenges the audience not to giggle at serious moments, and criticizes the show's abandonment of historical coherence, indicating disappointment despite the truncated text. | GPT-4o: The review highlights issues with the musical's tone and coherence, suggesting it falls flat and lacks historical grounding, leading to a negative impression. | Gemini: The review highlights both positive and negative aspects, suggesting an uneven experience. The phrase \"sometimes falls flat\" indicates reservations, placing it in the Mixed category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -60,20 +44,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:08.145Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:27:53.569Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 45,
-    "scoreDelta": 7,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 42,

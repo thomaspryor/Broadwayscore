@@ -9,64 +9,55 @@
   "showScoreExcerpt": "âSo transportive are the intoxicating Cuban music and spirited dance that itâs easy to forgive the showâs rather wispy and cliched book.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/buena-vista-social-club",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
       "low": 73,
-      "high": 85
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 53,
-      "music": 91,
-      "performances": 83,
-      "direction": 87
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "So transportive are the intoxicating Cuban music and spirited dance that it's easy to forgive the show's rather wispy and cliched book",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The lush sights and sounds more than make up for all the burdensome exposition and Broadway-style one-liners",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "I really felt whisked away — a feat many shows set in international locales fail to achieve",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Despite criticizing the weak book, the critic is clearly transported by and recommends the show for its exceptional music, performances, and production values that overcome the script's shortcomings. | GPT-4o-mini: The review highlights the exceptional music and vibrant choreography while acknowledging weaknesses in the book, leading to a strong overall recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly recommends the show despite acknowledging significant flaws in the book, emphasizing that the exceptional music, dance, and transportive experience more than compensate for the weak storytelling. | Gemini: The review clearly states that the music and dance are excellent and make up for the weak plot, indicating a positive recommendation despite reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:38:07.937Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:47.779Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "dtliExcerpt": "I really felt whisked away — a feat many shows set in international locales fail to achieve. The crowd audibly inhales when the windows slowly open on Arnulfo Maldonado’s set to reveal a spectacular ocean. Obviously it’s not real. But at “Buena Vista Social Club,” for a couple hours, you’re lulled into believing you’re drinking a mojito in 90-degree heat.",
   "sources": [

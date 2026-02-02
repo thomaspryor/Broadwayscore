@@ -9,71 +9,55 @@
   "bwwExcerpt": "Even at a time of overwhelming competition on Broadway, there may well be enough check boxes ticked for some – Lange dancing to I Will Survive in a gay club definitely straddles a few – but Mother Play isn’t quite specific or emotionally searing enough to live beyond its admittedly alluring reference points. It works in moments, most of them the result of Lange’s ineffable presence, but as a whole, it’s not as commanding as her or its title demand, perhaps more estranged aunt than mother.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 58,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 62
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 50
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Mother Play isn't quite specific or emotionally searing enough to live beyond its admittedly alluring reference points",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Mother Play sees a major writer teaming up with a major actor to give us a minor work",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "spending so much uninterrupted time living with an actor of her calibre and dazzle is a rich reward",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review praises Jessica Lange's performance but finds the play itself underwhelming and emotionally underpowered, concluding it's a 'minor work' despite its pedigree.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges strong elements (Lange's performance, staging details) but consistently emphasizes the play's failure to meet expectations, calling it 'minor work' from 'major' talents and noting it lacks emotional impact when needed most. | Gemini: The review acknowledges Jessica Lange's captivating performance and some clever staging, but ultimately finds the play emotionally underpowered and uneven. The critic suggests it's not a complete failure but doesn't strongly recommend it.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:39:23.894Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3925,
-    "outputTokens": 365,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:20.305Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "dateUnknown": true,

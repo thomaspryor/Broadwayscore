@@ -5,13 +5,13 @@
   "criticName": "Arifa Akbar",
   "bwwExcerpt": "It starts with those floating red letters and that electro-ethereal music. The intro creates the surreal effect of Netflix’s sci-fi juggernaut being brought to life as a stage-sized facsimile before our eyes. But the big surprise about this prequel to the TV series, about high-schoolers who tap into the dangerous world of the",
   "source": "bww-roundup",
-  "assignedScore": 60,
+  "assignedScore": 61,
   "llmScore": {
-    "score": 60,
+    "score": 61,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -21,24 +21,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the surreal effect of Netflix’s sci-fi juggernaut being brought to life",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "floating red letters and that electro-ethereal music",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "big surprise about this prequel",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "GPT-4o-mini: The review hints at an intriguing visual and auditory experience but lacks a clear recommendation or detailed critique of the overall production.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt cuts off mid-sentence and only provides descriptive opening content with one incomplete evaluative hint about a 'big surprise', making it impossible to determine the critic's actual recommendation. | GPT-4o: The excerpt highlights the impressive staging of the production but lacks a clear recommendation or critique of the overall quality. The single excerpt and lack of a full verdict lead to a conservative, middle-of-the-bucket score. | Gemini: The review excerpt describes a positive initial impression, but the lack of further context and the single excerpt warning necessitate a conservative score within the 'Positive' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,20 +31,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-30T23:17:07.566Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:43:13.367Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 60,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 60,
-    "scoreDelta": 0,
+    "claudeScore": 60,
+    "openaiScore": 62,
+    "geminiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

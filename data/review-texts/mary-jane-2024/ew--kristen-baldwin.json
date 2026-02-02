@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams delivers a powerhouse performance as a mother caring for her severely disabled son in this emotionally devastating but ultimately uplifting drama.",
   "originalScore": 88,
-  "assignedScore": 78,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "Rachel McAdams delivers a powerhouse performance as a mother caring for her severely disabled son in this emotionally devastating but ultimately uplifting drama.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
-    "confidence": "low",
+    "score": 88,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 85
+      "low": 83,
+      "high": 93
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "powerhouse performance",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "emotionally devastating but ultimately uplifting",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong praise for lead performance and emotional impact suggests positive recommendation, but extremely brief excerpt limits confidence in overall assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating clearly places this in rave territory, supported by highly positive language like 'powerhouse performance' and 'ultimately uplifting' despite emotional weight. | GPT-4o: The critic's original rating of 88 strongly suggests a rave review, and the description of McAdams' performance as 'powerhouse' supports an enthusiastic recommendation. | Gemini: The review highlights a strong performance and describes the drama as \"uplifting,\" suggesting a positive experience despite the potentially difficult subject matter. The original rating of 88 also supports a positive classification.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:03:55.799Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2331,
-    "outputTokens": 261,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:16:59.119Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

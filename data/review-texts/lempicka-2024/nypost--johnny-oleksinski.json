@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 13,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "What “Lempicka,” the mystifying new musical about Polish painter Tamara de Lempicka, needs more than anything else is turpentine.",
@@ -21,38 +21,22 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 25,
-    "confidence": "high",
+    "score": 13,
+    "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 8,
+      "high": 18
     },
     "bucket": "Pan",
     "thumb": "Down",
     "components": {
-      "book": 15,
-      "music": 35,
-      "performances": 40,
-      "direction": 30
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "the ugly splatter that audiences are left to parse is a ridiculous two-and-half-hour Eurovision act with stratospheric delusions of grandeur",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "And 'Lempicka' is incoherent",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "It's hard to believe this muck is directed by the talented Chavkin",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This is a comprehensive pan with harsh criticism of every element - calling it 'ugly splatter,' 'ridiculous,' 'incoherent,' and 'muck' with only minor acknowledgments of individual moments or performances.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: The critic systematically dismantles every aspect of the production, calling it 'ugly,' 'incoherent,' 'muck,' and 'perplexing' while offering no genuine recommendation to see it. | GPT-4o: The review is overwhelmingly negative, describing the musical as incoherent, tonally unhinged, and a waste of talent. The critic uses strong language to express disappointment, suggesting it is not worth seeing. | Gemini: The review is overwhelmingly negative, using phrases like \"ugly splatter,\" \"ridiculous,\" and \"incoherent.\" The critic clearly does not recommend seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -61,27 +45,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:25:16.674Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3614,
-    "outputTokens": 369,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:25:46.111Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 15,
-    "openaiScore": 15,
-    "scoreDelta": 0,
+    "claudeScore": 42,
+    "openaiScore": 10,
+    "geminiScore": 15,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "scoreDelta": 32,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Pan"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 15,

@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 75,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review explicitly calls the show 'perfectly delightful' and notes it sends audiences away happy, indicating a positive recommendation despite acknowledging it's undemanding entertainment. | GPT-4o: The review suggests that the show is enjoyable and leaves the audience with a positive feeling, which aligns with a positive recommendation. However, the lack of a full review and the phrasing 'asks very little of you' implies some reservations, leading to a medium confidence level. | Gemini: The review excerpt clearly states that the show is \"perfectly delightful\" and sends the audience away with a smile, indicating a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes the show as 'perfectly delightful' and notes it sends audiences away happy, indicating a positive recommendation for light musical comedy entertainment. | GPT-4o: The review suggests that the show is enjoyable and leaves the audience feeling good, which aligns with a positive recommendation. However, the phrase 'asks very little of you' implies some reservations about depth or engagement, leading to a mid-range positive score. | Gemini: The review excerpt indicates a positive experience, describing the show as \"perfectly delightful\" for a musical comedy. However, the phrase \"asks very little of you\" suggests it might not be a deeply impactful or challenging piece, hence the 'recommended with reservations' verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:53:53.033Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:47:59.287Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 75,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 78,
+    "openaiScore": 76,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

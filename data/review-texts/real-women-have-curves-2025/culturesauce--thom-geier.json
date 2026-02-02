@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"The show pulses with a distinctly chingona spirit–it is bold and defiantly optimistic despite relentlessly biased\"\n\nRead more",
@@ -18,67 +18,51 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 86,
+    "confidence": "low",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 81,
+      "high": 91
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
-      "music": 88,
-      "performances": 90,
-      "direction": 87
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "a sensational surprise",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Real Women Have Curves tells a simple story with musicality, with humor, with authenticity, and with an embrace of its female characters as fully rounded, three-dimensional individuals",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "★★★★★",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "The critic awards 5/5 stars and calls it a 'sensational surprise,' praising virtually every aspect including performances, music, direction, and authenticity with enthusiastic language throughout.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The review concludes with a 5-star rating and glowing praise throughout, calling it a 'sensational surprise' with 'show-stopping' numbers and praising its authenticity, humor, and powerful message. Despite being truncated, the critic's final assessment and star rating clearly indicate a rave recommendation. | Gemini: Despite the truncated text, the review is largely positive, highlighting the show's themes, music, and performances. The aggregator excerpts also point towards a positive reception, leading to a 'Positive' bucket and a score reflecting a recommendation with some reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:02:23.192Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3977,
-    "outputTokens": 345,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:20:52.035Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 79,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 79,

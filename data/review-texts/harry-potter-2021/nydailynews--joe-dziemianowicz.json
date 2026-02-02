@@ -8,73 +8,58 @@
   "fullText": "There are more magic wands than you can shake a stick at in the wildly theatrical and thrilling Broadway spectacle \"Harry Potter and the Cursed Child.\"\n\nTo say that this two-part, nearly six-hour epic that opened Sunday at the Lyric Theatre casts a spell with its fresh takes on beloved characters by J.K. Rowling — and new ones — is a major understatement. Eye-popping enchantment regularly flies off the stage.\n\nCredit the immeasurable wizardry of director John Tiffany (\"Once\"), who's a true master at creating stunning stage magic. He has outdone himself in this epic written by Jack Thorne based on an original story by himself, Tiffany and Rowling. You don't have to have read the seven books or seen the eight movies in the series about the boy wizard to revel in this Broadway party.\n\nFull disclosure: I haven't, but I crammed on the cheat sheet in the Playbill. Yes, there was a moment when Potterheads let out a collective gasp at the mention of a character's name that went over my head. But that didn't spoil my enjoyment for the twisty tale that starts where the book series ended.\n\nEnglish actor Jamie Parker, like the other principals in the cast, reprises his role from the play's earlier run in London. He anchors the production as Harry Potter, who's 37 and still has the jagged lightning-bolt scar on his forehead. He and wife Ginny (Poppy Miller) have kids going off to wizard school at Hogwarts. How'd-they-do-that marveling begins instantly as students go from street clothes to capes in a twirl. Jamie Harrison is credited for the jaw-dropping illusions that extend far beyond Katrina Lindsay's costumes.\n\nThe plot revolves around father-son drama between Harry and lonely son Albus (Sam Clemmett). The kid feels underappreciated and overshadowed by his famous dad and seeks solace, of all places, with Scorpius Malfoy (Anthony Boyle, wonderfully odd), the troubled son of Harry's bitter enemy Draco (Alex Price).\n\nHarry, meanwhile, depends on his longtime besties Hermione Granger (Noma Dumezweni, who nails the voice of authority) and goofy Ron Weasley (an appealing Paul Thornley), who are married with a daughter. Teenaged rebellion leads to risk-taking and, eventually, reconciliations — but not before some time travel and hairy battles between good and evil. Wicked Voldemort still casts a dark pall.\n\nAs with any story, it's all in the telling. What's so wondrous is how low-tech stagecraft brings such high-definition delight as the action unfolds on Christine Jones' arch-filled set bathed in glow and gloom by lighting designer Neil Austin. Suitcases turn into train cars; bookcases come alive; mobile staircases whirl as if in a living Escher print. Music by Imogen Heap and movement by Steven Hoggett create their own pinch-me moments.\n\nEventually, the ending gets a bit shaggy and Harry and Ginny's other kids simply go missing in action. But that's nitpicking. The show gleams like a bolt of lightning — not one that leaves marks on your forehead, just vivid memories in your mind.",
   "bwwExcerpt": "As with any story, it's all in the telling. What's so wondrous is how low-tech stagecraft brings such high-definition delight as the action unfolds on the Christine Jones' arch-filled set filled with glow and gloom by Neil Austin. Suitcases turn into train cars; bookcases come alive; mobile staircases whirl as if in a living Escher print. Music by Imogen Heap and movement by Steven Hoggett create their own pinch-me moments.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "sourceMethod": "archive",
   "scoreSource": null,
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 94,
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 95
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 95
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "wildly theatrical and thrilling Broadway spectacle",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "casts a spell with its fresh takes on beloved characters...is a major understatement",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "He has outdone himself in this epic",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Unqualified enthusiasm throughout with superlatives like 'thrilling spectacle,' 'major understatement,' and 'outdone himself,' plus explicit accessibility statement that broadens recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review uses superlative language throughout ('wildly theatrical and thrilling', 'casts a spell', 'Eye-popping enchantment', 'wondrous') with clear enthusiasm for the production's theatrical magic and stagecraft, indicating a strong recommendation. | GPT-4o: The review is filled with enthusiastic language and highlights the production's stunning stage magic and direction. The critic describes the show as a 'wildly theatrical and thrilling Broadway spectacle,' indicating a strong recommendation. | Gemini: The review uses highly positive language like \"wildly theatrical and thrilling,\" \"casts a spell,\" and \"eye-popping enchantment\" to describe the show, indicating a strong recommendation. The critic also praises the director's \"immeasurable wizardry.\"",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:08:02.884Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2491,
-    "outputTokens": 335,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:02:36.626Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 90,
-    "scoreDelta": 7,
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "sources": [
     "bww-roundup"

@@ -10,71 +10,56 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": "A",
-  "assignedScore": 83,
+  "assignedScore": 91,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 83,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 88
+      "low": 86,
+      "high": 96
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "crowd-pleasing Broadway musical",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "bigger, brighter and bursting with heart",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "no less prescient or powerful",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Consistently positive language throughout with strong praise for the adaptation and lead performance, describing it as 'crowd-pleasing' and emphasizing its emotional impact and relevance.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives an A rating and uses clearly enthusiastic language like 'absolute joy to witness,' 'bursting with heart,' and praises the production as 'bigger, brighter' while maintaining the powerful message of the original story. | GPT-4o: The review is overwhelmingly positive, highlighting the show's vibrant and heartwarming qualities. The critic's original rating of 'A' and the enthusiastic language used throughout strongly indicate a rave recommendation. | Gemini: The critic gives the show an 'A' rating and uses highly positive language such as 'absolute joy' and 'bursting with heart' to describe the production, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:02:33.928Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2490,
-    "outputTokens": 312,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:21:07.411Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 83,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "dtliExcerpt": "The show is an absolute joy to witness with its vibrant scenery and lively choreography. It also pulls off a crucial balancing act, immersing us in the real, textured world of their East Los Angeles locale, leaning into the detail and intimate moments, and then, in the right moments, embracing fantasy by whisking us into the character's minds and letting their dreams be visualized onstage.",
   "sources": [

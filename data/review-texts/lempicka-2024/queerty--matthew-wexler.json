@@ -9,71 +9,55 @@
   "bwwExcerpt": "“Why were they voguing?” my companion asks at intermission, referring to a dance sequence early in the show. “Ah, that makes sense,” she responds with a slightly perplexed look after I explain the Madonna connection. Herein lies Lempicka’s challenge: the musical wants to capitalize on Madonna and other pop stars’ notoriety along with sense of agency uncommon to female artists of the era, but its creators have stretched the canvas so thin that the brush strokes crack. Brian",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 52,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 48,
-      "high": 58
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 40,
-      "music": 45,
-      "performances": 65,
-      "direction": 50
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "its creators have stretched the canvas so thin that the brush strokes crack",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "In a Broadway season mostly void of LGBTQ+ visibility, the song and its message break through the show's construct",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Audiences will decide if Lempicka is back in fashion",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Mixed review that acknowledges significant flaws in execution and story while praising the lead performance and LGBTQ+ representation, ultimately leaving the recommendation up to audiences.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review criticizes execution and structure ('stretched the canvas so thin that the brush strokes crack') but praises the lead performance and finds meaningful moments, particularly in LGBTQ+ representation. The critic acknowledges flaws while noting the show's ambitions and some successes. | Gemini: The review highlights both positive and negative aspects of the show. While praising Espinosa's performance and the show's LGBTQ+ visibility, it also criticizes the thin plot, surface-level connections, and diluted real-life final chapters. The overall tone suggests a mixed experience, not strongly recommending or discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:26:10.380Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4461,
-    "outputTokens": 347,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:26:54.626Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 52,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 45,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "scored on brief excerpt, now has fullText",

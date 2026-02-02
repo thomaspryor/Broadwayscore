@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls it an 'uneven production' and highlights significant problems (dim lighting, questionable design choices, stiff acting) while praising specific elements like the town meeting sequence and the political relevance. | GPT-4o: The review describes the production as 'uneven' and highlights both strengths and weaknesses. While it praises certain aspects like the environmental theater experience, it also criticizes design choices and acting. The verdict is mixed, with notable moments but overall inconsistency. | Gemini: The review highlights both strengths (Strong's performance, the town meeting scene) and weaknesses (design choices, stiff acting). The overall impression is that the production is uneven, preventing a clear recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls it an 'uneven production' and criticizes the first half for questionable design choices and stiff acting, while praising specific elements like the town meeting sequence and the performances of Strong and Imperioli. | GPT-4o: The review describes the production as uneven with some questionable choices, but also highlights moments where it works well, such as the town meeting sequence. The overall tone suggests a mixed experience with notable highs and lows. | Gemini: The review highlights both strengths (the town meeting sequence, parallels to modern issues) and weaknesses (questionable design choices, stiff acting). The overall assessment is that the production is 'uneven,' suggesting a mixed experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,12 +38,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:13:35.225Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:36:21.303Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "3.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,

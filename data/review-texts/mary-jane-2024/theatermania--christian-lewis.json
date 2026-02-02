@@ -14,64 +14,48 @@
     "score": 78,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 82
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Herzog has written a mournful lullaby, somehow simultaneously upsetting and soothing, thoughtful and gut-wrenching",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Part of the genius of Herzog's text and Kaufman's direction is that we experience time as Mary Jane does, warped and in waves",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "However, I can't help feeling that a different performer could have been stronger and rawer",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The review praises the writing as 'genius' and lauds the direction and supporting cast, with only one notable criticism of the lead performance, indicating a clear positive recommendation despite the challenging subject matter.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the writing, direction, supporting cast as 'exceptional,' and finds the work 'consoling' and meaningful, though notes McAdams could have been stronger in the lead role. | Gemini: The review is largely positive, praising the writing, direction, and supporting cast. While the reviewer has reservations about McAdams' performance, the overall assessment leans towards a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:32:55.243Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3690,
-    "outputTokens": 376,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:18:38.415Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "showScoreExcerpt": "\"It’s difficult to sit through, and yet, there is something consoling about it.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mary-jane-broadway",

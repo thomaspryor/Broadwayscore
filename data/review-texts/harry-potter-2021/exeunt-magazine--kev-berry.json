@@ -8,16 +8,16 @@
   "fullText": null,
   "showScoreExcerpt": "\"A theatrical achievement...The production design is impeccable.\"",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 74,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": null,
   "llmScore": {
-    "score": 85,
-    "confidence": "high",
+    "score": 74,
+    "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -25,21 +25,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 90
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "A theatrical achievement",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The production design is impeccable",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong positive language including 'theatrical achievement' and 'impeccable' suggests clear recommendation, but extremely limited excerpt makes confidence low. | GPT-4o-mini: The review expresses strong praise for the production design and overall achievement, indicating a solid recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Single curated excerpt with positive language about achievement and impeccable design suggests recommendation, but extremely limited text requires conservative scoring within positive range. | GPT-4o: The phrase 'a theatrical achievement' suggests a high level of praise, indicating a strong recommendation. The mention of 'impeccable' production design further supports this positive assessment. However, due to the single excerpt warning, the confidence is medium. | Gemini: The quote indicates a positive assessment of the production, but without more context, it's difficult to gauge the overall enthusiasm. I'm placing it in the positive bucket with a score in the middle range due to the limited excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,20 +37,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:24:38.710Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:00:30.079Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 85,
-    "scoreDelta": 0,
+    "claudeScore": 72,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

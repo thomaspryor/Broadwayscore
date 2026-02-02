@@ -8,73 +8,58 @@
   "fullText": "B- A well-timed tax refund gave me an excuse to indulge my inner child and spend a king’s ransom on a ticket for this award-winning two-part extravaganza from London. As an avid fan of the seven Potter novels and eight films, I was curious to see how well J.K. Rowling’s creations would translate to the stage. Clearly the producers expected a very long run or they would not have invested $60+ million on a stunning renovation of the Lyric Theatre. Because of all the hype, I was afraid that the play by Jack Thorne, based on a story by Rowling, Thorne and John Tiffany, could not live up to my high expectations. My fears were, to some extent, justified. The play, set 22 years after the end of the last novel, has a timeless theme — the fraught relationship between parent and child — particularly father/son. The plot device of time travel opens up the opportunity for several clever touches. There is a wonderful cast of 40, mostly imported from London, a striking set design by Christine Jones evocatively lit by Neil Austin, terrific movement direction by Steven Hoggett, excellent costumes by Katrina Lindsay and seamless direction by John Tiffany. The illusions and magic by Jamie Harrison are often breathtaking. We meet Albus Potter (Sam Clemmett), awkward younger son of Harry (Jamie Parker) and Ginny Potter (Poppy Miller), as he is about to begin his first year at Hogwarts School of Witchcraft and Wizardry. Ron Weasley (the droll Paul Thornley) and his wife Hermione Granger (the terrific Noma Dumezweni) are also seeing their daughter off to Hogwarts. On the train, Albus befriends the nerdy Scorpius Malfoy (the wonderful Anthony Boyle), son of Harry’s archrival at Hogwarts, Draco Malfoy (Alex Price). The relationship of the two outcast boys reaches bromance proportions. The problem for me was that I found the plot both convoluted and repetitious. It did not succeed in holding my interest for over five hours. Even though I consider myself fairly well-versed in the Potter canon, I occasionally became confused. At times, the British accents were surprisingly difficult to understand. Unless you are familiar with either the novels or the movies, you will be totally lost trying to figure out what is going on or why the audience is wildly applauding the appearance of a new character. While I am not sorry I saw the show, I would have enjoyed it more if there had been less of it. I suspect it is critic-proof and will run for several years. Running time: about 2 hours 40 minutes for each of the two parts, including an intermission.",
   "showScoreExcerpt": "\"There is a wonderful cast of 40, mostly imported from London, a striking set design by Christine Jones evocatively lit by Neil Austin, terrific movement direction by Steven Hoggett, excellent costumes by Katrina Lindsay and seamless direction by John Tiffany. The illusions and magic by Jamie Harrison are often breathtaking...The problem for me was that I found the plot both convoluted and repetitious. It did not succeed in holding my interested for over five hours.\"",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "show-score",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 80,
-      "direction": 85
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "While I am not sorry I saw the show, I would have enjoyed it more if there had been less of it",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "I found the plot both convoluted and repetitious. It did not succeed in holding my interest for over five hours",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "There is a wonderful cast of 40, mostly imported from London, a striking set design by Christine Jones evocatively lit by Neil Austin",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Despite praising the production values and performances, the critic found the plot convoluted and repetitious, didn't hold interest over five hours, and wished there was 'less of it' - signals qualified disappointment despite not regretting attendance.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges excellent production values and cast but finds the plot convoluted and repetitious, ultimately expressing qualified satisfaction rather than a clear recommendation. | GPT-4o: The review acknowledges the impressive production elements and cast but criticizes the plot as convoluted and repetitious, ultimately not holding the critic's interest. The critic is not entirely negative, expressing some enjoyment, but the overall tone is mixed. | Gemini: The reviewer acknowledges the show's flaws (convoluted plot, length, accents) but ultimately states they are not sorry they saw it, indicating a positive but not enthusiastic recommendation. The review highlights several positive aspects like the cast, set design, and illusions.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:07:17.620Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2938,
-    "outputTokens": 384,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:01:03.754Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 52,
-    "openaiScore": 60,
-    "scoreDelta": 8,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/gotham-playgoer--robert-sholiton_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:29:32.708Z",

@@ -9,16 +9,16 @@
   "bwwExcerpt": "Equally, you can enjoy this immersive, overwhelming experience, which has a love for live performance at its very core, without having seen a second of the TV show. Daldry, the consummate showman of British culture, has done it again.",
   "showScoreExcerpt": "“This astonishing show turns normal expectations of theatre upside down. Director Stephen Daldry has taken the Duffer Brothers’ Eighties-set Netflix sci-fi hit and magicked it into a spectacular, multimedia prequel, full of enough thrills, scares and knowing nods to please fans and the uninitiated in equal measure.”",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 90,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://www.standard.co.uk/culture/theatre/stranger-things-the-first-shadow-review-west-end-netflix-phoenix-theatre-b1127020.html",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 92,
-    "confidence": "high",
+    "score": 90,
+    "confidence": "medium",
     "range": {
-      "low": 88,
+      "low": 85,
       "high": 95
     },
     "bucket": "Rave",
@@ -27,26 +27,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 95
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This astonishing show turns normal expectations of theatre upside down",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "magicked it into a spectacular, multimedia prequel",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "full of enough thrills, scares and knowing nods to please fans and the uninitiated in equal measure",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong superlatives like 'astonishing,' 'spectacular,' and 'magicked' combined with praise for broad appeal and successful adaptation indicate unqualified enthusiasm.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being an excerpt, the language is unambiguously enthusiastic with 'astonishing,' 'magicked,' and 'spectacular,' indicating strong recommendation for both fans and newcomers. | GPT-4o: The review uses highly enthusiastic language, describing the show as 'astonishing' and 'spectacular', indicating a strong recommendation. The critic praises the direction and the show's ability to please both fans and newcomers, suggesting it is a must-see production. | Gemini: The review uses strong positive language like \"astonishing\" and \"spectacular\" and indicates that both fans and newcomers will enjoy the show, suggesting a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,27 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:13:52.493Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2376,
-    "outputTokens": 346,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:44:44.631Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
-    "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "openaiScore": 92,
+    "geminiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/stranger-things-2024/the-standard--nick-curtis_2026-01-27.html",
   "textFetchedAt": "2026-01-27T05:40:44.827Z",

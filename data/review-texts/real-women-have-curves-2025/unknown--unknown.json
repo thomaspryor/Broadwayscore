@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 40,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,59 +21,53 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 40,
-    "confidence": "low",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 25,
-      "high": 55
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "pulses with a distinctly chingona spirit",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "bold and defiantly optimistic",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "relentlessly biased",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The fragment shows mixed signals with praise for the show's spirit and boldness but criticism of being 'relentlessly biased,' and the incomplete nature makes scoring highly uncertain.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt uses positive language ('bold', 'defiantly optimistic', 'chingona spirit') but is incomplete and may not represent the full review sentiment. Scoring conservatively in lower positive range due to single excerpt warning. | GPT-4o: The excerpt highlights the show's bold and optimistic nature, suggesting a positive experience. However, the mention of 'relentlessly biased' introduces some reservation, indicating a positive recommendation with some caveats. | Gemini: The phrase \"bold and defiantly optimistic\" suggests a positive experience, but the \"despite relentlessly biased\" implies a reservation, placing it in the positive but not rave category. The single excerpt and lack of full context lead to a conservative score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:13:10.503Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2334,
-    "outputTokens": 289,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "showScoreExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated Show Score excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:23:59.437Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 40,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

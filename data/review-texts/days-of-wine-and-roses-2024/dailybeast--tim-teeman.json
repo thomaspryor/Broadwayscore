@@ -10,67 +10,58 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 53,
+  "assignedScore": 70,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 53,
-    "confidence": "medium",
+    "score": 70,
+    "confidence": "low",
     "range": {
-      "low": 40.5,
-      "high": 65.5
+      "low": 65,
+      "high": 75
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 73,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Broadway royalty-level, award-garlanded stars, Kelli O'Hara and Brian D'Arcy James",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "relentlessly degrading, depressing, downward spiral",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "the kind of sexy partnership who would ordinarily fizz and shine",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: The excerpt praises the star performers but emphasizes the depressing, degrading nature of their characters' journey, suggesting a challenging show that may be difficult to recommend despite strong casting. | GPT-4o-mini: The review highlights strong performances but indicates a negative tone regarding the material, leading to a mixed recommendation. | Note: Models differed by 15 points.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic acknowledges the stellar performances and commitment of O'Hara and D'Arcy James, but finds the show 'tough not just to watch, but also to gel with' and describes it as 'unbearable' rather than compelling, with structural flaws in character development. | Gemini: The review highlights the strong performances and the show's uncompromising nature, but also notes that it's a tough musical to watch and gel with, suggesting a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:12:15.466Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:49:38.117Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 53,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 60,
-    "scoreDelta": 15,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 53,

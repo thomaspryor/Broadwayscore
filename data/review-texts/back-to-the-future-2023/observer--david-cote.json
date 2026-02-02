@@ -8,66 +8,57 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "So, in summary: a gifted cast with thankless roles, a hokey book that takes no chances, and an abysmal score that drags everything down. All that’s left is spectacle. And let’s be honest; the car is the star. Designed by",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 25,
+    "score": 41,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 36,
+      "high": 46
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
-      "music": 13,
-      "performances": 58,
+      "music": null,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "abysmal score",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "thankless roles",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "gifted cast",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic uses extremely harsh language ('abysmal score') and suggests even talented actors are wasted in 'thankless roles,' indicating a clear pan despite acknowledging the cast's talent. | GPT-4o-mini: The review is overwhelmingly negative, highlighting poor music and unfulfilling roles for the cast, leading to a clear rejection of the show.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The excerpt clearly criticizes multiple core elements (cast roles, book, score) with strongly negative language like 'thankless,' 'hokey,' and 'abysmal.' However, given this is a single curated excerpt and the text cuts off mid-sentence, I'm scoring conservatively within the negative range. | Gemini: The review excerpt is overwhelmingly negative, citing issues with the roles, book, and score. The only positive mentioned is the spectacle, but it's framed as the only thing left due to the other failings.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T22:39:18.935Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:58.863Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
-    "openaiScore": 25,
-    "scoreDelta": 0,
-    "thumbsMatch": true,
-    "expectedThumb": "Down",
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 40,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "archivePath": "data/archives/reviews/back-to-the-future-2023/observer--david-cote_2026-01-26.html",
   "textFetchedAt": "2026-01-26T20:04:40.463Z",

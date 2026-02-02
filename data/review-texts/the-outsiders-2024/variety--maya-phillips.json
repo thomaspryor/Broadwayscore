@@ -8,7 +8,7 @@
   "fullText": "Tough guys with a soft side have long held a firm grip on the American imagination. S.E. Hinton's novel \"The Outsiders,\" about a cadre of down-and-out boys, has been read by millions of restless adolescents since it was published in 1967, when the author herself was a teenager. Francis Ford Coppola's 1983 film, stacked with before-they-were-A-list hunks including Rob Lowe and Matt Dillon, ushered in the Brat Pack era of moviemaking that paid serious attention to young people and their discontents.",
   "dtliExcerpt": "This adaptation of S.E. Hinton's beloved novel succeeds in translating the story's raw emotion and class tensions to the stage, with standout performances from the young ensemble cast.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "contentTier": "truncated",
   "wordCount": 28,
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,7 +33,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear positive language with 'succeeds' and praise for 'standout performances' indicates a solid recommendation without major reservations. | GPT-4o: The review highlights the success of the adaptation and the standout performances, indicating a strong recommendation to see the show. | Gemini: The review highlights the success of the adaptation and praises the performances, indicating a positive recommendation without being overly enthusiastic.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The aggregator excerpt clearly states the adaptation 'succeeds' and praises 'standout performances,' indicating a positive recommendation despite the main text being mostly contextual setup. | GPT-4o: The review highlights the successful adaptation of the novel's themes and praises the performances, indicating a positive recommendation. | Gemini: The review states that the adaptation \"succeeds\" and highlights \"standout performances,\" indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,20 +43,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T13:59:45.110Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:11:38.274Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -67,7 +68,6 @@
   "previousUrl": "https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-1235971234/",
   "urlDiscoveredAt": "2026-02-01T14:08:54.335Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "isFullReview": true,
@@ -88,5 +88,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250812144804",
-  "archiveOrgUrl": "http://web.archive.org/web/20250812144804/https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-1235966796/"
+  "archiveOrgUrl": "http://web.archive.org/web/20250812144804/https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-1235966796/",
+  "rescoreCompletedAt": "2026-02-02T00:11:38.274Z"
 }

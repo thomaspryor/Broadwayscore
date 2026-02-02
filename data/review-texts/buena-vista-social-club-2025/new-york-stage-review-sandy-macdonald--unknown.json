@@ -32,61 +32,55 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20231216213116",
   "archiveOrgUrl": "http://web.archive.org/web/20231216213116/https://nystagereview.com/2023/12/13/buena-vista-social-club-go-for-the-music-alone/",
-  "assignedScore": 58,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 58,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 62
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 35,
-      "music": 82,
-      "performances": 75,
-      "direction": 65
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "You'll be getting plenty more music but must wait out the production's scripted portions (book by Marco Ramirez), which don't begin to live up to the expertly rendered playlist",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "It has the basic makings, but the script needs a livelier, clearer through line",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "The saving grace is that, in both nightspots (chichi and proletarian), co-choreographers Patricia Delgado and Justin Peck whip a sextet of lithe dancers into a high-flying frenzy",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic praises the music and performances but finds the script weak and unfocused, suggesting potential but significant structural problems that prevent a clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating indicates a positive recommendation, and while the critic identifies significant script weaknesses, they praise the music, performances, and choreography extensively, suggesting the show's strengths outweigh its flaws. | GPT-4o: The review acknowledges the shortcomings in the script and plot but praises the music and choreography, suggesting that the production is worth seeing for these elements. The original rating of 4/5 stars also indicates a positive recommendation despite some reservations. | Gemini: The review praises the music and dance while criticizing the script. The critic's 4/5 star rating also indicates a positive overall assessment, despite the script's shortcomings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:41:26.169Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3434,
-    "outputTokens": 397,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:21.812Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "complete",
-  "contentTierReason": "Full review text"
+  "contentTierReason": "Full review text",
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

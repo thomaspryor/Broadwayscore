@@ -9,7 +9,7 @@
   "showScoreExcerpt": "“...I have to admit that the car alone might be worth a ticket. It fills a deep Broadway longing for large objects performing audience flyovers — and, like the dear departed arthritic chandelier, may be doing so for the foreseeable future.”",
   "bwwExcerpt": "mechanical, busy, distracting, foggy. Though large, it's less a full-scale new work than a semi-operable souvenir.",
   "originalScore": null,
-  "assignedScore": 47,
+  "assignedScore": 69,
   "source": "show-score",
   "textFetchedAt": "2026-01-25T13:51:31.899Z",
   "textFetchMethod": "archive.org",
@@ -18,62 +18,51 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 47,
-    "confidence": "high",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 40.5,
-      "high": 53.5
+      "low": 64,
+      "high": 74
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 40,
-      "music": 48,
-      "performances": 60,
-      "direction": 40
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Alas, that also describes the rest of the show, directed by John Rando with Doc-like frenzy: mechanical, busy, distracting, foggy",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Though large, it's less a full-scale new work than a semi-operable souvenir",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Still, in this first post-'Phantom of the Opera' season, I have to admit that the car alone might be worth a ticket",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: The critic finds the production mechanically proficient but fundamentally hollow, questioning the need for the adaptation while acknowledging some impressive stagecraft and performances. | GPT-4o-mini: The review expresses significant disappointment in the adaptation's execution and overall value, leading to a clear negative recommendation despite some redeeming elements.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: Green finds significant flaws in the adaptation - calling it 'mechanical, busy, distracting, foggy' and questioning why the musical exists at all - but concludes the spectacular staging effects, particularly the DeLorean, might justify a ticket. | Gemini: The review acknowledges significant flaws in the adaptation, particularly the shallowness and lack of depth added by the new songs. However, it ultimately suggests the spectacle and stagecraft, especially the DeLorean, make it worth seeing, pushing it into the 'Positive' bucket.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T23:32:30.775Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:30:44.466Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 47,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 45,
-    "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (47 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "bwwThumb": "Meh",
   "sources": [

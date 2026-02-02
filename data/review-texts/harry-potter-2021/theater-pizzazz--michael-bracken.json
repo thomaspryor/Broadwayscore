@@ -8,16 +8,16 @@
   "fullText": null,
   "showScoreExcerpt": "\"An incredible theatrical experience...The magic is real on stage.\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 89,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": null,
   "llmScore": {
-    "score": 92,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 83.5,
-      "high": 100
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,46 +27,38 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "incredible theatrical experience",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "The magic is real on stage",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "An incredible theatrical experience",
-        "sentiment": "positive",
-        "strength": 5
-      }
-    ],
-    "reasoning": "Claude: Strong superlatives like 'incredible' and 'magic is real' suggest high enthusiasm, but extremely brief excerpt limits confidence in full recommendation context. | GPT-4o-mini: The review expresses unqualified enthusiasm and strong emotional impact, indicating a must-see experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language 'incredible theatrical experience' and 'magic is real' strongly suggests enthusiastic recommendation, but limited to single excerpt so scored conservatively within rave range. | GPT-4o: The excerpt uses strong positive language ('incredible', 'magic is real'), suggesting a highly enthusiastic recommendation. However, due to the single excerpt warning, the confidence is medium, and the score is conservatively placed in the middle of the Rave range. | Gemini: The review excerpt uses strong positive language like \"incredible\" and \"magic,\" indicating a positive recommendation. However, due to the single excerpt and truncated text warning, a more conservative score is appropriate.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:28:17.692Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:05:03.828Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
-    "scoreDelta": 7,
+    "claudeScore": 87,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "excerpt",
   "wordCount": 0

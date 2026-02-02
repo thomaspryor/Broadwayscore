@@ -7,17 +7,17 @@
   "publishDate": "November 17, 2022",
   "fullText": "★★★★☆ This Broadway musical featuring dozens of pop hits from the catalogue of songwriter/producer Max Martin imagines what might have happened if Juliet didn't die. If you’re anything like me, you probably haven’t spent a lot of time wondering why Juliet had to die at the conclusion of Shakespeare’s classic Romeo & Juliet. But the creators of the new Broadway musical & Juliet apparently have, resulting in the latest of what seems like an endless torrent of jukebox musicals. Fortunately, this effort featuring dozens of earworm-heavy smash hits by pop composer/producer Max Martin (a name you may not know, but you’ll have no trouble recognizing his songs) and his various collaborators provides the sort of infectious silliness that makes for a very enjoyable evening, provided that you leave your brains at the door. Of course, just because a show is frivolous doesn’t mean that it can’t hit you over the head with a message. In this case it’s female empowerment, especially for the teenage Juliet (a powerhouse Lorna Courtney) and Anne Hathaway (Betsy Wolfe charming and funny), Shakespeare’s beleaguered wife who makes it clear at the beginning that she doesn’t care for the ending of her smug husband’s (Stark Sands) new play (nor, for that matter, his eventual bequeathing to her of his “second-best bed”). So she suggests in no uncertain terms that he change it. The show’s meta-theatrical conceit imagines that Juliet didn’t kill herself upon finding Romeo dead, but rather lived on to explore new horizons by taking a road trip to Paris, accompanied by her non-binary friend May (Justin David Sullivan). There, she meets and begins a relationship with Francoise (Philippe Arroyo), a young man whose father Lance (Paulo Szot) has ordered him to either get married or enter the military. Although not excited about either option, Francois proposes to Juliet, still on the rebound from her star-crossed relationship with Romeo (Ben Jackson Walker), who (spoiler alert only for those who don’t read the Playbill), turns out to be not so dead after all. [Read Melissa Rose Bernardo’s ★★★★☆ review here.] As with Shakespeare’s original, the musical abounds with subplots, in this case involving the burgeoning romance between Lance and Juliet’s wisecracking nurse Angelique (a hilarious Melanie Le Barrie); and the sexually confused Francoise finding himself drawn to May. Book writer David West Read (Schitt’s Creek) somehow manages the difficult feat of weaving the goofiest of pop songs into the Elizabethan proceedings with almost sublime ingenuity. You’ll find yourself giggling as the middle-aged Lance and Angelique burst into a post-coital rendition of Katy Perry’s “Teenage Dream” and Shakespeare and Anne express their sharp differences of opinion with Backstreet Boys’ “I Want It That Way.” And when the vainglorious Romeo makes his reappearance, how else should he proclaim his revival from the dead but with Bon Jovi’s “It’s My Life?” Director Luke Sheppard provides the sort of high-octane, pop concert-style staging that gives the not dissimilar Six a run for its money (although that show is smart enough to last a tight 80 minutes, compared to this one’s overlong two-and-a-half hours), complete with flashy lighting and video effects, a turntable and rising platform. Jennifer Weber’s energetic choreography would prove perfectly suitable for the latest girl group or boy band at Madison Square Garden. The show’s terrific music numbers, fueled by high-powered vocals, give it a propulsive energy that’s impossible to resist. Or, as the ensemble puts it in the climactic Justin Timberlake song, “Can’t Stop the Feeling!” & Juliet opened November 17, 2022, at the Stephen Sondheim Theatre. Tickets and information: andjulietbroadway.com Frank Scheck has been covering film, theater and music for more than 30 years. He is currently a New York correspondent and arts writer for The Hollywood Reporter. He was previously the editor of Stages Magazine, the chief theater critic for the Christian Science Monitor, and a theater critic and culture writer for the New York Post. His writing has appeared in such publications as the New York Daily News, Playbill, Backstage, and various national and international newspapers.",
   "originalScore": "4/5 stars",
-  "assignedScore": 79,
+  "assignedScore": 81,
   "source": "scraped",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-23T21:55:47.796Z",
   "bwwExcerpt": "If you're anything like me, you probably haven't spent a lot of time wondering why Juliet had to die at the conclusion of Shakespeare's classic Romeo & Juliet. But the creators of the new Broadway musical & Juliet apparently have, resulting in the latest of what seems like an endless torrent of jukebox musicals.",
   "llmScore": {
-    "score": 79,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating and language like 'very enjoyable evening,' 'impossible to resist,' and 'terrific music numbers' clearly indicate a positive recommendation, though the critic notes the show is overlong and requires leaving 'brains at the door.' | Gemini: The critic gives the show 4/5 stars and calls it \"very enjoyable\". While noting its silliness, they praise the music, performances, and staging, indicating a positive overall experience.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and language like 'very enjoyable evening' and 'propulsive energy that's impossible to resist' clearly indicate a positive recommendation, despite noting the show requires leaving your brains at the door and runs overlong. | GPT-4o: The review is very positive, highlighting the show's infectious energy, clever integration of pop songs, and strong performances. The critic's 4/5 star rating aligns with a strong positive recommendation. | Gemini: The review is overwhelmingly positive, highlighting the enjoyable and infectious nature of the musical, despite its silliness. The 4/5 star rating reinforces this positive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,26 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:16:39.968Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:58:42.231Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
+    "claudeScore": 80,
+    "openaiScore": 82,
     "geminiScore": 80,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textFetchedAt": "2026-01-25T13:49:32.860Z",
   "textFetchMethod": "playwright",

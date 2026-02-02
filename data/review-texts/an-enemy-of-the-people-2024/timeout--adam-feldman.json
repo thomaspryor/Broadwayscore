@@ -27,7 +27,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating strongly indicates a positive recommendation, and 'pointedly modern' suggests relevance and effectiveness, though limited excerpt text prevents higher confidence. | GPT-4o: The original rating of 4/5 from the critic suggests a positive review, and the excerpt indicates a modern and potentially engaging interpretation. The aggregator context also supports a positive verdict. | Gemini: The 4/5 rating and 'feels pointedly modern' suggest a positive review, even with limited text. The aggregator context also indicates a positive reception.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 rating and 'Up' aggregator verdict strongly indicate a positive recommendation. The quote suggests the production successfully achieves contemporary relevance, which is typically praise for a revival. | GPT-4o: The original rating of 4/5 suggests a positive review, and the quote indicates a modern and likely engaging production. The aggregator verdict 'Up' supports a positive classification. | Gemini: The critic gave the play 4/5 stars, which indicates a positive review. The quote suggests the play is well-executed and relevant.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,12 +37,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:14:44.258Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:39:17.678Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 80,

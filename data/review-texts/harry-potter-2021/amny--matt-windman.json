@@ -8,18 +8,18 @@
   "fullText": null,
   "bwwExcerpt": "Aside from being able to easily grasp the numerous references in the dialogue, a theatergoer with no prior \"wizarding\" experience should still be able to have a great time - and may even find the show more enthralling than would a longtime fan who already knows the \"Harry Potter\" universe inside and out.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "sourceMethod": "bww-roundup",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 83.5
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,24 +29,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "should still be able to have a great time",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "may even find the show more enthralling than would a longtime fan",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "a theatergoer with no prior 'wizarding' experience should still be able to have a great time",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: The critic clearly recommends the show for general audiences, suggesting they will 'have a great time' and find it 'enthralling,' indicating solid positive reception. | GPT-4o-mini: The review suggests that the show is enjoyable for both newcomers and fans, indicating a solid recommendation despite not providing extensive details.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic indicates audiences will 'have a great time' and find it 'enthralling,' but with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review suggests that the show is enjoyable even for those unfamiliar with the 'Harry Potter' universe, indicating a positive recommendation. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The review suggests that even those unfamiliar with Harry Potter can enjoy the show, indicating a positive experience, but the single excerpt and smaller outlet size suggest a more conservative score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,20 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:23:11.016Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:58:36.923Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

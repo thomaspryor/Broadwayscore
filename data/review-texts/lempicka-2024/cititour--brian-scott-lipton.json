@@ -9,42 +9,26 @@
   "bwwExcerpt": "Yet, under Rachel Chavkin’s surprisingly frazzled direction, the show, now at the Longacre Theatre, often feels like you’re watching someone put together a misguided collage – one that often incorporates elements of other stronger musicals, most notably “Cabaret” -- as it struggles to decide what story it wants to tell us and what message we’re supposed to take ith us as we leave the theatre. Women can do anything? Women never get the same credit as men? Women are brilliant? Art isn’t easy? You",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 38,
-    "confidence": "medium",
+    "score": 44,
+    "confidence": "high",
     "range": {
-      "low": 32,
-      "high": 45
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
       "performances": null,
-      "direction": 30
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "surprisingly frazzled direction",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "feels like you're watching someone put together a misguided collage",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "struggles to decide what story it wants to tell us",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review criticizes fundamental structural problems with the direction and storytelling, describing the production as 'misguided' and 'frazzled' with no clear message or coherent narrative.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic describes frazzled direction and a show that struggles with identity, using clearly negative language like 'misguided.' However, with only one excerpt available, scoring conservatively within the negative range. | Gemini: The review uses negative language like \"frazzled direction\" and \"misguided collage\" to describe the production, indicating a negative assessment. The critic questions the show's message and overall direction, suggesting it's not a worthwhile experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +37,27 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:24:58.782Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2417,
-    "outputTokens": 329,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:58.121Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 35,
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Negative"
   },
   "bwwThumb": "Down",
   "rescoreReason": "scored on brief excerpt, now has fullText",

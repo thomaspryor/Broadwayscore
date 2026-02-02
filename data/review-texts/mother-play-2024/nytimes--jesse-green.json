@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes 'Mother Play' so affecting is not its originality but its specificity — the way Dietz has shaped his family's story into something that feels both deeply personal and surprisingly universal.",
   "originalScore": null,
-  "assignedScore": 70,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,59 +18,53 @@
   "showScoreExcerpt": "What makes 'Mother Play' so affecting is not its originality but its specificity — the way Dietz has shaped his family's story into something that feels both deeply personal and surprisingly universal.",
   "needsScoring": true,
   "llmScore": {
-    "score": 70,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 60,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "What makes 'Mother Play' so affecting",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "not its originality but its specificity",
-        "sentiment": "neutral",
-        "strength": 3
-      },
-      {
-        "quote": "feels both deeply personal and surprisingly universal",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic finds the play 'affecting' and praises its emotional resonance and universality, but notes lack of originality and provides only a brief excerpt without clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses positive language like 'affecting' and 'surprisingly universal' suggesting recommendation, though the brief excerpt limits confidence in the full assessment. | GPT-4o: The review highlights the play's ability to resonate on a personal and universal level, indicating a positive recommendation. | Gemini: The review highlights the affecting nature of the play, suggesting a positive experience, but the focus on specificity over originality implies a reservation. The overall tone is appreciative, leading to a positive but not rave classification.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:06:44.778Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2342,
-    "outputTokens": 318,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:54:20.727Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 70,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

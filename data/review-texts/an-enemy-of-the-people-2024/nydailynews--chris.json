@@ -8,16 +8,16 @@
   "fullText": null,
   "dtliExcerpt": "And Strong grabs that sudden intimate connection like a man holding on to bucking steer, falling ever deeper into his character’s abyss. It is a sight to see. Strong is one of the great American actors of his generation. And Imperioli is no slouch either. He’s as live and present as anyone could ask.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/an-enemy-of-the-people/",
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the lead performances with strong language like 'great American actors of his generation' and 'sight to see', indicating a positive recommendation based on the acting, though the excerpted nature limits full context. | GPT-4o: The review uses highly positive language to describe the performances, particularly praising Strong as one of the great actors of his generation, which suggests a strong recommendation. | Gemini: The review excerpt praises the performances of the actors, particularly Jeremy Strong, suggesting a positive experience overall. The phrase \"It is a sight to see\" implies a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows strong praise for the lead performances, calling Strong 'one of the great American actors' and praising Imperioli as 'live and present.' However, with only one excerpt available, I score conservatively within the positive range. | GPT-4o: The review highlights strong performances by the actors, particularly praising Strong's portrayal. The language suggests a positive impression, though the single excerpt limits the ability to fully gauge the overall verdict. | Gemini: The review excerpt praises the performances of the actors, particularly Jeremy Strong, indicating a positive experience, but the limited text and single excerpt warrant a score in the middle of the 'Positive' range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +38,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:14:05.696Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:37:32.581Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 88,
+    "claudeScore": 76,
+    "openaiScore": 76,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

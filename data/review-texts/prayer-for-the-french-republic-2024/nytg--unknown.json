@@ -31,62 +31,56 @@
   ],
   "textStatus": "partial",
   "sourceMethod": "playwright",
-  "assignedScore": 92,
+  "assignedScore": 93,
   "llmScore": {
-    "score": 92,
+    "score": 93,
     "confidence": "high",
     "range": {
       "low": 88,
-      "high": 95
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
     "components": {
-      "book": 95,
+      "book": null,
       "music": null,
-      "performances": 88,
-      "direction": 90
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Read our five-star review of Prayer for the French Republic on Broadway",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "He digs deeper than ever in Prayer for the French Republic and strikes pure gold",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Directed with airtight elegance for Manhattan Theatre Club by David Cromer",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This is explicitly labeled a five-star review with superlative praise like 'strikes pure gold' and 'airtight elegance', indicating unqualified enthusiasm.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: This is clearly a five-star rave review that calls the work 'pure gold' and praises every aspect from direction to performances to writing, with superlatives throughout like 'airtight elegance' and 'invaluable' performances. | GPT-4o: The review is overwhelmingly positive, highlighting the play's depth, impressive structure, and compelling storytelling. The use of 'five-star review' and 'strikes pure gold' strongly indicates a rave recommendation. | Gemini: The review is overwhelmingly positive, praising the play's depth, structure, and performances. The phrase \"strikes pure gold\" indicates a very high level of recommendation.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:43:45.537Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3029,
-    "outputTokens": 349,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:34:27.786Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.0.0"
   },
   "playbillVerdictUrl": "https://www.newyorktheatreguide.com/reviews/prayer-for-the-french-republic-broadway-review",
   "contentTier": "complete",
-  "contentTierReason": "Full review text"
+  "contentTierReason": "Full review text",
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

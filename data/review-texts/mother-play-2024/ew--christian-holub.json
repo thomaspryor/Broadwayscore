@@ -9,64 +9,56 @@
   "bwwExcerpt": "In addition to her years of teaching playwriting at Brown and Yale, Vogel is best-known for her Pulitzer-winning 1997 play How I Learned to Drive, which finally made it to Broadway in 2022 and remains unquestionably one of the very best works of recent American theater. That’s a hard standard to match, especially since the various twists and turns are almost impossible to predict when watching How I Learned to Drive for the first time. By contrast, Mother Play probably isn’t the first story you’",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 68,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 55,
+      "book": null,
       "music": null,
-      "performances": 78,
-      "direction": 72
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "excels in some aspects, but feels incomplete in other regards",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "Parsons is the standout here... his performance is so funny, charming, and moving",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "probably isn't the first story you've ever seen about American parents failing to understand their children during the '60s and '70s",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The B- grade and mixed language indicates a qualified recommendation with notable strengths (Parsons' performance) but significant weaknesses (predictable story, pacing issues).",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review gives a B- grade and concludes positively despite noting predictability and some pacing issues. The critic praises Parsons' standout performance and acknowledges the play hits its emotional targets. | Gemini: The review highlights both strengths (performances, emotional resonance) and weaknesses (predictability, pacing). The truncated text makes it hard to be certain, but the overall tone suggests a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:39:18.002Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3404,
-    "outputTokens": 360,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:53:02.756Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.0.0"
   },
-  "ensembleData": null,
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  },
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"...Vogel’s latest hits the emotional beats...reminder to call your mom now and then.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/mother-play-broadway",

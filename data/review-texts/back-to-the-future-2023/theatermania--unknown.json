@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 76,
+  "assignedScore": 75,
   "llmScore": {
-    "score": 76,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises specific production elements (illusions, sensory experience) with positive language like 'perfectly' and 'eye-popping', but confidence is low due to very limited text that may not reflect the full verdict. | GPT-4o: The review highlights the impressive sensory experience and illusions, suggesting a positive impression. However, the lack of a full review and specific recommendation language limits confidence. | Gemini: The review excerpt highlights positive aspects of the production, specifically the sensory experience and illusions. While limited, the tone suggests a positive, albeit potentially qualified, recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'perfectly disorienting' and 'eye-popping illusions' suggests positive assessment of the production's visual elements, but with only one curated excerpt available, the overall verdict remains unclear. | GPT-4o: The excerpt highlights the impressive visual aspects of the production, suggesting a positive experience. However, without more context, it's unclear if there are significant reservations, leading to a conservative score within the Positive range. | Gemini: The review excerpt highlights a positive aspect of the show (the illusions and sensory experience), suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt and lack of overall context, a score in the middle of the 'Positive' range is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,19 +36,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:44:16.998Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:31:32.629Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
+    "claudeScore": 72,
+    "openaiScore": 77,
     "geminiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

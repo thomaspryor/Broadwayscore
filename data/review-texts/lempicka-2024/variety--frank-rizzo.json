@@ -9,66 +9,56 @@
   "bwwExcerpt": "Certainly Eden Espinosa, starring in the title role, brings both luminosity and strength to her powerful performance as the ambitious, visionary and resilient artist known for capturing the women of her day in an aspirational light: perfectly poised, coiffed and seemingly glowing from within. But the musical’s titular character is not so polished. Rather she’s a complicated woman — to a fault. This might not be as much of a concern in a thick biography, but it’s harder to convey successfully in",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 55,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 45,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "long-in-development but still uneven musical",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "finally made it to Broadway",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The critic describes the musical as 'still uneven' despite years of development, suggesting ongoing fundamental problems that haven't been resolved.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review calls the musical 'uneven' and notes the character 'remains just beyond the frame,' while praising Espinosa's 'powerful performance.' The truncated text prevents seeing the full verdict, but the tone suggests mixed feelings about an imperfect but not unsuccessful show. | GPT-4o: The review acknowledges the unevenness of the musical but highlights Eden Espinosa's strong performance. The tone suggests a mix of strengths and weaknesses, leading to a mixed recommendation. | Gemini: The review highlights the unevenness of the musical despite a powerful performance by Eden Espinosa. The reviewer notes the complexity of the character, which is harder to convey successfully in a musical format.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:26:37.387Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2483,
-    "outputTokens": 272,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:00.436Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 55,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 55,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "showScoreExcerpt": "\"Eden Espinosa...brings both luminosity and strength to her powerful performance\"",

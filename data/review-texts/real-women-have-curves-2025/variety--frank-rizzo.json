@@ -7,7 +7,7 @@
   "publishDate": "April 27, 2025",
   "fullText": "The Latina seamstresses at a dressmaking workshop in East L.A. express their credo at the top of the new musical \"Real Women Have Curves.\" With the pulsating song \"Make It Work\" these women sing about how — despite their burdens and obstacles — this community of hardworking immigrant women manage to create a vibrant life.\n\nThe same can be said for the artistic team behind this appealing, tuneful and politically potent show based on Josefina López's 1990 play and the 2002 film which she co-wrote with George LaVoo, and which starred America Ferrera.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "dtliThumb": "Up",
   "source": "dtli",
   "bwwExcerpt": "Though sure to please many audiences, the show’s ending also feels unearned and underwritten. Perhaps if only Carmen could fully realize that Ana’s future writing will create something special that honors not only her but all the women like Carmen who, with fortitude, resilience and passion, will always be there making it work.",
@@ -16,8 +16,8 @@
   "showScoreExcerpt": "\"It’s a joyous scene of empowerment, with the women taking prideful ownership of their bodies, their lives and the stage.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/real-women-have-curves-the-musical-broadway",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
       "low": 72,
       "high": 82
@@ -26,28 +26,12 @@
     "thumb": "Up",
     "components": {
       "book": null,
-      "music": 80,
+      "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "appealing, tuneful and politically potent show",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "pulsating song \"Make It Work\"",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "manage to create a vibrant life",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic uses consistently positive language describing the show as 'appealing, tuneful and politically potent' with praise for the music and themes, indicating clear recommendation despite being an excerpt.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls the show 'appealing, tuneful and politically potent' and describes it as 'sure to please many audiences,' but notes the ending 'feels unearned and underwritten,' indicating a positive recommendation with reservations. | GPT-4o: The review highlights the show's appeal, tunefulness, and political potency, indicating a positive reception. However, it notes that the ending feels unearned and underwritten, suggesting some reservations. | Gemini: The review is generally positive, highlighting the show's strengths and appeal, but notes a weakness in the ending, indicating a recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,29 +40,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:03:50.075Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2444,
-    "outputTokens": 321,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:24:07.163Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (74 → Up) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "dtliExcerpt": "But politics comes most alive through the personal, and the heart of the musical lies in its characters’ dreams: those that conflict with others, those that are deferred and, most poignantly, those that are never realized. The show astutely depicts the mixed emotions of grappling with obligations and expectations of one’s self, family and culture.",
   "sources": [

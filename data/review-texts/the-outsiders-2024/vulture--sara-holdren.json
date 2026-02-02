@@ -9,72 +9,56 @@
   "dtliExcerpt": "Chance, Clay, and Levine can, and if The Outsiders sometimes traffics, perhaps unavoidably, in cliché, it makes up for it with the tenderness and muscle of not just its songs but its staging and performances.",
   "showScoreExcerpt": "\"The Outsiders is taking a real swing\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
-      "music": 80,
-      "performances": 85,
-      "direction": 88
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The Outsiders is taking a real swing at being the strongest entry in this season's wave of singer-songwriter outings on Broadway",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "if The Outsiders sometimes traffics, perhaps unavoidably, in cliché, it makes up for it with the tenderness and muscle of not just its songs but its staging and performances",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Taymor creates a spectacular ballet of violence",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This is a positive review that praises the performances, direction, choreography, and production values while acknowledging some clichés in the material - the critic positions it as a strong entry in the season and consistently highlights excellent technical and performance elements.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the performances, choreography, and staging extensively while acknowledging some flaws like clichés. The overall tone is appreciative and recommending, highlighting strong elements that outweigh the weaknesses. | Gemini: The review is largely positive, highlighting the strong performances, staging, and music. While it acknowledges some clichés, it ultimately recommends the show as a strong entry in the current Broadway season.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:23:57.351Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4780,
-    "outputTokens": 386,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:12:09.936Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 75,
-    "scoreDelta": 3,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/the-outsiders-2024/vulture--sara-holdren_2026-01-26.html",

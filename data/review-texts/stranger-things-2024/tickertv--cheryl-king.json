@@ -8,17 +8,17 @@
   "fullText": null,
   "bwwExcerpt": "With its impressive execution and grand theatrical moments, “Stranger Things: The First Shadow” has all the makings of a major hit. Daldry’s skillful direction and the dedication of the entire production team have created a truly immersive experience for audiences. So, if you’re a fan of Stranger Things and crave a theatrical adventure that will leave you on the edge of your seat, this is the show for you. Average Rating: 78.3% { \"@context\":\"https://schema.",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "bwwThumb": "Up",
   "bwwUrl": "https://ticker.tv/news/stranger-things-the-first-shadow-review-west-end-play-brings-netflix-series-thrillingly-to-life/335089/#gsc.tab=0",
   "sourceMethod": "bww-roundup",
   "llmScore": {
-    "score": 84,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 77.5,
-      "high": 90.5
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,48 +26,39 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "has all the makings of a major hit",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "truly immersive experience for audiences",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this is the show for you",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Strong positive language with explicit recommendation to fans, praising direction and production values, though lacks deeper critical analysis or superlatives. | GPT-4o-mini: The review expresses strong enthusiasm for the production's direction and immersive experience, indicating a clear recommendation for fans of the source material.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The excerpt shows clear recommendation language with praise for execution, direction, and immersive experience, though the single excerpt warning and truncated text suggest conservative scoring within the positive range. | Gemini: The review explicitly recommends the show for fans of Stranger Things, highlighting the immersive experience and skillful direction. The phrase \"has all the makings of a major hit\" also indicates a positive assessment.",
     "flags": {
-      "hasExplicitRecommendation": true,
+      "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:51:43.300Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:45:38.535Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 84,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 85,
-    "scoreDelta": 3,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway",
   "dateUnknown": true,

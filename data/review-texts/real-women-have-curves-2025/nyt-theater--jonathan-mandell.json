@@ -10,73 +10,55 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 72,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 65,
-      "music": 75,
-      "performances": 80,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "If it has a predictable plot, it's all these women together, and the proud characters they portray in the show, that make it work",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "twenty tuneful and rhythmic musical numbers in the show",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Tatianna Córdoba is a worthy successor in the role, making an impressive Broadway debut",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The reviewer acknowledges the show's predictable plot but emphasizes that the strong ensemble of women and their performances make it work, with praise for the music and newcomer performances, indicating a qualified but clear recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite being truncated, the review consistently highlights positive elements - the show has 'heart,' the characters 'make it work,' performances are praised as 'impressive' and 'worthy,' and design elements 'stand out.' The BWW excerpt confirms an 'Up' verdict, supporting a positive recommendation. | Gemini: The review highlights the heart and the performances of the cast, suggesting a positive experience despite a predictable plot. The aggregator excerpt also indicates a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:03:05.107Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 5831,
-    "outputTokens": 365,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:22:05.040Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 70,
-    "scoreDelta": 8,
-    "thumbsMatch": false,
-    "expectedThumb": "Up",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (66 → Flat) conflicts with aggregator thumbs (Up)"
-    ]
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 66,

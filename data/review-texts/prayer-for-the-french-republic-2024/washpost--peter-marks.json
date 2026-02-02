@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Joshua Harmon's sweeping family drama about French Jews grappling with rising antisemitism is both timely and deeply moving, anchored by powerhouse performances from Nancy Robinette and Richard Masur.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,7 @@
   "showScoreExcerpt": "Joshua Harmon's sweeping family drama about French Jews grappling with rising antisemitism is both timely and deeply moving, anchored by powerhouse performances from Nancy Robinette and Richard Masur.",
   "needsScoring": true,
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "medium",
     "range": {
       "low": 72,
@@ -27,29 +27,13 @@
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 75,
+      "book": null,
       "music": null,
-      "performances": 85,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "both timely and deeply moving",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "anchored by powerhouse performances",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "sweeping family drama",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Strong positive language about both the material and performances with no negative caveats suggests clear recommendation, though the brief excerpt limits confidence.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses clearly positive language like 'deeply moving' and 'powerhouse performances' to recommend the show, though it's a brief excerpt that suggests strong approval without being effusive. | GPT-4o: The review describes the show as 'timely and deeply moving' with 'powerhouse performances', indicating a strong recommendation and high praise. | Gemini: The review uses positive language like \"deeply moving\" and \"powerhouse performances,\" indicating a positive recommendation, though not an enthusiastic one.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,19 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:12:21.749Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2347,
-    "outputTokens": 299,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:36:10.130Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

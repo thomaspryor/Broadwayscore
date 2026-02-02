@@ -9,71 +9,56 @@
   "showScoreExcerpt": "“The production’s overdesign is a symptom of the broader problem, which is a lack of ingenuity in favor of sheer excess. It is a paradox of throwing money onstage that it can easily come at the expense of creativity. There may be a way to reanimate ‘Spamalot,’ and for Monty Python’s random surrealism to infect a new generation and confront the current moment. But that grail is not to be found here.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/spamalot-broadway",
   "originalScore": null,
-  "assignedScore": 38,
+  "assignedScore": 42,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 38,
+    "score": 42,
     "confidence": "high",
     "range": {
-      "low": 32,
-      "high": 45
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "struggles to find anything fresh about material covered in a half-century of dust",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "it's a shame that the first Broadway revival",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "some tenants of comedy never die. But they do lose their vigor",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic finds the revival disappointingly stale and lacking freshness, with multiple phrases indicating the material has lost its comedic vigor despite acknowledging the original Python legacy.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic clearly does not recommend this revival, citing lack of freshness, overdesign, and absence of creativity. The final line 'But that grail is not to be found here' definitively signals disappointment. | GPT-4o: The review criticizes the production for lacking freshness and creativity, describing it as overdesigned and excessive. The key quote suggests that the revival fails to achieve its potential, leading to a negative recommendation. | Gemini: The review expresses disappointment that the revival lacks freshness and ingenuity, indicating a negative assessment of the production. The critic explicitly states that the 'grail is not to be found here.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:09:56.474Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2479,
-    "outputTokens": 337,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:48:37.376Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 38,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 35,
-    "openaiScore": 25,
-    "scoreDelta": 10,
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 30,

@@ -16,57 +16,48 @@
     "score": 79,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 69,
-      "music": 85,
-      "performances": 91,
-      "direction": 78
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Kelli O'Hara and Brian d'Arcy James give astonishing voice to two lovers drowning in alcoholism",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "the one-act musical becomes a cathartic, deeply felt tonic",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The predeterminism is a bit dreary, but Lucas' book ably creates moments of tenderness",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Despite acknowledging the bleak subject matter and some structural issues, the critic consistently praises the exceptional performances, gorgeous score, and overall emotional impact, positioning it as a worthwhile theatrical experience. | GPT-4o-mini: The review expresses strong praise for the performances and music while acknowledging some weaknesses in the book, leading to a solid positive recommendation overall.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite acknowledging the corrosively downbeat subject matter and some structural issues, the critic praises the leads as 'astonishing' and calls the show 'cathartic' and 'deeply felt,' indicating a clear recommendation. | Gemini: The review is largely positive, highlighting the performances of the leads and the score, while acknowledging some issues with the story's predeterminism. The overall tone suggests a recommendation, albeit with reservations.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:46:04.943Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:46.736Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 2,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Transferring to Broadway after a well-received premiere at the Atlantic last summer, Kelli O’Hara and Brian d’Arcy James give astonishing voice to two lovers drowning in alcoholism. The subject matter is almost corrosively downbeat but, with its two leads at the top of their game, the one-act musical becomes a cathartic, deeply felt tonic.",

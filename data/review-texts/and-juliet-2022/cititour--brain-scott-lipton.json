@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is clearly positive throughout, praising the lead performance as 'spectacular,' calling the musical 'thoroughly enchanting,' and highlighting multiple elements from cast to creative team. The critic expresses genuine enthusiasm and recommends the show strongly. | GPT-4o: The review is overwhelmingly positive, praising the performances, direction, and writing, and describing the show as enchanting and capable of captivating audiences. The critic's enthusiasm and the strong recommendation to see the show align with a 'Rave' classification. | Gemini: The review is overwhelmingly positive, highlighting the enchanting nature of the musical and the spectacular performance of the lead actress. The concluding sentence explicitly states that the audience will feel good, indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is consistently positive throughout, praising performances, direction, and book with phrases like 'thoroughly enchanting,' 'spectacular,' and 'remarkable.' The critic clearly recommends the show and predicts audiences will feel good by the end. | GPT-4o: The review is overwhelmingly positive, praising the performances, direction, and writing, and describes the show as 'thoroughly enchanting' with audiences 'happily on their feet.' The critic's enthusiasm and specific praise for various elements of the production indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the enchanting nature of the musical and the strong performances. The critic explicitly states that audiences will be happily on their feet, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,21 +41,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:15:48.653Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:57:49.803Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 92,
+    "claudeScore": 81,
+    "openaiScore": 90,
     "geminiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "llo Tracey , Trevor Wayne . In Tulsa, Oklahoma, 1967, Ponyboy Curtis, his best friend Johnny Cade and their Greaser family of \"outsiders\" battle with their affluent rivals, the Socs. This thrilling new Broadway musical navigates the complexities of self-discovery as the Greasers dream about who they want to become in a world that may never accept them. With a dynamic original score, The Outsiders is a story of friendship, family, belonging... and the realization that there is still \"lots of good in the world.\" The Outsiders features Scenography by AMP featuring Tatiana Kahvegian , Costume Design by Sarafina Bush , Lighting Design by Brian MacDevitt , Sound Design by Cody Spencer , Projection Design by Hana S. Kim , Special Effects Design by Jeremy Chernick & Lillis Meeh , Hair & Wig Design by Alberto \"Albee\" Alvarado, Makeup Design by Tishonna Ferguson, Sound Effects Specialist Taylor Bense, Creative Consultant Jack Viertel . Music Direction & Additi",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
@@ -16,11 +16,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 80,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,24 +30,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "This thrilling new Broadway musical navigates the complexities of self-discovery",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The Outsiders is a story of friendship, family, belonging...",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "there is still 'lots of good in the world.'",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "GPT-4o-mini: The review expresses enthusiasm for the musical's themes and original score, indicating a strong recommendation despite lacking specific critiques.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The available text appears to be mostly promotional copy and credits rather than actual critical evaluation. With only one excerpt available and no clear evaluative language from the critic, scoring must be conservative. | GPT-4o: The excerpt describes the musical as 'thrilling' and highlights its dynamic score and themes of friendship and belonging, suggesting a positive reception. However, due to the single excerpt warning, the score is placed conservatively in the middle of the Positive range. | Gemini: The excerpt describes the musical as \"thrilling\" and highlights its exploration of self-discovery, suggesting a positive overall impression. However, due to the limited text and single excerpt warning, the score is placed conservatively within the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,20 +40,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:57:26.126Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:08:34.001Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 80,
-    "scoreDelta": 0,
+    "claudeScore": 60,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

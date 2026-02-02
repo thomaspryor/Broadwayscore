@@ -7,7 +7,7 @@
   "publishDate": "March 19, 2025",
   "dtliExcerpt": "The question of the night is the choice between selling out their souls to the vapid American tourists at the Tropicana nightclub (bad) or singing for their own people on the wrong side of the tracks (good). They try to make both work even as this relentlessly preachy show wants them to learn to pay more attention to their backup singers.",
   "originalScore": null,
-  "assignedScore": 35,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "textFetchedAt": "2026-01-30T20:01:11.578Z",
@@ -15,38 +15,22 @@
   "archivePath": "data/archives/reviews/buena-vista-social-club-2025/nydailynews--chris-jones_2026-01-30.html",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 35,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 30,
-      "high": 40
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "relentlessly preachy show",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "vapid American tourists",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "They try to make both work",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The critic describes the show as 'relentlessly preachy' and criticizes its heavy-handed moralizing, indicating significant problems with the material despite acknowledging the characters' efforts.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic describes the show as 'relentlessly preachy' which is clearly negative language, and the aggregator context confirms a 'Flat' verdict. However, with only one excerpt available, I'm scoring conservatively within the negative range. | GPT-4o: The review excerpt suggests a mixed opinion, noting the show as 'relentlessly preachy', which indicates criticism, but also acknowledges the characters' efforts to balance their choices, suggesting some redeeming qualities. | Gemini: The review excerpt presents a conflict within the show and criticizes its preachy nature, suggesting a mixed assessment. The phrase 'They try to make both work' indicates an attempt at something that isn't fully successful.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,27 +39,28 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:32:54.383Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2376,
-    "outputTokens": 315,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:55:33.369Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 35,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 72,
-    "scoreDelta": 0,
+    "claudeScore": 42,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "showScoreExcerpt": null,
   "bwwExcerpt": null,

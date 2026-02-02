@@ -7,7 +7,7 @@
   "publishDate": "2024-04-11",
   "bwwExcerpt": "and the other is just trying not to die while crossing from the wrong side of the tracks. And this sanitization makes the musical feel oddly superficial. It approaches its subjects from the outside. Emlyn Travis, Entertainment Weekly: For many, The Outsiders is a story that not only remains as raw and relatable as when they first read it, but also pushed the very boundaries of young adult fiction with its insightful ruminations on brotherhood, identity, and the cycles of grief and violence. While its musical adaptation may have its squabbles, its heart of gold still remains firmly intact. Grade: B Chris Jones, Chicago Tribune: It also doesn’t help that the young guy’s love interest drops away from the narrative. All in all, and with all due respect to the many capable artists here and the fame of the book, the emotional landscape just has not been shaped to fit the needs of a Broadway musical. “The Outsiders” needed greater expansion of character, a gentler, simpler touch, a better se",
   "originalScore": "B",
-  "assignedScore": 58,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
@@ -19,18 +19,13 @@
   "dtliExcerpt": "Now, The Outsiders has been crafted into a glittering musical that might not hit as hard as its predecessors, but still has the power to inspire an entire generation of young theatergoers just the same.",
   "dtliThumb": "Meh",
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:22:00.761Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2515,
-    "outputTokens": 319,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "bwwExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated BWW excerpt with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:08:13.553Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "showScoreExcerpt": null,
   "bwwThumb": null,
@@ -92,59 +87,43 @@
     "invalidatedAt": "2026-02-01T04:02:00.824Z"
   },
   "llmScore": {
-    "score": 58,
+    "score": 74,
     "confidence": "medium",
     "range": {
-      "low": 52,
-      "high": 64
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 50
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "its heart of gold still remains firmly intact",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "the emotional landscape just has not been shaped to fit the needs of a Broadway musical",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "makes the musical feel oddly superficial",
-        "sentiment": "negative",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Mixed reviews with Entertainment Weekly giving a B grade (positive) while Chicago Tribune critic identifies fundamental structural problems, creating a balanced but conflicted assessment.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The B grade and phrase 'heart of gold still remains firmly intact' indicate a positive assessment despite acknowledged flaws like 'sanitization' and superficiality. | GPT-4o: The critic acknowledges issues with the adaptation, describing it as 'superficial' and having 'squabbles,' but also notes that its 'heart of gold still remains firmly intact.' The original B rating suggests a mixed but somewhat positive view, aligning with a 'mixed' classification. | Gemini: The critic gives the show a B rating and states that the \"heart of gold still remains firmly intact,\" indicating a positive but not rave review. The mention of \"squabbles\" suggests reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 72,
     "openaiScore": 65,
     "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

@@ -9,71 +9,56 @@
   "showScoreExcerpt": "\"...one of the most sensational musical theatre performances I've ever seen.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/just-in-time-broadway",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 92,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 65,
-    "confidence": "low",
+    "score": 92,
+    "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 75
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Rave",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Just when the bio musical genre appears all but exhausted, we get the disarming story of Bobby Darin",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "There's a kind of gambler's recklessness behind this project",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "Most successful bio musicals cash in on stars with hit-packed catalogs",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "This appears to be an incomplete excerpt focusing on the unusual choice of Bobby Darin as subject matter, with mild intrigue but no clear evaluative content about the actual production quality.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite opening with skepticism about bio musicals, the critic delivers an unequivocal rave with 'one of the most sensational musical theatre performances I've ever seen' - superlative language indicating a must-see recommendation. | GPT-4o: The review describes the performance as 'one of the most sensational' the critic has ever seen, indicating a strong recommendation and placing it in the Rave category. | Gemini: The critic states that the performance is one of the most sensational they have ever seen, indicating a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:23:27.464Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2389,
-    "outputTokens": 353,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:14:06.573Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 65,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 95,
-    "scoreDelta": 0,
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "textFetchedAt": "2026-01-27T04:40:55.190Z",
   "fetchMethod": "playwright",

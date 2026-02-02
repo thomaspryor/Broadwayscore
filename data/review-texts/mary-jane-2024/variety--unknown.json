@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 77,
+  "assignedScore": 76,
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the lead performance and notes audience immersion, indicating a positive assessment, though limited excerpts prevent full confidence in the overall verdict. | GPT-4o: The review highlights the audience's full immersion and praises McAdams' portrayal, suggesting a positive experience. However, without a clear verdict statement, the confidence is medium. | Gemini: The review highlights McAdams' strong performance and the audience's immersion, suggesting a positive experience, but the lack of explicit recommendation and truncated text warrants a score in the lower end of the Positive range.",
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The excerpt praises McAdams' performance as 'mastered' and describes positive audience immersion, but with only one curated quote available, the overall review verdict remains unclear. | Gemini: The review highlights McAdams' masterful portrayal and the audience's immersion, suggesting a positive experience, but the lack of further context and the single excerpt warning necessitate a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:50:32.666Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:19:53.173Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 81,
+    "openaiScore": null,
     "geminiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

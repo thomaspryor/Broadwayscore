@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Gordon Greenberg directs and Lorin Latarro choreographs, achieving some kind of immortality with all that bubble wrap. Around the edges of this production are a few inspired performances. Raymond J. Lee’s wacky rocker, Tamika Lawrence’s un-PC HR director and Billy Harrigan Tighe’s bleach-blond ukulele-playing male bimbo invariably deliver laughs despite the paper-thin material.",
@@ -19,60 +19,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 54,
+    "score": 60,
     "confidence": "medium",
     "range": {
-      "low": 43,
+      "low": 55,
       "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 35,
+      "book": null,
       "music": null,
-      "performances": 75,
-      "direction": 65
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "paper-thin material",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "invariably deliver laughs despite the paper-thin material",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "a few inspired performances",
-        "sentiment": "positive",
-        "strength": 2
-      }
-    ],
-    "reasoning": "Claude: While the critic praises specific performances and acknowledges they deliver laughs, the fundamental criticism of 'paper-thin material' suggests the show's foundation is weak, making it hard to recommend despite bright spots. | GPT-4o-mini: The review highlights some strong performances but criticizes the weak script, leading to a mixed recommendation. | Note: Models differed by 12 points.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds some redeeming performances 'around the edges' but overall dismisses the musical as overly sentimental with thin material, delivering more criticism than praise throughout. | GPT-4o: The review highlights some positive aspects, such as inspired performances and moments of humor, but overall describes the show as 'pure cardboard schmaltz' with insufficient humor to compensate for its flaws. | Gemini: The review highlights flaws in the book and overall schmaltz, but also praises some performances and moments. This suggests a mixed experience with some redeeming qualities.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-27T22:11:17.537Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:41:58.577Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 42,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 60,
-    "scoreDelta": 12,
+    "claudeScore": 42,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 54,

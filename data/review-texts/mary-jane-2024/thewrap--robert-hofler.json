@@ -7,7 +7,7 @@
   "publishDate": "April 23, 2024",
   "fullText": "Skip to content\n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n\n \n\n \n \n \n \n \n \n \n\n \n \n \n \n\n \n \n\n \n \n\n \n\n \n \n \n \n\nAmy Herzog is best known on Broadway for paring-down plays written by Henrik Ibsen. Her version of “An Enemy of the People,” starring Jeremy Strong, now runs on Broadway, and last season her version of “A Doll’s House” starred Jessica Chastain.\n\nHerzog also writes totally original plays not based on Scandinavian classics, and one of those, “Mary Jane,” won the New York Drama Critics’ Circle Award for Best Play in 2018. On Tuesday, that play had its Broadway premiere at MTC’s Samuel J. Friedman Theatre, and stars Rachel McAdams in her Broadway debut.\n\nThere are plays that move you because they strike so close to your own life experience. There are also those plays that move you because they let you into a world completely removed from your own life experience. What is it like to care for a child with severe physical challenges?\n\nIn the case of “Mary Jane,” the 3-year-old Alex, whom we never see, has cerebral palsy and other complications, and is cared for by his divorced mother, Mary Jane, played by McAdams. Alex’s father, also not seen, left the marriage sometime after the child’s birth, and Mary Jane is now surrounded by a diverse community of people, none of whom happen to be male. Herzog never directly addresses the lack of men in Mary Jane’s current life, and her silence on the subject tells us much about how different mothers and fathers can be.\n\nTo indulge in some gender stereotyping for a moment, what it means to be a hero is often very different for men and women. Men tend to become heroes by making one spectacular feat that gets great public attention. Women become heroes out of the spotlight, making the daily sacrifice of setting aside their own lives to care for someone else. For women, heroism is often a process that doesn’t take place in an hour or even a day. It can evolve over years, if not decades. And there are never awards given for that kind of sacrifice.\n\nMary Jane is not only a hero. She is a saint.\n\nAnne Kauffman’s direction takes a while to coalesce the various facets of Herzog’s play. As presented by McAdams, Mary Jane is more than a little wan in her encounters with the various women who visit her apartment over the course of this two-hour one-act play. They include a super (Brenda Wehle), a nurse (April Matthis), a niece (Lily Santiago) and a Facebook friend (Susan Pourfar), who also has a child with special needs. Each of these four actors is double-cast, and when the second half of “Mary Jane” moves into a hospital (a scene change that is spectacularly facilitated by Lael Jellinek’s set), they portray, respectively, a counselor, a doctor, a therapist and a woman with seven children, one of whom is a patient at the hospital.\n\nIn the scenes set in the apartment, the four visitors tend to take focus away from Mary Jane. Each of the four actors is exemplary, but there’s too much still air on stage before each of them can establish her presence, especially in the play’s first half. Stoic is not an easy look to convey to an audience, and McAdams’ performance doesn’t really take shape until Mary Jane sets up residence in the hospital. Ultimately, McAdams gets her big theatrical moment, but much of the play’s power comes from Herzog’s scheme to withhold that moment. We expect Mary Jane to break down, explode, get pissed off long before she does. What sets her off is unexpected. It’s worth the wait.\n\n“Mary Jane” is semi-autobiographical. Herzog’s daughter, Frances, passed away at age 11 in 2023.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 76,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "Ultimately, McAdams gets her big theatrical moment, but much of the play’s power comes from Herzog’s scheme to withhold that moment. We expect Mary Jane to break down, explode, get pissed off long before she does. What sets her off is unexpected. It’s worth the wait.",
@@ -15,67 +15,52 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 78,
+      "book": null,
       "music": null,
-      "performances": 68,
-      "direction": 65
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's worth the wait",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "McAdams' performance doesn't really take shape until Mary Jane sets up residence in the hospital",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "much of the play's power comes from Herzog's scheme to withhold that moment",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The review praises Herzog's writing and the play's emotional power while critiquing pacing issues and McAdams' performance in the first half, landing on a qualified positive recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges significant flaws in pacing and direction but ultimately finds the play's emotional payoff worthwhile, indicating a positive recommendation with reservations. | GPT-4o: The review acknowledges some pacing issues and initial lack of focus but ultimately praises the play's emotional impact and McAdams' performance, suggesting it's worth seeing despite its flaws. | Gemini: The review has some reservations about the first half and McAdams' initial performance, but ultimately concludes that the play is worth seeing, especially for McAdams' performance and the unexpected emotional payoff.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:33:06.434Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3120,
-    "outputTokens": 338,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:19:18.379Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 75,
+    "claudeScore": 75,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,

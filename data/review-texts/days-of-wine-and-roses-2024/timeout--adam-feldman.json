@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "designation": "Recommended",
@@ -20,60 +20,52 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 76,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 67,
-      "high": 85
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
-      "book": 75,
-      "music": 75,
-      "performances": 89,
-      "direction": 81
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "If Days and Wine and Roses isn't exactly galvanizing—it's too classy for that—it is effectively sober",
-        "sentiment": "neutral",
-        "strength": 4
-      },
-      {
-        "quote": "Both are superb: Playing 'two people stranded at sea,' they navigate their characters' desperate highs and lows...with depth, grit and vocal expertise",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the result is ambitious, artful and musically sophisticated",
-        "sentiment": "positive",
-        "strength": 3
-      }
-    ],
-    "reasoning": "Claude: Feldman praises the sophisticated artistry, stellar performances, and elegant production, but notes the show isn't 'galvanizing' and describes it as more effectively crafted than emotionally compelling. | GPT-4o-mini: The review expresses strong praise for the performances and music while noting some limitations in the story's impact, leading to a solid recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic uses qualified language - 'isn't exactly galvanizing' suggests it lacks excitement, but 'effectively sober' implies it succeeds at its intended tone. This balanced assessment with both criticism and praise indicates a mixed review. | GPT-4o: The review text suggests a balanced view, noting that while the show isn't 'galvanizing', it is 'effectively sober'. This indicates a production that has merits but may not be compelling enough to strongly recommend, fitting a mixed verdict. | Gemini: The review suggests the show is not particularly exciting but still effective, indicating a mild recommendation. The aggregator context also points towards a positive reception.",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-29T01:46:17.156Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:51:58.322Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 80,
-    "scoreDelta": 8,
-    "thumbsMatch": true,
-    "expectedThumb": "Up",
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 64,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-COTTAGE-Opens-on-Broadway-20230723",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "The Cottage is not a dud; its momentary outbreaks of hilarity thankfully break up stretches of conversation about characters’ tangled pasts, and restatements of the comic setups in front of us. But, as wittily complicated as those summaries can sound, we’ve already got it. It’s been unpacked for us in the moment, over and over again. If The Cottage isn’t a farce, what is it? This critic couldn’t tell you, and—as presented—the production doesn’t seem to know the answer either.",
@@ -19,67 +19,51 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "low",
     "range": {
-      "low": 38,
-      "high": 46
+      "low": 47,
+      "high": 57
     },
     "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 25,
+      "book": null,
       "music": null,
-      "performances": 65,
-      "direction": 35
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Sadly, it is not as funny as it thinks it is, or intends to be",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The Cottage is not a dud; its outbreaks of hilarity thankfully break up stretches of conversation",
-        "sentiment": "neutral",
-        "strength": 2
-      },
-      {
-        "quote": "There is no tension in The Cottage because it keeps explaining itself and all its silliness—immediately leaking all the silliness from the silliness",
-        "sentiment": "negative",
-        "strength": 5
-      }
-    ],
-    "reasoning": "While acknowledging some comedic moments and praising specific performances (particularly Moffat and Cooper), the critic fundamentally finds the play structurally flawed, unfunny, and confused about its own identity.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Negative, gemini=Mixed | Claude: The critic systematically dismantles the production, calling it unfunny, poorly paced, and fundamentally confused about what it wants to be. While acknowledging it's 'not a dud' and has some moments of hilarity, the overall assessment is clearly negative with no recommendation to see it. | Gemini: The review points out several flaws in the play's writing and execution, but also acknowledges moments of hilarity and good performances. It doesn't outright recommend or discourage seeing it, placing it in the 'Mixed' bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:15:59.215Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4214,
-    "outputTokens": 388,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:00:18.305Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 50,
-    "scoreDelta": 8,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Negative, gemini=Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 46,

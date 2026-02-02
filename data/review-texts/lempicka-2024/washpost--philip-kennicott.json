@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"An artist with a big, messy life gets a big, messy musical\"",
@@ -18,67 +18,51 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 69,
+    "confidence": "low",
     "range": {
-      "low": 58,
-      "high": 66
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
-      "music": 55,
-      "performances": 75,
-      "direction": 65
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The result is a breathless, up-tempo force march through some of the darkest decades in European history, and a big, messy, fascinating life is processed into a theater piece that is just big and messy.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Espinosa does heroic work tying the threads together",
-        "sentiment": "positive",
-        "strength": 3
-      },
-      {
-        "quote": "Audiences may be inspired by the show to seek out the art itself, which offers a more measured and reasonable riposte.",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The review praises individual performances (especially Espinosa and Iman) and production values, but consistently criticizes the book's structural problems and the music's lack of melodic distinction, resulting in a qualified recommendation for those interested in the subject matter.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic finds the show problematic in its ambitious scope and execution, calling it 'big and messy,' but acknowledges standout performances and genuine theatrical moments, particularly praising Iman and Leavel while noting the production's stylish direction. | Gemini: The review acknowledges flaws in the musical's structure and historical representation, but praises the performances, direction, and some musical numbers, suggesting it's worth seeing despite its shortcomings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:26:50.353Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3911,
-    "outputTokens": 395,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:28:33.744Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 62,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 48,
-    "openaiScore": 55,
-    "scoreDelta": 7,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 52,

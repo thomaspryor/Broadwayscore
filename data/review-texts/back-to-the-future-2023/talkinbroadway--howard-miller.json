@@ -10,67 +10,59 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 50,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 35,
-      "music": 33,
+      "book": null,
+      "music": null,
       "performances": null,
-      "direction": 78
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Let us raise a rousing chorus of hoorahs for the design team",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "nothing but a fairly close rehash of the movie",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "stuffed with too many uninspired pop tunes",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: High praise for technical elements cannot overcome harsh criticism of the show as uninspired rehash with poor music, suggesting overall disappointment despite production values. | GPT-4o-mini: The review highlights strong design elements but criticizes the music and overall originality, leading to a mixed recommendation.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic enthusiastically praises the design team's work as magical and skillful, though criticizes the songs and dances as uninspired. The text is truncated but the positive elements seem to outweigh the negatives. | GPT-4o: The review praises the design team for making the magic happen, but also criticizes the show as a rehash of the movie with uninspired music and dance routines. This suggests a mixed impression, with strong design elements but overall lackluster content. | Gemini: The review praises the design team and their contribution to the show's magic, but also mentions uninspired pop tunes and dance routines, suggesting a mixed experience overall. The positive aspects outweigh the negatives, leading to a 'Positive' classification with a score in the lower end of the range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-28T01:12:39.092Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:31:29.170Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 55,
-    "scoreDelta": 10,
-    "thumbsMatch": true,
-    "expectedThumb": "Flat",
+    "claudeScore": 74,
+    "openaiScore": 66,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 50,

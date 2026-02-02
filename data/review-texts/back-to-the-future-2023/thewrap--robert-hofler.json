@@ -10,76 +10,59 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 25,
+    "score": 41,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 36,
+      "high": 46
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 30,
-      "music": 15,
-      "performances": 45,
-      "direction": 20
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Silvestri and Ballard's original score is so derivative it gives jukebox musicals a good name",
-        "sentiment": "negative",
-        "strength": 5
-      },
-      {
-        "quote": "The songs and jokes are dreary",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "I was very happy not to be sitting in the theater's first half dozen rows",
-        "sentiment": "negative",
-        "strength": 4
-      }
-    ],
-    "reasoning": "The critic systematically dismantles nearly every element of the production - calling the score derivative, the lyrics cliched, the direction incomprehensible, and expressing relief at not sitting closer to the stage.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic systematically criticizes nearly every aspect - songs are 'derivative' and 'dreary,' performances are lackluster, direction is 'vulgar' or 'incomprehensible,' and jokes are 'lame.' The only praise is for technical effects. | GPT-4o: The review is predominantly critical, highlighting the lackluster music, unamusing performances, and poor direction. The critic suggests the production is not worth seeing, especially given the negative comparison to other works. | Gemini: The review is overwhelmingly negative, criticizing the score, jokes, direction, and performances. The reviewer clearly did not enjoy the show and does not recommend it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:31:57.407Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 3180,
-    "outputTokens": 350,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:32:05.417Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 40,
+    "claudeScore": 42,
     "openaiScore": 40,
-    "scoreDelta": 0,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (40 → Down) conflicts with aggregator thumbs (Flat)"
-    ]
+    "geminiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 40,

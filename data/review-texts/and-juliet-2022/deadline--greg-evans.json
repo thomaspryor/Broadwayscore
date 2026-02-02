@@ -9,18 +9,18 @@
   "dtliExcerpt": "It’s not that & Juliet is unenjoyable – it isn’t. Somewhere beneath the bombast and repetition and overwrought-from-minute-one approach is a sweet(ish) and smart(ish) tale that gives voice to the marginalized and, not incidentally, provides fans of the music of Britney Spears, Backstreet Boys, Katy Perry, Kesha, Demi Lovato, Ariana Grande, Bon Jovi, Celine Dion, Pink and Justin Timberlake a chance to hear their favorite songs in a musical that makes no secret of its identity: A jukebox takes early pride of place on the set.",
   "showScoreExcerpt": "\"Itâs not that '& Juliet' is unenjoyable â it isnât. Somewhere beneath the bombast and repetition and overwrought-from-minute-one approach is a sweet(ish) and smart(ish) tale that gives voice to the marginalized.\"",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 64,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:57:18.264Z",
   "dtliThumb": "Meh",
   "bwwExcerpt": "It's not that & Juliet is unenjoyable - it isn't. Somewhere beneath the bombast and repetition and overwrought-from-minute-one approach is a sweet(ish) and smart(ish) tale that gives voice to the marginalized and, not incidentally, provides fans of the music of Britney Spears, Backstreet Boys, Katy ...",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -31,7 +31,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show isn't unenjoyable and has sweet/smart elements, but criticizes it as bombastic, repetitive, and lacking subtlety. The overall tone suggests neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the musical's enjoyable aspects and its appeal to fans of the music but criticizes its lack of subtlety and repetitive nature. The overall tone suggests neither a strong recommendation nor a complete dismissal. | Gemini: The review acknowledges some enjoyment but criticizes the bombast, repetition, and unsubtle approach. It lands in the 'Mixed' category as it neither strongly recommends nor discourages seeing the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly states the show is enjoyable but spends most of the review pointing out significant flaws in execution, subtlety, and book quality, landing in mixed territory with slight lean toward watchable. | GPT-4o: The review acknowledges the show's entertainment value and appeal to fans of the music, but criticizes its lack of subtlety and repetitive nature. The overall tone suggests a mixed experience with some positive elements. | Gemini: The review acknowledges flaws like bombast and repetition, but ultimately states the show is \"not unenjoyable\" and finds a \"sweet(ish) and smart(ish) tale\" within. This indicates a positive but not rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,27 +41,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-01-31T18:16:10.857Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:58:12.223Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 59,
-    "previousVersion": "3.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
+    "geminiScore": 75,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "textIssue": "too_short",
   "textFetchedAt": "2026-01-25T13:49:09.698Z",

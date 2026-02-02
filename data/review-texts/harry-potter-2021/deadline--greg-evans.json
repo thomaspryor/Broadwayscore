@@ -7,18 +7,18 @@
   "publishDate": "2021-12-07",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 74,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "The production's magic is hardly limited to well-choreographed transitions, though, with illusions ranging from the seemingly high-tech - lightning streams of flame, or a dreamlike effect that has the entire set shimmering with every jump in time - to age-old stage trickery modernized and perfected (unseen hands in black tote levitating actors, while some bat-wing swirls of Hogwarts cloaks all but demand a voila!).",
   "sourceMethod": "stub",
   "scoreSource": null,
   "llmScore": {
-    "score": 78,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 70.5,
-      "high": 85.5
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,26 +26,10 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 80
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "The production's magic is hardly limited to well-choreographed transitions",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "age-old stage trickery modernized and perfected",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "illusions ranging from the seemingly high-tech - lightning streams of flame",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Claude: Fragment shows clear admiration for production values and technical execution with praise for 'magic,' 'well-choreographed,' and 'perfected,' but excerpt is too limited to assess overall recommendation strength. | GPT-4o-mini: The review highlights impressive production elements and creativity, indicating a strong recommendation despite the lack of explicit praise for the script or performances.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt describes production elements positively with phrases like 'magic,' 'perfected,' and enthusiastic descriptions of effects. However, with only one curated quote available, this may not represent the full review sentiment, so scoring conservatively within the positive range. | GPT-4o: The review excerpt highlights the impressive and magical production elements, suggesting a positive experience. However, due to the single excerpt warning, the score is conservatively placed in the lower range of the Positive bucket. | Gemini: The review excerpt focuses on the positive aspects of the production's illusions and stagecraft, suggesting an enjoyable and worthwhile experience, but the limited text and single excerpt warrant a score in the middle of the positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +38,28 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o-mini",
-    "scoredAt": "2026-01-26T05:24:17.372Z",
-    "promptVersion": "3.0.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-01T23:59:54.945Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "3.0.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 80,
-    "scoreDelta": 5,
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

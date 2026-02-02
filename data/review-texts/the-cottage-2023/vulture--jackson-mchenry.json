@@ -9,71 +9,56 @@
   "showScoreExcerpt": "“There’s a fizz that bubbles up near the end of a door-slamming farce when the characters, one by one, have to explain to one another what’s actually going on...’The Cottage' tries to emphasize the fizz, but nobody remembered to shake the soda can beforehand. It’s full of explanations, light on mess.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
   "originalScore": null,
-  "assignedScore": 58,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 58,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 62
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
     "components": {
-      "book": 45,
+      "book": null,
       "music": null,
-      "performances": 68,
-      "direction": 52
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It's not un-fun to guess at how everyone is related, but you'll never be wrong in your first assumptions",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "gently diverting but never challenging",
-        "sentiment": "negative",
-        "strength": 3
-      },
-      {
-        "quote": "Like a lot of The Cottage, it all fits together pleasantly and too neatly",
-        "sentiment": "neutral",
-        "strength": 2
-      }
-    ],
-    "reasoning": "The review finds the show 'pleasantly' diverting with strong performances but criticizes the predictable, overly neat plot and lack of genuine surprise or challenge.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show is 'enjoyable' and 'not un-fun' but consistently points out fundamental flaws: lack of surprise, predictable plot, and performances that feel forced rather than organic. The tone is neither recommendation nor discouragement. | GPT-4o: The review highlights both the enjoyable aspects and the shortcomings of the play. While the performances and some comedic elements are praised, the overall execution is described as lacking tension and depth, leading to a mixed recommendation. | Gemini: The review acknowledges some enjoyment but ultimately finds the play predictable and lacking depth. It's not a strong recommendation, but not a complete dismissal either.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T16:17:29.949Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4108,
-    "outputTokens": 317,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T01:01:20.574Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 58,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 40,
-    "scoreDelta": 2,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwExcerpt": "The most interesting thread of The Cottage involves Rustin’s trying to work against the knee-jerk sexism of the genre as Sylvia slowly discovers that her happiness shouldn’t depend on the men around her. Fittingly for the 1920s setting, Rustin even weaves in a few references to the women’s-suffrage movement. But because the characters, for the sake of the comedy, have already become so abstract, Rustin’s points remain abstract too. As is true of so much in the play, you can see the turn coming a",
   "bwwThumb": "Meh",

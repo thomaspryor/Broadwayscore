@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 91,
+  "assignedScore": 89,
   "llmScore": {
-    "score": 91,
-    "confidence": "high",
+    "score": 89,
+    "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -26,7 +26,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review explicitly states this is THE musical to see this season and promises audiences won't be disappointed, with effusive praise for the lead performance and production values. | GPT-4o: The review is highly enthusiastic, praising the production's scenic design and Jonathan Groff's performance. The key quote strongly suggests it is the top musical to see this season, indicating a rave recommendation. | Gemini: The review uses very strong positive language such as \"terrific\", \"charisma\", and \"the very soul\" and explicitly states that it is the one musical to see this season. The final line seals the deal, indicating a rave review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The excerpt contains strong superlatives ('terrific', 'half the charisma') and explicitly positions this as THE musical to see this season with a guarantee of no disappointment, indicating an enthusiastic recommendation despite being a single curated excerpt. | GPT-4o: The review uses strong, enthusiastic language suggesting a must-see experience, highlighting the charismatic performance of Jonathan Groff and the impressive scenic design. The phrase 'you won't be disappointed' indicates a high level of recommendation. | Gemini: The review contains strong positive language, including praising the set design and Jonathan Groff's performance. The final sentence explicitly recommends seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,25 +36,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T18:48:41.202Z",
-    "promptVersion": "5.0.0",
+    "scoredAt": "2026-02-02T00:15:32.399Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 91,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 90,
+    "geminiScore": 80,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 2,
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

@@ -9,76 +9,58 @@
   "dtliExcerpt": "Groff is undeniably great at bending a crowd around his little finger, and he’s working with an audience that’s delighted to be pandered to. He spends much of the show weaving through that crowd and traipsing up the aisles and back to find people to flirt and dance with, like a Labrador licking his way through a maze in search of treats. How could you deny this guy the adulation he craves?",
   "bwwExcerpt": "The energy verges from electric to manic, in a way that makes you wonder Is Jonathan Groff telling us that he would like to die mid-performance? All right, that’s an exaggeration, but it does move the question of what a star gets out of entertaining, and what an audience gets out of receiving that performance, right to the center of the show, more so than the specific biography of Darin himself. It’s like Prospero at the end of The Tempest turning to the audience to be, finally, released by their applause—if Prospero were wearing a tuxedo and crooning “Beyond the Sea.” Still, as you from crimes would pardoned be, let your indulgence set him free. Cue the megamix.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 76,
   "source": "dtli",
   "bwwThumb": "Meh",
   "bwwUrl": "https://www.vulture.com/article/theater-review-jonathan-groff-bobby-darin-in-just-in-time.html",
   "dtliThumb": "Up",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 72,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 76
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 45,
-      "music": 75,
-      "performances": 85,
-      "direction": 70
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "Groff is undeniably great at bending a crowd around his little finger, and he's working with an audience that's delighted to be pandered to",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the clichés do accumulate like sediment in the plumbing",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Just in Time gets dark... The energy verges from electric to manic",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "The critic acknowledges Groff's star power and the show's entertainment value while criticizing the generic bio-musical structure and clichéd book, resulting in a qualified positive recommendation focused on the lead performance.",
+    "keyPhrases": [],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic clearly appreciates Groff's performance and the show's energy, praising his charisma and the production's staging, while acknowledging the formulaic bio-musical structure as a limitation rather than a dealbreaker. | Gemini: The review is generally positive, highlighting Groff's performance and Timbers' direction, but notes the show's reliance on bio-musical clichés. The overall impression is that it's an enjoyable experience, but not without its flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T15:24:36.998Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 4333,
-    "outputTokens": 369,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:16:25.250Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 72,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 70,
-    "scoreDelta": 2,
-    "thumbsMatch": false,
-    "expectedThumb": "Flat",
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Score (71 → Up) conflicts with aggregator thumbs (Flat)"
-    ]
+    "claudeScore": 74,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
   },
   "archivePath": "data/archives/reviews/just-in-time-2025/vulture--jackson-mchenry_2026-01-26.html",
   "textFetchedAt": "2026-01-26T15:44:39.509Z",

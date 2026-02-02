@@ -7,73 +7,60 @@
   "publishDate": "April 23, 2018",
   "showScoreExcerpt": "\"The design team has created a magical space...Compelling storytelling...thrillingly inventive staging...For all its magic and mayhem, at the heart of the play lie universal themes of friendship, loyalty, trust and the old truism that history has a habit of repeating itself...A fast-paced Rubik's cube type affair with the kind of reveals that make Potter aficionados gasp out loud...A play with great heart and many lessons to teach.\"",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 75,
   "source": "show-score",
   "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 25,
+    "score": 75,
     "confidence": "low",
     "range": {
-      "low": 15,
-      "high": 40
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 85
+      "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "from the moment you enter the foyer the results are breath-taking",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "the design team has created a magical space",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "this new take is just as magical",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "This appears to be an incomplete review fragment focusing heavily on production design and theater renovation, with positive comments about the physical space but lacking substantial critique of the actual theatrical experience.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The review is heavily truncated after describing the lavish production design as 'breath-taking' and calling the show 'just as magical', but the full verdict and recommendation are cut off, making a complete assessment impossible. | GPT-4o: The review highlights the impressive transformation of the theater and describes the production as 'just as magical' as the original, suggesting a strong recommendation despite the truncated text. | Gemini: The review describes the show as \"magical\", but the text is truncated, so it's hard to determine the full extent of the recommendation. The phrase \"Grab a ticket while you can can can!\" suggests a positive recommendation. | Buckets: claude=Mixed, openai=Rave, gemini=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": false
+      "comparesToPrevious": false,
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T17:36:51.977Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2933,
-    "outputTokens": 320,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:01:44.263Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.0.0"
   },
   "ensembleData": {
-    "claudeScore": 85,
-    "openaiScore": 88,
-    "scoreDelta": 3,
+    "claudeScore": 60,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 30,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": []
+    "needsReview": true,
+    "needsReviewReasons": [
+      "3-way bucket disagreement"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/limelight-magazine-au--clive-paget_2026-02-01.html",
   "textFetchedAt": "2026-02-01T15:11:13.439Z",

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams gives a tour de force performance in Amy Herzog's deeply moving and authentic play about a mother dealing with her chronically ill son.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,54 +18,53 @@
   "showScoreExcerpt": "Rachel McAdams gives a tour de force performance in Amy Herzog's deeply moving and authentic play about a mother dealing with her chronically ill son.",
   "needsScoring": true,
   "llmScore": {
-    "score": 82,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 88
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 85,
+      "book": null,
       "music": null,
-      "performances": 90,
+      "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "tour de force performance",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "deeply moving and authentic play",
-        "sentiment": "positive",
-        "strength": 4
-      }
-    ],
-    "reasoning": "Strong praise for both lead performance ('tour de force') and the play itself ('deeply moving and authentic') indicates clear positive recommendation despite brevity.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses highly positive language like 'tour de force' and 'deeply moving and authentic' which indicates a recommendation, though the brief excerpt limits confidence in the overall assessment. | GPT-4o: The review highlights a 'tour de force performance' and describes the play as 'deeply moving and authentic,' indicating a strong recommendation. | Gemini: The review highlights a 'tour de force performance' and describes the play as 'deeply moving and authentic,' indicating a positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-01T20:03:51.594Z",
-    "promptVersion": "5.0.0",
-    "inputTokens": 2331,
-    "outputTokens": 249,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T00:16:56.381Z",
+    "promptVersion": "5.1.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82,
+    "previousVersion": "5.0.0"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }
