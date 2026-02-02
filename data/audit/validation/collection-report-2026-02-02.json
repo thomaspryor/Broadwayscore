@@ -1,40 +1,40 @@
 {
-  "runDate": "2026-02-02T17:37:29.358Z",
+  "runDate": "2026-02-02T17:40:30.771Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "back-to-the-future-2023",
+    "showFilter": "lempicka-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
+    "processed": 1,
     "failed": 6,
     "skipped": 0,
-    "successRate": "40.0%"
+    "successRate": "14.3%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 3
+    "brightdata": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 2,
     "tier2Success": 0,
     "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier4Attempts": 10,
-    "tier4Success": 7,
-    "totalFailed": 5,
+    "tier3Success": 0,
+    "tier4Attempts": 8,
+    "tier4Success": 5,
+    "totalFailed": 6,
     "scrapingBeeCreditsUsed": 11,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -43,40 +43,39 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "back-to-the-future-2023/nyt-theater--david-nounou.json",
-    "back-to-the-future-2023/variety--aramide-tinubu.json",
-    "back-to-the-future-2023/nysr--elysa-gardner.json",
-    "back-to-the-future-2023/queerty--matthew-wexler.json"
+    "lempicka-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
-    "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
-    "back-to-the-future-2023/chelsea-community-news--michael-musto.json",
-    "back-to-the-future-2023/guardian--adrian-horton.json",
-    "back-to-the-future-2023/observer--david-cote.json",
-    "back-to-the-future-2023/timeout--adam-feldman.json",
-    "back-to-the-future-2023/wsj--charles-isherwood.json"
+    "lempicka-2024/deadline--greg-evans.json",
+    "lempicka-2024/new-york-sun--elysa-gardner.json",
+    "lempicka-2024/nydailynews--chris-jones.json",
+    "lempicka-2024/observer--rex-reed.json",
+    "lempicka-2024/timeout--adam-feldman.json",
+    "lempicka-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "back-to-the-future-2023/queerty--matthew-wexler.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "back-to-the-future-2023/hollywood-reporter--frank-scheck.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "back-to-the-future-2023/nyt-theater--david-nounou.json",
-      "back-to-the-future-2023/variety--aramide-tinubu.json",
-      "back-to-the-future-2023/nysr--elysa-gardner.json"
+      "lempicka-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "New York Daily News": {
+      "count": 1,
+      "domain": "nydailynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": [
     {
-      "reviewId": "back-to-the-future-2023/observer--david-cote.json",
-      "oldUrl": "https://observer.com/2023/08/back-to-the-future-the-musical-review-broadway/",
-      "newUrl": "https://observer.com/2023/08/back-to-the-future-the-musical-review-the-delorean-flies-the-songs-sink/"
+      "reviewId": "lempicka-2024/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2024/05/lempicka-broadway-review-eden-espinosa/",
+      "newUrl": "https://observer.com/2025/04/exhibition-review-tamara-de-lempicka-at-the-museum-of-fine-arts-houston/"
     }
   ]
 }
