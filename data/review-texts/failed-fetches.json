@@ -3604,18 +3604,6 @@
     "timestamp": "2026-01-29T06:34:39.244Z"
   },
   {
-    "reviewId": "the-cottage-2023/wsj--charles-isherwood.json",
-    "showId": "the-cottage-2023",
-    "outlet": "The Wall Street Journal",
-    "critic": "Charles Isherwood",
-    "url": "https://www.wsj.com/articles/the-cottage-review-a-bedroom-farce-braves-broadway-9b285462",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 1942,
-    "timestamp": "2026-01-29T06:36:10.676Z"
-  },
-  {
     "reviewId": "cabaret-2024/observer--rex-reed.json",
     "showId": "cabaret-2024",
     "outlet": "The Observer",
@@ -6194,5 +6182,65 @@
     "garbageReason": "Legal/privacy page: \"© 2025 NEXT Magazine Enterprises Inc. All rights reserved\"",
     "textLength": 4348,
     "timestamp": "2026-02-02T00:21:47.240Z"
+  },
+  {
+    "reviewId": "the-cottage-2023/new-york-sun--elysa-gardner.json",
+    "showId": "the-cottage-2023",
+    "outlet": "New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/give-the-cottage-a-bit-of-rope-and-itll-likely-pull-you-in",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
+    "textLength": 549,
+    "timestamp": "2026-02-02T00:23:15.746Z"
+  },
+  {
+    "reviewId": "the-cottage-2023/observer--rex-reed.json",
+    "showId": "the-cottage-2023",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2023/07/the-cottage-review-this-new-broadway-farce-is-a-fiasco/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 3611,
+    "timestamp": "2026-02-02T00:23:20.703Z"
+  },
+  {
+    "reviewId": "the-cottage-2023/theatermania--peter-hempstead.json",
+    "showId": "the-cottage-2023",
+    "outlet": "TheaterMania",
+    "critic": "Peter Hempstead",
+    "url": "https://www.theatermania.com/news/review-the-cottage-is-a-welcome-retreat-from-the-summer-heat_1709694/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©1999-2026 TheaterMania.com, Inc. All Rights Reserved\"",
+    "textLength": 4680,
+    "timestamp": "2026-02-02T00:23:29.306Z"
+  },
+  {
+    "reviewId": "the-cottage-2023/timeout--adam-feldman.json",
+    "showId": "the-cottage-2023",
+    "outlet": "Time Out",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/the-cottage-broadway-comedy-review",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 5225,
+    "timestamp": "2026-02-02T00:23:36.561Z"
+  },
+  {
+    "reviewId": "the-cottage-2023/wsj--charles-isherwood.json",
+    "showId": "the-cottage-2023",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/the-cottage-review-a-bedroom-farce-braves-broadway-9b285462",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 1942,
+    "timestamp": "2026-02-02T00:23:39.883Z"
   }
 ]
