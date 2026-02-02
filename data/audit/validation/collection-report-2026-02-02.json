@@ -1,102 +1,70 @@
 {
-  "runDate": "2026-02-02T23:20:11.827Z",
+  "runDate": "2026-02-02T23:23:32.968Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hamilton-2015",
+    "showFilter": "operation-mincemeat-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
+    "processed": 1,
     "failed": 3,
     "skipped": 0,
-    "successRate": "72.7%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 6
+    "brightdata": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 1,
     "tier1Success": 1,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 1,
-    "tier2Attempts": 4,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 1,
-    "tier4Attempts": 14,
-    "tier4Success": 6,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 5,
+    "tier4Success": 3,
     "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 21,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 1.1,
+    "scrapingBeeCreditsUsed": 1,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.4,
     "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "hamilton-2015/newsday--linda-winer.json",
-    "hamilton-2015/nypost--elisabeth-vincentelli.json",
-    "hamilton-2015/observer--david-cote.json",
-    "hamilton-2015/theatermania--adam-feldman.json",
-    "hamilton-2015/wsj--terry-teachout.json",
-    "hamilton-2015/ny1--roma-torre.json",
-    "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
+    "operation-mincemeat-2025/wsj--charles-isherwood.json"
   ],
   "failed": [
-    "hamilton-2015/variety--charles-isherwood.json",
-    "hamilton-2015/timeout--david-cote.json",
-    "hamilton-2015/the-clyde-fitch-report--david-finkle.json"
+    "operation-mincemeat-2025/observer--david-cote.json",
+    "operation-mincemeat-2025/timeout--adam-feldman.json",
+    "operation-mincemeat-2025/timeout--adam.json"
   ],
   "tierDetails": {
     "playwright": [],
-    "browserbase": [
-      "data/review-texts/hamilton-2015/observer--david-cote.json",
-      "hamilton-2015/observer--david-cote.json"
-    ],
+    "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "hamilton-2015/theatermania--adam-feldman.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "hamilton-2015/hollywood-reporter--david-rooney.json",
-      "hamilton-2015/newsday--linda-winer.json",
-      "hamilton-2015/nypost--elisabeth-vincentelli.json",
-      "hamilton-2015/wsj--terry-teachout.json",
-      "hamilton-2015/ny1--roma-torre.json",
-      "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
+      "operation-mincemeat-2025/wsj--charles-isherwood.json"
     ]
   },
-  "failuresByOutlet": {
-    "Variety": {
-      "count": 1,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Clyde Fitch Report": {
-      "count": 1,
-      "domain": "clydefitchreport.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": [
     {
-      "reviewId": "hamilton-2015/observer--david-cote.json",
-      "oldUrl": "https://observer.com/2015/08/hamilton-broadway-review/",
-      "newUrl": "https://observer.com/2020/07/hamilton-disney-plus-review-streaming/"
+      "reviewId": "operation-mincemeat-2025/observer--david-cote.json",
+      "oldUrl": "https://observer.com/2025/03/operation-mincemeat-broadway-review/",
+      "newUrl": "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is-anything-but-dead-on-arrival/"
     }
   ]
 }
