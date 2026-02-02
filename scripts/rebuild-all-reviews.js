@@ -326,6 +326,10 @@ function isJunkExcerpt(text) {
     /^This article was published more than/i,            // WaPo stale article warning
     /^Listen\d+\s*min/i,                                // WaPo audio player metadata
     /rose lovers|Bachelor in Paradise|couples grapple/i, // Wrong show content (reality TV)
+    /^(MUSIC|THEATER).*Add Topic/i,                      // USA Today CMS navigation junk
+    /^Trump says|^Biden|^Senate\s+(votes|passes)/i,      // AP/news feed content (wrong page)
+    /Keep Watching|mins ago\s/i,                          // NBC broadcast crawl / news feed
+    /Hear this story/i,                                   // Audio player prompt
   ];
 
   for (const pattern of junkPatterns) {
@@ -531,39 +535,26 @@ function extractExcerptFromFullText(fullText, showTitle) {
   // Split into sentences
   const sentences = text.split(/(?<=[.!?])\s+/);
 
-  // Find the first substantive sentence (skip bylines, photo credits, metadata)
-  let excerpt = '';
+  // Filter to substantive sentences only (skip bylines, photo credits, metadata, junk)
+  const substantive = [];
   for (const sentence of sentences) {
-    // Skip short fragments, bylines, photo credits
     if (sentence.length < 30) continue;
     if (/^By\s+[A-Z]/i.test(sentence)) continue;
     if (/^Photo:/i.test(sentence)) continue;
     if (/^\d{1,2}:\d{2}/i.test(sentence)) continue;
-    // Skip sentences that are mostly metadata
     if (/\b(Published Date|Leave a Comment|Posted in)\b/i.test(sentence)) continue;
-    // Skip "Read more" / "Read our review" / "Continue reading"
     if (/^Read (more|our review|the full)/i.test(sentence)) continue;
-    // Skip star ratings embedded in text
     if (/^[★☆⭐✩✪❤\s]{3,}/.test(sentence)) continue;
-    // Skip sentences starting with site navigation ("Reviews 'Title'...", "Posted in...")
     if (/^Reviews?\s+['''""]/i.test(sentence)) continue;
-    // Skip social sharing / boilerplate ("Share this: By Author...", "Share on Facebook...")
     if (/^Share\s+(this|on|via)\b/i.test(sentence)) continue;
-    // Skip photo captions ("Sam Tutty and X in "Title"." or "Photo by X." or "Name | Photo: X")
     if (/\bPhoto\s+(by|credit|courtesy)\b/i.test(sentence)) continue;
     if (/\|\s*Photo\s*:/i.test(sentence)) continue;
     if (/\bin\s+[""][^""]+[""]\s*\.\s*$/i.test(sentence) && sentence.length < 120) continue;
-    // Skip sentences with embedded metadata (author name + date + number concatenated)
     if (/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s+\d{4}\s+\d+\s+/i.test(sentence) && sentence.indexOf('Photo') !== -1) continue;
-    // Skip breadcrumb navigation ("Home > Entertainment...")
     if (/^Home\s*[>|]/i.test(sentence)) continue;
-    // Skip privacy/consent boilerplate ("By clicking submit...")
     if (/By clicking submit/i.test(sentence)) continue;
-    // Skip newsletter/signup prompts
     if (/newsletter|sign up for|subscribe to|Get all the top news/i.test(sentence)) continue;
-    // Skip raw HTML
     if (/<a\s+href=/i.test(sentence)) continue;
-    // Skip navigation skip links, newspaper mottos, quiz widgets
     if (/^Skip to (content|main)/i.test(sentence)) continue;
     if (/Democracy Dies/i.test(sentence)) continue;
     if (/^Q:\s/i.test(sentence)) continue;
@@ -571,19 +562,83 @@ function extractExcerptFromFullText(fullText, showTitle) {
     if (/^No Comment\b/i.test(sentence)) continue;
     if (/^Listen\s*\d+\s*min/i.test(sentence)) continue;
     if (/^This article was published/i.test(sentence)) continue;
-    // Skip WaPo photo description sentences ("Name as Character in 'Title'")
     if (/^[A-Z][a-z]+ [A-Z][a-z]+\s+(as|in|and|stars|is)\s/i.test(sentence) && /\([A-Z][a-z]+ [A-Z][a-z]+\)\s*$/.test(sentence)) continue;
-    // Skip NYSR star-rating taglines (cast list + show description, no review content)
     if (/^[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+,\s+[A-Z][a-z]+/.test(sentence) && /\b(cast|musical|new|spark|star)\b/i.test(sentence) && sentence.length < 200) continue;
+    // Skip CMS/navigation junk (USA Today, AP, etc.)
+    if (/^(MUSIC|THEATER|ARTS|ENTERTAINMENT)\s*[A-Z]/i.test(sentence) && /Add Topic|Keep Watching|mins ago/i.test(sentence)) continue;
+    if (/^NEW YORK\s*[-–—]\s*$/i.test(sentence)) continue;  // Orphaned dateline
 
-    excerpt += (excerpt ? ' ' : '') + sentence;
+    substantive.push(sentence);
+  }
 
-    // Stop after 2-3 good sentences or ~300 chars
-    if (excerpt.length >= 250 || (excerpt.match(/[.!?]/g) || []).length >= 2) {
-      break;
+  // Score sentences for evaluative content — critics put opinions in the middle, not the opening
+  const evaluativePatterns = /\b(brilliant|stunning|magnificent|masterful|superb|exquisite|riveting|extraordinary|tremendous|dazzling|remarkable|outstanding|phenomenal|triumphant|glorious|mesmerizing|unforgettable|electrifying|breathtaking|enthralling|captivating|compelling|powerful|moving|touching|stirring|soaring|ambitious|accomplished|impressive|enjoyable|entertaining|delightful|charming|witty|clever|smart|sharp|terrific|wonderful|excellent|great|good|solid|fine|decent|satisfying|adequate|mediocre|uneven|mixed|disappointing|lackluster|overwrought|tedious|plodding|uninspired|dull|bland|lifeless|clumsy|awkward|misguided|tiresome|labored|dreary|flat|overwrought|pretentious|bloated|muddled|incoherent|terrible|awful|abysmal|disastrous|dire|painful|insufferable|excels|succeeds|fails|stumbles|falters|shines|soars|triumphs|delivers|struggles|suffers|manages|achieves|misses|works|doesn't work|falls short|rises above|worth seeing|must.see|not to be missed|skip this|avoid|highly recommended)\b/i;
+
+  // Also detect evaluative structure: "is a [adjective] [noun]", "proves to be", comparative language
+  const evaluativeStructure = /\b(is a|is an|proves to be|turns out|makes for|offers a|provides|lacks|needs more|could use|doesn't quite|more than|less than|better than|worse than|the best|the worst|one of the|not enough|too much|too many|too little|though .{5,30} (it|the|this)|but .{5,30} (it|the|this)|despite|unfortunately|thankfully|fortunately|sadly)\b/i;
+
+  // Score each sentence
+  const scored = substantive.map((sentence, idx) => {
+    let score = 0;
+
+    // Evaluative language match
+    const evalMatches = sentence.match(evaluativePatterns);
+    if (evalMatches) score += 3;
+
+    // Evaluative structure match
+    if (evaluativeStructure.test(sentence)) score += 2;
+
+    // Bonus for sentences that feel like a verdict
+    if (/\b(overall|in the end|ultimately|all in all|on balance|the result|the bottom line|what emerges)\b/i.test(sentence)) score += 2;
+
+    // Penalty for pure scene-setting/context (dates, "back in YEAR", "when X first", producer/cast lists)
+    if (/^(In|Back in|When)\s+\d{4}/i.test(sentence)) score -= 2;
+    if (/^(With|Featuring|Starring|Directed by|Written by|Produced by)\s+[A-Z]/i.test(sentence)) score -= 1;
+    if (/^NEW YORK\s*[-–—]/i.test(sentence)) score -= 2;
+    // Penalty for pure plot summary language
+    if (/^(The story|The plot|The show|The musical|The play)\s+(follows|centers|is about|is set|takes place|begins|opens|starts|revolves)/i.test(sentence)) score -= 1;
+
+    // Slight preference for mid-review sentences (where opinions tend to be)
+    if (idx > 0 && idx < 8) score += 0.5;
+    // Heavy penalty for very early sentences in long reviews (likely context)
+    if (idx === 0 && substantive.length > 5) score -= 1;
+
+    return { sentence, score, idx };
+  });
+
+  // Try to build an excerpt from the highest-scored evaluative sentences
+  // First, try to find a cluster of 1-3 consecutive evaluative sentences
+  let bestExcerpt = '';
+  let bestScore = -Infinity;
+
+  for (let i = 0; i < Math.min(scored.length, 15); i++) {
+    let excerpt = scored[i].sentence;
+    let totalScore = scored[i].score;
+
+    // Try adding the next 1-2 sentences for context
+    for (let j = i + 1; j < Math.min(i + 3, scored.length); j++) {
+      if (scored[j].idx !== scored[j - 1].idx + 1) break; // Only consecutive
+      excerpt += ' ' + scored[j].sentence;
+      totalScore += scored[j].score;
+      if (excerpt.length >= 250) break;
+    }
+
+    if (excerpt.length >= 50 && excerpt.length <= 400 && totalScore > bestScore) {
+      bestScore = totalScore;
+      bestExcerpt = excerpt;
     }
   }
 
+  // Fallback: if no evaluative sentences found, take the first substantive sentences
+  if (bestScore <= 0 || bestExcerpt.length < 50) {
+    bestExcerpt = '';
+    for (const s of substantive) {
+      bestExcerpt += (bestExcerpt ? ' ' : '') + s;
+      if (bestExcerpt.length >= 250 || (bestExcerpt.match(/[.!?]/g) || []).length >= 2) break;
+    }
+  }
+
+  let excerpt = bestExcerpt;
   if (excerpt.length < 50) return null;
 
   // Strip trailing "Read more." or similar
@@ -618,7 +673,12 @@ function extractExcerptFromFullText(fullText, showTitle) {
 
 /**
  * Select the best available excerpt using smart priority
- * Priority: LLM keyPhrases > showScoreExcerpt > fullText extract > bwwExcerpt > dtliExcerpt
+ * Aggregator excerpts are preferred over fullText extraction because critics
+ * typically open reviews with context/scene-setting, not evaluative content.
+ * Aggregator editors hand-pick evaluative quotes.
+ *
+ * Priority: LLM keyPhrases > showScoreExcerpt > bwwExcerpt > nycTheatreExcerpt >
+ *           dtliExcerpt > fullText extract > existing pullQuote
  */
 function selectBestExcerpt(data) {
   // 1. Try LLM-extracted key phrases first (already curated quotes!)
@@ -651,15 +711,7 @@ function selectBestExcerpt(data) {
     }
   }
 
-  // 3. Try extracting from fullText (skip truncated/garbage scrapes)
-  if (data.fullText && data.fullText.length > 300 && data.textStatus !== 'truncated') {
-    const extracted = extractExcerptFromFullText(data.fullText, data.showId);
-    if (extracted && extracted.length > 50) {
-      return extracted;
-    }
-  }
-
-  // 4. Try bwwExcerpt (usually cleaner than DTLI)
+  // 3. Try bwwExcerpt (aggregator-curated, usually evaluative)
   if (data.bwwExcerpt) {
     const cleaned = cleanExcerpt(data.bwwExcerpt);
     if (cleaned && cleaned.length > 40) {
@@ -667,7 +719,7 @@ function selectBestExcerpt(data) {
     }
   }
 
-  // 5. Try nycTheatreExcerpt (similar quality to dtli/bww)
+  // 4. Try nycTheatreExcerpt (aggregator-curated)
   if (data.nycTheatreExcerpt) {
     const cleaned = cleanExcerpt(data.nycTheatreExcerpt);
     if (cleaned && cleaned.length > 40) {
@@ -675,11 +727,20 @@ function selectBestExcerpt(data) {
     }
   }
 
-  // 6. Last resort: dtliExcerpt with aggressive cleaning
+  // 5. Try dtliExcerpt with aggressive cleaning (aggregator-curated)
   if (data.dtliExcerpt) {
     const cleaned = cleanExcerpt(data.dtliExcerpt, true);
     if (cleaned && cleaned.length > 40) {
       return cleaned;
+    }
+  }
+
+  // 6. Extract from fullText (last automated option — critics often open with
+  //    context/scene-setting, so this is lower priority than aggregator excerpts)
+  if (data.fullText && data.fullText.length > 300 && data.textStatus !== 'truncated') {
+    const extracted = extractExcerptFromFullText(data.fullText, data.showId);
+    if (extracted && extracted.length > 50) {
+      return extracted;
     }
   }
 
