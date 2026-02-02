@@ -1,51 +1,64 @@
 {
   "processed": [
-    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
-    "an-enemy-of-the-people-2024/vulture--jesse-green.json",
-    "an-enemy-of-the-people-2024/deadline--greg-evans.json"
+    "six-2021/deadline--greg-evans.json",
+    "six-2021/guardian--adrian-horton.json",
+    "six-2021/theatermania--jesse-green.json",
+    "six-2021/did-they-like-it--jose-sols.json"
   ],
   "failed": [
-    "an-enemy-of-the-people-2024/guardian--adrian-horton.json",
-    "an-enemy-of-the-people-2024/nydailynews--chris-jones.json",
-    "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
-    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
-    "an-enemy-of-the-people-2024/wsj--unknown.json",
-    "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
-    "an-enemy-of-the-people-2024/washpost--peter-marks.json"
+    "six-2021/observer--david-cote.json",
+    "six-2021/timeout--adam-feldman.json",
+    "six-2021/wsj--charles-isherwood.json",
+    "six-2021/amny--matt-windman.json",
+    "six-2021/front-row-center--tulis-mccall.json",
+    "six-2021/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "browserbase": [
-      "data/review-texts/an-enemy-of-the-people-2024/nydailynews--chris-jones.json"
+    "playwright": [
+      "six-2021/guardian--adrian-horton.json",
+      "six-2021/did-they-like-it--jose-sols.json"
     ],
+    "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "six-2021/theatermania--jesse-green.json"
+    ],
     "archive": [
-      "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
-      "an-enemy-of-the-people-2024/vulture--jesse-green.json",
-      "an-enemy-of-the-people-2024/deadline--greg-evans.json"
+      "six-2021/deadline--greg-evans.json"
     ]
   },
-  "startTime": "2026-02-02T16:33:38.381Z",
-  "lastProcessed": "an-enemy-of-the-people-2024/washpost--peter-marks.json",
+  "startTime": "2026-02-02T16:32:58.595Z",
+  "lastProcessed": "six-2021/talkinbroadway--matthew-murray.json",
   "log": [
     {
-      "t": "2026-02-02T16:34:06.601Z",
+      "t": "2026-02-02T16:33:29.712Z",
       "event": "bb-session",
-      "session": "a22e2911",
-      "url": "https://www.nydailynews.com/2024/03/18/broadway-review-enemy-of-the-people-is-li"
+      "session": "a3c8a3e0",
+      "url": "https://observer.com/2021/10/six-broadway-review/"
     },
     {
-      "t": "2026-02-02T16:36:59.038Z",
+      "t": "2026-02-02T16:34:00.050Z",
       "event": "bb-session",
-      "session": "21a86339",
-      "url": "https://www.washingtonpost.com/theater-dance/2024/03/18/enemy-people-broadway-re"
+      "session": "46bbe503",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/six-broadway_91234"
     },
     {
-      "t": "2026-02-02T16:37:00.678Z",
-      "event": "bb-login-uncertain",
-      "domain": "washingtonpost.com"
+      "t": "2026-02-02T16:34:34.579Z",
+      "event": "bb-session",
+      "session": "6cafcafc",
+      "url": "https://www.wsj.com/articles/six-review-broadway-musical-11633550400"
+    },
+    {
+      "t": "2026-02-02T16:35:16.606Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-02T16:35:47.252Z",
+      "event": "bb-session",
+      "session": "32c14124",
+      "url": "https://www.amny.com/entertainment/six-broadway-review/"
     }
   ]
 }
