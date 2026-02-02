@@ -5,7 +5,7 @@
   "criticName": "Frank Rizzo",
   "url": "https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/",
   "publishDate": null,
-  "fullText": "A musical that captures the sweep of history in all its complexities without sacrifice of character or credibility is no easy feat.\n\nBut \"Suffs,\" which tells the story of the final push to achieve the 19th Amendment giving women the right to vote in 1920, does just that with a singular vision and a collective collaboration that is smart, inspiring and thoroughly entertaining.\n\nSince its initial bow in 2022, \"Suffs,\" created by composer-lyricist-book writer-lead actor Shaina Taub, has been inevitably compared to another musical epic created by a multi-hyphenate that began at the same theater at The Public which offered fresh perspectives of the American experience — and then went on to be a theatrical sensation. \"Suffs\" may not elicit the same musical furor of \"Hamilton\" but it's sure to find a following not only of contemporary suffs, but musical fans, too.",
+  "fullText": "A musical that captures the sweep of history in all its complexities without sacrifice of character or credibility is no easy feat.\n\nBut \"Suffs,\" which tells the story of the final push to achieve the 19th Amendment giving women the right to vote in 1920, does just that with a singular vision and a collective collaboration that is smart, inspiring and thoroughly entertaining.",
   "bwwExcerpt": "As writer, Taub smartly avoids the facile men-against-women tropes and digs deeper into internal challenges within the movement and within the women as individuals. Thanks to the specificity of the writing, music and lyrics and a remarkable ensemble of women and nonbinary actors, the multitude of characters in this densely packed historic narrative are, if not deeply, then at least reasonably well-defined and relatable with their personal doubts, fears and triumphs.",
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
@@ -63,24 +63,30 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 77,
-  "archivePath": "data/archives/reviews/suffs-2024/variety--frank-rizzo_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:44:55.378Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/suffs-2024/variety--frank-rizzo_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:56:02.203Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "404 - Page not found"
+      "error": "Insufficient text extracted: 0 chars"
     },
     {
-      "tier": 4,
-      "method": "archive",
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "sourceMethod": "archive",
+  "fetchTier": 3,
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20250104071638",
   "archiveOrgUrl": "http://web.archive.org/web/20250104071638/https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/",
   "rescoreCompletedAt": "2026-02-01T16:15:26.572Z",
@@ -90,8 +96,10 @@
   "contentTier": "complete",
   "wordCount": 1022,
   "isFullReview": false,
-  "textWordCount": 142,
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "partial"
+  "textWordCount": 63,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated"
 }
