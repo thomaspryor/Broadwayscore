@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/moulin-rouge-the-musical_88234.html",
   "publishDate": "July 25, 2019",
-  "fullText": "The show is a sugar rush of pure theatrical joy, even if it occasionally threatens to give you diabetes from its relentless sweetness.",
-  "isFullReview": false,
+  "fullText": "The recording will be based on the 2017 production from New York City Center.\n\nGhostlight Records has announced it will record a new cast album of Cole Porter's 1930 musical The New Yorkers. The recording will be based on the 2017 production from New York City Center Encores!, directed by John Rando with musical direction by Encores! music director Rob Berman and choreography by Chris Bailey. The concert adaptation is by Encores! artistic director Jack Viertel. The album, produced by Rob Berman and Lawrence Manchester, is being recorded March 25 and 26.\n\nThe cast of The New Yorkers features Cyrille Aimée, Clyde Alves, Todd Buonopane, Arnie Burton, Kevin Chamberlin, Mylinda Hull, Robyn Hurder, Byron Jennings, Eddie Korbich, Tam Mutu, Jeffrey Schecter, Scarlett Strallen, Tyler Lansing Weaks, and Ruth Williamson. The ensemble includes Matt Bauman, Sam Bolen, Christine DiGiallonardo, Brian Flores, Tessa Grady, Matthew Griffin, Curtis Holland, Evan Kasprzak, Marina Lazzaretto, Kathryn McCreary, Timothy McDevitt, Kristyn Pope, Mariah Reshea Reives, Lindsay Roberts, Brendan Stimson, Cody Williams, and Joseph Wiggan.\n\nThe New Yorkers is described as \"a gleefully amoral celebration of speakeasies, gangsters, society dames, and the great city they love. Inspired by legendary cartoonist Peter Arno's work for The New Yorker, the musical centers on featherbrained socialite Alice Wentworth (Scarlett Strallen), whose bootlegger beau, Al Spanish (Tam Mutu), leads her on a madcap romp from Park Avenue to Sing Sing and back again.\"\n\nReview: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Every Step Has Meaning in Anne Gridley’s Watch Me Walk \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Leopold Bloom for Rookies and Pros in a Hilarious Ulysses \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "The show is a sugar rush of pure theatrical joy, even if it occasionally threatens to give you diabetes from its relentless sweetness.",
   "originalScore": null,
   "assignedScore": 78,
@@ -66,5 +66,48 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 336,
+  "archivePath": "data/archives/reviews/moulin-rouge-2019/theatermania--jesse-green_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:59:49.318Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }

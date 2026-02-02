@@ -5,7 +5,7 @@
   "criticName": "Terry Teachout",
   "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11564101001",
   "publishDate": "July 25, 2019",
-  "fullText": null,
+  "fullText": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11564101001\n\nShareResizeDanny Burstein as Harold Zidler Matthew MurphyNew York\n\nIt was after seeing Baz Luhrmann’s “Moulin Rouge!” in 2001 that I decided his “Strictly Ballroom,” the 1992 film that first brought him international fame, had been a one-off fluke. Lovely though “Strictly Ballroom” was and is, nothing that Mr. Luhrmann has done since then has caused me to think otherwise, “Moulin Rouge!” in particular. A pop-music jukebox-musical rewrite of “La Bohème” shot in the style of an octillion-dollar music video, it’s the campiest movie I’ve ever seen—it may well be the campiest movie ever made—and the only thing that I now remember about it with any particular clarity was Jim Broadbent lip-syncing “Like a Virgin” in drag. It was thus inevitable that someone would bring it to Broadway, where campy big-budget musicals usually draw a crowd, and that someone turns out to be Alex Timbers, who’s good at going big (the musical version of “Rocky” that he directed in 2014 ended with a total-immersion fight scene of the utmost spectacularity). That doesn’t mean the show itself is any good—it is, in fact, horrible—but it’s definitely big. Every cent of its $28 million budget is visible.",
   "showScoreExcerpt": "\"âMoulin Rouge! The Musical!â Review: Pop Opera Excess. A stage adaptation of Baz Luhrmannâs 2001 camp extravaganza is as opulent as it is empty.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/moulin-rouge-broadway",
   "originalScore": null,
@@ -65,5 +65,46 @@
   "sources": [
     "show-score",
     "web-search"
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 60,
+  "isFullReview": false,
+  "textWordCount": 195,
+  "archivePath": "data/archives/reviews/moulin-rouge-2019/wsj--terry-teachout_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T03:00:10.153Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "Insufficient text in archive: 378 chars"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 210 (min: 300)"
   ]
 }
