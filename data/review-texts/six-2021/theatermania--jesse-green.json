@@ -69,7 +69,7 @@
   "contentTierReason": "Short text (32 words)",
   "textWordCount": 42,
   "archivePath": "data/archives/reviews/six-2021/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T03:08:38.300Z",
+  "textFetchedAt": "2026-02-02T16:34:23.525Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -85,10 +85,16 @@
       "error": "Skipped - known blocked site"
     },
     {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 75 chars"
+    },
+    {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+      "error": "Insufficient text: 141 chars"
     },
     {
       "tier": 3,
