@@ -1,92 +1,73 @@
 {
-  "runDate": "2026-02-02T23:21:06.137Z",
+  "runDate": "2026-02-02T23:24:28.990Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hadestown-2019",
+    "showFilter": "the-wiz-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 7,
+    "processed": 3,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "22.2%"
+    "successRate": "42.9%"
   },
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 1,
+    "playwright": 1,
+    "browserbase": 1,
+    "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
-    "tier1_5Attempts": 4,
-    "tier1_5Success": 0,
-    "tier2Attempts": 5,
+    "tier1Attempts": 5,
+    "tier1Success": 3,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 2,
     "tier2Success": 1,
-    "tier3Attempts": 2,
+    "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier4Attempts": 11,
-    "tier4Success": 4,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 22,
-    "browserbaseSessionsUsed": 4,
-    "browserbaseMinutesUsed": 3.1,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 10,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.4,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-2019/theatermania--jesse-green.json",
-    "hadestown-2019/wsj--terry-teachout.json"
+    "the-wiz-2024/broadwaynews--brittani-samuel.json",
+    "the-wiz-2024/talkinbroadway--unknown.json",
+    "the-wiz-2024/village-voice--michael-musto.json"
   ],
   "failed": [
-    "hadestown-2019/guardian--jesse-green.json",
-    "hadestown-2019/observer--david-cote.json",
-    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
-    "hadestown-2019/timeout--adam-feldman.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/medium--christian-lewis.json",
-    "hadestown-2019/vox--constance-grady.json"
+    "the-wiz-2024/ny-sun--elysa-gardner.json",
+    "the-wiz-2024/nydailynews--chris-jones.json",
+    "the-wiz-2024/thestage--lane-williamson.json",
+    "the-wiz-2024/washpost--gloria-oladipo.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [
-      "hadestown-2019/theatermania--jesse-green.json"
+    "playwright": [
+      "the-wiz-2024/village-voice--michael-musto.json"
     ],
+    "browserbase": [
+      "data/review-texts/the-wiz-2024/nydailynews--chris-jones.json"
+    ],
+    "scrapingbee": [],
     "brightdata": [
-      "hadestown-2019/wsj--terry-teachout.json"
+      "the-wiz-2024/talkinbroadway--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "the-wiz-2024/broadwaynews--brittani-samuel.json"
+    ]
   },
-  "failuresByOutlet": {
-    "Theater Reviews from My Seat": {
-      "count": 1,
-      "domain": "theaterreviewsfrommyseat.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Daily Beast": {
-      "count": 1,
-      "domain": "thedailybeast.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "hadestown-2019/observer--david-cote.json",
-      "oldUrl": "https://observer.com/2019/04/hadestown-broadway-review/",
-      "newUrl": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-on-broadway-review/"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
