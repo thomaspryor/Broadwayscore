@@ -70,9 +70,16 @@
     ]
   },
   "failuresByOutlet": {
-    "The Hollywood Reporter": {
+    "The Wall Street Journal": {
       "count": 1,
-      "domain": "hollywoodreporter.com",
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -106,5 +113,11 @@
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
+      "oldUrl": "https://nypost.com/2024/11/13/entertainment/maybe-happy-ending-review-charming-musical-about-robot-romance/",
+      "newUrl": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
+    }
+  ]
 }
