@@ -1,59 +1,53 @@
 {
   "processed": [
-    "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "hamilton-2015/newsday--linda-winer.json",
-    "hamilton-2015/nypost--elisabeth-vincentelli.json",
-    "hamilton-2015/observer--david-cote.json",
-    "hamilton-2015/theatermania--adam-feldman.json",
-    "hamilton-2015/wsj--terry-teachout.json",
-    "hamilton-2015/ny1--roma-torre.json",
-    "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
+    "harry-potter-2021/exeunt-magazine--kev-berry.json",
+    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
+    "harry-potter-2021/medium--christian-lewis.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/the-times--ann-treneman.json",
+    "harry-potter-2021/washpost--peter-marks.json"
   ],
   "failed": [
-    "hamilton-2015/variety--charles-isherwood.json",
-    "hamilton-2015/timeout--david-cote.json",
-    "hamilton-2015/the-clyde-fitch-report--david-finkle.json"
+    "harry-potter-2021/national-review--kyle-smith.json",
+    "harry-potter-2021/timeout--adam-feldman.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
+    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "browserbase": [
-      "data/review-texts/hamilton-2015/observer--david-cote.json",
-      "hamilton-2015/observer--david-cote.json"
+    "playwright": [
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json",
+      "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+      "harry-potter-2021/exeunt-magazine--kev-berry.json",
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+      "harry-potter-2021/the-times--ann-treneman.json",
+      "harry-potter-2021/washpost--peter-marks.json"
     ],
-    "scrapingbee": [],
-    "brightdata": [
-      "hamilton-2015/theatermania--adam-feldman.json"
+    "browserbase": [],
+    "scrapingbee": [
+      "harry-potter-2021/limelight-magazine-au--clive-paget.json",
+      "harry-potter-2021/medium--christian-lewis.json"
     ],
+    "brightdata": [],
     "archive": [
-      "hamilton-2015/hollywood-reporter--david-rooney.json",
-      "hamilton-2015/newsday--linda-winer.json",
-      "hamilton-2015/nypost--elisabeth-vincentelli.json",
-      "hamilton-2015/wsj--terry-teachout.json",
-      "hamilton-2015/ny1--roma-torre.json",
-      "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "harry-potter-2021/broadwayworld--michael-dale.json",
+      "harry-potter-2021/drama-queen-nyc--jonathan-warman.json"
     ]
   },
-  "startTime": "2026-02-02T23:15:47.593Z",
-  "lastProcessed": "hamilton-2015/thisbroadsway--sandra-mcfarland.json",
-  "log": [
-    {
-      "t": "2026-02-02T23:16:55.726Z",
-      "event": "bb-session",
-      "session": "ae00744a",
-      "url": "https://observer.com/2015/08/hamilton-broadway-review/"
-    },
-    {
-      "t": "2026-02-02T23:17:28.518Z",
-      "event": "bb-session",
-      "session": "fa3bfa2a",
-      "url": "https://observer.com/2020/07/hamilton-disney-plus-review-streaming/"
-    },
-    {
-      "t": "2026-02-02T23:17:43.222Z",
-      "event": "bb-session",
-      "session": "3968c2b1",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/hamilton_72618.html"
-    }
-  ]
+  "startTime": "2026-02-02T23:11:31.584Z",
+  "lastProcessed": "harry-potter-2021/zeal-nyc--chris-caggiano.json",
+  "log": []
 }
