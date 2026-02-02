@@ -1,96 +1,140 @@
 {
-  "runDate": "2026-02-02T15:15:35.774Z",
+  "runDate": "2026-02-02T15:18:51.435Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hamilton-2015",
+    "showFilter": "harry-potter-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 8,
+    "processed": 10,
+    "failed": 14,
     "skipped": 0,
-    "successRate": "46.7%"
+    "successRate": "41.7%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 7,
     "browserbase": 0,
-    "scrapingbee": 2,
-    "brightdata": 1,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 3,
+    "tier1Attempts": 20,
+    "tier1Success": 10,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 8,
-    "tier2Success": 3,
-    "tier3Attempts": 4,
-    "tier3Success": 2,
-    "tier4Attempts": 20,
-    "tier4Success": 5,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 52,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 2,
+    "tier3Success": 0,
+    "tier4Attempts": 37,
+    "tier4Success": 7,
+    "totalFailed": 14,
+    "scrapingBeeCreditsUsed": 28,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoveryAttempts": 8,
+    "urlDiscoverySuccess": 3,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hamilton-2015/guardian--jesse-green.json",
-    "hamilton-2015/newsday--linda-winer.json",
-    "hamilton-2015/nypost--elisabeth-vincentelli.json",
-    "hamilton-2015/nypost--johnny-oleksinski.json",
-    "hamilton-2015/theatermania--adam-feldman.json",
-    "hamilton-2015/theatre-reviews-limited--david-roberts.json",
-    "hamilton-2015/ny1--roma-torre.json"
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "harry-potter-2021/did-they-like-it--ana-zambrana.json",
+    "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
+    "harry-potter-2021/mashable--erin-strecker.json",
+    "harry-potter-2021/medium--christian-lewis.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/the-times--ann-treneman.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json"
   ],
   "failed": [
-    "hamilton-2015/hollywood-reporter--david-rooney.json",
-    "hamilton-2015/variety--charles-isherwood.json",
-    "hamilton-2015/observer--david-cote.json",
-    "hamilton-2015/timeout--david-cote.json",
-    "hamilton-2015/wsj--terry-teachout.json",
-    "hamilton-2015/ap--mark-kennedy.json",
-    "hamilton-2015/the-clyde-fitch-report--david-finkle.json",
-    "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
+    "harry-potter-2021/deadline--greg-evans.json",
+    "harry-potter-2021/national-review--kyle-smith.json",
+    "harry-potter-2021/timeout--adam-feldman.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/exeunt-magazine--kev-berry.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
+    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
+    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
   ],
   "tierDetails": {
     "playwright": [
-      "hamilton-2015/guardian--jesse-green.json",
-      "hamilton-2015/ny1--roma-torre.json"
+      "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+      "harry-potter-2021/did-they-like-it--ana-zambrana.json",
+      "harry-potter-2021/mashable--erin-strecker.json",
+      "harry-potter-2021/medium--christian-lewis.json",
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+      "harry-potter-2021/the-times--ann-treneman.json",
+      "harry-potter-2021/woman-around-town--alix-cohen.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "hamilton-2015/nypost--johnny-oleksinski.json",
-      "hamilton-2015/theatermania--adam-feldman.json"
-    ],
-    "brightdata": [
-      "hamilton-2015/hollywood-reporter--david-rooney.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archive": [
-      "hamilton-2015/newsday--linda-winer.json",
-      "hamilton-2015/nypost--elisabeth-vincentelli.json",
-      "hamilton-2015/theatre-reviews-limited--david-roberts.json"
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "harry-potter-2021/broadwayworld--michael-dale.json",
+      "harry-potter-2021/drama-queen-nyc--jonathan-warman.json"
     ]
   },
   "failuresByOutlet": {
-    "Variety": {
+    "Cititour": {
       "count": 1,
-      "domain": "variety.com",
+      "domain": "cititour.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Clyde Fitch Report": {
+    "Broadway Blog": {
       "count": 1,
-      "domain": "clydefitchreport.com",
+      "domain": "thebroadwayblog.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "CurtainUp": {
+      "count": 1,
+      "domain": "curtainup.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Front Row Center": {
+      "count": 1,
+      "domain": "frontrowcenter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Front Mezz Junkies": {
+      "count": 1,
+      "domain": "frontmezzjunkies.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Theater Pizzazz": {
+      "count": 1,
+      "domain": "theaterpizzazz.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Zeal NYC": {
+      "count": 1,
+      "domain": "zealnyc.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -98,14 +142,19 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "hamilton-2015/guardian--jesse-green.json",
-      "oldUrl": "https://www.theguardian.com/stage/2015/aug/07/hamilton-review-broadway-musical",
-      "newUrl": "https://www.theguardian.com/stage/2015/feb/18/hamilton-review-founding-father-gets-a-hip-hop-makeover"
+      "reviewId": "harry-potter-2021/deadline--greg-evans.json",
+      "oldUrl": "https://deadline.com/2021/12/harry-potter-cursed-child-broadway-review/",
+      "newUrl": "https://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/"
     },
     {
-      "reviewId": "hamilton-2015/nypost--johnny-oleksinski.json",
-      "oldUrl": "https://nypost.com/2015/08/06/hamilton-is-the-best-musical-to-hit-broadway-in-years/",
-      "newUrl": "https://nypost.com/2020/06/30/hamilton-review-musical-loses-edge-but-reveals-tenderness/"
+      "reviewId": "harry-potter-2021/curtainup--elyse-sommer.json",
+      "oldUrl": "http://www.curtainup.com/harrypottercursedchild.html",
+      "newUrl": "http://www.curtainup.com/harrypotterbway18.html"
+    },
+    {
+      "reviewId": "harry-potter-2021/exeunt-magazine--kev-berry.json",
+      "oldUrl": "http://exeuntmagazine.com/reviews/harry-potter-cursed-child/",
+      "newUrl": "https://exeuntmagazine.com/features/harry-potter-and-the-cursed-child-some-speculative-reviews/"
     }
   ]
 }
