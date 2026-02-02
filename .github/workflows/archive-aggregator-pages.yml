@@ -31,7 +31,7 @@ jobs:
       - name: Archive aggregator pages
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_CUSTOMER_ID: ${{ secrets.BRIGHTDATA_CUSTOMER_ID }}
           BRIGHTDATA_ZONE: ${{ github.event.inputs.bright_data_zone }}
           SHOW_IDS: ${{ github.event.inputs.show_ids }}
@@ -164,7 +164,7 @@ jobs:
           async function main() {
             const config = {
               scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY,
-              brightDataKey: process.env.BRIGHTDATA_API_KEY,
+              brightDataKey: process.env.BRIGHTDATA_TOKEN,
               brightDataCustomerId: process.env.BRIGHTDATA_CUSTOMER_ID,
               brightDataZone: process.env.BRIGHTDATA_ZONE || 'web_unlocker',
             };
@@ -176,7 +176,7 @@ jobs:
             if (!hasScrapingBee && !hasBrightData) {
               console.error('❌ No scraping service configured. Set either:');
               console.error('   - SCRAPINGBEE_API_KEY, or');
-              console.error('   - BRIGHTDATA_API_KEY + BRIGHTDATA_CUSTOMER_ID');
+              console.error('   - BRIGHTDATA_TOKEN + BRIGHTDATA_CUSTOMER_ID');
               process.exit(1);
             }
 

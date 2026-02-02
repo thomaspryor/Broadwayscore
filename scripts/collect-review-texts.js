@@ -20,7 +20,7 @@
  *   VULTURE_EMAIL, VULTURE_PASSWORD - Vulture/NY Mag credentials
  *   WAPO_EMAIL, WAPO_PASSWORD - Washington Post credentials
  *   SCRAPINGBEE_API_KEY - ScrapingBee API key
- *   BRIGHTDATA_API_KEY - Bright Data API key
+ *   BRIGHTDATA_TOKEN - Bright Data API token
  *   BRIGHTDATA_CUSTOMER_ID - Bright Data customer ID
  *   BROWSERBASE_API_KEY - Browserbase API key (for managed browser cloud)
  *   BROWSERBASE_PROJECT_ID - Browserbase project ID
@@ -113,7 +113,7 @@ const CONFIG = {
 
   // API Keys
   scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '',
-  brightDataKey: process.env.BRIGHTDATA_API_KEY || '',
+  brightDataKey: process.env.BRIGHTDATA_TOKEN || '',
   brightDataCustomerId: process.env.BRIGHTDATA_CUSTOMER_ID || '',
   browserbaseApiKey: process.env.BROWSERBASE_API_KEY || '',
   browserbaseProjectId: process.env.BROWSERBASE_PROJECT_ID || '',
