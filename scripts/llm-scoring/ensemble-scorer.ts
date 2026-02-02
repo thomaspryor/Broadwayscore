@@ -333,15 +333,14 @@ export class EnsembleReviewScorer {
         thumb: ensembleResult.bucket === 'Rave' || ensembleResult.bucket === 'Positive' ? 'Up' :
                ensembleResult.bucket === 'Mixed' ? 'Flat' : 'Down',
         components: { book: null, music: null, performances: null, direction: null },
-        keyPhrases: ensembleResult.modelResults.claude?.keyPhrases
-          || ensembleResult.modelResults.openai?.keyPhrases
-          || ensembleResult.modelResults.gemini?.keyPhrases
-          // V5 scorers return keyQuote (single string) instead of keyPhrases (array)
-          // Convert the best available keyQuote into a keyPhrases entry for pullQuote pipeline
-          || (ensembleResult.modelResults.claude?.keyQuote ? [{ quote: ensembleResult.modelResults.claude.keyQuote, sentiment: 'neutral' as const, strength: 3 }]
-            : ensembleResult.modelResults.openai?.keyQuote ? [{ quote: ensembleResult.modelResults.openai.keyQuote, sentiment: 'neutral' as const, strength: 3 }]
-            : ensembleResult.modelResults.gemini?.keyQuote ? [{ quote: ensembleResult.modelResults.gemini.keyQuote, sentiment: 'neutral' as const, strength: 3 }]
-            : []),
+        // V5 scorers return keyQuote (single string); convert to keyPhrases array for pullQuote pipeline
+        keyPhrases: (() => {
+          const kq = ensembleResult.modelResults.claude?.keyQuote
+            || ensembleResult.modelResults.openai?.keyQuote
+            || ensembleResult.modelResults.gemini?.keyQuote
+            || '';
+          return kq.length > 20 ? [{ quote: kq, sentiment: 'neutral' as const, strength: 3 }] : [];
+        })(),
         reasoning: this.buildCombinedReasoning(ensembleResult),
         flags: {
           hasExplicitRecommendation: false,
