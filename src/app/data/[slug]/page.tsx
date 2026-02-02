@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getShowBySlug, shows } from '@/data/shows';
+import { BASE_URL } from '@/lib/seo';
 
 export function generateStaticParams() {
   return shows.map((show) => ({
@@ -15,6 +16,9 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
   return {
     title: `${show.metadata.title} Data - Broadway Critic Score`,
     description: `Raw data for ${show.metadata.title}`,
+    alternates: {
+      canonical: `${BASE_URL}/data/${params.slug}`,
+    },
   };
 }
 

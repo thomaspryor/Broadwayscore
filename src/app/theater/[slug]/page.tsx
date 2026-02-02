@@ -5,7 +5,7 @@ import { getTheaterBySlug, getAllTheaterSlugs } from '@/lib/data';
 import { generateBreadcrumbSchema, generateTheaterSchema } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export function generateStaticParams() {
   return getAllTheaterSlugs().map((slug) => ({ slug }));
