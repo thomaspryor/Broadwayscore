@@ -38,8 +38,8 @@
     "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -67,5 +67,11 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "back-to-the-future-2023/observer--david-cote.json",
+      "oldUrl": "https://observer.com/2023/08/back-to-the-future-the-musical-review-broadway/",
+      "newUrl": "https://observer.com/2023/08/back-to-the-future-the-musical-review-the-delorean-flies-the-songs-sink/"
+    }
+  ]
 }
