@@ -1,21 +1,35 @@
 {
   "processed": [
-    "cabaret-2024/nyt-theater--jonathan-mandell.json"
+    "spamalot-2023/variety--naveen-kumar.json",
+    "spamalot-2023/deadline--greg-evans.json",
+    "spamalot-2023/theatermania--jesse-green.json",
+    "spamalot-2023/timeout--adam-feldman.json"
   ],
   "failed": [
-    "cabaret-2024/variety--naveen-kumar.json"
+    "spamalot-2023/variety--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "cabaret-2024/nyt-theater--jonathan-mandell.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archive": []
+    "brightdata": [
+      "spamalot-2023/theatermania--jesse-green.json"
+    ],
+    "archive": [
+      "spamalot-2023/variety--naveen-kumar.json",
+      "spamalot-2023/deadline--greg-evans.json",
+      "spamalot-2023/timeout--adam-feldman.json"
+    ]
   },
-  "startTime": "2026-02-02T02:38:51.894Z",
-  "lastProcessed": "cabaret-2024/variety--naveen-kumar.json",
-  "log": []
+  "startTime": "2026-02-02T02:41:27.566Z",
+  "lastProcessed": "spamalot-2023/timeout--adam-feldman.json",
+  "log": [
+    {
+      "t": "2026-02-02T02:41:47.160Z",
+      "event": "bb-session",
+      "session": "f654b952",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/spamalot-broadway-st-"
+    }
+  ]
 }
