@@ -1,17 +1,36 @@
 {
   "processed": [],
   "failed": [
-    "stranger-things-2024/broadwaynews--brittani-samuel.json"
+    "stranger-things-2024/broadwaynews--brittani-samuel.json",
+    "stranger-things-2024/deadline--greg-evans.json",
+    "stranger-things-2024/timeout--adam-feldman.json",
+    "stranger-things-2024/wsj--charles-isherwood.json",
+    "stranger-things-2024/thestage--dave-fargnoli.json",
+    "stranger-things-2024/tickertv--cheryl-king.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "stranger-things-2024/deadline--greg-evans.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-02-02T18:17:15.724Z",
-  "lastProcessed": "stranger-things-2024/broadwaynews--brittani-samuel.json",
-  "log": []
+  "startTime": "2026-02-02T18:26:26.554Z",
+  "lastProcessed": "stranger-things-2024/tickertv--cheryl-king.json",
+  "log": [
+    {
+      "t": "2026-02-02T18:31:17.454Z",
+      "event": "bb-session",
+      "session": "24e98308",
+      "url": "https://www.wsj.com/arts-culture/theater/stranger-things-first-shadow-broadway-r"
+    },
+    {
+      "t": "2026-02-02T18:32:00.824Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
