@@ -1,53 +1,74 @@
 {
   "processed": [
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-    "harry-potter-2021/broadwayworld--michael-dale.json",
-    "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
-    "harry-potter-2021/exeunt-magazine--kev-berry.json",
-    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
-    "harry-potter-2021/medium--christian-lewis.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/the-times--ann-treneman.json",
-    "harry-potter-2021/washpost--peter-marks.json"
+    "moulin-rouge-2019/vulture--jesse-green.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json",
+    "moulin-rouge-2019/wsj--terry-teachout.json",
+    "moulin-rouge-2019/nysr--jesse-oxfeld.json",
+    "moulin-rouge-2019/telegraph--diane-snyder.json",
+    "moulin-rouge-2019/washpost--peter-marks.json"
   ],
   "failed": [
-    "harry-potter-2021/national-review--kyle-smith.json",
-    "harry-potter-2021/timeout--adam-feldman.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "moulin-rouge-2019/observer--david-cote.json",
+    "moulin-rouge-2019/observer--rex-reed.json",
+    "moulin-rouge-2019/timeout--adam-feldman.json",
+    "moulin-rouge-2019/amny--matt-windman.json",
+    "moulin-rouge-2019/dailybeast--tim-teeman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-      "harry-potter-2021/exeunt-magazine--kev-berry.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-      "harry-potter-2021/the-times--ann-treneman.json",
-      "harry-potter-2021/washpost--peter-marks.json"
+      "moulin-rouge-2019/nysr--jesse-oxfeld.json"
     ],
     "browserbase": [],
     "scrapingbee": [
-      "harry-potter-2021/limelight-magazine-au--clive-paget.json",
-      "harry-potter-2021/medium--christian-lewis.json"
+      "moulin-rouge-2019/theatermania--jesse-green.json",
+      "moulin-rouge-2019/telegraph--diane-snyder.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "moulin-rouge-2019/wsj--terry-teachout.json"
+    ],
     "archive": [
-      "harry-potter-2021/wsj--terry-teachout.json",
-      "harry-potter-2021/broadwayworld--michael-dale.json",
-      "harry-potter-2021/drama-queen-nyc--jonathan-warman.json"
+      "moulin-rouge-2019/vulture--jesse-green.json",
+      "moulin-rouge-2019/washpost--peter-marks.json"
     ]
   },
-  "startTime": "2026-02-02T23:11:31.584Z",
-  "lastProcessed": "harry-potter-2021/zeal-nyc--chris-caggiano.json",
-  "log": []
+  "startTime": "2026-02-02T23:25:07.979Z",
+  "lastProcessed": "moulin-rouge-2019/washpost--peter-marks.json",
+  "log": [
+    {
+      "t": "2026-02-02T23:25:19.014Z",
+      "event": "bb-session",
+      "session": "19d1a1b4",
+      "url": "https://observer.com/2019/07/moulin-rouge-broadway-review/"
+    },
+    {
+      "t": "2026-02-02T23:25:43.300Z",
+      "event": "bb-session",
+      "session": "b0632603",
+      "url": "https://www.theatermania.com/broadway/reviews/moulin-rouge-the-musical_88234.htm"
+    },
+    {
+      "t": "2026-02-02T23:26:14.417Z",
+      "event": "bb-session",
+      "session": "2ad10235",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-02-02T23:26:58.762Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-02T23:27:23.924Z",
+      "event": "bb-session",
+      "session": "3336349c",
+      "url": "https://www.amny.com/entertainment/moulin-rouge-broadway-review/"
+    },
+    {
+      "t": "2026-02-02T23:27:49.569Z",
+      "event": "bb-session",
+      "session": "1ae4907f",
+      "url": "https://www.thedailybeast.com/moulin-rouge-broadway-review/"
+    }
+  ]
 }
