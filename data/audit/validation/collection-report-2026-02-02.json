@@ -1,103 +1,147 @@
 {
-  "runDate": "2026-02-02T17:36:46.801Z",
+  "runDate": "2026-02-02T17:40:07.929Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "chess-2025",
+    "showFilter": "harry-potter-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 6,
+    "processed": 11,
+    "failed": 11,
     "skipped": 0,
-    "successRate": "53.8%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 4,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archive": 3
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archive": 7
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 14,
+    "tier1Success": 6,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
-    "tier2Success": 1,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
     "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 15,
-    "tier4Success": 7,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 22,
+    "tier3Success": 0,
+    "tier4Attempts": 32,
+    "tier4Success": 10,
+    "totalFailed": 11,
+    "scrapingBeeCreditsUsed": 26,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 6,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-2019/vulture--jesse-green.json",
-    "hadestown-2019/ew--kristen-baldwin.json",
-    "hadestown-2019/guardian--jesse-green.json",
-    "hadestown-2019/theatermania--jesse-green.json",
-    "hadestown-2019/theatermania--zachary-stewart.json",
-    "hadestown-2019/wsj--terry-teachout.json",
-    "hadestown-2019/rollingstone--peter-travers.json"
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
+    "harry-potter-2021/mashable--erin-strecker.json",
+    "harry-potter-2021/medium--christian-lewis.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/the-times--ann-treneman.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json"
   ],
   "failed": [
-    "hadestown-2019/observer--david-cote.json",
-    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
-    "hadestown-2019/timeout--adam-feldman.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/medium--christian-lewis.json",
-    "hadestown-2019/vox--constance-grady.json"
+    "harry-potter-2021/national-review--kyle-smith.json",
+    "harry-potter-2021/timeout--adam-feldman.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/exeunt-magazine--kev-berry.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
+    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
+    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
   ],
   "tierDetails": {
     "playwright": [
-      "hadestown-2019/ew--kristen-baldwin.json",
-      "hadestown-2019/guardian--jesse-green.json"
+      "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+      "harry-potter-2021/medium--christian-lewis.json",
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+      "harry-potter-2021/woman-around-town--alix-cohen.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "chess-2025/nytimes--elisabeth-vincentelli.json"
-    ],
-    "brightdata": [
-      "hadestown-2019/wsj--terry-teachout.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archive": [
-      "hadestown-2019/vulture--jesse-green.json",
-      "hadestown-2019/theatermania--zachary-stewart.json",
-      "hadestown-2019/rollingstone--peter-travers.json"
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json",
+      "harry-potter-2021/broadwayworld--michael-dale.json",
+      "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
+      "harry-potter-2021/mashable--erin-strecker.json",
+      "harry-potter-2021/the-times--ann-treneman.json"
     ]
   },
   "failuresByOutlet": {
-    "Theater Reviews from My Seat": {
+    "Broadway Blog": {
       "count": 1,
-      "domain": "theaterreviewsfrommyseat.com",
+      "domain": "thebroadwayblog.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Daily Beast": {
+    "CurtainUp": {
       "count": 1,
-      "domain": "thedailybeast.com",
+      "domain": "curtainup.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
+    },
+    "Front Row Center": {
+      "count": 1,
+      "domain": "frontrowcenter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Front Mezz Junkies": {
+      "count": 1,
+      "domain": "frontmezzjunkies.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Theater Pizzazz": {
+      "count": 1,
+      "domain": "theaterpizzazz.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Zeal NYC": {
+      "count": 1,
+      "domain": "zealnyc.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "hadestown-2019/observer--david-cote.json",
-      "oldUrl": "https://observer.com/2019/04/hadestown-broadway-review/",
-      "newUrl": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-on-broadway-review/"
+      "reviewId": "harry-potter-2021/curtainup--elyse-sommer.json",
+      "oldUrl": "http://www.curtainup.com/harrypottercursedchild.html",
+      "newUrl": "http://www.curtainup.com/harrypotterbway18.html"
+    },
+    {
+      "reviewId": "harry-potter-2021/exeunt-magazine--kev-berry.json",
+      "oldUrl": "http://exeuntmagazine.com/reviews/harry-potter-cursed-child/",
+      "newUrl": "https://exeuntmagazine.com/features/harry-potter-and-the-cursed-child-some-speculative-reviews/"
     }
   ]
 }
