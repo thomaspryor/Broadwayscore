@@ -3,11 +3,11 @@
     "description": "Critic-outlet affinity audit report",
     "lastUpdated": "2026-02-02",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 2127,
-    "skippedFiles": 32,
-    "totalCritics": 291,
-    "registryCritics": 103,
-    "flaggedReviews": 10
+    "totalFilesScanned": 1822,
+    "skippedFiles": 49,
+    "totalCritics": 269,
+    "registryCritics": 96,
+    "flaggedReviews": 12
   },
   "flaggedReviews": [
     {
@@ -30,7 +30,7 @@
       "outletShare": 6,
       "primaryOutlet": "nyt-theater",
       "primaryShare": 94,
-      "totalReviews": 49
+      "totalReviews": 48
     },
     {
       "critic": "Jonathan Mandell",
@@ -41,7 +41,7 @@
       "outletShare": 6,
       "primaryOutlet": "nyt-theater",
       "primaryShare": 94,
-      "totalReviews": 49
+      "totalReviews": 48
     },
     {
       "critic": "Jonathan Mandell",
@@ -52,7 +52,29 @@
       "outletShare": 6,
       "primaryOutlet": "nyt-theater",
       "primaryShare": 94,
-      "totalReviews": 49
+      "totalReviews": 48
+    },
+    {
+      "critic": "Matt Windman",
+      "criticSlug": "matt-windman",
+      "outlet": "amny-matt-windman",
+      "showId": "appropriate-2023",
+      "file": "amny-matt-windman--matt-windman.json",
+      "outletShare": 8,
+      "primaryOutlet": "amny",
+      "primaryShare": 92,
+      "totalReviews": 25
+    },
+    {
+      "critic": "Matt Windman",
+      "criticSlug": "matt-windman",
+      "outlet": "amny-matt-windman",
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "amny-matt-windman--matt-windman.json",
+      "outletShare": 8,
+      "primaryOutlet": "amny",
+      "primaryShare": 92,
+      "totalReviews": 25
     },
     {
       "critic": "Greg Evans",
@@ -82,10 +104,10 @@
       "outlet": "new-york-theatre-guide-gillian-russo",
       "showId": "buena-vista-social-club-2025",
       "file": "new-york-theatre-guide-gillian-russo--gillian-russo.json",
-      "outletShare": 7,
+      "outletShare": 8,
       "primaryOutlet": "nytg",
-      "primaryShare": 93,
-      "totalReviews": 14
+      "primaryShare": 92,
+      "totalReviews": 13
     },
     {
       "critic": "Patrick Ryan",
@@ -107,7 +129,7 @@
       "outletShare": 8,
       "primaryOutlet": "nysr",
       "primaryShare": 92,
-      "totalReviews": 13
+      "totalReviews": 12
     },
     {
       "critic": "Dan Rubins",
@@ -129,7 +151,7 @@
         "nydailynews",
         "chicagotribune"
       ],
-      "totalReviews": 88
+      "totalReviews": 84
     },
     {
       "critic": "Thom Geier",
@@ -186,10 +208,9 @@
       "outlets": [
         "new-york-sun",
         "nysr",
-        "usatoday",
-        "ew"
+        "usatoday"
       ],
-      "totalReviews": 29
+      "totalReviews": 27
     },
     {
       "critic": "Charles Isherwood",
@@ -226,58 +247,7 @@
         "variety",
         "observer"
       ],
-      "totalReviews": 72
-    },
-    {
-      "critic": "Unknown",
-      "slug": "unknown",
-      "outlets": [
-        "theatermania",
-        "timeout",
-        "variety",
-        "deadline",
-        "theatrely",
-        "nytimes",
-        "nytg",
-        "vulture",
-        "thewrap",
-        "nypost",
-        "ew",
-        "dailybeast",
-        "nydailynews",
-        "wsj",
-        "guardian",
-        "broadwaynews",
-        "theatreley",
-        "cititour",
-        "chicagotribune",
-        "hollywood-reporter",
-        "observer",
-        "new-york-post",
-        "queerty",
-        "new-york-stage-review-sandy-macdonald",
-        "nysr",
-        "cititourny",
-        "timeoutny",
-        "chicago-tribune",
-        "entertainment-weekly",
-        "new-york-theatre-guide",
-        "la-times-charles-mcnulty",
-        "front-row-center",
-        "plenty-of-joy-and-pleasures-to-offer",
-        "washpost",
-        "entertainment",
-        "josh-at-the-movies-joshua-m-hayes",
-        "decider-meghan-okeefe",
-        "the-new-york-times",
-        "usa-today",
-        "usatoday",
-        "exeunt-nyc",
-        "the-new-yorker-helen-shaw",
-        "culturesauce",
-        "frontmezzjunkies"
-      ],
-      "totalReviews": 213
+      "totalReviews": 71
     },
     {
       "critic": "Frank Scheck",
@@ -287,15 +257,6 @@
         "hollywood-reporter"
       ],
       "totalReviews": 27
-    },
-    {
-      "critic": "Allison Considine",
-      "slug": "allison-considine",
-      "outlets": [
-        "nytg",
-        "ew"
-      ],
-      "totalReviews": 9
     },
     {
       "critic": "David Gordon",
@@ -317,6 +278,29 @@
         "towleroad"
       ],
       "totalReviews": 30
+    },
+    {
+      "critic": "Unknown",
+      "slug": "unknown",
+      "outlets": [
+        "wsj",
+        "talkinbroadway",
+        "ew",
+        "nytg",
+        "washpost",
+        "nytimes",
+        "theatermania",
+        "nydailynews",
+        "front-row-center",
+        "nypost",
+        "variety",
+        "deadline",
+        "thewrap",
+        "amny",
+        "exeunt-nyc",
+        "frontmezzjunkies"
+      ],
+      "totalReviews": 29
     },
     {
       "critic": "Christian Lewis",
@@ -368,7 +352,7 @@
         "1-minute-critic-matthew-wexler",
         "broadway-blog"
       ],
-      "totalReviews": 17
+      "totalReviews": 16
     },
     {
       "critic": "Caroline Cao",
@@ -380,6 +364,15 @@
       "totalReviews": 6
     },
     {
+      "critic": "Roma Torre",
+      "slug": "roma-torre",
+      "outlets": [
+        "nysr",
+        "ny1"
+      ],
+      "totalReviews": 12
+    },
+    {
       "critic": "Emlyn Travis",
       "slug": "emlyn-travis",
       "outlets": [
@@ -387,7 +380,7 @@
         "amny",
         "thewrap"
       ],
-      "totalReviews": 15
+      "totalReviews": 14
     },
     {
       "critic": "Richard Lawson",
@@ -407,7 +400,7 @@
         "the-clyde-fitch-report",
         "theatermania"
       ],
-      "totalReviews": 22
+      "totalReviews": 21
     },
     {
       "critic": "Deb Miller",
@@ -435,24 +428,6 @@
         "guardian"
       ],
       "totalReviews": 5
-    },
-    {
-      "critic": "Roger Friedman",
-      "slug": "roger-friedman",
-      "outlets": [
-        "showbiz411",
-        "showbiz-411-roger-friedman"
-      ],
-      "totalReviews": 3
-    },
-    {
-      "critic": "Maya Phillips",
-      "slug": "maya-phillips",
-      "outlets": [
-        "nytimes",
-        "variety"
-      ],
-      "totalReviews": 3
     }
   ]
 }
