@@ -876,8 +876,36 @@ async function browserbaseLogin(bbPage, domain, email, password) {
   if (domain === 'wsj.com') {
     // WSJ uses Dow Jones SSO - an SPA that requires JS rendering
     // accounts.wsj.com/login redirects to sso.accounts.dowjones.com
+    // The SSO page has DataDome CAPTCHA - Browserbase's solveCaptchas handles it
     console.log(`    → Browserbase: navigating to WSJ login...`);
     await bbPage.goto('https://accounts.wsj.com/login', { timeout: CONFIG.loginTimeout, waitUntil: 'networkidle' });
+
+    // Check for and wait for CAPTCHA resolution (DataDome on Dow Jones SSO)
+    const hasCaptcha = await bbPage.evaluate(() => {
+      const iframes = document.querySelectorAll('iframe');
+      for (const f of iframes) {
+        if (f.src && f.src.includes('captcha-delivery.com')) return true;
+      }
+      return false;
+    });
+    if (hasCaptcha) {
+      console.log(`    → CAPTCHA detected on WSJ login - waiting for Browserbase to solve...`);
+      // Wait for the CAPTCHA iframe to disappear (Browserbase solves it automatically)
+      try {
+        await bbPage.waitForFunction(() => {
+          const iframes = document.querySelectorAll('iframe');
+          for (const f of iframes) {
+            if (f.src && f.src.includes('captcha-delivery.com')) return false;
+          }
+          return true;
+        }, { timeout: 45000 });
+        console.log(`    → CAPTCHA resolved, proceeding with login...`);
+        await bbPage.waitForTimeout(2000);
+      } catch (e) {
+        console.log(`    ✗ CAPTCHA not resolved after 45s - continuing anyway`);
+      }
+    }
+
     // Wait for the SPA to render the login form (up to 30s)
     let emailInput = null;
     try {
@@ -890,7 +918,7 @@ async function browserbaseLogin(bbPage, domain, email, password) {
       emailInput = await bbPage.$('input[type="email"], input[name="email"], input[name="emailOrUsername"], input[name="username"]');
     }
     if (!emailInput) {
-      console.log(`    ✗ WSJ login FAILED (no email/username field found)`);
+      console.log(`    ✗ WSJ login FAILED (no email/username field found after CAPTCHA wait)`);
       return false;
     }
     await emailInput.click();
@@ -1620,9 +1648,9 @@ async function fetchReviewText(review) {
   const url = review.url;
   const urlLower = url.toLowerCase();
 
-  // Determine if we should skip Playwright (known-blocked or --aggressive flag)
+  // Determine if we should skip Playwright (known-blocked sites can't be scraped by headless)
   const isKnownBlocked = CONFIG.knownBlockedSites.some(s => urlLower.includes(s));
-  const skipPlaywright = CLI.aggressive && isKnownBlocked;
+  const skipPlaywright = isKnownBlocked;
   const isBrightDataPreferred = CONFIG.brightDataPreferred.some(s => urlLower.includes(s));
   const isArchiveFirstSite = CONFIG.archiveFirstSites.some(s => urlLower.includes(s));
 
@@ -1719,7 +1747,7 @@ async function fetchReviewText(review) {
       }
     }
   } else {
-    console.log('  [Tier 1] Skipped (known-blocked site + aggressive mode)');
+    console.log('  [Tier 1] Skipped (known-blocked site)');
     attempts.push({ tier: 1, method: 'playwright', success: false, error: 'Skipped - known blocked site' });
   }
 
