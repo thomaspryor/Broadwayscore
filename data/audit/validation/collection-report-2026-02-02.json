@@ -1,73 +1,76 @@
 {
-  "runDate": "2026-02-02T05:01:49.785Z",
+  "runDate": "2026-02-02T05:05:42.680Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "the-cottage-2023",
+    "showFilter": "how-to-dance-in-ohio-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
+    "processed": 1,
     "failed": 4,
     "skipped": 0,
-    "successRate": "42.9%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 2,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 1,
-    "tier1_5Attempts": 2,
+    "tier1Attempts": 2,
+    "tier1Success": 0,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 1,
-    "tier2Attempts": 2,
+    "tier2Attempts": 3,
     "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier3Attempts": 2,
     "tier3Success": 1,
-    "tier4Attempts": 4,
-    "tier4Success": 3,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
     "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.5,
+    "scrapingBeeCreditsUsed": 20,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 2.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-cottage-2023/new-york-sun--elysa-gardner.json",
-    "the-cottage-2023/observer--rex-reed.json",
-    "the-cottage-2023/amny--unknown.json"
+    "how-to-dance-in-ohio-2023/theatermania--david-finkle.json"
   ],
   "failed": [
-    "the-cottage-2023/variety--naveen-kumar.json",
-    "the-cottage-2023/timeout--adam-feldman.json",
-    "the-cottage-2023/wsj--charles-isherwood.json",
-    "the-cottage-2023/theater-pizzazz--carole-di-tosti.json"
+    "how-to-dance-in-ohio-2023/variety--aramide-tinubu.json",
+    "how-to-dance-in-ohio-2023/deadline--greg-evans.json",
+    "how-to-dance-in-ohio-2023/timeout--adam-feldman.json",
+    "how-to-dance-in-ohio-2023/wsj--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-cottage-2023/new-york-sun--elysa-gardner.json"
-    ],
+    "playwright": [],
     "browserbase": [
-      "data/review-texts/the-cottage-2023/observer--rex-reed.json",
-      "the-cottage-2023/observer--rex-reed.json"
+      "data/review-texts/how-to-dance-in-ohio-2023/variety--aramide-tinubu.json",
+      "how-to-dance-in-ohio-2023/variety--aramide-tinubu.json"
     ],
     "scrapingbee": [
-      "the-cottage-2023/variety--naveen-kumar.json"
+      "how-to-dance-in-ohio-2023/theatermania--david-finkle.json"
     ],
     "brightdata": [],
-    "archive": [
-      "the-cottage-2023/amny--unknown.json"
-    ]
+    "archive": []
+  },
+  "failuresByOutlet": {
+    "wsj": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
   },
   "urlDiscoveries": []
 }
