@@ -13,6 +13,11 @@ on:
         required: false
         default: 'Manual sync'
         type: string
+      allow_drift:
+        description: 'Allow large score drift (e.g. after prompt version rescore)'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -50,6 +55,8 @@ jobs:
           fi
 
       - name: Rebuild reviews.json
+        env:
+          ALLOW_DRIFT: ${{ github.event.inputs.allow_drift }}
         run: node scripts/rebuild-all-reviews.js
 
       - name: Update critic registry
