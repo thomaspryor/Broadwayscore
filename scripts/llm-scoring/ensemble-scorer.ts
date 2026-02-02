@@ -90,15 +90,25 @@ export class EnsembleReviewScorer {
     context: string = ''
   ): Promise<EnsembleResultType> {
     // Build promises for all available models
-    const promises: Promise<{ model: 'claude' | 'openai' | 'gemini'; result: SimplifiedLLMResult | null; error?: string }>[] = [];
+    const promises: Promise<{
+      model: 'claude' | 'openai' | 'gemini';
+      result: SimplifiedLLMResult | null;
+      error?: string;
+      rejected?: boolean;
+      rejection?: string;
+      rejectionReasoning?: string;
+    }>[] = [];
 
     // Claude
     promises.push(
       this.claudeScorer.scoreReviewV5(reviewText, context)
         .then(outcome => ({
           model: 'claude' as const,
-          result: outcome.success ? outcome.result! : null,
-          error: outcome.error
+          result: outcome.success && !outcome.rejected ? outcome.result! : null,
+          error: outcome.error,
+          rejected: outcome.rejected,
+          rejection: outcome.rejection,
+          rejectionReasoning: outcome.rejectionReasoning
         }))
         .catch(err => ({
           model: 'claude' as const,
@@ -112,8 +122,11 @@ export class EnsembleReviewScorer {
       this.openaiScorer.scoreReviewV5(reviewText, context)
         .then(outcome => ({
           model: 'openai' as const,
-          result: outcome.success ? outcome.result! : null,
-          error: outcome.error
+          result: outcome.success && !outcome.rejected ? outcome.result! : null,
+          error: outcome.error,
+          rejected: outcome.rejected,
+          rejection: outcome.rejection,
+          rejectionReasoning: outcome.rejectionReasoning
         }))
         .catch(err => ({
           model: 'openai' as const,
@@ -128,8 +141,11 @@ export class EnsembleReviewScorer {
         this.geminiScorer.scoreReview(reviewText, context)
           .then(outcome => ({
             model: 'gemini' as const,
-            result: outcome.success ? outcome.result! : null,
-            error: outcome.error
+            result: outcome.success && !outcome.rejected ? outcome.result! : null,
+            error: outcome.error,
+            rejected: outcome.rejected,
+            rejection: outcome.rejection,
+            rejectionReasoning: outcome.rejectionReasoning
           }))
           .catch(err => ({
             model: 'gemini' as const,
@@ -142,14 +158,62 @@ export class EnsembleReviewScorer {
     // Run all models in parallel
     const results = await Promise.all(promises);
 
-    // Convert to ModelScore format
+    // Check for rejection consensus (v5.2+)
+    const rejections = results.filter(r => r.rejected);
+    const totalModels = results.length;
+
+    if (rejections.length >= 2) {
+      // 2/3 or 3/3 models rejected — consensus rejection
+      const primaryRejection = rejections[0];
+      const rejectionResult: EnsembleResultType = {
+        score: 0,
+        bucket: 'Pan',
+        confidence: 'high',
+        source: 'ensemble-unanimous',
+        rejected: true,
+        rejection: primaryRejection.rejection,
+        rejectionReasoning: rejections.map(r => `${r.model}: ${r.rejectionReasoning}`).join('; '),
+        modelResults: {},
+        needsReview: false,
+        note: `${rejections.length}/${totalModels} models rejected as ${primaryRejection.rejection}`
+      };
+
+      if (this.options.verbose) {
+        console.log(`  Ensemble REJECTED: ${primaryRejection.rejection} (${rejections.length}/${totalModels} models)`);
+        for (const r of rejections) {
+          console.log(`    ${r.model}: ${r.rejectionReasoning}`);
+        }
+      }
+
+      return rejectionResult;
+    }
+
+    // Convert to ModelScore format (treat rejectors as failed)
     const claudeOutcome = results.find(r => r.model === 'claude');
     const openaiOutcome = results.find(r => r.model === 'openai');
     const geminiOutcome = results.find(r => r.model === 'gemini');
 
-    const claudeScore = claudeOutcome ? toModelScore(claudeOutcome.result, 'claude', claudeOutcome.error) : null;
-    const openaiScore = openaiOutcome ? toModelScore(openaiOutcome.result, 'openai', openaiOutcome.error) : null;
-    const geminiScore = geminiOutcome ? toModelScore(geminiOutcome.result, 'gemini', geminiOutcome.error) : null;
+    const claudeScore = claudeOutcome
+      ? toModelScore(
+          claudeOutcome.rejected ? null : claudeOutcome.result,
+          'claude',
+          claudeOutcome.rejected ? 'Rejected as unscorable' : claudeOutcome.error
+        )
+      : null;
+    const openaiScore = openaiOutcome
+      ? toModelScore(
+          openaiOutcome.rejected ? null : openaiOutcome.result,
+          'openai',
+          openaiOutcome.rejected ? 'Rejected as unscorable' : openaiOutcome.error
+        )
+      : null;
+    const geminiScore = geminiOutcome
+      ? toModelScore(
+          geminiOutcome.rejected ? null : geminiOutcome.result,
+          'gemini',
+          geminiOutcome.rejected ? 'Rejected as unscorable' : geminiOutcome.error
+        )
+      : null;
 
     // Use ensemble voting logic
     const ensembleResult = ensembleScore(claudeScore, openaiScore, geminiScore);
@@ -168,6 +232,9 @@ export class EnsembleReviewScorer {
     success: boolean;
     scoredFile?: ScoredReviewFile;
     ensembleResult?: EnsembleResultType;
+    rejected?: boolean;
+    rejection?: string;
+    rejectionReasoning?: string;
     error?: string;
   }> {
     // Build rich input context using input-builder
@@ -200,6 +267,17 @@ export class EnsembleReviewScorer {
     // Score with ensemble
     const ensembleResult = await this.scoreReview(scoringInput.text, scoringInput.context);
 
+    // Check for rejection (v5.2+)
+    if (ensembleResult.rejected) {
+      return {
+        success: true,
+        rejected: true,
+        rejection: ensembleResult.rejection,
+        rejectionReasoning: ensembleResult.rejectionReasoning,
+        ensembleResult
+      };
+    }
+
     // Build the scored file
     const scoredFile: ScoredReviewFile = {
       ...reviewFile,
@@ -212,7 +290,10 @@ export class EnsembleReviewScorer {
         thumb: ensembleResult.bucket === 'Rave' || ensembleResult.bucket === 'Positive' ? 'Up' :
                ensembleResult.bucket === 'Mixed' ? 'Flat' : 'Down',
         components: { book: null, music: null, performances: null, direction: null },
-        keyPhrases: [],
+        keyPhrases: ensembleResult.modelResults.claude?.keyPhrases
+          || ensembleResult.modelResults.openai?.keyPhrases
+          || ensembleResult.modelResults.gemini?.keyPhrases
+          || [],
         reasoning: this.buildCombinedReasoning(ensembleResult),
         flags: {
           hasExplicitRecommendation: false,
