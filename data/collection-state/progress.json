@@ -1,37 +1,35 @@
 {
   "processed": [
-    "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-    "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-    "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-    "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json",
-    "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/variety--peter-marks.json",
+    "mj-2022/guardian--adrian-horton.json",
+    "mj-2022/ap--mark-kennedy.json",
+    "mj-2022/usatoday--david-rooney.json"
   ],
   "failed": [
-    "once-upon-a-one-more-time-2023/hollywood-reporter--angie-han.json",
-    "once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
-    "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json",
-    "once-upon-a-one-more-time-2023/thestage--lane-williamson.json"
+    "mj-2022/hollywood-reporter--david-rooney.json",
+    "mj-2022/ew--kristen-baldwin.json",
+    "mj-2022/timeout--adam-feldman.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "mj-2022/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "once-upon-a-one-more-time-2023/exeunt-nyc--loren-noveck.json"
+      "mj-2022/guardian--adrian-horton.json",
+      "mj-2022/ap--mark-kennedy.json"
     ],
     "browserbase": [],
-    "scrapingbee": [
-      "once-upon-a-one-more-time-2023/associated-press-mark-kennedy--mark-kennedy.json"
+    "scrapingbee": [],
+    "brightdata": [
+      "mj-2022/usatoday--david-rooney.json"
     ],
-    "brightdata": [],
     "archive": [
-      "once-upon-a-one-more-time-2023/nytimes--jesse-cohn.json",
-      "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
-      "once-upon-a-one-more-time-2023/deadline--greg-evans.json",
-      "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
-      "once-upon-a-one-more-time-2023/amny-matt-windman--matt-windman.json"
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/variety--peter-marks.json"
     ]
   },
-  "startTime": "2026-02-02T17:43:44.828Z",
-  "lastProcessed": "once-upon-a-one-more-time-2023/thestage--lane-williamson.json",
+  "startTime": "2026-02-02T17:42:24.525Z",
+  "lastProcessed": "mj-2022/usatoday--david-rooney.json",
   "log": []
 }
