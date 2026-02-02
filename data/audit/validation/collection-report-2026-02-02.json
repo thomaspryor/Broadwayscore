@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-02T19:07:58.047Z",
+  "runDate": "2026-02-02T23:13:39.258Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "mary-jane-2024",
+    "showFilter": "doubt-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -17,61 +17,52 @@
     "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archive": 0
+    "brightdata": 1,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 2,
-    "tier1_5Attempts": 2,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
+    "tier2Attempts": 2,
     "tier2Success": 1,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 31,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 5,
+    "tier4Success": 3,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 10,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.5,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "mary-jane-2024/ew--kristen-baldwin.json",
-    "mary-jane-2024/theatermania--jesse-green.json"
+    "doubt-2024/deadline--greg-evans.json",
+    "doubt-2024/theatermania--andy-propst.json"
   ],
   "failed": [
-    "mary-jane-2024/hollywood-reporter--david-rooney.json",
-    "mary-jane-2024/broadwaynews--brittani-samuel.json",
-    "mary-jane-2024/timeout--adam-feldman.json",
-    "mary-jane-2024/washpost--peter-marks.json"
+    "doubt-2024/nydailynews--chris-jones.json",
+    "doubt-2024/timeout--adam-feldman.json",
+    "doubt-2024/wsj--charles-isherwood.json",
+    "doubt-2024/thestage--lane-williamson.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "mary-jane-2024/ew--kristen-baldwin.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "mary-jane-2024/hollywood-reporter--david-rooney.json",
-      "mary-jane-2024/theatermania--jesse-green.json"
+      "doubt-2024/theatermania--andy-propst.json"
     ],
-    "archive": []
+    "archive": [
+      "doubt-2024/deadline--greg-evans.json"
+    ]
   },
-  "failuresByOutlet": {
-    "The Washington Post": {
-      "count": 1,
-      "domain": "washingtonpost.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
