@@ -5512,18 +5512,6 @@
     "timestamp": "2026-02-01T23:55:00.296Z"
   },
   {
-    "reviewId": "gutenberg-2023/new-york-sun--elysa-gardner.json",
-    "showId": "gutenberg-2023",
-    "outlet": "New York Sun",
-    "critic": "Elysa Gardner",
-    "url": "https://www.nysun.com/article/so-much-to-like-perhaps-too-much-as-the-gutenberg-musical-reaches-broadway",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
-    "textLength": 608,
-    "timestamp": "2026-02-01T23:55:06.314Z"
-  },
-  {
     "reviewId": "gutenberg-2023/timeout--adam-feldman.json",
     "showId": "gutenberg-2023",
     "outlet": "Time Out New York",
@@ -6662,5 +6650,17 @@
     "garbageReason": "Ad blocker message: \"turn off your ad block\"",
     "textLength": 5404,
     "timestamp": "2026-02-02T02:43:24.633Z"
+  },
+  {
+    "reviewId": "gutenberg-2023/new-york-sun--elysa-gardner.json",
+    "showId": "gutenberg-2023",
+    "outlet": "New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/so-much-to-like-perhaps-too-much-as-the-gutenberg-musical-reaches-broadway",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
+    "textLength": 608,
+    "timestamp": "2026-02-02T02:47:43.152Z"
   }
 ]
