@@ -157,21 +157,15 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Trigger reviews.json rebuild
-        if: steps.push.outputs.has_changes == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh workflow run "Rebuild Reviews Data" \
-            -f reason="Auto-triggered after Collect Review Texts"
-
       - name: Rebuild reviews.json
+        if: steps.push.outputs.has_changes == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/rebuild-all-reviews.js
         continue-on-error: true
 
       - name: Commit rebuilt reviews.json
+        if: steps.push.outputs.has_changes == 'true'
         run: |
           git add data/reviews.json data/critic-registry.json data/audit/
           if git diff --staged --quiet; then
@@ -291,29 +285,6 @@ jobs:
           Co-Authored-By: GitHub Action <action@github.com>"
 
             # Robust retry loop for parallel job conflicts
-            for i in 1 2 3 4 5; do
-              git pull --rebase origin main && git push && break || {
-                echo "Retry $i: Waiting before retry..."
-                sleep $((RANDOM % 10 + 5))
-                git rebase --abort 2>/dev/null || true
-                git pull --no-rebase -X ours origin main
-              }
-            done
-          fi
-
-      - name: Rebuild reviews.json
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: node scripts/rebuild-all-reviews.js
-        continue-on-error: true
-
-      - name: Commit rebuilt reviews.json
-        run: |
-          git add data/reviews.json data/critic-registry.json data/audit/
-          if git diff --staged --quiet; then
-            echo "No changes to reviews.json"
-          else
-            git commit -m "data: Auto-rebuild reviews.json (${{ matrix.outlet_tier }})"
             for i in 1 2 3 4 5; do
               git pull --rebase origin main && git push && break || {
                 echo "Retry $i: Waiting before retry..."
