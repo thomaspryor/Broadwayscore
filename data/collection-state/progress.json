@@ -1,40 +1,66 @@
 {
   "processed": [
-    "illinoise-2024/hollywood-reporter--david-rooney.json",
-    "illinoise-2024/broadwaynews--brittani-samuel.json",
-    "illinoise-2024/theatermania--david-gordon.json",
-    "illinoise-2024/usatoday--david-rooney.json"
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "aladdin-2014/ew--thom-geier.json",
+    "aladdin-2014/newsday--linda-winer.json",
+    "aladdin-2014/uinterview--danny-graugnard.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
   ],
   "failed": [
-    "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "illinoise-2024/deadline--greg-evans.json",
-    "illinoise-2024/guardian--adrian-horton.json",
-    "illinoise-2024/observer--rex-reed.json",
-    "illinoise-2024/timeout--adam-feldman.json",
-    "illinoise-2024/talkinbroadway--matthew-murray.json"
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/nypost--elisabeth-vincentelli.json",
+    "aladdin-2014/theatermania--charles-isherwood.json",
+    "aladdin-2014/timeout--adam-feldman.json",
+    "aladdin-2014/broadway-voice--kristen-balzano.json",
+    "aladdin-2014/catholic-transcript--bernard-carragher.json",
+    "aladdin-2014/theater-pizzazz--sandi-durell.json",
+    "aladdin-2014/thestage--mark-shenton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [
-      "illinoise-2024/usatoday--david-rooney.json"
+    "playwright": [
+      "aladdin-2014/ap--mark-kennedy.json"
     ],
-    "brightdata": [],
+    "browserbase": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "aladdin-2014/wsj--terry-teachout.json"
+    ],
     "archive": [
-      "illinoise-2024/hollywood-reporter--david-rooney.json",
-      "illinoise-2024/broadwaynews--brittani-samuel.json",
-      "illinoise-2024/theatermania--david-gordon.json"
+      "aladdin-2014/hollywood-reporter--david-rooney.json",
+      "aladdin-2014/ew--thom-geier.json",
+      "aladdin-2014/newsday--linda-winer.json",
+      "aladdin-2014/uinterview--danny-graugnard.json",
+      "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
     ]
   },
-  "startTime": "2026-02-02T23:11:48.426Z",
-  "lastProcessed": "illinoise-2024/usatoday--david-rooney.json",
+  "startTime": "2026-02-02T23:11:27.475Z",
+  "lastProcessed": "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
   "log": [
     {
-      "t": "2026-02-02T23:12:28.444Z",
+      "t": "2026-02-02T23:12:50.786Z",
       "event": "bb-session",
-      "session": "5816fb85",
-      "url": "https://observer.com/2024/04/illinoise-broadway-review-sufjan-stevens/"
+      "session": "70cb97df",
+      "url": "https://nypost.com/2014/03/21/aladdin-review-a-whole-new-wonderful-world/"
+    },
+    {
+      "t": "2026-02-02T23:13:44.246Z",
+      "event": "bb-session",
+      "session": "1d607ad8",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/aladdin_70661.html"
+    },
+    {
+      "t": "2026-02-02T23:14:22.160Z",
+      "event": "bb-session",
+      "session": "96536796",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-02-02T23:15:09.383Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     }
   ]
 }
