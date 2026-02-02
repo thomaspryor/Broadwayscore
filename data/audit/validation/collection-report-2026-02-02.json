@@ -1,103 +1,78 @@
 {
-  "runDate": "2026-02-02T17:36:46.801Z",
+  "runDate": "2026-02-02T17:40:17.107Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "chess-2025",
+    "showFilter": "days-of-wine-and-roses-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 6,
+    "processed": 2,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "53.8%"
+    "successRate": "28.6%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 3
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
-    "tier2Success": 1,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 15,
-    "tier4Success": 7,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 22,
+    "tier2Attempts": 3,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 2,
+    "tier4Attempts": 7,
+    "tier4Success": 3,
+    "totalFailed": 4,
+    "scrapingBeeCreditsUsed": 20,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hadestown-2019/vulture--jesse-green.json",
-    "hadestown-2019/ew--kristen-baldwin.json",
-    "hadestown-2019/guardian--jesse-green.json",
-    "hadestown-2019/theatermania--jesse-green.json",
-    "hadestown-2019/theatermania--zachary-stewart.json",
-    "hadestown-2019/wsj--terry-teachout.json",
-    "hadestown-2019/rollingstone--peter-travers.json"
+    "days-of-wine-and-roses-2024/deadline--greg-evans.json",
+    "days-of-wine-and-roses-2024/theatermania--david-gordon.json"
   ],
   "failed": [
-    "hadestown-2019/observer--david-cote.json",
-    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
-    "hadestown-2019/timeout--adam-feldman.json",
-    "hadestown-2019/dailybeast--tim-teeman.json",
-    "hadestown-2019/medium--christian-lewis.json",
-    "hadestown-2019/vox--constance-grady.json"
+    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+    "days-of-wine-and-roses-2024/variety--aramide-tinubu.json",
+    "days-of-wine-and-roses-2024/new-york-sun--elysa-gardner.json",
+    "days-of-wine-and-roses-2024/timeout--adam-feldman.json",
+    "days-of-wine-and-roses-2024/wsj--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "hadestown-2019/ew--kristen-baldwin.json",
-      "hadestown-2019/guardian--jesse-green.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "chess-2025/nytimes--elisabeth-vincentelli.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
-      "hadestown-2019/wsj--terry-teachout.json"
+      "days-of-wine-and-roses-2024/variety--aramide-tinubu.json"
     ],
     "archive": [
-      "hadestown-2019/vulture--jesse-green.json",
-      "hadestown-2019/theatermania--zachary-stewart.json",
-      "hadestown-2019/rollingstone--peter-travers.json"
+      "days-of-wine-and-roses-2024/deadline--greg-evans.json",
+      "days-of-wine-and-roses-2024/theatermania--david-gordon.json"
     ]
   },
   "failuresByOutlet": {
-    "Theater Reviews from My Seat": {
+    "The Hollywood Reporter": {
       "count": 1,
-      "domain": "theaterreviewsfrommyseat.com",
+      "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "The Daily Beast": {
-      "count": 1,
-      "domain": "thedailybeast.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "hadestown-2019/observer--david-cote.json",
-      "oldUrl": "https://observer.com/2019/04/hadestown-broadway-review/",
-      "newUrl": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-on-broadway-review/"
-    }
-  ]
+  "urlDiscoveries": []
 }
