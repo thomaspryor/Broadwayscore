@@ -63,18 +63,36 @@
     "modelAgreement": "2/3 models agree: Rave"
   },
   "textIssue": "too_short",
-  "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/six-2021/variety--frank-rizzo_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:43:10.894Z",
-  "fetchMethod": "archive",
+  "sourceMethod": "brightdata",
+  "archivePath": "data/archives/reviews/six-2021/variety--frank-rizzo_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:36:28.315Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "archiveOrgTimestamp": "20251211121527",
   "archiveOrgUrl": "http://web.archive.org/web/20251211121527/https://variety.com/2021/legit/reviews/six-review-broadway-musical-1235079922/",
   "textIssues": [

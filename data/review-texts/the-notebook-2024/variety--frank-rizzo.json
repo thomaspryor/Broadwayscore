@@ -63,18 +63,12 @@
     "modelAgreement": "2/3 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/the-notebook-2024/variety--frank-rizzo_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T02:19:45.602Z",
+  "textFetchedAt": "2026-02-02T02:40:11.578Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "404 - Page not found"
-    },
-    {
-      "tier": 4,
-      "method": "archive",
+      "tier": 0,
+      "method": "archive-first",
       "success": true
     }
   ],

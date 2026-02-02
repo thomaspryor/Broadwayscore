@@ -61,8 +61,8 @@
     "modelAgreement": "All 3 models agree: Rave"
   },
   "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/the-lion-king-1997/variety--greg-evans_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:48:25.197Z",
+  "archivePath": "data/archives/reviews/the-lion-king-1997/variety--greg-evans_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T02:36:34.923Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -78,8 +78,16 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 95,
+  "previousLlmScore": 94,
   "rescoreCompletedAt": "2026-02-01T16:19:28.514Z",
   "contentTier": "complete",
-  "wordCount": 1313
+  "wordCount": 1313,
+  "needsRescore": true,
+  "isFullReview": false,
+  "textWordCount": 64,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "shorter_than_excerpt"
+  ],
+  "textStatus": "truncated"
 }
