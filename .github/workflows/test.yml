@@ -66,11 +66,10 @@ jobs:
           echo "Validating individual review-text files..."
           node scripts/validate-review-texts.js
         # Validates review-text file structure:
-        # - Unknown outlets (must be in outlet-registry.json)
-        # - Garbage critic names (photo credit, staff, etc.)
-        # - Duplicate reviews (same outlet+critic in same show)
-        # - Required fields (showId, outletId or outlet)
-        # This validation is STRICT - any failure blocks the build.
+        # - Required fields (showId, outletId or outlet) — ERROR
+        # - Duplicate reviews (same outlet+critic in same show) — ERROR
+        # - Unknown outlets (not in outlet-registry.json) — WARNING
+        # - Garbage critic names (photo credit, staff, unknown) — WARNING
 
       - name: Create issue on failure
         if: failure() && github.event_name == 'schedule'

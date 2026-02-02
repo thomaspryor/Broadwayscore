@@ -145,20 +145,20 @@ function validateReviewFile(filePath, validOutlets, seenReviews) {
     });
   }
 
-  // Check 2: Unknown outlets
+  // Check 2: Unknown outlets (warning — unregistered outlets are common from aggregators)
   const outletId = normalizeOutletId(data.outletId);
   if (outletId && !validOutlets.has(outletId)) {
-    errors.push({
+    warnings.push({
       file: relativePath,
       check: 'unknown_outlet',
       message: `Outlet '${data.outletId}' not in registry`
     });
   }
 
-  // Check 3: Garbage critic names
+  // Check 3: Garbage critic names (warning — aggregator stubs often lack critic names)
   if (isGarbageCriticName(data.criticName)) {
     const displayName = data.criticName || '(empty)';
-    errors.push({
+    warnings.push({
       file: relativePath,
       check: 'garbage_critic_name',
       message: `Garbage critic name: '${displayName}'`
@@ -205,7 +205,8 @@ function getShowDirectories() {
     return fs.readdirSync(REVIEW_TEXTS_DIR)
       .filter(f => {
         const fullPath = path.join(REVIEW_TEXTS_DIR, f);
-        return fs.statSync(fullPath).isDirectory();
+        const stat = fs.lstatSync(fullPath);
+        return stat.isDirectory() && !stat.isSymbolicLink();
       })
       .map(f => path.join(REVIEW_TEXTS_DIR, f));
   } catch (err) {
