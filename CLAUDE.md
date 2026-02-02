@@ -375,7 +375,7 @@ All automation runs via GitHub Actions - no local commands needed. See `.github/
 | `rebuild-reviews.yml` | ❌ | ✅ | **PRIMARY sync** - daily 4 AM UTC + manual trigger |
 | `review-refresh.yml` | ✅ | ✅ | Weekly extraction + rebuild |
 | `gather-reviews.yml` | ✅ | ❌ | Parallel-safe, relies on daily rebuild |
-| `collect-review-texts.yml` | ✅ | ❌ | Parallel-safe, relies on daily rebuild |
+| `collect-review-texts.yml` | ✅ | ❌ | Nightly 2 AM UTC + manual, parallel-safe, relies on daily rebuild |
 | `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 
@@ -527,31 +527,34 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 
 ### Full Text Collection Status (Feb 2026)
 
-**472 stubs remain** (reviews without fullText):
+**704 reviews need re-scraping** (truncated/stub/needs-rescrape):
 
 | Category | Count | Top Outlets |
 |----------|-------|-------------|
-| Free (no login) | 424 | timeout (52), deadline (40), new-york-sun (34), observer (26), nydailynews (24), thestage (18) |
-| Paywalled | 48 | wsj (44), nytimes (4) |
+| Free (no login) | 568 | timeout (52), deadline (40), new-york-sun (34), observer (26), nydailynews (24), thestage (18) |
+| Paywalled | 136 | wsj, nytimes, vulture, newyorker, washpost, latimes, telegraph, financialtimes |
+
+**Content tier distribution (3,644 source files):** 2,138 complete (58.6%), 774 excerpt (21.2%), 484 truncated (13.3%), 154 stub (4.2%), 66 needs-rescrape (1.8%), 16 invalid, 8 none, 4 full.
 
 **Multi-tier fallback success rates (Jan 2026 data):**
 | Tier | Method | Success Rate | Notes |
 |------|--------|-------------|-------|
 | 0 | Archive.org (first for paywalled) | 11.1% | Best performer |
 | 1 | Playwright + stealth | 6.7% | Local browser |
-| 1.5 | Browserbase | New | $0.10/session, CAPTCHA solving |
+| 1.5 | Browserbase | Enabled by default | $0.10/session, CAPTCHA solving |
 | 2 | ScrapingBee | 3.6% | API-based |
 | 3 | Bright Data Web Unlocker | 3.7% | API-based |
 | 4 | Archive.org (final fallback) | — | Last resort |
 
-**Low success rates are normal** — many URLs are dead (404), behind aggressive anti-bot, or on defunct sites. The overnight-collect workflow (`overnight-collect.yml`) auto-detects shows with the most stubs and processes up to 15 shows sequentially with 5-hour timeout. Enable Browserbase for CAPTCHA-heavy sites.
+**Browserbase routing fix (Feb 2026):** Paywalled sites returning 404 used to trigger a fast-path that skipped Browserbase entirely. Fixed to allow paywalled 404s to fall through to Browserbase when login credentials exist, since 404 may be due to anti-bot blocking rather than a dead URL. Also: `archiveFirstSites` config routes paywalled domains to Archive.org first (Tier 0), which is correct for historical reviews but means Browserbase only fires for non-archived paywalled content.
 
-**Collect free stubs:** `gh workflow run "Overnight Review Collection" -f browserbase_enabled=true`
-**Collect per-show:** `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_reviews=0 -f browserbase_enabled=true`
+**Low success rates are normal** — many URLs are dead (404), behind aggressive anti-bot, or on defunct sites. The nightly cron (`collect-review-texts.yml`, 2 AM UTC) processes up to 100 reviews per run with Browserbase enabled by default and retry_failed=true.
+
+**Collect per-show:** `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_reviews=0`
 
 ## Known Extraction & Data Quality Issues (Feb 2026)
 
-Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). These inform planned improvements below.
+Documented from the Jan-Feb 2026 review corpus audit (1,825→3,644 reviews). **All issues below are FIXED** as of Feb 2026.
 
 ### Text Quality Issues
 
@@ -559,13 +562,15 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 
 **Outlet-specific junk in fullText (FIXED Feb 2026):** `scripts/lib/text-cleaning.js` now has outlet-specific trailing junk patterns for EW (`<img>` tags, srcset, "Related Articles"), BWW ("Get Access To Every Broadway Story"), Variety ("Related Stories", "Popular on Variety"), BroadwayNews (site navigation), and The Times UK (paywall prefix). Applied at write time in all three consumer scripts via `cleanText()`.
 
-**Quality classification in `gather-reviews.js` (FIXED Feb 2026):** `gather-reviews.js` now runs `classifyContentTier()` on every review before writing (line 1194). All 2,141 review files have contentTier assigned. Distribution: complete 1,108, excerpt 463, truncated 257, stub 293, other 20.
+**Byline extraction false positives (FIXED Feb 2026):** `extractByline()` in `content-quality.js` now accepts `options.excludeNames` to skip cast/creative team names that appear in review text (e.g., "Written by David Yazbek" is the songwriter, not the reviewer). Pattern 3 ("Written by X") removed since it always means playwright in theater reviews. Non-name word blocklist (Prize, Weekly, Crown, Theatre, etc.) rejects extracted "names" that are actually proper nouns. Callers (`backfill-review-flags.js`, `collect-review-texts.js`) pass show cast+creative names from shows.json.
+
+**Quality classification in `gather-reviews.js` (FIXED Feb 2026):** `gather-reviews.js` now runs `classifyContentTier()` on every review before writing (line 1194). All 3,644 review files have contentTier assigned. Distribution: 2,138 complete, 774 excerpt, 484 truncated, 154 stub, 66 needs-rescrape, 28 other.
 
 ### Scoring Issues
 
 **Explicit ratings auto-converted (FIXED Feb 2026):** `rebuild-all-reviews.js` extracts explicit ratings (stars, letter grades, X/5, "X out of Y") from review text and `originalScore` field, overriding LLM scores. Priority 0 in the scoring hierarchy. As of Feb 2026: 217 text-extracted + 110 originalScore-parsed = 327 reviews (16.3%) using explicit ratings. The `scoreSource` field in reviews.json tracks which method produced each score.
 
-**Scoring hierarchy in `rebuild-all-reviews.js`:** Priority 0 (explicit ratings from text/originalScore) → Priority 0.5 (`humanReviewScore` manual override) → Priority 0b (originalScore parsed) → Priority 1 (LLM high/medium confidence) → Priority 2 (aggregator thumb override for low-confidence LLM) → Priority 3 (LLM fallback). The `humanReviewScore` field (1-100) is set during manual audit of flagged reviews where LLM and aggregator thumbs disagree. It persists across rebuilds and takes precedence over all automated scoring except explicit ratings. Always paired with `humanReviewNote` explaining the rationale.
+**Scoring hierarchy in `rebuild-all-reviews.js`:** Priority 0 (explicit ratings from text/originalScore) → Priority 0.5 (`humanReviewScore` manual override) → Priority 0b (originalScore parsed) → Priority 1 (LLM high/medium confidence) → Priority 2 (aggregator thumb direction override for low-confidence LLM) → Priority 3 (LLM fallback). The `humanReviewScore` field (1-100) is set during manual audit of flagged reviews where LLM and aggregator thumbs disagree. It persists across rebuilds and takes precedence over all automated scoring except explicit ratings. Always paired with `humanReviewNote` explaining the rationale. As of Feb 2026: 120 source files have humanReviewScore (60 active in reviews.json; rest overridden by higher-priority explicit ratings).
 
 **Excerpt-only confidence downgrade (FIXED Feb 2026):** Audit showed ~50% error rate when LLM scored excerpt-only reviews with high/medium confidence. `rebuild-all-reviews.js` now computes `effectiveConfidence` that downgrades to "low" when `fullText` is missing or <100 chars. This routes excerpt-only reviews through Priority 2 (thumb override) instead of trusting the LLM score directly.
 
@@ -584,28 +589,28 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→2,022 reviews). Th
 ### Scoring Pipeline Details (Feb 2026)
 
 **Scoring hierarchy in `rebuild-all-reviews.js`:**
-- **Priority 0:** Explicit ratings extracted from review text (stars, letter grades, X/5, "X out of Y") — 205 reviews
-- **Priority 0.5:** `humanReviewScore` (1-100) — manual override from audit queue, always paired with `humanReviewNote` — 39 reviews
-- **Priority 0b:** `originalScore` parsed from field (letter grades, star ratings) — 61 reviews
-- **Priority 1:** LLM ensemble score (high/medium confidence, not needs-review) — 1,233 reviews
-- **Priority 2:** Aggregator thumb override of low-confidence/needs-review LLM — 13 reviews
-- **Priority 3:** LLM fallback (low confidence, single/no thumbs) — 115 reviews
+- **Priority 0:** Explicit ratings extracted from review text (stars, letter grades, X/5, "X out of Y") — 199 reviews
+- **Priority 0.5:** `humanReviewScore` (1-100) — manual override from audit queue, always paired with `humanReviewNote` — 60 reviews (120 source files have humanReviewScore, but 60 are overridden by higher-priority explicit ratings)
+- **Priority 0b:** `originalScore` parsed from field (letter grades, star ratings) — 67 reviews
+- **Priority 1:** LLM ensemble score (high/medium confidence, not needs-review) — 1,142 reviews
+- **Priority 2:** Aggregator thumb override of low-confidence/needs-review LLM — 0 reviews (see P2 direction fix below)
+- **Priority 3:** LLM fallback (low confidence, single/no thumbs) — 272 reviews
+
+**P2 direction comparison fix (Feb 2026):** The P2 thumb override previously compared exact buckets (Rave/Positive/Mixed/Negative/Pan), but aggregator thumbs only have 3 levels (Up/Meh/Down). This caused false overrides: an LLM score of 87 (Rave bucket) with both thumbs "Up" (Positive bucket) was treated as a disagreement, pulling Rave scores down to 80. Fixed by comparing *directions* (positive/negative/neutral) instead of exact buckets. `thumbDirection('Up')` → "positive" matches `bucketDirection('Rave')` → "positive", so no override fires. The `thumb-override-llm` source now correctly shows 0 reviews — all former cases were false positives caught by `humanReviewScore` overrides.
 
 **Excerpt-only confidence downgrade:** When `fullText` is missing or <100 chars, LLM confidence is downgraded to "low" regardless of what the model reported. Audit showed ~50% error rate on excerpt-only high/medium confidence scores. These route through Priority 2 (thumb override) or Priority 3 (fallback) instead.
 
 **garbageFullText recovery:** During rebuild, reviews with `fullText: null` but `garbageFullText` >200 chars are cleaned via `cleanText()`. If the cleaned result is >200 chars, it's promoted to `fullText` for scoring. 114 reviews recovered this way. The source files are NOT modified — recovery is in-memory during rebuild only.
 
-**contentTier flow-through:** `rebuild-all-reviews.js` carries `contentTier` from source files into `reviews.json`. Distribution: 1,063 complete, 335 excerpt, 245 truncated, 45 stub, 33 needs-rescrape.
+**contentTier flow-through:** `rebuild-all-reviews.js` carries `contentTier` from source files into `reviews.json`. Source file distribution: 2,138 complete, 774 excerpt, 484 truncated, 154 stub, 66 needs-rescrape, 16 invalid.
 
-**Human review queue:** `data/audit/needs-human-review.json` lists reviews where LLM score and aggregator thumbs disagree. Categories: `both-thumbs-override-llm` (auto-handled), `single-thumb-override-low-conf`, `both-thumbs-disagree-with-llm` (needs manual review). Set `humanReviewScore` + `humanReviewNote` on the source file to override.
+**Human review queue:** `data/audit/needs-human-review.json` lists reviews where LLM score and aggregator thumbs disagree. Categories: `both-thumbs-override-llm` (auto-handled), `single-thumb-override-low-conf`, `both-thumbs-disagree-with-llm` (needs manual review). Set `humanReviewScore` + `humanReviewNote` on the source file to override. As of Feb 2026: 2 reviews in queue (down from 23 after audit).
 
 ### Remaining Data Quality Work (Feb 2026)
 
-**472 stub reviews without fullText (Feb 2026):** 424 are on free (non-paywalled) sites, 48 paywalled (mostly WSJ 44, NYT 4). Highest-count free outlets: timeout (52), deadline (40), new-york-sun (34), observer (26), nydailynews (24), thestage (18). Many URLs may be dead/404. The `overnight-collect.yml` workflow auto-detects shows with the most stubs. Enable Browserbase for better results on CAPTCHA-heavy sites.
+**704 reviews need re-scraping (Feb 2026):** 568 on free (non-paywalled) sites, 136 paywalled. Breakdown: 484 truncated, 154 stub, 66 needs-rescrape. Highest-count free outlets: timeout (52), deadline (40), new-york-sun (34), observer (26), nydailynews (24), thestage (18). Many URLs may be dead/404. The nightly `collect-review-texts.yml` cron (2 AM UTC) processes up to 100 reviews per run with Browserbase enabled. Paywalled sites use subscription credentials from GitHub Secrets (NYT, Vulture, WSJ, WaPo).
 
-**Truncated reviews re-scrape (ONGOING):** ~245 truncated + ~33 needs-rescrape reviews still need better text. `collect-review-texts.js` runs weekly via `review-refresh.yml` and attempts re-scrape. BroadwayNews reviews (paywall) are the hardest — require subscription credentials not yet configured.
-
-**23 reviews in human review queue:** `data/audit/needs-human-review.json` — 10 `both-thumbs-disagree-with-llm` needing manual score assessment, 12 `both-thumbs-override-llm` (auto-handled), 1 `single-thumb-override`.
+**2 reviews in human review queue:** `data/audit/needs-human-review.json` — down from 23 after full audit in Feb 2026. Most were resolved by `humanReviewScore` overrides (120 source files) or fixed by the P2 direction comparison fix.
 
 **27 cross-outlet duplicate-text reviews:** Files with `duplicateTextOf` field where the same fullText appears at a different outlet (e.g., Chris Jones at both Chicago Tribune and NY Daily News). These are legitimate — the same freelance critic published in multiple outlets. Same-outlet duplicates and wrong-critic attributions have been cleaned up.
 
