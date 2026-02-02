@@ -4972,18 +4972,6 @@
     "timestamp": "2026-02-01T20:27:32.567Z"
   },
   {
-    "reviewId": "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "illinoise-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"members only\"",
-    "textLength": 8798,
-    "timestamp": "2026-02-01T22:07:47.275Z"
-  },
-  {
     "reviewId": "aladdin-2014/hollywood-reporter--david-rooney.json",
     "showId": "aladdin-2014",
     "outlet": "The Hollywood Reporter",
@@ -6650,5 +6638,17 @@
     "garbageReason": "Multiple article boundaries detected (3)",
     "textLength": 5987,
     "timestamp": "2026-02-02T02:22:35.517Z"
+  },
+  {
+    "reviewId": "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "illinoise-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"members only\"",
+    "textLength": 17513,
+    "timestamp": "2026-02-02T02:35:25.247Z"
   }
 ]
