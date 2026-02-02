@@ -123,76 +123,7 @@ function findOutlier(results: ModelScore[]): { model: string; bucket: Bucket; sc
 // ========================================
 
 /**
- * Process 3-model ensemble results
- */
-function threeModelEnsemble(results: ModelScore[]): EnsembleResult {
-  const majority = getMajorityBucket(results);
-  const scores = results.map(r => r.score);
-  const avgScore = mean(scores);
-  const medScore = median(scores);
-  const spread = Math.max(...scores) - Math.min(...scores);
-
-  // Check if all 3 models agree on bucket (unanimous)
-  if (majority && majority.count === 3) {
-    // All agree - use average score
-    const finalScore = Math.round(avgScore);
-    const clampedScore = clampScoreToBucket(finalScore, majority.bucket);
-
-    return {
-      score: clampedScore,
-      bucket: majority.bucket,
-      confidence: spread <= TIGHT_AGREEMENT_THRESHOLD ? 'high' : 'medium',
-      source: 'ensemble-unanimous',
-      agreement: `All 3 models agree: ${majority.bucket}`,
-      modelResults: buildModelResultsMap(results),
-      needsReview: false
-    };
-  }
-
-  // Check if 2/3 models agree (majority)
-  if (majority && majority.count === 2) {
-    const outlier = findOutlier(results);
-    const majorityResults = results.filter(r => r.bucket === majority.bucket);
-    const majorityAvg = mean(majorityResults.map(r => r.score));
-    const finalScore = Math.round(majorityAvg);
-    const clampedScore = clampScoreToBucket(finalScore, majority.bucket);
-
-    // Check if outlier is severe (>1 bucket away)
-    const needsReview = outlier ? bucketDistance(majority.bucket, outlier.bucket) > 1 : false;
-
-    return {
-      score: clampedScore,
-      bucket: majority.bucket,
-      confidence: 'medium',
-      source: 'ensemble-majority',
-      agreement: `2/3 models agree: ${majority.bucket}`,
-      outlier: outlier || undefined,
-      modelResults: buildModelResultsMap(results),
-      needsReview,
-      reviewReason: needsReview ? `Outlier ${outlier?.model} chose ${outlier?.bucket}, 2+ buckets from majority` : undefined
-    };
-  }
-
-  // No consensus (all 3 picked different buckets)
-  // Fall back to average score and derive bucket from that
-  const finalScore = Math.round(medScore); // Use median to reduce outlier influence
-  const derivedBucket = scoreToBucket(finalScore);
-
-  return {
-    score: finalScore,
-    bucket: derivedBucket,
-    confidence: 'low',
-    source: 'ensemble-no-consensus',
-    agreement: 'No bucket consensus - using median score',
-    note: `Buckets: ${results.map(r => `${r.model}=${r.bucket}`).join(', ')}`,
-    modelResults: buildModelResultsMap(results),
-    needsReview: true,
-    reviewReason: '3-way bucket disagreement'
-  };
-}
-
-/**
- * Process 2-model ensemble results (fallback when one model fails)
+ * Process 2-model ensemble results (fallback when one or more models fail)
  */
 function twoModelEnsemble(results: ModelScore[]): EnsembleResult {
   const scores = results.map(r => r.score);
@@ -270,55 +201,141 @@ function buildModelResultsMap(results: ModelScore[]): EnsembleResult['modelResul
 /**
  * Combine model results into a final ensemble score
  *
- * Graceful degradation:
- * - 3 valid results: Use majority voting
- * - 2 valid results: Use average with disagreement detection
- * - 1 valid result: Use that model's score
- * - 0 valid results: Return failure
+ * Accepts either:
+ * - 3 named params (backward-compatible): ensembleScore(claude, openai, gemini)
+ * - Array of results: ensembleScoreFromArray([...results])
+ *
+ * Graceful degradation: N→...→2→1→0 model fallback
  */
 export function ensembleScore(
   claudeResult: ModelScore | null,
   openaiResult: ModelScore | null,
-  geminiResult: ModelScore | null
+  geminiResult: ModelScore | null,
+  kimiResult?: ModelScore | null
 ): EnsembleResult {
+  const allResults: (ModelScore | null)[] = [claudeResult, openaiResult, geminiResult];
+  if (kimiResult !== undefined) {
+    allResults.push(kimiResult);
+  }
+  return ensembleScoreFromArray(allResults);
+}
+
+/**
+ * Generalized N-model ensemble scoring
+ *
+ * Graceful degradation:
+ * - 3+ valid results: Use majority voting (most common bucket wins)
+ * - 2 valid results: Use average with disagreement detection
+ * - 1 valid result: Use that model's score
+ * - 0 valid results: Return failure
+ */
+export function ensembleScoreFromArray(results: (ModelScore | null)[]): EnsembleResult {
   // Collect valid results
-  const validResults: ModelScore[] = [];
+  const validResults: ModelScore[] = results.filter(
+    (r): r is ModelScore => r !== null && r !== undefined && !r.error
+  );
 
-  if (claudeResult && !claudeResult.error) {
-    validResults.push(claudeResult);
+  if (validResults.length === 0) {
+    return {
+      score: 50,
+      bucket: 'Mixed',
+      confidence: 'low',
+      source: 'single-model-fallback',
+      note: 'All models failed',
+      modelResults: buildModelResultsMap(validResults),
+      needsReview: true,
+      reviewReason: 'All models failed to score'
+    };
   }
-  if (openaiResult && !openaiResult.error) {
-    validResults.push(openaiResult);
-  }
-  if (geminiResult && !geminiResult.error) {
-    validResults.push(geminiResult);
+
+  if (validResults.length === 1) {
+    return singleModelFallback(validResults[0]);
   }
 
-  // Handle based on number of valid results
-  switch (validResults.length) {
-    case 3:
-      return threeModelEnsemble(validResults);
-
-    case 2:
-      return twoModelEnsemble(validResults);
-
-    case 1:
-      return singleModelFallback(validResults[0]);
-
-    case 0:
-    default:
-      // All models failed
-      return {
-        score: 50, // Neutral fallback
-        bucket: 'Mixed',
-        confidence: 'low',
-        source: 'single-model-fallback',
-        note: 'All models failed',
-        modelResults: {},
-        needsReview: true,
-        reviewReason: 'All models failed to score'
-      };
+  if (validResults.length === 2) {
+    return twoModelEnsemble(validResults);
   }
+
+  // 3+ models: use generalized majority voting
+  return multiModelEnsemble(validResults);
+}
+
+/**
+ * Process 3+ model ensemble results with majority voting
+ */
+function multiModelEnsemble(results: ModelScore[]): EnsembleResult {
+  const majority = getMajorityBucket(results);
+  const scores = results.map(r => r.score);
+  const avgScore = mean(scores);
+  const medScore = median(scores);
+  const spread = Math.max(...scores) - Math.min(...scores);
+  const n = results.length;
+
+  // Check if ALL models agree on bucket (unanimous)
+  if (majority && majority.count === n) {
+    const finalScore = Math.round(avgScore);
+    const clampedScore = clampScoreToBucket(finalScore, majority.bucket);
+
+    return {
+      score: clampedScore,
+      bucket: majority.bucket,
+      confidence: spread <= TIGHT_AGREEMENT_THRESHOLD ? 'high' : 'medium',
+      source: 'ensemble-unanimous',
+      agreement: `All ${n} models agree: ${majority.bucket}`,
+      modelResults: buildModelResultsMap(results),
+      needsReview: false
+    };
+  }
+
+  // Check for majority (>50% of models agree)
+  if (majority && majority.count > n / 2) {
+    const majorityResults = results.filter(r => r.bucket === majority.bucket);
+    const outlierResults = results.filter(r => r.bucket !== majority.bucket);
+    const majorityAvg = mean(majorityResults.map(r => r.score));
+    const finalScore = Math.round(majorityAvg);
+    const clampedScore = clampScoreToBucket(finalScore, majority.bucket);
+
+    // Check if any outlier is severe (>1 bucket away)
+    const severeOutlier = outlierResults.find(r => bucketDistance(majority.bucket, r.bucket) > 1);
+    const needsReview = !!severeOutlier;
+
+    // For 3 models, find the single outlier for backward compatibility
+    const outlier = results.length === 3 ? findOutlier(results) : undefined;
+
+    return {
+      score: clampedScore,
+      bucket: majority.bucket,
+      confidence: majority.count >= n - 1 ? 'medium' : 'low',
+      source: 'ensemble-majority',
+      agreement: `${majority.count}/${n} models agree: ${majority.bucket}`,
+      outlier: outlier || (outlierResults.length === 1 ? {
+        model: outlierResults[0].model,
+        bucket: outlierResults[0].bucket,
+        score: outlierResults[0].score
+      } : undefined),
+      modelResults: buildModelResultsMap(results),
+      needsReview,
+      reviewReason: needsReview
+        ? `Outlier ${severeOutlier?.model} chose ${severeOutlier?.bucket}, 2+ buckets from majority`
+        : undefined
+    };
+  }
+
+  // No clear majority — use median score and derive bucket
+  const finalScore = Math.round(medScore);
+  const derivedBucket = scoreToBucket(finalScore);
+
+  return {
+    score: finalScore,
+    bucket: derivedBucket,
+    confidence: 'low',
+    source: 'ensemble-no-consensus',
+    agreement: 'No bucket consensus - using median score',
+    note: `Buckets: ${results.map(r => `${r.model}=${r.bucket}`).join(', ')}`,
+    modelResults: buildModelResultsMap(results),
+    needsReview: true,
+    reviewReason: `${n}-way bucket disagreement`
+  };
 }
 
 /**
@@ -326,7 +343,7 @@ export function ensembleScore(
  */
 export function toModelScore(
   result: SimplifiedLLMResult | null,
-  model: 'claude' | 'openai' | 'gemini',
+  model: 'claude' | 'openai' | 'gemini' | 'kimi',
   error?: string
 ): ModelScore {
   if (!result || error) {
