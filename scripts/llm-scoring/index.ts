@@ -291,6 +291,7 @@ async function main(): Promise<void> {
   const claudeApiKey = process.env.ANTHROPIC_API_KEY;
   const openaiApiKey = process.env.OPENAI_API_KEY;
   const geminiApiKey = process.env.GEMINI_API_KEY;
+  const openrouterApiKey = process.env.OPENROUTER_API_KEY;
 
   if (!claudeApiKey) {
     console.error('Error: ANTHROPIC_API_KEY environment variable not set');
@@ -308,15 +309,21 @@ async function main(): Promise<void> {
   let scorer: ReviewScorer | EnsembleReviewScorer;
 
   if (options.ensemble) {
-    scorer = new EnsembleReviewScorer(claudeApiKey, openaiApiKey!, geminiApiKey, {
+    scorer = new EnsembleReviewScorer(claudeApiKey, openaiApiKey!, geminiApiKey, openrouterApiKey, {
       claudeModel: options.model,
       openaiModel: 'gpt-4o',
       geminiModel: 'gemini-2.0-flash',
+      kimiModel: 'moonshotai/kimi-k2.5',
       verbose: options.verbose
     });
     const modelCount = (scorer as EnsembleReviewScorer).getModelCount();
-    if (modelCount === 3) {
+    if (modelCount === 4) {
+      console.log('Using 4-MODEL ensemble mode (Claude Sonnet + GPT-4o + Gemini 2.0 Flash + Kimi K2.5)\n');
+    } else if (modelCount === 3) {
       console.log('Using 3-MODEL ensemble mode (Claude Sonnet + GPT-4o + Gemini 2.0 Flash)\n');
+      if (!openrouterApiKey) {
+        console.log('  (Set OPENROUTER_API_KEY to enable 4-model mode with Kimi K2.5)\n');
+      }
     } else {
       console.log('Using 2-MODEL ensemble mode (Claude Sonnet + GPT-4o)\n');
       if (!geminiApiKey) {
@@ -561,6 +568,38 @@ async function main(): Promise<void> {
     try {
       const result = await scorer.scoreReviewFile(reviewFile);
 
+      // Handle scoreability rejection (v5.2+)
+      if (result.success && (result as any).rejected) {
+        const rejection = (result as any).rejection as string;
+        const rejectionReasoning = (result as any).rejectionReasoning as string;
+
+        if (!options.dryRun) {
+          const fileData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+
+          // Route rejection to appropriate flags
+          if (rejection === 'wrong_show') {
+            fileData.wrongShow = true;
+          } else if (rejection === 'wrong_production') {
+            fileData.wrongProduction = true;
+          } else if (rejection === 'not_a_review') {
+            fileData.contentTier = 'invalid';
+          } else if (rejection === 'garbage_text') {
+            fileData.contentTier = 'needs-rescrape';
+          }
+
+          fileData.rejectedAt = new Date().toISOString();
+          fileData.rejectedBy = 'ensemble-scoreability-check';
+          fileData.rejectionReason = rejection;
+          fileData.rejectionReasoning = rejectionReasoning;
+          fileData.promptVersion = PROMPT_VERSION;
+          saveReviewFile(filePath, fileData);
+        }
+
+        console.log(`REJECTED (${rejection}): ${(result as any).rejectionReasoning?.substring(0, 80) || ''}`);
+        skipped++;
+        continue;
+      }
+
       if (result.success && result.scoredFile) {
         // Always clear needsRescore flag after successful scoring
         const scoredAny = result.scoredFile as any;
@@ -597,7 +636,8 @@ async function main(): Promise<void> {
         let ensembleInfo = '';
         if (ed) {
           const geminiPart = ed.geminiScore !== null && ed.geminiScore !== undefined ? ` G:${ed.geminiScore}` : '';
-          ensembleInfo = ` [C:${ed.claudeScore} O:${ed.openaiScore}${geminiPart}${ed.needsReview ? ' ⚠️' : ''}]`;
+          const kimiPart = ed.kimiScore !== null && ed.kimiScore !== undefined ? ` K:${ed.kimiScore}` : '';
+          ensembleInfo = ` [C:${ed.claudeScore} O:${ed.openaiScore}${geminiPart}${kimiPart}${ed.needsReview ? ' ⚠️' : ''}]`;
         }
 
         console.log(`${score} (${bucket}, ${confidence})${ensembleInfo}`);
@@ -641,11 +681,14 @@ async function main(): Promise<void> {
   // Handle both single and ensemble scorer token usage
   if ('claude' in tokenUsage) {
     // Ensemble scorer
-    const ensembleUsage = tokenUsage as { claude: { input: number; output: number }; openai: { input: number; output: number }; gemini: { input: number; output: number } | null; total: number };
+    const ensembleUsage = tokenUsage as { claude: { input: number; output: number }; openai: { input: number; output: number }; gemini: { input: number; output: number } | null; kimi: { input: number; output: number } | null; total: number };
     console.log(`Claude tokens: ${(ensembleUsage.claude.input + ensembleUsage.claude.output).toLocaleString()} (in: ${ensembleUsage.claude.input.toLocaleString()}, out: ${ensembleUsage.claude.output.toLocaleString()})`);
     console.log(`OpenAI tokens: ${(ensembleUsage.openai.input + ensembleUsage.openai.output).toLocaleString()} (in: ${ensembleUsage.openai.input.toLocaleString()}, out: ${ensembleUsage.openai.output.toLocaleString()})`);
     if (ensembleUsage.gemini) {
       console.log(`Gemini tokens: ${(ensembleUsage.gemini.input + ensembleUsage.gemini.output).toLocaleString()} (in: ${ensembleUsage.gemini.input.toLocaleString()}, out: ${ensembleUsage.gemini.output.toLocaleString()})`);
+    }
+    if (ensembleUsage.kimi) {
+      console.log(`Kimi tokens: ${(ensembleUsage.kimi.input + ensembleUsage.kimi.output).toLocaleString()} (in: ${ensembleUsage.kimi.input.toLocaleString()}, out: ${ensembleUsage.kimi.output.toLocaleString()})`);
     }
 
     // Estimate cost
@@ -653,8 +696,10 @@ async function main(): Promise<void> {
     const claudeOutputCost = options.model.includes('haiku') ? 4.00 : 15.00;
     const openaiInputCost = 2.50;  // gpt-4o
     const openaiOutputCost = 10.00;
-    const geminiInputCost = 1.25;  // gemini-1.5-pro
+    const geminiInputCost = 1.25;  // gemini-2.0-flash
     const geminiOutputCost = 5.00;
+    const kimiInputCost = 1.50;  // kimi-k2.5 via openrouter (approximate)
+    const kimiOutputCost = 5.00;
 
     const claudeCost = (ensembleUsage.claude.input / 1_000_000) * claudeInputCost +
                        (ensembleUsage.claude.output / 1_000_000) * claudeOutputCost;
@@ -664,11 +709,15 @@ async function main(): Promise<void> {
       ? (ensembleUsage.gemini.input / 1_000_000) * geminiInputCost +
         (ensembleUsage.gemini.output / 1_000_000) * geminiOutputCost
       : 0;
-    const totalCost = claudeCost + openaiCost + geminiCost;
-    const costBreakdown = ensembleUsage.gemini
-      ? `Claude: $${claudeCost.toFixed(4)}, OpenAI: $${openaiCost.toFixed(4)}, Gemini: $${geminiCost.toFixed(4)}`
-      : `Claude: $${claudeCost.toFixed(4)}, OpenAI: $${openaiCost.toFixed(4)}`;
-    console.log(`Estimated cost: $${totalCost.toFixed(4)} (${costBreakdown})`);
+    const kimiCost = ensembleUsage.kimi
+      ? (ensembleUsage.kimi.input / 1_000_000) * kimiInputCost +
+        (ensembleUsage.kimi.output / 1_000_000) * kimiOutputCost
+      : 0;
+    const totalCost = claudeCost + openaiCost + geminiCost + kimiCost;
+    const costParts = [`Claude: $${claudeCost.toFixed(4)}`, `OpenAI: $${openaiCost.toFixed(4)}`];
+    if (ensembleUsage.gemini) costParts.push(`Gemini: $${geminiCost.toFixed(4)}`);
+    if (ensembleUsage.kimi) costParts.push(`Kimi: $${kimiCost.toFixed(4)}`);
+    console.log(`Estimated cost: $${totalCost.toFixed(4)} (${costParts.join(', ')})`);
   } else {
     // Single scorer
     const singleUsage = tokenUsage as { input: number; output: number; total: number };

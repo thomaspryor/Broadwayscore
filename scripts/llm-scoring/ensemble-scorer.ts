@@ -8,6 +8,7 @@
 import { ReviewScorer } from './scorer';
 import { OpenAIReviewScorer } from './openai-scorer';
 import { GeminiScorer } from './gemini-scorer';
+import { KimiScorer } from './kimi-scorer';
 import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, EnsembleResult as EnsembleResultType } from './types';
 import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5 } from './config';
 import { buildScoringInput, ReviewInputData } from './input-builder';
@@ -21,6 +22,7 @@ export interface EnsembleScoringOptions {
   claudeModel: 'claude-sonnet-4-20250514' | 'claude-3-5-haiku-20241022';
   openaiModel: 'gpt-4o-mini' | 'gpt-4o';
   geminiModel: 'gemini-2.0-flash' | 'gemini-1.5-flash';
+  kimiModel: string;
   maxDelta: number;  // Maximum acceptable difference between models
   verbose: boolean;
   useV5Prompt: boolean;  // Use simplified bucket-first prompt
@@ -34,19 +36,22 @@ export class EnsembleReviewScorer {
   private claudeScorer: ReviewScorer;
   private openaiScorer: OpenAIReviewScorer;
   private geminiScorer: GeminiScorer | null;
+  private kimiScorer: KimiScorer | null;
   private options: EnsembleScoringOptions;
-  private modelCount: 2 | 3;
+  private modelCount: 2 | 3 | 4;
 
   constructor(
     claudeApiKey: string,
     openaiApiKey: string,
     geminiApiKey?: string,
+    openrouterApiKey?: string,
     options: Partial<EnsembleScoringOptions> = {}
   ) {
     this.options = {
       claudeModel: options.claudeModel || 'claude-sonnet-4-20250514',
       openaiModel: options.openaiModel || 'gpt-4o',
       geminiModel: options.geminiModel || 'gemini-2.0-flash',
+      kimiModel: options.kimiModel || 'moonshotai/kimi-k2.5',
       maxDelta: options.maxDelta ?? 15,
       verbose: options.verbose ?? false,
       useV5Prompt: options.useV5Prompt ?? true
@@ -68,17 +73,27 @@ export class EnsembleReviewScorer {
         model: this.options.geminiModel,
         verbose: this.options.verbose
       });
-      this.modelCount = 3;
     } else {
       this.geminiScorer = null;
-      this.modelCount = 2;
     }
+
+    // Kimi via OpenRouter is optional - enables 4-model mode if provided
+    if (openrouterApiKey) {
+      this.kimiScorer = new KimiScorer(openrouterApiKey, {
+        model: this.options.kimiModel,
+        verbose: this.options.verbose
+      });
+    } else {
+      this.kimiScorer = null;
+    }
+
+    this.modelCount = 2 + (this.geminiScorer ? 1 : 0) + (this.kimiScorer ? 1 : 0) as 2 | 3 | 4;
   }
 
   /**
    * Get the number of models in use
    */
-  getModelCount(): 2 | 3 {
+  getModelCount(): 2 | 3 | 4 {
     return this.modelCount;
   }
 
@@ -91,7 +106,7 @@ export class EnsembleReviewScorer {
   ): Promise<EnsembleResultType> {
     // Build promises for all available models
     const promises: Promise<{
-      model: 'claude' | 'openai' | 'gemini';
+      model: 'claude' | 'openai' | 'gemini' | 'kimi';
       result: SimplifiedLLMResult | null;
       error?: string;
       rejected?: boolean;
@@ -155,6 +170,26 @@ export class EnsembleReviewScorer {
       );
     }
 
+    // Kimi via OpenRouter (if available)
+    if (this.kimiScorer) {
+      promises.push(
+        this.kimiScorer.scoreReview(reviewText, context)
+          .then(outcome => ({
+            model: 'kimi' as const,
+            result: outcome.success && !outcome.rejected ? outcome.result! : null,
+            error: outcome.error,
+            rejected: outcome.rejected,
+            rejection: outcome.rejection,
+            rejectionReasoning: outcome.rejectionReasoning
+          }))
+          .catch(err => ({
+            model: 'kimi' as const,
+            result: null,
+            error: err.message
+          }))
+      );
+    }
+
     // Run all models in parallel
     const results = await Promise.all(promises);
 
@@ -192,6 +227,7 @@ export class EnsembleReviewScorer {
     const claudeOutcome = results.find(r => r.model === 'claude');
     const openaiOutcome = results.find(r => r.model === 'openai');
     const geminiOutcome = results.find(r => r.model === 'gemini');
+    const kimiOutcome = results.find(r => r.model === 'kimi');
 
     const claudeScore = claudeOutcome
       ? toModelScore(
@@ -214,9 +250,16 @@ export class EnsembleReviewScorer {
           geminiOutcome.rejected ? 'Rejected as unscorable' : geminiOutcome.error
         )
       : null;
+    const kimiScore = kimiOutcome
+      ? toModelScore(
+          kimiOutcome.rejected ? null : kimiOutcome.result,
+          'kimi',
+          kimiOutcome.rejected ? 'Rejected as unscorable' : kimiOutcome.error
+        )
+      : null;
 
     // Use ensemble voting logic
-    const ensembleResult = ensembleScore(claudeScore, openaiScore, geminiScore);
+    const ensembleResult = ensembleScore(claudeScore, openaiScore, geminiScore, kimiScore);
 
     if (this.options.verbose) {
       this.logVerbose(ensembleResult);
@@ -303,7 +346,7 @@ export class EnsembleReviewScorer {
         }
       },
       llmMetadata: {
-        model: `ensemble:${this.options.claudeModel}+${this.options.openaiModel}${this.geminiScorer ? `+${this.options.geminiModel}` : ''}`,
+        model: `ensemble:${this.options.claudeModel}+${this.options.openaiModel}${this.geminiScorer ? `+${this.options.geminiModel}` : ''}${this.kimiScorer ? `+${this.options.kimiModel}` : ''}`,
         scoredAt: new Date().toISOString(),
         promptVersion: PROMPT_VERSION,
         inputTokens: 0,
@@ -315,9 +358,11 @@ export class EnsembleReviewScorer {
         claudeScore: ensembleResult.modelResults.claude?.score ?? null,
         openaiScore: ensembleResult.modelResults.openai?.score ?? null,
         geminiScore: ensembleResult.modelResults.gemini?.score ?? null,
+        kimiScore: ensembleResult.modelResults.kimi?.score ?? null,
         claudeBucket: ensembleResult.modelResults.claude?.bucket,
         openaiBucket: ensembleResult.modelResults.openai?.bucket,
         geminiBucket: ensembleResult.modelResults.gemini?.bucket,
+        kimiBucket: ensembleResult.modelResults.kimi?.bucket,
         scoreDelta: this.calculateScoreDelta(ensembleResult),
         thumbsMatch: null, // TODO: Re-implement thumbs validation
         expectedThumb: null,
@@ -350,6 +395,9 @@ export class EnsembleReviewScorer {
     if (result.modelResults.gemini && !result.modelResults.gemini.error) {
       scores.push(result.modelResults.gemini.score);
     }
+    if (result.modelResults.kimi && !result.modelResults.kimi.error) {
+      scores.push(result.modelResults.kimi.score);
+    }
 
     if (scores.length < 2) return 0;
 
@@ -381,6 +429,9 @@ export class EnsembleReviewScorer {
     if (modelResults.gemini?.reasoning) {
       parts.push(`Gemini: ${modelResults.gemini.reasoning}`);
     }
+    if (modelResults.kimi?.reasoning) {
+      parts.push(`Kimi: ${modelResults.kimi.reasoning}`);
+    }
 
     if (result.note) {
       parts.push(result.note);
@@ -399,6 +450,9 @@ export class EnsembleReviewScorer {
     if (result.modelResults.gemini !== undefined) {
       console.log(`    Gemini: ${result.modelResults.gemini?.bucket || 'N/A'} (${result.modelResults.gemini?.score ?? 'N/A'})`);
     }
+    if (result.modelResults.kimi !== undefined) {
+      console.log(`    Kimi:   ${result.modelResults.kimi?.bucket || 'N/A'} (${result.modelResults.kimi?.score ?? 'N/A'})`);
+    }
     console.log(`    Final: ${result.bucket} (${result.score}) [${result.confidence}]`);
     if (result.outlier) {
       console.log(`    Outlier: ${result.outlier.model} chose ${result.outlier.bucket}`);
@@ -415,18 +469,21 @@ export class EnsembleReviewScorer {
     claude: { input: number; output: number };
     openai: { input: number; output: number };
     gemini: { input: number; output: number } | null;
+    kimi: { input: number; output: number } | null;
     total: number;
   } {
     const claudeUsage = this.claudeScorer.getTokenUsage();
     const openaiUsage = this.openaiScorer.getTokenUsage();
     const geminiUsage = this.geminiScorer?.getTokenUsage() || null;
+    const kimiUsage = this.kimiScorer?.getTokenUsage() || null;
 
-    const total = claudeUsage.total + openaiUsage.total + (geminiUsage?.total || 0);
+    const total = claudeUsage.total + openaiUsage.total + (geminiUsage?.total || 0) + (kimiUsage?.total || 0);
 
     return {
       claude: { input: claudeUsage.input, output: claudeUsage.output },
       openai: { input: openaiUsage.input, output: openaiUsage.output },
       gemini: geminiUsage ? { input: geminiUsage.input, output: geminiUsage.output } : null,
+      kimi: kimiUsage ? { input: kimiUsage.input, output: kimiUsage.output } : null,
       total
     };
   }
@@ -435,5 +492,6 @@ export class EnsembleReviewScorer {
     this.claudeScorer.resetTokenUsage();
     this.openaiScorer.resetTokenUsage();
     this.geminiScorer?.resetTokenUsage();
+    this.kimiScorer?.resetTokenUsage();
   }
 }

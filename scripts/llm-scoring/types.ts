@@ -67,9 +67,25 @@ export interface ReviewEntry {
 export type Bucket = 'Rave' | 'Positive' | 'Mixed' | 'Negative' | 'Pan';
 
 /**
+ * Valid rejection reasons for unscorable text (v5.2+)
+ */
+export type RejectionReason = 'wrong_show' | 'wrong_production' | 'not_a_review' | 'garbage_text';
+
+/**
+ * Result when a model determines the text is not scoreable (v5.2+)
+ */
+export interface RejectionResult {
+  scoreable: false;
+  rejection: RejectionReason;
+  reasoning: string;
+}
+
+/**
  * Simplified LLM result for v5 scoring (bucket-first approach)
  */
 export interface SimplifiedLLMResult {
+  /** Whether the text was scoreable (v5.2+, always true for scoring results) */
+  scoreable?: true;
   /** Sentiment bucket (chosen first, then score within range) */
   bucket: Bucket;
   /** Score within the bucket's range */
@@ -88,7 +104,7 @@ export interface SimplifiedLLMResult {
  * Individual model score for ensemble
  */
 export interface ModelScore {
-  model: 'claude' | 'openai' | 'gemini';
+  model: 'claude' | 'openai' | 'gemini' | 'kimi';
   bucket: Bucket;
   score: number;
   confidence: 'high' | 'medium' | 'low';
@@ -123,6 +139,7 @@ export interface EnsembleResult {
     claude?: ModelScore;
     openai?: ModelScore;
     gemini?: ModelScore;
+    kimi?: ModelScore;
   };
   /** Outlier model if 2/3 agree */
   outlier?: {
@@ -130,6 +147,12 @@ export interface EnsembleResult {
     bucket: Bucket;
     score: number;
   };
+  /** Whether the review was rejected as unscorable (v5.2+) */
+  rejected?: boolean;
+  /** Rejection reason if rejected */
+  rejection?: string;
+  /** Rejection reasoning from models */
+  rejectionReasoning?: string;
 }
 
 // ========================================
@@ -247,10 +270,13 @@ export interface ScoredReviewFile extends ReviewTextFile {
     openaiScore: number | null;
     /** Gemini score (v5+) */
     geminiScore?: number | null;
+    /** Kimi score (v5.2+) */
+    kimiScore?: number | null;
     /** Bucket from each model (v5+) */
     claudeBucket?: Bucket;
     openaiBucket?: Bucket;
     geminiBucket?: Bucket;
+    kimiBucket?: Bucket;
     scoreDelta: number;
     thumbsMatch: boolean | null;
     expectedThumb: 'Up' | 'Flat' | 'Down' | null;
