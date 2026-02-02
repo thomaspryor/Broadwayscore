@@ -1,52 +1,60 @@
 {
   "processed": [
-    "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/backstage--david-sheward.json",
-    "book-of-mormon-2011/chicagotribune--.json",
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "book-of-mormon-2011/ny-1--roma-torre.json"
+    "suffs-2024/nytimes--jesse-green.json",
+    "suffs-2024/theatermania--jesse-green.json",
+    "suffs-2024/wsj--charles-isherwood.json",
+    "suffs-2024/the-times--nancy-durrant.json"
   ],
   "failed": [
-    "book-of-mormon-2011/newsday--linda-winer.json",
-    "book-of-mormon-2011/timeout--david-cote.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
-    "book-of-mormon-2011/the-village-voice--michael-musto.json"
+    "suffs-2024/chelsea-community-news--michael-musto.json",
+    "suffs-2024/deadline--greg-evans.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/observer--rex-reed.json",
+    "suffs-2024/timeout--adam-feldman.json",
+    "suffs-2024/timeout--regina-robbins.json",
+    "suffs-2024/talkinbroadway--matthew-murray.json",
+    "suffs-2024/usatoday--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "book-of-mormon-2011/ap--mark-kennedy.json"
+      "suffs-2024/the-times--nancy-durrant.json"
     ],
-    "browserbase": [
-      "data/review-texts/book-of-mormon-2011/newsday--linda-winer.json"
+    "browserbase": [],
+    "scrapingbee": [
+      "suffs-2024/deadline--greg-evans.json",
+      "suffs-2024/theatermania--jesse-green.json"
     ],
-    "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "suffs-2024/wsj--charles-isherwood.json"
+    ],
     "archive": [
-      "book-of-mormon-2011/backstage--david-sheward.json",
-      "book-of-mormon-2011/chicagotribune--.json",
-      "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-      "book-of-mormon-2011/ny-1--roma-torre.json"
+      "suffs-2024/nytimes--jesse-green.json"
     ]
   },
-  "startTime": "2026-02-02T23:11:40.379Z",
-  "lastProcessed": "book-of-mormon-2011/the-village-voice--michael-musto.json",
+  "startTime": "2026-02-02T23:32:40.267Z",
+  "lastProcessed": "suffs-2024/usatoday--charles-isherwood.json",
   "log": [
     {
-      "t": "2026-02-02T23:11:47.589Z",
+      "t": "2026-02-02T23:38:55.505Z",
       "event": "bb-session",
-      "session": "c4474ec4",
-      "url": "https://www.newsday.com/news/new-york/theater-review-the-book-of-mormon-4-stars-"
+      "session": "76fadeb8",
+      "url": "https://observer.com/2024/04/suffs-broadway-review-shaina-taub/"
     },
     {
-      "t": "2026-02-02T23:12:10.799Z",
+      "t": "2026-02-02T23:39:20.998Z",
       "event": "bb-session",
-      "session": "9d822b55",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+      "session": "4ad9af69",
+      "url": "https://www.theatermania.com/broadway/reviews/suffs_90952.html"
     },
     {
-      "t": "2026-02-02T23:12:57.451Z",
+      "t": "2026-02-02T23:40:09.437Z",
+      "event": "bb-session",
+      "session": "b008bcc5",
+      "url": "https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-tau"
+    },
+    {
+      "t": "2026-02-02T23:40:52.471Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     }

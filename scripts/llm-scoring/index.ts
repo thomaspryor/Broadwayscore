@@ -446,8 +446,22 @@ async function main(): Promise<void> {
     return null;
   };
 
+  // Pre-filter: skip reviews already flagged as unscorable
+  let dataQualitySkipped = 0;
+  const scorableFiles = filesToProcess.filter(f => {
+    const d = f.data as any;
+    if (d.wrongShow || d.wrongProduction || d.showNotMentioned || d.contentTier === 'invalid') {
+      dataQualitySkipped++;
+      return false;
+    }
+    return true;
+  });
+  if (dataQualitySkipped > 0) {
+    console.log(`Skipped ${dataQualitySkipped} reviews (wrongShow/wrongProduction/showNotMentioned/invalid)\n`);
+  }
+
   // Apply text length filter - now includes reviews with excerpts
-  const validFiles = filesToProcess.filter(f => getScorableText(f.data, f.path) !== null);
+  const validFiles = scorableFiles.filter(f => getScorableText(f.data, f.path) !== null);
 
   // Apply limit
   const finalFiles = options.limit
