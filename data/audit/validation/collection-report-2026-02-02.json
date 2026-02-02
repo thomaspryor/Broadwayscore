@@ -1,89 +1,96 @@
 {
-  "runDate": "2026-02-02T15:15:24.401Z",
+  "runDate": "2026-02-02T15:15:35.774Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "illinoise-2024",
+    "showFilter": "hamilton-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 6,
+    "processed": 7,
+    "failed": 8,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "46.7%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 5
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 1,
+    "tier1Attempts": 7,
+    "tier1Success": 3,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 7,
-    "tier2Success": 2,
-    "tier3Attempts": 2,
-    "tier3Success": 0,
-    "tier4Attempts": 18,
-    "tier4Success": 7,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 24,
+    "tier2Attempts": 8,
+    "tier2Success": 3,
+    "tier3Attempts": 4,
+    "tier3Success": 2,
+    "tier4Attempts": 20,
+    "tier4Success": 5,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 52,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
-    "urlDiscoverySuccess": 3,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "illinoise-2024/hollywood-reporter--david-rooney.json",
-    "illinoise-2024/vulture--helen-shaw.json",
-    "illinoise-2024/broadwaynews--brittani-samuel.json",
-    "illinoise-2024/nydailynews--joe-dziemianowicz.json",
-    "illinoise-2024/nysr--roma-torre.json",
-    "illinoise-2024/usatoday--david-rooney.json"
+    "hamilton-2015/guardian--jesse-green.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nypost--elisabeth-vincentelli.json",
+    "hamilton-2015/nypost--johnny-oleksinski.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "hamilton-2015/theatre-reviews-limited--david-roberts.json",
+    "hamilton-2015/ny1--roma-torre.json"
   ],
   "failed": [
-    "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "illinoise-2024/deadline--greg-evans.json",
-    "illinoise-2024/guardian--adrian-horton.json",
-    "illinoise-2024/observer--rex-reed.json",
-    "illinoise-2024/timeout--adam-feldman.json",
-    "illinoise-2024/talkinbroadway--matthew-murray.json"
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/variety--charles-isherwood.json",
+    "hamilton-2015/observer--david-cote.json",
+    "hamilton-2015/timeout--david-cote.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "hamilton-2015/ap--mark-kennedy.json",
+    "hamilton-2015/the-clyde-fitch-report--david-finkle.json",
+    "hamilton-2015/thisbroadsway--sandra-mcfarland.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "hamilton-2015/guardian--jesse-green.json",
+      "hamilton-2015/ny1--roma-torre.json"
+    ],
     "browserbase": [],
     "scrapingbee": [
-      "illinoise-2024/usatoday--david-rooney.json"
+      "hamilton-2015/nypost--johnny-oleksinski.json",
+      "hamilton-2015/theatermania--adam-feldman.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "hamilton-2015/hollywood-reporter--david-rooney.json"
+    ],
     "archive": [
-      "illinoise-2024/hollywood-reporter--david-rooney.json",
-      "illinoise-2024/vulture--helen-shaw.json",
-      "illinoise-2024/broadwaynews--brittani-samuel.json",
-      "illinoise-2024/nydailynews--joe-dziemianowicz.json",
-      "illinoise-2024/nysr--roma-torre.json"
+      "hamilton-2015/newsday--linda-winer.json",
+      "hamilton-2015/nypost--elisabeth-vincentelli.json",
+      "hamilton-2015/theatre-reviews-limited--david-roberts.json"
     ]
   },
   "failuresByOutlet": {
-    "The Guardian": {
+    "Variety": {
       "count": 1,
-      "domain": "theguardian.com",
+      "domain": "variety.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Talkin' Broadway": {
+    "The Clyde Fitch Report": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "clydefitchreport.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -91,19 +98,14 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "illinoise-2024/vulture--helen-shaw.json",
-      "oldUrl": "https://www.vulture.com/article/illinoise-broadway-review.html",
-      "newUrl": "https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html"
+      "reviewId": "hamilton-2015/guardian--jesse-green.json",
+      "oldUrl": "https://www.theguardian.com/stage/2015/aug/07/hamilton-review-broadway-musical",
+      "newUrl": "https://www.theguardian.com/stage/2015/feb/18/hamilton-review-founding-father-gets-a-hip-hop-makeover"
     },
     {
-      "reviewId": "illinoise-2024/nydailynews--joe-dziemianowicz.json",
-      "oldUrl": "https://www.nydailynews.com/2024/04/25/illinoise-review-sufjan-stevens-songs-soar-in-transcendent-broadway-dance-musical/",
-      "newUrl": "https://www.nydailynews.com/2024/04/26/broadway-review-illinoise-based-on-sufjan-stevens-album-is-atypical-esoteric-and-intense/"
-    },
-    {
-      "reviewId": "illinoise-2024/observer--rex-reed.json",
-      "oldUrl": "https://observer.com/2024/04/illinoise-broadway-review-sufjan-stevens/",
-      "newUrl": "https://observer.com/2024/03/review-illinoise-musical-dance-broadway/"
+      "reviewId": "hamilton-2015/nypost--johnny-oleksinski.json",
+      "oldUrl": "https://nypost.com/2015/08/06/hamilton-is-the-best-musical-to-hit-broadway-in-years/",
+      "newUrl": "https://nypost.com/2020/06/30/hamilton-review-musical-loses-edge-but-reveals-tenderness/"
     }
   ]
 }
