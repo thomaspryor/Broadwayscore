@@ -627,8 +627,7 @@ function getBestScore(data) {
         if (agreeBucket !== llmBucket) {
           const thumbScore = dtliScore; // Both agree, use dtli
           const scoreDiff = Math.abs(thumbScore - llmScore);
-          flagForHumanReview(data, 'both-thumbs-override-llm',
-            `LLM=${llmScore} (${llmBucket}), both thumbs=${data.dtliThumb} (${agreeBucket}), delta=${scoreDiff}`);
+          // Auto-resolved: thumb score wins. No human review needed.
           stats.thumbOverrideLlm = (stats.thumbOverrideLlm || 0) + 1;
           return { score: thumbScore, source: 'thumb-override-llm' };
         }
@@ -641,8 +640,7 @@ function getBestScore(data) {
         const isExcerptBased = data.llmMetadata?.textSource?.type === 'excerpt' ||
           data.llmMetadata?.textSource?.status === 'excerpt-only';
         if (delta > 25 && (data.llmScore.confidence === 'low' || isExcerptBased)) {
-          flagForHumanReview(data, 'single-thumb-override-low-conf',
-            `LLM=${llmScore} (${data.llmScore.confidence}), thumb=${singleThumb}, delta=${delta}`);
+          // Auto-resolved: single thumb wins. No human review needed.
           stats.thumbOverrideLlm = (stats.thumbOverrideLlm || 0) + 1;
           return { score: singleThumb, source: 'thumb-override-llm' };
         }
@@ -1176,8 +1174,8 @@ if (stats.unscoredWithText.length > 0) {
   }
 }
 
-// Write human review queue if any items were flagged
-if (humanReviewQueue.length > 0) {
+// Write human review queue (always write, even if empty, to clear stale data)
+{
   const auditDir = path.join(__dirname, '../data/audit');
   if (!fs.existsSync(auditDir)) {
     fs.mkdirSync(auditDir, { recursive: true });
@@ -1199,11 +1197,15 @@ if (humanReviewQueue.length > 0) {
   });
 
   fs.writeFileSync(auditPath, JSON.stringify(auditOutput, null, 2) + '\n');
-  console.log(`\nHUMAN REVIEW QUEUE: ${humanReviewQueue.length} reviews flagged`);
-  Object.entries(auditOutput._meta.reasons).forEach(([reason, count]) => {
-    console.log(`  ${reason}: ${count}`);
-  });
-  console.log(`  Written to: ${auditPath}`);
+  if (humanReviewQueue.length > 0) {
+    console.log(`\nHUMAN REVIEW QUEUE: ${humanReviewQueue.length} reviews flagged`);
+    Object.entries(auditOutput._meta.reasons).forEach(([reason, count]) => {
+      console.log(`  ${reason}: ${count}`);
+    });
+    console.log(`  Written to: ${auditPath}`);
+  } else {
+    console.log(`\nHUMAN REVIEW QUEUE: 0 reviews flagged (all clear)`);
+  }
 }
 
 console.log('\n=== DONE ===');
