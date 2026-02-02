@@ -78,18 +78,36 @@
     "needsReviewReasons": []
   },
   "bwwExcerpt": "Though the main characters are played for laughs, each one, amid all the comic chaos, also reveals their own dignity, heart, and humanity. The show also manages to teeter between patriotism and subversiveness: admiring the derring-do of the mission while poking at its shortcomings, too. Having the actors play any gender of any character without camp or winks is a theatrical approach that not only cleverly skirts the sexist and classist ick of that era but coolly comments on it, too.",
-  "sourceMethod": "archive",
-  "archivePath": "data/archives/reviews/operation-mincemeat-2025/variety--frank-rizzo_2026-02-01.html",
-  "textFetchedAt": "2026-02-01T23:36:58.031Z",
-  "fetchMethod": "archive",
+  "sourceMethod": "brightdata",
+  "archivePath": "data/archives/reviews/operation-mincemeat-2025/variety--frank-rizzo_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T00:58:36.164Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "archiveOrgTimestamp": "20251205014344",
   "archiveOrgUrl": "http://web.archive.org/web/20251205014344/https://variety.com/2025/legit/reviews/operation-mincemeat-review-broadway-musical-1236343736/",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
