@@ -1,71 +1,34 @@
 {
   "processed": [
-    "chess-2025/nytimes--elisabeth-vincentelli.json",
-    "chess-2025/timeout--adam-feldman.json",
-    "and-juliet-2022/nytg--unknown.json"
+    "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
-    "chess-2025/wsj--charles-isherwood.json",
-    "aladdin-2014/hollywood-reporter--david-rooney.json",
-    "an-enemy-of-the-people-2024/hollywood-reporter--david-rooney.json",
-    "an-enemy-of-the-people-2024/variety--aramide-tinubu.json",
-    "an-enemy-of-the-people-2024/variety--daniel-dand8217addario.json",
-    "an-enemy-of-the-people-2024/vulture--jesse-green.json",
-    "and-juliet-2022/variety--peter-marks.json",
-    "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
-    "appropriate-2023/variety--aramide-tinubu.json",
-    "appropriate-2023/vulture--jesse-green.json"
+    "uncle-vanya-2024/variety--bob-verini.json",
+    "uncle-vanya-2024/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "and-juliet-2022/nytg--unknown.json"
-    ],
-    "browserbase": [
-      "data/review-texts/appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
-      "appropriate-2023/hollywood-reporter--lovia-gyarkye.json"
-    ],
+    "playwright": [],
+    "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "chess-2025/nytimes--elisabeth-vincentelli.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "chess-2025/timeout--adam-feldman.json",
-      "aladdin-2014/hollywood-reporter--david-rooney.json",
-      "an-enemy-of-the-people-2024/variety--daniel-dand8217addario.json"
+      "uncle-vanya-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "startTime": "2026-02-02T03:48:14.615Z",
-  "lastProcessed": "appropriate-2023/vulture--jesse-green.json",
+  "startTime": "2026-02-02T04:33:36.901Z",
+  "lastProcessed": "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
   "log": [
     {
-      "t": "2026-02-02T03:49:40.892Z",
+      "t": "2026-02-02T04:35:05.664Z",
       "event": "bb-session",
-      "session": "eb085c2b",
-      "url": "https://www.nytimes.com/2025/11/16/theater/chess-review-lea-michele-broadway.htm"
+      "session": "561b6d2d",
+      "url": "https://www.vulture.com/article/uncle-vanya-broadway-review.html"
     },
     {
-      "t": "2026-02-02T03:50:24.569Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770004191249\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAgAYpw2a8ymcALPe1oA==&cid=fdcBq~INS_ggW4gRo2a77lr2ele7qGkVh5fPsHZj~saFuYiIiJDZGP7s5qnH9jcFsFYSLG~lYTYZNViUu43VGizzxwUnCqGo5ClKayPe55XeeoUeU4SxW0x8vpcaasVY&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770004191249\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770004191249\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAgAYpw2a8ymcALPe1oA==&cid=fdcBq~INS_ggW4gRo2a77lr2ele7qGkVh5fPsHZj~saFuYiIiJDZGP7s5qnH9jcFsFYSLG~lYTYZNViUu43VGizzxwUnCqGo5ClKayPe55XeeoUeU4SxW0x8vpcaasVY&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770004191249\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    28 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770004191249\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAgAYpw2a8ymcALPe1oA==&cid=fdcBq~INS_ggW4gRo2a77lr2ele7qGkVh5fPsHZj~saFuYiIiJDZGP7s5qnH9jcFsFYSLG~lYTYZNViUu43VGizzxwUnCqGo5ClKayPe55XeeoUeU4SxW0x8vpcaasVY&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770004191249\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
-    },
-    {
-      "t": "2026-02-02T03:50:51.696Z",
-      "event": "bb-session",
-      "session": "995c96a5",
-      "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9"
-    },
-    {
-      "t": "2026-02-02T03:51:11.911Z",
+      "t": "2026-02-02T04:35:08.095Z",
       "event": "bb-login-uncertain",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-02T04:15:50.584Z",
-      "event": "bb-session",
-      "session": "0efd7f49",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sara"
+      "domain": "vulture.com"
     }
   ]
 }
