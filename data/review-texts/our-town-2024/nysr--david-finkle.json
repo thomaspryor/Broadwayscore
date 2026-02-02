@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and concluding guarantee that patrons will appreciate the show 'every, every minute' indicates strong recommendation. The review praises the casting choices, direction, and performances throughout, with only minor technical challenges noted. | GPT-4o: The review is highly positive, praising the director's choices and the performances, and concludes with a strong endorsement of the production. The original 4/5 star rating supports a high score within the Positive bucket. | Gemini: The critic gives a 4/5 star rating and ends the review with a strong positive statement, indicating a recommendation despite some liberties taken with the original script.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and concluding guarantee that patrons will appreciate the show 'every, every minute' indicates strong enthusiasm. The critic praises the direction, casting choices, and performances throughout, with only minor reservations about pantomiming challenges. | GPT-4o: The review is highly positive, praising the director's choices, the performances, and the production's ability to convey the play's universal themes. The critic's original 4/5 star rating aligns with a strong positive recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and overall impact of the production. The critic explicitly states that patrons are \"guaranteed to appreciate Thornton Wilder’s genius\".",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,21 +39,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:37:04.423Z",
+    "scoredAt": "2026-02-02T18:50:34.011Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
+    "claudeScore": 82,
     "openaiScore": 82,
-    "geminiScore": 82,
+    "geminiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

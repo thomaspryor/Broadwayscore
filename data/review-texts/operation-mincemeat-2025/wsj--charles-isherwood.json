@@ -8,18 +8,18 @@
   "dtliExcerpt": "Audiences are always receptive to flights into jubilant escapism—perhaps particularly now—and this plucky musical provides it in generous doses.",
   "fullText": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9\n\nThe cast of ‘Operation Mincemeat.’ Julieta CervantesIt may be telling that the song receiving the most enthusiastic response in the daffy British musical “Operation Mincemeat” is not one of the many comic romps that are the show’s bread and butter—or should I say tea and crumpets? Instead it’s a tender ballad in which the schoolmistressy secretary Hester Leggatt, played by Jak Malone, sings an imagined love letter to be planted on a corpse to add verisimilitude to the dead man’s manufactured life story. Intrigued yet?\n\nPerformed by Mr. Malone with a touching sincerity untainted by sentimentality, the song hints at a lost love in Hester’s past that reveals a beating heart just below the classic British stiff upper lip. Yet it’s not just the character but the musical, too, that in this moment takes a necessary breath, indicating a subtle emotional core beneath the sometimes exhaustingly antic comedy that drives this odd duck of a musical, now on Broadway.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "But the limited run has been extended more than once, and the surprise sensation of the Broadway season has been the unabashedly silly ‘Oh, Mary!,’ which also lampoons history, albeit more cavalierly. Audiences are always receptive to flights into jubilant escapism—perhaps particularly now—and this plucky musical provides it in generous doses.",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 77,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic appreciates the show's escapist entertainment value and notes its extended run success, though finds the comedy sometimes 'exhaustingly antic,' suggesting a positive but not glowing recommendation. | GPT-4o: The review highlights the musical's ability to provide jubilant escapism and praises a standout performance, indicating a positive overall impression despite some reservations about its antic comedy. | Gemini: The review highlights the show's comedic and escapist qualities, ultimately indicating a positive experience for audiences seeking lighthearted entertainment. The phrase \"plucky musical provides it in generous doses\" seals the positive classification.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the show's escapism and entertainment value, notes its extended run success, but also suggests the comedy can be 'exhaustingly antic,' indicating solid recommendation with some qualifications. | GPT-4o: The review praises the musical for its jubilant escapism and emotional depth, highlighting its success as a surprise sensation of the Broadway season. The tone is enthusiastic and recommends the show strongly. | Gemini: The review highlights the show's comedic and escapist qualities, ultimately indicating a positive experience for audiences seeking lighthearted entertainment. The phrase \"plucky musical provides it in generous doses\" suggests a solid recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,17 +40,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:36:13.094Z",
+    "scoredAt": "2026-02-02T18:50:07.314Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 80,
-    "geminiScore": 75,
+    "openaiScore": 81,
+    "geminiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
@@ -63,49 +63,31 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250121",
-  "contentTier": "truncated",
-  "wordCount": 160,
+  "contentTier": "excerpt",
+  "wordCount": 0,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "isFullReview": false,
   "textWordCount": 160,
   "archivePath": "data/archives/reviews/operation-mincemeat-2025/wsj--charles-isherwood_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T17:44:43.756Z",
-  "fetchMethod": "brightdata",
+  "textFetchedAt": "2026-02-02T17:17:35.153Z",
+  "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped - known blocked site"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (500): Request failed with status code 500"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 4,
   "textQuality": "partial",
+  "truncationSignals": [],
   "textStatus": "incomplete",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251111234531",
   "archiveOrgUrl": "http://web.archive.org/web/20251111234531/https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9",
   "textIssues": [
-    "Word count too low: 178 (min: 300)"
+    "Word count too low: 182 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-02-02T03:36:13.094Z",
-  "tierReason": "Short text (160 words)"
+  "rescoreCompletedAt": "2026-02-02T03:36:13.094Z"
 }

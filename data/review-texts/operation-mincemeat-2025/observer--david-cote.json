@@ -7,7 +7,7 @@
   "publishDate": "2025-03-20",
   "bwwExcerpt": "domestic details, it becomes clear she is addressing her own sweetheart who did not return from the Great War. Jak Malone’s simple, oh-so-touching rendition likely nabs him awards later this spring. David Cote, Observer: Operation Mincemeat is totally lovable and expertly zany, with Big Let’s Put on a Show Energy. See it now before SpitLip’s visas are revoked and they get thrown in Guantánamo. Caroline Cao, New York Theatre Guide: Operation Mincemeat is a cup of British comedy, sometimes with drawn-out humor to a fault — not for every American. But it also captures the Hollywood hagiographic, the self-deprecating, the ironic, and the tragic that will make you gasp. Chris Jones, The New York Daily News: While it’s a retro wartime story, the overall sensibility here is both contemporary and self-aware, filled with sly critiques of the domination of wartime intelligence services by members of the British ruling class, exerting their sexist ways. For the most part, the show is composed of",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 90,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250320",
@@ -15,13 +15,13 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 81,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 85,
+      "high": 95
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -30,7 +30,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses strongly positive language ('totally lovable', 'expertly zany') and gives an urgent recommendation to 'see it now', indicating high enthusiasm for the production. | GPT-4o: The review uses highly positive language, describing the show as 'totally lovable' and 'expertly zany,' and includes a strong recommendation to 'see it now,' indicating a must-see status. | Gemini: The review uses positive language like \"totally lovable\" and \"expertly zany\", and the phrase \"See it now\" indicates a recommendation.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses highly positive language ('totally lovable', 'expertly zany') and gives an urgent recommendation to see it immediately, indicating strong enthusiasm despite the humorous tone. | GPT-4o: The review uses highly enthusiastic language, describing the show as 'totally lovable' and 'expertly zany,' and urges readers to 'see it now,' indicating a strong recommendation. | Gemini: The review uses very positive language like \"totally lovable\" and encourages readers to \"see it now,\" indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,18 +40,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:18.354Z",
+    "scoredAt": "2026-02-02T18:49:36.071Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "3.0.0"
+    "previousScore": 81,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 80,
-    "claudeBucket": "Positive",
+    "claudeScore": 87,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "scoreDelta": 10,
@@ -60,7 +60,7 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/operation-mincemeat-2025/observer--david-cote_2026-01-27.html",
   "textFetchedAt": "2026-01-27T20:27:17.082Z",

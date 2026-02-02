@@ -28,7 +28,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review concludes with an explicit must-see recommendation ('demands to be seen') and declares it 'some of the best of what musical theatre can be,' using superlative language throughout with praise for every element of the production. | GPT-4o: The review is overwhelmingly positive, praising the cast, direction, and ingenuity of the production. The critic explicitly states that the show 'demands to be seen,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the cast, music, and direction. The concluding statement that the show \"demands to be seen\" clearly indicates a 'Rave' recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review is overwhelmingly positive with superlative language throughout ('geniuses', 'brilliant', 'hilarious', 'best of what musical theatre can be') and ends with the emphatic 'It demands to be seen' - clear must-see language. | GPT-4o: The review is overwhelmingly positive, praising the cast, direction, and writing as exceptional. The critic describes the show as 'musical comedy gold' and states it 'demands to be seen,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"musical comedy gold\", \"unflagging energy and megawatt charm\", and concluding with \"Operation Mincemeat is some of the best of what musical theatre can be. It demands to be seen.\" This warrants a Rave score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,21 +38,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:29.632Z",
+    "scoredAt": "2026-02-02T18:49:43.538Z",
     "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 91,
     "openaiScore": 95,
     "geminiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
