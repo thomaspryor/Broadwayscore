@@ -1,66 +1,70 @@
 {
-  "runDate": "2026-02-02T17:41:45.602Z",
+  "runDate": "2026-02-02T17:44:46.840Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "liberation-2025",
+    "showFilter": "operation-mincemeat-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 2,
+    "processed": 1,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 2,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 20,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier4Attempts": 5,
+    "tier4Success": 2,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 11,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "liberation-2025/thewrap--robert-hofler.json",
-    "liberation-2025/washpost--naveen-kumar.json"
+    "operation-mincemeat-2025/wsj--charles-isherwood.json"
   ],
   "failed": [
-    "liberation-2025/timeout--adam-feldman.json",
-    "liberation-2025/wsj--charles-isherwood.json"
+    "operation-mincemeat-2025/observer--david-cote.json",
+    "operation-mincemeat-2025/timeout--adam-feldman.json",
+    "operation-mincemeat-2025/timeout--adam.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "liberation-2025/washpost--naveen-kumar.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [
-      "liberation-2025/thewrap--robert-hofler.json"
+    "scrapingbee": [],
+    "brightdata": [
+      "operation-mincemeat-2025/wsj--charles-isherwood.json"
     ],
-    "brightdata": [],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "operation-mincemeat-2025/observer--david-cote.json",
+      "oldUrl": "https://observer.com/2025/03/operation-mincemeat-broadway-review/",
+      "newUrl": "https://observer.com/2025/03/review-british-musical-farce-operation-mincemeat-is-anything-but-dead-on-arrival/"
+    }
+  ]
 }
