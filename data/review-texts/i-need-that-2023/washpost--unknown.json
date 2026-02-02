@@ -5,8 +5,8 @@
   "criticName": "Unknown",
   "url": "https://www.washingtonpost.com/entertainment/theater/2023/11/02/devito-turturro-fontana-rebeck-wholesale/",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "‘I Need That’ is among a new crop of shows presenting tough challenges to splendid stage actors. They don’t all pay off. NEW YORK — Danny DeVito is so likable he could turn an irascible hoarder into a cuddle toy. Which is fortunate, because that’s precisely his assignment in playwright Theresa Rebeck’s sugary misfire, “I Need That,” a Broadway comedy that posits a stubborn shut-in as the most well-adjusted person in town. The view of hoarding as a serious mental health affliction never gets much acknowledgment in this 100-minute, sitcom-adjacent throwback, which marked its official opening Thursday night at the American Airlines Theatre. It’s treated, rather, as a cause for harrumphing and rolling of eyes by Amelia, the daughter of DeVito’s character, Sam, and played by DeVito’s own daughter, Lucy DeVito. Maneuvering amid the piles of old magazines and broken appliances on Alexander Dodge’s impressively shabby set, DeVito holds court for most of those 100 minutes, giving an appealing if unconvincingly untroubled account of Sam, who pines for his dead wife and assures Amelia that his partially seen kitchen and offstage bathroom are clean, his dinnerware spotless. If this is so, you wonder, why are the health authorities in this unnamed New Jersey community so intent on evicting Sam? Is there a municipal law against a surfeit of sentimentality? Sharp. Witty. Thoughtful. Sam is a curious character to build a play around, and not the only odd duck in New York’s drama pond these days. Off-Broadway, too, men with obnoxiously alienating traits are front and center, in old work and new. At Classic Stage Company on East 13th Street, Santino Fontana stars as a backstabbing Garment District embezzler in a revival of the 1962 musical “I Can Get It for You Wholesale.” And John Turturro is the wholly antagonistic protagonist in a world-premiere adaptation of Philip Roth’s novelistic excursion into dyspepsia, “Sabbath’s Theater,” at the New Group just off Times Square. There’s no reason to stop a crackpot or a crook or a creep from holding center stage, so long as the character’s flaws cross paths in some satisfying way with emotional reality — a requirement that “I Need That” ignores. And if similarly off-putting vibes permeate the leading men in all of these projects, the artistic results are wildly varied. Director Trip Cullman, for instance, brings inordinate skill to his staging of “I Can Get It for You Wholesale,” with a cast that gleams with Broadway polish: it includes Judy Kuhn, Adam Chanler-Berat, Rebecca Naomi Jones and Sarah Steele. Most enthrallingly, Julia Lester — Little Red Ridinghood in last season’s revival of “Into The Woods” — takes on the storied role of the musical’s Miss Marmelstein, originally portrayed by a then-little-known Barbra Streisand. “I Can Get It for You Wholesale” is the tale of the rise of Fontana’s Harry Bogen, whose business success is built on accounting lies and throwing friends and colleagues under the bus. (Hmmm, why does this sound so topical?) That Harry is demonstrably Jewish, though, takes on unsettling connotations in the current toxic environment, when antisemitic tropes circulate so ominously. Still, the musical itself, with a score by Harold Rome and a book by Jerome Weidman that has been revised by his son, John Weidman, is a bracing reminder of the sophistication that once was the norm in Broadway musicals. As it constructs its critique of American capitalism with mounting evidence of Harry’s misdeeds, “Wholesale” stays true to a compelling mission: a rogue can fool everyone with charm. It is the achievement of Fontana (a Tony winner for the musical version of “Tootsie”) that, armed with that evidence, we can be charmed by his Harry, too. Sometimes, though, a character’s roguishness is so distasteful that any charm evaporates. Even with an actor as magnetic as Turturro, “Sabbath’s Theater” — about an ex-puppeteer disgraced by accusations of inappropriate behavior with a student — comes across as terminally unpleasant. I know, I know: This contrarian portrait, directed by Jo Bonney is supposed to be redeemed by Roth’s insights and language (as adapted by Turturro and Ariel Levy). For me, it was just a tedious exercise in nihilism. The intended effect of DeVito’s character in “I Need That” is diametrically opposite. Rebeck’s desire, for us to empathize with Sam’s grief, manifested as an embrace of any thing that prompts a memory of his wife, is nice enough. It just seems false to suggest such an unhealthy mental condition as somehow romantic. Lucy DeVito does a thoroughly commendable job in a fairly thankless role, and as a concerned neighbor, Ray Anthony Thomas is a valuable addition, providing a sympathetic ear for Sam. Feeling kind of bad for Sam, though, is a pretty bland emotional state in which to leave us. I Need That, by Theresa Rebeck. Directed by Moritz von Stuelpnagel. Sets, Alexander Dodge; costumes, Tilly Grimes; lighting, Yi Zhao; music, Fitz Patton; sound, Patton and Bradlee Ward. About 1 hour, 40 minutes. At American Airlines Theatre, 227 W. 42nd St. roundabouttheatre.org. I Can Get It for You Wholesale, book by Jerome Weidman, music and lyrics by Harold Rome, script revisions by John Weidman. Directed by Trip Cullman. Choreography, Ellenore Scott. Set, Mark Wendland. Lighting, Adam Honoré. Music direction and orchestrations, Jacinth Greywoode. Costumes, Ann Hould-Ward. Sound, Sun Hee Kil. Arrangements, David Chose. With Greg Hildreth, Joy Woods, Adam Grupper. About 2 hours, 15 minutes. Through Dec. 13 at Classic Stage Company, 136 E. 13th St. classicstage.org. Sabbath’s Theater, adapted from Philip Roth’s novel by Ariel Levy and John Turturro. Directed by Jo Bonney. Set and costumes, Arnulfo Maldonado. Lighting, Jeff Croiter. Sound, Mikaal Sulaiman. With Jason Kravits, Elizabeth Marvel. About 1 hour, 35 minutes. Through Dec. 17 at Pershing Square Signature Center, 480 W. 42nd St., New York. thenewgroup.org.",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 44,
@@ -69,5 +69,30 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 44,
+  "textWordCount": 961,
+  "archivePath": "data/archives/reviews/i-need-that-2023/washpost--unknown_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T17:40:26.236Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "playwright"
 }
