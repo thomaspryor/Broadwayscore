@@ -1,102 +1,70 @@
 {
-  "runDate": "2026-02-02T23:31:41.080Z",
+  "runDate": "2026-02-02T23:33:31.211Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "six-2021",
+    "showFilter": "real-women-have-curves-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 6,
+    "processed": 2,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "28.6%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 0,
+    "playwright": 0,
+    "browserbase": 1,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 1
+    "brightdata": 0,
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 2,
-    "tier1Success": 1,
-    "tier1_5Attempts": 4,
-    "tier1_5Success": 0,
-    "tier2Attempts": 5,
+    "tier1Success": 2,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 4,
-    "tier3Success": 1,
-    "tier4Attempts": 12,
-    "tier4Success": 3,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 21,
-    "browserbaseSessionsUsed": 4,
-    "browserbaseMinutesUsed": 3,
-    "urlDiscoveryAttempts": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 7,
+    "tier4Success": 4,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "six-2021/deadline--greg-evans.json",
-    "six-2021/guardian--adrian-horton.json",
-    "six-2021/theatermania--jesse-green.json"
+    "real-women-have-curves-2025/nytg--kyle-turner.json",
+    "real-women-have-curves-2025/talkinbroadway--kimberly-ramirez.json"
   ],
   "failed": [
-    "six-2021/observer--david-cote.json",
-    "six-2021/timeout--adam-feldman.json",
-    "six-2021/wsj--charles-isherwood.json",
-    "six-2021/amny--matt-windman.json",
-    "six-2021/front-row-center--tulis-mccall.json",
-    "six-2021/talkinbroadway--matthew-murray.json"
+    "real-women-have-curves-2025/deadline--greg-evans.json",
+    "real-women-have-curves-2025/new-york-sun--elysa-gardner.json",
+    "real-women-have-curves-2025/thewrap--robert-hofler.json",
+    "real-women-have-curves-2025/timeout--adam-feldman.json",
+    "real-women-have-curves-2025/washpost--naveen-kumar.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "six-2021/guardian--adrian-horton.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/real-women-have-curves-2025/thewrap--robert-hofler.json"
     ],
-    "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "six-2021/theatermania--jesse-green.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "six-2021/deadline--greg-evans.json"
+      "real-women-have-curves-2025/nytg--kyle-turner.json",
+      "real-women-have-curves-2025/talkinbroadway--kimberly-ramirez.json"
     ]
   },
-  "failuresByOutlet": {
-    "Observer": {
-      "count": 1,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "amNewYork": {
-      "count": 1,
-      "domain": "amny.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
