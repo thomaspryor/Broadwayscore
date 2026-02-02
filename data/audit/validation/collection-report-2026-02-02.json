@@ -1,73 +1,87 @@
 {
-  "runDate": "2026-02-02T05:01:49.785Z",
+  "runDate": "2026-02-02T05:06:15.234Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "the-cottage-2023",
+    "showFilter": "water-for-elephants-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 4,
+    "processed": 4,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "42.9%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
-    "browserbase": 2,
+    "browserbase": 4,
     "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 1
+    "brightdata": 1,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 5,
     "tier1Success": 1,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 1,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 2,
+    "tier2Attempts": 5,
+    "tier2Success": 3,
+    "tier3Attempts": 2,
     "tier3Success": 1,
-    "tier4Attempts": 4,
-    "tier4Success": 3,
-    "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 10,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.5,
+    "tier4Attempts": 5,
+    "tier4Success": 2,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 40,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 0.9,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-cottage-2023/new-york-sun--elysa-gardner.json",
-    "the-cottage-2023/observer--rex-reed.json",
-    "the-cottage-2023/amny--unknown.json"
+    "water-for-elephants-2024/nypost--johnny-oleksinski.json",
+    "water-for-elephants-2024/observer--rex-reed.json",
+    "water-for-elephants-2024/theatermania--david-gordon.json",
+    "water-for-elephants-2024/lighting-and-sound-america--david-barbour.json"
   ],
   "failed": [
-    "the-cottage-2023/variety--naveen-kumar.json",
-    "the-cottage-2023/timeout--adam-feldman.json",
-    "the-cottage-2023/wsj--charles-isherwood.json",
-    "the-cottage-2023/theater-pizzazz--carole-di-tosti.json"
+    "water-for-elephants-2024/variety--frank-rizzo.json",
+    "water-for-elephants-2024/broadwaynews--brittani-samuel.json",
+    "water-for-elephants-2024/timeout--adam-feldman.json",
+    "water-for-elephants-2024/wsj--charles-isherwood.json",
+    "water-for-elephants-2024/theatrely--olivia-clement.json",
+    "water-for-elephants-2024/thestage--lane-williamson.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-cottage-2023/new-york-sun--elysa-gardner.json"
+      "water-for-elephants-2024/lighting-and-sound-america--david-barbour.json"
     ],
     "browserbase": [
-      "data/review-texts/the-cottage-2023/observer--rex-reed.json",
-      "the-cottage-2023/observer--rex-reed.json"
+      "data/review-texts/water-for-elephants-2024/nypost--johnny-oleksinski.json",
+      "water-for-elephants-2024/nypost--johnny-oleksinski.json",
+      "data/review-texts/water-for-elephants-2024/observer--rex-reed.json",
+      "water-for-elephants-2024/observer--rex-reed.json"
     ],
     "scrapingbee": [
-      "the-cottage-2023/variety--naveen-kumar.json"
+      "water-for-elephants-2024/theatermania--david-gordon.json"
     ],
-    "brightdata": [],
-    "archive": [
-      "the-cottage-2023/amny--unknown.json"
-    ]
+    "brightdata": [
+      "water-for-elephants-2024/variety--frank-rizzo.json"
+    ],
+    "archive": []
+  },
+  "failuresByOutlet": {
+    "Theatrely": {
+      "count": 1,
+      "domain": "theatrely.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
   },
   "urlDiscoveries": []
 }
