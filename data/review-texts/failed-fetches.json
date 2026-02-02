@@ -5020,54 +5020,6 @@
     "timestamp": "2026-02-01T19:17:13.072Z"
   },
   {
-    "reviewId": "harmony-2023/timeout--adam-feldman.json",
-    "showId": "harmony-2023",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/harmony-review-broadway-musical-barry-manilow",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 7826,
-    "timestamp": "2026-02-01T19:18:25.849Z"
-  },
-  {
-    "reviewId": "harry-potter-2021/national-review--kyle-smith.json",
-    "showId": "harry-potter-2021",
-    "outlet": "National Review",
-    "critic": "Kyle Smith",
-    "url": "https://www.nationalreview.com/2018/04/harry-potter-broadway-play-turning-point-for-american-theater/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"paywall\"",
-    "textLength": 6457,
-    "timestamp": "2026-02-01T19:19:07.385Z"
-  },
-  {
-    "reviewId": "harry-potter-2021/timeout--adam-feldman.json",
-    "showId": "harry-potter-2021",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6445,
-    "timestamp": "2026-02-01T19:19:15.364Z"
-  },
-  {
-    "reviewId": "harry-potter-2021/wsj--terry-teachout.json",
-    "showId": "harry-potter-2021",
-    "outlet": "The Wall Street Journal",
-    "critic": "Terry Teachout",
-    "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-bringing-the-magic-to-life-1524677142",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 1027,
-    "timestamp": "2026-02-01T19:19:18.807Z"
-  },
-  {
     "reviewId": "heart-of-rock-and-roll-2024/the-new-york-sun--elysa-gardner.json",
     "showId": "heart-of-rock-and-roll-2024",
     "outlet": "The New York Sun",
@@ -6122,5 +6074,53 @@
     "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
     "textLength": 628,
     "timestamp": "2026-02-01T23:58:38.228Z"
+  },
+  {
+    "reviewId": "harmony-2023/timeout--adam-feldman.json",
+    "showId": "harmony-2023",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/harmony-review-broadway-musical-barry-manilow",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 7826,
+    "timestamp": "2026-02-01T23:58:55.777Z"
+  },
+  {
+    "reviewId": "harry-potter-2021/national-review--kyle-smith.json",
+    "showId": "harry-potter-2021",
+    "outlet": "National Review",
+    "critic": "Kyle Smith",
+    "url": "https://www.nationalreview.com/2018/04/harry-potter-broadway-play-turning-point-for-american-theater/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"paywall\"",
+    "textLength": 6457,
+    "timestamp": "2026-02-02T00:00:32.556Z"
+  },
+  {
+    "reviewId": "harry-potter-2021/timeout--adam-feldman.json",
+    "showId": "harry-potter-2021",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6700,
+    "timestamp": "2026-02-02T00:00:36.099Z"
+  },
+  {
+    "reviewId": "harry-potter-2021/wsj--terry-teachout.json",
+    "showId": "harry-potter-2021",
+    "outlet": "The Wall Street Journal",
+    "critic": "Terry Teachout",
+    "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-bringing-the-magic-to-life-1524677142",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 1027,
+    "timestamp": "2026-02-02T00:00:39.532Z"
   }
 ]
