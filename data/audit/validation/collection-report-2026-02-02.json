@@ -2,7 +2,7 @@
   "runDate": "2026-02-02T17:58:10.148Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 1,
     "priority": "all",
     "showFilter": "the-roommate-2024",
     "aggressive": false,
@@ -38,7 +38,7 @@
     "scrapingBeeCreditsUsed": 31,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -59,6 +59,7 @@
     "the-roommate-2024/wsj--charles-isherwood.json",
     "the-roommate-2024/talkinbroadway--matthew-murray.json"
   ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
       "the-roommate-2024/the-village-voice--michael-musto.json"
