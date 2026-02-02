@@ -45,13 +45,32 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
 const GROSSES_FILE = path.join(DATA_DIR, 'grosses.json');
 const COMMERCIAL_FILE = path.join(DATA_DIR, 'commercial.json');
+const BASELINE_FILE = path.join(DATA_DIR, 'audit', 'validation-baseline.json');
 
 const strictMode = process.argv.includes('--strict');
 
-// Safety thresholds
-const THRESHOLDS = {
+// Hardcoded fallback thresholds (used only if baseline file doesn't exist)
+const FALLBACK_THRESHOLDS = {
   MIN_TOTAL_SHOWS: 30,
   MIN_OPEN_SHOWS: 15,
+};
+
+// Maximum allowed decline from baseline before flagging as error
+const MAX_DECLINE_PCT = 0.25;  // 25% for shows
+const MAX_REVIEW_DECLINE_PCT = 0.10;  // 10% for reviews
+
+// Load previous baseline if available
+let baseline = null;
+try {
+  if (fs.existsSync(BASELINE_FILE)) {
+    baseline = JSON.parse(fs.readFileSync(BASELINE_FILE, 'utf8'));
+  }
+} catch (e) {
+  // Baseline file corrupt or unreadable, use fallback
+}
+
+// Safety thresholds
+const THRESHOLDS = {
   MAX_DELETED_SHOWS: 0,
   REQUIRED_FIELDS: ['id', 'title', 'slug', 'status'],
   REQUIRED_FIELDS_OPEN: ['id', 'title', 'slug', 'status', 'venue'],
@@ -108,10 +127,15 @@ function validateNoDuplicates(shows) {
     info('Running comprehensive duplicate detection...');
     const duplicatesFound = [];
 
+    // Fast-path: Set-based O(1) lookup to skip shows already caught as exact ID/slug dupes
+    const dupIdSet = new Set(dupIds);
+    const dupSlugSet = new Set(dupSlugs);
+
     for (let i = 1; i < shows.length; i++) {
       const show = shows[i];
-      const previousShows = shows.slice(0, i);
-      const check = checkForDuplicate(show, previousShows);
+      if (dupIdSet.has(show.id) || dupSlugSet.has(show.slug)) continue;
+
+      const check = checkForDuplicate(show, shows.slice(0, i));
 
       if (check.isDuplicate) {
         duplicatesFound.push({
@@ -262,17 +286,38 @@ function validateImageUrls(shows) {
 function validateMinimumCounts(shows) {
   info('Checking minimum counts...');
 
-  if (shows.length < THRESHOLDS.MIN_TOTAL_SHOWS) {
-    error(`Only ${shows.length} shows (minimum: ${THRESHOLDS.MIN_TOTAL_SHOWS})`);
-  } else {
-    ok(`Total shows: ${shows.length} (minimum: ${THRESHOLDS.MIN_TOTAL_SHOWS})`);
-  }
-
   const openShows = shows.filter(s => s.status === 'open');
-  if (openShows.length < THRESHOLDS.MIN_OPEN_SHOWS) {
-    error(`Only ${openShows.length} open shows (minimum: ${THRESHOLDS.MIN_OPEN_SHOWS})`);
+
+  if (baseline) {
+    // Dynamic thresholds from baseline
+    const minTotal = Math.floor(baseline.totalShows * (1 - MAX_DECLINE_PCT));
+    const minOpen = Math.floor(baseline.openShows * (1 - MAX_DECLINE_PCT));
+
+    if (shows.length < minTotal) {
+      error(`Only ${shows.length} shows (baseline: ${baseline.totalShows}, min allowed: ${minTotal} = -${Math.round(MAX_DECLINE_PCT * 100)}%)`);
+    } else {
+      ok(`Total shows: ${shows.length} (baseline: ${baseline.totalShows}, min: ${minTotal})`);
+    }
+
+    if (openShows.length < minOpen) {
+      error(`Only ${openShows.length} open shows (baseline: ${baseline.openShows}, min allowed: ${minOpen} = -${Math.round(MAX_DECLINE_PCT * 100)}%)`);
+    } else {
+      ok(`Open shows: ${openShows.length} (baseline: ${baseline.openShows}, min: ${minOpen})`);
+    }
   } else {
-    ok(`Open shows: ${openShows.length} (minimum: ${THRESHOLDS.MIN_OPEN_SHOWS})`);
+    // First run: use hardcoded fallback
+    info('No baseline file found, using fallback thresholds');
+    if (shows.length < FALLBACK_THRESHOLDS.MIN_TOTAL_SHOWS) {
+      error(`Only ${shows.length} shows (fallback minimum: ${FALLBACK_THRESHOLDS.MIN_TOTAL_SHOWS})`);
+    } else {
+      ok(`Total shows: ${shows.length} (fallback minimum: ${FALLBACK_THRESHOLDS.MIN_TOTAL_SHOWS})`);
+    }
+
+    if (openShows.length < FALLBACK_THRESHOLDS.MIN_OPEN_SHOWS) {
+      error(`Only ${openShows.length} open shows (fallback minimum: ${FALLBACK_THRESHOLDS.MIN_OPEN_SHOWS})`);
+    } else {
+      ok(`Open shows: ${openShows.length} (fallback minimum: ${FALLBACK_THRESHOLDS.MIN_OPEN_SHOWS})`);
+    }
   }
 }
 
@@ -364,7 +409,7 @@ function validateReviewsJson() {
 
   if (!fs.existsSync(reviewsFile)) {
     info('reviews.json does not exist, skipping');
-    return;
+    return 0;
   }
 
   let data;
@@ -372,11 +417,21 @@ function validateReviewsJson() {
     data = JSON.parse(fs.readFileSync(reviewsFile, 'utf8'));
   } catch (e) {
     error(`reviews.json parse error: ${e.message}`);
-    return;
+    return 0;
   }
 
   const reviews = data.reviews || [];
   ok(`Loaded ${reviews.length} reviews from reviews.json`);
+
+  // Review count delta check against baseline
+  if (baseline && baseline.totalReviews) {
+    const minReviews = Math.floor(baseline.totalReviews * (1 - MAX_REVIEW_DECLINE_PCT));
+    if (reviews.length < minReviews) {
+      error(`Review count dropped: ${reviews.length} reviews (baseline: ${baseline.totalReviews}, min allowed: ${minReviews} = -${Math.round(MAX_REVIEW_DECLINE_PCT * 100)}%)`);
+    } else {
+      ok(`Review count: ${reviews.length} (baseline: ${baseline.totalReviews}, min: ${minReviews})`);
+    }
+  }
 
   // Check for duplicate outlet+critic per show
   const byShow = {};
@@ -551,6 +606,8 @@ function validateReviewsJson() {
   } else {
     info('Skipping registry-based misattribution check (validateCriticOutlet not available)');
   }
+
+  return reviews.length;
 }
 
 // ===========================================
@@ -843,7 +900,7 @@ function runValidation() {
   console.log('');
   validateReviewData(shows);
   console.log('');
-  validateReviewsJson();
+  const reviewCount = validateReviewsJson() || 0;
 
   // Summary
   console.log('');
@@ -855,6 +912,25 @@ function runValidation() {
     console.log(`\n❌ FAILED: ${errors.length} error(s) found\n`);
     errors.forEach((e, i) => console.log(`   ${i + 1}. ${e}`));
     process.exit(1);
+  }
+
+  // Write baseline file on successful validation
+  const openShows = shows.filter(s => s.status === 'open');
+  const newBaseline = {
+    totalShows: shows.length,
+    openShows: openShows.length,
+    totalReviews: reviewCount,
+    updatedAt: new Date().toISOString().split('T')[0],
+  };
+  try {
+    const auditDir = path.dirname(BASELINE_FILE);
+    if (!fs.existsSync(auditDir)) {
+      fs.mkdirSync(auditDir, { recursive: true });
+    }
+    fs.writeFileSync(BASELINE_FILE, JSON.stringify(newBaseline, null, 2) + '\n');
+    ok(`Baseline written: ${newBaseline.totalShows} shows, ${newBaseline.openShows} open, ${newBaseline.totalReviews} reviews`);
+  } catch (e) {
+    warn(`Failed to write baseline file: ${e.message}`);
   }
 
   if (warnings.length > 0) {

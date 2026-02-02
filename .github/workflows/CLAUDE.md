@@ -11,8 +11,8 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 |----------|----------------------|----------------------|-------|
 | `rebuild-reviews.yml` | ❌ | ✅ | **PRIMARY sync** - daily + manual trigger |
 | `review-refresh.yml` | ✅ | ✅ | Weekly extraction + rebuild |
-| `gather-reviews.yml` | ✅ | ❌ | Parallel-safe, relies on daily rebuild |
-| `collect-review-texts.yml` | ✅ | ❌ | Parallel-safe, relies on daily rebuild |
+| `gather-reviews.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline after commit |
+| `collect-review-texts.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline after commit |
 | `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `scrape-nysr.yml` | ✅ | ❌ | Weekly NYSR via WordPress API, relies on daily rebuild |
