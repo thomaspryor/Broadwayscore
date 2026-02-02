@@ -19,18 +19,18 @@
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 5,
+    "tier1Success": 2,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 4,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
     "tier3Success": 0,
     "tier4Attempts": 4,
     "tier4Success": 4,
@@ -52,9 +52,14 @@
     "the-cottage-2023/theater-pizzazz--carole-di-tosti.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "patriots-2024/deadline--pete-hammond.json",
+      "patriots-2024/washpost--peter-marks.json"
+    ],
     "browserbase": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "patriots-2024/theatermania--jesse-green.json"
+    ],
     "brightdata": [],
     "archive": [
       "the-cottage-2023/wsj--charles-isherwood.json"
