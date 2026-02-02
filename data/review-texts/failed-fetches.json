@@ -3760,18 +3760,6 @@
     "timestamp": "2026-01-30T19:37:58.313Z"
   },
   {
-    "reviewId": "merrily-we-roll-along-2023/the-village-voice--michael-musto.json",
-    "showId": "merrily-we-roll-along-2023",
-    "outlet": "Village Voice",
-    "critic": "Michael Musto",
-    "url": "https://www.villagevoice.com/review-merrily-we-roll-along-finally-has-its-moment-in-time/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2023 VILLAGE VOICE, LLC. ALL RIGHTS RESERVED\"",
-    "textLength": 8006,
-    "timestamp": "2026-01-30T19:42:51.027Z"
-  },
-  {
     "reviewId": "back-to-the-future-2023/queerty--matthew-wexler.json",
     "showId": "back-to-the-future-2023",
     "outlet": "Queerty",
@@ -6602,5 +6590,17 @@
     "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
     "textLength": 7443,
     "timestamp": "2026-02-02T00:43:56.885Z"
+  },
+  {
+    "reviewId": "merrily-we-roll-along-2023/the-village-voice--michael-musto.json",
+    "showId": "merrily-we-roll-along-2023",
+    "outlet": "Village Voice",
+    "critic": "Michael Musto",
+    "url": "https://www.villagevoice.com/review-merrily-we-roll-along-finally-has-its-moment-in-time/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2023 VILLAGE VOICE, LLC. ALL RIGHTS RESERVED\"",
+    "textLength": 7875,
+    "timestamp": "2026-02-02T00:56:08.237Z"
   }
 ]
