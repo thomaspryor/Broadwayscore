@@ -1,94 +1,62 @@
 {
-  "runDate": "2026-02-02T00:34:41.714Z",
+  "runDate": "2026-02-02T00:44:06.393Z",
   "config": {
     "batchSize": 5,
-    "maxReviews": 20,
+    "maxReviews": 5,
     "priority": "all",
-    "showFilter": "bug-2026,oedipus-2025,chess-2025",
+    "showFilter": "bug-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 8,
+    "processed": 1,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "27.3%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 2,
+    "playwright": 0,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 2
+    "brightdata": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 2,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 3,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 1,
-    "tier4Attempts": 9,
-    "tier4Success": 5,
-    "totalFailed": 6,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 1,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "bug-2026/wsj--charles-isherwood.json",
-    "chess-2025/theatermania--unknown.json",
-    "oedipus-2025/wsj--charles-isherwood.json"
+    "bug-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
-    "chess-2025/nytg--unknown.json",
-    "chess-2025/variety--christian-lewis.json",
-    "bug-2026/deadline--greg-evans.json",
-    "bug-2026/timeout--adam-feldman.json",
-    "chess-2025/timeout--adam-feldman.json",
-    "chess-2025/wsj--charles-isherwood.json",
-    "chess-2025/wsj--christopher-isherwood.json",
-    "oedipus-2025/timeout--adam-feldman.json"
+    "bug-2026/timeout--adam-feldman.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "chess-2025/theatermania--unknown.json"
-    ],
-    "browserbase": [
-      "data/review-texts/chess-2025/variety--christian-lewis.json",
-      "chess-2025/variety--christian-lewis.json"
-    ],
+    "playwright": [],
+    "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "bug-2026/deadline--greg-evans.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "bug-2026/wsj--charles-isherwood.json",
-      "oedipus-2025/wsj--charles-isherwood.json"
+      "bug-2026/wsj--charles-isherwood.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
