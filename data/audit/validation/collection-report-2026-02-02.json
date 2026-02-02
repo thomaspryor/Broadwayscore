@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-02T17:41:48.637Z",
+  "runDate": "2026-02-02T17:43:22.342Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hells-kitchen-2024",
+    "showFilter": "oedipus-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,98 +12,56 @@
   },
   "summary": {
     "processed": 3,
-    "failed": 3,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "75.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 5,
+    "tier1Attempts": 1,
     "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 14,
-    "tier4Success": 4,
-    "totalFailed": 7,
-    "scrapingBeeCreditsUsed": 3,
+    "tier4Attempts": 4,
+    "tier4Success": 3,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 3,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "hells-kitchen-2024/nytimes--jesse-green.json",
-    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json"
+    "oedipus-2025/wsj--charles-isherwood.json",
+    "oedipus-2025/latimes--charles-mcnulty.json",
+    "oedipus-2025/washpost--naveen-kumar.json"
   ],
   "failed": [
-    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
-    "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
-    "hells-kitchen-2024/deadline--pete-hammond.json",
-    "hells-kitchen-2024/new-york-sun--elysa-gardner.json",
-    "hells-kitchen-2024/timeout--adam-feldman.json",
-    "hells-kitchen-2024/wsj--charles-isherwood.json",
-    "hells-kitchen-2024/talkinbroadway--matthew-murray.json"
+    "oedipus-2025/timeout--adam-feldman.json"
   ],
   "tierDetails": {
     "playwright": [
-      "hells-kitchen-2024/ap--mark-kennedy.json"
+      "oedipus-2025/washpost--naveen-kumar.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "hells-kitchen-2024/nytimes--jesse-green.json",
-      "hells-kitchen-2024/broadwaynews--brittani-samuel.json"
+      "oedipus-2025/wsj--charles-isherwood.json",
+      "oedipus-2025/latimes--charles-mcnulty.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Hollywood Reporter": {
-      "count": 1,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Deadline": {
-      "count": 1,
-      "domain": "deadline.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The New York Sun": {
-      "count": 1,
-      "domain": "nysun.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
