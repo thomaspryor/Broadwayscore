@@ -62,7 +62,7 @@
     "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/broadway-and-me--janice-c--simpson_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T16:17:44.277Z",
+  "textFetchedAt": "2026-02-02T23:13:08.461Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -83,9 +83,12 @@
   "rescoreCompletedAt": "2026-02-01T15:05:55.719Z",
   "contentTier": "truncated",
   "wordCount": 1109,
-  "truncationSignals": [],
+  "truncationSignals": [
+    "paywall_or_login_prompt"
+  ],
   "isFullReview": true,
   "textWordCount": 1109,
   "textQuality": "full",
-  "textStatus": "complete"
+  "textStatus": "complete",
+  "tierReason": "Truncation detected: paywall_or_login_prompt"
 }
