@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/stereophonic-playwrights-horizons_93571.html",
   "publishDate": "November 15, 2024",
-  "fullText": "Adjaye-Brenyah's play is a thoughtful exploration of identity and belonging that resonates with authenticity and emotional depth.",
-  "isFullReview": false,
+  "fullText": "The full roster of starry performers is set for this year’s concert event.\n\nMCC Theater has announced the full lineup of performers set for Miscast22, which returns to the Hammerstein Ballroom on Monday, April 4. The evening will honor Emmy and Tony winner Christine Baranski, MCC Board Chair Susan Raanan, and MCC Youth Company Alum Alexander Lambie.\n\nMiscast is one of the most highly anticipated annual events in the theater community, and features stars of stage and screen performing songs from roles in which they would not traditionally be cast.\n\nThe show will feature performances by Shoshana Bean (Mr. Saturday Night), Myles Frost (MJ), J. Harrison Ghee (Mrs. Doubtfire), Tony winner Andrea Martin (Pippin), six-time Tony winner Audra McDonald (The Gilded Age), Emmy and Grammy nominee Lea Michele (Glee), Tony winner Kelli O'Hara (The Gilded Age) and Steven Pasquale (Assassins).\n\nThey join the previously announced Emmy winner Uzo Aduba (Clyde's), Tony nominee Raúl Esparza (Law and Order: SVU), Tony nominee Joshua Henry (MCC's The Wrong Man), Tony nominee Jennifer Simard (Company), and Tony winner Aaron Tveit (Moulin Rouge! The Musical). Will Van Dyke serves as musical director.\n\nMiscast22 will be filmed in its entirety for a broadcast that will stream on Sunday, May 22, at 7pm. Click here for tickets for the virtual broadcast.\n\nReview: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Every Step Has Meaning in Anne Gridley’s Watch Me Walk \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Leopold Bloom for Rookies and Pros in a Hilarious Ulysses \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "Adjaye-Brenyah's play is a thoughtful exploration of identity and belonging that resonates with authenticity and emotional depth.",
   "originalScore": null,
   "assignedScore": 78,
@@ -65,5 +65,42 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "contentTier": "truncated",
-  "contentTierReason": "Short text (17 words)"
+  "contentTierReason": "Short text (17 words)",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 318,
+  "archivePath": "data/archives/reviews/stereophonic-2024/theatermania--jesse-green_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T15:10:28.483Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true
 }
