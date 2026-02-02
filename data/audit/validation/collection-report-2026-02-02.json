@@ -1,70 +1,74 @@
 {
-  "runDate": "2026-02-02T15:24:25.995Z",
+  "runDate": "2026-02-02T16:34:34.643Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 5,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "maybe-happy-ending-2024",
+    "showFilter": "and-juliet-2022",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 2,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
-    "browserbase": 1,
+    "playwright": 0,
+    "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 0
+    "brightdata": 0,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 2,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "tier1_5Attempts": 2,
-    "tier1_5Success": 1,
+    "tier1_5Success": 0,
     "tier2Attempts": 2,
     "tier2Success": 1,
     "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
+    "tier3Success": 0,
+    "tier4Attempts": 6,
+    "tier4Success": 3,
     "totalFailed": 3,
-    "scrapingBeeCreditsUsed": 20,
+    "scrapingBeeCreditsUsed": 10,
     "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.7,
+    "browserbaseMinutesUsed": 2.4,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "maybe-happy-ending-2024/deadline--greg-evans.json"
+    "and-juliet-2022/variety--peter-marks.json",
+    "and-juliet-2022/thewrap--robert-hofler.json"
   ],
   "failed": [
-    "maybe-happy-ending-2024/vulture--jackson-mchenry.json",
-    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
-    "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
-    "maybe-happy-ending-2024/nydailynews--chris-jones.json"
+    "and-juliet-2022/theatermania--jesse-green.json",
+    "and-juliet-2022/timeout--adam-feldman.json",
+    "and-juliet-2022/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "maybe-happy-ending-2024/deadline--greg-evans.json"
-    ],
-    "browserbase": [
-      "data/review-texts/maybe-happy-ending-2024/nydailynews--chris-jones.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "maybe-happy-ending-2024/vulture--jackson-mchenry.json"
-    ],
-    "archive": []
+    "brightdata": [],
+    "archive": [
+      "and-juliet-2022/variety--peter-marks.json",
+      "and-juliet-2022/thewrap--robert-hofler.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
   "urlDiscoveries": []
 }
