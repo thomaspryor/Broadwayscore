@@ -133,11 +133,8 @@ export default function RootLayout({
                 <span className="text-4xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
                 <span className="text-4xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
               </Link>
-              <div className="flex items-center gap-2">
-                <div className="hidden sm:flex items-center gap-1">
-                  <Link href="/" className="nav-link nav-link-active">
-                    Shows
-                  </Link>
+              <div className="flex items-center gap-3">
+                <div className="hidden sm:block">
                   <HeaderSubscribeButton />
                 </div>
                 <HeaderSearch shows={searchShows} />

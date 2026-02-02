@@ -109,7 +109,7 @@ export default function HeaderSubscribeButton() {
             ) : (
               <>
                 <h2 className="text-lg font-bold text-white">Never Miss a New Broadway Show</h2>
-                <p className="text-sm text-gray-400 mt-1 mb-4">Get opening night scores, closing alerts, and a roundup of what&apos;s hot on Broadway.</p>
+                <p className="text-sm text-gray-400 mt-1 mb-4">No spam, no schedule &mdash; just opening night scores. Unsubscribe anytime.</p>
 
                 <form onSubmit={handleSubmit}>
                   <label htmlFor="header-modal-email" className="sr-only">Email address</label>
@@ -134,10 +134,7 @@ export default function HeaderSubscribeButton() {
 
                 {status === 'error' && errorMessage && (
                   <p className="mt-2 text-xs text-red-400 text-center">{errorMessage}</p>
-                )}
-
-                <p className="mt-3 text-xs text-gray-500 text-center">No spam, no schedule &mdash; just opening night scores. Unsubscribe anytime.</p>
-                <p className="mt-1.5 text-xs text-gray-600 text-center">Aggregating 1,150+ reviews from the NYT, Variety, Vulture &amp; more</p>
+                }
               </>
             )}
           </div>
