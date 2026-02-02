@@ -184,8 +184,8 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
             </p>
           )}
           {review.pullQuote && !review.quote && !review.summary && (
-            <p className="text-sm sm:text-base text-gray-400 leading-snug mb-1">
-              {review.pullQuote}{/[.!?'""\u2019]$/.test(review.pullQuote.trim()) ? '' : '.'}
+            <p className="text-sm sm:text-base text-gray-300 leading-snug mb-1">
+              &ldquo;{review.pullQuote}{/[.!?''""\u2019]$/.test(review.pullQuote.trim()) ? '' : '.'}&rdquo;
             </p>
           )}
 
