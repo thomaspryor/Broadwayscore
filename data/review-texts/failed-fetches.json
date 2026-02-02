@@ -4264,18 +4264,6 @@
     "timestamp": "2026-02-01T15:04:38.174Z"
   },
   {
-    "reviewId": "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
-    "showId": "aladdin-2014",
-    "outlet": "This Broadway",
-    "critic": "Sandra McFarland",
-    "url": "http://www.thisbroadsway.com/aladdin.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"All rights reserved.\"",
-    "textLength": 1159,
-    "timestamp": "2026-02-01T15:12:25.882Z"
-  },
-  {
     "reviewId": "moulin-rouge-2019/nysr--jesse-oxfeld.json",
     "showId": "moulin-rouge-2019",
     "outlet": "New York Stage Review",
@@ -6122,5 +6110,41 @@
     "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
     "textLength": 6895,
     "timestamp": "2026-02-02T00:03:46.011Z"
+  },
+  {
+    "reviewId": "aladdin-2014/catholic-transcript--bernard-carragher.json",
+    "showId": "aladdin-2014",
+    "outlet": "Catholic Transcript",
+    "critic": "Bernard Carragher",
+    "url": "http://www.catholictranscript.org/arts-media/theater-reviews/3404-aladdin.html",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"aladdin\" not mentioned in text; No theater-related keywords in short text",
+    "textLength": 1389,
+    "timestamp": "2026-02-02T00:09:44.248Z"
+  },
+  {
+    "reviewId": "aladdin-2014/theater-pizzazz--sandi-durell.json",
+    "showId": "aladdin-2014",
+    "outlet": "Theater Pizzazz",
+    "critic": "Sandi Durell",
+    "url": "http://www.theaterpizzazz.com/aladdin-dreams-made/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Join our mailing list\"",
+    "textLength": 3675,
+    "timestamp": "2026-02-02T00:09:48.661Z"
+  },
+  {
+    "reviewId": "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+    "showId": "aladdin-2014",
+    "outlet": "This Broadway",
+    "critic": "Sandra McFarland",
+    "url": "http://www.thisbroadsway.com/aladdin.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"All rights reserved.\"",
+    "textLength": 1159,
+    "timestamp": "2026-02-02T00:10:12.874Z"
   }
 ]
