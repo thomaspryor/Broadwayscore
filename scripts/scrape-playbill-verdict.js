@@ -193,8 +193,12 @@ function isNotBroadway(title) {
     lower.includes('public theater') || lower.includes('at the public') ||
     lower.includes('old globe') || lower.includes('la jolla') ||
     lower.includes('hollywood bowl') || lower.includes('at the ahmanson') ||
-    // TV specials
-    (lower.includes(' live') && (lower.includes('nbc') || lower.includes('tv')))
+    // TV specials and streaming
+    (lower.includes(' live') && (lower.includes('nbc') || lower.includes('tv'))) ||
+    lower.includes('tv series') || lower.includes('tv show') ||
+    lower.includes('apple tv') || lower.includes('netflix') ||
+    lower.includes('hulu') || lower.includes('disney+') ||
+    lower.includes('streaming') || lower.includes('amazon prime')
   );
 }
 
@@ -534,7 +538,25 @@ async function scrapePlaybillVerdict() {
     const reviewLinks = extractReviewLinksFromArticle(html, article.showId);
     stats.reviewLinksExtracted += reviewLinks.length;
 
+    // Look up show opening date for URL year validation
+    const showEntry = shows.find(s => (s.slug || s.id) === article.showId);
+    const showOpeningYear = showEntry && showEntry.openingDate
+      ? new Date(showEntry.openingDate).getFullYear() : null;
+
     for (const link of reviewLinks) {
+      // Check for URL year mismatch (catches TV reviews, wrong productions)
+      if (showOpeningYear && link.url) {
+        const urlYearMatch = link.url.match(/\/((?:19|20)\d{2})\//);
+        if (urlYearMatch) {
+          const urlYear = parseInt(urlYearMatch[1]);
+          if (urlYear < showOpeningYear - 3 || urlYear > showOpeningYear + 2) {
+            console.log(`    [SKIP] ${link.outletDomain}: URL year ${urlYear} vs show ${showOpeningYear} (${Math.abs(urlYear - showOpeningYear)}yr gap)`);
+            stats.skippedOffBroadway++;
+            continue;
+          }
+        }
+      }
+
       const result = saveReviewFromPlaybill(article.showId, link);
       if (result === 'new') {
         console.log(`    [NEW] ${link.outletDomain}: ${link.critic || 'unknown'}`);
