@@ -1,0 +1,134 @@
+# Adjudicate Review Queue
+# Auto-resolves flagged reviews where LLM scores disagree with aggregator thumbs
+name: Adjudicate Review Queue
+
+on:
+  schedule:
+    # Daily at 5 AM UTC (1 hour after 4 AM rebuild generates the queue)
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no file changes)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  adjudicate:
+    name: Adjudicate flagged reviews
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check if queue has items
+        id: check_queue
+        run: |
+          if [ ! -f data/audit/needs-human-review.json ]; then
+            echo "has_items=false" >> $GITHUB_OUTPUT
+            echo "Queue file not found — nothing to do."
+            exit 0
+          fi
+
+          COUNT=$(node -e "const q = require('./data/audit/needs-human-review.json'); console.log(q.reviews ? q.reviews.length : 0)")
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+
+          if [ "$COUNT" = "0" ]; then
+            echo "has_items=false" >> $GITHUB_OUTPUT
+            echo "Queue is empty — nothing to do."
+          else
+            echo "has_items=true" >> $GITHUB_OUTPUT
+            echo "Queue has $COUNT item(s) to process."
+          fi
+
+      - name: Setup Node.js
+        if: steps.check_queue.outputs.has_items == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.check_queue.outputs.has_items == 'true'
+        run: npm ci
+
+      - name: Run adjudication
+        if: steps.check_queue.outputs.has_items == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            node scripts/adjudicate-review-queue.js --dry-run
+          else
+            node scripts/adjudicate-review-queue.js
+          fi
+
+      - name: Check for changes
+        if: steps.check_queue.outputs.has_items == 'true'
+        id: changes
+        run: |
+          if git diff --quiet data/review-texts/; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No files changed."
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            CHANGED=$(git diff --name-only data/review-texts/ | wc -l | tr -d ' ')
+            echo "changed_count=$CHANGED" >> $GITHUB_OUTPUT
+            echo "$CHANGED file(s) changed."
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/review-texts/
+
+          CHANGED=${{ steps.changes.outputs.changed_count }}
+          git commit -m "data: Auto-adjudicate $CHANGED review(s) from queue
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          # Retry push with rebase (handles parallel workflow conflicts)
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
+            sleep $((RANDOM % 5 + 2))
+          done
+
+      - name: Trigger rebuild
+        if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run "Rebuild Reviews Data" -f reason="Post-adjudication rebuild (${{ steps.changes.outputs.changed_count }} reviews)"
+
+      - name: Summary
+        run: |
+          echo "## Review Queue Adjudication" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Queue items:** ${{ steps.check_queue.outputs.count || 0 }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.check_queue.outputs.has_items }}" = "true" ]; then
+            echo "**Files changed:** ${{ steps.changes.outputs.changed_count || 0 }}" >> $GITHUB_STEP_SUMMARY
+            if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** Dry run" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "**Status:** Queue empty, no action taken" >> $GITHUB_STEP_SUMMARY
+          fi
