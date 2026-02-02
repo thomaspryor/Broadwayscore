@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/appropriate-review-drama-coded-into-its-dna-42f5e6db",
   "publishDate": "December 21, 2023",
-  "fullText": null,
+  "fullText": "https://www.wsj.com/articles/appropriate-review-drama-coded-into-its-dna-42f5e6db\n\nSarah Paulson Photo: Joan MarcusAs families gather to celebrate the holidays, the Broadway opening of Branden Jacobs-Jenkins’s “Appropriate” almost seems a gift to audiences. For no matter how fraught your family’s time of togetherness might be, it will seem a blithe, ant-free summer picnic compared to the festival of fractiousness in Mr. Jacobs-Jenkins’s play.\n\nThe Hayes Theatre, 240 W. 44th St., New York\n \n \n \n $109-$279, 212-541-4516, closes March 3, 2024\n\nThe setting is a decaying plantation house in Arkansas whose amenities include two graveyards on the grounds—a family plot, and another where slaves were buried. But the skeletons inside the closets possibly outnumber those outside. This being a drama firmly grounded in the hallowed miserable-American-family tradition, by the conclusion all the secrets have tumbled out, and the ugly bones of long-held resentments have been picked over. And over, and over—the play runs nearly three hours.\n\n“Appropriate” premiered at the (sadly now defunct) Humana Festival of New American Plays, where I first saw it in 2013, and was later produced off-Broadway and elsewhere. The Broadway production, directed with skillful focus by Lila Neugebauer, features a superb cast, highlighted by the return to the stage of Sarah Paulson, a noted theater performer who has become a leading lady in Ryan Murphy’s television empire. (She appeared in a whopping nine seasons of “American Horror Story.”) Ms. Paulson’s delicate beauty is here in amusing contrast to the sharp-tongued and sharper-elbowed character she plays, Toni, the eldest of three siblings who gather months after their father’s funeral to oversee the liquidation of his estate.\n\nMichael Esper and Elle Fanning Photo: Joan Marcus",
   "showScoreExcerpt": "\"This being a drama firmly grounded in the hallowed miserable-American-family tradition, by the conclusion all the secrets have tumbled out, and the ugly bones of long-held resentments have been picked over. And over, and over—the play runs nearly three hours.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
@@ -61,5 +61,34 @@
     "modelAgreement": "2/3 models agree: Mixed"
   },
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 59,
+  "isFullReview": true,
+  "textWordCount": 267,
+  "archivePath": "data/archives/reviews/appropriate-2023/wsj--charles-isherwood_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T03:22:56.689Z",
+  "designation": "Recommended",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20240402233254",
+  "archiveOrgUrl": "http://web.archive.org/web/20240402233254/https://www.wsj.com/articles/appropriate-review-drama-coded-into-its-dna-42f5e6db",
+  "textIssues": [
+    "Word count too low: 293 (min: 300)"
+  ]
 }
