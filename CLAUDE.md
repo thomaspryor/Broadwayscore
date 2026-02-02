@@ -269,9 +269,11 @@ data/
 
 **Fallback chain for search:** ScrapingBee Google SERP → Bright Data SERP → direct URL construction from title slug.
 
-**Integration with discovery:** Both `discover-new-shows.js` and `discover-historical-shows.js` enrich dates from IBDB after discovering shows. If IBDB lookup succeeds, its opening date overwrites Broadway.org's "Begins:" date. If IBDB fails, Broadway.org's "Begins:" is treated as `previewsStartDate` (not `openingDate`).
+**Creative team extraction:** `extractCreativeTeamFromText()` parses 15 role patterns from IBDB page text (e.g., "Directed by X", "Choreographed by Y", "Scenic Design by Z"). Handles multi-word names, "and" separators, excess whitespace from HTML tables, and deduplicates "Music & Lyrics" vs standalone "Music"/"Lyrics" entries. Returns `[{ name, role }]` array matching the `creativeTeam` schema.
 
-**Standalone enrichment:** `node scripts/enrich-ibdb-dates.js` with flags: `--dry-run`, `--show=SLUG`, `--missing-only` (default), `--verify` (compare only), `--force` (overwrite), `--status=open|previews|closed`.
+**Integration with discovery:** Both `discover-new-shows.js` and `discover-historical-shows.js` enrich dates and creative team from IBDB after discovering shows. If IBDB lookup succeeds, its opening date overwrites Broadway.org's "Begins:" date and creative team is populated (if non-empty). If IBDB fails, Broadway.org's "Begins:" is treated as `previewsStartDate` (not `openingDate`).
+
+**Standalone enrichment:** `node scripts/enrich-ibdb-dates.js` with flags: `--dry-run`, `--show=SLUG`, `--missing-only` (default), `--verify` (compare only), `--force` (overwrite), `--status=open|previews|closed`. Also backfills shows with empty `creativeTeam` arrays.
 
 ### Review-Text Directory Convention
 
