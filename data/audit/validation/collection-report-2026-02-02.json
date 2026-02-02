@@ -1,97 +1,80 @@
 {
-  "runDate": "2026-02-02T05:11:23.491Z",
+  "runDate": "2026-02-02T05:14:43.342Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 10,
     "priority": "all",
-    "showFilter": "wicked-2003",
+    "showFilter": "days-of-wine-and-roses-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 7,
+    "processed": 0,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "22.2%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 3
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 1,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 5,
+    "tier1Success": 2,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 1,
     "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier4Attempts": 10,
-    "tier4Success": 5,
-    "totalFailed": 6,
-    "scrapingBeeCreditsUsed": 12,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "tier3Success": 1,
+    "tier4Attempts": 4,
+    "tier4Success": 1,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 2,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 1.4,
     "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "wicked-2003/nytimes--charles-isherwood.json",
-    "wicked-2003/ew--alice-king.json",
-    "wicked-2003/observer--rex-reed.json"
-  ],
+  "processed": [],
   "failed": [
-    "wicked-2003/variety--charles-isherwood.json",
-    "wicked-2003/ew--lisa-schwarzbaum.json",
-    "wicked-2003/timeout--david-cote.json",
-    "wicked-2003/wsj--terry-teachout.json",
-    "wicked-2003/curtainup--elyse-sommer.json",
-    "wicked-2003/frontmezzjunkies--unknown.json",
-    "wicked-2003/njcom-star-ledger--michael-sommers.json"
+    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+    "days-of-wine-and-roses-2024/variety--aramide-tinubu.json",
+    "days-of-wine-and-roses-2024/deadline--greg-evans.json",
+    "days-of-wine-and-roses-2024/new-york-sun--elysa-gardner.json",
+    "days-of-wine-and-roses-2024/timeout--adam-feldman.json",
+    "days-of-wine-and-roses-2024/wsj--unknown.json"
   ],
   "tierDetails": {
     "playwright": [],
     "browserbase": [
-      "data/review-texts/wicked-2003/observer--rex-reed.json",
-      "wicked-2003/observer--rex-reed.json"
+      "data/review-texts/days-of-wine-and-roses-2024/variety--aramide-tinubu.json",
+      "days-of-wine-and-roses-2024/variety--aramide-tinubu.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": [
-      "wicked-2003/nytimes--charles-isherwood.json",
-      "wicked-2003/ew--alice-king.json",
-      "wicked-2003/variety--charles-isherwood.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
-    "Entertainment Weekly": {
+    "The Hollywood Reporter": {
       "count": 1,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NJ.com": {
-      "count": 1,
-      "domain": "wickedthemusical.com",
+      "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "days-of-wine-and-roses-2024/variety--aramide-tinubu.json",
+      "oldUrl": "https://variety.com/2024/legit/reviews/days-of-wine-and-roses-review-broadway-1235884441/",
+      "newUrl": "https://variety.com/2005/legit/reviews/days-of-wine-and-roses-2-1200527616/"
+    }
+  ]
 }
