@@ -1,74 +1,77 @@
 {
   "processed": [
-    "moulin-rouge-2019/vulture--jesse-green.json",
-    "moulin-rouge-2019/theatermania--jesse-green.json",
-    "moulin-rouge-2019/wsj--terry-teachout.json",
-    "moulin-rouge-2019/nysr--jesse-oxfeld.json",
-    "moulin-rouge-2019/telegraph--diane-snyder.json",
-    "moulin-rouge-2019/washpost--peter-marks.json"
+    "our-town-2024/ew--shania-russell.json",
+    "our-town-2024/nypost--johnny-oleksinski.json",
+    "our-town-2024/theatermania--jesse-green.json",
+    "our-town-2024/thewrap--robert-hofler.json",
+    "our-town-2024/wsj--charles-isherwood.json",
+    "our-town-2024/washpost--peter-marks.json"
   ],
   "failed": [
-    "moulin-rouge-2019/observer--david-cote.json",
-    "moulin-rouge-2019/observer--rex-reed.json",
-    "moulin-rouge-2019/timeout--adam-feldman.json",
-    "moulin-rouge-2019/amny--matt-windman.json",
-    "moulin-rouge-2019/dailybeast--tim-teeman.json"
+    "our-town-2024/hollywood-reporter--angie-han.json",
+    "our-town-2024/deadline--greg-evans.json",
+    "our-town-2024/ny-sun--elysa-gardner.json",
+    "our-town-2024/nydailynews--chris-jones.json",
+    "our-town-2024/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "moulin-rouge-2019/nysr--jesse-oxfeld.json"
+      "our-town-2024/washpost--peter-marks.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [
-      "moulin-rouge-2019/theatermania--jesse-green.json",
-      "moulin-rouge-2019/telegraph--diane-snyder.json"
+    "browserbase": [
+      "data/review-texts/our-town-2024/nydailynews--chris-jones.json",
+      "data/review-texts/our-town-2024/nypost--johnny-oleksinski.json",
+      "our-town-2024/nypost--johnny-oleksinski.json"
     ],
+    "scrapingbee": [],
     "brightdata": [
-      "moulin-rouge-2019/wsj--terry-teachout.json"
+      "our-town-2024/deadline--greg-evans.json",
+      "our-town-2024/theatermania--jesse-green.json",
+      "our-town-2024/thewrap--robert-hofler.json"
     ],
     "archive": [
-      "moulin-rouge-2019/vulture--jesse-green.json",
-      "moulin-rouge-2019/washpost--peter-marks.json"
+      "our-town-2024/ew--shania-russell.json",
+      "our-town-2024/wsj--charles-isherwood.json"
     ]
   },
-  "startTime": "2026-02-02T23:25:07.979Z",
-  "lastProcessed": "moulin-rouge-2019/washpost--peter-marks.json",
+  "startTime": "2026-02-02T23:24:59.846Z",
+  "lastProcessed": "our-town-2024/washpost--peter-marks.json",
   "log": [
     {
-      "t": "2026-02-02T23:25:19.014Z",
+      "t": "2026-02-02T23:28:43.727Z",
       "event": "bb-session",
-      "session": "19d1a1b4",
-      "url": "https://observer.com/2019/07/moulin-rouge-broadway-review/"
+      "session": "38ac513c",
+      "url": "https://www.nydailynews.com/2024/10/10/broadway-review-revival-of-thornton-wilde"
     },
     {
-      "t": "2026-02-02T23:25:43.300Z",
+      "t": "2026-02-02T23:29:08.775Z",
       "event": "bb-session",
-      "session": "b0632603",
-      "url": "https://www.theatermania.com/broadway/reviews/moulin-rouge-the-musical_88234.htm"
+      "session": "91b241cc",
+      "url": "https://nypost.com/2024/10/10/entertainment/our-town-review-revival-starring-jim"
     },
     {
-      "t": "2026-02-02T23:26:14.417Z",
+      "t": "2026-02-02T23:29:32.938Z",
       "event": "bb-session",
-      "session": "2ad10235",
-      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+      "session": "35db2302",
+      "url": "https://www.theatermania.com/broadway/reviews/our-town-broadway-revival-kenny-le"
     },
     {
-      "t": "2026-02-02T23:26:58.762Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-02T23:29:58.353Z",
+      "event": "bb-session",
+      "session": "f75a092a",
+      "url": "https://www.thewrap.com/our-town-broadway-review-jim-parsons-katie-holmes/"
     },
     {
-      "t": "2026-02-02T23:27:23.924Z",
+      "t": "2026-02-02T23:31:10.636Z",
       "event": "bb-session",
-      "session": "3336349c",
-      "url": "https://www.amny.com/entertainment/moulin-rouge-broadway-review/"
+      "session": "dbce92a0",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/10/11/our-town-broadway-review"
     },
     {
-      "t": "2026-02-02T23:27:49.569Z",
-      "event": "bb-session",
-      "session": "1ae4907f",
-      "url": "https://www.thedailybeast.com/moulin-rouge-broadway-review/"
+      "t": "2026-02-02T23:31:13.593Z",
+      "event": "bb-login-uncertain",
+      "domain": "washingtonpost.com"
     }
   ]
 }
