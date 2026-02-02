@@ -5,7 +5,7 @@
   "criticName": "Terry Teachout",
   "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978",
   "publishDate": "March 20, 2014",
-  "fullText": null,
+  "fullText": "https://www.wsj.com/articles/SB10001424052702303802104579449142401496978\n\nShareResizeThe marketplace scene in 'Aladdin' Deen van MeerNew York\n\nDisney Theatrical Productions turned six Disney films into Broadway musicals between 1994 and 2012. All were successful in varying degrees, and two of them, \"The Lion King\" and \"Newsies,\" are still running. If money makes your world go round, that's an impressive track record. If, on the other hand, you're more interested in artistic quality, then you may take a dimmer view of Disney's continuing presence on Broadway. The best of the Disney shows, Julie Taymor's stage version of \"The Lion King,\" is a minor masterpiece of creative design, while the worst, \"Tarzan,\" was as forgettable as a bad novel written in invisible ink. \"Aladdin,\" which is based on the 1992 animated feature, falls roughly halfway between those two stools. It's not nearly as good as the movie, but it does have a terrific star, super-duper sets and sensational special effects.",
   "showScoreExcerpt": "\"It's not nearly as good as the movie, but it does have a terrific star, super-duper sets and sensational special effects.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
@@ -62,5 +62,47 @@
   },
   "bwwExcerpt": "Billing notwithstanding, the real star of \"Aladdin\" is James",
   "contentTier": "excerpt",
-  "wordCount": 0
+  "wordCount": 0,
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 64,
+  "isFullReview": false,
+  "textWordCount": 151,
+  "archivePath": "data/archives/reviews/aladdin-2014/wsj--terry-teachout_2026-02-02.html",
+  "textFetchedAt": "2026-02-02T03:12:29.742Z",
+  "designation": "Recommended",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "Insufficient text in archive: 411 chars"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee auth failed: Monthly API calls limit reached: 250000"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 162 (min: 300)"
+  ]
 }
