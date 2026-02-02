@@ -1,15 +1,51 @@
 {
-  "updatedAt": "2026-02-02T23:22:54.745Z",
-  "processed": 12,
-  "failed": 9,
-  "successRate": "57.1%",
+  "updatedAt": "2026-02-02T23:30:34.330Z",
+  "processed": 6,
+  "failed": 5,
+  "successRate": "54.5%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 2,
-    "brightdata": 0,
-    "archive": 3
+    "brightdata": 1,
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-02T23:25:19.014Z",
+      "event": "bb-session",
+      "session": "19d1a1b4",
+      "url": "https://observer.com/2019/07/moulin-rouge-broadway-review/"
+    },
+    {
+      "t": "2026-02-02T23:25:43.300Z",
+      "event": "bb-session",
+      "session": "b0632603",
+      "url": "https://www.theatermania.com/broadway/reviews/moulin-rouge-the-musical_88234.htm"
+    },
+    {
+      "t": "2026-02-02T23:26:14.417Z",
+      "event": "bb-session",
+      "session": "2ad10235",
+      "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11"
+    },
+    {
+      "t": "2026-02-02T23:26:58.762Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-02T23:27:23.924Z",
+      "event": "bb-session",
+      "session": "3336349c",
+      "url": "https://www.amny.com/entertainment/moulin-rouge-broadway-review/"
+    },
+    {
+      "t": "2026-02-02T23:27:49.569Z",
+      "event": "bb-session",
+      "session": "1ae4907f",
+      "url": "https://www.thedailybeast.com/moulin-rouge-broadway-review/"
+    }
+  ]
 }

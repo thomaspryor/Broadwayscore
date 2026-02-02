@@ -21,7 +21,7 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "archivePath": "data/archives/reviews/here-lies-love-2023/theatermania--adam-feldman_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T16:21:14.280Z",
+  "textFetchedAt": "2026-02-02T23:28:08.580Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -35,6 +35,12 @@
       "method": "playwright",
       "success": false,
       "error": "Skipped - known blocked site"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
     },
     {
       "tier": 2,
@@ -143,5 +149,6 @@
   "textWordCount": 1803,
   "textQuality": "truncated",
   "textStatus": "truncated",
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "truncationSignals": []
 }
