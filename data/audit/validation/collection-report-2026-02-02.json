@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-02-02T02:42:11.980Z",
+  "runDate": "2026-02-02T02:50:42.403Z",
   "config": {
-    "batchSize": 5,
-    "maxReviews": 5,
+    "batchSize": 20,
+    "maxReviews": 0,
     "priority": "all",
     "showFilter": "spamalot-2023",
     "aggressive": false,
@@ -12,32 +12,32 @@
   },
   "summary": {
     "processed": 4,
-    "failed": 1,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 3
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 2,
     "tier3Success": 1,
-    "tier4Attempts": 6,
-    "tier4Success": 3,
-    "totalFailed": 1,
+    "tier4Attempts": 8,
+    "tier4Success": 2,
+    "totalFailed": 2,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.5,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 1.7,
     "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -49,10 +49,13 @@
     "spamalot-2023/timeout--adam-feldman.json"
   ],
   "failed": [
-    "spamalot-2023/variety--charles-isherwood.json"
+    "spamalot-2023/variety--charles-isherwood.json",
+    "spamalot-2023/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "spamalot-2023/timeout--adam-feldman.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
@@ -60,8 +63,7 @@
     ],
     "archive": [
       "spamalot-2023/variety--naveen-kumar.json",
-      "spamalot-2023/deadline--greg-evans.json",
-      "spamalot-2023/timeout--adam-feldman.json"
+      "spamalot-2023/deadline--greg-evans.json"
     ]
   },
   "failuresByOutlet": {
@@ -71,6 +73,13 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": []
