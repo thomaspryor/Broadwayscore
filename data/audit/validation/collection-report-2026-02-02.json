@@ -1,83 +1,74 @@
 {
-  "runDate": "2026-02-02T17:49:56.136Z",
+  "runDate": "2026-02-02T17:52:51.677Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "our-town-2024",
+    "showFilter": "the-notebook-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 5,
+    "processed": 5,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "54.5%"
+    "successRate": "45.5%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 2,
-    "brightdata": 1,
-    "archive": 1
+    "scrapingbee": 1,
+    "brightdata": 0,
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 4,
+    "tier1Attempts": 3,
+    "tier1Success": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
-    "tier2Success": 2,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 11,
-    "tier4Success": 2,
-    "totalFailed": 4,
-    "scrapingBeeCreditsUsed": 42,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier4Attempts": 15,
+    "tier4Success": 7,
+    "totalFailed": 6,
+    "scrapingBeeCreditsUsed": 23,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 3,
     "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "our-town-2024/ew--shania-russell.json",
-    "our-town-2024/nypost--johnny-oleksinski.json",
-    "our-town-2024/theatermania--jesse-green.json",
-    "our-town-2024/thewrap--robert-hofler.json",
-    "our-town-2024/wsj--charles-isherwood.json",
-    "our-town-2024/washpost--peter-marks.json"
+    "the-notebook-2024/nytimes--jesse-green.json",
+    "the-notebook-2024/nytimes--unknown.json",
+    "the-notebook-2024/broadwaynews--brittani-samuel.json",
+    "the-notebook-2024/deadline--greg-evans.json",
+    "the-notebook-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "our-town-2024/hollywood-reporter--angie-han.json",
-    "our-town-2024/deadline--greg-evans.json",
-    "our-town-2024/ny-sun--elysa-gardner.json",
-    "our-town-2024/nydailynews--chris-jones.json",
-    "our-town-2024/timeout--adam-feldman.json"
+    "the-notebook-2024/hollywood-reporter--david-rooney.json",
+    "the-notebook-2024/vulture--helen-shaw.json",
+    "the-notebook-2024/nydailynews--chris-jones.json",
+    "the-notebook-2024/timeout--adam-feldman.json",
+    "the-notebook-2024/wsj--charles-isherwood.json",
+    "the-notebook-2024/rollingstone--brittany-spanos.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "our-town-2024/ew--shania-russell.json",
-      "our-town-2024/deadline--greg-evans.json",
-      "our-town-2024/washpost--peter-marks.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [
-      "our-town-2024/nypost--johnny-oleksinski.json",
-      "our-town-2024/thewrap--robert-hofler.json"
-    ],
-    "brightdata": [
-      "our-town-2024/theatermania--jesse-green.json"
-    ],
-    "browserbase": [],
-    "scrapingbee": [
-      "patriots-2024/theatermania--jesse-green.json"
+      "the-notebook-2024/theatermania--jesse-green.json"
     ],
     "brightdata": [],
     "archive": [
-      "our-town-2024/wsj--charles-isherwood.json"
+      "the-notebook-2024/nytimes--jesse-green.json",
+      "the-notebook-2024/nytimes--unknown.json",
+      "the-notebook-2024/broadwaynews--brittani-samuel.json",
+      "the-notebook-2024/deadline--greg-evans.json"
     ]
   },
   "failuresByOutlet": {
@@ -94,13 +85,20 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
+    },
+    "Rolling Stone": {
+      "count": 1,
+      "domain": "rollingstone.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "our-town-2024/washpost--peter-marks.json",
-      "oldUrl": "https://www.washingtonpost.com/theater-dance/2024/10/11/our-town-broadway-review/",
-      "newUrl": "https://www.washingtonpost.com/entertainment/theater_dance/theater-review-our-town-at-fords-theatre/2013/01/31/3f0ad3cc-6be4-11e2-8f4f-2abd96162ba8_story.html"
+      "reviewId": "the-notebook-2024/vulture--helen-shaw.json",
+      "oldUrl": "https://www.vulture.com/article/the-notebook-broadway-review.html",
+      "newUrl": "https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html"
     }
   ]
 }
