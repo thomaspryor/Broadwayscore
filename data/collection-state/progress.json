@@ -1,35 +1,31 @@
 {
   "processed": [
-    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
-    "mj-2022/variety--peter-marks.json",
-    "mj-2022/guardian--adrian-horton.json",
-    "mj-2022/ap--mark-kennedy.json",
-    "mj-2022/usatoday--david-rooney.json"
+    "mother-play-2024/nytimes--jesse-green.json",
+    "mother-play-2024/variety--aramide-tinubu.json",
+    "mother-play-2024/broadwaynews--brittani-samuel.json",
+    "mother-play-2024/theatermania--rachel-graham.json"
   ],
   "failed": [
-    "mj-2022/hollywood-reporter--david-rooney.json",
-    "mj-2022/ew--kristen-baldwin.json",
-    "mj-2022/timeout--adam-feldman.json",
-    "mj-2022/wsj--charles-isherwood.json",
-    "mj-2022/talkinbroadway--matthew-murray.json"
+    "mother-play-2024/new-york-sun--elysa-gardner.json",
+    "mother-play-2024/timeout--adam-feldman.json",
+    "mother-play-2024/wsj--charles-isherwood.json",
+    "mother-play-2024/queerty--matthew-wexler.json",
+    "mother-play-2024/thestage--nicole-serratore.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "mj-2022/guardian--adrian-horton.json",
-      "mj-2022/ap--mark-kennedy.json"
-    ],
+    "playwright": [],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [
-      "mj-2022/usatoday--david-rooney.json"
+    "scrapingbee": [
+      "mother-play-2024/theatermania--rachel-graham.json"
     ],
     "archive": [
-      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
-      "mj-2022/variety--peter-marks.json"
+      "mother-play-2024/nytimes--jesse-green.json",
+      "mother-play-2024/variety--aramide-tinubu.json",
+      "mother-play-2024/broadwaynews--brittani-samuel.json"
     ]
   },
-  "startTime": "2026-02-02T17:42:24.525Z",
-  "lastProcessed": "mj-2022/usatoday--david-rooney.json",
+  "startTime": "2026-02-02T17:42:24.972Z",
+  "lastProcessed": "mother-play-2024/thestage--nicole-serratore.json",
   "log": []
 }
