@@ -1,86 +1,60 @@
 {
-  "runDate": "2026-02-02T02:50:42.403Z",
+  "runDate": "2026-02-02T03:15:24.799Z",
   "config": {
-    "batchSize": 20,
-    "maxReviews": 0,
+    "batchSize": 1,
+    "maxReviews": 1,
     "priority": "all",
-    "showFilter": "spamalot-2023",
+    "showFilter": "chess-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 2,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 2
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
-    "tier1_5Attempts": 2,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier4Attempts": 8,
-    "tier4Success": 2,
-    "totalFailed": 2,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 0,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.7,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "spamalot-2023/variety--naveen-kumar.json",
-    "spamalot-2023/deadline--greg-evans.json",
-    "spamalot-2023/theatermania--jesse-green.json",
-    "spamalot-2023/timeout--adam-feldman.json"
+    "chess-2025/nytimes--elisabeth-vincentelli.json"
   ],
-  "failed": [
-    "spamalot-2023/variety--charles-isherwood.json",
-    "spamalot-2023/wsj--charles-isherwood.json"
-  ],
+  "failed": [],
   "tierDetails": {
-    "playwright": [
-      "spamalot-2023/timeout--adam-feldman.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [
-      "spamalot-2023/theatermania--jesse-green.json"
+      "chess-2025/nytimes--elisabeth-vincentelli.json"
     ],
-    "archive": [
-      "spamalot-2023/variety--naveen-kumar.json",
-      "spamalot-2023/deadline--greg-evans.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "Variety": {
-      "count": 1,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
