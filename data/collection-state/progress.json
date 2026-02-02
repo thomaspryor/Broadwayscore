@@ -1,43 +1,57 @@
 {
   "processed": [
-    "the-outsiders-2024/vulture--jackson-mchenry.json",
-    "the-outsiders-2024/broadwaynews--brittani-samuel.json",
-    "the-outsiders-2024/theatermania--adam-feldman.json",
-    "the-outsiders-2024/culturesauce--thom-geier.json"
+    "water-for-elephants-2024/nypost--johnny-oleksinski.json",
+    "water-for-elephants-2024/observer--rex-reed.json",
+    "water-for-elephants-2024/theatermania--david-gordon.json",
+    "water-for-elephants-2024/lighting-and-sound-america--david-barbour.json"
   ],
   "failed": [
-    "the-outsiders-2024/hollywood-reporter--angie-han.json",
-    "the-outsiders-2024/hollywood-reporter--david-rooney.json",
-    "the-outsiders-2024/variety--maya-phillips.json",
-    "the-outsiders-2024/deadline--greg-evans.json",
-    "the-outsiders-2024/timeout--adam-feldman.json",
-    "the-outsiders-2024/wsj--charles-isherwood.json"
+    "water-for-elephants-2024/variety--frank-rizzo.json",
+    "water-for-elephants-2024/broadwaynews--brittani-samuel.json",
+    "water-for-elephants-2024/timeout--adam-feldman.json",
+    "water-for-elephants-2024/wsj--charles-isherwood.json",
+    "water-for-elephants-2024/theatrely--olivia-clement.json",
+    "water-for-elephants-2024/thestage--lane-williamson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-outsiders-2024/broadwaynews--brittani-samuel.json",
-      "the-outsiders-2024/culturesauce--thom-geier.json"
+      "water-for-elephants-2024/lighting-and-sound-america--david-barbour.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/water-for-elephants-2024/nypost--johnny-oleksinski.json",
+      "water-for-elephants-2024/nypost--johnny-oleksinski.json",
+      "data/review-texts/water-for-elephants-2024/observer--rex-reed.json",
+      "water-for-elephants-2024/observer--rex-reed.json"
+    ],
     "scrapingbee": [
-      "the-outsiders-2024/theatermania--adam-feldman.json"
+      "water-for-elephants-2024/theatermania--david-gordon.json"
     ],
     "brightdata": [
-      "the-outsiders-2024/variety--maya-phillips.json"
+      "water-for-elephants-2024/variety--frank-rizzo.json"
     ],
-    "archive": [
-      "the-outsiders-2024/vulture--jackson-mchenry.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-02-02T04:57:06.684Z",
-  "lastProcessed": "the-outsiders-2024/culturesauce--thom-geier.json",
+  "startTime": "2026-02-02T04:57:07.773Z",
+  "lastProcessed": "water-for-elephants-2024/thestage--lane-williamson.json",
   "log": [
     {
-      "t": "2026-02-02T05:05:15.042Z",
+      "t": "2026-02-02T05:03:15.430Z",
       "event": "bb-session",
-      "session": "245432b2",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-outsiders_93847.h"
+      "session": "63fb7035",
+      "url": "https://nypost.com/2024/03/21/entertainment/water-for-elephants-review-acrobats-"
+    },
+    {
+      "t": "2026-02-02T05:03:36.461Z",
+      "event": "bb-session",
+      "session": "42131719",
+      "url": "https://observer.com/2024/03/water-for-elephants-theater-review-the-worst-broadw"
+    },
+    {
+      "t": "2026-02-02T05:03:48.814Z",
+      "event": "bb-session",
+      "session": "a5464997",
+      "url": "https://www.theatermania.com/broadway/reviews/water-for-elephants_93847.html"
     }
   ]
 }
