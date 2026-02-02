@@ -1,25 +1,41 @@
 {
   "processed": [
-    "and-juliet-2022/variety--peter-marks.json",
-    "and-juliet-2022/thewrap--robert-hofler.json"
+    "hadestown-2019/vulture--jesse-green.json",
+    "hadestown-2019/ew--kristen-baldwin.json",
+    "hadestown-2019/guardian--jesse-green.json",
+    "hadestown-2019/theatermania--jesse-green.json",
+    "hadestown-2019/theatermania--zachary-stewart.json",
+    "hadestown-2019/wsj--terry-teachout.json",
+    "hadestown-2019/rollingstone--peter-travers.json"
   ],
   "failed": [
-    "and-juliet-2022/theatermania--jesse-green.json",
-    "and-juliet-2022/timeout--adam-feldman.json",
-    "and-juliet-2022/wsj--charles-isherwood.json"
+    "hadestown-2019/observer--david-cote.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-2019/timeout--adam-feldman.json",
+    "hadestown-2019/dailybeast--tim-teeman.json",
+    "hadestown-2019/medium--christian-lewis.json",
+    "hadestown-2019/vox--constance-grady.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "hadestown-2019/ew--kristen-baldwin.json",
+      "hadestown-2019/guardian--jesse-green.json"
+    ],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "hadestown-2019/theatermania--jesse-green.json"
+    ],
+    "brightdata": [
+      "hadestown-2019/wsj--terry-teachout.json"
+    ],
     "archive": [
-      "and-juliet-2022/variety--peter-marks.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "hadestown-2019/vulture--jesse-green.json",
+      "hadestown-2019/theatermania--zachary-stewart.json",
+      "hadestown-2019/rollingstone--peter-travers.json"
     ]
   },
-  "startTime": "2026-02-02T17:33:18.815Z",
-  "lastProcessed": "and-juliet-2022/wsj--charles-isherwood.json",
+  "startTime": "2026-02-02T17:33:51.405Z",
+  "lastProcessed": "hadestown-2019/vox--constance-grady.json",
   "log": []
 }
