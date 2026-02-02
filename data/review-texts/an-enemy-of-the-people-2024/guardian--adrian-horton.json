@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Strong brings his trademark intensity to Dr Thomas Stockmann, a scientist who discovers the water supply in his Norwegian town is contaminated, but his performance occasionally tips into caricature.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,22 +18,28 @@
   "showScoreExcerpt": "Strong brings his trademark intensity to Dr Thomas Stockmann, a scientist who discovers the water supply in his Norwegian town is contaminated, but his performance occasionally tips into caricature.",
   "needsScoring": true,
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges Strong's trademark intensity but criticizes the performance for tipping into caricature, suggesting a flawed execution that neither fully recommends nor discourages. | GPT-4o: The review acknowledges the actor's intensity but notes a flaw in the performance, suggesting a mixed impression overall. | Gemini: The review acknowledges a strong performance but notes a significant flaw, suggesting a qualified recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "at least a night of good New York theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises Strong's performance as 'bravura' and describes the production as 'good New York theater' while acknowledging some jarring elements. The positive elements (performances, staging, thematic relevance) outweigh the criticisms, but the truncated ending and mixed tone prevent a higher score. | GPT-4o: The review praises Jeremy Strong's performance and the immersive staging, suggesting a positive experience. However, the text is truncated, and the final verdict may be missing, leading to a cautious score with low confidence. | Gemini: The review acknowledges some jarring elements but concludes that the production is \"at least a night of good New York theater\" due to the actors and staging. The truncated text lowers confidence. | Kimi: The review offers consistent praise for Jeremy Strong's 'bravura' performance and calls the adaptation 'rousing' and 'ably directed', while noting reservations about the production's heavy-handed contemporary parallels and occasionally jarring directorial choices. The truncated ending suggests caution, but the available text clearly recommends the show as 'at least a night of good New York theater'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,34 +48,36 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:57:28.766Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:54:37.994Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 72,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "previousUrl": "https://www.theguardian.com/stage/2024/mar/19/an-enemy-of-the-people-review-jeremy-strong-michael-imperioli-broadway",
   "urlDiscoveredAt": "2026-02-02T15:10:57.876Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "textWordCount": 781,
@@ -103,5 +111,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 781,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-02T23:54:37.994Z"
 }

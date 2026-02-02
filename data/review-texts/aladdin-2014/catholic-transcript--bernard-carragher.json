@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review emphasizes fun and describes the show as 'craftily assembled' and 'a treat,' indicating clear enjoyment and recommendation despite being a single excerpt. | GPT-4o: The excerpt highlights the production as fun and visually and aurally pleasing, suggesting a strong positive recommendation. The use of 'F-U-N' and 'treat' indicates enthusiasm, warranting a score at the higher end of the Positive range. | Gemini: The review excerpt uses strong positive language like \"F-U-N\" and \"a treat,\" indicating a positive recommendation. Given the single excerpt warning, I'm placing it at the higher end of the positive bucket.",
+    "keyPhrases": [
+      {
+        "quote": "Mainly, this Aladdin is F-U-N because it was so craftily assembled.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'F-U-N' and 'treat for the eye and ear', but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt describes the show as 'F-U-N' and a 'treat for the eye and ear,' indicating a strong positive impression. Given the single excerpt warning, the score is placed in the upper range of Positive. | Gemini: The review excerpt uses enthusiastic language like \"F-U-N\" and \"treat for the eye and ear\", indicating a positive recommendation. Given that it's a single excerpt, I've placed the score towards the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the show's craftsmanship and entertainment value, calling it 'F-U-N' and a 'treat for the eye and ear,' indicating a clear positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:36:47.358Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:30:07.155Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
+    "claudeScore": 82,
     "openaiScore": 82,
-    "geminiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/aladdin-2014/catholic-transcript--bernard-carragher_2026-01-27.html",
   "textFetchedAt": "2026-01-27T20:27:34.072Z",

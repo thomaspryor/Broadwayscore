@@ -8,18 +8,18 @@
   "dtliExcerpt": "And Strong grabs that sudden intimate connection like a man holding on to bucking steer, falling ever deeper into his character’s abyss. It is a sight to see. Strong is one of the great American actors of his generation. And Imperioli is no slouch either. He’s as live and present as anyone could ask.",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 82,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 78,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The excerpt praises two lead performances enthusiastically, calling Strong 'one of the great American actors of his generation' and noting both actors are compelling to watch. However, with only one excerpt available, this could be cherry-picked praise from a more mixed review. | Gemini: The review excerpt focuses on the strength of the performances, particularly Jeremy Strong's, suggesting a positive experience, but the limited text and single excerpt warrant a score in the middle of the 'Positive' range.",
+    "keyPhrases": [
+      {
+        "quote": "Strong is one of the great American actors of his generation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: High praise for lead performances with superlative language ('great American actors', 'sight to see'), but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt praises the performances of Strong and Imperioli, highlighting their exceptional talent. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The excerpt focuses on praising the performances of the actors, particularly Jeremy Strong, indicating a positive experience. Given the limited text, I'm placing it in the upper end of the positive bucket with low confidence. | Kimi: The excerpt delivers enthusiastic praise for the lead performances, calling Strong one of the greats and the work 'a sight to see,' though the single-quote limitation prevents assessing the full production's verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:37:28.981Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:55:40.659Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 82,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

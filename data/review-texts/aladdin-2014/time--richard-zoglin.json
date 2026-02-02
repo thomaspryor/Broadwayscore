@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting some limitations and calling it a 'downsizing of ambition,' the critic ultimately endorses the show as entertaining and professionally crafted, concluding with clear approval. | GPT-4o: The review acknowledges the show's limitations but ultimately praises its entertainment value and Disney's professionalism, indicating a positive recommendation despite some reservations. | Gemini: The review acknowledges the show's formulaic nature and lack of emotional depth but ultimately concludes that it is \"frisky and fun\" and a demonstration of Disney's professionalism, implying a positive, albeit reserved, recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Aladdin is frisky and fun, another demonstration of Disney professionalism.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Zoglin clearly recommends the show despite acknowledging its formulaic nature. He praises the professionalism, entertainment value ('frisky and fun'), and specifically highlights strong performances, calling it 'another demonstration of Disney professionalism' with the final endorsement 'Don't scoff. It helped save Broadway.' | Gemini: The review is generally positive, describing the show as \"frisky and fun\" and praising the performances and old-fashioned Broadway pizzazz, while acknowledging some shortcomings. | Kimi: While noting the show marks a 'downsizing of ambition' with an 'anodyne' love story, the critic praises the performances (particularly Iglehart), the 'old-fashioned Broadway pizzazz,' and ultimately delivers a clear recommendation, concluding 'Don't scoff. It helped save Broadway.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +43,22 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:08:22.218Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:45:20.584Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 77,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 79,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,

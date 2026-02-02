@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic clearly states the show 'finds no magic whatsoever' and questions whether the cynical approach is appropriate for children's theater, indicating disappointment with the production. | GPT-4o: The review excerpt criticizes the lack of magic in a story that should be magical, and questions the appropriateness of the humor for children, suggesting a negative view of the production. | Gemini: The review excerpt expresses disappointment with the book and humor, suggesting a negative overall assessment of the production. The truncated nature and single excerpt warrant a score in the middle of the negative range.",
+    "keyPhrases": [
+      {
+        "quote": "finds no magic whatsoever in a story rife with magic lanterns, carpets, genies and sultry Arabian nights",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds the book lacking in magic and questions cynical approach to introducing children to theater. However, this is only one excerpt and may not represent the full review verdict. | GPT-4o: The excerpt criticizes the book for lacking magic and questions its approach to introducing children to theater, suggesting a negative view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is negative, criticizing the book and humor. Given the single excerpt and negative tone, I've scored it as negative with low confidence. | Kimi: The critic unfavorably compares the show to The Book of Mormon, criticizes the book as cynical and lacking magic despite the fantastical source material, and questions whether children will appreciate its humor, indicating a recommendation against.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,9 +44,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:21:43.040Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:44:23.219Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 44,
@@ -50,16 +56,18 @@
     "claudeScore": 42,
     "openaiScore": 45,
     "geminiScore": 45,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "sources": [
     "bww-roundup"

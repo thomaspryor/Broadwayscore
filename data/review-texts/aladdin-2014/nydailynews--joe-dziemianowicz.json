@@ -9,7 +9,7 @@
   "bwwExcerpt": "While burning through wishes, you should ask for the musical to have a lot more heart. The absence is glaring, given that Disney excels at tugging at tickers and then making them melt. But this show seldom moves you. The title character's yearning ballad, \"Proud of Your Boy,\" sung to his long-gone mom, isn't enough to make this anything better than a Bedouin \"Beauty and the Beast\" - a cartoon on stage.",
   "showScoreExcerpt": "\"The show is as colorful as the Crayola 64 box, and as tirelessly energetic as a toddler, but it also feels canned. While burning through wishes, you should ask for the musical to have a lot more heart. The absence is glaring, given that Disney excels at tugging at tickers and then making them melt.\"",
   "originalScore": 80,
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "urlSource": "show-score",
@@ -18,11 +18,11 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 80,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic finds the show entertaining with standout performances and spectacular effects, but notes it lacks emotional depth. The 80/100 original rating confirms this as positive territory with reservations. | Gemini: The critic explicitly states the show is \"entertaining\" and the original rating is 80. However, they also note it's \"emotionally sparse\" and \"canned,\" indicating reservations.",
+    "keyPhrases": [
+      {
+        "quote": "This supercool carpet sweeps some wow! into this entertaining but emotionally sparse adaptation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic gives an 80/100 rating and finds the show 'entertaining' with spectacular effects and strong performances, particularly praising Iglehart's genie. However, significant reservations about emotional depth ('seldom moves you', 'feels canned') prevent this from being a stronger positive. | GPT-4o: The review highlights impressive visual effects and performances, particularly praising James Monroe Iglehart's role as the genie. However, it notes a lack of emotional depth, aligning with the original rating of 80, indicating a positive but not unqualified recommendation. | Gemini: The review is mostly positive, highlighting the magic carpet ride, performances, and humor, but notes a lack of emotional depth. The critic's rating of 80 aligns with a positive assessment. | Kimi: While the critic praises the spectacle, magic carpet effect, and James Monroe Iglehart's performance, they criticize the show's lack of heart and emotional depth. The provided 80/100 rating confirms this as a qualified positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:06:51.713Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:36:59.937Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 80,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 79,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/aladdin-2014/ny-daily-news--joe-dziemianowicz_2026-01-26.html",
   "textFetchedAt": "2026-01-26T19:46:56.445Z",

@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic calls it 'generic' but still recommends it as entertainment that 'certainly delivers' and predicts commercial success. This is a qualified positive recommendation. | Gemini: The review states that the show delivers spectacle and will likely be successful, indicating a positive, though somewhat generic, experience. The \"a bit generic\" phrase suggests reservations.",
+    "keyPhrases": [
+      {
+        "quote": "This big, busy, splashy family entertainment fits right in; it feels a bit generic, but it certainly delivers in terms of sheer eye-popping spectacle, and is sure to run and run.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed praise acknowledging generic quality but emphasizing spectacle and commercial success prediction. Single excerpt limits confidence in overall verdict assessment. | GPT-4o: The review acknowledges the show as 'big, busy, splashy' and delivering 'eye-popping spectacle,' suggesting a positive experience despite being 'a bit generic.' The single excerpt indicates a positive tone, but the text quality warning suggests caution. | Gemini: The review says the show \"delivers in terms of sheer eye-popping spectacle\" and is \"sure to run and run\", but also notes that it \"feels a bit generic.\" This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The excerpt offers qualified praise, acknowledging the show feels generic but praising its visual spectacle and commercial potential, suggesting a mild recommendation tempered by the single-quote context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:08:08.210Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:43:31.269Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
-    "previousVersion": "5.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": null,
+    "claudeScore": 74,
+    "openaiScore": 74,
     "geminiScore": 75,
+    "kimiScore": 74,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly calls it 'a considerable win for Disney' and predicts success, praising standout performances and production numbers while acknowledging it's not perfect. Clear positive recommendation despite reservations. | GPT-4o: The review acknowledges flaws such as the padded score and some restrained elements, but overall it praises the production, especially James Monroe Iglehart's performance and the 'Friend Like Me' number. The critic concludes that Aladdin is a considerable win for Disney, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting strong performances and production elements, but also noting some weaknesses in the book and score. The critic ultimately recommends the show as a 'considerable win' for Disney.",
+    "keyPhrases": [
+      {
+        "quote": "Score Aladdin a considerable win for Disney, likely to fill the New Amsterdam with happy crowds for seasons to come.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic explicitly calls it 'a considerable win for Disney' and predicts long-term success, despite acknowledging flaws like padded songs and sitcom-easy jokes. Praises standout performances and production numbers while noting it's 'Better than Little Mermaid, Aida and Tarzan, though not exactly a knockout.' | GPT-4o: The review praises the production's standout moments and performances, particularly Iglehart's Genie, while noting some weaknesses in the first act and new songs. Overall, it recommends the show as a success for Disney. | Gemini: The review is generally positive, highlighting Iglehart's performance and the 'Friend Like Me' number. While noting some shortcomings, it concludes with a recommendation, calling it a 'considerable win' for Disney. | Kimi: While the reviewer notes several flaws including a weak first act and over-amplified sound, the verdict is clearly positive, praising James Monroe Iglehart's performance as 'delirious' and calling it a 'considerable win' that will entertain crowds, though explicitly 'not exactly a knockout'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:05:43.342Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:33:35.896Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 80,
-    "geminiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "sources": [
     "bww-roundup"

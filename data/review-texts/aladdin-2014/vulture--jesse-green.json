@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"So why is Aladdin a bit of a chore? Even the best of what the writers offer doesn’t seem to stick very long; if it weren’t for Nicholaw’s merciless flogging, you feel the story would simply evaporate in the desert heat.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
-  "assignedScore": 67,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 67,
-    "confidence": "low",
+    "score": 61,
+    "confidence": "high",
     "range": {
-      "low": 62,
-      "high": 72
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: Green acknowledges Disney's technical prowess and craft while repeatedly calling the show a 'chore' and criticizing its lack of emotional substance. He neither recommends nor discourages attendance, focusing on competent execution of hollow material. | Gemini: The review acknowledges flaws and a lack of depth, but ultimately suggests it's an enjoyable, well-executed production. The critic highlights the strengths of the production while also pointing out its shortcomings, leading to a positive but not rave recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "So why is Aladdin a bit of a chore?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Green acknowledges Disney's technical excellence and craft ('jaw-dropping moments', 'consistently delightful' music) but finds the show emotionally hollow and overly calculated. He calls it 'a bit of a chore' and questions whether audiences can care about anything when everything is designed to prevent taking it seriously. This is classic mixed review territory - respecting the artistry while finding the overall experience unsatisfying. | Gemini: The review acknowledges the show's strengths (catchy music, impressive staging) but criticizes its lack of depth, over-reliance on sarcasm, and failure to take risks. The overall tone is ambivalent, placing it in the Mixed bucket. | Kimi: While praising James Monroe Iglehart's showstopping performance, Casey Nicholaw's energetic choreography, and the lavish production design, the critic finds the show emotionally empty and calls it a 'bit of a chore,' ultimately viewing it as a professionally executed but artistically hollow corporate product.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:02.713Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:48:25.828Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "5.0.0"
+    "previousScore": 67,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
+    "claudeScore": 62,
     "openaiScore": null,
-    "geminiScore": 74,
+    "geminiScore": 62,
+    "kimiScore": 58,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "dtliExcerpt": "The show is gorgeous to look at, but it's also exhausting — like being trapped in a very expensive, very loud toy store.",
   "sources": [

@@ -7,17 +7,17 @@
   "publishDate": "March 20, 2014",
   "showScoreExcerpt": "\"While it doesn't rival the imagination or innovation of \"The Lion King,\" the show's ebullient comic spirit should make it a popular hit. It's not the most sophisticated entertainment, but the target demographic won't mind at all.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "dtli",
   "needsFullText": false,
   "urlUpdated": "2026-01-23T05:30:05.962Z",
   "fetchedAt": "2026-01-23T05:23:06.420Z",
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging it's not sophisticated entertainment, the critic clearly recommends the show as 'sweet, silly fun' that will be a 'popular hit' and 'family-friendly hit.' The review praises performances, staging, and entertainment value while noting limitations. | GPT-4o: The review acknowledges that 'Aladdin' may not be the most sophisticated entertainment, but highlights its appeal as a family-friendly hit with 'sweet, silly fun.' The critic notes the show's strengths in its comic spirit and production numbers, suggesting a positive recommendation despite some reservations about its lack of sophistication and emotional depth. | Gemini: Despite some reservations about sentimentality and character depth, the review suggests the show is enjoyable and a family-friendly hit, indicating a positive recommendation. The aggregator excerpts also point towards a positive reception.",
+    "keyPhrases": [
+      {
+        "quote": "Directed and choreographed by musical comedy specialist Casey Nicholaw with loads of retro showmanship, an unapologetic embrace of casbah kitsch and a heavy accent on shtick, this is sweet, silly fun.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review is clearly positive despite some reservations. The critic calls it 'sweet, silly fun' that 'should make it a popular hit' and says audiences shouldn't be deterred from seeing it. While noting it's 'not the most sophisticated entertainment,' the overall recommendation is positive for its target demographic. The truncation warning and aggregator excerpts support this positive assessment. | GPT-4o: The review acknowledges that 'Aladdin' may not be as innovative as 'The Lion King,' but it highlights the show's comic spirit and potential popularity. The tone is generally positive, suggesting it will be a family-friendly hit despite some reservations about sophistication and emotional depth. | Gemini: The review acknowledges the show's fun and energetic spirit, but also points out its lack of sophistication and emotional depth. The aggregator context also suggests a positive leaning. | Kimi: While the critic notes the show lacks sophistication and romantic chemistry, they praise James Monroe Iglehart's 'delightful' performance and Casey Nicholaw's energetic direction, calling it 'sweet, silly fun' and predicting it will be a 'popular hit' with its target demographic.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:37:15.605Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:33:24.383Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 78,
-    "geminiScore": 79,
+    "geminiScore": 77,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwExcerpt": "Its exotic Middle Eastern setting and multiethnic cast aside, Aladdin offers less \"A Whole New World\" - to quote its signature song - than a traditional Disney fairy-tale realm; it's perhaps the most old-school of the company's screen-to-stage adaptations since Beauty and the Beast. But that shouldn't deter audiences from making this splashy Arabian Nights wish-fulfillment fantasy into a family-friendly hit.",
   "textFetchedAt": "2026-02-02T23:11:30.681Z",

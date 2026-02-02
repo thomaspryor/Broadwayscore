@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls it an 'uneven production' and criticizes the first half for questionable design choices and stiff acting, while praising specific elements like the town meeting sequence and the performances of Strong and Imperioli. | GPT-4o: The review describes the production as uneven with some questionable choices, but also highlights moments where it works well, such as the town meeting sequence. The overall tone suggests a mixed experience with notable highs and lows. | Gemini: The review highlights both strengths (the town meeting sequence, parallels to modern issues) and weaknesses (questionable design choices, stiff acting). The overall assessment is that the production is 'uneven,' suggesting a mixed experience.",
+    "keyPhrases": [
+      {
+        "quote": "The production truly works best in the town meeting sequence, in which the doctor struggles to communicate his findings to the community.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic calls it an 'uneven production' and notes many problems (dim lighting, stiff acting, questionable choices) but praises specific elements like Strong's performance and the town meeting sequence. No clear recommendation either way. | GPT-4o: The review highlights both strengths and weaknesses of the production. While it praises certain sequences and performances, it also notes questionable design choices and stiff acting, leading to a mixed overall impression. | Gemini: The review highlights both positive and negative aspects of the production. While praising Strong and Imperioli's performances and the town meeting sequence, it also criticizes the design and directorial choices, as well as the stiff acting in the first half. | Kimi: The reviewer praises Strong's performance and the town meeting scene but criticizes questionable design choices and stiff acting in the first half, explicitly calling it an 'uneven production' despite its timely relevance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:36:21.303Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:51:53.942Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 63,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
+    "kimiScore": 63,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "dtliExcerpt": "I wish I had been there (alas, I attended the following night), as it would have been an exciting addition to this uneven production of a timely work.",
   "sources": [

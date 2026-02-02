@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B rating and phrase 'one of the better Disney stage musicals' indicates solid recommendation, though the limited excerpt and qualifier 'better' (not 'best') suggests measured rather than enthusiastic praise. | GPT-4o: The critic's original rating of 'B' suggests a positive but not exceptional review. The quote highlights the show's strong production numbers, indicating a solid recommendation. | Gemini: The critic states it is one of the better Disney stage musicals, indicating a positive recommendation. The B rating also supports this classification.",
+    "keyPhrases": [
+      {
+        "quote": "This is one of the better Disney stage musicals, complete with several eye-popping production numbers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: B grade and 'one of the better' indicates solid positive recommendation, but limited excerpt and qualified praise ('one of the better' rather than superlatives) suggests mid-range positive score. | GPT-4o: The critic's B rating suggests a positive review, and the quote highlights strong production numbers. However, the text is an excerpt, so confidence is low. | Gemini: The critic states that it is \"one of the better Disney stage musicals\" and gives it a B, which indicates a positive, but not rave, review. The confidence is low due to the limited text. | Kimi: The B rating and praise for production values indicate a solid recommendation, though the qualified phrasing ('one of the better') stops short of rave territory. Confidence is low due to excerpt-only format.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T16:37:02.922Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-02T23:31:57.092Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "sources": [
     "bww-roundup",
