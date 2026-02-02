@@ -1,25 +1,35 @@
 {
   "processed": [
-    "and-juliet-2022/variety--peter-marks.json",
-    "and-juliet-2022/thewrap--robert-hofler.json"
+    "gutenberg-2023/deadline--greg-evans.json",
+    "gutenberg-2023/nypost--johnny-oleksinski.json",
+    "gutenberg-2023/theatermania--jesse-green.json",
+    "gutenberg-2023/theatermania--zachary-stewart.json",
+    "gutenberg-2023/theatrely--david-gordon.json"
   ],
   "failed": [
-    "and-juliet-2022/theatermania--jesse-green.json",
-    "and-juliet-2022/timeout--adam-feldman.json",
-    "and-juliet-2022/wsj--charles-isherwood.json"
+    "gutenberg-2023/new-york-sun--elysa-gardner.json",
+    "gutenberg-2023/observer--david-cote.json",
+    "gutenberg-2023/timeout--adam-feldman.json",
+    "gutenberg-2023/wsj--charles-isherwood.json",
+    "gutenberg-2023/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "gutenberg-2023/theatrely--david-gordon.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "gutenberg-2023/theatermania--jesse-green.json"
+    ],
     "archive": [
-      "and-juliet-2022/variety--peter-marks.json",
-      "and-juliet-2022/thewrap--robert-hofler.json"
+      "gutenberg-2023/deadline--greg-evans.json",
+      "gutenberg-2023/nypost--johnny-oleksinski.json",
+      "gutenberg-2023/theatermania--zachary-stewart.json"
     ]
   },
-  "startTime": "2026-02-02T17:33:18.815Z",
-  "lastProcessed": "and-juliet-2022/wsj--charles-isherwood.json",
+  "startTime": "2026-02-02T17:33:39.367Z",
+  "lastProcessed": "gutenberg-2023/theatrely--david-gordon.json",
   "log": []
 }
