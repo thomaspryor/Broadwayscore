@@ -24,7 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 const { getOutletDisplayName } = require('./lib/review-normalization');
-const { decodeHtmlEntities } = require('./lib/text-cleaning');
+const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
@@ -565,8 +565,13 @@ function getBestScore(data) {
     const confidence = data.llmScore.confidence;
     const needsReview = data.ensembleData?.needsReview;
 
+    // Downgrade confidence when scoring from excerpt-only text
+    // Audit showed ~50% error rate on excerpt-only high/medium confidence scores
+    const hasFullText = data.fullText && data.fullText.trim().length > 100;
+    const effectiveConfidence = (!hasFullText && confidence !== 'low') ? 'low' : confidence;
+
     // High/medium confidence: use directly
-    if (confidence !== 'low' && !needsReview) {
+    if (effectiveConfidence !== 'low' && !needsReview) {
       // Flag if BOTH thumbs agree with each other but disagree with LLM direction
       const llmThumb = data.llmScore.score >= 70 ? 'Up' : data.llmScore.score >= 55 ? 'Flat' : 'Down';
       const dtli = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
@@ -580,8 +585,10 @@ function getBestScore(data) {
   }
 
   // Priority 2: Nuanced thumb override of low-confidence/needs-review LLM scores (3A)
+  // Also applies when confidence was downgraded due to excerpt-only text
   const hasLowConfLlm = data.llmScore?.score &&
-    (data.llmScore.confidence === 'low' || data.ensembleData?.needsReview);
+    (data.llmScore.confidence === 'low' || data.ensembleData?.needsReview ||
+     !(data.fullText && data.fullText.trim().length > 100));
 
   if (hasLowConfLlm) {
     const dtliThumbNorm = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
@@ -750,6 +757,18 @@ showDirs.forEach(showId => {
     try {
       const filePath = path.join(showDir, file);
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+      // Recover review text from garbageFullText when fullText is missing
+      // Some reviews were flagged as garbage only due to trailing junk (newsletters, copyright)
+      // but contain valid review text that can be cleaned and promoted
+      if (!data.fullText && data.garbageFullText && data.garbageFullText.length > 200) {
+        const cleaned = cleanText(data.garbageFullText);
+        if (cleaned && cleaned.length > 200) {
+          data.fullText = cleaned;
+          data.fullTextRecoveredFrom = 'garbageFullText';
+          stats.recoveredFromGarbage = (stats.recoveredFromGarbage || 0) + 1;
+        }
+      }
 
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)
       if (data.wrongProduction === true) {
@@ -968,6 +987,7 @@ const output = {
       skippedNoScore: stats.skippedNoScore,
       skippedDuplicate: stats.skippedDuplicate,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
+      recoveredFromGarbage: stats.recoveredFromGarbage || 0,
       scoreSources: stats.scoreSources
     }
   },
@@ -984,6 +1004,9 @@ console.log(`Total reviews INCLUDED: ${stats.totalReviews}`);
 console.log(`  Skipped (no valid score): ${stats.skippedNoScore}`);
 console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
+if (stats.recoveredFromGarbage > 0) {
+  console.log(`  Recovered from garbageFullText: ${stats.recoveredFromGarbage}`);
+}
 
 // Explicit rating summary
 const explicitCount = (stats.scoreSources['explicit-stars'] || 0) +
