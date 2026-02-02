@@ -1,19 +1,54 @@
 {
   "processed": [
-    "chicago-1996/time--.json"
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "book-of-mormon-2011/chicagotribune--.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "book-of-mormon-2011/ny-1--roma-torre.json"
   ],
-  "failed": [],
+  "failed": [
+    "book-of-mormon-2011/newsday--linda-winer.json",
+    "book-of-mormon-2011/timeout--david-cote.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
+    "book-of-mormon-2011/the-village-voice--michael-musto.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "browserbase": [],
+    "playwright": [
+      "book-of-mormon-2011/ap--mark-kennedy.json"
+    ],
+    "browserbase": [
+      "data/review-texts/book-of-mormon-2011/newsday--linda-winer.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "chicago-1996/time--.json"
+      "book-of-mormon-2011/backstage--david-sheward.json",
+      "book-of-mormon-2011/chicagotribune--.json",
+      "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+      "book-of-mormon-2011/ny-1--roma-torre.json"
     ]
   },
-  "startTime": "2026-02-02T23:11:26.492Z",
-  "lastProcessed": "chicago-1996/time--.json",
-  "log": []
+  "startTime": "2026-02-02T23:11:40.379Z",
+  "lastProcessed": "book-of-mormon-2011/the-village-voice--michael-musto.json",
+  "log": [
+    {
+      "t": "2026-02-02T23:11:47.589Z",
+      "event": "bb-session",
+      "session": "c4474ec4",
+      "url": "https://www.newsday.com/news/new-york/theater-review-the-book-of-mormon-4-stars-"
+    },
+    {
+      "t": "2026-02-02T23:12:10.799Z",
+      "event": "bb-session",
+      "session": "9d822b55",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-02-02T23:12:57.451Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
