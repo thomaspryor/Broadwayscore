@@ -155,8 +155,8 @@ const CONFIG = {
     'theatermania.com', 'observer.com', 'chicagotribune.com',
     'dailybeast.com', 'thedailybeast.com', 'amny.com', 'newsday.com',
     'nypost.com', 'nydailynews.com', 'indiewire.com',
-    // Note: variety.com, hollywoodreporter.com, deadline.com are FREE - Playwright works fine
-    // Note: wsj.com removed - now using login
+    'wsj.com',  // Dow Jones SSO login page is an SPA that won't render in headless Chromium
+    // Note: variety.com, hollywoodreporter.com, deadline.com are FREE - use .a-content selector
   ],
 
   // Sites that need residential proxies (Bright Data preferred)
@@ -283,12 +283,12 @@ const OUTLET_WAIT_CONFIGS = {
   },
   // PMC sites (Variety, THR, Deadline) - free content, standard WordPress rendering
   'variety.com': {
-    waitForSelector: '.c-content, .entry-content, article',
+    waitForSelector: '.a-content, .entry-content, article',
     waitTimeout: 15000,
     extraWait: 2000,
   },
   'hollywoodreporter.com': {
-    waitForSelector: '.c-content, .entry-content, article',
+    waitForSelector: '.a-content, .entry-content, article',
     waitTimeout: 15000,
     extraWait: 2000,
   },
@@ -874,12 +874,25 @@ async function loginToSite(domain, email, password) {
  */
 async function browserbaseLogin(bbPage, domain, email, password) {
   if (domain === 'wsj.com') {
-    await bbPage.goto('https://accounts.wsj.com/login', { timeout: CONFIG.loginTimeout });
-    await bbPage.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
-    await bbPage.waitForTimeout(3000);
-
-    const emailInput = await bbPage.$('input[name="emailOrUsername"], input#emailOrUsername-form-item, input[type="email"], input[name="username"]');
-    if (!emailInput) return false;
+    // WSJ uses Dow Jones SSO - an SPA that requires JS rendering
+    // accounts.wsj.com/login redirects to sso.accounts.dowjones.com
+    console.log(`    → Browserbase: navigating to WSJ login...`);
+    await bbPage.goto('https://accounts.wsj.com/login', { timeout: CONFIG.loginTimeout, waitUntil: 'networkidle' });
+    // Wait for the SPA to render the login form (up to 30s)
+    let emailInput = null;
+    try {
+      await bbPage.waitForSelector('input[type="email"], input[name="email"], input[name="emailOrUsername"], input[name="username"]', { timeout: 30000 });
+      emailInput = await bbPage.$('input[type="email"], input[name="email"], input[name="emailOrUsername"], input[name="username"]');
+    } catch (e) {
+      // SPA may still be loading - try waiting longer
+      console.log(`    → WSJ login SPA slow to render, waiting...`);
+      await bbPage.waitForTimeout(10000);
+      emailInput = await bbPage.$('input[type="email"], input[name="email"], input[name="emailOrUsername"], input[name="username"]');
+    }
+    if (!emailInput) {
+      console.log(`    ✗ WSJ login FAILED (no email/username field found)`);
+      return false;
+    }
     await emailInput.click();
     await emailInput.type(email, { delay: 30 });
     await bbPage.waitForTimeout(500);
@@ -887,10 +900,20 @@ async function browserbaseLogin(bbPage, domain, email, password) {
     const continueBtn = await bbPage.$('button:has-text("Continue"), button:has-text("Sign In"), button[type="submit"]');
     if (continueBtn) await continueBtn.click();
     else await bbPage.keyboard.press('Enter');
-    await bbPage.waitForTimeout(4000);
 
-    const passInput = await bbPage.$('input[type="password"]');
-    if (!passInput) return false;
+    // Wait for password step (Dow Jones SSO is two-step)
+    let passInput = null;
+    try {
+      await bbPage.waitForSelector('input[type="password"]', { timeout: 15000 });
+      passInput = await bbPage.$('input[type="password"]');
+    } catch (e) {
+      await bbPage.waitForTimeout(5000);
+      passInput = await bbPage.$('input[type="password"]');
+    }
+    if (!passInput) {
+      console.log(`    ✗ WSJ login FAILED (no password field found)`);
+      return false;
+    }
     await passInput.click();
     await passInput.type(password, { delay: 30 });
     await bbPage.waitForTimeout(500);
@@ -902,7 +925,10 @@ async function browserbaseLogin(bbPage, domain, email, password) {
     await bbPage.waitForTimeout(3000);
 
     const postUrl = bbPage.url();
-    return !postUrl.includes('accounts.wsj.com/login') && !postUrl.includes('accounts.dowjones.com/login');
+    const loginOk = !postUrl.includes('accounts.wsj.com/login') && !postUrl.includes('accounts.dowjones.com');
+    if (loginOk) console.log(`    ✓ WSJ login succeeded`);
+    else console.log(`    ✗ WSJ login uncertain (still on: ${postUrl.substring(0, 60)})`);
+    return loginOk;
   }
 
   if (domain === 'nytimes.com') {
@@ -1118,6 +1144,8 @@ async function fetchWithBrowserbase(url, review) {
         '[class*="ArticlePageChunks"]', '[class*="RawHtmlBody"]',
         // TimeOut (hashed class names)
         '[class*="_articleContent_"]',
+        // Variety / THR / Deadline (PMC sites)
+        '.a-content',
         // WSJ
         '.article-content .wsj-snippet-body', 'div.article-content', '[class*="article_body"]',
         // WaPo
@@ -1695,11 +1723,16 @@ async function fetchReviewText(review) {
     attempts.push({ tier: 1, method: 'playwright', success: false, error: 'Skipped - known blocked site' });
   }
 
-  // TIER 1.5: Browserbase (managed browser cloud with CAPTCHA solving)
-  // Only use for known-blocked sites or when Playwright fails with CAPTCHA
+  // TIER 1.5: Browserbase (managed browser cloud with CAPTCHA solving + login)
+  // Use when: (a) known-blocked site, (b) Playwright hit CAPTCHA, or
+  // (c) paywall detected AND we have login credentials for this site
   const lastAttempt = attempts[attempts.length - 1];
   const playwrightHitCaptcha = lastAttempt?.error?.includes('CAPTCHA') || lastAttempt?.error?.includes('blocked');
-  const shouldTryBrowserbase = CONFIG.browserbaseEnabled && (isKnownBlocked || playwrightHitCaptcha);
+  const playwrightHitPaywall = lastAttempt?.error?.includes('Paywall');
+  const hasLoginCreds = getPaywallCredentials(url)?.email;
+  const shouldTryBrowserbase = CONFIG.browserbaseEnabled && (
+    isKnownBlocked || playwrightHitCaptcha || (playwrightHitPaywall && hasLoginCreds)
+  );
 
   if (shouldTryBrowserbase && canUseBrowserbase()) {
     console.log('  [Tier 1.5] Browserbase (managed browser + CAPTCHA solving)...');
@@ -1856,7 +1889,7 @@ async function extractArticleText(page) {
       // TimeOut (uses hashed class names like _articleContent_3h2iz_20)
       '[class*="_articleContent_"]',
       // Variety / THR / Deadline (PMC sites - free content)
-      '.c-content',
+      '.a-content',
       // WSJ
       '.article-content .wsj-snippet-body',
       'div.article-content',
