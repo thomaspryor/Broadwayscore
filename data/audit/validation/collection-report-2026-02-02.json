@@ -1,94 +1,59 @@
 {
-  "runDate": "2026-02-02T23:15:44.419Z",
+  "runDate": "2026-02-02T23:17:01.893Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "harmony-2023",
+    "showFilter": "just-in-time-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 5,
+    "processed": 0,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "37.5%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 2
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 1,
     "tier1Success": 1,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 1,
-    "tier2Attempts": 3,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 3,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier4Attempts": 9,
-    "tier4Success": 3,
-    "totalFailed": 5,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 2,
     "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 2.3,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "harmony-2023/broadwaynews--brittani-samuel.json",
-    "harmony-2023/deadline--greg-evans.json",
-    "harmony-2023/observer--david-cote.json"
-  ],
+  "processed": [],
   "failed": [
-    "harmony-2023/the-new-york-sun--elysa-gardner.json",
-    "harmony-2023/timeout--adam-feldman.json",
-    "harmony-2023/wsj--charles-isherwood.json",
-    "harmony-2023/theatrely--juan-a-ramirez.json",
-    "harmony-2023/talkinbroadway--matthew-murray.json"
+    "just-in-time-2025/timeout--adam-feldman.json",
+    "just-in-time-2025/theater-scene--joel-benjamin.json"
   ],
   "tierDetails": {
     "playwright": [],
-    "browserbase": [
-      "data/review-texts/harmony-2023/observer--david-cote.json",
-      "harmony-2023/observer--david-cote.json"
-    ],
+    "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archive": [
-      "harmony-2023/broadwaynews--brittani-samuel.json",
-      "harmony-2023/deadline--greg-evans.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "Theatrely": {
-      "count": 1,
-      "domain": "theatrely.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
