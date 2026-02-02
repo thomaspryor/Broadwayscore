@@ -1,91 +1,98 @@
 {
-  "runDate": "2026-02-02T17:49:00.232Z",
+  "runDate": "2026-02-02T17:50:30.528Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "prayer-for-the-french-republic-2024",
+    "showFilter": "the-great-gatsby-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 2,
+    "processed": 2,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "77.8%"
+    "successRate": "28.6%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archive": 5
+    "brightdata": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 1,
     "tier1Success": 1,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 4,
     "tier2Success": 0,
     "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 11,
-    "tier4Success": 6,
-    "totalFailed": 2,
-    "scrapingBeeCreditsUsed": 1,
+    "tier3Success": 0,
+    "tier4Attempts": 9,
+    "tier4Success": 2,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 12,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 3,
-    "urlDiscoverySuccess": 3,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "prayer-for-the-french-republic-2024/variety--daniel-dand8217addario.json",
-    "prayer-for-the-french-republic-2024/vulture--helen-shaw.json",
-    "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
-    "prayer-for-the-french-republic-2024/deadline--greg-evans.json",
-    "prayer-for-the-french-republic-2024/theatermania--jesse-green.json",
-    "prayer-for-the-french-republic-2024/wsj--charles-isherwood.json",
-    "prayer-for-the-french-republic-2024/washpost--peter-marks.json"
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+    "the-great-gatsby-2024/guardian--adrian-horton.json"
   ],
   "failed": [
-    "prayer-for-the-french-republic-2024/timeout--adam-feldman.json",
-    "prayer-for-the-french-republic-2024/talkinbroadway--matthew-murray.json"
+    "the-great-gatsby-2024/nydailynews--chris-jones.json",
+    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
+    "the-great-gatsby-2024/observer--david-cote.json",
+    "the-great-gatsby-2024/timeout--adam-feldman.json",
+    "the-great-gatsby-2024/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
-      "prayer-for-the-french-republic-2024/washpost--peter-marks.json"
+      "the-great-gatsby-2024/guardian--adrian-horton.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "prayer-for-the-french-republic-2024/theatermania--jesse-green.json"
-    ],
+    "brightdata": [],
     "archive": [
-      "prayer-for-the-french-republic-2024/variety--daniel-dand8217addario.json",
-      "prayer-for-the-french-republic-2024/vulture--helen-shaw.json",
-      "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
-      "prayer-for-the-french-republic-2024/deadline--greg-evans.json",
-      "prayer-for-the-french-republic-2024/wsj--charles-isherwood.json"
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
     ]
   },
   "failuresByOutlet": {
-    "Talkin' Broadway": {
+    "New York Daily News": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "nydailynews.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": false
+      "isKnownBlocked": true
+    },
+    "New York Post": {
+      "count": 1,
+      "domain": "nypost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Observer": {
+      "count": 1,
+      "domain": "observer.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "prayer-for-the-french-republic-2024/washpost--peter-marks.json",
-      "oldUrl": "https://www.washingtonpost.com/theater-dance/2024/02/09/prayer-french-republic-broadway-review/",
-      "newUrl": "https://www.washingtonpost.com/entertainment/theater/2024/11/08/prayer-for-the-french-republic-theater-j/"
-    }
-  ]
+  "urlDiscoveries": []
 }
