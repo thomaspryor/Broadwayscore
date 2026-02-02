@@ -5,7 +5,7 @@
   "criticName": "Helen Shaw",
   "url": "https://www.vulture.com/article/the-notebook-broadway-review.html",
   "publishDate": "March 15, 2024",
-  "fullText": "The Notebook is a musical that knows exactly what it is: a big, swoony, unabashedly romantic spectacle that trades in the currency of feelings.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The Notebook is a musical that knows exactly what it is: a big, swoony, unabashedly romantic spectacle that trades in the currency of feelings.",
   "originalScore": null,
@@ -65,6 +65,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
+  "textWordCount": 0
 }

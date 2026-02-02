@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/aladdin_70661.html",
   "publishDate": "March 21, 2014",
-  "fullText": "The new Disney musical is a colorful, energetic show that should please families, even if it doesn't quite capture the magic of the animated film.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The new Disney musical is a colorful, energetic show that should please families, even if it doesn't quite capture the magic of the animated film.",
   "originalScore": null,
@@ -64,6 +64,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
+  "textWordCount": 0
 }

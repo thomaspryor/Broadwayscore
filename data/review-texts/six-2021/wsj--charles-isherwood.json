@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/six-review-broadway-musical-11633550400",
   "publishDate": "October 6, 2021",
-  "fullText": "This wildly entertaining musical about the six wives of Henry VIII transforms these historical figures into pop stars, each getting her moment to shine in a concert-style format that's both educational and exhilarating.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "This wildly entertaining musical about the six wives of Henry VIII transforms these historical figures into pop stars, each getting her moment to shine in a concert-style format that's both educational and exhilarating.",
   "originalScore": null,
@@ -64,6 +64,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
+  "textWordCount": 0
 }

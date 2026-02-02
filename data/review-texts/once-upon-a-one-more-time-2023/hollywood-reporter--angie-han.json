@@ -5,7 +5,7 @@
   "criticName": "Angie Han",
   "url": "https://www.hollywoodreporter.com/lifestyle/arts/once-upon-one-more-time-broadway-review-1235518558/",
   "publishDate": "June 23, 2023",
-  "fullText": "The musical's commitment to its own silliness is both its greatest strength and its most glaring weakness.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The musical's commitment to its own silliness is both its greatest strength and its most glaring weakness.",
   "originalScore": null,
@@ -50,8 +50,8 @@
     "previousScore": 62,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (17 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 65,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
-  }
+  },
+  "textWordCount": 0
 }

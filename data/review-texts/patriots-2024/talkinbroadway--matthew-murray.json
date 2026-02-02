@@ -5,7 +5,7 @@
   "criticName": "Matthew Murray",
   "url": "https://talkinbroadway.com/page2/patriots.html",
   "publishDate": "May 1, 2024",
-  "fullText": "This is a show that demands to be seen and heard, even if it doesn't always succeed in making its case as clearly or as compellingly as it might.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "This is a show that demands to be seen and heard, even if it doesn't always succeed in making its case as clearly or as compellingly as it might.",
   "originalScore": null,
@@ -50,8 +50,8 @@
     "previousScore": 77,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 73,
     "openaiScore": 82,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "textWordCount": 0
 }

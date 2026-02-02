@@ -5,7 +5,7 @@
   "criticName": "Matthew Murray",
   "url": "https://www.talkinbroadway.com/world/Illinoise.html",
   "publishDate": "May 1, 2024",
-  "fullText": "Illinoise is a show that succeeds on multiple levels, offering both visual and aural delights that complement each other beautifully.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Illinoise is a show that succeeds on multiple levels, offering both visual and aural delights that complement each other beautifully.",
   "originalScore": null,
@@ -50,8 +50,8 @@
     "previousScore": 79,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 82,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "textWordCount": 0
 }

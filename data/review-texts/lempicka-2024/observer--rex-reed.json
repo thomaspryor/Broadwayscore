@@ -5,7 +5,7 @@
   "criticName": "Rex Reed",
   "url": "https://observer.com/2024/05/lempicka-broadway-review-eden-espinosa/",
   "publishDate": "May 2, 2024",
-  "fullText": "The show is a visual feast with stunning costumes and sets that capture the Art Deco period beautifully, but the musical itself lacks the emotional depth needed to match its gorgeous surface.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The show is a visual feast with stunning costumes and sets that capture the Art Deco period beautifully, but the musical itself lacks the emotional depth needed to match its gorgeous surface.",
   "originalScore": null,
@@ -50,8 +50,8 @@
     "previousScore": 63,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
-  }
+  },
+  "textWordCount": 0
 }

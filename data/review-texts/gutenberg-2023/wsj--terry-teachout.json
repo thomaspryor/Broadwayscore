@@ -5,7 +5,7 @@
   "criticName": "Terry Teachout",
   "url": "https://www.wsj.com/arts-culture/theater/gutenberg-the-musical-review-broadway-josh-gad-andrew-rannells-2b8c7e8a",
   "publishDate": "October 13, 2023",
-  "fullText": "The show is consistently funny, and Mr. Gad and Mr. Rannells are both accomplished musical-comedy performers who know how to put a song across.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The show is consistently funny, and Mr. Gad and Mr. Rannells are both accomplished musical-comedy performers who know how to put a song across.",
   "originalScore": null,
@@ -64,6 +64,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
+  "textWordCount": 0
 }

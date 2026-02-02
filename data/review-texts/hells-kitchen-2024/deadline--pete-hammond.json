@@ -5,7 +5,7 @@
   "criticName": "Pete Hammond",
   "url": "https://deadline.com/2024/04/hells-kitchen-review-broadway-alicia-keys-musical-1235887234/",
   "publishDate": "April 21, 2024",
-  "fullText": "This is a musical that soars on the strength of Keys' extraordinary catalog and the powerhouse performance of Maleah Joi Moon as Ali, a character clearly inspired by the composer herself.",
+  "fullText": null,
   "dtliExcerpt": "This is a musical that soars on the strength of Keys' extraordinary catalog and the powerhouse performance of Maleah Joi Moon as Ali, a character clearly inspired by the composer herself.",
   "originalScore": null,
   "assignedScore": 78,
@@ -15,7 +15,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a musical that soars on the strength of Keys' extraordinary catalog and the powerhouse performance of Maleah Joi Moon as Ali, a character clearly inspired by the composer herself.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "wordCount": 31,
   "llmScore": {
     "score": 78,
@@ -64,5 +64,8 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "isFullReview": false,
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
+  "textWordCount": 0
 }

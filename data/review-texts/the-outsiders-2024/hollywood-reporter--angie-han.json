@@ -5,7 +5,7 @@
   "criticName": "Angie Han",
   "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1235874615/",
   "publishDate": "April 12, 2024",
-  "fullText": "The new musical adaptation of S.E. Hinton's beloved novel captures the story's raw emotion and youthful energy, though it sometimes struggles under the weight of its own ambitions.",
+  "fullText": null,
   "dtliExcerpt": "The new musical adaptation of S.E. Hinton's beloved novel captures the story's raw emotion and youthful energy, though it sometimes struggles under the weight of its own ambitions.",
   "originalScore": null,
   "assignedScore": 75,
@@ -15,7 +15,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new musical adaptation of S.E. Hinton's beloved novel captures the story's raw emotion and youthful energy, though it sometimes struggles under the weight of its own ambitions.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "wordCount": 28,
   "llmScore": {
     "score": 75,
@@ -64,5 +64,8 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
-  }
+  },
+  "isFullReview": false,
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
+  "textWordCount": 0
 }

@@ -5,7 +5,7 @@
   "criticName": "Lisa Schwarzbaum",
   "url": "https://ew.com/article/2003/11/14/wicked/",
   "publishDate": "November 14, 2003",
-  "fullText": "This is a smart, resilient show that does honor to its source material while never once making you forget you're watching a Broadway musical.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "This is a smart, resilient show that does honor to its source material while never once making you forget you're watching a Broadway musical.",
   "originalScore": 88,
@@ -64,6 +64,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
+  "textWordCount": 0
 }

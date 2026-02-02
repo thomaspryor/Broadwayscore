@@ -5,7 +5,7 @@
   "criticName": "Adrian Horton",
   "url": "https://www.theguardian.com/stage/2023/jul/21/here-lies-love-review-broadway-imelda-marcos",
   "publishDate": "July 21, 2023",
-  "fullText": "Here Lies Love is an ambitious, immersive musical that transforms the Broadway Theatre into a dancefloor-cum-dictator origin story, though its political complexities sometimes get lost in the spectacle.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Here Lies Love is an ambitious, immersive musical that transforms the Broadway Theatre into a dancefloor-cum-dictator origin story, though its political complexities sometimes get lost in the spectacle.",
   "originalScore": null,
@@ -50,8 +50,8 @@
     "previousScore": 76,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 78,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
-  }
+  },
+  "textWordCount": 0
 }

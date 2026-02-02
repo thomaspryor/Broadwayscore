@@ -5,7 +5,7 @@
   "criticName": "Adam Feldman",
   "url": "https://www.timeout.com/newyork/theater/illinoise-review",
   "publishDate": "April 25, 2024",
-  "fullText": "This is a show that trusts its audience to follow it into deep emotional waters, and the trust is rewarded. Illinoise is a rare Broadway musical that feels both intimate and epic.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "This is a show that trusts its audience to follow it into deep emotional waters, and the trust is rewarded. Illinoise is a rare Broadway musical that feels both intimate and epic.",
   "originalScore": 80,
@@ -50,8 +50,8 @@
     "previousScore": 80,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 80,
     "openaiScore": 80,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "textWordCount": 0
 }

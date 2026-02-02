@@ -5,7 +5,7 @@
   "criticName": "Angie Han",
   "url": "https://www.hollywoodreporter.com/lifestyle/arts/our-town-broadway-review-jim-parsons-zoey-deutch-1235982620/",
   "publishDate": "October 10, 2024",
-  "fullText": "This revival of Thornton Wilder's 1938 drama feels especially poignant in a post-pandemic world, reminding us to treasure the everyday moments we so often take for granted.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "This revival of Thornton Wilder's 1938 drama feels especially poignant in a post-pandemic world, reminding us to treasure the everyday moments we so often take for granted.",
   "originalScore": null,
@@ -50,8 +50,8 @@
     "previousScore": 76,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 75,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "textWordCount": 0
 }

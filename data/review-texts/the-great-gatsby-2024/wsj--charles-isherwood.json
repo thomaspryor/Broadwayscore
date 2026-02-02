@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy-jordan-eva-noblezada-4c8b8c8a",
   "publishDate": "April 26, 2024",
-  "fullText": "The musical adaptation of F. Scott Fitzgerald's classic novel brings lavish spectacle to Broadway, though it sometimes struggles to capture the source material's deeper themes.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of F. Scott Fitzgerald's classic novel brings lavish spectacle to Broadway, though it sometimes struggles to capture the source material's deeper themes.",
   "originalScore": null,
@@ -64,6 +64,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
+  "textWordCount": 0
 }

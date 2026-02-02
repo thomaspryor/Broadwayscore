@@ -5,7 +5,7 @@
   "criticName": "Kristen Baldwin",
   "url": "https://ew.com/theater/mj-the-musical-broadway-review/",
   "publishDate": "February 1, 2022",
-  "fullText": "MJ succeeds as both a celebration of Jackson's artistic genius and a thoughtful examination of the costs of fame.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "MJ succeeds as both a celebration of Jackson's artistic genius and a thoughtful examination of the costs of fame.",
   "originalScore": 88,
@@ -50,8 +50,8 @@
     "previousScore": 88,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (19 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 88,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
-  }
+  },
+  "textWordCount": 0
 }

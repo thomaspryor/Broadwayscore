@@ -5,7 +5,7 @@
   "criticName": "Olivia Clement",
   "url": "https://theatrely.com/review-water-for-elephants-broadway/",
   "publishDate": "March 21, 2024",
-  "fullText": "Water for Elephants is a sweeping spectacle that manages to capture both the grandeur and intimacy of Sara Gruen's beloved novel. The production succeeds in creating theatrical magic through stunning puppetry and heartfelt performances.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Water for Elephants is a sweeping spectacle that manages to capture both the grandeur and intimacy of Sara Gruen's beloved novel. The production succeeds in creating theatrical magic through stunning puppetry and heartfelt performances.",
   "originalScore": null,
@@ -50,8 +50,8 @@
     "previousScore": 79,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 90,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
-  }
+  },
+  "textWordCount": 0
 }

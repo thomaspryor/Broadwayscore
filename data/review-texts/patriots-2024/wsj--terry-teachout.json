@@ -5,7 +5,7 @@
   "criticName": "Terry Teachout",
   "url": "https://www.wsj.com/arts-culture/theater/patriots-review-michael-stuhlbarg-putin-oligarch-2024-04-23",
   "publishDate": "April 23, 2024",
-  "fullText": "Michael Stuhlbarg gives a commanding performance as Boris Berezovsky, the Russian oligarch whose relationship with Vladimir Putin is at the center of Peter Morgan's fact-based drama.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Michael Stuhlbarg gives a commanding performance as Boris Berezovsky, the Russian oligarch whose relationship with Vladimir Putin is at the center of Peter Morgan's fact-based drama.",
   "originalScore": null,
@@ -50,8 +50,8 @@
     "previousScore": 63,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 75,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
-  }
+  },
+  "textWordCount": 0
 }

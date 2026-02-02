@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-11644525600",
   "publishDate": "February 10, 2022",
-  "fullText": "The show is a slick, professionally mounted tribute that will satisfy Jackson's devoted fans, but it doesn't dig deep enough to reveal the complex humanity of its subject.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The show is a slick, professionally mounted tribute that will satisfy Jackson's devoted fans, but it doesn't dig deep enough to reveal the complex humanity of its subject.",
   "originalScore": null,
@@ -50,8 +50,8 @@
     "previousScore": 64,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Mixed"
-  }
+  },
+  "textWordCount": 0
 }

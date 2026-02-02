@@ -5,7 +5,7 @@
   "criticName": "Rex Reed",
   "url": "https://observer.com/2024/04/illinoise-broadway-review-sufjan-stevens/",
   "publishDate": "April 25, 2024",
-  "fullText": "The result is a mesmerizing evening of dance, music and visual poetry that transcends the boundaries of traditional musical theater.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The result is a mesmerizing evening of dance, music and visual poetry that transcends the boundaries of traditional musical theater.",
   "originalScore": null,
@@ -50,8 +50,8 @@
     "previousScore": 90,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 92,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
-  }
+  },
+  "textWordCount": 0
 }

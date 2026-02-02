@@ -5,7 +5,7 @@
   "criticName": "Brittany Spanos",
   "url": "https://www.rollingstone.com/culture/culture-features/the-notebook-broadway-musical-review-1234994847/",
   "publishDate": "March 14, 2024",
-  "fullText": "The musical adaptation of Nicholas Sparks' beloved novel and subsequent film manages to capture the sweeping romance and emotional intensity that made the story so enduring, while adding layers of musical theater magic that elevate the source material.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Nicholas Sparks' beloved novel and subsequent film manages to capture the sweeping romance and emotional intensity that made the story so enduring, while adding layers of musical theater magic that elevate the source material.",
   "originalScore": null,
@@ -65,6 +65,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (38 words)"
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
+  "textWordCount": 0
 }

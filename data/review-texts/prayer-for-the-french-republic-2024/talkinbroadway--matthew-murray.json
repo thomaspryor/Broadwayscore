@@ -5,7 +5,7 @@
   "criticName": "Matthew Murray",
   "url": "https://www.talkinbroadway.com/page/regional/ny/ny1006.html",
   "publishDate": "February 9, 2024",
-  "fullText": "Prayer for the French Republic is a work of enormous ambition that Joshua Harmon has executed with considerable skill, creating a sprawling family saga that examines how the past never truly releases its grip on the present.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Prayer for the French Republic is a work of enormous ambition that Joshua Harmon has executed with considerable skill, creating a sprawling family saga that examines how the past never truly releases its grip on the present.",
   "originalScore": null,
@@ -50,8 +50,8 @@
     "previousScore": 77,
     "previousVersion": "5.1.0"
   },
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (37 words)",
+  "contentTier": "excerpt",
+  "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
     "claudeScore": 78,
     "openaiScore": 80,
@@ -66,5 +66,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "textWordCount": 0
 }
