@@ -173,7 +173,7 @@ function extractLetterGradeFromText(text) {
  */
 function extractExplicitRating(data) {
   // Combine all text sources
-  const allText = [
+  let allText = [
     data.fullText || '',
     data.dtliExcerpt || '',
     data.bwwExcerpt || '',
@@ -182,6 +182,13 @@ function extractExplicitRating(data) {
   ].join(' ');
 
   if (!allText.trim()) return null;
+
+  // Strip NYSR cross-reference lines before extraction — they contain other critics'
+  // star ratings (e.g., "[Read Steven Suskin's ★★★★☆ review here.]") that would
+  // be incorrectly extracted as this review's rating
+  allText = allText
+    .replace(/\[Read\s+[^\]]*?★[^\]]*?review[^\]]*?\]/gi, '')
+    .replace(/Read\s+\w[^.]*?★+☆*[^.]*?review here\.?/gi, '');
 
   // Try each extraction method in order of reliability
   // Stars are most reliable (no false positives)
@@ -759,11 +766,37 @@ showDirs.forEach(showId => {
       const criticKey = normalizeOutletId(data.criticName || '');
       const dedupKey = `${outletKey}|${criticKey}`;
 
-      // Skip duplicates (keep first occurrence)
+      // Skip exact duplicates (keep first occurrence)
       if (seenKeys.has(dedupKey)) {
         stats.skippedDuplicate++;
         return;
       }
+
+      // First-name prefix dedup: "jesse" at "nytimes" matches "jessegreen" at "nytimes"
+      // This catches files like nytimes--jesse.json vs nytimes--jesse-green.json
+      let prefixDuplicate = false;
+      for (const existingKey of seenKeys) {
+        const [existingOutlet, existingCritic] = existingKey.split('|');
+        if (existingOutlet !== outletKey) continue;
+        if (criticKey.length >= 3 && existingCritic.startsWith(criticKey)) {
+          // Incoming is shorter name (e.g., "jesse"), existing is full name — skip incoming
+          prefixDuplicate = true;
+          break;
+        }
+        if (existingCritic.length >= 3 && criticKey.startsWith(existingCritic)) {
+          // Incoming is full name (e.g., "jessegreen"), existing is shorter — keep incoming, but don't remove existing
+          // The existing shorter-name entry is already in the output; this is a rare edge case.
+          // For now, skip the incoming to avoid duplicates. The file-level dedup in gather-reviews.js
+          // is the primary defense; this is a safety net.
+          prefixDuplicate = true;
+          break;
+        }
+      }
+      if (prefixDuplicate) {
+        stats.skippedDuplicate++;
+        return;
+      }
+
       seenKeys.add(dedupKey);
 
       // CHECK: Flag reviews that SHOULD have LLM scores but don't

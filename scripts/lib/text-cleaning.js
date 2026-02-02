@@ -137,6 +137,18 @@ function stripTrailingJunk(text) {
  * @param {string} text - Raw text to clean
  * @returns {string} Fully cleaned text
  */
+/**
+ * Strip NYSR-style cross-reference lines that contain star ratings from other critics.
+ * e.g., "[Read Steven Suskin's ★★★★☆ review here.]"
+ * These contaminate star extraction if not removed.
+ */
+function stripCrossReferences(text) {
+  if (!text) return text;
+  return text
+    .replace(/\[Read\s+[^\]]*?★[^\]]*?review[^\]]*?\]/gi, '')
+    .replace(/Read\s+\w[^.]*?★+☆*[^.]*?review here\.?/gi, '');
+}
+
 function cleanText(text) {
   if (!text) return text;
 
@@ -148,13 +160,16 @@ function cleanText(text) {
   // Step 2: Strip control characters (keep \n, \r, \t)
   cleaned = cleaned.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
 
-  // Step 3: Collapse whitespace runs
+  // Step 3: Strip cross-reference lines (before whitespace collapse so we don't leave gaps)
+  cleaned = stripCrossReferences(cleaned);
+
+  // Step 4: Collapse whitespace runs
   // Multiple spaces/tabs on same line → single space
   cleaned = cleaned.replace(/[^\S\n\r]+/g, ' ');
   // 3+ consecutive newlines → 2 newlines (preserve paragraph breaks)
   cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
 
-  // Step 4: Strip trailing/leading junk
+  // Step 5: Strip trailing/leading junk
   cleaned = stripTrailingJunk(cleaned);
 
   return cleaned.trim();
@@ -163,6 +178,7 @@ function cleanText(text) {
 module.exports = {
   decodeHtmlEntities,
   stripTrailingJunk,
+  stripCrossReferences,
   cleanText,
   TRAILING_JUNK_PATTERNS,
 };
