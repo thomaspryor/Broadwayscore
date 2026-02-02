@@ -1,15 +1,27 @@
 {
-  "updatedAt": "2026-02-02T18:18:59.408Z",
+  "updatedAt": "2026-02-02T18:36:41.371Z",
   "processed": 0,
-  "failed": 1,
+  "failed": 6,
   "successRate": "0%",
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-02-02T18:31:17.454Z",
+      "event": "bb-session",
+      "session": "24e98308",
+      "url": "https://www.wsj.com/arts-culture/theater/stranger-things-first-shadow-broadway-r"
+    },
+    {
+      "t": "2026-02-02T18:32:00.824Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    }
+  ]
 }
