@@ -1,60 +1,99 @@
 {
-  "runDate": "2026-02-02T23:11:32.945Z",
+  "runDate": "2026-02-02T23:14:38.520Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "chicago-1996",
+    "showFilter": "book-of-mormon-2011",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 5,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
+    "playwright": 1,
+    "browserbase": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archive": 1
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier1Attempts": 4,
+    "tier1Success": 1,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 1,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 0,
-    "scrapingBeeCreditsUsed": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "tier4Attempts": 13,
+    "tier4Success": 5,
+    "totalFailed": 5,
+    "scrapingBeeCreditsUsed": 2,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 2.3,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "chicago-1996/time--.json"
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "book-of-mormon-2011/chicagotribune--.json",
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "book-of-mormon-2011/ny-1--roma-torre.json"
   ],
-  "failed": [],
+  "failed": [
+    "book-of-mormon-2011/newsday--linda-winer.json",
+    "book-of-mormon-2011/timeout--david-cote.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
+    "book-of-mormon-2011/the-village-voice--michael-musto.json"
+  ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [],
+    "playwright": [
+      "book-of-mormon-2011/ap--mark-kennedy.json"
+    ],
+    "browserbase": [
+      "data/review-texts/book-of-mormon-2011/newsday--linda-winer.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "chicago-1996/time--.json"
+      "book-of-mormon-2011/backstage--david-sheward.json",
+      "book-of-mormon-2011/chicagotribune--.json",
+      "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+      "book-of-mormon-2011/ny-1--roma-torre.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "The Philadelphia Inquirer": {
+      "count": 1,
+      "domain": "philly.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Village Voice": {
+      "count": 1,
+      "domain": "villagevoice.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
