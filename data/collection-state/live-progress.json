@@ -1,15 +1,28 @@
 {
-  "updatedAt": "2026-02-02T03:15:23.634Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-02-02T03:28:58.536Z",
+  "processed": 2,
+  "failed": 3,
+  "successRate": "40.0%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-02-02T03:25:44.927Z",
+      "event": "bb-session",
+      "session": "76b84f86",
+      "url": "https://variety.com/2023/legit/reviews/spamalot-review-broadway-2023-1235792687/"
+    },
+    {
+      "t": "2026-02-02T03:28:37.121Z",
+      "event": "bb-session",
+      "session": "93a73585",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/spamalot-broadway-st-"
+    }
+  ]
 }
