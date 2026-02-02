@@ -283,12 +283,12 @@ const OUTLET_WAIT_CONFIGS = {
   },
   // PMC sites (Variety, THR, Deadline) - free content, standard WordPress rendering
   'variety.com': {
-    waitForSelector: '.c-content, .entry-content, article',
+    waitForSelector: '.a-content, .entry-content, article',
     waitTimeout: 15000,
     extraWait: 2000,
   },
   'hollywoodreporter.com': {
-    waitForSelector: '.c-content, .entry-content, article',
+    waitForSelector: '.a-content, .entry-content, article',
     waitTimeout: 15000,
     extraWait: 2000,
   },
@@ -1118,6 +1118,8 @@ async function fetchWithBrowserbase(url, review) {
         '[class*="ArticlePageChunks"]', '[class*="RawHtmlBody"]',
         // TimeOut (hashed class names)
         '[class*="_articleContent_"]',
+        // Variety / THR / Deadline (PMC sites)
+        '.a-content',
         // WSJ
         '.article-content .wsj-snippet-body', 'div.article-content', '[class*="article_body"]',
         // WaPo
@@ -1861,7 +1863,7 @@ async function extractArticleText(page) {
       // TimeOut (uses hashed class names like _articleContent_3h2iz_20)
       '[class*="_articleContent_"]',
       // Variety / THR / Deadline (PMC sites - free content)
-      '.c-content',
+      '.a-content',
       // WSJ
       '.article-content .wsj-snippet-body',
       'div.article-content',
