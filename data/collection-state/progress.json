@@ -2,7 +2,11 @@
   "processed": [
     "art-2025/nytg--allison-considine.json",
     "art-2025/nydailynews--chris-jones.json",
-    "art-2025/nypost--johnny-oleksinski.json"
+    "art-2025/nypost--johnny-oleksinski.json",
+    "art-2025/thewrap--robert-hofler.json",
+    "art-2025/dailybeast--tim-teeman.json",
+    "art-2025/nysr--david-finkle.json",
+    "art-2025/nysr--frank-scheck.json"
   ],
   "failed": [
     "art-2025/nytimes--elisabeth-vincentelli.json",
@@ -11,7 +15,11 @@
     "art-2025/deadline--greg-evans.json",
     "art-2025/guardian--adrian-horton.json",
     "art-2025/observer--david-cote.json",
-    "art-2025/theatermania--hayley-levitt.json"
+    "art-2025/theatermania--hayley-levitt.json",
+    "art-2025/timeout--adam-feldman.json",
+    "art-2025/theatrely--juan-a-ramirez.json",
+    "art-2025/amny--matt-windman.json",
+    "art-2025/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -19,14 +27,20 @@
       "art-2025/nytg--allison-considine.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "art-2025/thewrap--robert-hofler.json"
+    ],
+    "brightdata": [
+      "art-2025/dailybeast--tim-teeman.json"
+    ],
     "archive": [
       "art-2025/nydailynews--chris-jones.json",
-      "art-2025/nypost--johnny-oleksinski.json"
+      "art-2025/nypost--johnny-oleksinski.json",
+      "art-2025/nysr--david-finkle.json",
+      "art-2025/nysr--frank-scheck.json"
     ]
   },
   "startTime": "2026-02-03T22:19:52.528Z",
-  "lastProcessed": "art-2025/theatermania--hayley-levitt.json",
+  "lastProcessed": "art-2025/nysr--frank-scheck.json",
   "log": []
 }
