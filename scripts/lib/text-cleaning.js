@@ -210,11 +210,17 @@ function stripTrailingJunk(text) {
 function stripLeadingNavigation(text) {
   if (!text) return text;
 
-  // Only fire if text starts with "Skip to content" or "Skip to main"
-  if (!/^skip\s+to\s+(content|main)/i.test(text)) return text;
+  // Check first 150 chars for "Skip to content/main" (may be preceded by event schedules etc.)
+  const head = text.substring(0, 150);
+  const skipMatch = head.match(/skip\s+to\s+(content|main)/i);
+  if (!skipMatch) return text;
 
-  // Strip the "Skip to content/main content" marker itself
-  let cleaned = text.replace(/^skip\s+to\s+(?:main\s+)?content\s*/i, '');
+  // Cut everything before and including the "Skip to..." marker
+  const markerEnd = text.indexOf(skipMatch[0]) + skipMatch[0].length;
+  let cleaned = text.substring(markerEnd);
+
+  // Also strip any trailing "...or skip to search" continuation
+  cleaned = cleaned.replace(/^[,\s]*or\s+skip\s+to\s+search\.?\s*/i, '');
 
   // Find the first substantial line (>60 chars with sentence punctuation)
   const lines = cleaned.split('\n');
@@ -235,8 +241,9 @@ function stripLeadingNavigation(text) {
     cleaned = cleaned.trim();
   }
 
-  // Guard: must leave at least 200 chars remaining
-  if (cleaned.length >= 200) {
+  // Always return stripped text — let downstream classifiers handle short content.
+  // Returning the original nav-polluted text causes false "complete" classifications.
+  if (cleaned.length > 0) {
     return cleaned;
   }
 
@@ -278,6 +285,9 @@ function cleanText(text) {
 
   // Step 3c: Strip embedded JavaScript blocks (Chicago Tribune Trinity Audio player, etc.)
   cleaned = cleaned.replace(/function\s+\w+\s*\([^)]*\)\s*\{[^}]*(?:\{[^}]*\}[^}]*)*\}/g, '');
+
+  // Step 3d: Strip JSON-LD blocks (schema.org structured data that leaks into scraped text)
+  cleaned = cleaned.replace(/\{[^{}]*"@context"\s*:\s*"https?:\/\/schema\.org"[^{}]*\}/g, '');
 
   // Step 4: Collapse whitespace runs
   // Multiple spaces/tabs on same line → single space
