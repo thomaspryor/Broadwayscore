@@ -90,6 +90,65 @@ const GARBAGE_SKIPS_PATH = path.join(__dirname, '../../data/llm-scoring-garbage-
 const PROJECT_ROOT = path.join(__dirname, '../..');
 
 // ========================================
+// LIVE PROGRESS REPORTING
+// ========================================
+
+/**
+ * Write live progress to GITHUB_STEP_SUMMARY (visible in Actions UI during run)
+ * and to a progress JSON file that gets committed at each checkpoint.
+ */
+function writeProgress(
+  processedSoFar: number,
+  totalFiles: number,
+  errors: number,
+  skipped: number,
+  startTime: number
+): void {
+  const elapsed = Math.round((Date.now() - startTime) / 1000);
+  const elapsedMin = Math.round(elapsed / 60);
+  const rate = processedSoFar > 0 ? (elapsed / processedSoFar).toFixed(1) : '?';
+  const remaining = processedSoFar > 0 ? Math.round((totalFiles - processedSoFar) * elapsed / processedSoFar / 60) : '?';
+  const pct = totalFiles > 0 ? Math.round(processedSoFar / totalFiles * 100) : 0;
+  const timestamp = new Date().toISOString();
+
+  // Write to GITHUB_STEP_SUMMARY (visible in Actions web UI during run)
+  const summaryPath = process.env.GITHUB_STEP_SUMMARY;
+  if (summaryPath) {
+    const summary = [
+      `## Scoring Progress: ${processedSoFar}/${totalFiles} (${pct}%)`,
+      `| Metric | Value |`,
+      `|--------|-------|`,
+      `| Processed | ${processedSoFar} |`,
+      `| Skipped | ${skipped} |`,
+      `| Errors | ${errors} |`,
+      `| Elapsed | ${elapsedMin} min |`,
+      `| Rate | ${rate}s per review |`,
+      `| Est. remaining | ${remaining} min |`,
+      `| Last updated | ${timestamp} |`,
+      ``
+    ].join('\n');
+    try { fs.writeFileSync(summaryPath, summary); } catch {}
+  }
+
+  // Write progress JSON for monitoring
+  const progressPath = path.join(PROJECT_ROOT, 'data', 'collection-state', 'scoring-progress.json');
+  const progress = {
+    pipeline: 'llm-ensemble-scoring',
+    processed: processedSoFar,
+    total: totalFiles,
+    pct,
+    skipped,
+    errors,
+    elapsedSeconds: elapsed,
+    rateSecondsPerReview: parseFloat(rate) || 0,
+    estimatedRemainingMinutes: typeof remaining === 'number' ? remaining : null,
+    lastUpdated: timestamp,
+    runId: process.env.GITHUB_RUN_ID || null
+  };
+  try { fs.writeFileSync(progressPath, JSON.stringify(progress, null, 2) + '\n'); } catch {}
+}
+
+// ========================================
 // GIT CHECKPOINT
 // ========================================
 
@@ -106,7 +165,7 @@ function gitCheckpoint(processedSoFar: number, totalFiles: number): boolean {
   try {
     console.log(`\n📌 Checkpoint: committing ${processedSoFar}/${totalFiles} scored reviews...`);
 
-    execSync('git add data/review-texts/', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+    execSync('git add data/review-texts/ data/collection-state/scoring-progress.json', { cwd: PROJECT_ROOT, stdio: 'pipe' });
 
     // Check if there are staged changes
     try {
@@ -568,11 +627,15 @@ async function main(): Promise<void> {
 
   // Process files
   const startedAt = new Date().toISOString();
+  const startTime = Date.now();
   let processed = 0;
   let skipped = 0;
   let errors = 0;
   let garbageSkipped = 0;
   let suspiciousWarnings = 0;
+
+  // Write initial progress
+  writeProgress(0, finalFiles.length, 0, 0, startTime);
   const errorDetails: Array<{ showId: string; outletId: string; error: string }> = [];
   // Note: garbageSkips is declared earlier and shared with getScorableText()
 
@@ -758,10 +821,14 @@ async function main(): Promise<void> {
     // Checkpoint: commit and push progress every N processed reviews
     if (options.checkpointInterval && options.checkpointInterval > 0 && !options.dryRun) {
       if (processed > 0 && processed % options.checkpointInterval === 0) {
+        writeProgress(processed, finalFiles.length, errors, skipped, startTime);
         gitCheckpoint(processed, finalFiles.length);
       }
     }
   }
+
+  // Write final progress
+  writeProgress(processed, finalFiles.length, errors, skipped, startTime);
 
   // Summary
   const completedAt = new Date().toISOString();
