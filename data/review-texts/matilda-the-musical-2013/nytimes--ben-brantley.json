@@ -18,59 +18,10 @@
   "showScoreExcerpt": "This sing-along celebration of the powers of the imagination and the written word is that rarest of Broadway creatures: a musical that feels both brand-new and comfortably timeless.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "llmScore": {
-    "score": 87,
-    "confidence": "medium",
-    "range": {
-      "low": 82,
-      "high": 92
-    },
-    "bucket": "Rave",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "This sing-along celebration of the powers of the imagination and the written word is that rarest of Broadway creatures: a musical that feels both brand-new and comfortably timeless.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling it 'that rarest of Broadway creatures' with positive descriptors like 'brand-new and comfortably timeless,' though this appears to be a brief excerpt which limits full assessment of the critic's complete verdict. | GPT-4o: The review uses highly positive language, describing the musical as 'brand-new and comfortably timeless,' indicating a strong recommendation without reservations. | Gemini: The review uses positive language such as \"sing-along celebration\" and \"rarest of Broadway creatures\" to describe the show, indicating a strong recommendation. | Kimi: The critic employs superlatives ('rarest of Broadway creatures') to praise the musical as feeling both 'brand-new and comfortably timeless,' indicating an enthusiastic, unqualified recommendation despite the brevity of the excerpt. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:50:59.746Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 90,
-    "geminiScore": 82,
-    "kimiScore": 90,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 8,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shubert-theater.html?_r=0",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

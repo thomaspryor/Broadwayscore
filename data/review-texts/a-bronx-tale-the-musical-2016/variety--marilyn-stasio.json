@@ -66,5 +66,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This text contains website navigation, ads, and repeated promotional content about various unrelated topics (Grammys, movies, etc.) but no actual theater review content.; openai: The text provided is a mix of unrelated content, including navigation menus, ad copy, and various entertainment news snippets, not a review of the target show.; gemini: This appears to be a collection of article titles and snippets from Variety, not a review of a specific show.; kimi: The text provided is a concatenation of unrelated entertainment news headlines, snippets, and fragments from multiple Variety articles (including references to Grammys, films, and other Broadway shows), not a coherent review of the target show. It lacks a continuous evaluative narrative about any single production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "playbillVerdictUrl": "http://variety.com/2016/legit/reviews/a-bronx-tale-review-musical-1201706762/",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

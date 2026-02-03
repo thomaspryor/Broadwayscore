@@ -18,59 +18,10 @@
   "showScoreExcerpt": "Mike Bartlett's riveting 'King Charles III' is that rare theatrical bird — a new play that feels like a classic from the moment the curtain rises.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "llmScore": {
-    "score": 91,
-    "confidence": "high",
-    "range": {
-      "low": 86,
-      "high": 96
-    },
-    "bucket": "Rave",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Mike Bartlett's riveting 'King Charles III' is that rare theatrical bird — a new play that feels like a classic from the moment the curtain rises.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlative language ('riveting', 'rare theatrical bird') and declares it feels like a classic immediately, indicating highest level of praise and recommendation. | GPT-4o: The review uses strong, enthusiastic language ('riveting', 'feels like a classic') indicating a highly positive recommendation without reservations. | Gemini: The review uses strong positive language, calling the play \"riveting\" and comparing it to a classic. This indicates a very high level of recommendation. | Kimi: The critic employs unqualified superlatives ('riveting,' 'classic') to praise the play as an immediate masterpiece, indicating the highest level of recommendation despite the brevity of the excerpt.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:13:57.466Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 90,
-    "geminiScore": 88,
-    "kimiScore": 92,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "kimiBucket": "Rave",
-    "scoreDelta": 4,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Rave"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://variety.com/2015/legit/reviews/king-charles-iii-review-broadway-1201631303/",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }
