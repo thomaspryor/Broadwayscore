@@ -84,12 +84,9 @@ Optional `priceFrom` field if known:
 }
 ```
 
-### 5. Cast & Creative Team
+### 5. Creative Team
 
 ```json
-"cast": [
-  { "name": "Actor Name", "role": "Character Name" }
-],
 "creativeTeam": [
   { "name": "Director Name", "role": "Director" },
   { "name": "Composer Name", "role": "Music" }
@@ -107,7 +104,6 @@ Optional `priceFrom` field if known:
 - [ ] Tags added
 - [ ] **Ticket links added** (TodayTix + Telecharge/Ticketmaster)
 - [ ] Theater address included
-- [ ] Cast added (at minimum, leads)
 - [ ] Creative team added (director, composer/lyricist, book writer)
 - [ ] JSON validates successfully
 - [ ] Build passes

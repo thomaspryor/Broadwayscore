@@ -75,8 +75,8 @@ function main() {
       INSERT OR REPLACE INTO shows (id, title, slug, venue, opening_date, closing_date,
         previews_start_date, status, type, runtime, intermissions, synopsis,
         age_recommendation, official_url, trailer_url, theater_address,
-        tags, images, ticket_links, cast_data, creative_team)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        tags, images, ticket_links, creative_team)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
     const tx = db.transaction((rows) => {
       for (const s of rows) {
@@ -90,7 +90,6 @@ function main() {
           s.tags ? JSON.stringify(s.tags) : null,
           s.images ? JSON.stringify(s.images) : null,
           s.ticketLinks ? JSON.stringify(s.ticketLinks) : null,
-          s.cast ? JSON.stringify(s.cast) : null,
           s.creativeTeam ? JSON.stringify(s.creativeTeam) : null
         );
       }

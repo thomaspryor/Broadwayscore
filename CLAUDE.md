@@ -80,7 +80,7 @@ A website aggregating Broadway show reviews into composite scores (independent B
 ## Current State (January 2026)
 
 ### What's Working
-- **40 Broadway shows** with full metadata (synopsis, cast, creative team, venues)
+- **40 Broadway shows** with full metadata (synopsis, creative team, venues)
 - **1,150+ critic reviews** across all shows in `data/review-texts/`
 - **Critics-only scoring** (V1 approach)
 - **TodayTix-inspired UI** with card layout, hero images, show detail pages
@@ -90,7 +90,7 @@ A website aggregating Broadway show reviews into composite scores (independent B
 ### Shows Database
 - 27 currently open, 13 closed shows tracked
 - Upcoming shows (status: "previews") with opening dates and preview start dates
-- Full metadata: synopsis, cast, creative team, tags, age recommendations, theater addresses
+- Full metadata: synopsis, creative team, tags, age recommendations, theater addresses
 - Ticket links for all open shows
 
 ## Scoring Methodology (V1 - Critics Only)
@@ -141,7 +141,6 @@ data/
   synopsis, ageRecommendation, tags,
   previewsStartDate,  // For upcoming shows (status: "previews")
   ticketLinks: [{ platform, url, priceFrom }],
-  cast: [{ name, role }],
   creativeTeam: [{ name, role }],
   officialUrl, trailerUrl, theaterAddress
 }
@@ -447,6 +446,7 @@ All automation runs via GitHub Actions - no local commands needed. See `.github/
 | `collect-review-texts.yml` | ✅ | ✅ | Nightly 2 AM UTC + manual. Single-job rebuilds inline; parallel triggers `rebuild-reviews.yml` after all jobs complete |
 | `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
+| `scrape-new-aggregators.yml` | ✅ | ✅ | Weekly Playbill Verdict + NYC Theatre, rebuilds inline. Also runs per-show from `gather-reviews.yml` |
 | `adjudicate-review-queue.yml` | ✅ | ❌ | Daily 5 AM UTC, triggers rebuild after commit |
 
 **For bulk imports (100s of shows):** Run parallel gather-reviews workflows, then trigger manual rebuild:
@@ -529,8 +529,10 @@ Use ALL FIVE for comprehensive review coverage - each has different historical c
 1. **Show Score** (show-score.com) - Best for recent shows (2015+). URL: `{slug}-broadway` (always try `-broadway` suffix first to avoid off-broadway redirects)
 2. **DTLI** (didtheylikeit.com) - Excellent historical coverage back to ~2000s. URL: `didtheylikeit.com/shows/{show-name}/`
 3. **BWW Review Roundups** - Reviews from smaller outlets not on other aggregators. URL: search BroadwayWorld.
-4. **Playbill Verdict** (playbill.com/category/the-verdict) - Discovers review URLs from many outlets. Script: `scripts/scrape-playbill-verdict.js`. Google fallback for shows not on category page.
-5. **NYC Theatre Roundups** (newyorkcitytheatre.com) - Excerpts for paywalled reviews from 2023+ shows. Script: `scripts/scrape-nyc-theatre-roundups.js`. Google discovery for roundup page URLs.
+4. **Playbill Verdict** (playbill.com/category/the-verdict) - Discovers review URLs from many outlets. Script: `scripts/scrape-playbill-verdict.js`. Google fallback for shows not on category page. Supports `--shows=X,Y,Z` for targeted runs and `--no-date-filter` for historical imports.
+5. **NYC Theatre Roundups** (newyorkcitytheatre.com) - Excerpts for paywalled reviews from 2023+ shows. Script: `scripts/scrape-nyc-theatre-roundups.js`. Google discovery for roundup page URLs. Supports `--shows=X,Y,Z` for targeted runs.
+
+**Integration:** Sources 1-3 run inline during `gather-reviews.js` (immediate). Sources 4-5 run as a non-blocking `scrape-aggregators` job in `gather-reviews.yml` after gathering completes, and also weekly via `scrape-new-aggregators.yml` (Sundays 11 AM UTC) for catch-up.
 
 Archives stored in `data/aggregator-archive/`. Extraction scripts: `scripts/extract-show-score-reviews.js`, `scripts/extract-bww-reviews.js`.
 
@@ -651,7 +653,7 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→3,644 reviews). **
 
 **Outlet-specific junk in fullText (FIXED Feb 2026):** `scripts/lib/text-cleaning.js` now has outlet-specific trailing junk patterns for EW (`<img>` tags, srcset, "Related Articles"), BWW ("Get Access To Every Broadway Story"), Variety ("Related Stories", "Popular on Variety"), BroadwayNews (site navigation), and The Times UK (paywall prefix). Applied at write time in all three consumer scripts via `cleanText()`.
 
-**Byline extraction false positives (FIXED Feb 2026):** `extractByline()` in `content-quality.js` now accepts `options.excludeNames` to skip cast/creative team names that appear in review text (e.g., "Written by David Yazbek" is the songwriter, not the reviewer). Pattern 3 ("Written by X") removed since it always means playwright in theater reviews. Non-name word blocklist (Prize, Weekly, Crown, Theatre, etc.) rejects extracted "names" that are actually proper nouns. Callers (`backfill-review-flags.js`, `collect-review-texts.js`) pass show cast+creative names from shows.json.
+**Byline extraction false positives (FIXED Feb 2026):** `extractByline()` in `content-quality.js` now accepts `options.excludeNames` to skip creative team names that appear in review text (e.g., "Written by David Yazbek" is the songwriter, not the reviewer). Pattern 3 ("Written by X") removed since it always means playwright in theater reviews. Non-name word blocklist (Prize, Weekly, Crown, Theatre, etc.) rejects extracted "names" that are actually proper nouns. Callers (`backfill-review-flags.js`, `collect-review-texts.js`) pass show creative names from shows.json.
 
 **Quality classification in `gather-reviews.js` (FIXED Feb 2026):** `gather-reviews.js` now runs `classifyContentTier()` on every review before writing (line 1194). All review files have contentTier assigned.
 

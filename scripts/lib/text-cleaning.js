@@ -195,15 +195,54 @@ function stripTrailingJunk(text) {
 }
 
 /**
- * Master text cleaning function. Applies all cleaning steps in order:
- * 1. Decode HTML entities
- * 2. Strip control characters (except newlines/tabs)
- * 3. Collapse whitespace runs (multiple spaces → single, 3+ newlines → 2)
- * 4. Strip trailing junk patterns
+ * Strip leading navigation junk from scraped review text.
+ * Many sites (TheWrap, BroadwayNews, NY Daily News, Chicago Tribune) include
+ * "Skip to content" followed by site navigation menus, whitespace, and other
+ * non-review content at the start of scraped text.
  *
- * @param {string} text - Raw text to clean
- * @returns {string} Fully cleaned text
+ * Detects "Skip to content" / "Skip to main" at the start, then finds the first
+ * substantial content line (>60 chars with sentence punctuation) and strips
+ * everything before it.
+ *
+ * @param {string} text - Text that may start with navigation junk
+ * @returns {string} Text with leading navigation stripped
  */
+function stripLeadingNavigation(text) {
+  if (!text) return text;
+
+  // Only fire if text starts with "Skip to content" or "Skip to main"
+  if (!/^skip\s+to\s+(content|main)/i.test(text)) return text;
+
+  // Strip the "Skip to content/main content" marker itself
+  let cleaned = text.replace(/^skip\s+to\s+(?:main\s+)?content\s*/i, '');
+
+  // Find the first substantial line (>60 chars with sentence punctuation)
+  const lines = cleaned.split('\n');
+  let cutLine = -1;
+
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (trimmed.length > 60 && /[.!?,'"]/.test(trimmed)) {
+      cutLine = i;
+      break;
+    }
+  }
+
+  // If substantial content starts after line 0, strip preceding nav junk lines
+  if (cutLine > 0) {
+    cleaned = lines.slice(cutLine).join('\n').trim();
+  } else {
+    cleaned = cleaned.trim();
+  }
+
+  // Guard: must leave at least 200 chars remaining
+  if (cleaned.length >= 200) {
+    return cleaned;
+  }
+
+  return text;
+}
+
 /**
  * Strip NYSR-style cross-reference lines that contain star ratings from other critics.
  * e.g., "[Read Steven Suskin's ★★★★☆ review here.]"
@@ -226,6 +265,9 @@ function cleanText(text) {
 
   // Step 2: Strip control characters (keep \n, \r, \t)
   cleaned = cleaned.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+
+  // Step 2b: Strip leading navigation junk ("Skip to content" + nav menus)
+  cleaned = stripLeadingNavigation(cleaned);
 
   // Step 3: Strip cross-reference lines (before whitespace collapse so we don't leave gaps)
   cleaned = stripCrossReferences(cleaned);
@@ -251,6 +293,7 @@ function cleanText(text) {
 
 module.exports = {
   decodeHtmlEntities,
+  stripLeadingNavigation,
   stripTrailingJunk,
   stripCrossReferences,
   cleanText,
