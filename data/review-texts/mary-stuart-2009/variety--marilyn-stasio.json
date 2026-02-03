@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Janet McTeer and Harriet Walter deliver commanding performances as the rival queens in Friedrich Schiller's 'Mary Stuart,' but this Broadway production feels more like a stately historical pageant than a living, breathing drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Janet McTeer and Harriet Walter deliver commanding performances as the rival queens in Friedrich Schiller's 'Mary Stuart,' but this Broadway production feels more like a stately historical pageant than a living, breathing drama.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this Broadway production feels more like a stately historical pageant than a living, breathing drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises the lead performances as 'commanding' but criticizes the production as feeling static and pageant-like rather than dramatically engaging. Neither recommends nor discourages. | GPT-4o: The review praises the performances but criticizes the production for lacking vitality, suggesting a neutral stance. | Gemini: The review praises the performances of the leads but ultimately finds the production lacking in vitality, suggesting a mixed experience. | Kimi: While praising the lead performances as 'commanding,' the critic finds the production itself stiff and lacking dramatic vitality, comparing it to a 'stately historical pageant' rather than 'living, breathing drama.' This creates a balanced mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:49:07.234Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

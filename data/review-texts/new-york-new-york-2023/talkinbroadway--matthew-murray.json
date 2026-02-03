@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "New York, New York is a show that wants to have it all: the glitz, the glamour, the romance, the heartbreak, the triumph, and the tragedy of the Big Apple in the 1940s.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T18:11:03.441Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be only an opening sentence or excerpt describing what the show wants to be, with no critical evaluation or verdict from the reviewer.; openai: The text is a descriptive statement about the show's setting and themes, not an evaluative review.; gemini: This is a plot summary with no evaluation or recommendation.; kimi: The text provides only a descriptive summary of the show's themes and ambitions without any critical evaluation, recommendation, or assessment of quality. It describes what the show 'wants' to be but offers no opinion on whether it succeeds or whether it is worth seeing.",
+  "promptVersion": "5.2.0"
 }

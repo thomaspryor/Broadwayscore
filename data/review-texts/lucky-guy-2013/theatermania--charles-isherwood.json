@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tom Hanks brings his considerable charm and skill to bear on the role of Mike McAlary, the brash New York tabloid columnist who became a Pulitzer Prize winner before dying of cancer at 41.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T17:43:09.075Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a plot summary or cast description with no critical evaluation of the theatrical production.; openai: The text is a brief mention of Tom Hanks' role without any evaluative content or overall assessment of the show.; gemini: This is a single sentence that mentions the actor and the role, but does not provide any evaluative commentary on the production itself. It reads more like a cast announcement or plot summary than a review.",
+  "promptVersion": "5.2.0"
 }

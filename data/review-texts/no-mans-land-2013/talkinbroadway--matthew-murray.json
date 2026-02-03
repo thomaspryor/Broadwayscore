@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McKellen and Stewart are having the time of their lives here, and their joy is infectious enough that you're likely to catch it whether or not you completely understand what's happening around them.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "McKellen and Stewart are having the time of their lives here, and their joy is infectious enough that you're likely to catch it whether or not you completely understand what's happening around them.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McKellen and Stewart are having the time of their lives here, and their joy is infectious enough that you're likely to catch it",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the lead performances and suggests audiences will enjoy it despite potential confusion. However, this appears to be a very brief excerpt, limiting confidence in the full assessment. | GPT-4o: The review highlights the infectious joy of the performances by McKellen and Stewart, suggesting a positive experience despite potential confusion with the plot. This indicates a recommendation with some reservations. | Gemini: The review states that the actors' joy is infectious, making it likely that the audience will enjoy the show, even if they don't fully understand it. This indicates a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: Critic delivers enthusiastic praise for the lead performances, describing them as 'infectious' and likely to entertain even if the plot is confusing, indicating a clear recommendation based on the stars' work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:16:22.099Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

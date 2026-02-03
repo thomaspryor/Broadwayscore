@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Midler's return to Broadway after more than 30 years is a triumph of star power and old-fashioned musical theater craft, even if the show itself feels like a relic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Midler's return to Broadway after more than 30 years is a triumph of star power and old-fashioned musical theater craft, even if the show itself feels like a relic.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Midler's return to Broadway after more than 30 years is a triumph of star power and old-fashioned musical theater craft",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for Midler's performance and the production craft as a 'triumph,' but the caveat that 'the show itself feels like a relic' prevents this from being a stronger positive score. | GPT-4o: The review praises Midler's performance as a 'triumph' and highlights the show's craft, indicating a strong recommendation despite noting the show feels like a 'relic'. | Gemini: The review praises Midler's performance and the musical theater craft but notes the show feels dated, indicating a positive but not rave review. | Kimi: The critic uses strong praise ('triumph') for Midler's performance and the production craft, recommending the show on that basis, while qualifying that the material itself feels dated.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:11:18.979Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

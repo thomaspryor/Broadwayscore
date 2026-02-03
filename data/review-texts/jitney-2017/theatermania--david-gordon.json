@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Under Ruben Santiago-Hudson's direction, this revival crackles with authenticity and emotional power, bringing Wilson's masterpiece to vivid life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Under Ruben Santiago-Hudson's direction, this revival crackles with authenticity and emotional power, bringing Wilson's masterpiece to vivid life.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (18 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Ruben Santiago-Hudson's direction, this revival crackles with authenticity and emotional power, bringing Wilson's masterpiece to vivid life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong positive language with 'crackles with authenticity and emotional power' and calling it Wilson's 'masterpiece brought to vivid life.' However, confidence is medium due to the very brief excerpt. | GPT-4o: The review uses strong positive language ('crackles with authenticity and emotional power') and calls the production a 'masterpiece', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"crackles with authenticity and emotional power\" and calls the play a \"masterpiece\", indicating a strong recommendation. | Kimi: Unqualified praise using superlatives ('crackles', 'emotional power', 'vivid life') indicates a strong rave recommendation, though the brief excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:46:46.336Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lestat is a musical that doesn't know what it wants to be when it grows up, and given that it's based on Anne Rice's vampire chronicles, growing up may not be in the cards.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,61 @@
   "showScoreExcerpt": "Lestat is a musical that doesn't know what it wants to be when it grows up, and given that it's based on Anne Rice's vampire chronicles, growing up may not be in the cards.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 44,
+    "confidence": "low",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lestat is a musical that doesn't know what it wants to be when it grows up",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: Single sentence suggests confusion and lack of clear identity, but not definitively negative. Very limited text makes confidence low. | GPT-4o: The review is clearly negative, indicating the musical lacks direction and coherence, suggesting it fails to meet expectations. | Gemini: The review states that the musical doesn't know what it wants to be, implying a lack of direction and a negative assessment. | Kimi: The critic delivers a fundamental criticism that the musical suffers from an identity crisis and lack of focus, offering no positive counterbalance or recommendation. The very brief text suggests the review may be truncated, warranting low confidence. | Buckets: claude=Mixed, openai=Pan, gemini=Negative, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:28:43.120Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 40,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

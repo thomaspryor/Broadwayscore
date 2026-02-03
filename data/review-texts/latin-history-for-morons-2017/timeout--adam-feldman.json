@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Leguizamo's personal story is compelling, and his mimetic skills are impressive. But the show's didactic elements feel forced, and its structure is scattershot.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Leguizamo's personal story is compelling, and his mimetic skills are impressive. But the show's didactic elements feel forced, and its structure is scattershot.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Leguizamo's personal story is compelling, and his mimetic skills are impressive.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges strong elements (compelling story, impressive performance skills) but identifies significant structural and didactic problems. The original 60 rating aligns perfectly with mixed reception. | GPT-4o: The review acknowledges the compelling personal story and impressive skills but criticizes the forced didactic elements and scattershot structure. The original rating of 60 aligns with a mixed review. | Gemini: The review acknowledges Leguizamo's strengths but criticizes the show's structure and didactic elements, resulting in a mixed assessment. The original rating of 60 aligns with the mixed bucket. | Kimi: The critic praises Leguizamo's personal story and mimetic skills but criticizes the show's forced didactic elements and scattershot structure, resulting in a balanced mixed assessment consistent with the 60/100 rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:27:44.591Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

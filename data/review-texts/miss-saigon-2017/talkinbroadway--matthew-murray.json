@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Miss Saigon is unquestionably the best Broadway has seen, with a production that finally does justice to Schönberg and Boublil's often soaring score and finds the human heart beating beneath all the helicopter blades and smoke.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This Miss Saigon is unquestionably the best Broadway has seen, with a production that finally does justice to Schönberg and Boublil's often soaring score and finds the human heart beating beneath all the helicopter blades and smoke.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Miss Saigon is unquestionably the best Broadway has seen, with a production that finally does justice to Schönberg and Boublil's often soaring score.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlative praise calling it 'unquestionably the best Broadway has seen' with strong positive language about the production doing 'justice' to the score and finding emotional depth. | GPT-4o: The review is highly enthusiastic, calling it the best Broadway has seen and praising the production for doing justice to the score and finding the human heart in the spectacle. | Gemini: The review uses strong positive language, calling this production \"unquestionably the best Broadway has seen\" and stating that it \"finally does justice\" to the score. This indicates a very high level of praise and enthusiasm, placing it in the Rave category. | Kimi: The critic declares this production superior to all previous Broadway iterations, praising its emotional resonance and musical execution without reservation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:59:18.209Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 88,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This musical biography of Frankie Valli and the Four Seasons is a crowd-pleasing entertainment that manages to be both slick and heartfelt.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This musical biography of Frankie Valli and the Four Seasons is a crowd-pleasing entertainment that manages to be both slick and heartfelt.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical biography of Frankie Valli and the Four Seasons is a crowd-pleasing entertainment that manages to be both slick and heartfelt.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language calling it 'crowd-pleasing entertainment' with praise for being both 'slick and heartfelt', though brief excerpt limits deeper assessment. | GPT-4o: The review describes the show as 'crowd-pleasing entertainment' and 'both slick and heartfelt,' indicating a strong positive recommendation without reservations. | Gemini: The review calls the show a \"crowd-pleasing entertainment\", which indicates a positive recommendation. The use of \"slick\" suggests a reservation, but overall it's a positive assessment. | Kimi: The critic describes the show as 'crowd-pleasing entertainment' that is both 'slick and heartfelt,' indicating a clear recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:08:53.998Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

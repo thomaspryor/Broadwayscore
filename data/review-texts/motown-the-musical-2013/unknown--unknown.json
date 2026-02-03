@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Charles Randolph-Wright's direction, it remains what it was: a sparkling and enjoyable, if lumpy, journey through 25 years of Motown history",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'sparkling and enjoyable' and praises the performances, but acknowledges significant flaws ('lumpy', lack of 'dramatic subtlety'). The rhetorical question at the end suggests audiences will get what they came for. Single excerpt with mixed signals warrants low confidence and lower-positive score. | GPT-4o: The review describes the show as 'sparkling and enjoyable' despite noting some flaws ('lumpy', lack of dramatic subtlety). The focus on the songbook suggests a positive experience overall, but the excerpt's limited scope and mixed elements warrant a lower score within the Positive range. | Gemini: The review describes the show as \"sparkling and enjoyable\" but also \"lumpy\", suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt, confidence is low. | Kimi: The reviewer praises the recast performances as 'excellent' and the direction while calling the show 'sparkling and enjoyable,' but notes significant reservations ('lumpy,' lacking dramatic subtlety). Given this is a single excerpt, the score reflects a solid but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:03:55.122Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

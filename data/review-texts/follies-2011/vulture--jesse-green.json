@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new production of Follies at the Marquis Theatre is both a triumph and a tragedy — a triumph because it finally gives us a Broadway mounting worthy of Sondheim's masterpiece, and a tragedy because it makes clear what we've been missing all these years.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The new production of Follies at the Marquis Theatre is both a triumph and a tragedy — a triumph because it finally gives us a Broadway mounting worthy of Sondheim's masterpiece, and a tragedy because it makes clear what we've been missing all these years.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (45 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a triumph because it finally gives us a Broadway mounting worthy of Sondheim's masterpiece",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses 'triumph' and 'masterpiece' while declaring this production finally worthy of the material. The 'tragedy' refers to what we've been missing, not a flaw in this production. | GPT-4o: The review describes the production as a 'triumph' and 'worthy of Sondheim's masterpiece', indicating a strong recommendation with no reservations. | Gemini: The review uses the word \"triumph\" and calls the show a \"masterpiece,\" indicating a rave review. | Kimi: The reviewer explicitly calls the production a 'triumph' and 'worthy of Sondheim's masterpiece,' offering unqualified praise with no significant caveats about the current Broadway mounting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:33:44.600Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

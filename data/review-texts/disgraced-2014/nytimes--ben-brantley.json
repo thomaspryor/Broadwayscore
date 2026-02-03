@@ -23,5 +23,10 @@
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote from a review, not a complete review that can be properly scored for recommendation strength.; openai: The provided text is a single sentence without sufficient context or evaluation of the show as a whole.; gemini: This is a single sentence excerpt, lacking a clear recommendation or overall assessment of the show. It describes a moment in the play but doesn't offer a review.",
   "promptVersion": "5.2.0",
-  "textQuality": "partial"
+  "textQuality": "partial",
+  "playbillVerdictUrl": "http://www.nytimes.com/2014/10/24/theater/josh-radner-and-gretchen-mol-star-in-disgraced-on-broadway.html?_r=0",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

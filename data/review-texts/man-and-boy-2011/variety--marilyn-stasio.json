@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Frank Langella gives a commanding performance as the ruthless business tycoon Gregor Antonescu in Terence Rattigan's 'Man and Boy,' but even this powerhouse actor can't breathe life into a creaky 1963 melodrama that feels hopelessly dated.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Frank Langella gives a commanding performance as the ruthless business tycoon Gregor Antonescu in Terence Rattigan's 'Man and Boy,' but even this powerhouse actor can't breathe life into a creaky 1963 melodrama that feels hopelessly dated.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "even this powerhouse actor can't breathe life into a creaky 1963 melodrama that feels hopelessly dated",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict despite praising Langella's performance. The critic explicitly states the show 'feels hopelessly dated' and 'creaky,' indicating disappointment with the overall production. | GPT-4o: The review acknowledges a strong performance by Langella but criticizes the play as 'creaky' and 'hopelessly dated,' leading to a negative overall assessment. | Gemini: The review praises Langella's performance but ultimately finds the play itself to be dated and uninspired, leading to a negative overall assessment. | Kimi: While the critic praises Langella's 'commanding' performance, the explicit verdict is that the play itself is 'creaky' and 'hopelessly dated,' with the superstar unable to save it. This is a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:48:16.849Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

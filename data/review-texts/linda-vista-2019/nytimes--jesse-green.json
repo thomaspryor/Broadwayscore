@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "In Tracy Letts's new play, a middle-aged man's midlife crisis becomes everyone else's problem too. But Ian Barford's performance makes the self-absorbed Wheeler both repellent and pitiable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "In Tracy Letts's new play, a middle-aged man's midlife crisis becomes everyone else's problem too. But Ian Barford's performance makes the self-absorbed Wheeler both repellent and pitiable.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ian Barford's performance makes the self-absorbed Wheeler both repellent and pitiable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review criticizes the protagonist as self-absorbed with problems that burden others, but praises Barford's performance for making the character complex and compelling. This suggests a show worth seeing for the acting despite character/story issues. | Gemini: The review acknowledges a key performance but doesn't offer a clear recommendation, suggesting a mixed or neutral assessment. | Kimi: The excerpt praises the lead actor's complex performance but suggests the play itself is a taxing experience ('becomes everyone else's problem'). With only two sentences provided, the overall recommendation remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:29:57.352Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

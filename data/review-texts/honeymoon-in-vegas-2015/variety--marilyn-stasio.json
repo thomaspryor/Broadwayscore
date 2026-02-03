@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheerfully mindless musical comedy about a mama's boy who loses his fiancee in a poker game is so relentlessly upbeat that it's hard to resist its charms, even when your brain is screaming at you to show some taste.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This cheerfully mindless musical comedy about a mama's boy who loses his fiancee in a poker game is so relentlessly upbeat that it's hard to resist its charms, even when your brain is screaming at you to show some taste.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (40 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's hard to resist its charms",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite calling it 'mindless' and acknowledging taste concerns, the critic finds it charming and hard to resist, indicating a positive if qualified recommendation. | GPT-4o: The review acknowledges the show's mindlessness but ultimately finds it charming and hard to resist, indicating a positive recommendation despite reservations about its taste. | Gemini: The review expresses a positive sentiment despite acknowledging its 'mindless' nature, indicating a recommendation with reservations. | Kimi: The critic acknowledges the show is 'mindless' and lacks sophistication, but ultimately finds it 'hard to resist' and charming, recommending it as an entertaining guilty pleasure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:17:02.093Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

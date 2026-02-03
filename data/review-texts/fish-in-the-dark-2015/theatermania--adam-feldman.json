@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Larry David's first Broadway play is a fitfully funny family comedy that feels like a very long Curb Your Enthusiasm episode transplanted to the stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Larry David's first Broadway play is a fitfully funny family comedy that feels like a very long Curb Your Enthusiasm episode transplanted to the stage.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Larry David's first Broadway play is a fitfully funny family comedy that feels like a very long Curb Your Enthusiasm episode transplanted to the stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges humor ('fitfully funny') but implies the play feels overstretched and not quite suited for theater. The comparison to a 'very long' TV episode suggests pacing issues and lack of theatrical adaptation. | GPT-4o: The review describes the play as 'fitfully funny' and compares it to a 'very long Curb Your Enthusiasm episode', suggesting it has moments of humor but lacks overall satisfaction. | Gemini: The review suggests the play is funny at times, but ultimately compares it unfavorably to an extended episode of Curb Your Enthusiasm, indicating a mixed experience. | Kimi: The critic describes the comedy as only sporadically effective ('fitfully funny') and criticizes its pacing ('very long'), indicating an inconsistent, uneven production that neither strongly recommends nor rejects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:29:15.083Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

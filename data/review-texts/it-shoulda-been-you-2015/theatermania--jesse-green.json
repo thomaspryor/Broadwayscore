@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is both too broad and too narrow, trying to squeeze laughs from familiar Jewish and Italian stereotypes while also attempting to make serious points about acceptance and family.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "The show is both too broad and too narrow, trying to squeeze laughs from familiar Jewish and Italian stereotypes while also attempting to make serious points about acceptance and family.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is both too broad and too narrow, trying to squeeze laughs from familiar Jewish and Italian stereotypes while also attempting to make serious points about acceptance and family.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Critic identifies fundamental structural problems (relying on stereotypes, conflicted tone) but acknowledges the show is attempting to address meaningful themes. No clear recommendation either way. | Gemini: The review points out both positive and negative aspects of the show, indicating a mixed opinion without a clear recommendation. | Kimi: The excerpt criticizes the show's fundamental execution, finding it fails at both comedy (forced stereotypes) and drama (serious points), though the brief length limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:05:32.984Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

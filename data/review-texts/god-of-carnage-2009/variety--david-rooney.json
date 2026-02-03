@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Reza's play is a surgical dissection of bourgeois civility that peels back layers of politeness to reveal the primal savagery beneath. The Broadway production, directed by Matthew Warchus, is a taut 90-minute exercise in escalating tension.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Reza's play is a surgical dissection of bourgeois civility that peels back layers of politeness to reveal the primal savagery beneath. The Broadway production, directed by Matthew Warchus, is a taut 90-minute exercise in escalating tension.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Broadway production, directed by Matthew Warchus, is a taut 90-minute exercise in escalating tension.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic uses positive evaluative language ('surgical dissection,' 'taut') to describe both the play and production, indicating appreciation for the craft and execution. | GPT-4o: The review praises the play as a 'surgical dissection' and describes the production as 'taut' with 'escalating tension,' indicating a strong recommendation. | Gemini: The review describes the play as a 'surgical dissection' and 'taut,' indicating a positive assessment, but without strong enthusiasm, placing it in the lower end of the positive bucket. | Kimi: The review employs strong positive descriptors ('surgical dissection', 'taut') to praise the direction and dramatic tension, though the brevity of the excerpt prevents a higher confidence assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:52:52.515Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

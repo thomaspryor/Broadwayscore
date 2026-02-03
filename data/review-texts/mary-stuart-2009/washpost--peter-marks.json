@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Janet McTeer and Harriet Walter bring such force and intelligence to their roles as the rival queens that they make Schiller's somewhat creaky 1800 melodrama feel surprisingly vital.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Janet McTeer and Harriet Walter bring such force and intelligence to their roles as the rival queens that they make Schiller's somewhat creaky 1800 melodrama feel surprisingly vital.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Janet McTeer and Harriet Walter bring such force and intelligence to their roles as the rival queens that they make Schiller's somewhat creaky 1800 melodrama feel surprisingly vital.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performances that overcome material weaknesses. The critic acknowledges the source material is 'creaky' but finds the production 'surprisingly vital' due to the performances. | GPT-4o: The review praises the performances of the lead actors for revitalizing the play, indicating a positive recommendation. However, the mention of 'somewhat creaky' suggests some reservations about the material itself. | Gemini: The review praises the performances of the leads, stating they make the play feel surprisingly vital despite its age. This indicates a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic offers enthusiastic praise for the lead actresses' performances, noting they overcome the dated source material to create vital theater, resulting in a solid recommendation despite acknowledging the play's structural limitations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:47:23.370Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

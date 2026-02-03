@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kimberly Akimbo is a show that sneaks up on you with its emotional depth, taking what could be a gimmicky premise and turning it into something genuinely moving and theatrical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Kimberly Akimbo is a show that sneaks up on you with its emotional depth, taking what could be a gimmicky premise and turning it into something genuinely moving and theatrical.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kimberly Akimbo is a show that sneaks up on you with its emotional depth, taking what could be a gimmicky premise and turning it into something genuinely moving and theatrical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the show's emotional impact and theatrical quality, clearly recommending it despite acknowledging potential concerns about the premise. However, this is a very brief excerpt which limits confidence in the full critical assessment. | GPT-4o: The review praises the show for transforming a potentially gimmicky premise into something 'genuinely moving and theatrical,' indicating a strong positive recommendation. | Gemini: The review indicates that the show is \"genuinely moving and theatrical\", which is a positive sentiment. However, the phrase \"sneaks up on you\" suggests that the emotional depth is not immediately apparent, indicating a reservation. | Kimi: The critic offers strong praise for the show's emotional resonance and theatrical execution, noting it transcends its potentially gimmicky setup. The excerpt is brief but indicates a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:16:29.726Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

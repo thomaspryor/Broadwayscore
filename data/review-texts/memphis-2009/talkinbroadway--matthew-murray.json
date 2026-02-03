@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Memphis is a show that wants to have it both ways: to be both a serious examination of racial tensions in the 1950s South and a feel-good musical that sends audiences home humming.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T17:55:00.123Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with evaluation or recommendation; openai: This text is a brief description of the show's themes without any evaluative content or recommendation.",
+  "promptVersion": "5.2.0"
 }

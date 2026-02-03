@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Dan Lauria delivers a powerhouse performance as the legendary Green Bay Packers coach in this engaging biographical play that scores big with both sports fans and theater lovers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Dan Lauria delivers a powerhouse performance as the legendary Green Bay Packers coach in this engaging biographical play that scores big with both sports fans and theater lovers.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dan Lauria delivers a powerhouse performance as the legendary Green Bay Packers coach in this engaging biographical play that scores big with both sports fans and theater lovers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for lead performance and overall production with specific recommendation for target audiences, indicating solid positive reception. | GPT-4o: The review uses strong positive language ('powerhouse performance', 'engaging') indicating a solid recommendation for the play. | Gemini: The review uses strong positive language like \"powerhouse performance\" and \"scores big,\" indicating a very positive recommendation. | Kimi: The critic offers unqualified praise for the lead performance ('powerhouse') and describes the play as 'engaging' and successful ('scores big') for diverse audiences, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:37:52.942Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

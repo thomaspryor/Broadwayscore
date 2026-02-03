@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a perfectly pleasant throwback to the kind of musical theater that Broadway used to do routinely — but it's also the kind of show that makes you realize why Broadway had to evolve.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show is a perfectly pleasant throwback to the kind of musical theater that Broadway used to do routinely — but it's also the kind of show that makes you realize why Broadway had to evolve.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a perfectly pleasant throwback to the kind of musical theater that Broadway used to do routinely — but it's also the kind of show that makes you realize why Broadway had to evolve.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Calls the show 'perfectly pleasant' but immediately undercuts this with criticism that it represents outdated theater that needed to evolve. This is classic mixed review language - acknowledging positives while suggesting the show is behind the times. | GPT-4o: The review acknowledges the show as 'pleasant' but implies it's outdated and suggests a lack of necessity for such productions in modern Broadway, indicating a mixed sentiment. | Gemini: The review acknowledges the show is pleasant but also implies it's outdated and not innovative, placing it in the mixed category. | Kimi: The critic offers faint praise ('perfectly pleasant') but undercuts it by suggesting the show exemplifies the outdated musical theater that necessitated Broadway's evolution, creating a mixed assessment that neither recommends nor discourages seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:11:16.726Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

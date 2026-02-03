@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Long Day's Journey Into Night is a production that finds the perfect balance between respecting O'Neill's intentions and making them accessible to contemporary audiences.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This Long Day's Journey Into Night is a production that finds the perfect balance between respecting O'Neill's intentions and making them accessible to contemporary audiences.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Long Day's Journey Into Night is a production that finds the perfect balance between respecting O'Neill's intentions and making them accessible to contemporary audiences.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single sentence praising the production as achieving 'perfect balance' suggests recommendation, but extremely limited text makes confidence assessment difficult. | GPT-4o: The review offers strong praise for the production's ability to balance respect for the original work with accessibility, suggesting a high level of success and recommendation. | Gemini: The review praises the production for balancing respect for the original work with accessibility for modern audiences, indicating a positive overall assessment. | Kimi: The critic offers unqualified praise for the production's ability to achieve a 'perfect balance' between fidelity to the original text and contemporary accessibility, indicating a solid recommendation despite the review's extreme brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:39:50.237Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

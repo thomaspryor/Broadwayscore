@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new production of 'My Fair Lady' is a handsome, well-sung revival that does full justice to one of the greatest of all American musicals.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This new production of 'My Fair Lady' is a handsome, well-sung revival that does full justice to one of the greatest of all American musicals.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new production of 'My Fair Lady' is a handsome, well-sung revival that does full justice to one of the greatest of all American musicals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive assessment with praise for the production quality and acknowledgment that it serves the source material well, though without extreme superlatives that would elevate to Rave. | GPT-4o: The review offers unqualified praise, describing the production as 'handsome' and 'well-sung', and states it 'does full justice' to a classic, indicating a strong recommendation. | Gemini: The review is highly positive, calling the production \"handsome, well-sung\" and stating that it \"does full justice\" to the musical, indicating a strong recommendation. | Kimi: The critic offers unqualified praise for the production, calling it handsome and well-sung, and stating it does full justice to the classic musical.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:04:15.947Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

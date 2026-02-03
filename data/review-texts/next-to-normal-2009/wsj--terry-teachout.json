@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes 'Next to Normal' exceptional is that it treats mental illness not as a metaphor for the human condition but as a disease whose effects on both patients and their families are explored with clinical precision and unsparing honesty.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "What makes 'Next to Normal' exceptional is that it treats mental illness not as a metaphor for the human condition but as a disease whose effects on both patients and their families are explored with clinical precision and unsparing honesty.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (40 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes 'Next to Normal' exceptional is that it treats mental illness not as a metaphor for the human condition but as a disease whose effects on both patients and their families are explored with clinical precision and unsparing honesty.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Critic clearly labels the show as 'exceptional' and praises its honest, precise treatment of the subject matter, indicating a positive recommendation despite this appearing to be an excerpt. | Gemini: The review highlights the show's exceptional treatment of mental illness, suggesting a positive, though potentially qualified, recommendation. | Kimi: Brief excerpt offers unqualified praise, calling the show 'exceptional' for its honest, precise treatment of mental illness, warranting a high positive score despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:14:59.364Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

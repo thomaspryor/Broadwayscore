@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical 'Legally Blonde,' which opened last night at the Palace Theater, is as shiny, peppy and demanding of attention as its fame-seeking heroine.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "The musical 'Legally Blonde,' which opened last night at the Palace Theater, is as shiny, peppy and demanding of attention as its fame-seeking heroine.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical 'Legally Blonde' is as shiny, peppy and demanding of attention as its fame-seeking heroine.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: This appears to be only the opening line of a review. The description could be read as either praise (shiny, peppy) or subtle criticism (demanding of attention like a fame-seeker). Without the full review, the verdict is unclear. | Gemini: The review describes the musical as \"shiny, peppy and demanding of attention\", which suggests a positive, albeit potentially superficial, experience. This leans towards a positive recommendation, but not overwhelmingly so. | Kimi: The brief excerpt describes the show with mildly positive adjectives suggesting energy and appeal, but the text appears truncated and lacks a definitive verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:30:15.234Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

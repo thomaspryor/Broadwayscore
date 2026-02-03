@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This expensively mounted vampire musical, based on the Anne Rice novels, opened last night at the Palace Theater with a thud that could be heard in several time zones.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 15,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This expensively mounted vampire musical, based on the Anne Rice novels, opened last night at the Palace Theater with a thud that could be heard in several time zones.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 15,
+    "confidence": "medium",
+    "range": {
+      "low": 10,
+      "high": 20
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "opened last night at the Palace Theater with a thud that could be heard in several time zones",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: The opening line delivers a complete pan verdict - describing the show as opening 'with a thud that could be heard in several time zones' is devastatingly negative imagery with no redeeming qualities offered. | GPT-4o: The review uses vivid language to describe the show as a failure ('with a thud'), indicating a strongly negative impression with no redeeming qualities. | Gemini: The review opens with a strongly negative statement about the show's opening, indicating a pan. | Kimi: The available text uses the metaphor of a 'thud heard in several time zones' to describe the opening, indicating a clear critical failure and lack of recommendation. However, given the severe truncation of the review, confidence is set to low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:32:36.318Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 12,
+    "openaiScore": 20,
+    "geminiScore": 12,
+    "kimiScore": 40,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Negative",
+    "scoreDelta": 28,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This biographical musical about Kurt Weill and Lotte Lenya feels more like a perfunctory homework assignment than a labor of love. The show never finds its emotional center or dramatic focus.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This biographical musical about Kurt Weill and Lotte Lenya feels more like a perfunctory homework assignment than a labor of love. The show never finds its emotional center or dramatic focus.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This biographical musical feels more like a perfunctory homework assignment than a labor of love.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment comparing the show to tedious homework, criticizing fundamental elements like emotional center and dramatic focus with no redeeming qualities mentioned. | GPT-4o: The review describes the musical as lacking emotional and dramatic engagement, likening it to a 'perfunctory homework assignment'. This indicates a negative recommendation. | Gemini: The review uses negative language such as \"perfunctory homework assignment\" and states that the show \"never finds its emotional center or dramatic focus,\" indicating a negative assessment. | Kimi: The critic dismisses the show as 'perfunctory' and lacking emotional center or dramatic focus, indicating a clear negative verdict with no redeeming qualities mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:41:46.101Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

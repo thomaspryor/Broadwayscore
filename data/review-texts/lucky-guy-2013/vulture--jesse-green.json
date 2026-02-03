@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lucky Guy is a valentine to a vanished world of newspapers and the men who made them, but it's also a surprisingly moving portrait of a flawed hero trying to do right in a world gone wrong.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Lucky Guy is a valentine to a vanished world of newspapers and the men who made them, but it's also a surprisingly moving portrait of a flawed hero trying to do right in a world gone wrong.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a surprisingly moving portrait of a flawed hero trying to do right in a world gone wrong",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review presents positive language ('valentine', 'surprisingly moving') but is quite brief and lacks explicit recommendation language or star rating to indicate strength of endorsement. | GPT-4o: The review highlights the show as a 'valentine' and 'surprisingly moving,' indicating a positive recommendation. However, the use of 'flawed hero' and 'world gone wrong' suggests some complexity and reservations, leading to a solid but not unqualified positive score. | Gemini: The review describes the play as a \"valentine\" and \"surprisingly moving,\" indicating a positive, though not ecstatic, recommendation. | Kimi: The critic describes the show as a 'valentine' and 'surprisingly moving,' indicating clear appreciation and recommendation, though the brevity of this excerpt suggests it is pulled from a longer review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:43:38.396Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -70,5 +70,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
   "rejectionReasoning": "openai: The review is about a production of 'A Streetcar Named Desire' at London's Donmar Warehouse, not the current Broadway run.; kimi: This review explicitly covers the 2009 production at London's Donmar Warehouse starring Rachel Weisz, not a current Broadway run. The venue and date clearly indicate this is a West End production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/gillian-anderson-a-streetcar-named-889167",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

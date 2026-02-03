@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Andrew Lloyd Webber and Tim Rice's rock opera is a blessing for anyone who loves the show's driving score and can tolerate its bombastic staging.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This revival of Andrew Lloyd Webber and Tim Rice's rock opera is a blessing for anyone who loves the show's driving score and can tolerate its bombastic staging.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival is a blessing for anyone who loves the show's driving score and can tolerate its bombastic staging.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Mixed verdict that recommends the show conditionally - only for those who already love the score AND can tolerate problematic staging. The qualification 'can tolerate' indicates significant reservations. | GPT-4o: The review acknowledges the appeal of the score but suggests a significant reservation about the staging, indicating a mixed recommendation. | Gemini: The review recommends the show for those who love the score but acknowledges the staging may be off-putting, indicating a positive but qualified recommendation. | Kimi: The critic uses strong positive language ('blessing') but qualifies the recommendation with the caveat that viewers must be able to 'tolerate' the 'bombastic' staging, indicating a solid but not unreserved endorsement. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:10:28.180Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

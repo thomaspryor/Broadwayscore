@@ -16,12 +16,16 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "McDonald's Rose is a force of nature, a woman who refuses to be ignored or dismissed, even when her dreams have long since passed their expiration date.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (27 words)",
   "nycTheatreExcerpt": "\"The latest revival, shepherded by legendary director and playwright George C. Wolfe and starring Tony Award winner Audra McDonald, is an electric and truly unique production that will undoubtedly become a crowning jewel in the canon of Gypsy.\"",
   "sources": [
     "web-search",
     "nyc-theatre"
   ],
-  "textQuality": "truncated"
+  "rejectedAt": "2026-02-03T17:03:21.794Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with evaluative content about the Broadway production; openai: The text is a single sentence that appears to be a character description or performance note, not a full review or evaluation of the show.",
+  "promptVersion": "5.2.0"
 }

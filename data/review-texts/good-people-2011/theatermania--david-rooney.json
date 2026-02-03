@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Frances McDormand brings her trademark blend of intelligence, wit and emotional honesty to David Lindsay-Abaire's compassionate drama about class, loyalty and the choices that define us.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Frances McDormand brings her trademark blend of intelligence, wit and emotional honesty to David Lindsay-Abaire's compassionate drama about class, loyalty and the choices that define us.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Frances McDormand brings her trademark blend of intelligence, wit and emotional honesty to David Lindsay-Abaire's compassionate drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Positive language praising both lead performance and the play itself, but very brief excerpt limits confidence in full assessment. | Gemini: The review praises McDormand's performance and describes the play as a \"compassionate drama,\" indicating a positive, though not ecstatic, recommendation. | Kimi: Though brief, the excerpt offers clear praise for the lead performance and positively characterizes the play as 'compassionate,' suggesting a recommendation, though the limited length warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:54:59.647Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

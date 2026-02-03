@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "While the show doesn't break new ground dramatically, it delivers what it promises with infectious energy and authentic musical thrills that should keep audiences tapping their feet.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "While the show doesn't break new ground dramatically, it delivers what it promises with infectious energy and authentic musical thrills that should keep audiences tapping their feet.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it delivers what it promises with infectious energy and authentic musical thrills",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation despite acknowledging lack of dramatic innovation. Emphasizes entertainment value and audience satisfaction. | GPT-4o: The review acknowledges that the show doesn't break new ground but praises its energy and musical appeal, suggesting a positive experience overall. | Gemini: The review is generally positive, highlighting the show's energy and musical thrills, but notes that it doesn't break new ground, indicating a recommendation with reservations. | Kimi: The review provides a clear recommendation focused on the show's infectious energy and authentic musical thrills, offering only a minor qualification about its dramatic originality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:00:10.846Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

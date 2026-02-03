@@ -65,5 +65,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
   "rejectionReasoning": "openai: The review is about Ivo Van Hove's production of 'A View From the Bridge' at the Young Vic, not the current Broadway run.; kimi: The review explicitly describes Ivo van Hove's 'production for the Young Vic' (a London theatre company), references Mark Strong's Olivier Award (a British theatre award), and mentions the 'original British production.' This is a review of the London production, not the Broadway transfer.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "playbillVerdictUrl": "http://variety.com/2015/legit/reviews/a-view-from-the-bridge-review-broadway-mark-strong-1201639192/",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

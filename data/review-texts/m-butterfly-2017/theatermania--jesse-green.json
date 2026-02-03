@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though the play's exotic orientalism feels dated, Jin Ha and Clive Owen bring fresh intensity to this revival of David Henry Hwang's Tony-winning drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Though the play's exotic orientalism feels dated, Jin Ha and Clive Owen bring fresh intensity to this revival of David Henry Hwang's Tony-winning drama.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jin Ha and Clive Owen bring fresh intensity to this revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging dated aspects, the critic praises the leads' performances as bringing 'fresh intensity,' suggesting the revival succeeds despite the material's age. | GPT-4o: The review acknowledges dated elements but praises the performances, suggesting a positive recommendation with some reservations. | Gemini: The review acknowledges dated elements but praises the performances, suggesting it's worth seeing despite the play's flaws. The praise is not overwhelming, so a lower positive score is appropriate. | Kimi: While the critic notes the play's 'exotic orientalism' feels dated, the strong praise for the lead performances ('fresh intensity') indicates a qualified recommendation to see this revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:44:31.310Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

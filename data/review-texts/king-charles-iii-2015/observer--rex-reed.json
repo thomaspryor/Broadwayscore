@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "King Charles III is a fascinating work of speculative fiction that combines the pomp and circumstance of royal protocol with the psychological complexity of Shakespearean tragedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "King Charles III is a fascinating work of speculative fiction that combines the pomp and circumstance of royal protocol with the psychological complexity of Shakespearean tragedy.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "King Charles III is a fascinating work of speculative fiction that combines the pomp and circumstance of royal protocol with the psychological complexity of Shakespearean tragedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single sentence with positive evaluation ('fascinating') and sophisticated analysis, but lacks clear recommendation language or sufficient detail for higher confidence. | Gemini: The review uses positive language such as \"fascinating\" and \"psychological complexity\" to describe the show, indicating a positive recommendation. | Kimi: The critic describes the work as 'fascinating' with highbrow comparisons to Shakespearean tragedy, indicating clear appreciation, though the brief excerpt limits assessment of the full recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:18:03.818Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

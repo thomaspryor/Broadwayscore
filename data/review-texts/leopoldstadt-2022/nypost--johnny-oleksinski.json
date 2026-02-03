@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Stoppard's deeply personal drama about a Jewish family in Vienna across several decades is nothing short of his masterpiece — a devastating, beautiful and essential work of art.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Stoppard's deeply personal drama about a Jewish family in Vienna across several decades is nothing short of his masterpiece — a devastating, beautiful and essential work of art.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stoppard's deeply personal drama about a Jewish family in Vienna across several decades is nothing short of his masterpiece",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlatives calling it 'nothing short of his masterpiece' and 'essential work of art' with no reservations whatsoever. | GPT-4o: The review uses superlatives like 'masterpiece', 'devastating', 'beautiful', and 'essential', indicating an enthusiastic, must-see recommendation with no reservations. | Gemini: The review uses superlative language such as \"masterpiece,\" \"devastating,\" \"beautiful,\" and \"essential work of art,\" indicating a rave review. | Kimi: Unqualified superlatives with no caveats indicate maximum enthusiasm for this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:26:38.073Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

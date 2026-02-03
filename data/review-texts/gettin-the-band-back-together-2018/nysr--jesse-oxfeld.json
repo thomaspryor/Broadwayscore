@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "3/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's impossible not to enjoy yourself",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: 3/5 stars with clear positive verdict. Critic acknowledges many flaws (hackneyed, predictable, too long) but concludes it's 'genuinely enjoyable' and 'a really good time' with strong praise for performances and tone. | GPT-4o: The review acknowledges flaws like plot contrivances and stereotypes but emphasizes the show's enjoyable and fun nature. The original 3/5 star rating suggests a positive but not overwhelmingly enthusiastic recommendation. | Gemini: Despite acknowledging flaws, the critic ultimately finds the show enjoyable and good-natured, giving it a positive recommendation. The 3/5 stars also points to a positive, but not rave, assessment. | Kimi: The 3/5 star rating and text reflect significant reservations about the 'hackneyed, predictable' story and 'creaky' plot mechanics, balanced against praise for the 'genuinely enjoyable' experience and strong performances. The truncation warning necessitates caution, though the available text suggests a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:44:17.325Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 77,
+    "kimiScore": 65,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Stoppard's deeply personal play about a Jewish family in Vienna across several decades is a moving meditation on memory, identity, and the weight of history.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Stoppard's deeply personal play about a Jewish family in Vienna across several decades is a moving meditation on memory, identity, and the weight of history.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stoppard's deeply personal play about a Jewish family in Vienna across several decades is a moving meditation on memory, identity, and the weight of history.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic's own 80 rating strongly indicates a positive recommendation, and the descriptive language ('moving meditation') suggests appreciation, though the excerpt is too brief to assess full critical verdict. | Gemini: The review is positive, calling the play a \"moving meditation.\" Given the critic's rating of 80, I placed the score slightly below that to account for the brevity of the review. | Kimi: The critic provides a warm, appreciative assessment ('moving meditation', 'deeply personal') that aligns with the 80 rating, indicating a solid positive recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:31:19.680Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

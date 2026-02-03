@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lennon is a show that works best when it stops trying to be a traditional musical and becomes what it really wants to be: a concert celebrating the music of John Lennon and The Beatles.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Lennon is a show that works best when it stops trying to be a traditional musical and becomes what it really wants to be: a concert celebrating the music of John Lennon and The Beatles.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lennon is a show that works best when it stops trying to be a traditional musical and becomes what it really wants to be: a concert celebrating the music of John Lennon and The Beatles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic suggests the show succeeds as a concert but struggles as a traditional musical, indicating mixed feelings about the theatrical format versus the musical content. However, this appears to be a truncated excerpt, limiting confidence in the full assessment. | GPT-4o: The review suggests the show succeeds only when it shifts focus from being a traditional musical to a concert, indicating mixed success. The tone is not strongly positive or negative, placing it in the mixed category. | Gemini: The review suggests the show has strengths when it focuses on the music but implies weaknesses in its attempt to be a traditional musical, indicating a mixed experience. | Kimi: The critic suggests the show has an identity crisis, failing in its attempt to be a traditional musical but succeeding when it embraces concert format. This qualified assessment indicates mixed results rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:30:41.316Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

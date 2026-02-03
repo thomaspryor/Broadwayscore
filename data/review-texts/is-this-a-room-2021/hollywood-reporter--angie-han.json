@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The verbatim transcript becomes a gripping psychological thriller in the hands of director Tina Satter and star Emily Davis.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The verbatim transcript becomes a gripping psychological thriller in the hands of director Tina Satter and star Emily Davis.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (19 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The verbatim transcript becomes a gripping psychological thriller in the hands of director Tina Satter and star Emily Davis.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'gripping' with specific acclaim for director and star, but this appears to be a brief excerpt with very limited content to evaluate. | GPT-4o: The review uses strong positive language ('gripping psychological thriller') to describe the show, indicating a high level of enthusiasm and recommendation. | Gemini: The review explicitly states that the play becomes a 'gripping psychological thriller,' indicating a positive recommendation. | Kimi: The critic praises the production as a 'gripping psychological thriller' and credits the director and star for the transformation, indicating a strong positive recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:04:42.350Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

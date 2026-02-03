@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mark Rylance's towering performance as Johnny 'Rooster' Byron in Jez Butterworth's Jerusalem is a theatrical tour de force that transcends the sometimes meandering play itself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Mark Rylance's towering performance as Johnny 'Rooster' Byron in Jez Butterworth's Jerusalem is a theatrical tour de force that transcends the sometimes meandering play itself.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mark Rylance's towering performance as Johnny 'Rooster' Byron in Jez Butterworth's Jerusalem is a theatrical tour de force that transcends the sometimes meandering play itself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises Rylance's performance as a 'tour de force' but notes the play itself is 'meandering.' This suggests recommendation primarily for the star turn despite script weaknesses. Low confidence due to very brief excerpt. | GPT-4o: The review praises Rylance's performance as a 'tour de force', suggesting a strong positive aspect, but notes the play itself is 'sometimes meandering', indicating some reservations. | Gemini: The review praises Rylance's performance as a \"tour de force\" but notes the play itself is \"sometimes meandering.\" This suggests a positive recommendation with reservations. | Kimi: The critic lavishes superlatives on Rylance's performance ('towering', 'tour de force') and states it transcends the play's flaws, indicating the production is worth seeing primarily for the acting despite reservations about the script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:04:26.079Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

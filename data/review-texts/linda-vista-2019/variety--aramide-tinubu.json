@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tracy Letts has written a deeply personal, funny and ultimately heartbreaking play about midlife crisis and the search for meaning.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Tracy Letts has written a deeply personal, funny and ultimately heartbreaking play about midlife crisis and the search for meaning.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (20 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tracy Letts has written a deeply personal, funny and ultimately heartbreaking play about midlife crisis and the search for meaning.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises the play as 'deeply personal, funny and ultimately heartbreaking', suggesting a strong positive impression. However, the brevity of the text limits the depth of evaluation, leading to medium confidence. | Gemini: The review uses positive language such as \"deeply personal, funny and ultimately heartbreaking\" to describe the play, indicating a strong recommendation. | Kimi: The critic offers strong praise describing the play as 'deeply personal,' 'funny,' and 'heartbreaking,' indicating a successful emotional impact, though the extremely brief excerpt limits certainty about the complete verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:30:32.785Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

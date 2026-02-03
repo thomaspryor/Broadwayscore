@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McNeal is a play about artificial intelligence that feels oddly mechanical itself, despite Robert Downey Jr.'s committed performance as a novelist grappling with technology and mortality.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,12 +18,59 @@
   "showScoreExcerpt": "McNeal is a play about artificial intelligence that feels oddly mechanical itself, despite Robert Downey Jr.'s committed performance as a novelist grappling with technology and mortality.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "playbillVerdictUrl": "https://www.vulture.com/article/theater-review-robert-downey-jr-mcneal.html",
-  "sources": [
-    "web-search",
-    "playbill-verdict",
-    "nyc-theatre"
-  ],
-  "nycTheatreExcerpt": "Akhtar is a synthesizing playwright interested in picking apart vast systems, whether America's relationship to Islam or the financial markets.",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McNeal is a play about artificial intelligence that feels oddly mechanical itself, despite Robert Downey Jr.'s committed performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic finds the play itself 'oddly mechanical' while praising Downey Jr.'s performance. This creates a mixed assessment - positive element (committed performance) balanced against negative critique (mechanical feel). | GPT-4o: The review describes the play as 'oddly mechanical,' suggesting a lack of engagement or effectiveness, despite praising Downey Jr.'s performance. This indicates a negative overall impression. | Gemini: The review acknowledges a committed performance from Downey Jr., but ultimately finds the play itself \"oddly mechanical,\" suggesting a mixed or lukewarm reception. | Kimi: The critic finds the play 'mechanical' and uses 'despite' to signal that Downey's performance cannot save the flawed production, indicating a negative recommendation. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:52:27.228Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

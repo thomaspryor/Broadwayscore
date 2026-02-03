@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Mary Poppins is a triumph of gifted stagecraft over story, a production that dazzles the eyes while lessening the impact of what was already a fairly thin tale.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This Mary Poppins is a triumph of gifted stagecraft over story, a production that dazzles the eyes while lessening the impact of what was already a fairly thin tale.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Mary Poppins is a triumph of gifted stagecraft over story, a production that dazzles the eyes while lessening the impact of what was already a fairly thin tale.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Praises the production values and stagecraft as triumphant and dazzling, but criticizes the story as thin and notes the production actually weakens the material's impact. Classic mixed review balancing technical excellence against narrative weakness. | GPT-4o: The review praises the production's stagecraft as a 'triumph,' indicating a positive recommendation despite noting the story's limitations. | Gemini: The review acknowledges the impressive stagecraft but also points out the story's thinness, suggesting a mixed but overall positive experience. It is recommended, but with reservations. | Kimi: The reviewer employs strong praise ('triumph,' 'dazzles') for the staging and visual elements, while explicitly noting significant weaknesses in the story material. This creates a qualified recommendation that values production quality over narrative content, fitting the upper-mid range of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:48:35.827Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 76,
+    "geminiScore": 72,
+    "kimiScore": 78,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
