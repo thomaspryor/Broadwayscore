@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Good People is a play that doesn't shy away from asking hard questions about class, loyalty, and the circumstances that shape our lives, and it does so with remarkable honesty and insight.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Good People is a play that doesn't shy away from asking hard questions about class, loyalty, and the circumstances that shape our lives, and it does so with remarkable honesty and insight.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Good People is a play that doesn't shy away from asking hard questions about class, loyalty, and the circumstances that shape our lives, and it does so with remarkable honesty and insight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single sentence with clear praise for the play's qualities ('remarkable honesty and insight'), but extremely brief text limits confidence in the full assessment. | GPT-4o: The review praises the play for its honesty and insight in tackling complex themes, indicating a positive recommendation. However, the lack of more detailed evaluative content or superlatives suggests a solid but not overwhelmingly strong endorsement. | Gemini: The review praises the play's honesty and insight, indicating a positive recommendation, but it's not overwhelmingly enthusiastic, suggesting a score in the lower-middle of the positive range. | Kimi: The critic offers unambiguous praise for the play's thematic depth and writing quality using strong positive language ('remarkable honesty'), indicating a clear recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:21:20.902Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

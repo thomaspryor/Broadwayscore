@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "James Ijames' Pulitzer Prize-winning comedy 'Fat Ham' is a raucous, irreverent and wholly original riff on 'Hamlet' that crackles with wit, heart and contemporary relevance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,9 +18,58 @@
   "showScoreExcerpt": "James Ijames' Pulitzer Prize-winning comedy 'Fat Ham' is a raucous, irreverent and wholly original riff on 'Hamlet' that crackles with wit, heart and contemporary relevance.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "nycTheatreExcerpt": "\"The funniest and most invigorating new show on Broadway...Winner of the 2022 Pulitzer Prize, \"Fat Ham\" recasts its source material to imagine what Shakespeare did not  how people might overcome circumstances, expectations and their own demons to forge new paths through life.\"",
-  "sources": [
-    "web-search",
-    "nyc-theatre"
-  ]
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Fat Ham' is a raucous, irreverent and wholly original riff on 'Hamlet' that crackles with wit, heart and contemporary relevance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | GPT-4o: The review uses superlatives like 'raucous', 'irreverent', and 'wholly original', indicating a strong, enthusiastic recommendation. The language suggests a must-see production. | Gemini: The review uses strong positive language like \"raucous, irreverent, and wholly original\" and \"crackles with wit, heart and contemporary relevance,\" indicating a very enthusiastic recommendation. | Kimi: The review delivers unqualified praise with superlatives like 'wholly original' and declares the show 'crackles with wit, heart and contemporary relevance,' indicating a strong recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:49:49.822Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 92,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

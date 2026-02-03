@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "James Ijames's Pulitzer Prize-winning play is a raucous, irreverent riff on Hamlet that transplants Shakespeare's tragedy to a contemporary Black family barbecue in North Carolina.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (25 words)",
+  "rejectedAt": "2026-02-03T15:48:41.042Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "openai: The text is a plot summary with no evaluation or opinion on the production.; gemini: This is a plot summary, not a review. There is no evaluative content or recommendation.",
+  "promptVersion": "5.2.0"
 }

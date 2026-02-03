@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Lindsay-Abaire has written a solidly crafted play that asks hard questions about class, loyalty and the meaning of success in contemporary America, and Daniel Sullivan has directed it with appropriate restraint.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Lindsay-Abaire has written a solidly crafted play that asks hard questions about class, loyalty and the meaning of success in contemporary America, and Daniel Sullivan has directed it with appropriate restraint.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Lindsay-Abaire has written a solidly crafted play that asks hard questions about class, loyalty and the meaning of success in contemporary America.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the craft and substance of the play with 'solidly crafted' and notes appropriate direction, but the restrained language suggests measured appreciation rather than enthusiasm. | GPT-4o: The review praises the play as 'solidly crafted' and the direction as 'appropriate,' indicating a positive but not overly enthusiastic recommendation. | Gemini: The review states the play is \"solidly crafted\" and the direction is \"appropriate\", indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The review offers clear approval with 'solidly crafted' and praise for the direction's 'appropriate restraint,' indicating a recommendation, though the muted, professional tone suggests competence rather than enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:21:46.288Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

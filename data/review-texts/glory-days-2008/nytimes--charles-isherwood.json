@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The four young men at the center of 'Glory Days' are so relentlessly likable that you may find yourself wishing one of them would do something truly awful, just to provide a little dramatic tension.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The four young men at the center of 'Glory Days' are so relentlessly likable that you may find yourself wishing one of them would do something truly awful, just to provide a little dramatic tension.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (35 words)"
+  "contentTierReason": "Short text (35 words)",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you may find yourself wishing one of them would do something truly awful, just to provide a little dramatic tension",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic finds the characters so one-dimensionally likable that they wish for conflict to create interest, indicating the show lacks essential dramatic elements and fails to engage. | GPT-4o: The review implies a lack of dramatic tension and suggests that the likability of the characters is a flaw, leading to a negative impression. However, the tone is not strongly negative, so it falls in the higher range of the Negative bucket. | Gemini: The review suggests the show lacks dramatic tension, implying it's not particularly engaging, but the likability of the characters keeps it from being outright negative. | Kimi: The critic offers genuine praise for the cast's likability but identifies a significant flaw in the show's lack of dramatic tension or conflict. As an excerpt, the full verdict is unclear, but the balanced praise and criticism suggests a middle-ground assessment. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:16:44.890Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 60,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

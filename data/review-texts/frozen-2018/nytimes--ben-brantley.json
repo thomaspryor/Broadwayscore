@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Broadway adaptation of the Disney animated blockbuster works hardest when it's working least, coasting on the charming performances of its leading ladies and the sublime silliness of its snowman.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Broadway adaptation of the Disney animated blockbuster works hardest when it's working least, coasting on the charming performances of its leading ladies and the sublime silliness of its snowman.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Broadway adaptation of the Disney animated blockbuster works hardest when it's working least, coasting on the charming performances of its leading ladies and the sublime silliness of its snowman.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The review praises the lead performances as 'charming' and finds positive qualities in the production, but the phrase 'works hardest when it's working least' suggests effortless appeal rather than deep artistic achievement, indicating solid but not exceptional recommendation. | GPT-4o: The review suggests that the show relies heavily on performances rather than its own merits, indicating a lack of strong recommendation. The tone is balanced, with some praise for performances but an overall sense of mediocrity. | Gemini: The review highlights the positive aspects of the show, specifically the performances of the leading ladies and the snowman, suggesting it is enjoyable despite working 'least'. | Kimi: The critic suggests the show fails when it tries too hard but succeeds on the strength of its performances and comic elements, indicating an uneven production with redeeming qualities but significant structural issues. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:04:47.718Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 60,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

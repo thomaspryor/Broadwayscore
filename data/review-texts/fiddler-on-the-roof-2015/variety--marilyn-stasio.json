@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production doesn't reinvent the wheel, but it spins the familiar story with such warmth, sincerity and technical excellence that audiences will be charmed all over again by this tale of family, faith and the fragility of tradition.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production doesn't reinvent the wheel, but it spins the familiar story with such warmth, sincerity and technical excellence that audiences will be charmed all over again by this tale of family, faith and the fragility of tradition.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (38 words)"
+  "contentTierReason": "Short text (38 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "audiences will be charmed all over again by this tale of family, faith and the fragility of tradition.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises the production's warmth, sincerity, and technical excellence, indicating a strong positive recommendation despite not being groundbreaking. | Gemini: The review indicates that the production is well-executed and charming, although not groundbreaking, leading to a positive but not rave recommendation. | Kimi: While acknowledging the show doesn't break new ground, the critic praises its warmth, sincerity, and technical excellence, clearly indicating audiences will be charmed by this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:51:48.328Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 80,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

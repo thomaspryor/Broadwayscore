@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Menzel's voice remains a force of nature, a instrument of such piercing power that it can probably be heard in New Jersey without amplification. But even she cannot lift this show's unwieldy concept into the theatrical stratosphere.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Menzel's voice remains a force of nature, a instrument of such piercing power that it can probably be heard in New Jersey without amplification. But even she cannot lift this show's unwieldy concept into the theatrical stratosphere.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (38 words)"
+  "contentTierReason": "Short text (38 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But even she cannot lift this show's unwieldy concept into the theatrical stratosphere.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising Menzel's powerful voice as 'a force of nature,' the critic clearly states that even her exceptional performance 'cannot lift' the show's fundamental flaws. This is a classic pattern where performer praise doesn't redeem an overall negative verdict. | GPT-4o: The review acknowledges Menzel's vocal talent but criticizes the overall concept of the show, indicating it fails to achieve its ambitions. The tone suggests a negative recommendation. | Gemini: The review praises Menzel's voice but ultimately states that she cannot save the show, indicating a negative overall assessment. | Kimi: While the critic praises Idina Menzel's voice as a 'force of nature,' the decisive 'but' clause establishes that the show itself fails due to its 'unwieldy concept,' making this a negative recommendation despite the lead's talent.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:50:31.037Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

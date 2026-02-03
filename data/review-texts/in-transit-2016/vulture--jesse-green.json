@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "In Transit is a musical that works best when it's most like life: messy, unresolved, and heartbreakingly ordinary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "In Transit is a musical that works best when it's most like life: messy, unresolved, and heartbreakingly ordinary.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (18 words)"
+  "contentTierReason": "Short text (18 words)",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In Transit is a musical that works best when it's most like life: messy, unresolved, and heartbreakingly ordinary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The phrase 'works best' suggests recommendation, and 'heartbreakingly ordinary' reads as appreciative of realistic storytelling, but the extremely brief excerpt and emphasis on messiness prevents higher confidence or score. | GPT-4o: The review suggests that the musical has qualities that are both relatable and ordinary, but does not provide a clear recommendation or discouragement. The tone is neutral, indicating a mixed assessment. | Gemini: The review suggests the musical is enjoyable when it embraces the messiness of life, implying a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The excerpt praises the show's realism and emotional authenticity ('heartbreakingly ordinary') but implies uneven quality by noting it only 'works best' under specific conditions. The single-sentence length lacks clear recommendation language. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:54:19.951Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

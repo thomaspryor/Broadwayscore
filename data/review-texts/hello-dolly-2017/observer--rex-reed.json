@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bette Midler is so good in Hello, Dolly! that she makes you forget anyone else ever played the role. She owns it completely, making Dolly Gallagher Levi her own with a perfect blend of vulnerability and brassy confidence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bette Midler is so good in Hello, Dolly! that she makes you forget anyone else ever played the role. She owns it completely, making Dolly Gallagher Levi her own with a perfect blend of vulnerability and brassy confidence.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (38 words)"
+  "contentTierReason": "Short text (38 words)",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bette Midler is so good in Hello, Dolly! that she makes you forget anyone else ever played the role.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise for the lead performance with superlative language ('so good', 'owns it completely', 'perfect blend'), indicating strong enthusiasm without reservations. | GPT-4o: The review offers unqualified praise for Bette Midler's performance, suggesting she completely owns the role and makes it unforgettable, indicating a strong recommendation. | Gemini: The review contains very high praise for Bette Midler's performance, stating she \"owns it completely\" and makes you forget other actresses who have played the role. This indicates a rave review. | Kimi: Unqualified superlatives for Midler's performance ('so good', 'owns it completely', 'perfect blend') with no reservations mentioned, implying a must-see star turn.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:39:23.902Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

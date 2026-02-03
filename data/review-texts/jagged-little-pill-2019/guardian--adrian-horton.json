@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jagged Little Pill feels like a show written by committee, with Morissette's songs shoehorned into a plot that tackles every social issue of the moment with the subtlety of a sledgehammer.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jagged Little Pill feels like a show written by committee, with Morissette's songs shoehorned into a plot that tackles every social issue of the moment with the subtlety of a sledgehammer.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jagged Little Pill feels like a show written by committee, with Morissette's songs shoehorned into a plot that tackles every social issue of the moment with the subtlety of a sledgehammer.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment criticizing the show as committee-written with forced song integration and heavy-handed social messaging. No positive elements mentioned to offset the criticism. | GPT-4o: The review criticizes the show for lacking subtlety and feeling forced, indicating a negative assessment without any redeeming praise. | Gemini: The review is clearly negative, criticizing the show's writing and integration of Morissette's songs. The phrase \"subtlety of a sledgehammer\" indicates a lack of nuance and a negative experience. | Kimi: The review describes the show as manufactured ('written by committee') and criticizes the heavy-handed integration of songs ('shoehorned') and themes ('subtlety of a sledgehammer'), indicating a clear negative assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:02:16.193Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

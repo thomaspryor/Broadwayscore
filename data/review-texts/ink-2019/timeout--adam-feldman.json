@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "James Graham's fact-based drama about the transformation of The Sun into a tabloid juggernaut is an energetic ensemble piece that captures the frenzied atmosphere of a newsroom in transition.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "James Graham's fact-based drama about the transformation of The Sun into a tabloid juggernaut is an energetic ensemble piece that captures the frenzied atmosphere of a newsroom in transition.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "James Graham's fact-based drama about the transformation of The Sun into a tabloid juggernaut is an energetic ensemble piece that captures the frenzied atmosphere of a newsroom in transition.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory. The review offers mild praise ('energetic ensemble piece') but lacks any clear recommendation or enthusiasm that would push it into Positive range. | GPT-4o: The original rating of 60 suggests a mixed review. The description of the play as 'energetic' and capturing a 'frenzied atmosphere' indicates some positive elements, but the lack of strong praise or recommendation aligns with a mixed verdict. | Gemini: The review describes the play as an 'energetic ensemble piece' and 'captures the frenzied atmosphere of a newsroom in transition,' but lacks a clear recommendation, placing it in the mixed category. The original rating of 60 aligns with this assessment. | Kimi: The critic's own rating of 60/100 places this squarely in the Mixed range, and the review offers qualified praise ('energetic', 'captures') without strong enthusiasm or clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:56:26.091Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

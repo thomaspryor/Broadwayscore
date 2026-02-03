@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The lavish Broadway revival of Stephen Sondheim's 'Follies' is a sumptuous treat for the eyes and ears, even if it doesn't quite capture the show's elusive emotional core.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The lavish Broadway revival of Stephen Sondheim's 'Follies' is a sumptuous treat for the eyes and ears, even if it doesn't quite capture the show's elusive emotional core.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The lavish Broadway revival of Stephen Sondheim's 'Follies' is a sumptuous treat for the eyes and ears, even if it doesn't quite capture the show's elusive emotional core.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Praises the production values ('sumptuous treat for the eyes and ears') but identifies a significant flaw in missing the emotional core, resulting in a qualified mixed assessment. | GPT-4o: The review praises the production's visual and auditory appeal, indicating a positive recommendation, but notes a significant reservation about its emotional impact. | Gemini: The review is positive overall, describing the production as a \"sumptuous treat\" but notes that it doesn't fully capture the emotional core of the show, indicating a recommendation with reservations. | Kimi: The critic offers clear praise for the production values ('lavish,' 'sumptuous treat') while noting a significant reservation about the emotional impact, indicating a qualified but firm recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:00:28.471Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

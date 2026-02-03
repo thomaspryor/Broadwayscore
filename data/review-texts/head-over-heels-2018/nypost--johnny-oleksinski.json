@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Broadway musical about a royal family — featuring the music of the Go-Go's — is stuffed with more glitter than a craft store explosion and more plastic than the Pacific Ocean.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Broadway musical about a royal family — featuring the music of the Go-Go's — is stuffed with more glitter than a craft store explosion and more plastic than the Pacific Ocean.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Broadway musical about a royal family — featuring the music of the Go-Go's — is stuffed with more glitter than a craft store explosion and more plastic than the Pacific Ocean.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic uses distinctly negative imagery comparing the show to excessive, artificial elements ('craft store explosion', 'plastic'). The tone is dismissive and suggests the production is overdone and inauthentic. | GPT-4o: The review uses hyperbolic negative comparisons to describe the show, indicating a strong negative verdict with no redeeming qualities mentioned. | Gemini: The review uses negative comparisons (craft store explosion, Pacific Ocean plastic) to describe the show, indicating a negative overall impression. | Kimi: The critic uses vivid negative metaphors (environmental pollution, chaotic explosion) to condemn the production aesthetic as cheap, excessive, and artificial. No positive elements are mentioned in this brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:36:44.894Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }
