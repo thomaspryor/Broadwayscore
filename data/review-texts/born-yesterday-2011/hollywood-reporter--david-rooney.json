@@ -5,7 +5,7 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/news/born-yesterday-theater-review-169602/",
   "publishDate": "April 25, 2011",
-  "fullText": "Nina Arianda brings fierce intelligence and surprising depth to the archetypal dumb blonde role of Billie Dawn in the Broadway revival of Garson Kanin's Born Yesterday.",
+  "fullText": "×\n \n \n \n\n \n \n \n\n \n\n \n\n \n \n \n \n \n\n \n \n \n\n \n \n \n\n \n\n \n Skip to main content \n\n \n \n \n \n\n \n \n \n\n \n \n \n\n \n \n \n\n \n \n\n \n\n \n \n \n \n\n \n \n \n\n \n \n\n \n \n \n\n \n\n \n \n \n \n \n By \n\n Andy Lewis\n\nHow to build a wine collection for free.\n As a solo artist in the ’70s, Hagar stocked his wine room by having his tour rider include a selection of fine wines for his dressing room. When promoter Bill Graham found out, he ordered the bottles uncorked.\n\nBackup plans.\n Even after his solo album, Standing Hampton, hit it big in 1982, Hagar still didn’t think he would have a long career as a singer, so he got his contractor’s license and invested in apartment buildings. After persuading officials in Fontana, Calif., to let him install sprinklers in a building rather than build a fire hydrant, Hagar started American Fire Chief Inc. It became the second-largest fire-sprinkler company in the U.S.\n\nVan Hating.\n He wants to settle scores with Eddie and Alex Van Halen. He uses the occasional nice word (Eddie was “one of the sweetest guys I ever met”) to stick the shiv in and twist. The brothers are greedy, paranoid and jealous. They are crappy businessmen who only make money when Hagar joined the band, and only occasionally are good businessmen.\n\nBusiness mogul.\n In 2007, he sold 80 percent of Cabo Wabo, the tequila brand he started in the late 1990s, to Campari for $80 million.",
   "isFullReview": false,
   "dtliExcerpt": "Nina Arianda brings fierce intelligence and surprising depth to the archetypal dumb blonde role of Billie Dawn in the Broadway revival of Garson Kanin's Born Yesterday.",
   "originalScore": null,
@@ -72,5 +72,48 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 75,
+  "textWordCount": 214,
+  "archivePath": "data/archives/reviews/born-yesterday-2011/hollywood-reporter--david-rooney_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T16:58:32.818Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 214 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wordCount": 214,
+  "tierReason": "Short text (214 words)"
 }
