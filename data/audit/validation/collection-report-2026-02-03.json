@@ -1,44 +1,44 @@
 {
-  "runDate": "2026-02-03T01:10:10.053Z",
+  "runDate": "2026-02-03T02:02:41.225Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "patriots-2024",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 6,
+    "processed": 38,
+    "failed": 20,
     "skipped": 0,
-    "successRate": "45.5%"
+    "successRate": "65.5%"
   },
   "tierBreakdown": {
-    "playwright": 2,
-    "browserbase": 0,
-    "scrapingbee": 2,
-    "brightdata": 0,
-    "archive": 2
+    "playwright": 7,
+    "browserbase": 4,
+    "scrapingbee": 9,
+    "brightdata": 8,
+    "archive": 13
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 3,
-    "tier1_5Attempts": 3,
+    "tier1Attempts": 8,
+    "tier1Success": 6,
+    "tier1_5Attempts": 10,
     "tier1_5Success": 0,
-    "tier2Attempts": 7,
-    "tier2Success": 3,
-    "tier3Attempts": 5,
-    "tier3Success": 2,
-    "tier4Attempts": 11,
-    "tier4Success": 4,
-    "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 40,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 4.6,
-    "urlDiscoveryAttempts": 0,
+    "tier2Attempts": 19,
+    "tier2Success": 6,
+    "tier3Attempts": 13,
+    "tier3Success": 12,
+    "tier4Attempts": 28,
+    "tier4Success": 5,
+    "totalFailed": 7,
+    "scrapingBeeCreditsUsed": 141,
+    "browserbaseSessionsUsed": 10,
+    "browserbaseMinutesUsed": 10.8,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -47,7 +47,40 @@
     "patriots-2024/deadline--pete-hammond.json",
     "patriots-2024/guardian--michael-billington.json",
     "patriots-2024/new-york-sun--elysa-gardner.json",
-    "patriots-2024/theatermania--jesse-green.json"
+    "patriots-2024/theatermania--jesse-green.json",
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+    "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
+    "cabaret-2024/variety--naveen-kumar.json",
+    "chicago-1996/nytimes--ben-brantley.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "harry-potter-2021/variety--marilyn-stasio.json",
+    "here-lies-love-2023/hollywood-reporter--angie-han.json",
+    "illinoise-2024/hollywood-reporter--david-rooney.json",
+    "just-for-us-2023/nytimes--jesse-green.json",
+    "mary-jane-2024/hollywood-reporter--david-rooney.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "doubt-2024/theatermania--andy-propst.json",
+    "doubt-2024/wsj--charles-isherwood.json",
+    "gutenberg-2023/theatermania--jesse-green.json",
+    "hadestown-2019/theatermania--jesse-green.json",
+    "hamilton-2015/theatermania--adam-feldman.json",
+    "here-lies-love-2023/theatermania--adam-feldman.json",
+    "how-to-dance-in-ohio-2023/theatermania--david-finkle.json",
+    "mary-jane-2024/theatermania--jesse-green.json",
+    "moulin-rouge-2019/theatermania--jesse-green.json",
+    "our-town-2024/theatermania--jesse-green.json",
+    "six-2021/theatermania--jesse-green.json",
+    "suffs-2024/ew--kristen-baldwin.json",
+    "the-roommate-2024/theatermania--jesse-green.json",
+    "the-shark-is-broken-2023/theatermania--jesse-green.json",
+    "uncle-vanya-2024/theatermania--jesse-green.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "aladdin-2014/nbcny--dave-quinn.json",
+    "harry-potter-2021/dcmetro--deb-miller.json",
+    "hells-kitchen-2024/ap--mark-kennedy.json",
+    "mj-2022/ap--mark-kennedy.json"
   ],
   "failed": [
     "patriots-2024/deadline--greg-evans.json",
@@ -55,42 +88,86 @@
     "patriots-2024/wsj--charles-isherwood.json",
     "patriots-2024/wsj--terry-teachout.json",
     "patriots-2024/nysr--frank-scheck.json",
-    "patriots-2024/talkinbroadway--matthew-murray.json"
+    "patriots-2024/talkinbroadway--matthew-murray.json",
+    "buena-vista-social-club-2025/nyt-theater--jonathan-mandell.json",
+    "cabaret-2024/nyt-theater--jonathan-mandell.json",
+    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+    "hamilton-2015/variety--charles-isherwood.json",
+    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
+    "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "mj-2022/hollywood-reporter--david-rooney.json",
+    "the-lion-king-1997/nytimes--ben-brantley.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "an-enemy-of-the-people-2024/wsj--unknown.json",
+    "gutenberg-2023/wsj--charles-isherwood.json",
+    "marjorie-prime-2025/wsj--charles-isherwood.json",
+    "mary-jane-2024/ew--kristen-baldwin.json",
+    "merrily-we-roll-along-2023/wsj--charles-isherwood.json"
   ],
   "tierDetails": {
     "playwright": [
       "patriots-2024/deadline--greg-evans.json",
-      "patriots-2024/deadline--pete-hammond.json"
+      "patriots-2024/deadline--pete-hammond.json",
+      "suffs-2024/ew--kristen-baldwin.json",
+      "aladdin-2014/ap--mark-kennedy.json",
+      "aladdin-2014/nbcny--dave-quinn.json",
+      "hells-kitchen-2024/ap--mark-kennedy.json",
+      "mj-2022/ap--mark-kennedy.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+    ],
     "scrapingbee": [
       "patriots-2024/guardian--michael-billington.json",
-      "patriots-2024/theatermania--jesse-green.json"
+      "patriots-2024/theatermania--jesse-green.json",
+      "grey-house-2023/newyorker--dan-stahl.json",
+      "doubt-2024/theatermania--andy-propst.json",
+      "hadestown-2019/theatermania--jesse-green.json",
+      "hamilton-2015/theatermania--adam-feldman.json",
+      "here-lies-love-2023/theatermania--adam-feldman.json",
+      "how-to-dance-in-ohio-2023/theatermania--david-finkle.json",
+      "moulin-rouge-2019/theatermania--jesse-green.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "doubt-2024/wsj--charles-isherwood.json",
+      "gutenberg-2023/theatermania--jesse-green.json",
+      "mary-jane-2024/theatermania--jesse-green.json",
+      "our-town-2024/theatermania--jesse-green.json",
+      "six-2021/theatermania--jesse-green.json",
+      "the-roommate-2024/theatermania--jesse-green.json",
+      "the-shark-is-broken-2023/theatermania--jesse-green.json",
+      "uncle-vanya-2024/theatermania--jesse-green.json"
+    ],
     "archive": [
       "patriots-2024/broadwaynews--brittani-samuel.json",
-      "patriots-2024/new-york-sun--elysa-gardner.json"
+      "patriots-2024/new-york-sun--elysa-gardner.json",
+      "aladdin-2014/hollywood-reporter--david-rooney.json",
+      "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+      "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
+      "cabaret-2024/variety--naveen-kumar.json",
+      "chicago-1996/nytimes--ben-brantley.json",
+      "harry-potter-2021/variety--marilyn-stasio.json",
+      "here-lies-love-2023/hollywood-reporter--angie-han.json",
+      "illinoise-2024/hollywood-reporter--david-rooney.json",
+      "just-for-us-2023/nytimes--jesse-green.json",
+      "mary-jane-2024/hollywood-reporter--david-rooney.json",
+      "harry-potter-2021/dcmetro--deb-miller.json"
     ]
   },
   "failuresByOutlet": {
-    "The Wall Street Journal": {
+    "New Jersey Newsroom": {
       "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "New York Stage Review": {
-      "count": 1,
-      "domain": "didtheylikeit.com",
+      "domain": "newjerseynewsroom.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Talkin' Broadway": {
+    "Entertainment Weekly": {
       "count": 1,
-      "domain": "talkinbroadway.com",
+      "domain": "ew.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
