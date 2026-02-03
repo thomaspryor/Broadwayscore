@@ -54,6 +54,18 @@ on:
         description: 'Filter by content tier: excerpt, truncated, needs-rescrape (empty = all)'
         required: false
         default: ''
+      chain:
+        description: 'Auto-trigger next batch when this one finishes (true/false)'
+        required: false
+        default: 'false'
+      remaining_batches:
+        description: 'Remaining batches for chaining (decrements each run, 0 = stop)'
+        required: false
+        default: '0'
+      chain_browserbase_budget:
+        description: 'Remaining Browserbase sessions across chained runs (daily cap awareness)'
+        required: false
+        default: '30'
 
 ## PARALLEL RUNS: Max 5 simultaneous runs recommended.
 ## Browserbase daily limit is 30 sessions; default 5/run × 5 runs = 25 (safe).
@@ -198,6 +210,85 @@ jobs:
             data/audit/validation/collection-report-*.json
             data/collection-state/progress.json
           retention-days: 30
+
+      - name: Count remaining reviews needing text
+        if: ${{ inputs.chain == 'true' }}
+        id: count-remaining
+        run: |
+          REMAINING=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const dirs = fs.readdirSync(base).filter(d => fs.statSync(path.join(base, d)).isDirectory());
+            let n = 0;
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json')).forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (r.url && !r.fullText) n++;
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          echo "Reviews still needing full text: $REMAINING"
+
+      - name: Chain next collection batch
+        if: ${{ inputs.chain == 'true' && steps.count-remaining.outputs.remaining > 10 }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BATCHES_LEFT=${{ inputs.remaining_batches }}
+          if [ "$BATCHES_LEFT" -le 0 ] 2>/dev/null; then
+            echo "No remaining batches. Chain complete."
+            exit 0
+          fi
+
+          NEXT_BATCHES=$((BATCHES_LEFT - 1))
+
+          # Browserbase budget tracking across chain
+          BB_BUDGET=${{ inputs.chain_browserbase_budget }}
+          BB_PER_RUN=${{ inputs.browserbase_max_sessions }}
+          BB_PER_RUN="${BB_PER_RUN:-20}"
+          NEXT_BB_BUDGET=$((BB_BUDGET - BB_PER_RUN))
+
+          # Determine Browserbase settings for next run
+          if [ "$NEXT_BB_BUDGET" -le 0 ]; then
+            echo "Browserbase daily budget exhausted. Next run without Browserbase."
+            NEXT_BB_ENABLED="false"
+            NEXT_BB_SESSIONS="0"
+            NEXT_BB_BUDGET="0"
+          else
+            NEXT_BB_ENABLED="true"
+            # Cap next run's sessions to remaining budget
+            if [ "$BB_PER_RUN" -gt "$NEXT_BB_BUDGET" ]; then
+              NEXT_BB_SESSIONS="$NEXT_BB_BUDGET"
+            else
+              NEXT_BB_SESSIONS="$BB_PER_RUN"
+            fi
+          fi
+
+          echo "Dispatching next batch..."
+          echo "  Remaining batches after this: $NEXT_BATCHES"
+          echo "  Browserbase budget remaining: $NEXT_BB_BUDGET sessions"
+          echo "  Browserbase this run: $NEXT_BB_ENABLED ($NEXT_BB_SESSIONS sessions)"
+          echo "  Reviews still needing text: ${{ steps.count-remaining.outputs.remaining }}"
+
+          TIER_FILTER="${{ inputs.content_tier }}"
+
+          gh workflow run "Collect Review Texts" \
+            -f max_reviews=${{ inputs.max_reviews }} \
+            -f batch_size=${{ inputs.batch_size }} \
+            -f browserbase_enabled="$NEXT_BB_ENABLED" \
+            -f browserbase_max_sessions="$NEXT_BB_SESSIONS" \
+            -f retry_failed=${{ inputs.retry_failed }} \
+            -f archive_first=${{ inputs.archive_first }} \
+            -f content_tier="$TIER_FILTER" \
+            -f chain=true \
+            -f remaining_batches="$NEXT_BATCHES" \
+            -f chain_browserbase_budget="$NEXT_BB_BUDGET"
+
+          echo "Next batch dispatched successfully."
 
   # Parallel multi-job mode (matrix strategy)
   collect-reviews-parallel:
