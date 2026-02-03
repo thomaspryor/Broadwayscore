@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Yahya Abdul-Mateen II and Corey Hawkins are electric as feuding brothers in Suzan-Lori Parks' Pulitzer Prize-winning play. The two actors bring raw intensity and authentic chemistry to this devastating drama about sibling rivalry and survival.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yahya Abdul-Mateen II and Corey Hawkins are electric as feuding brothers in Suzan-Lori Parks' Pulitzer Prize-winning play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for lead performances with enthusiastic language ('electric', 'raw intensity', 'devastating drama'), but limited scope of review focusing primarily on acting rather than full production assessment. | GPT-4o: The review uses strong positive language ('electric', 'raw intensity', 'authentic chemistry') to describe the performances, indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"electric\", \"raw intensity\", and \"authentic chemistry\", clearly recommending the play for its performances. | Kimi: The critic offers enthusiastic praise for the lead performances ('electric', 'raw intensity') and the dramatic impact, clearly recommending the production despite the brief text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:28:37.252Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

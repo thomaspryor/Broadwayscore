@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Thanksgiving Play is a sharp, funny satire about well-meaning white liberals trying to create an inclusive Thanksgiving pageant, but it's also a play that knows exactly how to skewer its targets without losing its humanity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "web-search",
     "playbill-verdict"
   ],
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Thanksgiving Play is a sharp, funny satire",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('sharp, funny') with praise for the show's satirical effectiveness and humanity, indicating a solid recommendation. | GPT-4o: The review praises the play as 'sharp' and 'funny' while maintaining humanity, indicating a positive recommendation. However, the brevity of the review limits the confidence level. | Gemini: The review describes the play as \"sharp\" and \"funny\", and praises its ability to \"skewer its targets without losing its humanity\", indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The excerpt provides unambiguous praise, calling the show 'sharp' and 'funny' while commending its ability to balance satire with humanity, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:23:12.776Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

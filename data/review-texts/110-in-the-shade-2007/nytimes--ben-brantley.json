@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The sun beats down mercilessly on a parched Western town in '110 in the Shade,' the new Broadway revival of the 1963 musical that opened last night at Studio 54. Unfortunately, the production itself feels equally dried out.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The sun beats down mercilessly on a parched Western town in '110 in the Shade,' the new Broadway revival of the 1963 musical that opened last night at Studio 54. Unfortunately, the production itself feels equally dried out.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, the production itself feels equally dried out.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic directly states the production 'feels equally dried out,' which is clearly negative language. However, this is only one excerpt from a single curated quote, so the full review verdict remains uncertain. | GPT-4o: The excerpt suggests a negative view of the production, comparing it to a 'dried out' environment, indicating disappointment. However, with only one excerpt, the full context is unclear, leading to low confidence. | Gemini: The review excerpt directly states the production feels \"dried out\", indicating a negative assessment. Given this single excerpt, a negative bucket is appropriate. | Kimi: The critic explicitly describes the Broadway revival as 'dried out,' unfavorably comparing its vitality to the parched desert setting and indicating the production lacks energy and substance. Given only one excerpt is available, confidence is reduced, but the language clearly signals a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:35:33.338Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

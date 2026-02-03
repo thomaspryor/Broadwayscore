@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This adaptation of Natalie Babbitt's beloved children's novel about a family cursed with eternal life has been turned into a gentle, old-fashioned musical that's heavy on sentiment and light on surprises.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "heavy on sentiment and light on surprises",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review describes the show as 'gentle' and 'old-fashioned' which could be positive, but 'heavy on sentiment and light on surprises' suggests predictability and lack of theatrical excitement. No clear recommendation either way. | GPT-4o: The review describes the musical as 'gentle' and 'old-fashioned' but also 'heavy on sentiment and light on surprises,' indicating a lack of enthusiasm or strong recommendation. | Gemini: The review uses neutral language, suggesting a middling experience. It doesn't explicitly recommend or discourage seeing the show. | Kimi: The review offers a balanced but unenthusiastic assessment, acknowledging the show's gentle, old-fashioned charm while criticizing it for being overly sentimental and predictable ('light on surprises'). With only one sentence provided, the verdict lacks clear recommendation language.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:29:58.019Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

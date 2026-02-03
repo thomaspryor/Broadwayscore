@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Beetlejuice is a crowd-pleasing musical that delivers on its promise of irreverent fun, even if it doesn't always hit the emotional beats it's aiming for.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Beetlejuice is a crowd-pleasing musical that delivers on its promise of irreverent fun, even if it doesn't always hit the emotional beats it's aiming for.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Beetlejuice is a crowd-pleasing musical that delivers on its promise of irreverent fun, even if it doesn't always hit the emotional beats it's aiming for.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('crowd-pleasing', 'delivers on its promise') but with notable reservations about emotional depth. Single excerpt limits confidence in full verdict. | GPT-4o: The review excerpt describes the show as 'crowd-pleasing' and delivering 'irreverent fun', indicating a positive experience. However, it notes some shortcomings in emotional impact, suggesting reservations. | Gemini: The review states that the musical is \"crowd-pleasing\" and \"delivers on its promise\", which indicates a positive recommendation. However, the phrase \"even if it doesn't always hit the emotional beats it's aiming for\" suggests some reservations, placing it in the lower end of the positive bucket. | Kimi: The excerpt offers clear praise ('crowd-pleasing,' 'delivers') with a minor caveat about emotional impact, placing it in the Positive bucket. Score reflects the 'clearly positive' instruction for single excerpts, with low confidence due to limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:44:51.276Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new 'Pippin' is a gorgeous piece of eye candy, featuring some of the most spectacular circus-infused staging you'll see on Broadway. But it's also a show that prioritizes visual spectacle over emotional connection.",
   "originalScore": 75,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new 'Pippin' is a gorgeous piece of eye candy, featuring some of the most spectacular circus-infused staging you'll see on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges spectacular visual elements but criticizes the lack of emotional connection. The 75 rating suggests positive elements, but the 'but' construction and emphasis on prioritizing spectacle over substance indicates a mixed recommendation. | GPT-4o: The critic's original rating of 75 suggests a positive review. The review praises the visual spectacle but notes a lack of emotional connection, indicating a recommendation with some reservations. | Gemini: The review acknowledges the show's visual appeal but also notes a lack of emotional connection, aligning with a 'Positive' bucket and a score of 75. | Kimi: The critic offers enthusiastic praise for the visual spectacle and staging while noting a significant reservation about the lack of emotional connection, resulting in a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:47:42.726Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This blazingly youthful musical, inspired by Frank Wedekind's 1891 play about the traumas of adolescent sexuality, turns the traditional coming-of-age story inside out with a combination of period costume drama and contemporary rock anthems.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (34 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.nytimes.com/2015/09/28/theater/review-spring-awakening-by-deaf-west-theater-brings-a-new-sensation-to-broadway.html?_r=0",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-03T19:56:37.287Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief plot summary or description without any critical evaluation or recommendation about the show's quality.; openai: The text is a description of the musical's concept and style, not an evaluative review.; gemini: This is a plot summary with no evaluative content or critical opinion.",
+  "promptVersion": "5.2.0"
 }

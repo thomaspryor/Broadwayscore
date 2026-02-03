@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Clifford Odets's 1935 drama about a working-class Jewish family in the Bronx during the Depression has been assembled with obvious care and affection.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Clifford Odets's 1935 drama about a working-class Jewish family in the Bronx during the Depression has been assembled with obvious care and affection.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival has been assembled with obvious care and affection.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes a production made with 'obvious care and affection' which suggests positive regard, but the measured tone and lack of stronger superlatives indicates mild rather than strong praise. Low confidence due to single excerpt limitation. | GPT-4o: The excerpt indicates a positive view of the production's assembly, suggesting a recommendation. However, without more context, it's unclear if there are significant reservations or if the praise is limited. The confidence is low due to the single excerpt warning. | Gemini: The excerpt indicates a positive sentiment, noting the production was assembled with \"care and affection.\" Given it's a single excerpt, the confidence is low, and the score is placed at the lower end of the positive range. | Kimi: The excerpt offers warm but measured praise emphasizing craftsmanship and dedication rather than theatrical excitement, suggesting a qualified recommendation. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:44:21.901Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

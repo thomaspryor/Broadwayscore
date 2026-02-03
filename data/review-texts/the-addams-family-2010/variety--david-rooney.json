@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "While the show has its charms and Nathan Lane delivers a characteristically robust comic performance as Gomez, the musical feels oddly sanitized and conventional for a property built on gleeful morbidity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "While the show has its charms and Nathan Lane delivers a characteristically robust comic performance as Gomez, the musical feels oddly sanitized and conventional for a property built on gleeful morbidity.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical feels oddly sanitized and conventional for a property built on gleeful morbidity",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review acknowledges positive elements (Lane's performance, show's charms) but the core criticism that it feels 'sanitized and conventional' suggests disappointment with the overall execution, placing it in mixed territory. | GPT-4o: The review acknowledges some positive elements, like Nathan Lane's performance, but criticizes the overall production as 'sanitized and conventional,' indicating a mixed reception. | Gemini: The review acknowledges positive aspects like Nathan Lane's performance but ultimately finds the musical \"oddly sanitized and conventional,\" indicating a mixed assessment. | Kimi: Acknowledges the show's charms and Nathan Lane's strong performance but ultimately finds the production too sanitized and conventional for the source material, resulting in a mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:01:58.291Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

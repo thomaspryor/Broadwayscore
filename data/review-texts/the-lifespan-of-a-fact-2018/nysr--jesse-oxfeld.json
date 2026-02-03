@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play The Lifespan of a Fact is an amusing evening at the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic gives 3/5 stars and delivers a balanced assessment that acknowledges strong performances and direction while identifying fundamental problems with the adaptation. The concluding verdict of 'amusing evening' is lukewarm praise that doesn't constitute a recommendation. | GPT-4o: The review acknowledges the play's enjoyable aspects, particularly the performances, but criticizes its execution and relevance, leading to a mixed recommendation. | Gemini: The review acknowledges some positive aspects, such as the performances and direction, but ultimately finds the play \"frustratingly empty\" and less compelling than the book it's based on. The final verdict is that it's an \"amusing evening at the theater,\" which suggests a mixed recommendation. | Kimi: The 3/5 star rating reflects substantial criticism of the script as 'frustratingly empty' and 'ersatz' alongside praise for the 'starry, excellent cast' and stylish direction, resulting in a genuinely mixed assessment that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:15:15.675Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

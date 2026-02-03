@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is essentially a feature-length expansion of a sketch that might have struggled to fill even a half-hour slot, but the committed goofiness of Mulaney and Kroll makes it surprisingly sustainable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The show is essentially a feature-length expansion of a sketch that might have struggled to fill even a half-hour slot, but the committed goofiness of Mulaney and Kroll makes it surprisingly sustainable.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the committed goofiness of Mulaney and Kroll makes it surprisingly sustainable",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite calling it a stretched sketch, the critic finds it 'surprisingly sustainable' due to the lead performances, indicating a qualified but positive recommendation. | GPT-4o: The review acknowledges the show's limited premise but credits the performers' energy for making it work, suggesting a mixed but not strongly positive or negative view. | Gemini: The review acknowledges the show's thin premise but ultimately finds it enjoyable due to the performers' commitment. This makes it a positive, but qualified, recommendation. | Kimi: While the critic criticizes the thin material stretched to feature length, the verdict credits the performers' committed goofiness with making the show 'surprisingly sustainable,' indicating a guarded but positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:41:17.839Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheerfully dopey musical adaptation of Adam Sandler's 1998 rom-com is a harmless piece of fluff that should find a ready audience among fans of the original film and theatergoers seeking undemanding entertainment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This cheerfully dopey musical adaptation of Adam Sandler's 1998 rom-com is a harmless piece of fluff that should find a ready audience among fans of the original film and theatergoers seeking undemanding entertainment.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This cheerfully dopey musical adaptation is a harmless piece of fluff that should find a ready audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic uses notably lukewarm language - 'cheerfully dopey,' 'harmless piece of fluff,' and 'undemanding entertainment' - which suggests the show is inoffensive but not particularly good. This is classic mixed territory: not recommending against it, but certainly not endorsing it either. | GPT-4o: The review describes the show as 'cheerfully dopey' and 'harmless fluff,' suggesting it is light and undemanding. It neither strongly recommends nor discourages, indicating a mixed verdict. | Gemini: The review calls the show \"harmless fluff\" and says it \"should find a ready audience,\" indicating a positive but not enthusiastic recommendation. | Kimi: The critic uses faint praise ('harmless piece of fluff,' 'undemanding entertainment') to describe a lightweight show that serves its niche but lacks substance, neither recommending it nor warning audiences away.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:24:36.396Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

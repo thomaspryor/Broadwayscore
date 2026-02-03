@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What's most remarkable about Waitress is how it manages to be both deeply personal and broadly universal, finding the extraordinary in the ordinary through Sara Bareilles's gorgeous score and Jessie Nelson's heartfelt book.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "What's most remarkable about Waitress is how it manages to be both deeply personal and broadly universal, finding the extraordinary in the ordinary through Sara Bareilles's gorgeous score and Jessie Nelson's heartfelt book.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What's most remarkable about Waitress is how it manages to be both deeply personal and broadly universal",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the score ('gorgeous') and book ('heartfelt'), with appreciation for the show's emotional resonance. However, this appears to be a brief excerpt, limiting confidence in the full critical assessment. | GPT-4o: The review praises the show for its ability to connect on both personal and universal levels, highlighting the 'gorgeous score' and 'heartfelt book'. The language used is enthusiastic and unqualified, indicating a strong recommendation. | Gemini: The review praises the show's ability to be both personal and universal, highlighting the score and book as strengths, indicating a positive recommendation. | Kimi: The critic employs strongly positive language ('remarkable', 'gorgeous', 'heartfelt') to praise the score, book, and emotional resonance, indicating a solid recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:32:13.802Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

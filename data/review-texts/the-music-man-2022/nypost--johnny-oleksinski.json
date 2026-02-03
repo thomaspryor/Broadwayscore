@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Hugh Jackman and Sutton Foster are Broadway royalty, and they reign supreme in this gorgeous revival of 'The Music Man.'",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -46,5 +46,62 @@
   "archiveOrgTimestamp": "20220211034535",
   "archiveOrgUrl": "http://web.archive.org/web/20220211034535/https://nypost.com/2022/02/10/the-music-man-review-hugh-jackmans-revival-is-a-let-down/",
   "wordCount": 792,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 64,
+    "confidence": "low",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She's a wonder and the main reason to buy a ticket.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The critic clearly states the show 'does not live up to our oversize expectations' and finds major problems with Jackman's performance and the production's identity, but praises Sutton Foster as 'the main reason to buy a ticket' and acknowledges the strong supporting cast. | GPT-4o: The review expresses disappointment with the production, noting that it does not meet expectations and criticizes Jackman's performance and the overall execution. While Sutton Foster is praised, the overall recommendation is negative. | Gemini: The review praises Sutton Foster's performance as the main reason to see the show, but criticizes Jackman's performance and the overall production, resulting in a mixed recommendation. | Kimi: While the critic expresses disappointment with Jackman's performance, the uneven direction, and the production's failure to live up to the material, they explicitly recommend purchasing a ticket specifically to see Sutton Foster's standout performance, which qualifies this as a bare-minimum positive recommendation. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:17:38.609Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 65,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 26,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

@@ -17,5 +17,60 @@
   "playbillVerdictUrl": "http://nystagereview.com/2022/01/26/skeleton-crew-dominique-morisseaus-ode-to-a-shrinking-industry/",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Skeleton Crew proves a well-meaning, respectable play that ultimately underwhelms.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with consistent critique of weak drama and characters despite acknowledging fine acting and sociological relevance. Clear mixed verdict with more negative than positive elements. | GPT-4o: The review highlights the play's strengths in atmosphere and sociological resonance but criticizes its lack of compelling drama and character development. The critic's 3/5 star rating aligns with a mixed verdict. | Gemini: The review acknowledges the play's strengths (atmosphere, sociological resonance, fine acting) but ultimately finds it underwhelming due to a lack of compelling drama and an engrossing narrative. The 3/5 star rating aligns with a mixed assessment. | Kimi: The 3/5 star rating and mixed verdict acknowledge strong performances and sociological resonance but criticize the lack of dramatic tension and the production's failure to translate effectively to the Broadway stage, resulting in an overall underwhelming experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:54:03.199Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
