@@ -7312,18 +7312,6 @@
     "timestamp": "2026-02-02T18:48:48.006Z"
   },
   {
-    "reviewId": "maybe-happy-ending-2024/timeout--adam-feldman.json",
-    "showId": "maybe-happy-ending-2024",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6704,
-    "timestamp": "2026-02-02T18:49:38.781Z"
-  },
-  {
     "reviewId": "mary-jane-2024/broadwaynews--brittani-samuel.json",
     "showId": "mary-jane-2024",
     "outlet": "Broadway News",
@@ -7526,42 +7514,6 @@
     "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
     "textLength": 7239,
     "timestamp": "2026-02-03T02:19:51.188Z"
-  },
-  {
-    "reviewId": "mother-play-2024/wsj--charles-isherwood.json",
-    "showId": "mother-play-2024",
-    "outlet": "The Wall Street Journal",
-    "critic": "Charles Isherwood",
-    "url": "https://www.wsj.com/articles/mother-play-review-jessica-langes-tortured-vision-of-parenthood-2850835f?mod=latest_headlines",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2024 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 679,
-    "timestamp": "2026-02-03T02:20:04.701Z"
-  },
-  {
-    "reviewId": "moulin-rouge-2019/observer--david-cote.json",
-    "showId": "moulin-rouge-2019",
-    "outlet": "Observer",
-    "critic": "David Cote",
-    "url": "https://observer.com/2019/08/moulin-rouge-the-musical-kitsch-glitz-review-broadway/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"ad blocker\"",
-    "textLength": 7668,
-    "timestamp": "2026-02-03T02:20:51.502Z"
-  },
-  {
-    "reviewId": "moulin-rouge-2019/observer--rex-reed.json",
-    "showId": "moulin-rouge-2019",
-    "outlet": "Observer",
-    "critic": "Rex Reed",
-    "url": "https://observer.com/2019/07/moulin-rouge-broadway-review/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"ad blocker\"",
-    "textLength": 582,
-    "timestamp": "2026-02-03T02:21:11.276Z"
   },
   {
     "reviewId": "moulin-rouge-2019/timeout--adam-feldman.json",
@@ -8246,5 +8198,65 @@
     "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
     "textLength": 5770,
     "timestamp": "2026-02-03T03:09:27.799Z"
+  },
+  {
+    "reviewId": "maybe-happy-ending-2024/timeout--adam-feldman.json",
+    "showId": "maybe-happy-ending-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6720,
+    "timestamp": "2026-02-03T03:10:54.558Z"
+  },
+  {
+    "reviewId": "mj-2022/timeout--adam-feldman.json",
+    "showId": "mj-2022",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/mj-broadway-review-michael-jackson-musical",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 8370,
+    "timestamp": "2026-02-03T03:12:42.492Z"
+  },
+  {
+    "reviewId": "mother-play-2024/wsj--charles-isherwood.json",
+    "showId": "mother-play-2024",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/mother-play-review-jessica-langes-tortured-vision-of-parenthood-2850835f?mod=latest_headlines",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2026 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 906,
+    "timestamp": "2026-02-03T03:13:47.269Z"
+  },
+  {
+    "reviewId": "moulin-rouge-2019/observer--david-cote.json",
+    "showId": "moulin-rouge-2019",
+    "outlet": "Observer",
+    "critic": "David Cote",
+    "url": "https://observer.com/2019/08/moulin-rouge-the-musical-kitsch-glitz-review-broadway/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 7668,
+    "timestamp": "2026-02-03T03:14:21.769Z"
+  },
+  {
+    "reviewId": "moulin-rouge-2019/observer--rex-reed.json",
+    "showId": "moulin-rouge-2019",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2019/07/moulin-rouge-broadway-review/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 582,
+    "timestamp": "2026-02-03T03:14:38.304Z"
   }
 ]
