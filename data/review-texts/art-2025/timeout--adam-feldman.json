@@ -1,0 +1,75 @@
+{
+  "showId": "art-2025",
+  "outletId": "timeout",
+  "outlet": "Time Out New York",
+  "criticName": "Adam Feldman",
+  "url": "https://www.timeout.com/newyork/theater/art-broadway-review-revival-play-james-corden-bobby-cannavale-neil-patrick-harris",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "The result is a slender but amusing 90-minute evening of Broadway entertainment. Is it art? Maybe not. But why argue?",
+  "originalScore": null,
+  "assignedScore": 72,
+  "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a slender but amusing 90-minute evening of Broadway entertainment.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Is it art? Maybe not.",
+        "sentiment": "negative",
+        "strength": 2
+      },
+      {
+        "quote": "But why argue?",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic finds it 'amusing' entertainment worth not arguing about, suggesting a qualified recommendation despite acknowledging it may not be high art.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:09:23.247Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2675,
+    "outputTokens": 311,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  }
+}

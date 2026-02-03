@@ -1,0 +1,65 @@
+{
+  "showId": "art-2025",
+  "outletId": "variety",
+  "outlet": "Variety",
+  "criticName": "Daniel D'Addario",
+  "url": "https://variety.com/2025/legit/reviews/art-review-broadway-play-james-corden-1236519571/",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "Corden is reasserting himself as a major theater actor, and his turn as the wobbliest vertex of a friendship triangle would, alone, make the new production of this slippery social satire worth seeing.",
+  "originalScore": null,
+  "assignedScore": 78,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Corden is reasserting himself as a major theater actor, and his turn as the wobbliest vertex of a friendship triangle would, alone, make the new production of this slippery social satire worth seeing.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic explicitly states the production is 'worth seeing' based solely on Corden's performance, indicating a clear positive recommendation despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:09:27.651Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2693,
+    "outputTokens": 276,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt with verdict"
+    }
+  }
+}

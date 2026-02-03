@@ -1,0 +1,70 @@
+{
+  "showId": "art-2025",
+  "outletId": "nysr",
+  "outlet": "New York Stage Review",
+  "criticName": "David Finkle",
+  "url": "https://nystagereview.com/2025/09/16/art-male-friends-argue-on-a-flashy-canvas/",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "That manosphere quadrant is being invaded again, zut alors, with a revival crisply directed by Scott Ellis and this time marquee-boasting, in alphabetical order, Bobby Cannavale, James Corden, and Neil Patrick Harris. Although bowing early in the 2025-26 season, it already shows strong signs of eventual Tony noms when the time comes.",
+  "originalScore": null,
+  "assignedScore": 78,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "A revival crisply directed by Scott Ellis.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "It already shows strong signs of eventual Tony noms when the time comes.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic praises the direction as 'crisp' and predicts Tony nominations, suggesting a quality production worth seeing, though the brief excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:08:46.038Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2730,
+    "outputTokens": 283,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  }
+}

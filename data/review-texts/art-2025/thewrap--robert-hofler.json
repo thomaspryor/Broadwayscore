@@ -1,0 +1,70 @@
+{
+  "showId": "art-2025",
+  "outletId": "thewrap",
+  "outlet": "TheWrap",
+  "criticName": "Robert Hofler",
+  "url": "https://www.thewrap.com/art-broadway-review-bobby-cannavale-james-corden-neil-patrick-harris/",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "In this respect, “Art” is a poor man’s “Glengarry Glenross.” Here are plays that are often revived because stars want to appear in them so they can deliver these showy acting-class scenes.",
+  "originalScore": null,
+  "assignedScore": 25,
+  "source": "dtli",
+  "dtliThumb": "DOWN",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 25,
+    "confidence": "low",
+    "range": {
+      "low": 15,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 25,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In this respect, \"Art\" is a poor man's \"Glengarry Glenross.\"",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Here are plays that are often revived because stars want to appear in them so they can deliver these showy acting-class scenes.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic dismisses the play as inferior to a superior work and suggests it's revived only for actor vanity, not artistic merit.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:09:18.578Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2697,
+    "outputTokens": 307,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  }
+}

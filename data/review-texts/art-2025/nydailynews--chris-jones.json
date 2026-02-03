@@ -1,0 +1,70 @@
+{
+  "showId": "art-2025",
+  "outletId": "nydailynews",
+  "outlet": "New York Daily News",
+  "criticName": "Chris Jones",
+  "url": "https://www.nydailynews.com/2025/09/16/broadway-review-art-revival-james-corden-neil-patrick-harris-bobby-cannavale/",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "If you saw “Art” back in its heyday, you likely forgot the finer points of the plot. It is forgettable. But there is no credible arguing with this level of audience-pleasing success. This very fun revival at least makes the case that forgettability can be an asset and “Art’ enjoyed over and over again.",
+  "originalScore": null,
+  "assignedScore": 78,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This very fun revival at least makes the case that forgettability can be an asset.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There is no credible arguing with this level of audience-pleasing success.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "Despite calling the plot 'forgettable,' the critic frames this as an asset and emphasizes the production's 'audience-pleasing success' and 'very fun' qualities, indicating a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:08:36.619Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2720,
+    "outputTokens": 305,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  }
+}

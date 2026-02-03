@@ -1,0 +1,65 @@
+{
+  "showId": "art-2025",
+  "outletId": "observer",
+  "outlet": "Observer",
+  "criticName": "David Cote",
+  "url": "https://observer.com/2025/09/art-review-james-corden-neil-patrick-harris-bobby-cannavale/",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "It was hard to know if it was the play or the cast that prevented me from connecting with the characters on a level beyond smug satire.",
+  "originalScore": null,
+  "assignedScore": 38,
+  "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 38,
+    "confidence": "low",
+    "range": {
+      "low": 32,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 35,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It was hard to know if it was the play or the cast that prevented me from connecting with the characters on a level beyond smug satire.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Critic expresses fundamental disconnection with the material, unable to distinguish whether the fault lies with the play or performances, suggesting problems with both core elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:09:04.809Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2677,
+    "outputTokens": 262,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  }
+}

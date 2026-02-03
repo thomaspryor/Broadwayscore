@@ -1,0 +1,70 @@
+{
+  "showId": "art-2025",
+  "outletId": "nytg",
+  "outlet": "New York Theatre Guide",
+  "criticName": "Allison Considine",
+  "url": "https://www.newyorktheatreguide.com/reviews/art-broadway-review-bobby-cannavale-james-corden-neil-patrick-harris",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "The cast's comedic chops are on full display here. Their reactions to the painting earn plenty of laughs, from Harris’s head-shaking adoration to Cannavale’s up-close skepticism. The three display impeccable timing and physicality.",
+  "originalScore": null,
+  "assignedScore": 50,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 50,
+    "confidence": "low",
+    "range": {
+      "low": 40,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 80,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The cast's comedic chops are on full display here.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "The three display impeccable timing and physicality.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "This excerpt only praises the cast's comedic performances without any evaluation of the show's overall quality, script, direction, or whether it's worth seeing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:08:56.133Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2703,
+    "outputTokens": 282,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  }
+}

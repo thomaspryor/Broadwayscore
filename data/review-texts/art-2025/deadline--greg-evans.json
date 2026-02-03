@@ -1,0 +1,65 @@
+{
+  "showId": "art-2025",
+  "outletId": "deadline",
+  "outlet": "Deadline",
+  "criticName": "Greg Evans",
+  "url": "https://deadline.com/2025/09/art-broadway-review-1236544412/",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "As Art‘s three buddies set up their impending conflict, we know exactly where they’re heading. This production eventually rewards our patience, even if we sometimes wish for quicker brushstrokes.",
+  "originalScore": null,
+  "assignedScore": 68,
+  "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 68,
+    "confidence": "low",
+    "range": {
+      "low": 62,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": null,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production eventually rewards our patience, even if we sometimes wish for quicker brushstrokes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "Mixed review that acknowledges predictable setup but suggests the show ultimately pays off, indicating qualified recommendation despite pacing concerns.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:08:26.881Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2687,
+    "outputTokens": 243,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  }
+}

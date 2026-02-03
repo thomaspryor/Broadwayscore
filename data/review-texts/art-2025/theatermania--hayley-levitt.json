@@ -1,0 +1,70 @@
+{
+  "showId": "art-2025",
+  "outletId": "theatermania",
+  "outlet": "TheaterMania",
+  "criticName": "Hayley Levitt",
+  "url": "https://www.theatermania.com/news/white-a-blank-page-or-canvas-or-is-it-art-proves-forever-fashionable-in-a-starry-broadway-revival_1803635/",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "Art is as smart a commentary on friendship, identity, and the unspoken expectations that tie them together as it ever was. Sure, it’s wrapped in the veneer of high-brow aesthetic debate, but all that jibber-jabber is just intellectual varnish smoothing over the cracks in three fragile men who feel abandoned by each other.",
+  "originalScore": null,
+  "assignedScore": 78,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Art is as smart a commentary on friendship, identity, and the unspoken expectations that tie them together as it ever was.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "All that jibber-jabber is just intellectual varnish smoothing over the cracks in three fragile men who feel abandoned by each other.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic praises the play's intelligence and enduring relevance while showing appreciation for its deeper emotional themes beneath the intellectual surface.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:09:09.388Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2723,
+    "outputTokens": 317,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  }
+}

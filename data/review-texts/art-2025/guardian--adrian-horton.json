@@ -1,0 +1,70 @@
+{
+  "showId": "art-2025",
+  "outletId": "guardian",
+  "outlet": "The Guardian",
+  "criticName": "Adrian Horton",
+  "url": "https://www.theguardian.com/stage/2025/sep/17/art-review-james-corden-broadway-stars",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "As both the heart and the court jester for the show, Corden is superb, a perfectly calibrated level of hysterical, sincere and crisp. One blistering monologue sees him ranting, in the voice of three separate characters, for several minutes straight without missing a beat; it was not celebrity compelling the extended applause when he finally collapsed, spent and spittle-covered, into a chair.",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Corden is superb, a perfectly calibrated level of hysterical, sincere and crisp.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It was not celebrity compelling the extended applause when he finally collapsed, spent and spittle-covered, into a chair.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The excerpt focuses exclusively on praising Corden's performance as 'superb' with vivid description of audience response, but provides no evaluation of the show itself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:08:31.487Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2738,
+    "outputTokens": 317,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "showId": "art-2025",
+  "outletId": "dailybeast",
+  "outlet": "The Daily Beast",
+  "criticName": "Tim Teeman",
+  "url": "https://www.thedailybeast.com/obsessed/art-review-james-corden-delivers-a-masterclass-of-broadway-comedy/",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "It is Yvan’s revelation of one of his pre-nuptial conflicts that Corden serves with full comedic relish—around four minutes of recalled argument, deflated exhaustion, and exaggerated whimpering. It is glorious, and this Broadway season’s first showstopper.",
+  "originalScore": null,
+  "assignedScore": 85,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 85,
+    "confidence": "low",
+    "range": {
+      "low": 75,
+      "high": 90
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 90,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is glorious, and this Broadway season's first showstopper.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "The critic uses superlative language ('glorious', 'showstopper') to describe a key performance moment, indicating strong enthusiasm despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:08:22.485Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2712,
+    "outputTokens": 248,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  }
+}

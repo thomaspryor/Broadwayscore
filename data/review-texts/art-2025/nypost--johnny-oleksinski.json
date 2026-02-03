@@ -1,0 +1,70 @@
+{
+  "showId": "art-2025",
+  "outletId": "nypost",
+  "outlet": "New York Post",
+  "criticName": "Johnny Oleksinski",
+  "url": "https://nypost.com/2025/09/16/entertainment/art-review-james-corden-and-neil-patrick-harris-drone-on-about-paintings-in-retro-broadway-comedy/",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "Every word and action is unnatural, like the actors have yardsticks down the backs of their shirts. Much of the stiffness is baked in, of course. Being that the script about snobs was originally French, and has been translated by British writer Christopher Hampton, even affectations have affectations.",
+  "originalScore": null,
+  "assignedScore": 25,
+  "source": "dtli",
+  "dtliThumb": "DOWN",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 25,
+    "confidence": "medium",
+    "range": {
+      "low": 20,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": 25,
+      "direction": 30
+    },
+    "keyPhrases": [
+      {
+        "quote": "Every word and action is unnatural, like the actors have yardsticks down the backs of their shirts.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Much of the stiffness is baked in, of course.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic harshly criticizes the fundamental unnaturalness of the performances and writing, suggesting deep structural problems that make the production difficult to recommend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:08:41.245Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2714,
+    "outputTokens": 297,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  }
+}
