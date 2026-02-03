@@ -13,7 +13,7 @@
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.988Z",
-  "sourceMethod": "archive",
+  "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -64,29 +64,53 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "archivePath": "data/archives/reviews/ragtime-2025/wsj--charles-isherwood_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T02:46:23.006Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/ragtime-2025/wsj--charles-isherwood_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T03:24:49.388Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 2,
   "archiveOrgTimestamp": "20260119035810",
   "archiveOrgUrl": "http://web.archive.org/web/20260119035810/https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broadway-7fc41113",
   "textIssues": [
-    "Word count too low: 131 (min: 300)"
+    "Word count too low: 145 (min: 300)"
   ],
   "bwwThumb": "Up",
-  "rescoreReason": "scored on brief excerpt, now has fullText",
+  "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 89,
   "rescoreCompletedAt": "2026-01-29T14:31:52.003Z",
   "garbageFullText": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broadway-7fc41113\n\nJoshua Henry, Caissie Levy, Brandon Uranowitz and the company of ‘Ragtime.’ Matthew MurphyNew York\n\nStanding ovations on Broadway are so common you might imagine the seats have been booby-trapped to eject patrons as the curtain calls begin. But at a recent performance of the brightly shining revival of “Ragtime,” the ovation came early—actually two came early—so transported was the audience by the emotional and musical potency of this panorama of America at the turn of the 20th century.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n‘Bug’ Review: A Broadway Drama of Insidious Delusion\n\nopinionA Word of Caution on Wages\n\nopinionThe Rent-Control Slums of New York\n\nBillionaires’ Row Loses One of Its Last Affordable Buildings\n\nHow to Keep a Deal Alive When a Home Buyer Backs Out",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.152Z",
-  "contentTier": "excerpt",
-  "wordCount": 0
+  "contentTier": "truncated",
+  "wordCount": 145,
+  "needsRescore": true,
+  "fullText": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broadway-7fc41113\n\nJoshua Henry, Caissie Levy, Brandon Uranowitz and the company of ‘Ragtime.’ Matthew MurphyNew York\n\nStanding ovations on Broadway are so common you might imagine the seats have been booby-trapped to eject patrons as the curtain calls begin. But at a recent performance of the brightly shining revival of “Ragtime,” the ovation came early—actually two came early—so transported was the audience by the emotional and musical potency of this panorama of America at the turn of the 20th century.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nContinue reading your article witha WSJ subscription\n\nThe Super Bowl’s Biggest Loser: The New York Jets\n\nMamdani Presses for Tax Hike on New York’s Wealthiest as Budget Deficit Looms\n\nopinionNew York City Robs Kids of a Snow Day\n\n‘Emery Roth’s New York Apartment Buildings’ Review: Palaces by the Park\n\nopinionThe Diversity of a Local Parish",
+  "isFullReview": false,
+  "textWordCount": 145,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "paywall_or_login_prompt",
+    "no_ending_punctuation",
+    "has_footer_junk"
+  ],
+  "textStatus": "truncated",
+  "tierReason": "Truncation detected: paywall_or_login_prompt, no_ending_punctuation, has_footer_junk"
 }
