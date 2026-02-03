@@ -1,0 +1,77 @@
+{
+  "showId": "angels-in-america-2018",
+  "outletId": "variety",
+  "outlet": "Variety",
+  "criticName": "Marilyn Stasio",
+  "url": "https://variety.com/2018/legit/reviews/angels-in-america-review-andrew-garfield-nathan-lane-1202736925/",
+  "publishDate": "March 25, 2018",
+  "fullText": "Andrew Garfield gives a performance of such blazing honesty and emotional intensity that he transforms Tony Kushner's young prophet into a figure of true spiritual majesty.",
+  "isFullReview": false,
+  "dtliExcerpt": "Andrew Garfield gives a performance of such blazing honesty and emotional intensity that he transforms Tony Kushner's young prophet into a figure of true spiritual majesty.",
+  "originalScore": null,
+  "assignedScore": 87,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Andrew Garfield gives a performance of such blazing honesty and emotional intensity that he transforms Tony Kushner's young prophet into a figure of true spiritual majesty.",
+  "contentTier": "truncated",
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Andrew Garfield gives a performance of such blazing honesty and emotional intensity that he transforms Tony Kushner's young prophet into a figure of true spiritual majesty.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Extremely high praise with superlatives ('blazing', 'true spiritual majesty', 'transforms') indicates a rave, though the excerpt only covers the lead performance so confidence is reduced due to limited scope. | GPT-4o: The review uses superlatives like 'blazing honesty' and 'emotional intensity' to describe Garfield's performance, indicating a strong, enthusiastic recommendation. | Gemini: The review uses strong positive language like \"blazing honesty\" and \"true spiritual majesty,\" indicating a highly positive assessment of Garfield's performance and the show overall. | Kimi: The critic offers unqualified superlative praise for the lead performance using language like 'blazing honesty' and 'true spiritual majesty,' indicating a strong recommendation despite the excerpt's brevity. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:58:18.769Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  },
+  "textQuality": "truncated"
+}
