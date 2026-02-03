@@ -6,7 +6,7 @@
   "url": "https://variety.com/2006/legit/reviews/company-1200515066/",
   "publishDate": "November 30, 2006",
   "fullText": null,
-  "isFullReview": false,
+  "isFullReview": true,
   "dtliExcerpt": "John Doyle's inventive revival of Stephen Sondheim's 'Company' transforms the musical into a chamber piece of unusual intimacy and emotional depth, with the cast doubling as the orchestra.",
   "originalScore": null,
   "assignedScore": null,
@@ -17,5 +17,51 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "John Doyle's inventive revival of Stephen Sondheim's 'Company' transforms the musical into a chamber piece of unusual intimacy and emotional depth, with the cast doubling as the orchestra.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "textWordCount": 254,
+  "archivePath": "data/archives/reviews/company-2006/variety--charles-isherwood_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:23:36.109Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 254 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Could Gretchen Finkle be the female Napoleon Dynamite? Instead of moon boots and unicorn T-shirts, her high school awkwardness manifests itself through a wardrobe of old-lady sweaters and pink ponytail holders. But \"Gretchen,\" while eccentric in its own right, strikes a more melancholy tone.\n\nThis article was updated on June 30, 2006.\n\nCould Gretchen Finkle be the female Napoleon Dynamite? Instead of moon boots and unicorn T-shirts, her high school awkwardness manifests itself through a wardrobe of old-lady sweaters and pink ponytail holders. But “Gretchen,” while eccentric in its own right, strikes a more melancholy tone. Where Dynamite’s oblivious outcast status was a source for offbeat laughs, sad-sack Finkle’s near-clinical lack of self-worth sparks a recognition that borders on depressing. With the right indie distrib, first-time director Steve Collins’ cynical, though not unaffectionate, take on stunted adolescence could find a small but dedicated hipster following, especially after winning the Los Angeles Film Festival’s Target Filmmaker Award.\n\nLess caustic than Todd Solondz and more restrained than Terry Zwigoff, Collins’ uneasy satire serves as a last laugh for those who regard high school as anything but the best years of their lives, reenacted by actors who look a decade older than the characters they play. As Gretchen, newcomer Courtney Davis bridges the age difference by channeling the body language of an insecure wallflower, although her obsessive relationship with rebel Ricky (John Merriman) seems highly unlikely. Tortured pacing takes patience as Collins milks protracted silences for maximum discomfort, but pic looks polished enough for the arthouse circuit."
 }
