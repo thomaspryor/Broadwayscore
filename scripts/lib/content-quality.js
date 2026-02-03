@@ -628,7 +628,12 @@ function isGarbageContent(text) {
   }
 
   // Check for 404/error page
-  const errorPage = detectErrorPage(text);
+  // For longer texts (>500 chars), only check the first 300 chars — real reviews
+  // may contain phrases like "has been removed" in legitimate theatrical context
+  const errorCheckText = trimmed.length > 500
+    ? trimmed.substring(0, 300)
+    : text;
+  const errorPage = detectErrorPage(errorCheckText);
   if (errorPage.detected) {
     return { isGarbage: true, reason: `Error/404 page: "${errorPage.match}"` };
   }
