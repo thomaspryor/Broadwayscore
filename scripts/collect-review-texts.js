@@ -121,8 +121,8 @@ const CONFIG = {
 
   // Browserbase spending limits (to control costs - $0.10/browser hour)
   browserbaseEnabled: process.env.BROWSERBASE_ENABLED === 'true',
-  browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '30'), // ~$3/day max
-  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '5'), // Per workflow run (5 × 5 parallel = 25, under 30 daily cap)
+  browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '60'), // ~$6/day max
+  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '20'), // Per workflow run
   browserbaseUsageFile: 'data/collection-state/browserbase-usage.json',
 
   // Directories

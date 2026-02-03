@@ -47,9 +47,9 @@ on:
         required: false
         default: 'true'
       browserbase_max_sessions:
-        description: 'Max Browserbase sessions per run (10 for nightly, 5 for parallel runs, 30 daily cap)'
+        description: 'Max Browserbase sessions per run (default 20, daily cap 30)'
         required: false
-        default: '10'
+        default: '20'
       content_tier:
         description: 'Filter by content tier: excerpt, truncated, needs-rescrape (empty = all)'
         required: false
