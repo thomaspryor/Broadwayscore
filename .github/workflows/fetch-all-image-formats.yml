@@ -22,6 +22,10 @@ on:
         required: false
         default: false
         type: boolean
+      concurrency:
+        description: 'Number of parallel image fetches (default 5)'
+        required: false
+        default: '5'
   schedule:
     - cron: '0 6 * * 1,4'  # Twice weekly on Monday and Thursday at 6 AM UTC
 
@@ -31,6 +35,7 @@ permissions:
 jobs:
   fetch-images:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with:
@@ -58,7 +63,8 @@ jobs:
           elif [ "${{ inputs.only_missing }}" == "true" ] || [ "${{ github.event_name }}" == "schedule" ]; then
             ARGS="--missing"
           fi
-          node scripts/fetch-show-images-auto.js $ARGS
+          CONCURRENCY="${{ inputs.concurrency || '5' }}"
+          node scripts/fetch-show-images-auto.js $ARGS --concurrency=$CONCURRENCY
 
       - name: Archive images locally
         run: |

@@ -109,6 +109,7 @@ const CONFIG = {
   retryFailed: process.env.RETRY_FAILED === 'true',
   commitEvery: parseInt(process.env.COMMIT_EVERY || '10'), // Git commit after every N reviews
   outletTier: process.env.OUTLET_TIER || '', // Filter by outlet tier: tier1, tier2, tier3
+  contentTierFilter: process.env.CONTENT_TIER_FILTER || '', // Filter by content tier: excerpt, truncated, needs-rescrape
   archiveFirst: process.env.ARCHIVE_FIRST === 'true', // Try Archive.org first for older reviews
 
   // API Keys
@@ -120,8 +121,8 @@ const CONFIG = {
 
   // Browserbase spending limits (to control costs - $0.10/browser hour)
   browserbaseEnabled: process.env.BROWSERBASE_ENABLED === 'true',
-  browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '30'), // ~$3/day max
-  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '5'), // Per workflow run (5 × 5 parallel = 25, under 30 daily cap)
+  browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '60'), // ~$6/day max
+  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '20'), // Per workflow run
   browserbaseUsageFile: 'data/collection-state/browserbase-usage.json',
 
   // Directories
@@ -156,7 +157,7 @@ const CONFIG = {
     'dailybeast.com', 'thedailybeast.com', 'amny.com', 'newsday.com',
     'nypost.com', 'nydailynews.com', 'indiewire.com',
     'wsj.com',  // Dow Jones SSO login page is an SPA that won't render in headless Chromium
-    // Note: variety.com, hollywoodreporter.com, deadline.com are FREE - use .a-content selector
+    'hollywoodreporter.com', 'variety.com', 'deadline.com', // PMC sites — CAPTCHA-block Playwright consistently
   ],
 
   // Sites that need residential proxies (Bright Data preferred)
@@ -180,6 +181,8 @@ const CONFIG = {
     'theatrely.com', 'amny.com', 'forward.com',
     // Sites with CAPTCHA that block Playwright
     'timeout.com',
+    // BroadwayNews: WordPress paywall, but Archive.org has excellent coverage (7-8 snapshots per URL)
+    'broadwaynews.com',
   ],
 
   // Minimum word count for valid review
@@ -1533,6 +1536,81 @@ async function fetchFromArchive(url) {
   throw new Error(`Insufficient text in archive: ${text?.length || 0} chars`);
 }
 
+/**
+ * Archive.org CDX multi-snapshot fetcher.
+ * Uses the CDX API to find multiple archived snapshots, then tries oldest-first
+ * (pre-paywall snapshots are more likely to have full text).
+ * Rate limited: 2s between snapshot fetches to respect CDX ~15 req/min limit.
+ */
+async function fetchFromArchiveCDX(url) {
+  if (!axios) {
+    throw new Error('axios not available');
+  }
+
+  // Query CDX API for snapshots
+  const cdxUrl = `http://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=10&from=2014&to=2026`;
+  const cdxResp = await axios.get(cdxUrl, { timeout: 15000 });
+
+  const rows = cdxResp.data;
+  if (!Array.isArray(rows) || rows.length < 2) {
+    throw new Error('No CDX snapshots found');
+  }
+
+  // First row is header: [urlkey, timestamp, original, mimetype, statuscode, digest, length]
+  const snapshots = rows.slice(1)
+    .filter(row => row[4] === '200' && (row[3] || '').includes('text/html'))
+    .sort((a, b) => a[1].localeCompare(b[1])); // oldest-first
+
+  if (snapshots.length === 0) {
+    throw new Error('No usable CDX snapshots (all non-200 or non-HTML)');
+  }
+
+  console.log(`    → CDX found ${snapshots.length} snapshots (oldest: ${snapshots[0][1]}, newest: ${snapshots[snapshots.length - 1][1]})`);
+
+  // Try up to 5 snapshots, oldest-first
+  const maxAttempts = Math.min(snapshots.length, 5);
+  let lastError = null;
+
+  for (let i = 0; i < maxAttempts; i++) {
+    const [, timestamp, original] = snapshots[i];
+    const archiveUrl = `http://web.archive.org/web/${timestamp}/${original}`;
+
+    try {
+      const response = await axios.get(archiveUrl, {
+        timeout: CONFIG.apiTimeout,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+        },
+      });
+
+      const html = response.data;
+      const text = extractTextFromHtml(html);
+
+      if (text && text.length > 500) {
+        console.log(`    → CDX snapshot ${timestamp} yielded ${text.length} chars`);
+        return {
+          html,
+          text,
+          archiveTimestamp: timestamp,
+          archiveUrl,
+        };
+      }
+
+      console.log(`    → CDX snapshot ${timestamp}: only ${text?.length || 0} chars, trying next...`);
+    } catch (err) {
+      console.log(`    → CDX snapshot ${timestamp} failed: ${err.message}`);
+      lastError = err;
+    }
+
+    // Rate limit: 2s between snapshot fetches
+    if (i < maxAttempts - 1) {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+
+  throw new Error(lastError?.message || `All ${maxAttempts} CDX snapshots had insufficient text`);
+}
+
 // ============================================================================
 // TIMEOUT URL RESOLVER - TimeOut merged reviews into listing pages
 // Their standalone review URLs (e.g., /suffs-review) now 404.
@@ -1823,6 +1901,7 @@ function buildTierContext(review) {
     _bail404: false,
     consecutive404Count: 0,
     _archiveTierRan: false,
+    _archiveCdxRan: false,
   };
 }
 
@@ -1876,6 +1955,18 @@ function buildTierChain(ctx, review) {
       execute: (url) => fetchFromArchive(url),
       onSuccess: (review, result) => { ctx._archiveTierRan = true; },
       onFailure: (error) => { ctx._archiveTierRan = true; },
+    },
+
+    // TIER 0.5: Archive.org CDX multi-snapshot (after Tier 0 fails for archive-first sites)
+    {
+      id: 'archive-cdx',
+      tierNumber: 0.5,
+      method: 'archive',
+      label: 'Archive.org CDX multi-snapshot',
+      shouldRun: () => ctx.isArchiveFirst && ctx._archiveTierRan,
+      execute: (url) => fetchFromArchiveCDX(url),
+      onSuccess: (review, result) => { ctx._archiveCdxRan = true; },
+      onFailure: (error) => { ctx._archiveCdxRan = true; },
     },
 
     // TIER 1: Playwright with stealth
@@ -1961,6 +2052,18 @@ function buildTierChain(ctx, review) {
       shouldRun: () => !!CONFIG.brightDataKey,
       execute: (url) => fetchWithBrightData(url),
       onFailure: (error) => { ctx.anyTierFailed = true; },
+    },
+
+    // TIER 3.5: Archive.org CDX multi-snapshot (final fallback for non-archive-first sites)
+    {
+      id: 'archive-cdx-final',
+      tierNumber: 3.5,
+      method: 'archive',
+      label: 'Archive.org CDX multi-snapshot (fallback)',
+      shouldRun: () => !ctx._archiveCdxRan,
+      execute: (url) => fetchFromArchiveCDX(url),
+      onSuccess: (review, result) => { ctx._archiveCdxRan = true; },
+      onFailure: (error) => { ctx._archiveCdxRan = true; },
     },
 
     // TIER 4: Archive.org (last resort)
@@ -2697,9 +2800,11 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
         const showEntry = _showsJsonCache.shows.find(s => s.id === (review.showId || data.showId));
         if (showEntry && showEntry.openingDate) {
           const showYear = new Date(showEntry.openingDate).getFullYear();
-          if (urlYear < showYear - 3 || urlYear > showYear + 2) {
+          const closingYear = showEntry.closingDate ? new Date(showEntry.closingDate).getFullYear() : new Date().getFullYear();
+          const upperBound = Math.max(showYear + 2, closingYear + 1);
+          if (urlYear < showYear - 3 || urlYear > upperBound) {
             data.wrongProduction = true;
-            data.wrongProductionNote = `Auto-flagged: URL year ${urlYear} differs from show opening ${showYear} by ${Math.abs(urlYear - showYear)} years`;
+            data.wrongProductionNote = `Auto-flagged: URL year ${urlYear} outside valid range ${showYear - 3}–${upperBound} for show opening ${showYear}`;
             console.log(`    ⚠ Wrong production? URL year ${urlYear} vs show ${showYear} — flagged for review`);
           }
         }
@@ -2820,8 +2925,9 @@ function commitChanges(processed) {
       if ((state.tierBreakdown?.archive?.length || 0) > 0) tierInfo.push(`Ar:${state.tierBreakdown.archive.length}`);
       const tierStr = tierInfo.length ? ` [${tierInfo.join(',')}]` : '';
       const failStr = failCount > 0 ? ` (${failCount} failed)` : '';
+      const ctFilter = CONFIG.contentTierFilter ? ` (${CONFIG.contentTierFilter})` : '';
 
-      execSync(`git commit -m "chore: Checkpoint - collected ${processed} review texts${tierStr}${failStr}"`, {
+      execSync(`git commit -m "chore: Checkpoint - collected ${processed} review texts${ctFilter}${tierStr}${failStr}"`, {
         stdio: 'pipe'
       });
 
@@ -2982,6 +3088,14 @@ function findReviewsToProcess() {
           if (CONFIG.outletTier === 'tier1' && tierNum !== 1) continue;
           if (CONFIG.outletTier === 'tier2' && tierNum !== 2) continue;
           if (CONFIG.outletTier === 'tier3' && (tierNum !== 3 && tierNum !== 4)) continue;
+        }
+
+        // Apply content tier filter (for targeted runs: excerpt, truncated, needs-rescrape)
+        if (CONFIG.contentTierFilter) {
+          const ct = data.contentTier || '';
+          if (CONFIG.contentTierFilter === 'excerpt' && ct !== 'excerpt') continue;
+          if (CONFIG.contentTierFilter === 'truncated' && ct !== 'truncated') continue;
+          if (CONFIG.contentTierFilter === 'needs-rescrape' && ct !== 'needs-rescrape') continue;
         }
 
         // Parse publish date for archive-first logic

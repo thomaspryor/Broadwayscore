@@ -134,7 +134,7 @@ export default function HeaderSubscribeButton() {
 
                 {status === 'error' && errorMessage && (
                   <p className="mt-2 text-xs text-red-400 text-center">{errorMessage}</p>
-                }
+                )}
               </>
             )}
           </div>

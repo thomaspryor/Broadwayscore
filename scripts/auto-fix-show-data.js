@@ -366,8 +366,14 @@ function checkMissingImages(show) {
 }
 
 async function main() {
+  const args = process.argv.slice(2);
+  const backfillHistorical = args.includes('--backfill-historical');
+  const limitArg = args.find(a => a.startsWith('--limit='));
+  const limit = limitArg ? parseInt(limitArg.split('=')[1], 10) : 0;
+
   console.log('='.repeat(60));
   console.log('AUTO-FIX SHOW DATA');
+  if (backfillHistorical) console.log('MODE: Backfill historical shows (synopsis + creative team)');
   console.log('='.repeat(60));
   console.log(`Started: ${new Date().toISOString()}`);
   console.log(`Synopsis fetching: ${SCRAPINGBEE_API_KEY ? '✓ enabled' : '✗ disabled (no SCRAPINGBEE_API_KEY)'}`);
@@ -375,15 +381,32 @@ async function main() {
 
   const data = loadShows();
   const todayTixIds = loadTodayTixIds();
-  const openShows = data.shows.filter(s => s.status === 'open' || s.status === 'previews');
 
-  console.log(`Checking ${openShows.length} open/preview shows...\n`);
+  // Select which shows to process
+  let targetShows;
+  if (backfillHistorical) {
+    // All shows missing synopsis, regardless of status
+    targetShows = data.shows.filter(s => !s.synopsis || s.synopsis.length < 50);
+    if (limit > 0) {
+      targetShows = targetShows.slice(0, limit);
+    }
+    console.log(`Found ${targetShows.length} shows missing synopsis${limit > 0 ? ` (limited to ${limit})` : ''}...\n`);
+  } else {
+    targetShows = data.shows.filter(s => s.status === 'open' || s.status === 'previews');
+    console.log(`Checking ${targetShows.length} open/preview shows...\n`);
+  }
 
   let showsWithMissingImages = [];
   let changesMade = false;
+  let checkpointCount = 0;
 
-  for (const show of openShows) {
-    console.log(`Checking: ${show.title}`);
+  for (let i = 0; i < targetShows.length; i++) {
+    const show = targetShows[i];
+    if (backfillHistorical) {
+      console.log(`[${i + 1}/${targetShows.length}] ${show.title} (${show.id})`);
+    } else {
+      console.log(`Checking: ${show.title}`);
+    }
 
     // 1. Fix synopsis
     const synopsisFix = await fixSynopsis(show, todayTixIds);
@@ -403,23 +426,34 @@ async function main() {
       await sleep(1000); // Rate limit
     }
 
-    // 3. Fix ticket links (just clean up, don't flag)
-    const ticketFix = fixTicketLinks(show);
-    if (ticketFix) {
-      results.fixed.push(ticketFix);
-      console.log(`    ✓ ${ticketFix}`);
-      changesMade = true;
+    // 3. Fix ticket links (skip for historical backfill — closed shows have no tickets)
+    if (!backfillHistorical) {
+      const ticketFix = fixTicketLinks(show);
+      if (ticketFix) {
+        results.fixed.push(ticketFix);
+        console.log(`    ✓ ${ticketFix}`);
+        changesMade = true;
+      }
     }
 
-    // 4. Check for missing images (will trigger workflow)
-    const missingImages = checkMissingImages(show);
-    if (missingImages.length > 0) {
-      showsWithMissingImages.push({
-        id: show.id,
-        title: show.title,
-        missing: missingImages
-      });
-      console.log(`    ⚠ Missing images: ${missingImages.join(', ')}`);
+    // 4. Check for missing images (skip during historical backfill — handled by image workflow)
+    if (!backfillHistorical) {
+      const missingImages = checkMissingImages(show);
+      if (missingImages.length > 0) {
+        showsWithMissingImages.push({
+          id: show.id,
+          title: show.title,
+          missing: missingImages
+        });
+        console.log(`    ⚠ Missing images: ${missingImages.join(', ')}`);
+      }
+    }
+
+    // Checkpoint every 50 shows during historical backfill (saves progress on timeout)
+    if (backfillHistorical && changesMade && (i + 1) % 50 === 0) {
+      saveShows(data);
+      checkpointCount++;
+      console.log(`\n--- Checkpoint ${checkpointCount}: saved ${results.fixed.length} fixes ---\n`);
     }
   }
 
@@ -429,8 +463,8 @@ async function main() {
     console.log(`\n✅ Saved changes to shows.json`);
   }
 
-  // Flag shows needing images
-  if (showsWithMissingImages.length > 0) {
+  // Flag shows needing images (not during historical backfill)
+  if (!backfillHistorical && showsWithMissingImages.length > 0) {
     results.triggeredWorkflows.push('fetch-show-images-auto');
     console.log(`\n🖼️  ${showsWithMissingImages.length} shows need images - will trigger fetch workflow`);
 
@@ -445,8 +479,10 @@ async function main() {
   console.log('SUMMARY');
   console.log('='.repeat(60));
   console.log(`Auto-fixed: ${results.fixed.length} issues`);
-  console.log(`Needs images: ${showsWithMissingImages.length} shows`);
-  console.log(`Workflows to trigger: ${results.triggeredWorkflows.join(', ') || 'none'}`);
+  if (!backfillHistorical) {
+    console.log(`Needs images: ${showsWithMissingImages.length} shows`);
+    console.log(`Workflows to trigger: ${results.triggeredWorkflows.join(', ') || 'none'}`);
+  }
 
   // Write results
   fs.writeFileSync(
