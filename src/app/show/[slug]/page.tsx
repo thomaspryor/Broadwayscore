@@ -233,7 +233,7 @@ function TicketIcon() {
 
 // Format pill - outline style
 function FormatPill({ type }: { type: string }) {
-  const isMusical = type === 'musical' || type === 'revival';
+  const isMusical = type === 'musical';
   const label = isMusical ? 'MUSICAL' : 'PLAY';
   const colorClass = isMusical
     ? 'border-purple-500/50 text-purple-400'
@@ -461,7 +461,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const showSchema = generateShowSchema(show);
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
-    { name: show.type === 'musical' || show.type === 'revival' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${show.type === 'musical' || show.type === 'revival' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` },
+    { name: show.type === 'musical' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${show.type === 'musical' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` },
     { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
   ]);
   const faqSchema = generateShowFAQSchema(show);
@@ -491,7 +491,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
         <Breadcrumb items={[
           { label: 'Home', href: '/' },
-          { label: show.type === 'musical' || show.type === 'revival' ? 'Musicals' : 'Plays', href: `/browse/${show.type === 'musical' || show.type === 'revival' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` },
+          { label: show.type === 'musical' ? 'Musicals' : 'Plays', href: `/browse/${show.type === 'musical' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` },
           { label: show.title },
         ]} />
 
@@ -526,7 +526,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               {/* Pills row */}
               <div className="flex flex-wrap items-center gap-1.5 mb-2">
                 <FormatPill type={show.type} />
-                <ProductionPill isRevival={show.type === 'revival'} />
+                <ProductionPill isRevival={show.isRevival === true} />
                 {show.limitedRun && <LimitedRunBadge />}
                 <StatusBadge status={show.status} />
               </div>
@@ -760,7 +760,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
-              <span className="text-sm text-gray-400 font-medium">{show.criticScore.reviewCount} reviews</span>
+              <span className="text-sm text-gray-400 font-medium">{show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}</span>
             </div>
 
             <ReviewsList reviews={show.criticScore.reviews} initialCount={5} />
@@ -775,23 +775,38 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         )}
 
         {/* Audience Buzz Section - below Critic Reviews */}
-        {audienceBuzz ? (
-          <AudienceBuzzCard
-            buzz={audienceBuzz}
-            showScoreUrl={audienceBuzz.sources.showScore ? `https://www.show-score.com/broadway-shows/${show.slug}` : undefined}
-          />
-        ) : show.status === 'previews' && (
+        {audienceBuzz ? (() => {
+          const sourceCount = [audienceBuzz.sources.showScore, audienceBuzz.sources.mezzanine, audienceBuzz.sources.reddit].filter(Boolean).length;
+          const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
+          const isHistorical = show.status === 'closed' && showYear !== null && showYear < 2015;
+          return (
+            <AudienceBuzzCard
+              buzz={audienceBuzz}
+              showScoreUrl={audienceBuzz.sources.showScore ? `https://www.show-score.com/broadway-shows/${show.slug}` : undefined}
+              limitedSources={isHistorical && sourceCount <= 1}
+            />
+          );
+        })() : show.status === 'previews' ? (
           <section className="card p-5 sm:p-6 mb-6">
             <h2 className="text-lg font-bold text-white mb-3">Audience Buzz</h2>
             <p className="text-gray-400 text-sm">Audience data will be added once the show opens and reviews come in.</p>
           </section>
-        )}
+        ) : show.status === 'closed' && (() => {
+          const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
+          const isPreDigital = showYear !== null && showYear < 2015;
+          return isPreDigital ? (
+            <section className="card p-5 sm:p-6 mb-6">
+              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Audience Grade</h2>
+              <p className="text-sm text-gray-500">This show predates most audience rating platforms. Critic reviews only.</p>
+            </section>
+          ) : null;
+        })()}
 
         {/* Awards - above Box Office */}
         <AwardsCard showId={show.id} awards={awards} />
 
         {/* Box Office Stats */}
-        {grosses ? (
+        {grosses && (show.status !== 'previews' || grosses.thisWeek) ? (
           <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
         ) : show.status === 'previews' && (
           <section className="card p-5 sm:p-6 mb-6">
@@ -852,7 +867,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             {score && show.criticScore && show.criticScore.reviewCount >= 5 && (
               <div>
                 <dt className="text-gray-500">Critic Score</dt>
-                <dd className="text-white mt-0.5 font-semibold">{Math.round(score)}/100 <span className="font-normal text-gray-400">({show.criticScore.reviewCount} reviews)</span></dd>
+                <dd className="text-white mt-0.5 font-semibold">{Math.round(score)}/100 <span className="font-normal text-gray-400">({show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'})</span></dd>
               </div>
             )}
             <div>
