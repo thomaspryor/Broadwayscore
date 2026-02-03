@@ -1,57 +1,17 @@
 {
-  "updatedAt": "2026-02-03T01:53:59.259Z",
-  "processed": 25,
-  "failed": 16,
-  "successRate": "61.0%",
+  "updatedAt": "2026-02-03T02:01:22.356Z",
+  "processed": 31,
+  "failed": 20,
+  "successRate": "60.8%",
   "tierBreakdown": {
     "playwright": 3,
     "browserbase": 4,
-    "scrapingbee": 3,
-    "brightdata": 0,
-    "archive": 18
+    "scrapingbee": 9,
+    "brightdata": 6,
+    "archive": 12
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-02-03T01:03:57.584Z",
-      "event": "bb-session",
-      "session": "d824ca6b",
-      "url": "https://www.theatermania.com/broadway/reviews/patriots_92948.html"
-    },
-    {
-      "t": "2026-02-03T01:04:48.813Z",
-      "event": "bb-session",
-      "session": "93815e95",
-      "url": "https://www.wsj.com/articles/patriots-review-on-broadway-putin-peter-morgan-russ"
-    },
-    {
-      "t": "2026-02-03T01:05:35.060Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-03T01:06:14.435Z",
-      "event": "bb-session",
-      "session": "a3b96551",
-      "url": "https://www.wsj.com/arts-culture/theater/patriots-review-michael-stuhlbarg-putin"
-    },
-    {
-      "t": "2026-02-03T01:07:02.197Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-02-03T01:36:12.802Z",
-      "event": "bb-session",
-      "session": "1fc764c8",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/days-of-wine-and-roses-broadway"
-    },
-    {
-      "t": "2026-02-03T01:37:58.115Z",
-      "event": "bb-session",
-      "session": "6f5fee33",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
-    },
     {
       "t": "2026-02-03T01:38:00.310Z",
       "event": "bb-login-uncertain",
@@ -88,28 +48,85 @@
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
     },
     {
-      "t": "2026-02-03T01:49:36.486Z",
+      "t": "2026-02-03T01:51:35.575Z",
       "event": "bb-session",
-      "session": "369a7465",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235"
+      "session": "ceae7111",
+      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
     },
     {
-      "t": "2026-02-03T01:50:27.494Z",
-      "event": "bb-session",
-      "session": "34ec5a4c",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/notebook-broadway-review-123586"
+      "t": "2026-02-03T01:52:23.424Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-02-03T01:52:35.660Z",
+      "t": "2026-02-03T01:52:50.900Z",
       "event": "bb-session",
-      "session": "308f3416",
-      "url": "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html"
+      "session": "bf246c0c",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/doubt-a-parable_93847"
     },
     {
-      "t": "2026-02-03T01:53:25.834Z",
+      "t": "2026-02-03T01:53:19.979Z",
+      "event": "bb-session",
+      "session": "b4a371b3",
+      "url": "https://www.wsj.com/articles/doubt-review-broadway-revivial-roundabout-amy-ryan-"
+    },
+    {
+      "t": "2026-02-03T01:54:02.714Z",
       "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083572278\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAO_xBJ05eN5oANBsspA==&cid=x9NM3~19vqHI7belE0jQmiuBE1TmZlahRPFg6rTEeLIwyFN2LUGtcRTx3OC2a0W_nWTHmu~L6Phx~WveRFRyMNTKVLRYb5t6FXMnbYDU~nCzSFld9kqCUcu_XfN6HW6N&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770083572278\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083572278\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAO_xBJ05eN5oANBsspA==&cid=x9NM3~19vqHI7belE0jQmiuBE1TmZlahRPFg6rTEeLIwyFN2LUGtcRTx3OC2a0W_nWTHmu~L6Phx~WveRFRyMNTKVLRYb5t6FXMnbYDU~nCzSFld9kqCUcu_XfN6HW6N&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770083572278\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083572278\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAO_xBJ05eN5oANBsspA==&cid=x9NM3~19vqHI7belE0jQmiuBE1TmZlahRPFg6rTEeLIwyFN2LUGtcRTx3OC2a0W_nWTHmu~L6Phx~WveRFRyMNTKVLRYb5t6FXMnbYDU~nCzSFld9kqCUcu_XfN6HW6N&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770083572278\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+      "domain": "wsj.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083611874\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAFuG8Vl7V-8oANA1qtA==&cid=bHwqiLo1IiFWu8V~w_Luy82i3u0tBKmBSMzi0hIjkZHOetILzAsbXXzeR7mvGJ33GdZdGxH4rIMJrs~TvTpvgewitsmSEhshX5jZTyTSuru0pDVI0hoZPQK103~OSmUd&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770083611874\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083611874\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAFuG8Vl7V-8oANA1qtA==&cid=bHwqiLo1IiFWu8V~w_Luy82i3u0tBKmBSMzi0hIjkZHOetILzAsbXXzeR7mvGJ33GdZdGxH4rIMJrs~TvTpvgewitsmSEhshX5jZTyTSuru0pDVI0hoZPQK103~OSmUd&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770083611874\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083611874\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAFuG8Vl7V-8oANA1qtA==&cid=bHwqiLo1IiFWu8V~w_Luy82i3u0tBKmBSMzi0hIjkZHOetILzAsbXXzeR7mvGJ33GdZdGxH4rIMJrs~TvTpvgewitsmSEhshX5jZTyTSuru0pDVI0hoZPQK103~OSmUd&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770083611874\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-03T01:54:33.226Z",
+      "event": "bb-session",
+      "session": "1b312692",
+      "url": "https://www.theatermania.com/broadway/reviews/gutenberg-the-musical_96847.html"
+    },
+    {
+      "t": "2026-02-03T01:55:02.463Z",
+      "event": "bb-session",
+      "session": "e9f8d424",
+      "url": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannel"
+    },
+    {
+      "t": "2026-02-03T01:55:49.615Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-03T01:56:17.019Z",
+      "event": "bb-session",
+      "session": "cf7799be",
+      "url": "https://www.theatermania.com/broadway/reviews/hadestown_88061.html"
+    },
+    {
+      "t": "2026-02-03T01:56:41.996Z",
+      "event": "bb-session",
+      "session": "a1f45000",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/hamilton_72618.html"
+    },
+    {
+      "t": "2026-02-03T01:57:09.513Z",
+      "event": "bb-session",
+      "session": "eb69ffe0",
+      "url": "https://www.theatermania.com/broadway/reviews/here-lies-love_93847.html"
+    },
+    {
+      "t": "2026-02-03T01:57:35.451Z",
+      "event": "bb-session",
+      "session": "7bf06410",
+      "url": "https://www.theatermania.com/broadway/reviews/how-to-dance-in-ohio_94588.html"
+    },
+    {
+      "t": "2026-02-03T01:58:09.939Z",
+      "event": "bb-session",
+      "session": "cd73674c",
+      "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the"
+    },
+    {
+      "t": "2026-02-03T01:58:56.681Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     }
   ]
 }
