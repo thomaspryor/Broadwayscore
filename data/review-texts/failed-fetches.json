@@ -3604,18 +3604,6 @@
     "timestamp": "2026-01-29T07:14:57.701Z"
   },
   {
-    "reviewId": "oh-mary-2024/observer--david-cote.json",
-    "showId": "oh-mary-2024",
-    "outlet": "Observer",
-    "critic": "David Cote",
-    "url": "https://observer.com/2024/07/oh-mary-broadway-review/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"ad blocker\"",
-    "textLength": 582,
-    "timestamp": "2026-01-29T07:31:57.906Z"
-  },
-  {
     "reviewId": "hells-kitchen-2024/observer--jesse-green.json",
     "showId": "hells-kitchen-2024",
     "outlet": "Observer",
@@ -3842,18 +3830,6 @@
     "garbageReason": "Paywall/subscription prompt: \"members only\"",
     "textLength": 7125,
     "timestamp": "2026-02-01T03:21:59.189Z"
-  },
-  {
-    "reviewId": "moulin-rouge-2019/timeout--adam-feldman.json",
-    "showId": "moulin-rouge-2019",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/moulin-rouge-broadway-review",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6498,
-    "timestamp": "2026-02-01T04:01:44.104Z"
   },
   {
     "reviewId": "stereophonic-2024/deadline--greg-evans.json",
@@ -4466,18 +4442,6 @@
     "garbageReason": "Legal/privacy page: \"Terms of Use\"",
     "textLength": 10047,
     "timestamp": "2026-02-01T23:32:45.487Z"
-  },
-  {
-    "reviewId": "oedipus-2025/timeout--adam-feldman.json",
-    "showId": "oedipus-2025",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/oedipus-broadway-review-mark-strong-lesley-manville-robert-icke",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 9727,
-    "timestamp": "2026-02-01T23:41:11.070Z"
   },
   {
     "reviewId": "oedipus-2025/wsj--charles-isherwood.json",
@@ -5462,30 +5426,6 @@
     "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
     "textLength": 614,
     "timestamp": "2026-02-02T02:56:12.397Z"
-  },
-  {
-    "reviewId": "moulin-rouge-2019/observer--david-cote.json",
-    "showId": "moulin-rouge-2019",
-    "outlet": "Observer",
-    "critic": "David Cote",
-    "url": "https://observer.com/2019/08/moulin-rouge-the-musical-kitsch-glitz-review-broadway/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"turn off your ad block\"",
-    "textLength": 7668,
-    "timestamp": "2026-02-02T02:59:34.105Z"
-  },
-  {
-    "reviewId": "moulin-rouge-2019/observer--rex-reed.json",
-    "showId": "moulin-rouge-2019",
-    "outlet": "Observer",
-    "critic": "Rex Reed",
-    "url": "https://observer.com/2019/07/moulin-rouge-broadway-review/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"turn off your ad block\"",
-    "textLength": 582,
-    "timestamp": "2026-02-02T02:59:41.965Z"
   },
   {
     "reviewId": "operation-mincemeat-2025/observer--david-cote.json",
@@ -6758,30 +6698,6 @@
     "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
     "textLength": 627,
     "timestamp": "2026-02-02T17:42:40.867Z"
-  },
-  {
-    "reviewId": "mother-play-2024/timeout--adam-feldman.json",
-    "showId": "mother-play-2024",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/mother-play-five-evictions-broadway-review-jessica-lange-paula-vogel",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 7066,
-    "timestamp": "2026-02-02T17:43:15.893Z"
-  },
-  {
-    "reviewId": "mother-play-2024/wsj--charles-isherwood.json",
-    "showId": "mother-play-2024",
-    "outlet": "The Wall Street Journal",
-    "critic": "Charles Isherwood",
-    "url": "https://www.wsj.com/articles/mother-play-review-jessica-langes-tortured-vision-of-parenthood-2850835f?mod=latest_headlines",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2024 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 679,
-    "timestamp": "2026-02-02T17:43:20.234Z"
   },
   {
     "reviewId": "mother-play-2024/queerty--matthew-wexler.json",
@@ -8186,5 +8102,89 @@
     "garbageReason": "Multiple article boundaries detected (3)",
     "textLength": 5595,
     "timestamp": "2026-02-03T02:17:53.610Z"
+  },
+  {
+    "reviewId": "mother-play-2024/timeout--adam-feldman.json",
+    "showId": "mother-play-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/mother-play-five-evictions-broadway-review-jessica-lange-paula-vogel",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 7239,
+    "timestamp": "2026-02-03T02:19:51.188Z"
+  },
+  {
+    "reviewId": "mother-play-2024/wsj--charles-isherwood.json",
+    "showId": "mother-play-2024",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/mother-play-review-jessica-langes-tortured-vision-of-parenthood-2850835f?mod=latest_headlines",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2024 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 679,
+    "timestamp": "2026-02-03T02:20:04.701Z"
+  },
+  {
+    "reviewId": "moulin-rouge-2019/observer--david-cote.json",
+    "showId": "moulin-rouge-2019",
+    "outlet": "Observer",
+    "critic": "David Cote",
+    "url": "https://observer.com/2019/08/moulin-rouge-the-musical-kitsch-glitz-review-broadway/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 7668,
+    "timestamp": "2026-02-03T02:20:51.502Z"
+  },
+  {
+    "reviewId": "moulin-rouge-2019/observer--rex-reed.json",
+    "showId": "moulin-rouge-2019",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2019/07/moulin-rouge-broadway-review/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 582,
+    "timestamp": "2026-02-03T02:21:11.276Z"
+  },
+  {
+    "reviewId": "moulin-rouge-2019/timeout--adam-feldman.json",
+    "showId": "moulin-rouge-2019",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/moulin-rouge-broadway-review",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6507,
+    "timestamp": "2026-02-03T02:21:36.403Z"
+  },
+  {
+    "reviewId": "oedipus-2025/timeout--adam-feldman.json",
+    "showId": "oedipus-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/oedipus-broadway-review-mark-strong-lesley-manville-robert-icke",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 9727,
+    "timestamp": "2026-02-03T02:22:05.263Z"
+  },
+  {
+    "reviewId": "oh-mary-2024/observer--david-cote.json",
+    "showId": "oh-mary-2024",
+    "outlet": "Observer",
+    "critic": "David Cote",
+    "url": "https://observer.com/2024/07/oh-mary-broadway-review/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 582,
+    "timestamp": "2026-02-03T02:23:42.602Z"
   }
 ]
