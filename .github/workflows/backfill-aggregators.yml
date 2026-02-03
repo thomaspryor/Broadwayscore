@@ -1,0 +1,248 @@
+# One-time backfill of Playbill Verdict + NYC Theatre data for all shows
+# Re-runnable: cached shows cost 0 API calls on repeat runs
+name: Backfill Aggregator Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      parallel_jobs:
+        description: 'Number of parallel jobs (1-10)'
+        required: false
+        default: '5'
+        type: string
+      aggregator:
+        description: 'Which aggregator to backfill'
+        required: true
+        type: choice
+        options:
+          - all
+          - playbill-verdict
+          - nyc-theatre
+      date_filter:
+        description: 'Apply 2023+ date filter to Playbill Verdict (false = all eras)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.split.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Split shows into parallel batches
+        id: split
+        run: |
+          JOBS=${{ inputs.parallel_jobs }}
+
+          # Validate parallel_jobs is 1-10
+          if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then
+            JOBS=5
+          fi
+
+          # Extract all show slugs from shows.json
+          SHOWS=$(node -e '
+            const data = JSON.parse(require("fs").readFileSync("data/shows.json", "utf8"));
+            const slugs = data.shows.map(s => s.slug || s.id);
+            console.log(slugs.join(","));
+          ')
+
+          # Split comma-separated shows into array
+          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          TOTAL=${#SHOW_ARRAY[@]}
+
+          echo "Total shows: $TOTAL, parallel jobs: $JOBS"
+
+          # Don't use more jobs than shows
+          if [ "$JOBS" -gt "$TOTAL" ]; then
+            JOBS=$TOTAL
+          fi
+
+          # Distribute shows across jobs round-robin
+          declare -a BATCHES
+          for i in $(seq 0 $((JOBS - 1))); do
+            BATCHES[$i]=""
+          done
+
+          for i in "${!SHOW_ARRAY[@]}"; do
+            BATCH_IDX=$((i % JOBS))
+            SHOW=$(echo "${SHOW_ARRAY[$i]}" | xargs)
+            if [ -n "${BATCHES[$BATCH_IDX]}" ]; then
+              BATCHES[$BATCH_IDX]="${BATCHES[$BATCH_IDX]},$SHOW"
+            else
+              BATCHES[$BATCH_IDX]="$SHOW"
+            fi
+          done
+
+          # Build JSON matrix
+          MATRIX='{"include":['
+          FIRST=true
+          for i in $(seq 0 $((JOBS - 1))); do
+            if [ -n "${BATCHES[$i]}" ]; then
+              if [ "$FIRST" = true ]; then
+                FIRST=false
+              else
+                MATRIX="$MATRIX,"
+              fi
+              DELAY=$((i * 30))
+              BATCH_SIZE=$(echo "${BATCHES[$i]}" | tr ',' '\n' | wc -l | xargs)
+              MATRIX="$MATRIX{\"batch_id\":$i,\"shows\":\"${BATCHES[$i]}\",\"delay\":$DELAY,\"size\":$BATCH_SIZE}"
+            fi
+          done
+          MATRIX="$MATRIX]}"
+
+          echo "Matrix: $(echo "$MATRIX" | head -c 500)..."
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+
+  backfill:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Stagger start
+        if: matrix.delay > 0
+        run: |
+          echo "Batch ${{ matrix.batch_id }} (${{ matrix.size }} shows): waiting ${{ matrix.delay }}s..."
+          sleep ${{ matrix.delay }}
+
+      - name: Scrape Playbill Verdict
+        if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'playbill-verdict' }}
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          echo "Batch ${{ matrix.batch_id }}: Playbill Verdict for ${{ matrix.size }} shows"
+          DATE_FLAG=""
+          if [ "${{ inputs.date_filter }}" != "true" ]; then
+            DATE_FLAG="--no-date-filter"
+          fi
+          node scripts/scrape-playbill-verdict.js --shows=${{ matrix.shows }} $DATE_FLAG
+
+      - name: Scrape NYC Theatre roundups
+        if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'nyc-theatre' }}
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          echo "Batch ${{ matrix.batch_id }}: NYC Theatre for ${{ matrix.size }} shows (2023+ only)"
+          node scripts/scrape-nyc-theatre-roundups.js --shows=${{ matrix.shows }}
+
+      - name: Check for large files
+        uses: ./.github/actions/check-file-sizes
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/review-texts/ data/aggregator-archive/
+          git diff --staged --quiet && { echo "No changes in batch ${{ matrix.batch_id }}"; exit 0; }
+
+          git commit -m "data: Backfill aggregator data (batch ${{ matrix.batch_id }}/${{ strategy.job-total }})"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed batch ${{ matrix.batch_id }}"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
+
+  rebuild:
+    needs: [backfill]
+    if: always() && needs.backfill.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild reviews.json
+        run: node scripts/rebuild-all-reviews.js
+
+      - name: Commit and push rebuilt reviews.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/reviews.json data/critic-registry.json data/audit/
+          git diff --staged --quiet && { echo "No changes to reviews.json"; exit 0; }
+
+          git commit -m "data: Auto-rebuild reviews.json after aggregator backfill"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed rebuild"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1

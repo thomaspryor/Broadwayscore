@@ -370,6 +370,15 @@ function saveNycTheatreExcerpt(showId, reviewInfo) {
 async function scrapeNYCTheatreRoundups() {
   console.log('=== NYC Theatre Review Roundups Scraper ===\n');
 
+  // Parse CLI flags
+  const args = process.argv.slice(2);
+  const showsArg = args.find(a => a.startsWith('--shows='));
+  const targetShowIds = showsArg ? showsArg.replace('--shows=', '').split(',').map(s => s.trim()).filter(Boolean) : null;
+
+  if (targetShowIds) {
+    console.log(`Targeted mode: ${targetShowIds.length} show(s): ${targetShowIds.join(', ')}`);
+  }
+
   if (!SCRAPINGBEE_KEY) {
     console.error('SCRAPINGBEE_API_KEY is required for Google searches.');
     console.error('Set it in .env or pass as environment variable.');
@@ -385,11 +394,17 @@ async function scrapeNYCTheatreRoundups() {
   console.log(`Loaded ${shows.length} shows from shows.json`);
 
   // Filter to shows from 2023+ (NYC Theatre only covers recent shows)
-  const recentShows = shows.filter(s => {
+  let recentShows = shows.filter(s => {
     const opening = new Date(s.openingDate);
     return opening >= new Date('2023-01-01');
   });
-  console.log(`Filtering to ${recentShows.length} shows from 2023+\n`);
+
+  // Apply --shows filter if provided
+  if (targetShowIds) {
+    recentShows = recentShows.filter(s => targetShowIds.includes(s.slug || s.id));
+  }
+
+  console.log(`Processing ${recentShows.length} shows from 2023+\n`);
 
   for (const show of recentShows) {
     const showId = show.slug || show.id;
