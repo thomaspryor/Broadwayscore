@@ -3,9 +3,9 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2011/05/14/theater/reviews/camelot-at-vivian-beaumont-theater-review.html",
+  "url": "https://www.nytimes.com/2011/10/02/nyregion/camelot-at-the-john-w-engeman-theater-review.html",
   "publishDate": "May 13, 2011",
-  "fullText": null,
+  "fullText": "https://www.nytimes.com/2011/10/02/nyregion/camelot-at-the-john-w-engeman-theater-review.htmlShare full articleAdvertisement\n\nIn most productions of “Camelot,” the character of Mordred, the evil spawn of King Arthur and a sorceress who seduced him in his youth, is a footnote. Usually, he’s barely remembered by theatergoers and mentioned only briefly in reviews; in the movie version, he was stripped of his two big numbers. In the stage musical, he doesn’t even appear until the second act.\n\nRarely does he burst in to practically save the show — or at least inject much-needed vigor. Yet that is what Jeremy Morse does when, playing Mordred with all the venom of an angry, neglected young adult, he sows dissension among the Knights of the Round Table and drives a final wedge between Arthur and his wife, Guenevere.\n\nEnergy, let alone enchantment, is otherwise largely missing from the production of the 1960 Lerner and Loewe classic at the John W. Engeman Theater at Northport.\n\n“Camelot,” with book and lyrics by Alan Jay Lerner and music by Frederick Loewe, based on “The Once and Future King,” by T. H. White, is at the John W. Engeman Theater at Northport, 250 Main Street, through Nov. 6. Information: engemantheater.com or",
   "isFullReview": false,
   "dtliExcerpt": "This 'Camelot' doesn't inspire the sort of passion that makes audiences fall in love with shows. It's a handsome, well-intentioned production that feels more dutiful than enchanting.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This 'Camelot' doesn't inspire the sort of passion that makes audiences fall in love with shows. It's a handsome, well-intentioned production that feels more dutiful than enchanting.",
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 62,
@@ -72,5 +72,52 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Mixed"
-  }
+  },
+  "previousUrl": "https://www.nytimes.com/2011/05/14/theater/reviews/camelot-at-vivian-beaumont-theater-review.html",
+  "urlDiscoveredAt": "2026-02-03T23:16:35.127Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 62,
+  "textWordCount": 193,
+  "archivePath": "data/archives/reviews/camelot-2011/nytimes--ben-brantley_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:16:35.132Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 216 (min: 300)"
+  ],
+  "wordCount": 193,
+  "tierReason": "Short text (193 words)"
 }
