@@ -622,17 +622,23 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 | Tier | Method | Success Rate | Notes |
 |------|--------|-------------|-------|
 | 0 | Archive.org (first for paywalled) | 11.1% | Best performer |
+| 0.5 | Archive.org CDX multi-snapshot | New (Feb 2026) | Queries CDX API for up to 10 snapshots, tries oldest-first (pre-paywall). 2s rate limit between fetches. |
 | 1 | Playwright + stealth | 6.7% | Local browser |
 | 1.5 | Browserbase | Enabled by default | $0.10/session, CAPTCHA solving |
 | 2 | ScrapingBee | 3.6% | API-based |
 | 3 | Bright Data Web Unlocker | 3.7% | API-based |
+| 3.5 | Archive.org CDX (fallback) | New (Feb 2026) | Same as 0.5 but runs as final fallback for non-archive-first sites |
 | 4 | Archive.org (final fallback) | — | Last resort |
 
 **Browserbase routing fix (Feb 2026):** Paywalled sites returning 404 used to trigger a fast-path that skipped Browserbase entirely. Fixed to allow paywalled 404s to fall through to Browserbase when login credentials exist, since 404 may be due to anti-bot blocking rather than a dead URL. Also: `archiveFirstSites` config routes paywalled domains to Archive.org first (Tier 0), which is correct for historical reviews but means Browserbase only fires for non-archived paywalled content.
 
+**Content tier filtering (Feb 2026):** `CONTENT_TIER_FILTER` env var (and `content_tier` workflow input) allows targeted collection runs by tier: `excerpt`, `truncated`, or `needs-rescrape`. Enables parallel dispatches for different review categories.
+
+**Archive.org CDX multi-snapshot (Feb 2026):** `fetchFromArchiveCDX()` queries the CDX API (`/cdx/search/cdx?url=X&output=json&limit=10`) to find multiple archived snapshots when the single-snapshot availability API fails. Tries oldest-first (pre-paywall content for WSJ, pre-login for BroadwayNews). Rate limited: 2s between snapshot fetches (CDX has ~15 req/min undocumented limit). Integrated as Tier 0.5 (archive-first sites) and Tier 3.5 (final fallback). `archiveFirstSites` includes: nytimes, vulture, nymag, washingtonpost, wsj, newyorker, ew, latimes, rollingstone, chicagotribune, nypost, nydailynews, theatrely, amny, forward, timeout, broadwaynews.
+
 **Declarative tier chain architecture (Feb 2026):** `fetchReviewText()` uses a declarative tier chain loop instead of sequential try/catch blocks. Key components:
-- `buildTierContext()` — computes URL properties (isKnownBlocked, isArchiveFirst, hasPaywallCreds) and mutable state signals
-- `buildTierChain()` — returns 7 tier descriptors, each with `shouldRun()` predicates and `onFailure()` hooks
+- `buildTierContext()` — computes URL properties (isKnownBlocked, isArchiveFirst, hasPaywallCreds) and mutable state signals (including `_archiveCdxRan`)
+- `buildTierChain()` — returns 9 tier descriptors (0, 0.5, 1, 4-early, 1.5, 2, 3, 3.5, 4), each with `shouldRun()` predicates and `onFailure()` hooks
 - `checkContentQuality()` — quality gate using `isGarbageContent()` that rejects paywall pages, newsletter overlays, ad-blocker walls. When a tier returns HTTP 200 with garbage content, the loop falls through to the next tier instead of accepting it.
 - `withTimeout()` — wraps tier execution with configurable timeout (Browserbase gets 120s)
 - Best-of-garbage fallback — tracks the longest garbage response in case all tiers fail, uses it as last resort
@@ -640,6 +646,8 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 **Low success rates are normal** — many URLs are dead (404), behind aggressive anti-bot, or on defunct sites. The nightly cron (`collect-review-texts.yml`, 2 AM UTC) processes up to 100 reviews per run with Browserbase enabled by default and retry_failed=true.
 
 **Collect per-show:** `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_reviews=0`
+
+**Collect by content tier:** `gh workflow run "Collect Review Texts" -f content_tier=truncated -f max_reviews=0` (also: `excerpt`, `needs-rescrape`)
 
 ## Known Extraction & Data Quality Issues (Feb 2026)
 
@@ -736,6 +744,8 @@ With checkpointing, a single unlimited run is now safe — progress is preserved
 ### Remaining Data Quality Work (Feb 2026)
 
 **Re-scraping queue:** ~188 free-site reviews and ~136 paywalled reviews still need fullText. Bulk collection runs dispatched for all 58 affected shows (free sites). The nightly `collect-review-texts.yml` cron (2 AM UTC) processes up to 100 reviews per run with Browserbase enabled. Paywalled sites use subscription credentials from GitHub Secrets (NYT, Vulture, WSJ, WaPo).
+
+**TheaterMania misattribution cleanup (Feb 2026):** 11 reviews attributed to Jesse Green/Adam Feldman at TheaterMania were web-search bulk import artifacts with fabricated URLs (5 shared article ID `_96847`, 2 shared `_95234`). Jesse Green writes for NYT, Adam Feldman for Time Out — proper reviews already existed at correct outlets. All 11 flagged `wrongAttribution: true`, `contentTier: "invalid"`.
 
 **Known audit flags (17 issues, all verified):** These are flagged by the audit but are legitimate:
 - **9 long-running show re-reviews:** URL year mismatches for Book of Mormon (2011), Chicago (1996), Lion King (1997), Wicked (2003) — critics reviewing years after opening. Legitimate.
