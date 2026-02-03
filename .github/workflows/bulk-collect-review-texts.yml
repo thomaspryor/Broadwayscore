@@ -46,6 +46,11 @@ on:
         required: false
         default: ''
         type: string
+      aggressive:
+        description: 'Skip Playwright for known-blocked sites (faster, uses API tiers directly)'
+        required: false
+        default: true
+        type: boolean
       test_mode:
         description: 'Test mode: limit each job to 5 reviews'
         required: false
@@ -223,7 +228,12 @@ jobs:
           RETRY_FAILED: ${{ inputs.retry_failed }}
           ARCHIVE_FIRST: ${{ inputs.archive_first }}
           CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
-        run: node scripts/collect-review-texts.js
+        run: |
+          ARGS=""
+          if [ "${{ inputs.aggressive }}" = "true" ]; then
+            ARGS="$ARGS --aggressive"
+          fi
+          node scripts/collect-review-texts.js $ARGS
 
       - name: Check for large files
         uses: ./.github/actions/check-file-sizes
