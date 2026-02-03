@@ -154,7 +154,9 @@ jobs:
             echo "No changes to commit"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
-            git commit -m "feat: Collect review texts (single job)
+            TIER_LABEL="${{ inputs.content_tier }}"
+            JOB_LABEL="single job${TIER_LABEL:+ — $TIER_LABEL}"
+            git commit -m "feat: Collect review texts ($JOB_LABEL)
 
           Co-Authored-By: GitHub Action <action@github.com>"
             git pull --rebase origin main || {
