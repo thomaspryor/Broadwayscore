@@ -407,14 +407,19 @@ async function scrapeNYCTheatreRoundups() {
   console.log(`Processing ${recentShows.length} shows from 2023+\n`);
 
   for (const show of recentShows) {
-    const showId = show.slug || show.id;
+    const showId = show.id;
     const archivePath = path.join(archiveDir, `${showId}.html`);
+    // Also check slug-based archive from older runs
+    const slugArchivePath = show.slug && show.slug !== show.id
+      ? path.join(archiveDir, `${show.slug}.html`) : null;
+    const effectiveArchivePath = fs.existsSync(archivePath) ? archivePath
+      : (slugArchivePath && fs.existsSync(slugArchivePath) ? slugArchivePath : archivePath);
 
     // Use cached archive if fresh (<14 days), otherwise re-fetch
-    const archiveFresh = fs.existsSync(archivePath) &&
-      (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
+    const archiveFresh = fs.existsSync(effectiveArchivePath) &&
+      (Date.now() - fs.statSync(effectiveArchivePath).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
     if (archiveFresh) {
-      const html = fs.readFileSync(archivePath, 'utf8');
+      const html = fs.readFileSync(effectiveArchivePath, 'utf8');
       console.log(`[CACHE] ${showId}: Using archived HTML`);
 
       const reviews = extractReviewsFromRoundup(html, showId);

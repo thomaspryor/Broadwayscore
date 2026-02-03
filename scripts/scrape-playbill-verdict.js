@@ -436,9 +436,14 @@ function saveReviewFromPlaybill(showId, reviewInfo) {
 
 async function processShowViaGoogle(show, showId, shows) {
   const existingArchive = path.join(archiveDir, `${showId}.html`);
-  if (fs.existsSync(existingArchive)) {
+  // Also check slug-based archive from older runs
+  const slugArchive = show.slug && show.slug !== show.id
+    ? path.join(archiveDir, `${show.slug}.html`) : null;
+  const effectiveArchive = fs.existsSync(existingArchive) ? existingArchive
+    : (slugArchive && fs.existsSync(slugArchive) ? slugArchive : existingArchive);
+  if (fs.existsSync(effectiveArchive)) {
     console.log(`  [CACHE] ${showId}: Using archived HTML`);
-    const html = fs.readFileSync(existingArchive, 'utf8');
+    const html = fs.readFileSync(effectiveArchive, 'utf8');
     const reviewLinks = extractReviewLinksFromArticle(html, showId);
     stats.reviewLinksExtracted += reviewLinks.length;
     for (const link of reviewLinks) {
@@ -490,7 +495,7 @@ async function processShowViaGoogle(show, showId, shows) {
         }
 
         // Look up show opening date for URL year validation
-        const showEntry = shows.find(s => (s.slug || s.id) === showId);
+        const showEntry = shows.find(s => s.id === showId);
         const showOpeningYear = showEntry && showEntry.openingDate
           ? new Date(showEntry.openingDate).getFullYear() : null;
         const showClosingYear = showEntry && showEntry.closingDate
@@ -585,7 +590,7 @@ async function scrapePlaybillVerdict() {
     console.log(`Processing ${targetShows.length} targeted show(s) via Google search...\n`);
 
     for (const show of targetShows) {
-      const showId = show.slug || show.id;
+      const showId = show.id;
       await processShowViaGoogle(show, showId, shows);
     }
 
@@ -627,7 +632,7 @@ async function scrapePlaybillVerdict() {
 
   // Step 2: Match articles to shows
   const matchedArticles = [];
-  const unmatchedShows = new Set(shows.map(s => s.slug || s.id));
+  const unmatchedShows = new Set(shows.map(s => s.id));
 
   for (const article of uniqueArticles) {
     if (isNotBroadway(article.title)) {
@@ -637,7 +642,7 @@ async function scrapePlaybillVerdict() {
 
     const match = matchTitleToShow(article.title, shows);
     if (match) {
-      const showId = match.show.slug || match.show.id;
+      const showId = match.show.id;
       matchedArticles.push({ ...article, showId, confidence: match.confidence });
       unmatchedShows.delete(showId);
       stats.matchedShows++;
@@ -650,13 +655,19 @@ async function scrapePlaybillVerdict() {
   // Step 3: Fetch each matched article and extract review links
   for (const article of matchedArticles) {
     const archivePath = path.join(archiveDir, `${article.showId}.html`);
+    // Also check slug-based archive from older runs
+    const matchedShow = shows.find(s => s.id === article.showId);
+    const slugArchive = matchedShow && matchedShow.slug && matchedShow.slug !== matchedShow.id
+      ? path.join(archiveDir, `${matchedShow.slug}.html`) : null;
+    const effectiveArchive = fs.existsSync(archivePath) ? archivePath
+      : (slugArchive && fs.existsSync(slugArchive) ? slugArchive : archivePath);
 
     // Use cached archive if fresh (<14 days), otherwise re-fetch
     let html;
-    const archiveFresh = fs.existsSync(archivePath) &&
-      (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
+    const archiveFresh = fs.existsSync(effectiveArchive) &&
+      (Date.now() - fs.statSync(effectiveArchive).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
     if (archiveFresh) {
-      html = fs.readFileSync(archivePath, 'utf8');
+      html = fs.readFileSync(effectiveArchive, 'utf8');
       console.log(`  [CACHE] ${article.showId}: Using archived HTML`);
     } else {
       try {
@@ -689,7 +700,7 @@ async function scrapePlaybillVerdict() {
     stats.reviewLinksExtracted += reviewLinks.length;
 
     // Look up show opening date for URL year validation
-    const showEntry = shows.find(s => (s.slug || s.id) === article.showId);
+    const showEntry = shows.find(s => s.id === article.showId);
     const showOpeningYear = showEntry && showEntry.openingDate
       ? new Date(showEntry.openingDate).getFullYear() : null;
     const showClosingYear = showEntry && showEntry.closingDate
@@ -726,7 +737,7 @@ async function scrapePlaybillVerdict() {
   });
 
   const showsNeedingSearch = recentShows.filter(s => {
-    const showId = s.slug || s.id;
+    const showId = s.id;
     const ap = path.join(archiveDir, `${showId}.html`);
     if (!unmatchedShows.has(showId)) return false;
     if (!fs.existsSync(ap)) return true;
@@ -736,7 +747,7 @@ async function scrapePlaybillVerdict() {
   console.log(`Shows needing Google search: ${showsNeedingSearch.length}`);
 
   for (const show of showsNeedingSearch) {
-    const showId = show.slug || show.id;
+    const showId = show.id;
     await processShowViaGoogle(show, showId, shows);
   }
 
