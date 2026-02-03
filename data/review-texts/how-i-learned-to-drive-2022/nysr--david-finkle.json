@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Parker remains the 17-year-old she was then. Remarkable! Her version of innocence assailed and fighting back is acting at a zenith.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with consistent superlative praise: 'superb finesse', 'brilliance', 'acting at a zenith', 'Remarkable!'. Despite one minor critique, the overwhelming tone is enthusiastic celebration of the production and performances. | GPT-4o: The review is overwhelmingly positive, praising the production, performances, and writing. The original 5/5 stars rating indicates a strong recommendation, and despite the text being truncated, the available content suggests a rave review. | Gemini: Despite a few reservations, the review is overwhelmingly positive, praising the performances, writing, and direction. The critic highlights the play's sophistication and contribution to understanding human behavior, and the 5/5 star rating indicates strong approval. | Kimi: The critic awards 5/5 stars and delivers superlative praise for the performances ('acting at a zenith'), direction ('superb finesse'), and writing ('brilliance'), dismissing the single minor flaw as insignificant in context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:17:53.054Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Paula Vogel's Pulitzer Prize-winning drama about sexual abuse is sensitively staged and superbly acted, with Mary-Louise Parker delivering a performance of remarkable emotional complexity.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Paula Vogel's Pulitzer Prize-winning drama about sexual abuse is sensitively staged and superbly acted, with Mary-Louise Parker delivering a performance of remarkable emotional complexity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of Paula Vogel's Pulitzer Prize-winning drama about sexual abuse is sensitively staged and superbly acted.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating falls in the Positive range, with clear praise for staging and performances, particularly highlighting Parker's 'remarkable emotional complexity.' | GPT-4o: The review praises the staging and acting, particularly highlighting Mary-Louise Parker's performance, and aligns with the original rating of 80, indicating a strong recommendation. | Gemini: The review uses positive language such as \"sensitively staged\" and \"superbly acted,\" and the critic's rating is 80, indicating a positive recommendation. | Kimi: The review offers strong praise for the production's sensitive staging and superb acting, particularly highlighting Mary-Louise Parker's performance, and the provided rating of 80 confirms a solid positive recommendation in the high-Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:18:35.668Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

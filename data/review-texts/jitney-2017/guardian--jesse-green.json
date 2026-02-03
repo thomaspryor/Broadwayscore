@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of August Wilson's Jitney is a masterclass in ensemble acting, bringing the playwright's keen eye for working-class Pittsburgh life to vivid, heartbreaking reality.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of August Wilson's Jitney is a masterclass in ensemble acting, bringing the playwright's keen eye for working-class Pittsburgh life to vivid, heartbreaking reality.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of August Wilson's Jitney is a masterclass in ensemble acting, bringing the playwright's keen eye for working-class Pittsburgh life to vivid, heartbreaking reality.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Clear praise using superlative language ('masterclass') and strong positive descriptors ('vivid, heartbreaking reality'). No reservations expressed in the excerpt provided. | GPT-4o: The review uses strong, positive language ('masterclass', 'vivid, heartbreaking reality') indicating a highly enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"masterclass\" and \"vivid, heartbreaking reality,\" indicating a rave review. | Kimi: The review offers unqualified praise with superlatives ('masterclass') and emphasizes strong emotional impact ('heartbreaking reality') with no reservations mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:46:15.499Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

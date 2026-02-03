@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Fun Home is a musical that succeeds on virtually every level, presenting a story that's both deeply personal and universally relatable with uncommon intelligence, sensitivity, and theatrical flair.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Fun Home is a musical that succeeds on virtually every level, presenting a story that's both deeply personal and universally relatable with uncommon intelligence, sensitivity, and theatrical flair.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fun Home is a musical that succeeds on virtually every level, presenting a story that's both deeply personal and universally relatable with uncommon intelligence, sensitivity, and theatrical flair.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise stating the show 'succeeds on virtually every level' with high-quality descriptors like 'uncommon intelligence, sensitivity, and theatrical flair.' This is clear rave territory. | GPT-4o: The review offers unqualified praise, highlighting the show's success on 'virtually every level' with 'uncommon intelligence, sensitivity, and theatrical flair.' This indicates a strong recommendation. | Gemini: The review uses strong positive language such as \"succeeds on virtually every level\" and describes the show as having \"uncommon intelligence, sensitivity, and theatrical flair,\" indicating a rave review. | Kimi: The critic offers unqualified praise, declaring the show succeeds on virtually every level with uncommon intelligence and theatrical flair, indicating an enthusiastic must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:40:20.658Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

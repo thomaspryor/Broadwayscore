@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheerful but formulaic musical comedy based on the 1942 movie is as wholesome as apple pie and about as surprising.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This cheerful but formulaic musical comedy based on the 1942 movie is as wholesome as apple pie and about as surprising.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This cheerful but formulaic musical comedy based on the 1942 movie is as wholesome as apple pie and about as surprising.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review balances positive ('cheerful', 'wholesome') with negative ('formulaic', 'about as surprising [as apple pie]' implies predictable). No clear recommendation either way. | GPT-4o: The review describes the show as 'cheerful but formulaic' and 'wholesome,' suggesting it is pleasant but lacks originality or excitement. This indicates a mixed assessment without a strong recommendation. | Gemini: The review describes the show as \"cheerful but formulaic\" and \"wholesome as apple pie and about as surprising,\" indicating a mixed opinion. It doesn't strongly recommend or discourage seeing it. | Kimi: The review acknowledges positive qualities ('cheerful,' 'wholesome') but ultimately characterizes the show as 'formulaic' and 'about as surprising' as apple pie, indicating predictable, unoriginal material without a clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:15:39.942Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 58,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

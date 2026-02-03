@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This effervescent musical comedy about a Jewish-Catholic wedding where everything goes wrong is a crowd-pleaser that compensates for its formulaic nature with warmth, humor and a cast that sells every moment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This effervescent musical comedy about a Jewish-Catholic wedding where everything goes wrong is a crowd-pleaser that compensates for its formulaic nature with warmth, humor and a cast that sells every moment.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This effervescent musical comedy about a Jewish-Catholic wedding where everything goes wrong is a crowd-pleaser",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('effervescent', 'crowd-pleaser') with acknowledgment of flaws ('formulaic nature') but overall recommendation through praise of cast and entertainment value. | GPT-4o: The review describes the show as a 'crowd-pleaser' with positive elements like warmth and humor, despite acknowledging its formulaic nature. This suggests a solid recommendation with some reservations. | Gemini: The review calls the show a \"crowd-pleaser\" and states that it \"compensates for its formulaic nature with warmth, humor and a cast that sells every moment.\" This indicates a positive recommendation with some reservations. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:39:46.790Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

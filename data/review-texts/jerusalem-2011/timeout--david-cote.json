@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mark Rylance gives a towering performance as Johnny 'Rooster' Byron, a drug-dealing pied piper who spins tall tales from his trailer in the woods. This is theater at its most primal and affecting.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mark Rylance gives a towering performance as Johnny 'Rooster' Byron, a drug-dealing pied piper who spins tall tales from his trailer in the woods. This is theater at its most primal and affecting.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is theater at its most primal and affecting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The critic's 80 rating combined with superlative language ('towering performance', 'most primal and affecting') indicates strong enthusiasm despite the brief text. | GPT-4o: The review praises the performance as 'towering' and describes the theater as 'primal and affecting,' indicating a strong recommendation. | Gemini: The review praises Mark Rylance's performance as 'towering' and calls the production 'theater at its most primal and affecting,' indicating a strong positive recommendation. The original rating of 80 aligns with this assessment. | Kimi: The critic assigns a rating of 80 and offers superlative praise for both the lead performance ('towering') and the overall production ('primal and affecting'), placing it firmly in the Positive bucket. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:45:13.057Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

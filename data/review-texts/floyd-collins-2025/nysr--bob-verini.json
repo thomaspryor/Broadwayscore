@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "2/5 stars"
+  "originalScore": "2/5 stars",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The current mounting at Lincoln Center, with a starry cast and original director Tina Landau, left me restless and cold.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The 2/5 star rating and clear disappointment from an experienced reviewer who loved previous productions indicates a negative recommendation. Despite praising individual performances, the critic finds the venue fundamentally wrong for the material and lacks emotional connection. | GPT-4o: The critic expresses disappointment with the current production, noting that it lacks the emotional impact of previous versions. Despite some praise for individual performances, the overall experience is described as lacking due to the venue's unsuitability, leading to a negative assessment. | Gemini: The critic clearly states the production left them \"restless and cold\" despite a strong cast and director. The 2/5 star rating also indicates a negative assessment. The review focuses on the venue negatively impacting the claustrophobic nature of the story. | Kimi: The critic awards 2/5 stars and describes the production as leaving them 'restless and cold,' criticizing the expansive Beaumont venue for undermining the show's necessary claustrophobia despite praising the cast's performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:31:36.287Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

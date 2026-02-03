@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Robert Askins' raucous comedy about a sweet church lady whose hand puppet turns into a foul-mouthed demon is a hoot that gets funnier as it gets more outrageous.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Robert Askins' raucous comedy about a sweet church lady whose hand puppet turns into a foul-mouthed demon is a hoot that gets funnier as it gets more outrageous.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a hoot that gets funnier as it gets more outrageous",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language with 'hoot' and escalating praise about getting 'funnier as it gets more outrageous' indicates clear enthusiasm and recommendation. | GPT-4o: The review uses enthusiastic language ('a hoot', 'gets funnier'), indicating a strong recommendation with no reservations. | Gemini: The review uses positive language such as \"a hoot\" and \"funnier as it gets more outrageous,\" indicating a positive recommendation. | Kimi: The critic enthusiastically describes the comedy as a 'hoot' that improves as it grows more outrageous, indicating strong enjoyment and recommendation despite the brief capsule format.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:05:20.070Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

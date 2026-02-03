@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Feldstein's Fanny is warm and winsome, if not quite the powerhouse vocalist the role demands. Her comic timing is impeccable, and she brings a naturalistic approach that makes Fanny feel like a real person rather than a Broadway archetype.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Feldstein's Fanny is warm and winsome, if not quite the powerhouse vocalist the role demands. Her comic timing is impeccable, and she brings a naturalistic approach that makes Fanny feel like a real person rather than a Broadway archetype.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (39 words)"
+  "contentTierReason": "Short text (39 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Feldstein's Fanny is warm and winsome, if not quite the powerhouse vocalist the role demands.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Praises Feldstein's warmth, comic timing, and naturalistic approach, but identifies a significant vocal deficiency for this demanding role. The praise is genuine but qualified by a major reservation about her not meeting the vocal requirements. | Gemini: The review praises Feldstein's performance as warm and winsome with impeccable comic timing, but notes she isn't a powerhouse vocalist. This suggests a positive but qualified recommendation. | Kimi: The excerpt offers strong praise for Feldstein's acting and comedic skills ('impeccable', 'naturalistic') while noting she lacks the vocal power traditionally required for the role, indicating a favorable but qualified assessment of her performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:41:06.733Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Gigi is gorgeous to look at and boasts a fine performance from Vanessa Hudgens in the title role, but it's dramatically inert and musically disappointing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Gigi is gorgeous to look at and boasts a fine performance from Vanessa Hudgens in the title role, but it's dramatically inert and musically disappointing.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Gigi is gorgeous to look at and boasts a fine performance from Vanessa Hudgens in the title role, but it's dramatically inert and musically disappointing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review balances positive elements (visuals, lead performance) against significant flaws (dramatic inertness, musical disappointment). The 'but' structure indicates the negatives outweigh the positives, placing it in lower mixed range. | GPT-4o: The review acknowledges visual appeal and a strong lead performance but criticizes the show as 'dramatically inert and musically disappointing,' indicating a negative overall assessment. | Gemini: The review praises the visuals and Hudgens' performance, but criticizes the drama and music, resulting in a mixed assessment. | Kimi: The review balances significant praise for production values and Hudgens' performance against fundamental criticisms of the drama and music, offering no clear recommendation either way.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:47:21.998Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

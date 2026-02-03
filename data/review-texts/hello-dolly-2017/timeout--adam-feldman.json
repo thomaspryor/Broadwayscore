@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Midler's performance is a marvel of comic timing and emotional intelligence, bringing fresh life to a role that could easily feel dated.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Midler's performance is a marvel of comic timing and emotional intelligence, bringing fresh life to a role that could easily feel dated.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Midler's performance is a marvel of comic timing and emotional intelligence, bringing fresh life to a role that could easily feel dated.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's 80 rating places this firmly in Positive territory. The praise for Midler's performance is strong ('marvel'), but this appears to be a truncated excerpt focusing only on one element, hence low confidence. | GPT-4o: The critic's original rating of 80 aligns with a positive review. The key quote praises Midler's performance as a standout element, indicating a solid recommendation. | Gemini: The review praises Midler's performance as a \"marvel\" and highlights her ability to bring \"fresh life\" to the role. Given the critic's rating of 80, this falls squarely into the Positive bucket. | Kimi: The review offers strong praise for Midler's performance, calling it a 'marvel' that brings 'fresh life' to the role. The critic's own 80 rating confirms a solid positive recommendation, though the brevity of the excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:11:41.056Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new production, directed by Bartlett Sher, is handsome and well-sung and features a superb performance by Danny Burstein as Tevye. But it's also oddly muted, as if someone had put a damper on the show's essential exuberance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new production, directed by Bartlett Sher, is handsome and well-sung and features a superb performance by Danny Burstein as Tevye. But it's also oddly muted, as if someone had put a damper on the show's essential exuberance.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (38 words)"
+  "contentTierReason": "Short text (38 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But it's also oddly muted, as if someone had put a damper on the show's essential exuberance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises production values and lead performance but expresses significant concern about the show's energy and impact, landing in mixed territory. | GPT-4o: The review praises the production's visual and vocal qualities and highlights a superb performance, but ultimately finds the show lacking in energy, resulting in a mixed verdict. | Gemini: The review praises the production values and a specific performance, but also notes a lack of exuberance, resulting in a mixed assessment. | Kimi: The review praises specific elements—calling the production 'handsome,' 'well-sung,' and the lead performance 'superb'—but ultimately finds the show 'oddly muted' and lacking 'essential exuberance,' resulting in an ambivalent assessment that neither fully recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:25:12.932Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

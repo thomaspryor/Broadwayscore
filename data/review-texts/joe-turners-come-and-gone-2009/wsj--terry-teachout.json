@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of August Wilson's 'Joe Turner's Come and Gone' is a powerful reminder of why Wilson is considered one of America's greatest playwrights. LaTanya Richardson Jackson's direction brings fresh insight to this haunting tale of displacement and spiritual searching.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of August Wilson's 'Joe Turner's Come and Gone' is a powerful reminder of why Wilson is considered one of America's greatest playwrights. LaTanya Richardson Jackson's direction brings fresh insight to this haunting tale of displacement and spiritual searching.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (40 words)"
+  "contentTierReason": "Short text (40 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival of August Wilson's 'Joe Turner's Come and Gone' is a powerful reminder of why Wilson is considered one of America's greatest playwrights.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive language ('powerful reminder') and praise for direction ('brings fresh insight'), but text appears truncated with insufficient detail for full evaluation. | GPT-4o: The review uses strong positive language, praising both the playwright and the director's fresh insight. The tone suggests a highly enthusiastic recommendation. | Gemini: The review uses strong positive language, calling the revival a 'powerful reminder' and praising the direction for bringing 'fresh insight'. This indicates a strong recommendation. | Kimi: The critic offers unqualified praise for both the play and LaTanya Richardson Jackson's direction, calling the production a powerful reminder of Wilson's greatness that brings fresh insight to the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:48:10.309Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

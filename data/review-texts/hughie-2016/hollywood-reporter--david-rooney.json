@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Forest Whitaker brings his trademark intensity to Eugene O'Neill's late-career two-hander, though the production feels somewhat constrained by the intimate material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Forest Whitaker brings his trademark intensity to Eugene O'Neill's late-career two-hander, though the production feels somewhat constrained by the intimate material.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Forest Whitaker brings his trademark intensity to Eugene O'Neill's late-career two-hander, though the production feels somewhat constrained by the intimate material.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises Whitaker's performance but notes production feels 'constrained.' Very brief text with unclear overall recommendation makes confidence low. | GPT-4o: The review acknowledges Whitaker's strong performance but notes a limitation in the production's execution, suggesting a mixed impression overall. | Gemini: The review acknowledges Whitaker's performance but suggests the production is constrained, indicating a mixed assessment. | Kimi: Acknowledges Whitaker's strong performance but criticizes the production as feeling constrained, indicating a qualified recommendation weighted heavily toward the lead performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:24:00.303Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Larry David's Broadway debut as a playwright-star is a crowd-pleasing family comedy that runs on the reliable fuel of Jewish guilt and the actor's own cringe-inducing neuroses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Larry David's Broadway debut as a playwright-star is a crowd-pleasing family comedy that runs on the reliable fuel of Jewish guilt and the actor's own cringe-inducing neuroses.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Larry David's Broadway debut as a playwright-star is a crowd-pleasing family comedy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes it as 'crowd-pleasing' and notes it 'runs on reliable fuel,' suggesting it works as intended. However, this appears to be an excerpt with limited evaluative content, so confidence is medium. | GPT-4o: The review describes the show as 'crowd-pleasing,' indicating a positive reception. The mention of 'reliable fuel' suggests it effectively delivers its comedic elements, though the brevity of the review limits deeper insight. | Gemini: The review describes the play as a \"crowd-pleasing family comedy,\" which indicates a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic describes the show as 'crowd-pleasing' and praises its comedic use of David's persona, indicating a solid recommendation, though the single-sentence length suggests this may be an excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:30:47.464Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

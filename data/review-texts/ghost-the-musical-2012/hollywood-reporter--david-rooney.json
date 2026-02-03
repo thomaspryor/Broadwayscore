@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "While the show has its touching moments and the staging is often ingenious, Ghost never quite transcends its source material to become compelling theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While the show has its touching moments and the staging is often ingenious, Ghost never quite transcends its source material to become compelling theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ghost never quite transcends its source material to become compelling theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review acknowledges positive elements (touching moments, ingenious staging) but the final verdict is that it 'never quite transcends' to become compelling theater, indicating neither recommendation nor strong discouragement. | GPT-4o: The review acknowledges some positive aspects like touching moments and ingenious staging, but ultimately suggests the show fails to become compelling theater, indicating a mixed verdict. | Gemini: The review acknowledges positive aspects like touching moments and ingenious staging, but ultimately states that the show doesn't become compelling theater. This indicates a mixed or neutral stance. | Kimi: The critic acknowledges isolated strengths (touching moments, ingenious staging) but delivers a clear negative verdict that the show fails to become 'compelling theater,' constituting a recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:45:32.485Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

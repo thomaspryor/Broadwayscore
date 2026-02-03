@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival doesn't reinvent the wheel, but it spins familiar material with enough freshness and vocal firepower to justify a return trip to these dark woods.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival doesn't reinvent the wheel, but it spins familiar material with enough freshness and vocal firepower to justify a return trip to these dark woods.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival doesn't reinvent the wheel, but it spins familiar material with enough freshness and vocal firepower to justify a return trip to these dark woods.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive recommendation ('justify a return trip') with acknowledged limitations ('doesn't reinvent the wheel'). The 87 original rating confirms strong positive territory. | GPT-4o: The critic's original rating of 87 aligns with the positive bucket, and the review text praises the revival's freshness and vocal performance, indicating a strong recommendation. | Gemini: The review is positive, stating that the revival is fresh and has vocal firepower, justifying a return trip. However, it also notes that it doesn't reinvent the wheel, indicating some reservations. | Kimi: The critic's own rating of 87/100 places this in the Rave range. While acknowledging the revival doesn't reinvent the material, the praise for 'vocal firepower' and 'freshness' alongside the clear recommendation to see it indicates an enthusiastic endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:35:54.241Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 84,
+    "geminiScore": 77,
+    "kimiScore": 87,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
