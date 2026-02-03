@@ -3736,18 +3736,6 @@
     "timestamp": "2026-01-31T16:24:56.413Z"
   },
   {
-    "reviewId": "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-    "showId": "book-of-mormon-2011",
-    "outlet": "Financial Times",
-    "critic": "Brendan Lemon",
-    "url": "https://www.ft.com/cms/s/2/f1e89e28-5635-11e0-82aa-00144feab49a.html#axzz1HYqgDs9J",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"Privacy policy\"",
-    "textLength": 3014,
-    "timestamp": "2026-01-31T16:27:08.798Z"
-  },
-  {
     "reviewId": "book-of-mormon-2011/ny-1--roma-torre.json",
     "showId": "book-of-mormon-2011",
     "outlet": "NY1",
@@ -8414,5 +8402,29 @@
     "garbageReason": "Multiple shows mentioned (3): home, tina, once",
     "textLength": 932,
     "timestamp": "2026-02-03T05:12:16.453Z"
+  },
+  {
+    "reviewId": "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "showId": "book-of-mormon-2011",
+    "outlet": "Financial Times",
+    "critic": "Brendan Lemon",
+    "url": "https://www.ft.com/content/f1e89e28-5635-11e0-82aa-00144feab49a",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"book of mormon\" not mentioned in text; No theater-related keywords in short text",
+    "textLength": 537,
+    "timestamp": "2026-02-03T05:15:59.787Z"
+  },
+  {
+    "reviewId": "cabaret-2024/queerty--matthew-wexler.json",
+    "showId": "cabaret-2024",
+    "outlet": "Queerty",
+    "critic": "Matthew Wexler",
+    "url": "https://www.queerty.com/eddie-redmayne-leads-a-dazzling-dangerous-cabaret-at-the-kit-kat-club-20240421",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): hamilton, here lies love, the wiz, home, company...",
+    "textLength": 6868,
+    "timestamp": "2026-02-03T05:16:44.102Z"
   }
 ]

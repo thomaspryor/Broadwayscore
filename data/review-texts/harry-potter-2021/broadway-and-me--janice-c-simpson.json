@@ -62,9 +62,21 @@
     "modelAgreement": "2/3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/broadway-and-me--janice-c--simpson_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T01:04:02.362Z",
+  "textFetchedAt": "2026-02-03T05:20:40.909Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "Insufficient text in archive: 0 chars"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "All 5 CDX snapshots had insufficient text"
+    },
     {
       "tier": 1,
       "method": "playwright",
