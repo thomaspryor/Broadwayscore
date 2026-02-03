@@ -360,15 +360,24 @@ async function main() {
     }
   }
 
-  // Handle multiple shows (comma-separated)
+  // Handle multiple shows (comma-separated) or special keywords
   if (showsArg) {
-    const showIds = showsArg.split(',').map(s => s.trim()).filter(Boolean);
-    shows = showsData.shows.filter(s => showIds.includes(s.id) || showIds.includes(s.slug));
-    if (shows.length === 0) {
-      console.error(`No shows found matching: ${showsArg}`);
-      process.exit(1);
+    if (showsArg === 'missing') {
+      // Filter to shows without Show Score data
+      shows = shows.filter(s => {
+        const b = (audienceBuzz.shows || {})[s.id];
+        return !b || !b.sources || !b.sources.showScore;
+      });
+      console.log(`Found ${shows.length} shows missing Show Score data`);
+    } else {
+      const showIds = showsArg.split(',').map(s => s.trim()).filter(Boolean);
+      shows = showsData.shows.filter(s => showIds.includes(s.id) || showIds.includes(s.slug));
+      if (shows.length === 0) {
+        console.error(`No shows found matching: ${showsArg}`);
+        process.exit(1);
+      }
+      console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
     }
-    console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
   }
 
   if (showLimit) {
