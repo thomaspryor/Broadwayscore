@@ -103,6 +103,16 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Script:** `scripts/backfill-grosses-history.ts`
 - **Note:** Only for initial setup or extending history range
 
+## `backfill-aggregators.yml`
+- **Runs:** Manual trigger only
+- **Does:** One-time parallel backfill of Playbill Verdict + NYC Theatre data for all shows (730+)
+- **Options:** `parallel_jobs` (default 5, 1-10), `aggregator` (all/playbill-verdict/nyc-theatre), `date_filter` (default false = all eras)
+- **Job pipeline:** `prepare → backfill (N parallel matrix jobs) → rebuild`
+- **Parallel-safe:** 30s stagger between jobs, 5-retry push with random backoff
+- **Caching:** Both scripts skip shows with existing archives in `data/aggregator-archive/`. Re-runs cost ~0 API calls.
+- **Cost:** ~$8-11 ScrapingBee credits for full 730-show backfill (first run)
+- **Manual trigger:** `gh workflow run "Backfill Aggregator Data" -f parallel_jobs=5 -f aggregator=all`
+
 ## `discover-historical-shows.yml`
 - **Runs:** Manual trigger only
 - **Does:** Discovers closed Broadway shows from past seasons, adds with status "closed" and tag "historical", auto-triggers review gathering
