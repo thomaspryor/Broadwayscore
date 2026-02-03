@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2009/legit/reviews/desire-under-the-elms-1200474356/",
   "publishDate": "April 27, 2009",
-  "fullText": "Pablo Schreiber brings raw sexual magnetism and simmering volatility to his role as Eben, while Carla Gugino makes a persuasive Abbie, her earthy sensuality masking steely calculation.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Pablo Schreiber brings raw sexual magnetism and simmering volatility to his role as Eben, while Carla Gugino makes a persuasive Abbie, her earthy sensuality masking steely calculation.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Pablo Schreiber brings raw sexual magnetism and simmering volatility to his role as Eben, while Carla Gugino makes a persuasive Abbie, her earthy sensuality masking steely calculation.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 76,
@@ -71,5 +71,49 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 564,
+  "archivePath": "data/archives/reviews/desire-under-the-elms-2009/variety--david-rooney_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:35:30.373Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
+  "showNotMentioned": true,
+  "wrongFullText": "Cecile de France brings to life the story of the rebel in a habit who committed suicide with her lesbian lover.\n\nA long way from the candy-colored 1966 Debbie Reynolds starrer “The Singing Nun,” Flemish helmer Stijn Coninx’s take on the Belgian sister who stormed the charts in 1963 with song “Dominique” doesn’t shy away from its subject’s darker side. Coninx and Belgian-born thesp Cecile de France bring to fascinating life the story of the rebel in a habit who committed suicide with her lesbian lover, in “Soeur Sourire.” Even though the pic is awkwardly structured, the famous tune and de France’s name should drum up significant interest when “Soeur” goes a-warbling throughout Gaul April 29 and Belgium a week later.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'Knight of the Seven Kingdoms' Premiere Draws 6.7 Million Viewers in Three Days \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n ‘Industry’ Star Sagar Radia on Why 'F—ed Up' Rishi Needed to 'Suffer Further’ in Season 4 and That Shockingly Self-Destructive Twist\n\nBeautifully shot opening, at a concert in Canada, starts off the story midway through before jumping back to 1959, when small-town girl Jeannine Deckers (de France) flees the stifling home of her conservative but not particularly devout parents (Jo Deseure, Jan Decleir) and enters a Dominican convent.\n\nThe screenplay, credited to Chris Vander Stappen (“Ma vie en Rose”), Ariane Fert and Coninx, sets up early on how the girl’s answer to every problem is simply to leave. (A shot of her carrying luggage becomes a leitmotif.) Early fish-out-of- water scenes at the convent are gently milked for laughs as Jeannine comes to realize her act of defiance has landed her in a place where she’s not even allowed to play her guitar, one of her few means of escape.\n\nWithout becoming didactic, the pic sketches the widening cracks between the Catholic Church and modern society that were to lead to the sweeping changes introduced by the Second Vatican Council in the mid-’60s. Coninx’s treatment of the church is generally level-headed and focused on individuals, much like in his Oscar-nominated Flemish-language film “Daens.”\n\nThe church’s idea of reaching out to the masses leads to Jeannine getting back her guitar and recording her song about the founder of her order, “Dominique.” She’s credited as “Soeur Sourire” (literally, “Sister Smile”), which makes her remark that, “Whoever came up with that name doesn’t know me very well.”\n\nAfter “Dominique” becomes a worldwide sensation, and even “The Ed Sullivan Show” visits her in Belgium, Jeannine struggles to reconcile her faith and her newfound fame. Unlike in “The Singing Nun” (made before the later events in her life), Jeannine eventually leaves the convent, tries on the attitude of a ’60s rock star for size and tours North America.\n\nClosing reels focus on her relationship with the love of her life, Annie (Sandrine Blancke). Their final moments are shown in a beautiful, wordless sequence that may be unclear for those unfamiliar with the real story.\n\nDe France, who does her own singing, takes the role of her tragic compatriot and runs with it, superbly embodying the many contradictions of a woman misunderstood by many (not least by herself). Other thesps, all Belgian, offer solid support.\n\nPic’s structure suffers from the standard biopic disease of lingering too much on famous highlights. Also, the makeup job doesn’t convey the fact that Deckers was actually in her early 50s when she died. Other tech credits are pro."
 }
