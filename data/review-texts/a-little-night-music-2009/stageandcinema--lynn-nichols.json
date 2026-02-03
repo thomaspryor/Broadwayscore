@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Catherine Zeta-Jones brings her movie-star glamour to Broadway as the worldly Desiree, but her voice, while pleasant, lacks the depth and richness that the role demands.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Catherine Zeta-Jones brings her movie-star glamour to Broadway as the worldly Desiree, but her voice, while pleasant, lacks the depth and richness that the role demands.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "her voice, while pleasant, lacks the depth and richness that the role demands",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: This appears to be a brief excerpt focusing only on one performer's vocal performance, with mixed assessment (pleasant but lacking depth). Too limited to determine overall show recommendation. | GPT-4o: The review highlights Zeta-Jones' glamour but criticizes her vocal performance as lacking depth. This suggests a mixed assessment, with no clear recommendation or discouragement. | Gemini: The review praises Zeta-Jones' glamour but criticizes her vocal performance, indicating a mixed assessment. | Kimi: Brief excerpt offers balanced assessment praising the star's glamour while criticizing her vocal suitability for the role, without issuing a clear see-it-or-skip-it verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:18:43.424Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

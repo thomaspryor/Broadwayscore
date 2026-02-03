@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Under Kenny Leon's direction, this Broadway revival of Charles Fuller's Pulitzer Prize-winning drama crackles with tension and delivers a powerful punch that resonates deeply in our current moment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -59,5 +59,60 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 730,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A superb all-male ensemble, under the powerhouse direction of Kenny Leon, attacks this knock-your-socks-off drama with intense emotional passion and intellectual courage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'crackerjack revival,' 'superb ensemble,' 'knock-your-socks-off drama,' and 'powerhouse direction.' The critic shows genuine enthusiasm and recommends the production without any reservations. | GPT-4o: The review is filled with superlatives and praises the production, direction, and performances without reservation. The critic uses strong language to convey the impact and quality of the show, indicating a highly enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"crackerjack revival\", \"packs plenty of dramatic tension\", and \"knock-your-socks-off drama\". The critic praises the direction and ensemble, indicating a strong recommendation. | Kimi: The critic deploys unqualified superlatives including 'crackerjack,' 'superb,' 'powerhouse,' and 'knock-your-socks-off' to praise the direction, ensemble, and dramatic impact without reservation, accompanied by enthusiastic exclamations like 'Now, that's what I call a play!'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:31:29.805Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

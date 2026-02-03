@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Christmas Carol is a marvel of stagecraft, with flying spirits and a stage that transforms into a wonderland of Victorian London — but it's also surprisingly moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Christmas Carol is a marvel of stagecraft, with flying spirits and a stage that transforms into a wonderland of Victorian London — but it's also surprisingly moving.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Christmas Carol is a marvel of stagecraft, with flying spirits and a stage that transforms into a wonderland of Victorian London — but it's also surprisingly moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for both technical elements ('marvel of stagecraft') and emotional impact ('surprisingly moving'), indicating solid recommendation despite brief length. | GPT-4o: The review uses strong positive language ('marvel of stagecraft', 'wonderland') and highlights both technical achievement and emotional impact, indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"marvel\" and \"surprisingly moving,\" indicating a clear recommendation. | Kimi: The critic uses superlatives ('marvel,' 'wonderland') to praise the production's technical achievements and emotional resonance without any reservations or caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:47:26.200Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

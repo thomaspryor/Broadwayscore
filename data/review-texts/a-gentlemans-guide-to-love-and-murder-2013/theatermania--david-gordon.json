@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "A Gentleman's Guide to Love and Murder is a deliriously entertaining musical comedy that manages to be both sophisticated and silly, murderous and musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A Gentleman's Guide to Love and Murder is a deliriously entertaining musical comedy that manages to be both sophisticated and silly, murderous and musical.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Gentleman's Guide to Love and Murder is a deliriously entertaining musical comedy that manages to be both sophisticated and silly, murderous and musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language with 'deliriously entertaining' and praise for balancing sophisticated and silly elements indicates enthusiastic recommendation. | GPT-4o: The review uses strong positive language like 'deliriously entertaining' and 'sophisticated and silly', indicating a highly enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"deliriously entertaining\" and highlights the show's successful combination of different elements, indicating a strong recommendation. | Kimi: The critic offers enthusiastic praise describing the show as 'deliriously entertaining' and celebrating its successful balance of sophistication and silliness, indicating a strong recommendation despite the brevity of the excerpt. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:12:04.672Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

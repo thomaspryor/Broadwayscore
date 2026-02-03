@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of A Christmas Story is a sweet, nostalgic trip down memory lane that captures the essence of the beloved film while adding its own theatrical charm.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of A Christmas Story is a sweet, nostalgic trip down memory lane that captures the essence of the beloved film while adding its own theatrical charm.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation of A Christmas Story is a sweet, nostalgic trip down memory lane that captures the essence of the beloved film while adding its own theatrical charm.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language ('sweet', 'charm', 'captures the essence') indicates recommendation, but brief text and lack of stronger superlatives keeps it in mid-Positive range. | GPT-4o: The review describes the show as 'sweet' and 'nostalgic' with 'theatrical charm,' indicating a positive recommendation. However, the brevity of the review and lack of detailed evaluation suggest a moderate level of enthusiasm. | Gemini: The review uses positive language such as \"sweet\" and \"captures the essence\" indicating a positive recommendation, but it is not overly enthusiastic, so it falls into the positive bucket. | Kimi: The reviewer praises the adaptation for capturing the film's essence while adding theatrical charm, using warm adjectives like 'sweet' and 'nostalgic' that clearly recommend the show despite the mild tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:58:28.214Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

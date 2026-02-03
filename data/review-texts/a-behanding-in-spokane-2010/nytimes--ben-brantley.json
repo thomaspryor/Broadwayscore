@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. McDonagh has written what may be his most accessible work for American audiences, a gory comic thriller that finds fertile ground in the nation's fascination with violence and its aftermath.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. McDonagh has written what may be his most accessible work for American audiences, a gory comic thriller that finds fertile ground in the nation's fascination with violence and its aftermath.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. McDonagh has written what may be his most accessible work for American audiences, a gory comic thriller that finds fertile ground in the nation's fascination with violence and its aftermath.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes this as McDonagh's 'most accessible work' and notes it 'finds fertile ground,' suggesting successful execution. However, this appears to be a brief excerpt with limited evaluative content, making the full critical stance somewhat unclear. | Gemini: The review describes the play as \"accessible\" and finding \"fertile ground,\" indicating a positive, though not overwhelmingly enthusiastic, recommendation. | Kimi: The critic praises the play as McDonagh's most accessible work and commends its effective exploration of violence, indicating a favorable recommendation despite the brevity of the provided text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:34:54.800Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

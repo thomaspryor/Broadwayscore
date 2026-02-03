@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new Broadway adaptation of A Christmas Carol manages to capture both the intimacy of Dickens's original story and the spectacle that modern audiences expect from a big-budget musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new Broadway adaptation of A Christmas Carol manages to capture both the intimacy of Dickens's original story and the spectacle that modern audiences expect from a big-budget musical.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new Broadway adaptation of A Christmas Carol manages to capture both the intimacy of Dickens's original story and the spectacle that modern audiences expect from a big-budget musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single sentence fragment suggests positive assessment of the adaptation's balance of intimacy and spectacle, but extremely limited text provides insufficient context for a full evaluation. | GPT-4o: The review praises the adaptation for successfully balancing intimacy and spectacle, indicating a strong positive reception. However, the brief nature of the text limits the depth of evaluation, resulting in medium confidence. | Gemini: The review states that the adaptation captures both the intimacy of the original story and the spectacle of a big-budget musical, indicating a positive overall assessment. | Kimi: The critic praises the production for successfully balancing the original story's intimacy with modern spectacle, offering a clear recommendation despite the brevity of the review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:45:31.252Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

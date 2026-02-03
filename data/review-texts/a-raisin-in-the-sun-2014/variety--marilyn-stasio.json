@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Under Kenny Leon's sensitive direction, this production honors the play's enduring power to move audiences with its honest depiction of a family's struggles and dreams.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20240926115233",
   "archiveOrgUrl": "http://web.archive.org/web/20240926115233/https://variety.com/2014/legit/reviews/broadway-review-a-raisin-in-the-sun-with-denzel-washington-1201152162/",
   "wordCount": 906,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The performance is a personal triumph for Washington, who refrains from star-strutting to fold himself into a tight-knit ensemble of committed stage thesps who treat this revival like a labor of love.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise for Washington's 'triumphant performance' and the 'tight-knit ensemble,' with consistent appreciation for the direction, performances, and material throughout. No significant reservations expressed. | GPT-4o: The review is filled with superlatives and praises the production as a triumph, highlighting the emotional impact and the excellence of the performances, particularly Denzel Washington's. | Gemini: The review uses strong positive language such as \"triumphant performance\" and \"heart-stopping revival.\" The critic clearly admires the production and Washington's performance. | Kimi: Unqualified praise across all production elements including Washington's 'triumphant' performance, 'utterly mesmerizing' supporting cast, and 'heart-stopping' direction with no significant criticisms offered.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:28:58.333Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

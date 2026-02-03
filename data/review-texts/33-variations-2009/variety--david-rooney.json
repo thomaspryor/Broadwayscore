@@ -58,5 +58,11 @@
     "Show title not found in text"
   ],
   "wordCount": 537,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-03T10:23:58.440Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This review is about a British TV movie called 'Filth' starring Julie Walters, not a Broadway show. The aggregator excerpt mentions Jane Fonda in '33 Variations' but the actual review text is completely about a different production.; openai: The text is about a film titled 'Filth' and not the Broadway show '33 Variations'.; kimi: This text reviews the 2008 BBC television film 'Filth' (also titled 'Filth: The Mary Whitehouse Story') starring Julie Walters and Hugh Bonneville, not a Broadway production. The review explicitly refers to the work as a 'movie,' mentions BBC television content, and cites director Andy de Emmony and writer Amanda Coe - all associated with the TV film. It is not a theater review.",
+  "promptVersion": "5.2.0"
 }

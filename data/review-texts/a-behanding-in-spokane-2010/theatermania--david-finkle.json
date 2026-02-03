@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McDonagh has written a play that's simultaneously hilarious and disturbing, and director John Crowley has staged it with the right blend of comedy and menace.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "McDonagh has written a play that's simultaneously hilarious and disturbing, and director John Crowley has staged it with the right blend of comedy and menace.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonagh has written a play that's simultaneously hilarious and disturbing, and director John Crowley has staged it with the right blend of comedy and menace.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for both writing and direction with no negative elements mentioned, but extremely brief excerpt limits confidence in full assessment. | GPT-4o: The review praises both the writing and direction, highlighting the successful blend of comedy and menace. This indicates a strong recommendation. | Gemini: The review praises both the writing and direction, indicating a positive overall assessment, but without strong superlatives, it's a solid positive. | Kimi: Brief excerpt offers unqualified praise for both the writing ('hilarious and disturbing') and direction ('right blend'), indicating a strong recommendation despite the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:35:22.137Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 88,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

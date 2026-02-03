@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This show succeeds brilliantly in doing what so many Broadway musicals fail to do these days: it tells a story clearly, entertainingly and with a gratifying sense of inevitability.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "archiveOrgTimestamp": "20241110155749",
   "archiveOrgUrl": "http://web.archive.org/web/20241110155749/https://www.nytimes.com/2013/11/18/theater/reviews/a-gentlemans-guide-to-love-and-murder-on-broadway.html",
   "wordCount": 1265,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This delightful show will lift the hearts of all those who've been pining for what sometimes seems a lost art form.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Brantley delivers unqualified praise throughout, calling it 'delightful,' praising the 'most accomplished score to be heard on Broadway in the past dozen years,' and describing Mays' performance as deserving to 'be immortalized in Broadway lore.' The enthusiasm is sustained and superlative. | GPT-4o: The review is filled with unqualified praise, calling the show 'delightful', 'inspired', and comparing it favorably to 'Sweeney Todd'. The critic highlights the exceptional performances and the accomplished score, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using words like \"delightful\" and praising the show's wit and melody. The critic clearly recommends seeing it. | Kimi: Brantley delivers unreserved praise for the production, calling it a 'tour de force' and 'delightful show' while declaring Jefferson Mays' performance 'hardly likely to be bettered on Broadway this season' and the score one of the most accomplished in years.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:10:55.696Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

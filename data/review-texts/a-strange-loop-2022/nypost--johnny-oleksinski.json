@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Pulitzer Prize-winning musical about a young gay Black man writing a musical about a young gay Black man writing a musical is a genuine original that crackles with wit, heart and stunning vocals.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Pulitzer Prize-winning musical about a young gay Black man writing a musical about a young gay Black man writing a musical is a genuine original that crackles with wit, heart and stunning vocals.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Pulitzer Prize-winning musical is a genuine original that crackles with wit, heart and stunning vocals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong positive language with 'genuine original' and 'crackles with wit, heart and stunning vocals' indicates enthusiastic recommendation without reservations. | GPT-4o: The review uses superlatives like 'genuine original' and 'crackles with wit, heart and stunning vocals,' indicating a strong, enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"genuine original\" and \"crackles with wit, heart and stunning vocals,\" indicating a positive recommendation. | Kimi: Unreserved praise calling the show a 'genuine original' with wit, heart, and stunning vocals; no caveats or criticisms present.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:34:22.013Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

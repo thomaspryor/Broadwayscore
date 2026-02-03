@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lucas Hnath's play is a worthy sequel that asks what happened after Nora slammed the door — and the answer is both surprising and inevitable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Lucas Hnath's play is a worthy sequel that asks what happened after Nora slammed the door — and the answer is both surprising and inevitable.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lucas Hnath's play is a worthy sequel that asks what happened after Nora slammed the door — and the answer is both surprising and inevitable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The term 'worthy sequel' indicates positive assessment, but this appears to be a brief excerpt with limited evaluative content to determine the full scope of recommendation. | GPT-4o: The review describes the play as 'worthy' and highlights its surprising and inevitable nature, suggesting a positive reception. However, the brevity of the text limits the depth of evaluation, leading to a low confidence score. | Gemini: The review calls the play a 'worthy sequel,' indicating a positive assessment and recommendation, but not with overwhelming enthusiasm. | Kimi: The critic offers clear praise calling the play a 'worthy sequel' with 'surprising and inevitable' answers, though the brevity of the excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:07:05.986Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

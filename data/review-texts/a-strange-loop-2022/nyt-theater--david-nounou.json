@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "A Strange Loop is a brilliant, provocative, and deeply personal musical that challenges audiences while delivering exceptional artistry. Michael R. Jackson has created something truly extraordinary that deserves all the accolades it has received.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -37,5 +37,60 @@
   "archiveOrgTimestamp": "20231204123859",
   "archiveOrgUrl": "http://web.archive.org/web/20231204123859/https://newyorktheater.me/2022/04/26/a-strange-loop-broadway-review/",
   "wordCount": 900,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "how welcome this show is for a Broadway audience",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout with words like 'dazzling,' 'extraordinary,' 'delight,' and 'welcome.' Calls performances 'impressive' and describes elaborate positive details about design, choreography, and acting. No significant reservations expressed. | GPT-4o: The review is filled with praise for the production, performances, and creative elements, with no significant reservations. The critic highlights the show's freshness and the impressive Broadway debuts, emphasizing its welcome presence on Broadway. | Gemini: The review is overwhelmingly positive, highlighting the show's freshness, tuneful songs, and impressive performances, particularly the lead and ensemble. The critic clearly recommends seeing it. | Kimi: The reviewer offers unqualified praise for the Broadway transfer, calling it 'dazzling,' 'extraordinary,' and a 'satisfying Broadway musical,' while commending the performances, direction, and design as 'welcome' additions to the Broadway landscape.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:35:05.336Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

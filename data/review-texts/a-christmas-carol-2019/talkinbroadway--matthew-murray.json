@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new musical version of A Christmas Carol is a sumptuous, thoroughly engaging evening that should delight audiences of all ages with its perfect blend of Dickens's timeless story and sweeping musical theater spectacle.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new musical version of A Christmas Carol is a sumptuous, thoroughly engaging evening that should delight audiences of all ages with its perfect blend of Dickens's timeless story and sweeping musical theater spectacle.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new musical version of A Christmas Carol is a sumptuous, thoroughly engaging evening that should delight audiences of all ages",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language with 'sumptuous,' 'thoroughly engaging,' and 'should delight audiences of all ages' indicates enthusiastic recommendation with no reservations expressed. | GPT-4o: The review uses strong positive language ('sumptuous', 'thoroughly engaging', 'delight audiences of all ages') indicating a highly enthusiastic recommendation without reservations. | Gemini: The review is overwhelmingly positive, using words like \"sumptuous\" and \"thoroughly engaging.\" The phrase \"should delight audiences of all ages\" is a strong recommendation. | Kimi: The critic offers unqualified praise using superlatives like 'sumptuous' and 'perfect blend,' explicitly recommending the show for audiences of all ages with no reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:45:05.029Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

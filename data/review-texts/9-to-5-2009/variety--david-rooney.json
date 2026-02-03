@@ -58,5 +58,11 @@
     "Show title not found in text"
   ],
   "wordCount": 640,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-03T10:30:44.080Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "openai: The text is about 'Inked Baby' by Christina Anderson, not the target Broadway show.; kimi: The review explicitly identifies the production as a 'Playwrights Horizons premiere.' Playwrights Horizons is an Off-Broadway theater, and the review describes an Off-Broadway premiere, not a Broadway production. Per the instructions, reviews of off-Broadway productions should be rejected as 'wrong_production.'",
+  "promptVersion": "5.2.0"
 }

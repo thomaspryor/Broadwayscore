@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new production of '1776' makes explicit what the original only hinted at: that the men who founded America were as flawed and conflicted as the nation they created.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (29 words)",
+  "rejectedAt": "2026-02-03T10:12:49.981Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a single sentence excerpt that appears to be a pull quote or summary, not a complete review with evaluation or recommendation; openai: The text is a statement about the production's thematic focus, not an evaluative review of the show.; gemini: This is a plot summary with no evaluative content.",
+  "promptVersion": "5.2.0"
 }

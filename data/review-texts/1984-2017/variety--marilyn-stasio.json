@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This stunning production of '1984' presents Orwell's totalitarian nightmare as visceral theater that inflicts genuine anguish on both its characters and audience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -55,5 +55,60 @@
   "textStatus": "truncated",
   "sourceMethod": "browserbase",
   "wordCount": 825,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This stunning production of '1984' presents Orwell's totalitarian nightmare as visceral theater that inflicts genuine anguish on both its characters and audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls it a 'stunning production' and praises it as 'visceral theater,' indicating strong positive assessment. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt uses strong positive language ('stunning', 'visceral') indicating a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"stunning\" and describes a powerful theatrical experience. Given that it's a single excerpt, I'm placing it at the higher end of the positive bucket. | Kimi: Strong praise using words like 'stunning' and 'visceral' indicates a clear recommendation for the production's emotional impact, though the single-excerpt format requires caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:21:34.120Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

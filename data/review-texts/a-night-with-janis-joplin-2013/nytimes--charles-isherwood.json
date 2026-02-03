@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mary Bridget Davies delivers a performance of searing intensity and vocal power that makes you believe, at least while she's onstage, that the ghost of Janis has indeed materialized in the Lyceum Theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mary Bridget Davies delivers a performance of searing intensity and vocal power that makes you believe, at least while she's onstage, that the ghost of Janis has indeed materialized in the Lyceum Theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mary Bridget Davies delivers a performance of searing intensity and vocal power that makes you believe, at least while she's onstage, that the ghost of Janis has indeed materialized in the Lyceum Theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the lead performance with vivid language ('searing intensity', 'makes you believe'). However, this appears to be a brief excerpt focusing only on one element, so confidence is medium due to incomplete assessment of the overall production. | Gemini: The review is overwhelmingly positive, focusing on the lead performance and its impact. The critic uses strong language like \"searing intensity\" and \"vocal power\" to describe the performance, indicating a strong recommendation. | Kimi: The excerpt offers enthusiastic praise for the central performance using superlatives like 'searing intensity' and 'vocal power,' indicating a clear recommendation, though the single-sentence length suggests this is an excerpt from a potentially longer review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:25:04.619Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

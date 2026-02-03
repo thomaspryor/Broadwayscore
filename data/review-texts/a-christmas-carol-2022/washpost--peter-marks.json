@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This 'Christmas Carol' is a lavish, old-fashioned spectacle that delivers the holiday goods with impressive technical wizardry and heartfelt performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This 'Christmas Carol' is a lavish, old-fashioned spectacle that delivers the holiday goods with impressive technical wizardry and heartfelt performances.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)"
+  "contentTierReason": "Short text (20 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 'Christmas Carol' is a lavish, old-fashioned spectacle that delivers the holiday goods with impressive technical wizardry and heartfelt performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation praising both technical elements and performances, using affirming language like 'delivers the goods' and 'impressive.' | GPT-4o: The review praises the show as a 'lavish, old-fashioned spectacle' with 'impressive technical wizardry and heartfelt performances,' indicating a strong recommendation without reservations. | Gemini: The review uses positive language like \"lavish,\" \"impressive,\" and \"heartfelt,\" indicating a strong recommendation. | Kimi: The critic offers unqualified praise for the production values and performances, using words like 'lavish,' 'impressive,' and 'heartfelt' to describe a successful holiday entertainment, though the brevity of the excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:53:59.316Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

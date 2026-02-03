@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new musical adaptation of Charles Dickens' classic tale succeeds where so many other adaptations have failed — it actually feels fresh and necessary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new musical adaptation of Charles Dickens' classic tale succeeds where so many other adaptations have failed — it actually feels fresh and necessary.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new musical adaptation of Charles Dickens' classic tale succeeds where so many other adaptations have failed — it actually feels fresh and necessary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive language ('succeeds', 'fresh and necessary') but extremely brief excerpt limits confidence in full assessment. | GPT-4o: The review praises the show for feeling 'fresh and necessary,' suggesting it stands out positively among other adaptations. The language indicates strong approval. | Gemini: The review explicitly states that the show \"succeeds\" and feels \"fresh and necessary,\" indicating a strong positive recommendation. | Kimi: The critic offers strong praise stating the adaptation succeeds where others failed, calling it 'fresh and necessary,' indicating a clear recommendation without extreme hyperbole.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:43:14.993Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival proves that Fuller's play remains as potent and necessary today as it was nearly four decades ago, and that when performed with this level of commitment and insight, it can still pack a devastating punch.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival proves that Fuller's play remains as potent and necessary today as it was nearly four decades ago, and that when performed with this level of commitment and insight, it can still pack a devastating punch.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (37 words)"
+  "contentTierReason": "Short text (37 words)",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival proves that Fuller's play remains as potent and necessary today as it was nearly four decades ago.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise calling the revival 'potent and necessary' with performances that 'pack a devastating punch,' indicating an enthusiastic recommendation. | GPT-4o: The review describes the revival as 'potent and necessary' with a 'devastating punch', indicating strong praise and a must-see recommendation. | Gemini: The review states the play is \"potent and necessary\" and can \"pack a devastating punch\", indicating a strong positive recommendation. | Kimi: The critic employs strongly laudatory language ('potent,' 'necessary,' 'devastating punch') to praise the production's impact and execution, indicating enthusiastic endorsement despite the brevity of the provided excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:29:30.663Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

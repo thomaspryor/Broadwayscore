@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheerfully synthetic show, with music and lyrics by Dolly Parton and a book by Patricia Resnick, who wrote the screenplay for the original movie, is a workplace fantasy that feels assembled from the spare parts of other musicals.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This cheerfully synthetic show, with music and lyrics by Dolly Parton and a book by Patricia Resnick, who wrote the screenplay for the original movie, is a workplace fantasy that feels assembled from the spare parts of other musicals.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (39 words)"
+  "contentTierReason": "Short text (39 words)",
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This cheerfully synthetic show feels assembled from the spare parts of other musicals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic dismisses the show as 'synthetic' and 'assembled from spare parts of other musicals,' which are clear negative judgments about the show's originality and quality. | GPT-4o: The review describes the show as 'cheerfully synthetic' and 'assembled from spare parts,' indicating a lack of originality and creativity, leading to a negative verdict. | Gemini: The review uses the term 'cheerfully synthetic' and states that the show 'feels assembled from the spare parts of other musicals,' indicating a mixed or lukewarm reception. | Kimi: Single-sentence excerpt describes the show as 'synthetic' and derivative ('assembled from spare parts') while acknowledging its 'cheerful' tone, suggesting an unoriginal but mildly entertaining production. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:29:34.099Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

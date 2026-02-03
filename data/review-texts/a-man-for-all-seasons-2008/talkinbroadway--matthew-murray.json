@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Frank Langella delivers a performance of such towering integrity and quiet power that it transforms Robert Bolt's somewhat static play into a riveting examination of conscience versus convenience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Frank Langella delivers a performance of such towering integrity and quiet power that it transforms Robert Bolt's somewhat static play into a riveting examination of conscience versus convenience.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Frank Langella delivers a performance of such towering integrity and quiet power that it transforms Robert Bolt's somewhat static play into a riveting examination of conscience versus convenience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Langella's transformative performance that elevates the material, though acknowledges the play itself is 'somewhat static'. The word 'riveting' indicates a positive recommendation despite structural limitations. | GPT-4o: The review praises Langella's performance as transformative, elevating the play to a riveting experience. This strong endorsement places it in the Rave category. | Gemini: The review praises Langella's performance as transformative, turning a 'somewhat static play' into a 'riveting examination.' This indicates a strong positive recommendation. | Kimi: The critic gives exceptional praise to Langella's performance ('towering integrity,' 'quiet power') and states that it transforms the play into a 'riveting examination,' though noting the underlying material is somewhat static.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:21:52.767Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

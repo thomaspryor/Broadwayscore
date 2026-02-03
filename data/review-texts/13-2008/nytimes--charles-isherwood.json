@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show has a sunny, optimistic spirit that is hard to resist, even when the material feels thin. The young performers attack their roles with an enthusiasm that proves infectious.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show has a sunny, optimistic spirit that is hard to resist, even when the material feels thin. The young performers attack their roles with an enthusiasm that proves infectious.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show has a sunny, optimistic spirit that is hard to resist, even when the material feels thin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with qualifications. The critic acknowledges flaws ('material feels thin') but finds the show 'hard to resist' due to spirit and performances. | GPT-4o: The review expresses a positive overall sentiment, highlighting the show's spirit and the enthusiasm of the performers, but notes that the material feels thin, indicating some reservations. | Gemini: The review expresses a positive sentiment, describing the show as having a \"sunny, optimistic spirit\" that is \"hard to resist.\" However, it also notes that the material feels \"thin,\" indicating a reservation. | Kimi: The critic offers a clear recommendation ('hard to resist,' 'infectious enthusiasm') while acknowledging significant weaknesses in the material, resulting in a qualified positive verdict typical of the 75-79 range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:09:18.250Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

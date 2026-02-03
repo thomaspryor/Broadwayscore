@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jack Thorne's adaptation of the Dickens classic is a handsome production that hits all the right notes, but Campbell Scott's Scrooge never quite finds the emotional center of this familiar redemption story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 29,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20250426203950",
   "archiveOrgUrl": "http://web.archive.org/web/20250426203950/https://variety.com/2019/legit/reviews/christmas-carol-review-broadway-campbell-scott-1203410701/",
   "wordCount": 676,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 24,
+      "high": 34
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This dour production, whose additions only subtract from the potency of the transformative tale.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The critic finds fundamental problems with the adaptation's choices, calling it 'dour,' 'wrong-headed,' and lacking the magic of the original. While acknowledging some individual talents, the overall assessment is clearly negative. | GPT-4o: The review is overwhelmingly negative, criticizing the production's reinterpretation of the classic story, the performances, and the overall execution. The critic finds the changes misguided and the emotional impact lacking, resulting in a strong recommendation against seeing the show. | Gemini: The review is largely negative, criticizing the production's deviations from the original story and its lack of emotional impact. The critic finds the changes \"wrong-headed\" and the performances underwhelming. | Kimi: The critic condemns the adaptation's changes as 'wrong-headed' and 'drab,' criticizes the lead performance as 'one-note' with an 'unearned' transformation, and finds the production bereft of the original's magic and haunting power. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:46:40.677Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 18,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 27,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }
