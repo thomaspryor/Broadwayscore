@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Larry David's Broadway debut as playwright and star is a rambling family comedy that trades on his neurotic persona but lacks the sharp observational wit of his TV work.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Larry David's Broadway debut as playwright and star is a rambling family comedy that trades on his neurotic persona but lacks the sharp observational wit of his TV work.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a rambling family comedy that trades on his neurotic persona but lacks the sharp observational wit",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment - 'rambling' and 'lacks the sharp observational wit' indicate disappointment and suggest not recommending the show. | GPT-4o: The review criticizes the show for being rambling and lacking the wit of Larry David's TV work, indicating a negative assessment. | Gemini: The review explicitly states that the play lacks the wit of David's TV work, indicating a negative assessment and a lack of recommendation. | Kimi: The critic describes the comedy as rambling and criticizes it for failing to deliver the sharp observational wit of David's TV work, indicating a clear negative assessment without recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:03:16.585Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

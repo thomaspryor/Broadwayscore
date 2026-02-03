@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bette Midler's triumphant return to Broadway in 'Hello, Dolly!' is a master class in star power, delivering the kind of larger-than-life performance that makes you remember why musicals were invented in the first place.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Bette Midler's triumphant return to Broadway in 'Hello, Dolly!' is a master class in star power, delivering the kind of larger-than-life performance that makes you remember why musicals were invented in the first place.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bette Midler's triumphant return to Broadway in 'Hello, Dolly!' is a master class in star power.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlative language 'triumphant' and 'master class' with no reservations. Suggests the performance exemplifies why musicals exist, indicating highest recommendation level. | GPT-4o: The review uses superlatives like 'triumphant' and 'master class' to describe Bette Midler's performance, indicating an enthusiastic, must-see recommendation. | Gemini: The review uses superlatives like \"triumphant\" and \"master class\" to describe Bette Midler's performance, indicating a rave review. | Kimi: Unqualified praise with superlatives ('triumphant', 'master class') and an enthusiastic recommendation that declares the performance reminds you 'why musicals were invented,' with no reservations mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:44:31.136Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

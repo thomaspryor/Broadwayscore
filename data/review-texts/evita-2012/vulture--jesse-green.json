@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway revival of Evita is like a beautiful vintage car that's been lovingly restored but whose engine still doesn't quite purr. Elena Roger, the Argentine actress who originated the role of Eva Perón in the London revival, brings authenticity and a gorgeous voice to the part, but the production feels oddly bloodless.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "The new Broadway revival of Evita is like a beautiful vintage car that's been lovingly restored but whose engine still doesn't quite purr. Elena Roger, the Argentine actress who originated the role of Eva Perón in the London revival, brings authenticity and a gorgeous voice to the part, but the production feels oddly bloodless.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (54 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production feels oddly bloodless.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The review praises Elena Roger's performance but criticizes the production as 'oddly bloodless,' indicating a mixed reception with both positive and negative elements. | Gemini: The review praises the lead actress but finds the overall production \"oddly bloodless,\" indicating a mixed assessment. | Kimi: The review compliments the lead performance and visual restoration but delivers a fundamental criticism that the production lacks vitality and energy, resulting in an ambivalent assessment without a clear recommendation to attend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:51:13.620Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

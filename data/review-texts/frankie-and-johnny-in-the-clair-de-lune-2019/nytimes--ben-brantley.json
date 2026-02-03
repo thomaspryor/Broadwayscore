@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. McDonald and Mr. Shannon achieve something close to perfection in their portrayal of two lonely souls who find temporary refuge in each other's arms.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Ms. McDonald and Mr. Shannon achieve something close to perfection in their portrayal of two lonely souls who find temporary refuge in each other's arms.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. McDonald and Mr. Shannon achieve something close to perfection in their portrayal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | GPT-4o: The review uses strong praise ('something close to perfection') for the performances, indicating a highly positive assessment. The lack of additional context or reservations suggests a strong recommendation. | Gemini: The review uses the phrase \"close to perfection\" to describe the performances, which indicates a strong positive recommendation. | Kimi: The critic employs superlative praise ('close to perfection') for the lead performances, indicating the highest level of theatrical achievement, though the single-sentence excerpt limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:10:15.632Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "kimiScore": 96,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

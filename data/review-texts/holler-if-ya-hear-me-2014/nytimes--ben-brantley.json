@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This jukebox musical inspired by the songs of Tupac Shakur feels more like a sermon than a story, and its characters never acquire the specificity that would make us care about their individual fates.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This jukebox musical inspired by the songs of Tupac Shakur feels more like a sermon than a story, and its characters never acquire the specificity that would make us care about their individual fates.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This jukebox musical inspired by the songs of Tupac Shakur feels more like a sermon than a story, and its characters never acquire the specificity that would make us care about their individual fates.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict criticizing fundamental storytelling flaws - characters lack specificity and emotional connection. 'Sermon not story' indicates structural problems with the musical itself. | GPT-4o: The review criticizes the lack of character development and engaging narrative, suggesting a lack of recommendation. | Gemini: The review states that the show feels more like a sermon than a story and that the characters lack specificity, leading to a negative assessment. | Kimi: The critic criticizes the show for being didactic ('like a sermon') and failing to develop specific characters that generate audience investment, offering a clear negative assessment without recommending the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:47:08.030Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

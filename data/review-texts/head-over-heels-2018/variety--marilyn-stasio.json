@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This jukebox musical built around the hits of the Go-Go's is a campy, candy-colored romp that's as sweet and silly as cotton candy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This jukebox musical built around the hits of the Go-Go's is a campy, candy-colored romp that's as sweet and silly as cotton candy.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This jukebox musical built around the hits of the Go-Go's is a campy, candy-colored romp that's as sweet and silly as cotton candy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('romp') with affectionate tone about the show's entertainment value, though 'silly as cotton candy' suggests lightweight fun rather than substantial theater. | GPT-4o: The review describes the show as 'campy, candy-colored romp' and 'sweet and silly,' indicating a positive tone with some reservations about its depth. | Gemini: The review describes the show as a \"campy, candy-colored romp\" that is \"sweet and silly\", indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic describes the show as a 'campy, candy-colored romp' that is 'sweet and silly,' indicating an enjoyable if insubstantial entertainment. The tone is approving but not ecstatic, fitting the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:10:14.024Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

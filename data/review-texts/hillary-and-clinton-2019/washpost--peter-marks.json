@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Metcalf and Lithgow make a fascinating but flawed play work through sheer force of their talent and chemistry.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Metcalf and Lithgow make a fascinating but flawed play work through sheer force of their talent and chemistry.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (18 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Metcalf and Lithgow make a fascinating but flawed play work through sheer force of their talent and chemistry.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict - the stars 'make it work' despite the play's flaws. Recommends based on the strength of the performances overcoming material weaknesses. | GPT-4o: The review highlights the strong performances of Metcalf and Lithgow as the key elements making the play work, despite acknowledging its flaws. This suggests a positive recommendation with some reservations about the play itself. | Gemini: The review states that the play is flawed but the actors make it work, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: While acknowledging the play is flawed, the critic states it works due to the extraordinary performances, constituting a qualified but clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:46:04.963Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

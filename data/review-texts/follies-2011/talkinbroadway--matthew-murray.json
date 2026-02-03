@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival proves that Follies remains one of the most emotionally devastating and theatrically magnificent works ever created for the American musical stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This revival proves that Follies remains one of the most emotionally devastating and theatrically magnificent works ever created for the American musical stage.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival proves that Follies remains one of the most emotionally devastating and theatrically magnificent works ever created for the American musical stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlative praise calling it 'one of the most theatrically magnificent works ever created' with no reservations or caveats expressed. | GPT-4o: The review uses superlatives like 'emotionally devastating' and 'theatrically magnificent,' indicating a strong, enthusiastic recommendation. | Gemini: The review uses superlatives like \"most emotionally devastating\" and \"theatrically magnificent\", indicating a rave review. | Kimi: The critic employs absolute superlatives ('most... ever created', 'magnificent') and unqualified praise, indicating the highest possible recommendation for this revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:07:00.693Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

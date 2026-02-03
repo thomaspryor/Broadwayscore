@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The four fine actors who make up the cast of 'God of Carnage' turn Yasmina Reza's boulevard comedy into something approaching art, though the play itself never quite gets there.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The four fine actors who make up the cast of 'God of Carnage' turn Yasmina Reza's boulevard comedy into something approaching art, though the play itself never quite gets there.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The four fine actors who make up the cast of 'God of Carnage' turn Yasmina Reza's boulevard comedy into something approaching art, though the play itself never quite gets there.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises the cast as 'fine actors' who elevate the material to 'something approaching art,' but explicitly states the play itself 'never quite gets there' - a clear mixed assessment with qualified praise. | GPT-4o: The review praises the cast but notes the play itself falls short of being art, indicating a mixed reception with positive elements. | Gemini: The review praises the actors' performances, but notes the play itself falls short. This suggests a positive, but qualified, recommendation. | Kimi: The critic praises the ensemble's skill in elevating the material ('fine actors,' 'approaching art') but explicitly states the play itself fails to achieve its artistic ambitions ('never quite gets there'), resulting in a balanced, non-committal assessment without a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:23:56.596Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

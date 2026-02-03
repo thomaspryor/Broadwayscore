@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes 'Fun Home' so affecting is not just its emotional candor but the sophistication with which it explores the mysteries of identity and family.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "What makes 'Fun Home' so affecting is not just its emotional candor but the sophistication with which it explores the mysteries of identity and family.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes 'Fun Home' so affecting is not just its emotional candor but the sophistication with which it explores the mysteries of identity and family.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the show as 'affecting' with 'emotional candor' and 'sophistication,' indicating a strong positive recommendation, though the excerpt is brief which slightly reduces confidence. | Gemini: The review highlights the emotional impact and sophistication of the show, indicating a positive, though not overwhelmingly enthusiastic, recommendation. | Kimi: The excerpt offers clear praise for the show's emotional impact and thematic sophistication, indicating a solid recommendation despite the brief length.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:14:31.951Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Geoffrey Rush delivers a towering performance as the dying monarch in Ionesco's absurdist masterpiece, making this Broadway revival an essential theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Geoffrey Rush delivers a towering performance as the dying monarch in Ionesco's absurdist masterpiece, making this Broadway revival an essential theatrical experience.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Geoffrey Rush delivers a towering performance as the dying monarch in Ionesco's absurdist masterpiece, making this Broadway revival an essential theatrical experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | GPT-4o: The review uses strong superlatives like 'towering performance' and 'essential theatrical experience', indicating an enthusiastic must-see recommendation without reservations. | Gemini: The review uses strong positive language such as \"towering performance\" and \"essential theatrical experience,\" indicating a rave review. | Kimi: The critic uses superlatives ('towering', 'masterpiece', 'essential') to deliver an unqualified, enthusiastic recommendation without any reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:52:11.353Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

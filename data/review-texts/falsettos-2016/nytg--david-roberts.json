@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of William Finn and James Lapine's musical about love, family, and loss in the age of AIDS is both heartbreaking and uplifting, with stellar performances across the board.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This revival of William Finn and James Lapine's musical about love, family, and loss in the age of AIDS is both heartbreaking and uplifting, with stellar performances across the board.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival is both heartbreaking and uplifting, with stellar performances across the board.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive language ('stellar performances', 'heartbreaking and uplifting') indicates strong recommendation, though the brief excerpt limits full assessment of the critic's complete verdict. | GPT-4o: The review describes the production as 'heartbreaking and uplifting' with 'stellar performances,' indicating a strong recommendation without reservations. | Gemini: The review uses positive language such as \"heartbreaking and uplifting\" and highlights \"stellar performances\", indicating a positive recommendation. | Kimi: The review offers unqualified praise with superlatives like 'stellar' and strong emotional descriptors, indicating an enthusiastic recommendation despite the brief excerpt length.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:58:11.357Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

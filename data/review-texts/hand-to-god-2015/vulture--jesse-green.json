@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hand to God is a very funny play about very unfunny things, and that's what makes it so good. It's about repression and rebellion, about the ways we try to control ourselves and others, and about what happens when those controls break down.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Hand to God is a very funny play about very unfunny things, and that's what makes it so good. It's about repression and rebellion, about the ways we try to control ourselves and others, and about what happens when those controls break down.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (43 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hand to God is a very funny play about very unfunny things, and that's what makes it so good.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly states the play is 'so good' and praises its handling of serious themes through humor, indicating a positive recommendation despite the brief excerpt. | Gemini: The review states the play is \"very funny\" and \"so good\", indicating a positive recommendation. However, the description of the play being about \"very unfunny things\" suggests some reservations. | Kimi: The critic offers unqualified praise, describing the play as 'very funny' and 'so good,' which constitutes a clear recommendation despite the unusually brief text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:42:33.933Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

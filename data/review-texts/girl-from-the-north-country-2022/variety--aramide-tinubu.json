@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though the musical doesn't always work seamlessly, when it does click, it's absolutely magical, thanks in large part to the gorgeous folk music and the stellar ensemble cast.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Though the musical doesn't always work seamlessly, when it does click, it's absolutely magical, thanks in large part to the gorgeous folk music and the stellar ensemble cast.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "when it does click, it's absolutely magical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed language about seamless execution but ultimate praise for magical moments, gorgeous music, and stellar cast indicates a positive recommendation with reservations. | GPT-4o: The review acknowledges some flaws but highlights magical moments and praises the music and ensemble cast, indicating a positive recommendation with some reservations. | Gemini: The review states that the musical is \"absolutely magical\" when it works, but also notes that it doesn't always work seamlessly. This indicates a positive recommendation with reservations. | Kimi: While acknowledging the show's inconsistencies, the critic offers strong praise for its successful moments ('absolutely magical'), music, and cast, indicating a qualified but clear recommendation to see the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:21:30.655Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

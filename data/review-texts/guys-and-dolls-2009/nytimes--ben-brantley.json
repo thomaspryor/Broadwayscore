@@ -18,59 +18,8 @@
   "showScoreExcerpt": "This production brings a welcome dose of professionalism and polish to what has become a rather weary revival circuit, even if it doesn't quite recapture the original's legendary magic.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "llmScore": {
-    "score": 74,
-    "confidence": "medium",
-    "range": {
-      "low": 69,
-      "high": 79
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "This production brings a welcome dose of professionalism and polish to what has become a rather weary revival circuit, even if it doesn't quite recapture the original's legendary magic.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review acknowledges professional qualities and polish but immediately qualifies this with a significant reservation about failing to recapture the original's magic. The conditional praise suggests neither strong recommendation nor discouragement. | GPT-4o: The review praises the professionalism and polish of the production, suggesting a positive recommendation, but notes it doesn't fully recapture the original's magic, indicating some reservations. | Gemini: The review is generally positive, noting professionalism and polish, but acknowledges it doesn't reach the original's magic. This indicates a recommendation with reservations. | Kimi: The critic offers a qualified recommendation, praising the production's competence and polish as an improvement on recent revivals, while acknowledging it falls short of the original's legendary standard.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:29:11.908Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 75,
-    "geminiScore": 72,
-    "kimiScore": 74,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 13,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
-  }
+  "textQuality": "truncated",
+  "sources": [
+    "web-search"
+  ]
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Broadway musical 'Frozen' is a spectacular production that captures the magic of the Disney animated film while adding theatrical depth and emotional resonance to the beloved story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The Broadway musical 'Frozen' is a spectacular production that captures the magic of the Disney animated film while adding theatrical depth and emotional resonance to the beloved story.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Broadway musical 'Frozen' is a spectacular production that captures the magic of the Disney animated film while adding theatrical depth and emotional resonance to the beloved story.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: The review uses clearly positive language ('spectacular production', 'captures the magic', 'adding theatrical depth') but is extremely brief with no caveats or reservations mentioned, suggesting a positive recommendation despite the limited text available. | GPT-4o: The review uses strong positive language like 'spectacular', 'magic', and 'emotional resonance', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"spectacular\" and highlights the show's ability to capture the film's magic while adding depth, indicating a strong recommendation. | Kimi: The critic employs superlatives like 'spectacular' and praises the production for enhancing the source material with theatrical depth and emotional resonance, indicating an enthusiastic, unqualified recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:38:04.679Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

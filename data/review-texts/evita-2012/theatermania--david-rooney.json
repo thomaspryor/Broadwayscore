@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Elena Roger brings a fierce intensity to Eva Perón that makes this revival worth seeing, even if the production itself feels somewhat mechanical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Elena Roger brings a fierce intensity to Eva Perón that makes this revival worth seeing, even if the production itself feels somewhat mechanical.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Elena Roger brings a fierce intensity to Eva Perón that makes this revival worth seeing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The critic recommends seeing the show primarily for Elena Roger's performance, despite noting that the production feels 'somewhat mechanical'. This indicates a positive review with some reservations. | Gemini: The review explicitly states the revival is \"worth seeing\" due to Elena Roger's performance, despite reservations about the production feeling \"mechanical.\" | Kimi: The critic explicitly recommends the show as 'worth seeing' due to the lead performance, while qualifying that the production itself feels 'somewhat mechanical,' indicating a solid but qualified positive verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:50:28.623Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 73,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

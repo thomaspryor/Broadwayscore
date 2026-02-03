@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Flying Over Sunset is a show that wants desperately to soar, but despite some truly beautiful moments and inspired performances, it never quite gets off the ground.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Flying Over Sunset is a show that wants desperately to soar, but despite some truly beautiful moments and inspired performances, it never quite gets off the ground.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Flying Over Sunset is a show that wants desperately to soar, but despite some truly beautiful moments and inspired performances, it never quite gets off the ground.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Clear mixed verdict - acknowledges 'beautiful moments and inspired performances' but concludes the show 'never quite gets off the ground,' indicating it doesn't recommend seeing it despite positive elements. | GPT-4o: The review acknowledges some positive aspects but concludes that the show ultimately fails to achieve its goals, indicating a negative overall assessment. | Gemini: The review acknowledges beautiful moments and inspired performances, but ultimately states that the show 'never quite gets off the ground,' indicating a mixed or neutral recommendation. | Kimi: While the critic acknowledges 'truly beautiful moments' and 'inspired performances,' the overarching verdict is that the show fails to achieve its potential, metaphorically crashing with 'never quite gets off the ground.' The brief excerpt suggests a complete negative judgment. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:32:18.455Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a dazzling spectacle that will leave you breathless, even if it doesn't always leave you humming.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This is a dazzling spectacle that will leave you breathless, even if it doesn't always leave you humming.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (18 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a dazzling spectacle that will leave you breathless, even if it doesn't always leave you humming.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('dazzling spectacle', 'breathless') with a minor caveat about memorability of songs, indicating solid recommendation with small reservations. | GPT-4o: The review uses strong positive language ('dazzling spectacle', 'leave you breathless') with a minor caveat about the music. Overall, it is an enthusiastic recommendation. | Gemini: The review calls the show a 'dazzling spectacle' which indicates a positive experience, but the 'even if it doesn't always leave you humming' suggests a reservation, placing it in the positive bucket with a score in the middle. | Kimi: The review offers enthusiastic praise for the production's visual impact and emotional power ('dazzling', 'breathless') with only a minor reservation about the memorability of the score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:15:47.218Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

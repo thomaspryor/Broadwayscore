@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Broadway adaptation of Disney's animated blockbuster is a gorgeous spectacle that finds its emotional core in the relationship between two sisters.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The Broadway adaptation of Disney's animated blockbuster is a gorgeous spectacle that finds its emotional core in the relationship between two sisters.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Broadway adaptation of Disney's animated blockbuster is a gorgeous spectacle that finds its emotional core in the relationship between two sisters.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single sentence praising both visual spectacle and emotional core suggests positive recommendation, but extremely brief text limits confidence in scoring. | GPT-4o: The review describes the show as a 'gorgeous spectacle' with an emotional core, indicating a positive recommendation. However, the brevity of the review limits the confidence level. | Gemini: The review is positive, calling the show a \"gorgeous spectacle\" and highlighting its emotional core. This indicates a recommendation, though without extreme enthusiasm. | Kimi: This excerpt offers unqualified praise for the production's visual spectacle and emotional storytelling, clearly indicating a positive recommendation despite the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:37:19.869Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

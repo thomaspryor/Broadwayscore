@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Midler doesn't just stop the show; she picks it up, shakes it and makes it sparkle like fresh snow in sunlight.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Ms. Midler doesn't just stop the show; she picks it up, shakes it and makes it sparkle like fresh snow in sunlight.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Midler doesn't just stop the show; she picks it up, shakes it and makes it sparkle like fresh snow in sunlight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Vivid, poetic praise using magical imagery ('sparkle like fresh snow in sunlight') that goes beyond typical compliments to suggest transformative performance quality. | GPT-4o: The review uses highly enthusiastic language, indicating a strong recommendation. The metaphor of making the show 'sparkle like fresh snow in sunlight' suggests an exceptional performance. | Gemini: The review is highly positive, using vivid imagery to describe Midler's performance and its impact on the show. The language suggests a strong recommendation. | Kimi: The critic uses superlative language ('stop the show,' 'sparkle like fresh snow') to describe a transcendent, transformative performance that elevates the entire production. The vivid, ecstatic imagery indicates an unqualified rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:44:00.853Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes 'In the Heights' special is that Mr. Miranda has managed to write a musical that is simultaneously of the moment and timeless, a show that captures the spirit of a particular place and time while telling a universal story about the immigrant experience in America.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "What makes 'In the Heights' special is that Mr. Miranda has managed to write a musical that is simultaneously of the moment and timeless, a show that captures the spirit of a particular place and time while telling a universal story about the immigrant experience in America.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (47 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes 'In the Heights' special is that Mr. Miranda has managed to write a musical that is simultaneously of the moment and timeless",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise calling the show 'special' and highlighting Miranda's achievement in balancing contemporary relevance with universal themes. However, confidence is medium due to the brief excerpt lacking explicit recommendation language. | GPT-4o: The review praises the show for capturing both a specific and universal experience, highlighting its special nature. The language suggests strong approval, fitting a rave classification. | Gemini: The review praises the musical for being both timely and timeless, capturing the immigrant experience in America. This indicates a strong positive recommendation. | Kimi: The critic offers high praise calling the show 'special' and 'timeless' with universal storytelling, indicating a strong recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:57:40.510Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

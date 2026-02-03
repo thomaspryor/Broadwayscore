@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "James Ijames's Pulitzer Prize–winning play is a smart, funny, and deeply felt reworking of Hamlet that uses the original's bones to build something entirely new.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,10 +18,59 @@
   "showScoreExcerpt": "James Ijames's Pulitzer Prize–winning play is a smart, funny, and deeply felt reworking of Hamlet that uses the original's bones to build something entirely new.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "playbillVerdictUrl": "https://www.vulture.com/2023/04/theater-review-fat-ham-transfer-broadway.html",
-  "sources": [
-    "web-search",
-    "playbill-verdict"
-  ],
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "James Ijames's Pulitzer Prize–winning play is a smart, funny, and deeply felt reworking of Hamlet that uses the original's bones to build something entirely new.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('smart, funny, and deeply felt') with praise for the creative achievement, though the excerpt is very brief which limits confidence in the full review's scope. | GPT-4o: The review praises the play as 'smart, funny, and deeply felt,' suggesting a strong positive impression. The use of 'entirely new' indicates a successful transformation of the original material, aligning with a rave assessment. | Gemini: The review is highly positive, using words like \"smart\", \"funny\", and \"deeply felt\". It's a clear recommendation, indicating a strong positive experience. | Kimi: The review offers strong unqualified praise with no reservations, using words like 'deeply felt' and praising the creative achievement of the reworking, though it stops short of rave superlatives like 'masterpiece' or 'triumph'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:22:10.735Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

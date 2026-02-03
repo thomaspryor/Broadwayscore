@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Martin McDonagh's dark comedy 'Hangmen' finally makes it to Broadway in a production that captures both the playwright's mordant wit and his gift for finding humanity in the most unlikely characters.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Martin McDonagh's dark comedy 'Hangmen' finally makes it to Broadway in a production that captures both the playwright's mordant wit and his gift for finding humanity in the most unlikely characters.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a production that captures both the playwright's mordant wit and his gift for finding humanity",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Positive assessment praising both the playwright's qualities and the production's success in capturing them, though brief and lacking strong superlatives or explicit recommendation language. | GPT-4o: The review highlights the production's success in capturing the playwright's wit and depth, suggesting a strong recommendation without reservations. | Gemini: The review highlights the production's success in capturing the playwright's wit and humanity, indicating a positive assessment. The absence of strong superlatives suggests a score in the middle of the 'Positive' range. | Kimi: The critic praises the production for effectively capturing McDonagh's signature mordant wit and humanity, indicating a clear recommendation. Confidence is low due to the excerpt length.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:06:19.064Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

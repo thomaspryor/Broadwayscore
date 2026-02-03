@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "James Ijames's Pulitzer Prize-winning play, a riff on 'Hamlet' set at a backyard barbecue, is funny and moving but feels undercooked in its Broadway debut.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "James Ijames's Pulitzer Prize-winning play, a riff on 'Hamlet' set at a backyard barbecue, is funny and moving but feels undercooked in its Broadway debut.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "funny and moving but feels undercooked in its Broadway debut",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges positive qualities (funny and moving) but the verdict is that it 'feels undercooked' - a clear criticism of the Broadway production that prevents a positive recommendation. | GPT-4o: The review acknowledges positive aspects ('funny and moving') but ultimately suggests the production is lacking ('feels undercooked'), leading to a mixed verdict. | Gemini: The review acknowledges positive aspects (funny and moving) but ultimately finds the Broadway production lacking (undercooked), resulting in a mixed assessment. | Kimi: The review acknowledges positive qualities ('funny and moving') but the 'undercooked' verdict for a Broadway debut suggests significant reservations without a clear recommendation to see or skip it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:56:54.661Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Neil Patrick Harris delivers a tour de force performance that's both hilarious and heartbreaking, transforming what could have been a Broadway stunt into something genuinely transcendent.",
   "originalScore": 100,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Neil Patrick Harris delivers a tour de force performance that's both hilarious and heartbreaking, transforming what could have been a Broadway stunt into something genuinely transcendent.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Neil Patrick Harris delivers a tour de force performance that's both hilarious and heartbreaking, transforming what could have been a Broadway stunt into something genuinely transcendent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Critic's own 100 rating combined with 'tour de force' and 'genuinely transcendent' language indicates unqualified praise and strong recommendation. | GPT-4o: The review uses superlative language ('tour de force', 'transcendent') and the original rating of 100 indicates a strong recommendation. The performance is described as both hilarious and heartbreaking, suggesting a wide emotional range and depth. | Gemini: The review uses strong positive language like \"tour de force\" and \"genuinely transcendent,\" indicating a rave review. The critic praises Harris's performance and the overall impact of the show. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:43:31.775Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 98,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

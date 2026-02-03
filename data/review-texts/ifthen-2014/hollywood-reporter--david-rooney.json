@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show feels overstuffed with incident and underdeveloped in terms of emotional connection, despite Menzel's committed performance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show feels overstuffed with incident and underdeveloped in terms of emotional connection, despite Menzel's committed performance.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (17 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show feels overstuffed with incident and underdeveloped in terms of emotional connection.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict calling the show 'overstuffed' and 'underdeveloped' emotionally. Praise for Menzel's performance doesn't override the fundamental critique of the show itself. | GPT-4o: The review criticizes the show for being overstuffed and lacking emotional connection, despite praising Menzel's performance. The overall tone suggests a negative view of the production. | Gemini: The review acknowledges a committed performance but ultimately finds the show overstuffed and lacking emotional connection, resulting in a mixed assessment. | Kimi: While acknowledging the lead's committed performance, the critic uses 'despite' to emphasize that the show itself is critically flawed—overstuffed narratively and lacking emotional depth—indicating a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:02:14.879Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 43,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

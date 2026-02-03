@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of William Finn and James Lapine's 1992 musical about gay men, AIDS, and family in the 1980s is both heartbreaking and life-affirming, with a cast that finds new depths in familiar material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The revival of William Finn and James Lapine's 1992 musical about gay men, AIDS, and family in the 1980s is both heartbreaking and life-affirming, with a cast that finds new depths in familiar material.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival is both heartbreaking and life-affirming, with a cast that finds new depths in familiar material.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('heartbreaking and life-affirming') with praise for the cast finding 'new depths,' but brief excerpt limits confidence in full verdict. | GPT-4o: The review uses strong positive language ('heartbreaking and life-affirming') and praises the cast's performance, indicating a strong recommendation. | Gemini: The review uses positive language such as \"heartbreaking and life-affirming\" and praises the cast for finding \"new depths,\" indicating a positive recommendation. | Kimi: The critic offers warm praise for the emotional impact and the cast's fresh interpretation of the material, clearly recommending the revival despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:18:40.721Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 81,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

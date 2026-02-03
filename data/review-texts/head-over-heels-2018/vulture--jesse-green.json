@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Head Over Heels is a jukebox musical that uses the catalog of the Go-Go's to tell a story adapted from Sir Philip Sidney's 16th-century prose romance Arcadia. The result is both deeply silly and surprisingly moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Head Over Heels is a jukebox musical that uses the catalog of the Go-Go's to tell a story adapted from Sir Philip Sidney's 16th-century prose romance Arcadia. The result is both deeply silly and surprisingly moving.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is both deeply silly and surprisingly moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic describes the show as 'surprisingly moving' which indicates a positive response that exceeds expectations, though 'deeply silly' suggests some reservations about the material. | GPT-4o: The review describes the show as 'deeply silly and surprisingly moving,' indicating a positive reception with some reservations about its silliness. The tone suggests a recommendation, albeit not an unqualified one. | Gemini: The critic describes the show as \"deeply silly and surprisingly moving,\" which indicates a mixed reaction. It's not a strong recommendation or a strong dismissal. | Kimi: While acknowledging the show's absurdity ('deeply silly'), the critic delivers a clear positive verdict with 'surprisingly moving,' indicating the production succeeds emotionally. The extreme brevity suggests this is an excerpt, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:48:29.856Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 76,
+    "geminiScore": 62,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

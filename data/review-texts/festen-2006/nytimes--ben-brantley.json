@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The evening has the airless quality of a party where nobody really wants to be, including the audience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 29,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,62 @@
   "showScoreExcerpt": "The evening has the airless quality of a party where nobody really wants to be, including the audience.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (18 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 24,
+      "high": 34
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The evening has the airless quality of a party where nobody really wants to be, including the audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative assessment comparing the show to an unwanted party that even the audience doesn't want to attend. Strong dismissive language with no redeeming qualities mentioned. | GPT-4o: The review is strongly negative, indicating that the show lacks energy and engagement, leaving both performers and audience disinterested. | Gemini: The review clearly indicates a negative experience, comparing the show to an unwanted party. | Kimi: This excerpt delivers an unambiguous condemnation, describing the show as tedious and unwelcome with the critic noting that even the audience appears disengaged and uncomfortable. The metaphor of an unwanted social obligation signals a complete lack of theatrical vitality or entertainment value. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:59:32.282Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 20,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  },
+  "sources": [
+    "web-search"
+  ]
 }

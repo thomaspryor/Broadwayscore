@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This vigorous and engaging musical about the dreams and struggles of a tight-knit Latino community in Washington Heights is a thoroughly winning piece of musical theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This vigorous and engaging musical about the dreams and struggles of a tight-knit Latino community in Washington Heights is a thoroughly winning piece of musical theater.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This vigorous and engaging musical about the dreams and struggles of a tight-knit Latino community in Washington Heights is a thoroughly winning piece of musical theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language with 'vigorous and engaging' and 'thoroughly winning piece of musical theater' indicates clear enthusiasm and recommendation without reservations. | GPT-4o: The review uses strong positive language ('vigorous', 'engaging', 'thoroughly winning') indicating an enthusiastic recommendation without any reservations. | Gemini: The review uses strong positive language such as \"vigorous\", \"engaging\", and \"thoroughly winning\", indicating a strong recommendation. | Kimi: The critic employs strong positive descriptors ('vigorous,' 'engaging,' 'thoroughly winning') to deliver an unqualified recommendation, though the brevity of the text suggests this may be an excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:04:54.736Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

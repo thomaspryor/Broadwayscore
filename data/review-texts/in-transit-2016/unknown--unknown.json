@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Every now and then, as yet another peppy cliché prances across the stage, you may pause to ponder the pioneering achievement",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic dismisses the show as full of 'peppy clichés' and compares praising it to admiring 'a sentimental picture of a rainbow.' While acknowledging the cast's vocal skills, they find the amplification 'abrasive' and at odds with a cappella style. Single excerpt limits confidence. | GPT-4o: The review acknowledges the cast's vocal skills but criticizes the show's clichés and sound issues. The excerpt suggests a mixed impression without a clear recommendation. | Gemini: The review acknowledges the cast's skill but also criticizes the show's reliance on clichés and the amplification of the singers' voices, leading to a mixed assessment. | Kimi: The excerpt praises the cast's 'marvels of vocal synchronicity' but criticizes the material as 'peppy cliché' and 'sentimental,' while noting technical flaws with abrasive amplification that undermines the a cappella concept. The dismissive tone toward the show's artistic achievement suggests significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:30:51.758Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "First Date is a pleasant enough diversion that makes the most of its modest ambitions. The show's best asset is its appealing leads, Zachary Levi and Krysta Rodriguez, who have an easy chemistry that makes you root for their characters.",
   "originalScore": 83,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "First Date is a pleasant enough diversion that makes the most of its modest ambitions. The show's best asset is its appealing leads, Zachary Levi and Krysta Rodriguez, who have an easy chemistry that makes you root for their characters.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (40 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "First Date is a pleasant enough diversion that makes the most of its modest ambitions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic gives it 83/100 and describes it as 'pleasant enough' with 'appealing leads' and 'easy chemistry.' The language is positive but measured, indicating a solid recommendation without strong enthusiasm. | GPT-4o: The review describes the show as a 'pleasant enough diversion' with appealing leads, aligning with a positive but not enthusiastic recommendation. The original rating of 83 confirms the positive classification. | Gemini: The review is generally positive, calling the show a 'pleasant enough diversion.' While the critic praises the leads, the overall tone suggests a recommendation with some reservations, placing it in the lower end of the 'Positive' bucket. | Kimi: The review describes the show as a 'pleasant enough diversion' with 'appealing leads' and 'easy chemistry,' indicating a solid recommendation. The provided rating of 83 confirms this falls in the strong-positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:01:43.166Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 83,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McDonald's Rose is a force of nature, delivering a performance that is both deeply personal and universally resonant, proving once again why she is considered one of Broadway's greatest talents.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,10 +18,58 @@
   "showScoreExcerpt": "McDonald's Rose is a force of nature, delivering a performance that is both deeply personal and universally resonant, proving once again why she is considered one of Broadway's greatest talents.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "nycTheatreExcerpt": "\"McDonald's monumental performance and Wolfe's intelligent staging make this an essential entry into the revival canon, and a production not to be missed.\"",
-  "sources": [
-    "web-search",
-    "nyc-theatre"
-  ],
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonald's Rose is a force of nature, delivering a performance that is both deeply personal and universally resonant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for the lead performance with superlative language ('force of nature', 'greatest talents'), but extremely brief excerpt limits confidence in overall show assessment. | Gemini: The review uses strong positive language, calling Audra McDonald's performance a 'force of nature' and stating she is 'one of Broadway's greatest talents,' indicating a strong recommendation. | Kimi: While the brevity suggests truncation, the available text contains unambiguous superlatives ('force of nature', 'greatest talents') that clearly indicate a rave recommendation for this star vehicle.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:39:50.768Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

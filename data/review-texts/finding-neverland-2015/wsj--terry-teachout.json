@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Finding Neverland is a sweet-natured musical that tells the story of how J.M. Barrie came to write Peter Pan, and it does so with considerable charm and a surprising amount of emotional depth.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Finding Neverland is a sweet-natured musical that tells the story of how J.M. Barrie came to write Peter Pan, and it does so with considerable charm and a surprising amount of emotional depth.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Finding Neverland is a sweet-natured musical that tells the story of how J.M. Barrie came to write Peter Pan, and it does so with considerable charm and a surprising amount of emotional depth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment praising the show's charm and emotional depth, though without strong superlatives that would push it higher in the Positive range. | GPT-4o: The review praises the musical for its charm and emotional depth, indicating a positive recommendation. The tone is enthusiastic, with no reservations mentioned. | Gemini: The review describes the musical as \"sweet-natured\" with \"considerable charm and a surprising amount of emotional depth,\" indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic offers unqualified praise for the show's charm and emotional depth, indicating a solid recommendation despite the brief length of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:26:48.796Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

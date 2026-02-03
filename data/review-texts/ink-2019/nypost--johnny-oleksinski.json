@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bertie Carvel gives a superb performance as the controversial media mogul Rupert Murdoch in this gripping drama about the transformation of The Sun newspaper.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Bertie Carvel gives a superb performance as the controversial media mogul Rupert Murdoch in this gripping drama about the transformation of The Sun newspaper.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bertie Carvel gives a superb performance as the controversial media mogul Rupert Murdoch in this gripping drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance ('superb') and describes the drama as 'gripping', indicating recommendation. However, this appears to be a very brief excerpt, so confidence is low due to limited evaluative content. | GPT-4o: The review praises Bertie Carvel's performance as superb and describes the drama as gripping, indicating a positive recommendation. However, the brevity of the text limits the confidence in the overall assessment. | Gemini: The review uses the word \"superb\" to describe the performance and \"gripping\" to describe the drama, indicating a positive recommendation. | Kimi: The critic offers unqualified praise for both the lead performance ('superb') and the production itself ('gripping drama'), indicating strong enthusiasm for the show despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:02:01.261Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 75,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

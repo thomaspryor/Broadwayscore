@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sarah Ruhl's 'In the Next Room (or the Vibrator Play)' is a thoughtful, funny and surprisingly tender exploration of female sexuality in the Victorian era that manages to be both titillating and intellectually stimulating.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Sarah Ruhl's 'In the Next Room (or the Vibrator Play)' is a thoughtful, funny and surprisingly tender exploration of female sexuality in the Victorian era that manages to be both titillating and intellectually stimulating.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sarah Ruhl's 'In the Next Room (or the Vibrator Play)' is a thoughtful, funny and surprisingly tender exploration",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with multiple praising adjectives (thoughtful, funny, tender) and describes it as both titillating and intellectually stimulating, indicating a solid recommendation. | GPT-4o: The review uses positive adjectives like 'thoughtful', 'funny', 'tender', and 'intellectually stimulating', indicating a strong recommendation without reservations. | Gemini: The review uses positive adjectives such as \"thoughtful\", \"funny\", and \"tender\" to describe the play, indicating a positive recommendation. | Kimi: The critic consistently praises the production with warm adjectives (thoughtful, funny, tender, titillating) and no reservations, indicating a solid recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:58:59.698Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

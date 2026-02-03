@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sam Rockwell and Nina Arianda bring a ferocious sexual heat to their performances as the doomed lovers in Sam Shepard's 'Fool for Love,' but even their blazing chemistry can't ignite this oddly passionless revival.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Sam Rockwell and Nina Arianda bring a ferocious sexual heat to their performances as the doomed lovers in Sam Shepard's 'Fool for Love,' but even their blazing chemistry can't ignite this oddly passionless revival.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "even their blazing chemistry can't ignite this oddly passionless revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Praises the lead performances and their chemistry but clearly states this isn't enough to make the revival work, calling it 'oddly passionless' - a mixed verdict that acknowledges strengths while finding the overall production lacking. | GPT-4o: The review acknowledges strong performances but criticizes the overall production as 'oddly passionless,' indicating a lack of recommendation despite individual merits. | Gemini: The review praises the actors' performances but ultimately finds the revival itself to be \"oddly passionless,\" indicating a negative overall assessment. | Kimi: While praising Sam Rockwell and Nina Arianda's performances, the critic concludes the revival itself is passionless and fails to ignite, recommending against the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:08:08.551Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

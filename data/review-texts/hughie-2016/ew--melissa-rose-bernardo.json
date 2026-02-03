@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Forest Whitaker brings a quiet dignity to Eugene O'Neill's one-act play, transforming what could be a simple character study into something more profound.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Forest Whitaker brings a quiet dignity to Eugene O'Neill's one-act play, transforming what could be a simple character study into something more profound.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Forest Whitaker brings a quiet dignity to Eugene O'Neill's one-act play, transforming what could be a simple character study into something more profound.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear praise for the lead performance with language indicating transformation and profundity. The original 87 rating confirms strong positive territory, though the brief excerpt limits confidence. | GPT-4o: The review praises Forest Whitaker's performance as transformative, elevating the play to a profound experience. The original rating of 87 supports a Rave classification. | Gemini: The review praises Forest Whitaker's performance and its impact on the play, suggesting a positive experience overall. However, it doesn't explicitly recommend seeing the show, so it's a positive but not rave review. | Kimi: The critic praises Whitaker's performance for elevating the material to something profound, and the original rating of 87 confirms this falls in the enthusiastic recommendation range despite the excerpt's brevity. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:52:34.712Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 87,
+    "geminiScore": 75,
+    "kimiScore": 87,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

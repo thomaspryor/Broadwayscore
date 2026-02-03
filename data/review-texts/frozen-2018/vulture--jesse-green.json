@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Broadway musical Frozen, which opened Thursday at the St. James Theatre, is neither the disaster it could have been nor the transcendent experience it should have been.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The Broadway musical Frozen, which opened Thursday at the St. James Theatre, is neither the disaster it could have been nor the transcendent experience it should have been.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Broadway musical Frozen is neither the disaster it could have been nor the transcendent experience it should have been.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly states the show falls between disaster and transcendence, which is the definition of a mixed verdict with no clear recommendation either way. | GPT-4o: The review indicates a middle-ground assessment, acknowledging that the show avoids being a disaster but also fails to reach a transcendent level. This suggests a mixed verdict. | Gemini: The review explicitly states that the show is neither a disaster nor a transcendent experience, placing it squarely in the mixed category. | Kimi: The critic explicitly places the production in middle ground, stating it avoids failure but falls short of excellence, indicating an unenthusiastic, middling assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:16:25.834Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

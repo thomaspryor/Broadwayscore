@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a crackling good drama that never lets up, perfectly staged by Rupert Goold who directed the acclaimed London production and brings the same energy and pace to Broadway.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This is a crackling good drama that never lets up, perfectly staged by Rupert Goold who directed the acclaimed London production and brings the same energy and pace to Broadway.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a crackling good drama that never lets up, perfectly staged by Rupert Goold",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language ('crackling good', 'never lets up', 'perfectly staged') with enthusiastic tone, but brief excerpt limits full assessment of recommendation strength. | GPT-4o: The review uses strong positive language ('crackling good drama', 'never lets up', 'perfectly staged'), indicating a high level of enthusiasm and recommendation. | Gemini: The review uses strong positive language like \"crackling good drama\" and \"perfectly staged,\" indicating a strong recommendation. | Kimi: The critic offers unqualified praise using enthusiastic superlatives ('crackling', 'perfectly staged') with no reservations or caveats mentioned. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:08:32.049Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

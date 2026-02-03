@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical feels overstuffed and underdeveloped, with three fascinating subjects that never quite gel into a cohesive theatrical experience despite the best efforts of a talented cast.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical feels overstuffed and underdeveloped, with three fascinating subjects that never quite gel into a cohesive theatrical experience despite the best efforts of a talented cast.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical feels overstuffed and underdeveloped, with three fascinating subjects that never quite gel into a cohesive theatrical experience despite the best efforts of a talented cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative assessment calling the show 'overstuffed and underdeveloped' that 'never quite gel[s]'. Acknowledges talented cast but criticizes fundamental structure and coherence. | GPT-4o: The review describes the musical as 'overstuffed and underdeveloped' and notes a lack of cohesion, indicating a negative assessment despite acknowledging a talented cast. | Gemini: The review acknowledges the talent of the cast but ultimately finds the musical to be underdeveloped and lacking cohesion, indicating a mixed assessment. | Kimi: The critic describes the show as structurally flawed ('overstuffed,' 'underdeveloped,' 'never quite gel') and failing to work as a theatrical experience, despite acknowledging the cast's talent. This indicates a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:05:36.534Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

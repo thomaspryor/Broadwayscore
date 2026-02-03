@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With this production, these actors, this marriage, a little bit is a lot.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for performances, direction, and provocative themes. Despite calling it 'arguably inconsequential' and 'slim,' the critic finds it 'intriguing,' 'fulfilling,' and 'deeply provocative,' concluding positively that 'a little bit is a lot.' | GPT-4o: The review provides a generally positive assessment of the play, highlighting the strong performances and direction. However, it notes that the play is 'arguably inconsequential' and 'a slim, impressionistic portrait,' which suggests some reservations. The original 4/5 star rating supports a positive classification, but the truncated nature of the text reduces confidence. | Gemini: The review is positive, highlighting the performances and direction. However, the truncated text and lack of a clear concluding statement lower the confidence. | Kimi: The critic awards 4/5 stars and praises the performances by Metcalf and Lithgow as well as Mantello's direction, calling the production 'deeply provocative' and 'fulfilling,' though with reservations about the slim, inconsequential nature of the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:45:45.883Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

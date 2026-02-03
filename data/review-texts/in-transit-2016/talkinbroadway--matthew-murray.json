@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "In Transit is a musical that's easier to admire than to love, though it certainly deserves credit for its ambition and its performers' considerable talents.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "In Transit is a musical that's easier to admire than to love, though it certainly deserves credit for its ambition and its performers' considerable talents.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In Transit is a musical that's easier to admire than to love, though it certainly deserves credit for its ambition and its performers' considerable talents.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Classic mixed review language - 'easier to admire than to love' suggests respect without enthusiasm. Credits ambition and talent but implies emotional distance from the material. | GPT-4o: The review acknowledges ambition and talent but lacks enthusiasm, suggesting admiration without strong recommendation. | Gemini: The review states that the show is easier to admire than to love, indicating a mixed reaction. While acknowledging the show's ambition and the performers' talents, it doesn't offer a strong recommendation. | Kimi: While the critic praises the show's ambition and performers, the 'easier to admire than to love' framing indicates respect without enthusiasm, placing it in mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:05:55.650Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

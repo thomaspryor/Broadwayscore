@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "2/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the end, despite fitful laughter at an evening's worth of fitful jokes, nobody is happy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with consistent criticism of the material as 'flimsy' and 'trying too hard,' despite praising individual performances. The critic finds it formulaic and unfulfilling, even while acknowledging moments of laughter. | GPT-4o: The review is largely critical, noting the play's lack of originality and comparing it unfavorably to older works. The critic's 2/5 star rating supports a negative classification, but the text is truncated, so the final verdict might be missing. | Gemini: The review acknowledges some funny moments and good performances, but ultimately finds the play uninspired and not particularly successful. The 2/5 star rating and the phrase \"nobody is happy\" indicate a negative overall assessment. | Kimi: The 2/5 star rating anchors this in the Negative bucket. While Suskin praises the cast (Alexander, Urie, Park, Lopez), he finds the material 'flimsy,' 'non-challenging,' and 'fitful,' comparing it unfavorably to outdated 1970s sex comedies.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:56:42.024Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }
