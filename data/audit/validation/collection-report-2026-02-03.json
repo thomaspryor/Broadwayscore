@@ -1,151 +1,157 @@
 {
-  "runDate": "2026-02-03T19:22:28.177Z",
+  "runDate": "2026-02-03T19:27:41.651Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "harry-potter-2021",
+    "showFilter": "the-color-purple-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 16,
+    "processed": 6,
+    "failed": 11,
     "skipped": 0,
-    "successRate": "30.4%"
+    "successRate": "35.3%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "scrapingbee": 1,
+    "brightdata": 2,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 14,
-    "tier1Success": 5,
+    "tier1Attempts": 9,
+    "tier1Success": 3,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 0,
-    "tier3Attempts": 4,
-    "tier3Success": 1,
-    "tier4Attempts": 30,
-    "tier4Success": 8,
-    "totalFailed": 16,
-    "scrapingBeeCreditsUsed": 28,
+    "tier2Attempts": 16,
+    "tier2Success": 4,
+    "tier3Attempts": 13,
+    "tier3Success": 4,
+    "tier4Attempts": 27,
+    "tier4Success": 4,
+    "totalFailed": 11,
+    "scrapingBeeCreditsUsed": 60,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 8,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoveryAttempts": 10,
+    "urlDiscoverySuccess": 7,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "harry-potter-2021/timeout--adam-feldman.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/broadwayworld--michael-dale.json",
-    "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/the-times--ann-treneman.json"
+    "the-color-purple-2015/hollywood-reporter--david-rooney.json",
+    "the-color-purple-2015/variety--marilyn-stasio.json",
+    "the-color-purple-2015/ew--melissa-rose-bernardo.json",
+    "the-color-purple-2015/guardian--jesse-green.json",
+    "the-color-purple-2015/nypost--elisabeth-vincentelli.json",
+    "the-color-purple-2015/chicagotribune--chris-jones.json"
   ],
   "failed": [
-    "harry-potter-2021/ew--kristen-baldwin.json",
-    "harry-potter-2021/indiewire--david-ehrlich.json",
-    "harry-potter-2021/national-review--kyle-smith.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/exeunt-magazine--kev-berry.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
-    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/usatoday--kelly-lawler.json",
-    "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "the-color-purple-2015/nytimes--charles-isherwood.json",
+    "the-color-purple-2015/vulture--jesse-green.json",
+    "the-color-purple-2015/nydailynews--joe-dziemianowicz.json",
+    "the-color-purple-2015/observer--rex-reed.json",
+    "the-color-purple-2015/theatermania--jesse-green.json",
+    "the-color-purple-2015/timeout--adam-feldman.json",
+    "the-color-purple-2015/wsj--terry-teachout.json",
+    "the-color-purple-2015/dailybeast--tim-teeman.json",
+    "the-color-purple-2015/talkinbroadway--matthew-murray.json",
+    "the-color-purple-2015/usatoday--elysa-gardner.json",
+    "the-color-purple-2015/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+      "the-color-purple-2015/ew--melissa-rose-bernardo.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "the-color-purple-2015/guardian--jesse-green.json"
+    ],
+    "brightdata": [
+      "the-color-purple-2015/hollywood-reporter--david-rooney.json",
+      "the-color-purple-2015/chicagotribune--chris-jones.json"
+    ],
     "archive": [
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "harry-potter-2021/timeout--adam-feldman.json",
-      "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "harry-potter-2021/broadwayworld--michael-dale.json",
-      "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
-      "harry-potter-2021/the-times--ann-treneman.json"
+      "the-color-purple-2015/variety--marilyn-stasio.json",
+      "the-color-purple-2015/nypost--elisabeth-vincentelli.json"
     ]
   },
   "failuresByOutlet": {
-    "IndieWire": {
+    "The Wall Street Journal": {
       "count": 1,
-      "domain": "indiewire.com",
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "The Daily Beast": {
+      "count": 1,
+      "domain": "thedailybeast.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "Broadway Blog": {
+    "Talkin' Broadway": {
       "count": 1,
-      "domain": "thebroadwayblog.com",
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "CurtainUp": {
+    "USA Today": {
       "count": 1,
-      "domain": "curtainup.com",
+      "domain": "usatoday.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Front Row Center": {
+    "The Washington Post": {
       "count": 1,
-      "domain": "frontrowcenter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Front Mezz Junkies": {
-      "count": 1,
-      "domain": "frontmezzjunkies.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Theater Pizzazz": {
-      "count": 1,
-      "domain": "theaterpizzazz.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Zeal NYC": {
-      "count": 1,
-      "domain": "zealnyc.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
+      "domain": "washingtonpost.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
       "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
-      "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
-      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOorcigWYqAoRhJrFZ5I1A96j_v2buLCydnd1vgUfKDoQhGZ6gu_t"
+      "reviewId": "the-color-purple-2015/nytimes--charles-isherwood.json",
+      "oldUrl": "https://www.nytimes.com/2015/12/11/theater/review-the-color-purple-revival-takes-root-on-broadway.html",
+      "newUrl": "https://www.nytimes.com/2015/12/11/theater/review-the-color-purple-on-broadway-stripped-to-its-essence.html"
     },
     {
-      "reviewId": "harry-potter-2021/curtainup--elyse-sommer.json",
-      "oldUrl": "http://www.curtainup.com/harrypottercursedchild.html",
-      "newUrl": "http://www.curtainup.com/harrypotterbway18.html"
+      "reviewId": "the-color-purple-2015/variety--marilyn-stasio.json",
+      "oldUrl": "https://variety.com/2015/legit/reviews/the-color-purple-review-broadway-revival-1201662943/",
+      "newUrl": "https://variety.com/2015/legit/reviews/the-color-purple-review-broadway-jennifer-hudson-1201657768/"
+    },
+    {
+      "reviewId": "the-color-purple-2015/ew--melissa-rose-bernardo.json",
+      "oldUrl": "https://ew.com/article/2015/12/11/color-purple-broadway-review/",
+      "newUrl": "https://ew.com/article/2015/12/10/color-purple-ew-stage-review/?srsltid=AfmBOorllRnBd1M61jxfm6Bgy9g2oGV8t3NgM5DfGAgKC33kI5DiIBMr"
+    },
+    {
+      "reviewId": "the-color-purple-2015/guardian--jesse-green.json",
+      "oldUrl": "https://www.theguardian.com/stage/2015/dec/11/the-color-purple-review-broadway-revival-alice-walker",
+      "newUrl": "https://www.theguardian.com/stage/2015/dec/11/the-color-purple-jennifer-hudson-cynthia-erivo-musical"
+    },
+    {
+      "reviewId": "the-color-purple-2015/nydailynews--joe-dziemianowicz.json",
+      "oldUrl": "https://www.nydailynews.com/2015/12/11/the-color-purple-review-oprah-produced-broadway-revival-is-a-gorgeous-life-affirming-triumph/",
+      "newUrl": "https://www.nydailynews.com/2015/12/10/the-color-purple-review-cynthia-erivo-and-jennifer-hudson-shine-bright-in-musical-revival-produced-by-oprah-winfrey/"
+    },
+    {
+      "reviewId": "the-color-purple-2015/nypost--elisabeth-vincentelli.json",
+      "oldUrl": "https://nypost.com/2015/12/11/the-color-purple-is-a-gorgeous-broadway-revival/",
+      "newUrl": "https://nypost.com/2023/12/21/entertainment/the-color-purple-review-fantasia-barrino-stuns-in-movie-musical/"
+    },
+    {
+      "reviewId": "the-color-purple-2015/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/ct-color-purple-broadway-review-20151211-column.html",
+      "newUrl": "https://www.chicagotribune.com/2018/07/19/the-color-purple-review-this-thrilling-revival-sings-straight-to-us-in-the-audience-at-the-auditorium/"
     }
   ]
 }
