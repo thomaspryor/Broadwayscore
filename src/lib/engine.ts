@@ -597,7 +597,7 @@ export function computeShowData(
     tags: show.tags,
     theaterAddress: show.theaterAddress,
     // Revival and historical tracking
-    isRevival: show.isRevival,
+    isRevival: show.isRevival || (show.type as string) === 'revival',
     originalProductionId: show.originalProductionId,
     productionNumber: show.productionNumber,
     season: show.season,
