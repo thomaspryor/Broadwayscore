@@ -48,6 +48,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { execSync } from 'child_process';
 import { ReviewScorer } from './scorer';
 import { EnsembleReviewScorer } from './ensemble-scorer';
 import { runCalibration, runEnsembleCalibration } from './calibration';
@@ -86,6 +87,131 @@ function compareSemver(a: string, b: string): number {
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../../data/review-texts');
 const RUNS_LOG_PATH = path.join(__dirname, '../../data/llm-scoring-runs.json');
 const GARBAGE_SKIPS_PATH = path.join(__dirname, '../../data/llm-scoring-garbage-skips.json');
+const PROJECT_ROOT = path.join(__dirname, '../..');
+
+// ========================================
+// LIVE PROGRESS REPORTING
+// ========================================
+
+/**
+ * Write live progress to GITHUB_STEP_SUMMARY (visible in Actions UI during run)
+ * and to a progress JSON file that gets committed at each checkpoint.
+ */
+function writeProgress(
+  processedSoFar: number,
+  totalFiles: number,
+  errors: number,
+  skipped: number,
+  startTime: number
+): void {
+  const elapsed = Math.round((Date.now() - startTime) / 1000);
+  const elapsedMin = Math.round(elapsed / 60);
+  const rate = processedSoFar > 0 ? (elapsed / processedSoFar).toFixed(1) : '?';
+  const remaining = processedSoFar > 0 ? Math.round((totalFiles - processedSoFar) * elapsed / processedSoFar / 60) : '?';
+  const pct = totalFiles > 0 ? Math.round(processedSoFar / totalFiles * 100) : 0;
+  const timestamp = new Date().toISOString();
+
+  // Write to GITHUB_STEP_SUMMARY (visible in Actions web UI during run)
+  const summaryPath = process.env.GITHUB_STEP_SUMMARY;
+  if (summaryPath) {
+    const summary = [
+      `## Scoring Progress: ${processedSoFar}/${totalFiles} (${pct}%)`,
+      `| Metric | Value |`,
+      `|--------|-------|`,
+      `| Processed | ${processedSoFar} |`,
+      `| Skipped | ${skipped} |`,
+      `| Errors | ${errors} |`,
+      `| Elapsed | ${elapsedMin} min |`,
+      `| Rate | ${rate}s per review |`,
+      `| Est. remaining | ${remaining} min |`,
+      `| Last updated | ${timestamp} |`,
+      ``
+    ].join('\n');
+    try { fs.writeFileSync(summaryPath, summary); } catch {}
+  }
+
+  // Write progress JSON for monitoring
+  const progressPath = path.join(PROJECT_ROOT, 'data', 'collection-state', 'scoring-progress.json');
+  const progress = {
+    pipeline: 'llm-ensemble-scoring',
+    processed: processedSoFar,
+    total: totalFiles,
+    pct,
+    skipped,
+    errors,
+    elapsedSeconds: elapsed,
+    rateSecondsPerReview: parseFloat(rate) || 0,
+    estimatedRemainingMinutes: typeof remaining === 'number' ? remaining : null,
+    lastUpdated: timestamp,
+    runId: process.env.GITHUB_RUN_ID || null
+  };
+  try { fs.writeFileSync(progressPath, JSON.stringify(progress, null, 2) + '\n'); } catch {}
+}
+
+// ========================================
+// GIT CHECKPOINT
+// ========================================
+
+/**
+ * Commit and push scored review files as a checkpoint.
+ * Only runs in CI (detects GITHUB_ACTIONS env var).
+ * Returns true if checkpoint succeeded.
+ */
+function gitCheckpoint(processedSoFar: number, totalFiles: number): boolean {
+  if (!process.env.GITHUB_ACTIONS) {
+    return false; // Skip checkpoints in local runs
+  }
+
+  try {
+    console.log(`\n📌 Checkpoint: committing ${processedSoFar}/${totalFiles} scored reviews...`);
+
+    execSync('git add data/review-texts/ data/collection-state/scoring-progress.json', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+
+    // Check if there are staged changes
+    try {
+      execSync('git diff --staged --quiet', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+      console.log('   No changes to commit, skipping checkpoint.');
+      return true;
+    } catch {
+      // Non-zero exit = there ARE staged changes, proceed
+    }
+
+    execSync(
+      `git commit -m "checkpoint: scored ${processedSoFar}/${totalFiles} reviews"`,
+      { cwd: PROJECT_ROOT, stdio: 'pipe' }
+    );
+
+    // Push with retry (other workflows may be pushing concurrently)
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        execSync('git fetch origin main && git rebase origin/main', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+        execSync('git push origin HEAD:main', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+        console.log(`   ✓ Checkpoint pushed (attempt ${attempt})`);
+        return true;
+      } catch (e: any) {
+        if (attempt < 3) {
+          console.log(`   Push attempt ${attempt} failed, retrying...`);
+          // On rebase conflict, abort and try merge
+          try { execSync('git rebase --abort', { cwd: PROJECT_ROOT, stdio: 'pipe' }); } catch {}
+          try {
+            execSync('git fetch origin main && git merge origin/main -X ours --no-edit', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+            execSync('git push origin HEAD:main', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+            console.log(`   ✓ Checkpoint pushed via merge (attempt ${attempt})`);
+            return true;
+          } catch {
+            try { execSync('git merge --abort', { cwd: PROJECT_ROOT, stdio: 'pipe' }); } catch {}
+          }
+        }
+      }
+    }
+
+    console.log('   ⚠️ Checkpoint push failed after 3 attempts (will retry at next checkpoint)');
+    return false;
+  } catch (e: any) {
+    console.log(`   ⚠️ Checkpoint error: ${e.message}`);
+    return false;
+  }
+}
 
 // ========================================
 // CONTENT QUALITY TYPES
@@ -119,6 +245,7 @@ function parseArgs(): ScoringPipelineOptions & {
   needsRescore: boolean;
   outdated: boolean;
   ensembleCalibrateOnly: boolean;
+  checkpointInterval: number;
 } {
   const args = process.argv.slice(2);
 
@@ -130,6 +257,9 @@ function parseArgs(): ScoringPipelineOptions & {
 
   const rateLimitArg = args.find(a => a.startsWith('--rate-limit='));
   const rateLimitMs = rateLimitArg ? parseInt(rateLimitArg.split('=')[1]) : 100;
+
+  const checkpointArg = args.find(a => a.startsWith('--checkpoint='));
+  const checkpointInterval = checkpointArg ? parseInt(checkpointArg.split('=')[1]) : (process.env.GITHUB_ACTIONS ? 100 : 0);
 
   const modelArg = args.find(a => a.startsWith('--model='));
   const modelChoice = modelArg ? modelArg.split('=')[1] : 'sonnet';
@@ -156,7 +286,8 @@ function parseArgs(): ScoringPipelineOptions & {
     groundTruth: args.includes('--ground-truth'),
     needsRescore: args.includes('--needs-rescore'),
     outdated,
-    ensembleCalibrateOnly: args.includes('--ensemble-calibrate')
+    ensembleCalibrateOnly: args.includes('--ensemble-calibrate'),
+    checkpointInterval
   };
 }
 
@@ -475,6 +606,9 @@ async function main(): Promise<void> {
   console.log(`Unscored files: ${filesToProcess.length}`);
   console.log(`Valid files (text >= ${options.minTextLength} chars): ${validFiles.length}`);
   console.log(`Files to process: ${finalFiles.length}`);
+  if (options.checkpointInterval && options.checkpointInterval > 0 && !options.dryRun) {
+    console.log(`Checkpoint: every ${options.checkpointInterval} reviews (git commit+push)`);
+  }
   if (options.dryRun) console.log('DRY RUN - no files will be modified\n');
   console.log('');
 
@@ -493,11 +627,15 @@ async function main(): Promise<void> {
 
   // Process files
   const startedAt = new Date().toISOString();
+  const startTime = Date.now();
   let processed = 0;
   let skipped = 0;
   let errors = 0;
   let garbageSkipped = 0;
   let suspiciousWarnings = 0;
+
+  // Write initial progress
+  writeProgress(0, finalFiles.length, 0, 0, startTime);
   const errorDetails: Array<{ showId: string; outletId: string; error: string }> = [];
   // Note: garbageSkips is declared earlier and shared with getScorableText()
 
@@ -679,7 +817,18 @@ async function main(): Promise<void> {
     if (i < finalFiles.length - 1) {
       await new Promise(r => setTimeout(r, options.rateLimitMs));
     }
+
+    // Checkpoint: commit and push progress every N processed reviews
+    if (options.checkpointInterval && options.checkpointInterval > 0 && !options.dryRun) {
+      if (processed > 0 && processed % options.checkpointInterval === 0) {
+        writeProgress(processed, finalFiles.length, errors, skipped, startTime);
+        gitCheckpoint(processed, finalFiles.length);
+      }
+    }
   }
+
+  // Write final progress
+  writeProgress(processed, finalFiles.length, errors, skipped, startTime);
 
   // Summary
   const completedAt = new Date().toISOString();
