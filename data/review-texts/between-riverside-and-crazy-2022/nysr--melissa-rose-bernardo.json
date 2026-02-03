@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Henderson gives a bravura performance—all the more impressive considering he's seated for most of his scenes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with consistent enthusiastic praise throughout. Calls it 'an excellent introduction to Guirgis' work,' praises the 'bravura performance,' 'stunner' set design, and emphasizes the play's emotional heart. No meaningful reservations expressed. | GPT-4o: The review is overwhelmingly positive, highlighting the play's humor, strong performances, and Guirgis' writing. The 5/5 star rating strongly suggests a rave. Despite the truncation warning, the available text supports a high score. | Gemini: The review is generally positive, highlighting the humor and performances, especially Henderson's. The critic calls it an 'excellent introduction' to the playwright's work, but the truncated text and Common's 'still finding his footing' suggest some reservations. | Kimi: The critic awarded 5/5 stars and delivers consistent superlatives throughout, calling the play Guirgis' funniest, praising Henderson's bravura performance, and deeming the set a stunner, indicating an enthusiastic recommendation despite the text being truncated.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:54:49.412Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 95,
+    "geminiScore": 79,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Even if you can somehow get past the fundamental ickiness of turning a person's real-life trauma into a musical comedy, the show that opened Wednesday night at the Longacre Theater is shockingly awkward.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 21,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Even if you can somehow get past the fundamental ickiness of turning a person's real-life trauma into a musical comedy, the show that opened Wednesday night at the Longacre Theater is shockingly awkward.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 21,
+    "confidence": "medium",
+    "range": {
+      "low": 16,
+      "high": 26
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show that opened Wednesday night at the Longacre Theater is shockingly awkward",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Clear pan with harsh language: 'fundamental ickiness,' 'shockingly awkward.' The critic questions the show's very existence and finds it deeply problematic. | GPT-4o: The review describes the show as 'shockingly awkward' and criticizes the premise as 'fundamental ickiness', indicating a strong negative reaction with no redeeming qualities. | Gemini: The review expresses strong disapproval, calling the premise \"icky\" and the show \"shockingly awkward,\" indicating a pan. | Kimi: The review condemns the show as 'shockingly awkward' and criticizes the 'fundamental ickiness' of its premise, offering no redeeming qualities in the excerpt provided.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:58:58.371Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 25,
+    "kimiScore": 42,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Negative",
+    "scoreDelta": 24,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

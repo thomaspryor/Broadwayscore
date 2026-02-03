@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cost of Living is a play that asks hard questions about dignity, independence and what it means to be whole. Martyna Majok's Pulitzer Prize-winning drama is both intimate and expansive, finding universal truths in very specific experiences.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,58 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cost of Living is a play that asks hard questions about dignity, independence and what it means to be whole. Martyna Majok's Pulitzer Prize-winning drama is both intimate and expansive, finding universal truths in very specific experiences.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (37 words)"
+  "contentTierReason": "Short text (37 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Martyna Majok's Pulitzer Prize-winning drama is both intimate and expansive, finding universal truths in very specific experiences.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Gemini: The review highlights the play's thought-provoking nature and its ability to find universal truths, suggesting a positive experience, but lacks the enthusiastic tone of a rave. | Kimi: The critic provides an explicit rating of 80/100 and praises the play's thematic depth and intimate storytelling, though the text appears to be an excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:42:24.215Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  }
 }

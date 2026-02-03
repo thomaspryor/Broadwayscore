@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play's cyclical structure could grow tiresome, but Payne keeps us engaged by finding fresh details and dynamics in each iteration. And both actors rise to the considerable challenge with remarkable skill and sensitivity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play's cyclical structure could grow tiresome, but Payne keeps us engaged by finding fresh details and dynamics in each iteration. And both actors rise to the considerable challenge with remarkable skill and sensitivity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Payne keeps us engaged by finding fresh details and dynamics in each iteration.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises the direction and performances, noting the potential for tedium but ultimately finding the production engaging and skillful. The positive elements outweigh the reservations. | Gemini: The review acknowledges a potential issue (cyclical structure) but praises the playwright and actors for keeping the audience engaged. This indicates a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The reviewer praises the playwright for keeping audiences engaged despite structural risks and commends the performances as remarkable, indicating a clear recommendation, though the brevity of the excerpt limits certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:41:21.475Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

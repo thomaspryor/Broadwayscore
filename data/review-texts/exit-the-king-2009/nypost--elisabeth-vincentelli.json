@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Geoffrey Rush gives a masterful performance as the dying monarch in this absurdist masterpiece, transforming Ionesco's philosophical meditation on mortality into riveting theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Geoffrey Rush gives a masterful performance as the dying monarch in this absurdist masterpiece, transforming Ionesco's philosophical meditation on mortality into riveting theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Geoffrey Rush gives a masterful performance as the dying monarch in this absurdist masterpiece",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlatives 'masterful' and 'masterpiece' with no caveats, calls it 'riveting theater' - clear rave language throughout. | GPT-4o: The review uses strong, enthusiastic language such as 'masterful performance' and 'absurdist masterpiece,' indicating a highly positive recommendation. | Gemini: The review uses strong positive language such as \"masterful performance\" and \"absurdist masterpiece\", indicating a rave review. | Kimi: Unqualified superlatives including 'masterful,' 'masterpiece,' and 'riveting' indicate the highest level of enthusiasm with no reservations mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:15:55.315Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

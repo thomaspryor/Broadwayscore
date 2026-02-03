@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Diana the Musical is a spectacle of bad taste, a work so tone-deaf and historically myopic that it makes one wonder how it ever made it to Broadway.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 15,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Diana the Musical is a spectacle of bad taste, a work so tone-deaf and historically myopic that it makes one wonder how it ever made it to Broadway.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 15,
+    "confidence": "high",
+    "range": {
+      "low": 10,
+      "high": 20
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Diana the Musical is a spectacle of bad taste, a work so tone-deaf and historically myopic that it makes one wonder how it ever made it to Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating opening that questions the show's very existence on Broadway, calling it 'tone-deaf' and 'bad taste' with no redeeming qualities mentioned. | GPT-4o: The review is strongly negative, using phrases like 'spectacle of bad taste' and 'tone-deaf', indicating a complete lack of recommendation. | Gemini: The review uses strong negative language such as \"bad taste\" and \"tone-deaf\" to describe the musical, indicating a pan. | Kimi: The critic delivers an unqualified condemnation using severe language ('spectacle of bad taste,' 'tone-deaf') and explicitly questions the production's merit for Broadway, indicating a deep pan.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:58:05.970Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 12,
+    "openaiScore": 15,
+    "geminiScore": 15,
+    "kimiScore": 16,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

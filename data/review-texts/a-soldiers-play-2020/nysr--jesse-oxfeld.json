@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a lovely and loving revival that ably masks the script's flaws.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The 3/5 rating indicates mixed reception. Critic finds the play 'pretty basic' and 'underwhelming' as a murder mystery, but praises the deeper themes and particularly the performances (calling Grier's work 'remarkable'). The production elements are well-regarded, but the script's earnestness feels 'quaint' in 2020. | GPT-4o: The review acknowledges the play's basic procedural nature but praises the socio-psychological elements and performances, suggesting a mixed verdict. The original 3/5 stars and truncated text warrant a cautious approach. | Gemini: While the critic points out flaws in the play, they praise the performances, direction, and socio-psychological elements, suggesting it's worth seeing despite its shortcomings. The 3/5 star rating also indicates a positive but not rave review. However, the truncated text lowers the confidence. | Kimi: The 3/5 star rating reflects a production that the critic finds 'lovely and loving' with remarkable performances, but which cannot overcome a 'basic,' 'underwhelming' script that feels 'quaint' in 2020.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:43:09.732Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

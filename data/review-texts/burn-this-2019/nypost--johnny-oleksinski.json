@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Driver and Russell generate tremendous heat in Lanford Wilson's 1987 play about grief, lust and the creative process.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Driver and Russell generate tremendous heat in Lanford Wilson's 1987 play about grief, lust and the creative process.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (18 words)"
+  "contentTierReason": "Short text (18 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Driver and Russell generate tremendous heat in Lanford Wilson's 1987 play about grief, lust and the creative process.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single sentence praising the leads' chemistry with 'tremendous heat' suggests a positive recommendation, but extremely limited text makes assessment difficult. | GPT-4o: The review excerpt praises the performances of Driver and Russell, indicating a positive reception. However, the limited text provides insufficient context for a high confidence score. | Gemini: The review states that the actors generate tremendous heat, which indicates a positive assessment of their performances and the play itself. This suggests a recommendation. | Kimi: The critic offers enthusiastic praise for the lead performances ('tremendous heat'), clearly recommending the show on the strength of its acting, though the very brief excerpt provides limited insight into other production elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:10:58.832Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

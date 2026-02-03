@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical manages to be both faithful to Burton's film and its own beast, a raucous, irreverent comedy that works surprisingly well as a Broadway show.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical manages to be both faithful to Burton's film and its own beast, a raucous, irreverent comedy that works surprisingly well as a Broadway show.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical manages to be both faithful to Burton's film and its own beast, a raucous, irreverent comedy that works surprisingly well as a Broadway show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment with 'works surprisingly well as a Broadway show' indicating recommendation, though the surprise suggests modest expectations were exceeded rather than strong enthusiasm. | GPT-4o: The review describes the musical as successful in both honoring the original film and standing on its own, with a positive tone suggesting it works well on Broadway. | Gemini: The review states that the show \"works surprisingly well as a Broadway show,\" indicating a positive recommendation, but the \"surprisingly\" suggests some reservations. | Kimi: The critic praises the adaptation for successfully translating the film to stage, calling it a 'raucous, irreverent comedy that works surprisingly well,' indicating a clear recommendation. The brief excerpt suggests solid approval without ecstatic superlatives.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:45:46.396Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

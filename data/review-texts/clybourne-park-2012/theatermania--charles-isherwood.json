@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bruce Norris's clever sequel to Lorraine Hansberry's A Raisin in the Sun proves that racial tensions in America remain as fraught as ever, even when wrapped in dark comedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bruce Norris's clever sequel to Lorraine Hansberry's A Raisin in the Sun proves that racial tensions in America remain as fraught as ever, even when wrapped in dark comedy.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bruce Norris's clever sequel to Lorraine Hansberry's A Raisin in the Sun proves that racial tensions in America remain as fraught as ever",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls the play 'clever' which is positive evaluative language, but this appears to be a very brief excerpt with limited evaluative content about the production itself. | Gemini: The review calls the play \"clever\", which is a positive assessment. The phrase \"proves that racial tensions in America remain as fraught as ever\" suggests the play is thought-provoking and relevant, further supporting a positive classification. | Kimi: Brief excerpt offers clear praise ('clever') and validates the play's thematic impact, indicating a solid recommendation despite limited detail.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:32:22.393Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

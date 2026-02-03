@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival, with a gender-flipped lead and Patti LuPone in glorious voice, finally makes emotional sense of Sondheim's most psychologically complex musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival, with a gender-flipped lead and Patti LuPone in glorious voice, finally makes emotional sense of Sondheim's most psychologically complex musical.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival, with a gender-flipped lead and Patti LuPone in glorious voice, finally makes emotional sense of Sondheim's most psychologically complex musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | GPT-4o: The review provides strong praise, highlighting the successful emotional impact and the performance of Patti LuPone, indicating a must-see revival. | Gemini: The review indicates that the revival is successful in making emotional sense of the musical, and Patti LuPone's performance is highlighted as a positive aspect. | Kimi: The excerpt offers unqualified praise for both the performances ('glorious voice') and the production's interpretive breakthrough ('finally makes emotional sense'), indicating a rave recommendation despite the text's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:39:49.593Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 88,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

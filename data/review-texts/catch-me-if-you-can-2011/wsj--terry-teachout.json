@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show has a slick, polished surface that conceals a surprising amount of heart, and while it's not a masterpiece, it's definitely a crowd-pleaser that knows how to entertain.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show has a slick, polished surface that conceals a surprising amount of heart, and while it's not a masterpiece, it's definitely a crowd-pleaser that knows how to entertain.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's definitely a crowd-pleaser that knows how to entertain",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it a 'crowd-pleaser that knows how to entertain' with praise for having 'heart,' though explicitly states it's 'not a masterpiece' which prevents a higher score. | GPT-4o: The review describes the show as entertaining and a crowd-pleaser, indicating a positive recommendation despite acknowledging it's not a masterpiece. | Gemini: The review states that the show is \"definitely a crowd-pleaser that knows how to entertain,\" which indicates a positive recommendation, although it is not considered a masterpiece. | Kimi: The critic offers a qualified recommendation, praising the show's polish, heart, and entertainment value while explicitly noting it is not a masterpiece, fitting the solid Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:23:11.304Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

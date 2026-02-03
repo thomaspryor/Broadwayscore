@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Both of these actors and the play and probably other elements of the production are likely to figure prominently in various theater awards come this spring.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with unqualified praise throughout. Critic calls it a 'tiptop Broadway production' that 'deserves' acclaim, predicts awards recognition, and says it brings 'great distinction to the current Broadway season.' Despite truncation warning, the review concludes with strong endorsement. | GPT-4o: The review is overwhelmingly positive, highlighting the excellence of the production, direction, and performances. The 5/5 star rating further supports a Rave classification, despite the truncated text warning. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and design. The 5/5 star rating and enthusiastic language suggest a strong recommendation, even with the truncated text. | Kimi: The critic awards 5/5 stars and delivers unqualified praise for the 'cunningly written' comedy, 'exceptional performances' by Bill Irwin and Jessica Hecht, and 'tiptop' direction, predicting awards recognition.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:12:30.326Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

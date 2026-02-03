@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's saving grace is that it knows what it wants to be: a feel-good musical about the importance of family, told with enough theatrical razzle-dazzle to sugar-coat its bitter pill of mortality.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's saving grace is that it knows what it wants to be: a feel-good musical about the importance of family, told with enough theatrical razzle-dazzle to sugar-coat its bitter pill of mortality.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's saving grace is that it knows what it wants to be: a feel-good musical about the importance of family, told with enough theatrical razzle-dazzle to sugar-coat its bitter pill of mortality.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges the show succeeds at its goals with 'theatrical razzle-dazzle' but the phrase 'saving grace' implies significant flaws that need redemption. This suggests a qualified positive recommendation. | GPT-4o: The review acknowledges the show's intention and theatrical appeal but frames it as a 'saving grace,' suggesting mixed feelings overall. The tone is neither fully positive nor negative. | Gemini: The review identifies the show as a \"feel-good musical\" and its \"saving grace,\" indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:57:28.265Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

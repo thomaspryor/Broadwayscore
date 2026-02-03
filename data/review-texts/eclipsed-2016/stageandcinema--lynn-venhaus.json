@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This powerful drama about the resilience of women during Liberia's civil war is both heartbreaking and inspiring, showcasing exceptional performances from an all-female cast.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This powerful drama about the resilience of women during Liberia's civil war is both heartbreaking and inspiring, showcasing exceptional performances from an all-female cast.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This powerful drama about the resilience of women during Liberia's civil war is both heartbreaking and inspiring",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Uses strong positive language ('powerful', 'inspiring') and praises 'exceptional performances' from the cast. Clear recommendation despite brevity. | GPT-4o: The review highlights the show as 'powerful', 'heartbreaking', and 'inspiring', with 'exceptional performances', indicating a strong positive recommendation. | Gemini: The review uses positive language such as \"powerful,\" \"heartbreaking and inspiring,\" and \"exceptional performances,\" indicating a recommendation. | Kimi: The review offers strong praise for the performances and emotional impact, using words like 'exceptional' and 'inspiring,' though the very brief text limits confidence in the full assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:05:25.611Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

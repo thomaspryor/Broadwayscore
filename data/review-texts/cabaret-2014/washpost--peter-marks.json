@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Michelle Williams brings a bruised sensuality and surprising vocal authority to Sally Bowles in the latest Broadway revival of 'Cabaret,' turning in a performance that is both deeply felt and shrewdly calibrated.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Michelle Williams brings a bruised sensuality and surprising vocal authority to Sally Bowles in the latest Broadway revival of 'Cabaret,' turning in a performance that is both deeply felt and shrewdly calibrated.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Michelle Williams brings a bruised sensuality and surprising vocal authority to Sally Bowles",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear praise for the lead performance with positive descriptors like 'surprising vocal authority' and 'deeply felt,' but this appears to be a brief excerpt focusing only on one performer without a full production assessment. | Gemini: The review praises Michelle Williams' performance as Sally Bowles, calling it \"deeply felt and shrewdly calibrated.\" This indicates a positive, though perhaps not overwhelmingly enthusiastic, recommendation. | Kimi: The excerpt offers strong praise for Michelle Williams' lead performance, describing it as 'deeply felt and shrewdly calibrated' with 'surprising vocal authority,' indicating a positive recommendation, though the limited text prevents a full assessment of the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:14:00.670Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's creators have taken Pasternak's vast, complex novel and turned it into something that feels both rushed and sluggish—a peculiar achievement.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's creators have taken Pasternak's vast, complex novel and turned it into something that feels both rushed and sluggish—a peculiar achievement.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's creators have taken Pasternak's vast, complex novel and turned it into something that feels both rushed and sluggish—a peculiar achievement.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic describes the adaptation as a 'peculiar achievement' in a clearly sarcastic way, criticizing it as both 'rushed and sluggish.' The original 40 rating confirms this as a negative assessment. | GPT-4o: The critic's original rating of 40 aligns with the negative bucket, and the review text describes the adaptation as both 'rushed and sluggish,' indicating a lack of recommendation. | Gemini: The review explicitly states the show feels both rushed and sluggish, indicating a negative assessment. The critic's rating of 40 further confirms this. | Kimi: The critic's explicit 40/100 rating falls squarely in the Negative range, and the review text describes the adaptation as both rushed and sluggish with clear disappointment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:03:55.351Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

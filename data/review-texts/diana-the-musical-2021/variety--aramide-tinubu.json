@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical's biggest issue is that it never finds its footing tonally, veering between campy melodrama and genuine pathos without ever successfully balancing the two.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical's biggest issue is that it never finds its footing tonally, veering between campy melodrama and genuine pathos without ever successfully balancing the two.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical's biggest issue is that it never finds its footing tonally, veering between campy melodrama and genuine pathos without ever successfully balancing the two.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear structural criticism identifying fundamental flaws in the show's execution. The tone is measured but definitively negative about the production's ability to succeed. | GPT-4o: The review highlights a significant flaw in the production's tonal balance, suggesting a lack of coherence. This indicates a negative assessment, though without extreme language, placing it in the Negative bucket. | Gemini: The review identifies a significant flaw in the show's tone, suggesting it struggles to balance different elements. This indicates a mixed or neutral assessment rather than a clear recommendation. | Kimi: The critic identifies a fundamental flaw in the production's tonal consistency, stating it never successfully balances its competing elements. The single-sentence excerpt provides clear negative evaluation but limited context warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:59:40.759Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

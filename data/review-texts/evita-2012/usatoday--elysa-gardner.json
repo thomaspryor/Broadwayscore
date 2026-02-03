@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ricky Martin brings star wattage and a passionate, if not always polished, performance to the role of Che in this revival of Andrew Lloyd Webber's musical about Eva Perón.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ricky Martin brings star wattage and a passionate, if not always polished, performance to the role of Che in this revival of Andrew Lloyd Webber's musical about Eva Perón.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ricky Martin brings star wattage and a passionate, if not always polished, performance to the role of Che",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: This appears to be a truncated excerpt. The phrase 'passionate, if not always polished' suggests mixed evaluation - acknowledging positives (star wattage, passion) while noting flaws (not polished). Without the full review's verdict, confidence is low. | GPT-4o: The review highlights Ricky Martin's star power and passion but notes a lack of polish, suggesting a mixed impression without a clear recommendation. | Gemini: The review acknowledges Martin's star power and passion, but also notes that his performance isn't always polished, suggesting a positive but qualified recommendation. | Kimi: The critic acknowledges Martin's 'star wattage' and passion but qualifies the praise with 'if not always polished,' indicating a qualified recommendation in the lower Positive range. The excerpt's brevity necessitates low confidence. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:15:21.128Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }
