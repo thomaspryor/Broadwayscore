@@ -8440,18 +8440,6 @@
     "timestamp": "2026-02-03T10:35:27.315Z"
   },
   {
-    "reviewId": "all-my-sons-2019/hollywood-reporter--david-rooney.json",
-    "showId": "all-my-sons-2019",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/culture-news/all-my-sons-broadway-review-1205449/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (6): home, english, disgraced, hair, high...",
-    "textLength": 1327,
-    "timestamp": "2026-02-03T11:05:21.229Z"
-  },
-  {
     "reviewId": "all-the-way-2014/vulture--jesse-green.json",
     "showId": "all-the-way-2014",
     "outlet": "Vulture",
@@ -8714,18 +8702,6 @@
     "garbageReason": "Multiple shows mentioned (8): purpose, sweeney todd, the audience, once, rain...",
     "textLength": 11153,
     "timestamp": "2026-02-03T15:07:27.037Z"
-  },
-  {
-    "reviewId": "an-american-in-paris-2015/vulture--jesse-green.json",
-    "showId": "an-american-in-paris-2015",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "https://www.vulture.com/2015/04/theater-review-an-american-in-paris.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): proof, purpose, oklahoma!, hair, once...",
-    "textLength": 11433,
-    "timestamp": "2026-02-03T15:32:21.751Z"
   },
   {
     "reviewId": "an-enemy-of-the-people-2024/vulture--jesse-green.json",
@@ -9314,5 +9290,77 @@
     "garbageReason": "Multiple shows mentioned (7): appropriate, the elephant man, hair, once, high...",
     "textLength": 7443,
     "timestamp": "2026-02-03T22:34:41.376Z"
+  },
+  {
+    "reviewId": "all-my-sons-2019/hollywood-reporter--david-rooney.json",
+    "showId": "all-my-sons-2019",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/culture-news/all-my-sons-broadway-review-1205449/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (6): home, english, disgraced, hair, high...",
+    "textLength": 1327,
+    "timestamp": "2026-02-03T22:35:19.771Z"
+  },
+  {
+    "reviewId": "all-my-sons-2019/hollywood-reporter--frank-scheck.json",
+    "showId": "all-my-sons-2019",
+    "outlet": "Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.hollywoodreporter.com/review/all-my-sons-theater-review-1203756",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, high, race, august: osage county, company...",
+    "textLength": 5499,
+    "timestamp": "2026-02-03T22:35:35.007Z"
+  },
+  {
+    "reviewId": "all-my-sons-2019/nytimes--ben-brantley.json",
+    "showId": "all-my-sons-2019",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2019/04/22/theater/all-my-sons-review.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): company, disgraced, once, high, race...",
+    "textLength": 6490,
+    "timestamp": "2026-02-03T22:37:48.933Z"
+  },
+  {
+    "reviewId": "all-my-sons-2019/vulture--sara-holdren.json",
+    "showId": "all-my-sons-2019",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "http://www.vulture.com/2019/04/theater-review-annette-bening-on-broadway-in-all-my-sons.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): betrayal, summer, betrayal, once, elling...",
+    "textLength": 10709,
+    "timestamp": "2026-02-03T22:37:52.823Z"
+  },
+  {
+    "reviewId": "an-american-in-paris-2015/vulture--jesse-green.json",
+    "showId": "an-american-in-paris-2015",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2015/04/theater-review-an-american-in-paris.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): proof, purpose, oklahoma!, hair, once...",
+    "textLength": 11433,
+    "timestamp": "2026-02-03T22:39:26.027Z"
+  },
+  {
+    "reviewId": "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+    "showId": "appropriate-2023",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Lovia Gyarkye",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, the thanksgiving play, straight white men, the present, once...",
+    "textLength": 9621,
+    "timestamp": "2026-02-03T22:41:41.595Z"
   }
 ]
