@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of Harold Pinter's 'Betrayal' is a handsome production that benefits from the star power of Tom Hiddleston, but the emotional impact feels muted despite the skilled performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -62,5 +62,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 774,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lloyd's bold attack is a beautifully bleak approach to Pinter's most relatable play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout for direction ('impeccable'), performances ('charged', 'striking'), and staging. Calls it Pinter's 'most relatable play' and praises the precision and boldness of the production with no significant reservations. | GPT-4o: The review is filled with superlatives and praise for the direction, performances, and staging, describing the production as 'impeccable' and 'beautifully bleak.' The critic's language strongly suggests a must-see recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and staging. The critic calls it \"impeccable\" and says it \"clearly speaks to you, thinks for you, and may even feel for you.\" | Kimi: Unqualified superlatives throughout: 'impeccable' (twice), 'incredible heat,' 'daring approach,' 'extraordinarily suggestive,' 'beautifully bleak.' The critic finds no flaws, praises direction, performances, design, and staging equally. The closing emphasizes the production's emotional and intellectual power. Clear must-see recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:45:21.963Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

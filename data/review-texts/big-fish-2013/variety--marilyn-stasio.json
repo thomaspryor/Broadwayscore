@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Despite a heartfelt performance by Norbert Leo Butz and a lovely score by Andrew Lippa, this adaptation of Daniel Wallace's novel never finds its theatrical footing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,5 +64,60 @@
     "Word count too low: 286 (min: 300)"
   ],
   "wordCount": 286,
-  "tierReason": "Short text (286 words)"
+  "tierReason": "Short text (286 words)",
+  "llmScore": {
+    "score": 46,
+    "confidence": "high",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite a heartfelt performance by Norbert Leo Butz and a lovely score by Andrew Lippa, this adaptation of Daniel Wallace's novel never finds its theatrical footing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic acknowledges strong individual elements (Butz's performance, Lippa's score) but delivers a clear negative verdict that the show 'never finds its theatrical footing,' indicating fundamental problems with the adaptation itself. | GPT-4o: The excerpt indicates that despite some positive elements (performance, score), the overall production fails to succeed theatrically. The lack of 'theatrical footing' suggests a negative verdict. However, due to the single excerpt warning, confidence is low. | Gemini: The review acknowledges positive elements (performance, score) but ultimately states the adaptation \"never finds its theatrical footing,\" indicating a negative overall assessment. Given the single excerpt, confidence is medium. | Kimi: While the critic praises the lead performance and score, the verdict that the show 'never finds its theatrical footing' constitutes a clear recommendation against seeing the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:46:37.838Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

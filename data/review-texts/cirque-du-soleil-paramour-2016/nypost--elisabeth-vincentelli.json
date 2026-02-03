@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is undeniably gorgeous to look at, but it's also an incoherent mess that can't decide what it wants to be.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is undeniably gorgeous to look at, but it's also an incoherent mess that can't decide what it wants to be.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is undeniably gorgeous to look at, but it's also an incoherent mess that can't decide what it wants to be.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict calling the show an 'incoherent mess' despite acknowledging visual appeal. The 'but' construction emphasizes that aesthetic positives don't overcome fundamental structural problems. | GPT-4o: The review acknowledges the visual appeal but criticizes the show as an 'incoherent mess,' indicating a negative overall impression. | Gemini: The review presents conflicting opinions, praising the visuals while criticizing the narrative incoherence, resulting in a mixed assessment. | Kimi: While acknowledging the visual appeal ('undeniably gorgeous'), the critic delivers a clear non-recommendation using harsh language ('incoherent mess'), indicating the production fails at a fundamental level despite its aesthetics.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:09:57.048Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 59,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

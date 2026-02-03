@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Stephen Adly Guirgis's Pulitzer Prize-winning play gets a Broadway production that honors both its gritty realism and its surprising moments of grace.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Stephen Adly Guirgis's Pulitzer Prize-winning play gets a Broadway production that honors both its gritty realism and its surprising moments of grace.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gets a Broadway production that honors both its gritty realism and its surprising moments of grace",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment that the production 'honors' the Pulitzer-winning play, but extremely brief excerpt limits confidence in scoring. | GPT-4o: The review praises the Broadway production for honoring the play's realism and grace, indicating a positive recommendation. However, the brief nature of the text limits the depth of evaluation, resulting in medium confidence. | Gemini: The review indicates that the Broadway production is successful in honoring the play's qualities, suggesting a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic praises the production for successfully honoring the play's difficult qualities, indicating a solid recommendation, though the extreme brevity of this excerpt warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:45:44.629Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rob McClure gives a committed, energetic performance as Charlie Chaplin, but the musical itself feels more like a greatest hits compilation than a cohesive biographical journey.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Rob McClure gives a committed, energetic performance as Charlie Chaplin, but the musical itself feels more like a greatest hits compilation than a cohesive biographical journey.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical itself feels more like a greatest hits compilation than a cohesive biographical journey",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Praises lead performance but criticizes the show's structure as lacking cohesion. Neither recommends nor discourages - classic mixed review. | GPT-4o: The review praises the lead performance but criticizes the musical as lacking cohesion, suggesting it is not a recommended experience overall. | Gemini: The review praises McClure's performance but criticizes the musical's structure, resulting in a mixed assessment. | Kimi: While the critic praises Rob McClure's committed performance, the 'but' signals that the criticism of the show's disjointed, compilation-like structure represents the dominant verdict, indicating an overall negative assessment. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:02:54.933Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

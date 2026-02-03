@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is professionally assembled and satisfyingly familiar, like a Christmas sweater that fits just right — which is to say it's both cozy and a little itchy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is professionally assembled and satisfyingly familiar, like a Christmas sweater that fits just right — which is to say it's both cozy and a little itchy.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is professionally assembled and satisfyingly familiar, like a Christmas sweater that fits just right.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review describes the show as 'satisfyingly familiar' but also 'a little itchy,' suggesting a comfortable but unexciting experience. This indicates a mixed review with both positive and negative elements. | Gemini: The review is generally positive, describing the show as \"professionally assembled and satisfyingly familiar.\" The comparison to a \"Christmas sweater that fits just right\" suggests comfort and enjoyment, but the added phrase \"a little itchy\" indicates some minor drawbacks or reservations. | Kimi: The critic offers qualified praise, calling the production 'professionally assembled' and 'satisfyingly familiar' while noting minor irritation ('a little itchy'), indicating a solid but unenthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:44:42.152Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }
