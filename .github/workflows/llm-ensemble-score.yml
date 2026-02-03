@@ -90,6 +90,7 @@ env:
 jobs:
   ensemble-score:
     runs-on: ubuntu-latest
+    timeout-minutes: 330
 
     steps:
       - name: Checkout repository
