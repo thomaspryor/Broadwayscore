@@ -5,7 +5,7 @@
   "criticName": "Dave Quinn",
   "url": "https://www.nbcnewyork.com/entertainment/aladdin-broadway-review/",
   "publishDate": "2014-03-20",
-  "fullText": "Who lip-synced the national anthem at the Super Bowl? Who had the longest performance? Who messed up the lyrics? Find out here before your Super Bowl party. Lauren Scala finds out how you can win a trip to Palm Coast, Florida. No Pur. Nec. Void where prohibited. 21+ Ends 2/1. Subject to Official Rules. NBC’s Super Bowl LX pregame show in the Bay Area will feature Alcatraz Island, the first ever live broadcast to take place there. Inspired by a homework assignment in her social studies class, Connecticut student Eniola Taiwo pushed for the LAFD to be honored on the Walk of Fame. “Southern Charm” star Shep Rose sits down with Lauren Scala to chat about the Craig-Austen drama, dating, and the benefits of ayahuasca. Paula Pell, Kapil Talkwalkar, & Julia Duffy chat with Lauren Scala about the new dark comedy “The ‘Burbs.” Here are our biggest takeaways from the 68th Grammy Awards. Bad Bunny makes Grammy Awards history with win for album of the year for Spanish-language ‘Debí Tirar Más Fotos’. During his monologue, Trevor Noah joked about Nicki Minaj meeting and praising Donald Trump at the White House. “Melania: Twenty Days to History” brought in $7 million, according to Amazon MGM Studios, which distributed the film. Bad Bunny joined dozens of other artists at the Grammys in criticizing immigration operations across the country. The Grammy is designed for artists who achieve “a breakthrough into the public consciousness.” “Monday I lost the love of my life. My Codi,” Cori Broadus wrote Saturday on Instagram. President Trump said Sunday he will move to close Washington’s Kennedy Center performing arts venue for two years starting in July for construction. The biggest names in music came out Sunday night for the 68th Annual Grammy Awards in Los Angeles. The competition was fierce at music’s biggest night. See the full list of artists who won big at the Grammy Awards. Connor Storrie will host the Feb. 28 episode of “Saturday Night Live” with musical guest Mumford & Sons. Russian fans of “Heated Rivalry” could end up in prison if they display their love for the show, but the gay romance is a hit anyway. The 68th annual Grammy Awards will take place Sunday with a dramatically different tone than last year.",
+  "fullText": "The Magic Kingdom has a new monarch. Josh D’Amaro will succeed Bob Iger as CEO. Lauren Scala finds out how you can win a trip to Palm Coast, Florida. No Pur. Nec. Void where prohibited. 21+ Ends 2/1. Subject to Official Rules. Da Brat and Jesseca “Judy” Harris-Dupart tell Sara Gore about their new book detailing their relationship, “The Way Love Goes.” Ashley Bellman visits the Oculus, where The Strangers Project features more than 100,000 letters of people telling their stories. This highbrow-lowbrow take on surf and turf has made it to the fast-food big leagues. The last time 2026 co-host Cortina d’Ampezzo had an Olympic moment? Seventy years ago. Join us as we go back in time to see what was happening in 1956. Jenner needed help making her Super Bowl pick, so she called the expert for some advice. NFL Commissioner Roger Goodell said Monday he doesn’t expect Bad Bunny to say anything divisive during his Super Bowl halftime performance. Who lip-synced the national anthem at the Super Bowl? Who had the longest performance? Who messed up the lyrics? Find out here before your Super Bowl party. Markiplier’s “Iron Lung,” an adaptation of an indie video game, pulled in $18.19 million at the domestic box office on opening weekend. After seven seasons, “The Kelly Clarkson Show” will go off the air, the show announced Monday, saying host Clarkson “made the personal decision to step away.” NBC’s Super Bowl LX pregame show in the Bay Area will feature Alcatraz Island, the first ever live broadcast to take place there. Inspired by a homework assignment in her social studies class, Connecticut student Eniola Taiwo pushed for the LAFD to be honored on the Walk of Fame. “Southern Charm” star Shep Rose sits down with Lauren Scala to chat about the Craig-Austen drama, dating, and the benefits of ayahuasca. Paula Pell, Kapil Talkwalkar, & Julia Duffy chat with Lauren Scala about the new dark comedy “The ‘Burbs.” Here are our biggest takeaways from the 68th Grammy Awards. Bad Bunny makes Grammy Awards history with win for album of the year for Spanish-language ‘Debí Tirar Más Fotos’. During his monologue, Trevor Noah joked about Nicki Minaj meeting and praising Donald Trump at the White House. “Melania: Twenty Days to History” brought in $7 million, according to Amazon MGM Studios, which distributed the film.",
   "originalScore": null,
   "assignedScore": 60,
   "source": "reviews-json-stub",
@@ -63,7 +63,7 @@
     "modelAgreement": "2/3 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/aladdin-2014/nbcny--dave-quinn_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T02:02:17.154Z",
+  "textFetchedAt": "2026-02-03T19:17:28.134Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -71,6 +71,12 @@
       "method": "archive-first",
       "success": false,
       "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
     },
     {
       "tier": 1,
@@ -98,8 +104,8 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "rescoreCompletedAt": "2026-01-31T18:11:36.329Z",
-  "contentTier": "needs-rescrape",
-  "wordCount": 378,
+  "contentTier": "complete",
+  "wordCount": 391,
   "_removedDesignation": {
     "designation": "Recommended",
     "removedAt": "2026-02-02T04:23:14.150Z",
@@ -116,5 +122,10 @@
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be navigation menus, news headlines, or website content aggregation rather than a Broadway theater review; openai: The text is not related to a Broadway show review; it contains various unrelated topics such as the Super Bowl, Grammy Awards, and other entertainment news.; gemini: This is a news roundup, not a review of a specific show.; kimi: This text is a collection of entertainment news headlines and teasers about the Super Bowl, Grammy Awards, and various TV segments. It contains no review of a Broadway theatrical production.",
   "promptVersion": "5.2.0",
-  "textQuality": "partial"
+  "textQuality": "partial",
+  "textWordCount": 391,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "showNotMentioned": true,
+  "tierReason": "Full review text"
 }
