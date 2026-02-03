@@ -699,13 +699,13 @@ Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
 - GitHub Actions job timeout: **6 hours (360 minutes)**
 - **Max safe batch: ~400 reviews** (400 × 0.66 = 264 min, well under 360)
 
-**The scoring pipeline has NO intermediate checkpointing.** Files are written to the CI runner's ephemeral disk during scoring, but the git commit only happens AFTER the pipeline exits successfully. If the job times out, ALL progress from that run is lost.
+**Git checkpointing:** Every 100 reviews (default in CI, configurable via `--checkpoint=N`), the pipeline commits and pushes scored files to git. If the job times out at review 350, reviews 0-299 are safe (3 checkpoints committed). Only reviews since the last checkpoint are lost. Disabled locally (only runs when `GITHUB_ACTIONS` env is set).
 
 **Full rescore procedure (~1,700+ reviews):**
-1. Batch 1: `--rescore --limit=400` (scores first 400 with new prompt version)
-2. Batch 2+: `--outdated --limit=400` (catches reviews still on old prompt version)
-3. Repeat `--outdated` batches until all are done (4-5 runs total)
-4. Final verification: `--outdated` with no limit (should find 0 to process)
+With checkpointing, a single unlimited run is now safe — progress is preserved even on timeout. But batching is still recommended for cost control and monitoring:
+1. Batch 1: `--rescore --limit=500` (scores first 500 with new prompt version)
+2. Batch 2+: `--outdated` with no limit (catches reviews still on old prompt version — checkpoints protect against timeout)
+3. Final verification: `--outdated` with no limit (should find 0 to process)
 
 **Why `--outdated` works after batch 1:** The first `--rescore` batch updates `promptVersion` on scored files. Subsequent `--outdated` runs find files with older versions — exactly the remaining unscored ones.
 
