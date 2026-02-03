@@ -17,12 +17,15 @@ const NVP_SHOW_IDS = [
   'redwood-2025',
   'once-upon-a-mattress-2024',
   'romeo-juliet-2024',
+  'waiting-for-godot-2025',
   'cabaret-2024',
   'water-for-elephants-2024',
   'suffs-2024',
-  // Not yet in database:
-  // 'waiting-for-godot-2024',
-  // 'hold-on-to-me-darling-2024',
+];
+
+// Off-Broadway NVP investments (not in shows.json)
+const NVP_OFF_BROADWAY = [
+  { title: 'Hold On to Me Darling', venue: 'Lucille Lortel Theatre', year: '2024', note: 'Off-Broadway' },
 ];
 
 export const metadata: Metadata = {
@@ -237,6 +240,31 @@ export default function NVPPage() {
           <div className="text-4xl mb-4">🎭</div>
           <h2 className="text-xl font-bold text-white mb-2">No Shows Found</h2>
           <p className="text-gray-400">NVP shows haven&apos;t been added to the database yet.</p>
+        </div>
+      )}
+
+      {/* Off-Broadway */}
+      {NVP_OFF_BROADWAY.length > 0 && (
+        <div className="mt-6">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">Off-Broadway</h3>
+          <div className="space-y-3">
+            {NVP_OFF_BROADWAY.map((show) => (
+              <div key={show.title} className="card p-4 flex items-center gap-4 opacity-70">
+                <div className="w-16 h-16 rounded-lg bg-surface-overlay flex-shrink-0 flex items-center justify-center">
+                  <span className="text-2xl">🎭</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h2 className="font-bold text-white text-base truncate">{show.title}</h2>
+                  <p className="text-gray-400 text-sm truncate">{show.venue}</p>
+                  <div className="flex items-center gap-2 mt-1.5">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-400">
+                      {show.note}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
