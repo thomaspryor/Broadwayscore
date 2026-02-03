@@ -9626,5 +9626,77 @@
     "garbageReason": "Multiple article boundaries detected (3)",
     "textLength": 5120,
     "timestamp": "2026-02-03T23:28:00.206Z"
+  },
+  {
+    "reviewId": "farinelli-and-the-king-2017/hollywood-reporter--david-rooney.json",
+    "showId": "farinelli-and-the-king-2017",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/review/farinelli-king-theater-1068729",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, english, twelfth night, richard iii, once...",
+    "textLength": 8158,
+    "timestamp": "2026-02-03T23:32:39.192Z"
+  },
+  {
+    "reviewId": "fat-ham-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "fat-ham-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/04/12/fat-ham-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): titanique, appropriate, home, camelot, summer...",
+    "textLength": 7269,
+    "timestamp": "2026-02-03T23:38:18.567Z"
+  },
+  {
+    "reviewId": "frozen-2018/hollywood-reporter--david-rooney.json",
+    "showId": "frozen-2018",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/theater-review-frozen-1094192/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, the prom, cats, the audience, high...",
+    "textLength": 6177,
+    "timestamp": "2026-02-03T23:43:42.765Z"
+  },
+  {
+    "reviewId": "hedwig-and-the-angry-inch-2014/hollywood-reporter--unknown.json",
+    "showId": "hedwig-and-the-angry-inch-2014",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/neil-patrick-harris-hedwig-angry-698195",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): wicked, mamma mia!, home, company, tina...",
+    "textLength": 9705,
+    "timestamp": "2026-02-03T23:49:18.161Z"
+  },
+  {
+    "reviewId": "hedwig-and-the-angry-inch-2014/nytimes--unknown.json",
+    "showId": "hedwig-and-the-angry-inch-2014",
+    "outlet": "New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2014/04/23/theater/hedwig-and-the-angry-inch-stars-neil-patrick-harris.html?ref=theater&gwh=2032BE266AE0925D15136B44FB84556D&gwt=regi",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): tina, frozen, sweat, spring awakening, twelfth night...",
+    "textLength": 7881,
+    "timestamp": "2026-02-03T23:49:28.351Z"
+  },
+  {
+    "reviewId": "hedwig-and-the-angry-inch-2014/vulture--unknown.json",
+    "showId": "hedwig-and-the-angry-inch-2014",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2014/04/theater-review-hedwig-and-the-angry-inch.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): rocky, once, rain, elling, race...",
+    "textLength": 6313,
+    "timestamp": "2026-02-03T23:50:08.542Z"
   }
 ]
