@@ -4,12 +4,12 @@
     "lastUpdated": "2026-02-03",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 1700,
-      "skippedNoScore": 28,
+      "totalReviews": 1703,
+      "skippedNoScore": 27,
       "skippedDuplicate": 3,
       "skippedDuplicateUrl": 52,
       "skippedWrongProduction": 33,
-      "recoveredFromGarbage": 99,
+      "recoveredFromGarbage": 79,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 2,
@@ -17,14 +17,14 @@
         "explicit-letterGrade": 1,
         "human-review": 60,
         "originalScore-priority0": 245,
-        "llmScore": 1165,
+        "llmScore": 1167,
         "thumb-override-llm": 1,
         "llmScore-lowconf": 214,
         "llmScore-review": 3,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 2
+        "thumb": 3
       }
     }
   },
@@ -5868,7 +5868,7 @@
       "pullQuote": "...Ryan and Schreiber, presents the play without any intentional new slant on its ideas",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "needs-rescrape"
+      "contentTier": "truncated"
     },
     {
       "showId": "doubt-2024",
@@ -10037,6 +10037,23 @@
       "pullQuote": "So, ok, I won’t call “The Heart of Rock and Roll” poppy. If not poppy, it’s certainly predictable, a dose of 1980s nostalgia with a by-the-numbers plot that would not be out of place in a conventional 1950s musical comedy. But for what it is, the show has its moments.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
+      "contentTier": "complete"
+    },
+    {
+      "showId": "heart-of-rock-and-roll-2024",
+      "outletId": "nytg",
+      "outlet": "New York Theatre Guide",
+      "assignedScore": 76,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Gillian Russo",
+      "url": "https://www.newyorktheatreguide.com/reviews/the-heart-of-rock-and-roll-broadway-review-huey-lewis",
+      "publishDate": "April 22, 2024",
+      "originalRating": null,
+      "pullQuote": "Director Gordon Greenberg’s production is eager to sweep you up in its bright lights",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
       "contentTier": "complete"
     },
     {
@@ -24753,6 +24770,23 @@
     },
     {
       "showId": "the-lion-king-1997",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Ben Brantley",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9a01efd81738f937a25752c1a961958260",
+      "publishDate": "November 14, 1997",
+      "originalRating": null,
+      "pullQuote": "There is simply nothing else like it. Julie Taymor has taken the sweet but somewhat insubstantial story of the Disney movie and transformed it into a meditation on the great cycle of life.",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "the-lion-king-1997",
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 74,
@@ -25614,6 +25648,23 @@
       "publishDate": "2024-04-11T21:02:43-04:00",
       "originalRating": null,
       "pullQuote": "...has great visual touches but falters when the characters open their mouths",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "outletId": "theatermania",
+      "outlet": "TheaterMania",
+      "assignedScore": 78,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-outsiders_93847.html",
+      "publishDate": "April 12, 2024",
+      "originalRating": null,
+      "pullQuote": "The Outsiders is a deeply felt, beautifully staged musical that honors its source material while finding its own theatrical voice.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
