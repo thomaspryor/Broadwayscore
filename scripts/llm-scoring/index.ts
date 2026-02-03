@@ -246,6 +246,8 @@ function parseArgs(): ScoringPipelineOptions & {
   outdated: boolean;
   ensembleCalibrateOnly: boolean;
   checkpointInterval: number;
+  shard?: number;
+  totalShards?: number;
 } {
   const args = process.argv.slice(2);
 
@@ -260,6 +262,12 @@ function parseArgs(): ScoringPipelineOptions & {
 
   const checkpointArg = args.find(a => a.startsWith('--checkpoint='));
   const checkpointInterval = checkpointArg ? parseInt(checkpointArg.split('=')[1]) : (process.env.GITHUB_ACTIONS ? 100 : 0);
+
+  const shardArg = args.find(a => a.startsWith('--shard='));
+  const shard = shardArg ? parseInt(shardArg.split('=')[1]) : undefined;
+
+  const totalShardsArg = args.find(a => a.startsWith('--total-shards='));
+  const totalShards = totalShardsArg ? parseInt(totalShardsArg.split('=')[1]) : undefined;
 
   const modelArg = args.find(a => a.startsWith('--model='));
   const modelChoice = modelArg ? modelArg.split('=')[1] : 'sonnet';
@@ -287,7 +295,9 @@ function parseArgs(): ScoringPipelineOptions & {
     needsRescore: args.includes('--needs-rescore'),
     outdated,
     ensembleCalibrateOnly: args.includes('--ensemble-calibrate'),
-    checkpointInterval
+    checkpointInterval,
+    shard,
+    totalShards
   };
 }
 
@@ -594,10 +604,17 @@ async function main(): Promise<void> {
   // Apply text length filter - now includes reviews with excerpts
   const validFiles = scorableFiles.filter(f => getScorableText(f.data, f.path) !== null);
 
+  // Apply sharding (split work across parallel runs)
+  let shardedFiles = validFiles;
+  if (options.shard !== undefined && options.totalShards && options.totalShards > 1) {
+    shardedFiles = validFiles.filter((_, i) => i % options.totalShards! === options.shard!);
+    console.log(`Shard ${options.shard}/${options.totalShards}: ${shardedFiles.length} files (from ${validFiles.length} valid)\n`);
+  }
+
   // Apply limit
   const finalFiles = options.limit
-    ? validFiles.slice(0, options.limit)
-    : validFiles;
+    ? shardedFiles.slice(0, options.limit)
+    : shardedFiles;
 
   // Summary
   console.log('=== LLM Review Scoring Pipeline ===\n');
@@ -605,6 +622,7 @@ async function main(): Promise<void> {
   console.log(`Total review files: ${allFiles.length}`);
   console.log(`Unscored files: ${filesToProcess.length}`);
   console.log(`Valid files (text >= ${options.minTextLength} chars): ${validFiles.length}`);
+  if (options.shard !== undefined) console.log(`Shard: ${options.shard}/${options.totalShards}`);
   console.log(`Files to process: ${finalFiles.length}`);
   if (options.checkpointInterval && options.checkpointInterval > 0 && !options.dryRun) {
     console.log(`Checkpoint: every ${options.checkpointInterval} reviews (git commit+push)`);
@@ -973,6 +991,8 @@ Options:
   --rescore             Re-score even if already scored
   --needs-rescore       Only score reviews flagged with needsRescore=true
   --outdated            Re-score reviews with promptVersion older than current
+  --shard=N             Shard index (0-based) for parallel runs
+  --total-shards=N      Total number of parallel shards
   --dry-run             Don't save results, just print what would happen
   --verbose             Detailed logging
   --limit=N             Only process N reviews
