@@ -1,0 +1,71 @@
+{
+  "runDate": "2026-02-03T01:02:12.249Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "spamalot-2023",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 1,
+    "failed": 2,
+    "skipped": 0,
+    "successRate": "33.3%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "browserbase": 0,
+    "scrapingbee": 1,
+    "brightdata": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 1,
+    "tier1Success": 1,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 2,
+    "scrapingBeeCreditsUsed": 20,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 2.4,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "spamalot-2023/theatermania--jesse-green.json"
+  ],
+  "failed": [
+    "spamalot-2023/timeout--adam-feldman.json",
+    "spamalot-2023/wsj--charles-isherwood.json"
+  ],
+  "tierDetails": {
+    "playwright": [],
+    "browserbase": [],
+    "scrapingbee": [
+      "spamalot-2023/theatermania--jesse-green.json"
+    ],
+    "brightdata": [],
+    "archive": []
+  },
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": []
+}
