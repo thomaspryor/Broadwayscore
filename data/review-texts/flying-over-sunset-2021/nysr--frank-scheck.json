@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's sad to report, then, that the show from the librettist of such landmark musicals as Sunday in the Park with George, Into the Woods, and Passion is a misfire.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: 3/5 stars with explicit 'misfire' verdict. Despite praising individual elements (cast, design), the critic finds the show 'lackluster,' 'tedious,' and 'attenuated' with fundamental structural problems. | GPT-4o: The review describes the show as a 'misfire' but acknowledges it may have admirers and praises certain elements like performances and production design. The 3/5 star rating suggests a mixed review rather than outright negative. | Gemini: The review is mixed, noting the show's ambition and talented cast but ultimately finding it lackluster and tedious. The 3/5 star rating aligns with a mixed assessment. However, the truncated text and lack of a clear final recommendation lowers the confidence. | Kimi: Despite praising the lavish production values and talented cast, the critic explicitly calls the show a 'misfire' that is 'lackluster,' 'tedious,' and 'endlessly talky,' while acknowledging it will find 'ardent admirers.' The 3/5 star rating confirms a middle-ground, unenthusiastic assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:59:19.747Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

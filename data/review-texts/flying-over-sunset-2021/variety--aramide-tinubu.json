@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite its stellar cast and creative team, 'Flying Over Sunset' never quite takes flight, remaining earthbound when it should soar.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite its stellar cast and creative team, 'Flying Over Sunset' never quite takes flight, remaining earthbound when it should soar.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)"
+  "contentTierReason": "Short text (20 words)",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite its stellar cast and creative team, 'Flying Over Sunset' never quite takes flight, remaining earthbound when it should soar.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict using flight metaphor - 'never quite takes flight' and 'earthbound when it should soar' indicate fundamental failure to achieve its potential despite acknowledging quality cast and creative team. | GPT-4o: The review indicates disappointment, suggesting the show fails to achieve its potential despite its cast and team. The metaphor of being 'earthbound' implies a lack of success or impact. | Gemini: The review states that the show \"never quite takes flight\", indicating a negative assessment despite acknowledging the cast and creative team. | Kimi: The critic acknowledges the stellar cast and creative team but delivers a definitive negative verdict using aviation metaphors ('never quite takes flight,' 'earthbound') to indicate the show fundamentally fails to achieve its potential or emotional impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:06:19.234Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McDonald and Shannon are both accomplished actors who know how to handle Terrence McNally's demanding dialogue, but they never find the emotional core that would make this fractured romance feel urgent or even particularly moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "McDonald and Shannon are both accomplished actors who know how to handle Terrence McNally's demanding dialogue, but they never find the emotional core that would make this fractured romance feel urgent or even particularly moving.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (35 words)"
+  "contentTierReason": "Short text (35 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "they never find the emotional core that would make this fractured romance feel urgent or even particularly moving",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite acknowledging the actors' technical skills, the critic finds the production lacks emotional impact and urgency, indicating a clear negative assessment. | GPT-4o: The review acknowledges the actors' skills but criticizes the lack of emotional impact, suggesting the production fails to engage or move the audience. | Gemini: The review acknowledges the actors' skills but ultimately finds the production lacking in emotional depth, leading to a negative assessment. | Kimi: The excerpt praises the leads' technical abilities but fundamentally criticizes the production for lacking emotional resonance and urgency, which is particularly damaging for an intimate romance. Without the full review's final verdict, the mixed signals of good acting versus failed emotional impact place this in the middle range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:03:33.672Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

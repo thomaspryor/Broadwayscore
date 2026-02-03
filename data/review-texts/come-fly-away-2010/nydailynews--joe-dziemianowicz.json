@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is gorgeous to look at and listen to, but it's more style than substance. Still, when the style is this good, who's complaining?",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is gorgeous to look at and listen to, but it's more style than substance. Still, when the style is this good, who's complaining?",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is gorgeous to look at and listen to, but it's more style than substance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges significant flaws ('more style than substance') but concludes with a rhetorical question suggesting acceptance of those flaws given the production values. The 60 rating confirms mixed territory. | GPT-4o: The critic acknowledges the show's aesthetic appeal but criticizes its lack of substance. The original rating of 60 aligns with a mixed review, indicating a balance of positive and negative elements. | Gemini: The review acknowledges the show's visual and auditory appeal but notes a lack of substance, resulting in a mixed assessment. The critic's rating of 60 aligns with the Mixed bucket. | Kimi: The critic's own 60/100 rating places this firmly in the Mixed range, with praise for visual and auditory elements offset by criticism of shallow content, resulting in a qualified endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:35:12.942Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

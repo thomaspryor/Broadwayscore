@@ -105,7 +105,6 @@ export default function BestOfPage({ params }: { params: { category: string } })
       endDate: show.closingDate,
       description: show.synopsis,
       status: show.status,
-      cast: show.cast,
       ticketLinks: show.ticketLinks,
     })),
     list.title

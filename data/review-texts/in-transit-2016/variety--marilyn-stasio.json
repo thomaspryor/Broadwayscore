@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's salvation is its sensational a cappella score, which transforms the subway car into a concert hall and gives this motley crew of New Yorkers voices that soar.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's salvation is its sensational a cappella score, which transforms the subway car into a concert hall and gives this motley crew of New Yorkers voices that soar.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's salvation is its sensational a cappella score, which transforms the subway car into a concert hall and gives this motley crew of New Yorkers voices that soar.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt praises the score as 'sensational' and 'salvation,' indicating a positive recommendation despite apparent flaws elsewhere. Low confidence due to truncated text. | GPT-4o: The review highlights the score as a standout element, suggesting a strong positive impact on the overall experience. The use of 'sensational' and 'soar' indicates enthusiastic praise. | Gemini: The review highlights the a cappella score as the show's saving grace, indicating a positive aspect that elevates the overall experience. | Kimi: The excerpt offers qualified praise, identifying the a cappella score as the production's 'salvation' and describing it as 'sensational,' implying the show is worth seeing primarily for its musical elements despite implied weaknesses elsewhere.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:00:18.230Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

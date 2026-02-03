@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes 'Groundhog Day' work so well is that Mr. Rubin and Mr. Minchin have found a way to turn the film's gimmicky premise into the starting point for a thoughtful meditation on the meaning of life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What makes 'Groundhog Day' work so well is that Mr. Rubin and Mr. Minchin have found a way to turn the film's gimmicky premise into the starting point for a thoughtful meditation on the meaning of life.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (37 words)"
+  "contentTierReason": "Short text (37 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes 'Groundhog Day' work so well is that Mr. Rubin and Mr. Minchin have found a way to turn the film's gimmicky premise into the starting point for a thoughtful meditation on the meaning of life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Critic clearly states the show 'works so well' and praises the creative team for elevating source material into something meaningful, indicating a positive recommendation despite this being only an excerpt. | GPT-4o: The review praises the show for successfully transforming its source material into something deeper and more meaningful, suggesting a strong recommendation. | Gemini: The review highlights the show's success in transforming a gimmicky premise into a thoughtful exploration of life's meaning, indicating a positive assessment. | Kimi: The critic offers clear praise for the adaptation's ability to elevate the source material into a thoughtful work, though the brief excerpt limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:33:40.084Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

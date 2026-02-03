@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Paula Vogel's passionate play about the creation and suppression of Sholem Asch's controversial 1907 drama 'God of Vengeance' is a work of tremendous heart and intellectual rigor.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Paula Vogel's passionate play about the creation and suppression of Sholem Asch's controversial 1907 drama 'God of Vengeance' is a work of tremendous heart and intellectual rigor.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paula Vogel's passionate play is a work of tremendous heart and intellectual rigor.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review uses strong, positive language, describing the play as 'passionate' and 'a work of tremendous heart and intellectual rigor,' indicating a highly enthusiastic recommendation. | Gemini: The review uses positive language such as \"passionate,\" \"tremendous heart,\" and \"intellectual rigor,\" indicating a positive assessment of the play. | Kimi: The single-sentence excerpt offers strong unqualified praise, describing the play as 'passionate' with 'tremendous heart' and 'intellectual rigor,' indicating a solid recommendation despite the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:55:35.095Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

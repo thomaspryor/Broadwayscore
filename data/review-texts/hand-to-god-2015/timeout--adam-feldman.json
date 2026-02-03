@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hand to God is a raucous, irreverent comedy that succeeds in being both genuinely shocking and genuinely funny. Steven Boyer's dual performance as the meek Jason and his foul-mouthed sock puppet Tyrone is a tour de force.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hand to God is a raucous, irreverent comedy that succeeds in being both genuinely shocking and genuinely funny. Steven Boyer's dual performance as the meek Jason and his foul-mouthed sock puppet Tyrone is a tour de force.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (37 words)"
+  "contentTierReason": "Short text (37 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hand to God is a raucous, irreverent comedy that succeeds in being both genuinely shocking and genuinely funny.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('succeeds', 'tour de force') with original 80 rating confirming strong positive recommendation. | GPT-4o: The review describes the show as both shocking and funny, with a standout performance by Steven Boyer. The original rating of 80 aligns with a strong positive recommendation. | Gemini: The review is positive, highlighting the show's humor and Steven Boyer's performance. The critic's rating of 80 aligns with a positive recommendation. | Kimi: The critic delivers unqualified praise, calling the show genuinely funny and shocking with a tour de force performance, indicating a clear recommendation to see the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:36:26.889Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

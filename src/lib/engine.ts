@@ -42,11 +42,6 @@ export interface TicketLink {
   priceFrom?: number;   // Starting price in dollars
 }
 
-export interface CastMember {
-  name: string;
-  role: string;         // Character name or "Ensemble"
-}
-
 export interface CreativeMember {
   name: string;
   role: string;         // Director, Book, Music, Lyrics, Choreographer, etc.
@@ -72,7 +67,6 @@ export interface RawShow {
   ticketLinks?: TicketLink[];
   officialUrl?: string;
   trailerUrl?: string;
-  cast?: CastMember[];
   creativeTeam?: CreativeMember[];
   tags?: string[];             // Musical, Comedy, Romance, New, etc.
   theaterAddress?: string;
@@ -211,7 +205,6 @@ export interface ComputedShow {
   ticketLinks?: TicketLink[];
   officialUrl?: string;
   trailerUrl?: string;
-  cast?: CastMember[];
   creativeTeam?: CreativeMember[];
   tags?: string[];
   theaterAddress?: string;
@@ -600,7 +593,6 @@ export function computeShowData(
     ticketLinks: show.ticketLinks,
     officialUrl: show.officialUrl,
     trailerUrl: show.trailerUrl,
-    cast: show.cast,
     creativeTeam: show.creativeTeam,
     tags: show.tags,
     theaterAddress: show.theaterAddress,

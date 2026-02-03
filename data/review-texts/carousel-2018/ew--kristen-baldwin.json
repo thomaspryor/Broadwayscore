@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This thoughtful revival of Rodgers and Hammerstein's problematic masterpiece doesn't shy away from the musical's thorny issues, but it doesn't quite solve them either.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,63 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This thoughtful revival of Rodgers and Hammerstein's problematic masterpiece doesn't shy away from the musical's thorny issues, but it doesn't quite solve them either.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "low",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This thoughtful revival doesn't shy away from the musical's thorny issues, but it doesn't quite solve them either.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: Despite calling it a 'masterpiece,' the critic's verdict is equivocal - praising the thoughtful approach but noting it 'doesn't quite solve' the problems. This balanced assessment with no clear recommendation fits Mixed. | GPT-4o: The original rating of 87 indicates a strong positive recommendation despite acknowledging unresolved issues. The critic describes the revival as 'thoughtful,' suggesting a positive view overall. | Gemini: The review calls the musical a \"problematic masterpiece\" and \"thoughtful revival,\" but also states that it doesn't quite solve the thorny issues. This suggests a positive recommendation with reservations. | Kimi: The critic's own rating of 87 places this firmly in the Rave range (85-100), indicating strong approval. While the text notes the production doesn't fully resolve the source material's issues, the 'thoughtful revival' assessment and high numeric score suggest an enthusiastic recommendation. Confidence is low due to the brevity of the excerpt. | Buckets: claude=Mixed, openai=Positive, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:17:54.679Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 84,
+    "geminiScore": 75,
+    "kimiScore": 87,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  },
+  "textQuality": "truncated"
 }

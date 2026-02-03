@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Deirdre O'Connell gives a performance unlike anything I've ever seen on Broadway, lip-syncing with uncanny precision to actual recordings of playwright Lucas Hnath's mother recounting her harrowing experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Deirdre O'Connell gives a performance unlike anything I've ever seen on Broadway, lip-syncing with uncanny precision to actual recordings of playwright Lucas Hnath's mother recounting her harrowing experience.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 83,
+    "confidence": "low",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Deirdre O'Connell gives a performance unlike anything I've ever seen on Broadway, lip-syncing with uncanny precision to actual recordings of playwright Lucas Hnath's mother recounting her harrowing experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: gemini=Positive, kimi=Rave | Gemini: The review focuses on the unique performance of Deirdre O'Connell, indicating a positive aspect of the show. However, the limited context makes it difficult to assess the overall quality, leading to a score in the lower end of the positive range. | Kimi: The critic employs superlative language ('unlike anything I've ever seen', 'uncanny precision') to praise the central performance of this one-woman show, indicating strong enthusiasm. Confidence is reduced due to the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:50:18.292Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 90,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: gemini=Positive, kimi=Rave"
+  },
+  "textQuality": "truncated"
 }

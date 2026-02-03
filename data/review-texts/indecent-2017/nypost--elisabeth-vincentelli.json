@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This profoundly moving show about a controversial Yiddish play and the actors who risked everything to perform it is one of the finest productions to hit Broadway this season.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This profoundly moving show about a controversial Yiddish play and the actors who risked everything to perform it is one of the finest productions to hit Broadway this season.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This profoundly moving show is one of the finest productions to hit Broadway this season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Clear superlative praise calling it 'one of the finest productions to hit Broadway this season' with 'profoundly moving' as strong emotional endorsement. Unqualified recommendation. | GPT-4o: The review uses strong, unequivocal praise, calling the show 'profoundly moving' and 'one of the finest productions' this season, indicating a must-see recommendation. | Gemini: The review uses superlative language such as \"profoundly moving\" and \"one of the finest productions,\" indicating a rave review. | Kimi: The critic offers unqualified superlatives ('one of the finest productions', 'profoundly moving') with no reservations or caveats, indicating an enthusiastic must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:00:31.692Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

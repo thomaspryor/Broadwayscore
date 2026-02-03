@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rob McClure gives a winning performance as the Little Tramp in this biographical musical that hits more often than it misses.",
   "originalScore": 83,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Rob McClure gives a winning performance as the Little Tramp in this biographical musical that hits more often than it misses.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "hits more often than it misses",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The original 83 rating clearly indicates positive recommendation territory. The phrase 'hits more often than it misses' suggests solid approval with some reservations, fitting the upper-middle positive range. | GPT-4o: The critic's original rating of 83 places it firmly in the Positive bucket. The review highlights a strong lead performance and suggests the show is generally successful, with some reservations. | Gemini: The review is positive, highlighting McClure's performance and stating the musical \"hits more often than it misses,\" indicating a recommendation with some reservations. Given the original rating of 83, a score of 79 is appropriate. | Kimi: The critic praises McClure's winning performance and judges the show to succeed more than it fails, consistent with their own 83/100 rating indicating a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:24:03.214Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 83,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

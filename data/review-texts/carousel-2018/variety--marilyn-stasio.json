@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This handsome revival of Rodgers and Hammerstein's 1945 musical about a carnival barker and his troubled marriage benefits from Jack O'Brien's intelligent direction and a superb cast led by Joshua Henry and Jessie Mueller.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This handsome revival of Rodgers and Hammerstein's 1945 musical about a carnival barker and his troubled marriage benefits from Jack O'Brien's intelligent direction and a superb cast led by Joshua Henry and Jessie Mueller.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This handsome revival benefits from Jack O'Brien's intelligent direction and a superb cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the revival as 'handsome' with 'intelligent direction' and 'superb cast,' but brief excerpt lacks full evaluative context for higher confidence. | GPT-4o: The review praises the direction and cast, indicating a positive recommendation. However, the brevity of the text limits the depth of evaluation, resulting in medium confidence. | Gemini: The review uses positive language such as \"handsome revival\", \"intelligent direction\", and \"superb cast\", indicating a positive recommendation. | Kimi: The review offers unambiguous praise for the direction ('intelligent') and performances ('superb') with no negative caveats, indicating a positive recommendation, though the very brief text limits confidence in the overall verdict strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:19:21.330Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The seven women deliver Shange's stunning poetry with power and grace, creating a deeply moving theatrical experience that feels both timeless and urgently contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The seven women deliver Shange's stunning poetry with power and grace, creating a deeply moving theatrical experience that feels both timeless and urgently contemporary.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The seven women deliver Shange's stunning poetry with power and grace, creating a deeply moving theatrical experience that feels both timeless and urgently contemporary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('stunning', 'power and grace', 'deeply moving') with no caveats, but the brevity of the excerpt limits confidence in the full verdict. | GPT-4o: The review uses strong positive language ('stunning', 'power and grace', 'deeply moving') and suggests a must-see experience. The lack of any reservations or negative comments supports a high score within the Rave bucket. | Gemini: The review uses strong positive language such as \"stunning poetry,\" \"power and grace,\" and \"deeply moving theatrical experience,\" indicating a strong recommendation. | Kimi: The review offers strong praise for the performances ('power and grace') and describes the production as a 'deeply moving theatrical experience' using superlatives like 'stunning' and 'timeless,' indicating a clear recommendation without visible reservations. Confidence is low due to the brevity of the excerpt provided.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:08:38.038Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

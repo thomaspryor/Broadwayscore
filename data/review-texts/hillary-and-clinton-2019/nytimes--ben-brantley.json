@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This biodrama about the Clintons during the 2008 Democratic primary feels both rushed and static, despite committed performances by Laurie Metcalf and John Lithgow.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This biodrama about the Clintons during the 2008 Democratic primary feels both rushed and static, despite committed performances by Laurie Metcalf and John Lithgow.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This biodrama about the Clintons during the 2008 Democratic primary feels both rushed and static, despite committed performances by Laurie Metcalf and John Lithgow.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds fundamental flaws in the production (rushed and static) that committed lead performances cannot overcome. The 'despite' construction indicates the performances don't redeem the overall negative assessment. | GPT-4o: The review criticizes the show as rushed and static, indicating a negative assessment, despite acknowledging the actors' performances. | Gemini: The review acknowledges committed performances but ultimately finds the show feeling rushed and static, indicating a mixed or neutral assessment. | Kimi: While acknowledging strong performances from the leads, the critic fundamentally criticizes the production as 'rushed and static,' offering no recommendation to see the show and implying it fails to come alive despite its cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:40:36.495Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

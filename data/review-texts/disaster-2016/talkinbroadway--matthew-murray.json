@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Disaster! is exactly the kind of show that gives jukebox musicals a bad name, and proves that not every idea that sounds funny in a pitch meeting should make it to the stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 22,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Disaster! is exactly the kind of show that gives jukebox musicals a bad name, and proves that not every idea that sounds funny in a pitch meeting should make it to the stage.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 22,
+    "confidence": "high",
+    "range": {
+      "low": 17,
+      "high": 27
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Disaster! is exactly the kind of show that gives jukebox musicals a bad name",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Clear pan with harsh language calling it the type of show that 'gives jukebox musicals a bad name' and questioning whether it should exist at all. | GPT-4o: The review is strongly negative, stating that the show gives jukebox musicals a bad name and should not have been staged. There are no redeeming qualities mentioned. | Gemini: The review is strongly negative, stating that the show gives jukebox musicals a bad name and should not have been made. | Kimi: The critic condemns the show as damaging to the genre and suggests it should never have been produced, indicating a complete rejection of the work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:01:26.340Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 22,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  },
+  "textQuality": "truncated"
 }

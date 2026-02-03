@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of 'Hair' feels surprisingly reverent toward its source material, perhaps too much so for a show that was meant to shock and provoke.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production of 'Hair' feels surprisingly reverent toward its source material, perhaps too much so for a show that was meant to shock and provoke.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production of 'Hair' feels surprisingly reverent toward its source material, perhaps too much so for a show that was meant to shock and provoke.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review suggests the production is respectful but fails to capture the essential provocative spirit of the original show, indicating neither strong recommendation nor discouragement. | GPT-4o: The review suggests the production is overly reverent, implying it lacks the intended impact of the original. This indicates a mixed assessment, neither fully positive nor negative. | Gemini: The review suggests the production is too reverent and doesn't shock or provoke as intended, indicating a mixed reaction. | Kimi: The critic criticizes the production's respectful tone as inappropriate for material that should be provocative, suggesting a fundamental mismatch between approach and content, though the brevity prevents assessment of other elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:35:38.969Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

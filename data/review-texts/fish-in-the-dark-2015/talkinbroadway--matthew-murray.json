@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Larry David's Fish in the Dark is not a play in any traditional sense, but rather an extended comedy sketch that happens to take place on a Broadway stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Larry David's Fish in the Dark is not a play in any traditional sense, but rather an extended comedy sketch that happens to take place on a Broadway stage.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Larry David's Fish in the Dark is not a play in any traditional sense, but rather an extended comedy sketch",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic dismisses the work as 'not a play in any traditional sense' and reduces it to merely 'an extended comedy sketch,' which is clearly negative. However, this appears to be only a fragment or opening line of a longer review, so confidence is low due to the truncated nature of the text. | GPT-4o: The review suggests that the show lacks the depth of a traditional play, implying it may not meet typical theatrical expectations. However, it does not explicitly discourage attendance, indicating a mixed reception. | Gemini: The review describes the show as an \"extended comedy sketch\", which suggests a lack of traditional theatrical structure. This indicates a mixed or neutral assessment rather than a positive or negative one. | Kimi: The critic dismisses the work as merely an 'extended comedy sketch' unworthy of the designation 'play,' implying it is insubstantial for the Broadway stage, though the severely truncated text prevents a fuller assessment. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:57:31.730Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

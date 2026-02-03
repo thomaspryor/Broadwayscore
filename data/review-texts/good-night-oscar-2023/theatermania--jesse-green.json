@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sean Hayes delivers a tour-de-force performance as Oscar Levant in this biographical play that captures both the wit and tragedy of the pianist-comedian's life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Sean Hayes delivers a tour-de-force performance as Oscar Levant in this biographical play that captures both the wit and tragedy of the pianist-comedian's life.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sean Hayes delivers a tour-de-force performance as Oscar Levant in this biographical play that captures both the wit and tragedy of the pianist-comedian's life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single sentence praising Hayes's 'tour-de-force performance' and noting the play 'captures' key elements, suggesting positive reception. However, extremely brief text limits confidence in overall verdict. | GPT-4o: The review describes Sean Hayes' performance as a 'tour-de-force', indicating a strong recommendation for the show based on his portrayal. | Gemini: The review praises Sean Hayes' performance as a \"tour-de-force\" and states that the play captures both the wit and tragedy of Levant's life, indicating a positive recommendation. | Kimi: While brief, the review offers unqualified praise for both the lead performance ('tour-de-force') and the play's execution ('captures both the wit and tragedy'), indicating a clear recommendation. Confidence is low due to the extreme brevity of the text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:19:58.029Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -257,6 +257,106 @@ const KNOWN_ALIASES = {
 
   // Queen Versailles alternative slug
   'queen versailles': 'queen-versailles-2025',
+
+  // Tina Turner Musical variations
+  'tina': 'tina',
+  'tina: the tina turner musical': 'tina',
+  'tina the tina turner musical': 'tina',
+  'tina – the tina turner musical': 'tina',
+
+  // Beautiful/Carole King
+  'beautiful': 'beautiful-the-carole-king-musical',
+  'beautiful: the carole king musical': 'beautiful-the-carole-king-musical',
+  'beautiful the carole king musical': 'beautiful-the-carole-king-musical',
+
+  // Motown
+  'motown': 'motown-the-musical',
+  'motown the musical': 'motown-the-musical',
+
+  // Cinderella (Rodgers + Hammerstein)
+  'cinderella': 'rodgers-hammersteins-cinderella',
+  "rodgers + hammerstein's cinderella": 'rodgers-hammersteins-cinderella',
+  "rodgers and hammerstein's cinderella": 'rodgers-hammersteins-cinderella',
+
+  // Young Frankenstein
+  'young frankenstein': 'young-frankenstein',
+  'young frankenstein the musical': 'young-frankenstein',
+
+  // Fela!
+  'fela': 'fela',
+  'fela!': 'fela',
+
+  // Shuffle Along
+  'shuffle along': 'shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed',
+
+  // The Motherfucker with the Hat
+  'the motherfucker with the hat': 'the-motherfucker-with-the-hat',
+  'the motherf**ker with the hat': 'the-motherfucker-with-the-hat',
+
+  // Bengal Tiger
+  'bengal tiger at the baghdad zoo': 'bengal-tiger-at-the-baghdad-zoo',
+
+  // Norman Conquests (all 3 parts share the base)
+  'the norman conquests': 'the-norman-conquests-table-manners',
+
+  // Coast of Utopia
+  'the coast of utopia': 'the-coast-of-utopia-part-2-shipwreck',
+
+  // Who's Afraid of Virginia Woolf
+  "who's afraid of virginia woolf": 'whos-afraid-of-virginia-woolf',
+  "who's afraid of virginia woolf?": 'whos-afraid-of-virginia-woolf',
+
+  // Sunday in the Park
+  'sunday in the park with george': 'sunday-in-the-park-with-george',
+
+  // Cry-Baby
+  'cry-baby': 'crybaby',
+  'cry baby': 'crybaby',
+
+  // Les Liaisons Dangereuses
+  'les liaisons dangereuses': 'les-liaisons-dangereuses',
+
+  // Cat on a Hot Tin Roof
+  'cat on a hot tin roof': 'cat-on-a-hot-tin-roof',
+
+  // Glengarry Glen Ross
+  'glengarry glen ross': 'glengarry-glen-ross',
+
+  // A View from the Bridge
+  'a view from the bridge': 'a-view-from-the-bridge',
+
+  // Present Laughter
+  'present laughter': 'present-laughter',
+
+  // The Glass Menagerie
+  'the glass menagerie': 'the-glass-menagerie',
+  'glass menagerie': 'the-glass-menagerie',
+
+  // Waiting for Godot
+  'waiting for godot': 'waiting-for-godot',
+
+  // Les Misérables
+  'les miserables': 'les-miserables',
+  'les misérables': 'les-miserables',
+
+  // The Color Purple
+  'the color purple': 'the-color-purple',
+  'color purple': 'the-color-purple',
+
+  // Sweeney Todd (base slug)
+  'sweeney todd': 'sweeney-todd',
+  'sweeney todd: the demon barber of fleet street': 'sweeney-todd',
+
+  // Company (base slug)
+  'company': 'company',
+
+  // The Best Little Whorehouse in Texas
+  'the best little whorehouse in texas': 'the-best-little-whorehouse-in-texas',
+
+  // Angels in America
+  'angels in america': 'angels-in-america-millennium-approaches',
+  'angels in america: millennium approaches': 'angels-in-america-millennium-approaches',
+  'angels in america: perestroika': 'angels-in-america-perestroika',
 };
 
 // ---------------------------------------------------------------------------

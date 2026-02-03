@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The problem is that 'Hands on a Hardbody' doesn't know what it wants to be—a satire of American consumer culture or a sincere celebration of working-class grit—and the resulting confusion of tone proves fatal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The problem is that 'Hands on a Hardbody' doesn't know what it wants to be—a satire of American consumer culture or a sincere celebration of working-class grit—and the resulting confusion of tone proves fatal.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 37,
+    "confidence": "medium",
+    "range": {
+      "low": 32,
+      "high": 42
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The resulting confusion of tone proves fatal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The critic identifies a fundamental structural flaw ('doesn't know what it wants to be') and calls the tonal confusion 'fatal' - clear negative verdict despite brief format. | GPT-4o: The critic describes the confusion of tone as 'fatal', indicating a strong negative verdict with no redeeming qualities mentioned. | Gemini: The review explicitly states the confusion of tone is 'fatal', indicating a negative assessment and lack of recommendation. | Kimi: The critic declares the show's tonal confusion to be 'fatal,' indicating a fundamental artistic failure that prevents the production from succeeding. No redeeming qualities are mentioned in this excerpt. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:37:59.689Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 28,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

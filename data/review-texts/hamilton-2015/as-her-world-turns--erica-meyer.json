@@ -82,5 +82,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is a multi-show roundup covering 10 different productions with brief mentions of each, not a focused review of any single show that can be meaningfully scored.; openai: The review is a multi-show roundup, but the portion about 'A View from the Bridge' is about a UK transplant production, not the current Broadway run.; kimi: This text is a multi-show roundup reviewing eleven different productions (both Broadway and off-Broadway) without a specified target show. The instructions require scoring 'the portion about the target show' for roundups, but since no target show was identified in the prompt, it is impossible to determine which specific production to score.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "textQuality": "partial"
 }

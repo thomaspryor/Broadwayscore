@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ricky Martin brings his considerable charisma to the role of Che, the narrator who serves as both conscience and Greek chorus, while Elena Roger reprises her Olivier Award-winning performance as Eva Perón with fiery intensity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,58 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ricky Martin brings his considerable charisma to the role of Che, the narrator who serves as both conscience and Greek chorus, while Elena Roger reprises her Olivier Award-winning performance as Eva Perón with fiery intensity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (35 words)"
+  "contentTierReason": "Short text (35 words)",
+  "llmScore": {
+    "score": 67,
+    "confidence": "low",
+    "range": {
+      "low": 62,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ricky Martin brings his considerable charisma to the role of Che, the narrator who serves as both conscience and Greek chorus.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: gemini=Mixed, kimi=Positive | Gemini: The review excerpt only mentions the performances of Ricky Martin and Elena Roger, without providing an overall assessment of the show. It neither recommends nor discourages seeing the production. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:41:41.588Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "kimiScore": 73,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: gemini=Mixed, kimi=Positive"
+  }
 }

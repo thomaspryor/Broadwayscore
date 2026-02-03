@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Philip Seymour Hoffman brings a ferocious intensity to the role of Willy Loman that makes this revival feel fresh and urgent. His portrayal strips away any sentimentality from Arthur Miller's classic, revealing the raw desperation beneath.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Philip Seymour Hoffman brings a ferocious intensity to the role of Willy Loman that makes this revival feel fresh and urgent. His portrayal strips away any sentimentality from Arthur Miller's classic, revealing the raw desperation beneath.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (36 words)"
+  "contentTierReason": "Short text (36 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Philip Seymour Hoffman brings a ferocious intensity to the role of Willy Loman that makes this revival feel fresh and urgent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the lead performance with impactful descriptors like 'ferocious intensity' and 'fresh and urgent,' indicating clear recommendation despite brief length. | GPT-4o: The review praises Hoffman's performance as transformative, making the classic play feel 'fresh and urgent'. The language is enthusiastic and suggests a strong recommendation. | Gemini: The review praises Philip Seymour Hoffman's performance and states that the revival feels fresh and urgent, indicating a strong positive recommendation. | Kimi: The critic offers strong praise for the lead performance and production, describing it as 'fresh and urgent' with 'ferocious intensity,' though the brief excerpt limits full assessment of the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:55:26.664Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }
