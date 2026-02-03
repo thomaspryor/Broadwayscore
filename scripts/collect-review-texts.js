@@ -156,7 +156,7 @@ const CONFIG = {
     'dailybeast.com', 'thedailybeast.com', 'amny.com', 'newsday.com',
     'nypost.com', 'nydailynews.com', 'indiewire.com',
     'wsj.com',  // Dow Jones SSO login page is an SPA that won't render in headless Chromium
-    // Note: variety.com, hollywoodreporter.com, deadline.com are FREE - use .a-content selector
+    'hollywoodreporter.com', 'variety.com', 'deadline.com', // PMC sites — CAPTCHA-block Playwright consistently
   ],
 
   // Sites that need residential proxies (Bright Data preferred)
