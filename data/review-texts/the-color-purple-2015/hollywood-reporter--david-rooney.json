@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/news/general-news/color-purple-theater-review-847041/",
   "publishDate": "December 11, 2015",
-  "fullText": "This gorgeous revival of the Alice Walker musical fills the stage with lavish visual splendor and vocal power that lifts the rafters.",
-  "isFullReview": false,
+  "fullText": "WASHINGTON (AP) — Republican presidential candidate Donald Trump on Tuesday denied an Associated Press report that he planned to visit the majority-Muslim kingdom of Jordan at the end of December.\n\nThe AP report and Trump’s denial came one day after his controversial proposal to temporarily ban all Muslims from entering the United States to protect the nation from Islamic terrorism.\n\nTrump tweeted Tuesday, “Despite my great respect for King Abdullah II, I will not be visiting Jordan at this time. This is in response to the false @AP report.”\n\nTrump has said he plans to visit Israel. A U.S. official, speaking on condition of anonymity, had told the AP that the U.S. government was making preparations for Trump also to visit Jordan at the campaign’s request. The official was not authorized to publicly discuss the preparations, due to security concerns. Trump has Secret Service protection for his safety.\n\nAnother U.S. official, also speaking on condition of anonymity, told the AP late Tuesday that Trump’s campaign had contacted the U.S. embassy in Amman, Jordan, about the trip, and the State Department was discussing how to facilitate Trump’s visit as recently as Tuesday afternoon. This official also was not authorized to speak publicly about the trip over security issues.\n\nThe official said the State Department was working with Trump on security preparations and consulting about arranging meetings there. Because Trump is a private citizen, the State Department does not extend to him the same level of assistance as an administration official or member of Congress, but it was working cooperatively with his campaign, said the official.\n\nTrump was criticized widely over his proposal this week to prevent all Muslims from visiting the U.S., although he clarified his idea Tuesday, saying that he would allow foreign Muslim leaders to visit.\n\nJordan is among the United States’ staunchest allies in the Persian Gulf region, and its military has flown bombing missions against the Islamic State group regularly.\n\nTrump’s Republican rival Ben Carson visited two camps for Syrian refugees in the Jordanian desert two weeks ago with no media coverage. Carson afterward praised Jordan for its generosity toward the refugees but said none should be brought to the United States.",
+  "isFullReview": true,
   "dtliExcerpt": "This gorgeous revival of the Alice Walker musical fills the stage with lavish visual splendor and vocal power that lifts the rafters.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,7 +16,52 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This gorgeous revival of the Alice Walker musical fills the stage with lavish visual splendor and vocal power that lifts the rafters.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "textWordCount": 365,
+  "archivePath": "data/archives/reviews/the-color-purple-2015/hollywood-reporter--david-rooney_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T19:12:42.881Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wordCount": 365,
+  "tierReason": "Full review text"
 }
