@@ -1,14 +1,14 @@
 {
-  "updatedAt": "2026-02-03T01:10:09.002Z",
-  "processed": 5,
-  "failed": 6,
-  "successRate": "45.5%",
+  "updatedAt": "2026-02-03T01:39:36.094Z",
+  "processed": 12,
+  "failed": 9,
+  "successRate": "57.1%",
   "tierBreakdown": {
     "playwright": 2,
-    "browserbase": 0,
-    "scrapingbee": 2,
+    "browserbase": 2,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archive": 2
+    "archive": 7
   },
   "browserbaseSessions": 3,
   "recentActivity": [
@@ -39,6 +39,29 @@
       "t": "2026-02-03T01:07:02.197Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-03T01:36:12.802Z",
+      "event": "bb-session",
+      "session": "1fc764c8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/days-of-wine-and-roses-broadway"
+    },
+    {
+      "t": "2026-02-03T01:37:58.115Z",
+      "event": "bb-session",
+      "session": "6f5fee33",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
+    },
+    {
+      "t": "2026-02-03T01:38:00.310Z",
+      "event": "bb-login-uncertain",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-02-03T01:39:23.291Z",
+      "event": "bb-session",
+      "session": "8a5effac",
+      "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
     }
   ]
 }
