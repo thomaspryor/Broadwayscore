@@ -109,6 +109,7 @@ const CONFIG = {
   retryFailed: process.env.RETRY_FAILED === 'true',
   commitEvery: parseInt(process.env.COMMIT_EVERY || '10'), // Git commit after every N reviews
   outletTier: process.env.OUTLET_TIER || '', // Filter by outlet tier: tier1, tier2, tier3
+  contentTierFilter: process.env.CONTENT_TIER_FILTER || '', // Filter by content tier: excerpt, truncated, needs-rescrape
   archiveFirst: process.env.ARCHIVE_FIRST === 'true', // Try Archive.org first for older reviews
 
   // API Keys
@@ -2984,6 +2985,14 @@ function findReviewsToProcess() {
           if (CONFIG.outletTier === 'tier1' && tierNum !== 1) continue;
           if (CONFIG.outletTier === 'tier2' && tierNum !== 2) continue;
           if (CONFIG.outletTier === 'tier3' && (tierNum !== 3 && tierNum !== 4)) continue;
+        }
+
+        // Apply content tier filter (for targeted runs: excerpt, truncated, needs-rescrape)
+        if (CONFIG.contentTierFilter) {
+          const ct = data.contentTier || '';
+          if (CONFIG.contentTierFilter === 'excerpt' && ct !== 'excerpt') continue;
+          if (CONFIG.contentTierFilter === 'truncated' && ct !== 'truncated') continue;
+          if (CONFIG.contentTierFilter === 'needs-rescrape' && ct !== 'needs-rescrape') continue;
         }
 
         // Parse publish date for archive-first logic
