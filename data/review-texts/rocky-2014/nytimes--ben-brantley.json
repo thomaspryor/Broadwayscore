@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This musical version of the beloved underdog boxing movie feels more like a bout between a bantamweight and a heavyweight, with the bantamweight being the sound reason for adapting 'Rocky' for the stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical version of the beloved underdog boxing movie feels more like a bout between a bantamweight and a heavyweight",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The boxing metaphor clearly indicates an uneven, losing battle for the adaptation, with the critic questioning the 'sound reason' for adapting Rocky for stage. | GPT-4o: The review uses a metaphor to suggest the musical is outmatched and lacks the strength or impact of the original movie, indicating a negative assessment. | Gemini: The review uses a boxing analogy to suggest the musical adaptation is mismatched and ultimately unsuccessful, indicating a negative assessment. | Kimi: The critic employs a boxing metaphor suggesting the justification for the adaptation (the 'sound reason') is the weaker, outmatched fighter, implying the execution fails to support the premise. However, given the extreme brevity of the excerpt, the full verdict may be more nuanced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:51:37.336Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

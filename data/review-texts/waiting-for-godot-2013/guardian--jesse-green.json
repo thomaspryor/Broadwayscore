@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Patrick Stewart and Ian McKellen bring their considerable star power and decades of experience to Beckett's masterpiece, but the production feels more like a comfortable reunion than a revelatory theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Patrick Stewart and Ian McKellen bring their considerable star power and decades of experience to Beckett's masterpiece, but the production feels more like a comfortable reunion than a revelatory theatrical experience.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the production feels more like a comfortable reunion than a revelatory theatrical experience",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges the stars' talent and experience but finds the production lacking in theatrical impact, suggesting it's neither particularly recommended nor discouraged. | GPT-4o: The review acknowledges the star power and experience of the actors but suggests the production lacks a fresh or impactful interpretation, indicating a mixed assessment. | Gemini: The review acknowledges the star power of the leads but ultimately finds the production lacking a revelatory quality, suggesting a mixed experience. | Kimi: While acknowledging the star power of Stewart and McKellen, the critic finds the production merely comfortable rather than revelatory, suggesting a middling assessment that neither endorses nor discourages attendance",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:30:26.239Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

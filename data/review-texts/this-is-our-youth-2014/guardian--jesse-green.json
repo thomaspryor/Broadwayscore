@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The three young actors – Michael Cera, Kieran Culkin and Tavi Gevinson – bring a naturalistic energy to Kenneth Lonergan's 1996 play about privileged Manhattan teenagers adrift in a haze of drugs and parental neglect.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The three young actors – Michael Cera, Kieran Culkin and Tavi Gevinson – bring a naturalistic energy to Kenneth Lonergan's 1996 play about privileged Manhattan teenagers adrift in a haze of drugs and parental neglect.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The three young actors bring a naturalistic energy to Kenneth Lonergan's 1996 play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: This appears to be a brief excerpt with only neutral-positive description of the actors' approach. No clear recommendation or evaluation of the overall production quality, making it difficult to determine the critic's verdict. | Gemini: The review praises the actors' performances, describing them as bringing \"naturalistic energy\" to the play. This suggests a positive experience, warranting a \"Positive\" bucket score. | Kimi: The excerpt offers specific praise for the lead performances ('naturalistic energy') but is too brief to determine a clear overall recommendation for the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:25:16.000Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

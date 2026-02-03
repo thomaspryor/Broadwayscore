@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show works best when it focuses on Summer's personal journey from gospel-singing teenager LaDonna Adrian Gaines to international superstar, rather than getting bogged down in clunky attempts to address social issues.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The show works best when it focuses on Summer's personal journey from gospel-singing teenager LaDonna Adrian Gaines to international superstar, rather than getting bogged down in clunky attempts to address social issues.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show works best when it focuses on Summer's personal journey from gospel-singing teenager LaDonna Adrian Gaines to international superstar, rather than getting bogged down in clunky attempts to address social issues.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: This appears to be an excerpt praising one aspect while criticizing another, suggesting mixed reception. However, with only one sentence available, confidence is low as the overall recommendation is unclear. | GPT-4o: The review highlights strengths in the personal journey aspect but criticizes the handling of social issues, indicating a mixed reception. | Gemini: The review highlights what the show does well while also pointing out its weaknesses, indicating a mixed assessment. | Kimi: The critic identifies genuine strengths in the biographical storytelling but criticizes significant structural weaknesses regarding social themes, resulting in a balanced mixed assessment without issuing a clear see-it-or-skip-it verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:57:28.113Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

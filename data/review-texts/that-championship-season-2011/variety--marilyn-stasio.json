@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite a cast of superb actors, this revival of Jason Miller's 1972 Pulitzer Prize-winning drama feels tired and dated, lacking the emotional intensity that made the original production so compelling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Despite a cast of superb actors, this revival of Jason Miller's 1972 Pulitzer Prize-winning drama feels tired and dated, lacking the emotional intensity that made the original production so compelling.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this revival of Jason Miller's 1972 Pulitzer Prize-winning drama feels tired and dated",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the revival 'tired and dated' and 'lacking emotional intensity.' The praise for the cast doesn't overcome the fundamental criticism of the production. | GPT-4o: The review criticizes the revival for lacking emotional intensity and feeling dated, despite having a superb cast. This indicates a negative assessment of the overall production. | Gemini: The review explicitly states that the revival feels \"tired and dated\" and lacks the emotional intensity of the original, leading to a negative classification. | Kimi: Although the critic acknowledges the cast's abilities, the overall verdict finds the production tired, dated, and lacking the emotional intensity of the original, clearly indicating it is not recommended.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:01:15.267Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

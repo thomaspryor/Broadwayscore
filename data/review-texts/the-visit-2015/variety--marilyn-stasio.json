@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Chita Rivera gives a towering performance as the richest woman in the world who returns to her impoverished hometown with a diabolical proposition in 'The Visit,' John Kander and Fred Ebb's final collaboration.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,59 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chita Rivera gives a towering performance as the richest woman in the world",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the lead performance with 'towering' as a superlative, though this appears to be an excerpt focusing only on Rivera's work rather than a complete review assessment. | Gemini: The review highlights a \"towering performance\" by Chita Rivera, suggesting a positive experience, though the brevity of the review warrants a score in the lower end of the positive range. | Kimi: The critic uses the superlative 'towering' to describe Chita Rivera's performance, indicating strong praise for the lead actress. However, the text appears to be truncated or excerpted (only 38 words), containing only an opening description and performance assessment without a clear overall verdict on whether the production is recommended.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:23:42.485Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

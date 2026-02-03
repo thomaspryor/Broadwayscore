@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a fascinating look at two creative artists from completely different worlds who found common ground in their work together, and both Bettany and Pope are excellent in bringing these iconic figures to vivid life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This is a fascinating look at two creative artists from completely different worlds who found common ground in their work together, and both Bettany and Pope are excellent in bringing these iconic figures to vivid life.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "both Bettany and Pope are excellent in bringing these iconic figures to vivid life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the lead performances and calls the show 'fascinating,' but this appears to be an excerpt lacking fuller context about overall recommendation strength. | GPT-4o: The review praises the performances of Bettany and Pope, describing them as excellent, and finds the show fascinating. However, the review is brief and lacks detailed evaluative content, so the confidence is medium. | Gemini: The review uses positive language such as \"fascinating\" and \"excellent\" to describe the show and performances, indicating a recommendation. | Kimi: The critic offers unqualified praise for the production ('fascinating') and lead performances ('excellent'), indicating a clear recommendation. Confidence is low due to the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:03:56.371Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

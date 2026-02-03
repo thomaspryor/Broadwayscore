@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Straight White Men, rather like poor Matt, does not live up to its potential.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with significant criticism: 'does not live up to its potential,' 'conclusion seems abrupt and not especially satisfying,' suggests Broadway audiences 'might well become rather bored.' Acknowledges the playwright's intelligence but finds the execution lacking. | GPT-4o: The review provides a balanced view, recognizing the play's intriguing elements but ultimately finding it lacking in dramatic impact and satisfaction. The 3/5 star rating aligns with a mixed assessment. | Gemini: The review acknowledges the play's interesting premise and the playwright's intelligence, but ultimately finds the execution lacking and the conclusion unsatisfying. The 3/5 star rating also indicates a mixed assessment. | Kimi: The 3/5 star rating combined with criticisms about the lack of story, abrupt conclusion, and failure to fulfill the playwright's intriguing premise place this review in the Mixed bucket, despite acknowledging some positive elements like the sharper focus compared to the 2014 production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:57:04.687Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

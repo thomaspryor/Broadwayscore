@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of William Inge's 1953 Pulitzer Prize-winning drama feels like a museum piece that has been dusted off and put on display with loving care but little sense of why we should be looking at it now.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This revival of William Inge's 1953 Pulitzer Prize-winning drama feels like a museum piece that has been dusted off and put on display with loving care but little sense of why we should be looking at it now.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (38 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival feels like a museum piece that has been dusted off and put on display with loving care but little sense of why we should be looking at it now.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment that questions the revival's relevance and purpose, despite acknowledging the production's care. The 'museum piece' metaphor and 'little sense of why we should be looking at it now' indicate the critic does not recommend seeing it. | GPT-4o: The review suggests that the revival lacks relevance and purpose, indicating a lack of recommendation. | Gemini: The review explicitly states that the play feels like a museum piece, suggesting it lacks relevance or impact for a modern audience, indicating a negative assessment. | Kimi: The critic dismisses the revival as a pointless 'museum piece' that lacks contemporary relevance or justification for its existence, despite acknowledging the care taken in its production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:47:15.296Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

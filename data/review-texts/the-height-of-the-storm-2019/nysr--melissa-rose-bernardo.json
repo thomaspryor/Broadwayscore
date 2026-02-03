@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A few more of those moody, mushroom-peeling moments would not have been unwelcome.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with mixed assessment: praises lead performances highly but finds the play an 'exercise' with frustrating elements. Values the meditative moments while critiquing structural issues. | GPT-4o: The review highlights strong performances by Pryce and Atkins but notes issues with the plot and character devices. The original rating of 3/5 stars suggests a mixed assessment. The text is truncated, so the final verdict may be missing, leading to low confidence. | Gemini: The review praises the performances of Pryce and Atkins but finds the play itself somewhat lacking and repetitive. The 3/5 star rating and the mixed assessment lead to a mixed bucket score. | Kimi: The 3/5 star rating reflects a mixed reception: the critic praises the lead performances as 'hypnotic' and the chief draw, but criticizes the play as 'too much an exercise' with frustrating plot mechanics, finding it inferior to Zeller's 'The Father'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:10:58.000Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

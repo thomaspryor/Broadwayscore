@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of Arthur Miller's 1968 drama about two brothers confronting their past over their father's furniture succeeds in finding the humor and humanity in what can be a heavy, schematic work.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This production of Arthur Miller's 1968 drama about two brothers confronting their past over their father's furniture succeeds in finding the humor and humanity in what can be a heavy, schematic work.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production succeeds in finding the humor and humanity in what can be a heavy, schematic work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment that the production 'succeeds' in making the material work, though acknowledges the source material's inherent challenges. Recommends but with awareness of limitations. | GPT-4o: The review highlights the production's success in bringing out humor and humanity, suggesting a positive reception, though it acknowledges the play's potential heaviness and schematic nature. | Gemini: The review states that the production \"succeeds\" in finding humor and humanity, which implies a positive assessment, although with the caveat that the play itself can be \"heavy\". | Kimi: The critic praises the production for successfully bringing humor and humanity to Miller's difficult material, clearly recommending it as an effective interpretation despite the play's inherent schematic nature.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:21:10.513Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

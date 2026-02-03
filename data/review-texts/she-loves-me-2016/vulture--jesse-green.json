@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of She Loves Me at Studio 54 is so charming, so beautifully performed, and so perfectly scaled to its intimate venue that it seems to have been waiting 52 years for exactly this production.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The revival of She Loves Me at Studio 54 is so charming, so beautifully performed, and so perfectly scaled to its intimate venue that it seems to have been waiting 52 years for exactly this production.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival of She Loves Me at Studio 54 is so charming, so beautifully performed, and so perfectly scaled to its intimate venue that it seems to have been waiting 52 years for exactly this production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Effusive praise with superlative language ('so charming', 'so beautifully performed', 'so perfectly scaled') and the romantic notion that this is the production the show has been waiting decades for indicates unqualified enthusiasm. | Gemini: The review is overwhelmingly positive, using words like \"charming\" and \"beautifully performed.\" The critic suggests this production is ideal, indicating a strong recommendation. | Kimi: Unreserved praise for the revival's charm, performances, and staging, with the critic declaring this is the definitive production the show has been waiting 52 years to receive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:52:39.963Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 83,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of the 1944 musical comedy about three sailors on 24-hour shore leave in New York is an exuberant, full-bodied production that captures both the show's wartime optimism and its underlying melancholy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This revival of the 1944 musical comedy about three sailors on 24-hour shore leave in New York is an exuberant, full-bodied production that captures both the show's wartime optimism and its underlying melancholy.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival is an exuberant, full-bodied production that captures both the show's wartime optimism and its underlying melancholy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'exuberant, full-bodied production' but brief excerpt limits confidence in full verdict. | GPT-4o: The review uses positive language like 'exuberant' and 'full-bodied' to describe the production, indicating a strong recommendation. | Gemini: The review describes the production as \"exuberant\" and \"full-bodied,\" capturing both optimism and melancholy, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic employs enthusiastic descriptors ('exuberant,' 'full-bodied') and praises the production's successful capture of the material's dual tones, indicating a strong recommendation despite the brevity of the provided text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:42:27.173Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

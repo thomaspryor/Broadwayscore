@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Jackman brings his usual high-voltage charisma to the role of a man whose obsession with fly-fishing becomes a metaphor for deeper spiritual yearnings. But Jez Butterworth's poetic drama, for all its lyrical beauty, feels more like a meditation than a fully realized theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels more like a meditation than a fully realized theatrical experience",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises Jackman's performance and the play's lyrical beauty, but the key critique that it doesn't feel like a 'fully realized theatrical experience' suggests significant reservations about recommending it. | GPT-4o: The review acknowledges the lead's strong performance and the play's lyrical beauty but suggests it lacks the impact of a fully realized theatrical experience, indicating a mixed review. | Gemini: The review praises Jackman's performance and the play's lyrical beauty, but ultimately finds the drama lacking as a fully realized theatrical experience, resulting in a mixed assessment. | Kimi: While the critic praises Jackman's charisma and the play's lyrical qualities, the assessment that it fails to deliver a fully realized theatrical experience suggests significant reservations without an outright dismissal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:22:06.708Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jane Fonda makes a triumphant return to Broadway in Moisés Kaufman's '33 Variations,' a thoughtful meditation on art, mortality and the creative process that weaves together the stories of Beethoven and a contemporary musicologist.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jane Fonda makes a triumphant return to Broadway in Moisés Kaufman's '33 Variations,' a thoughtful meditation on art, mortality and the creative process that weaves together the stories of Beethoven and a contemporary musicologist.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jane Fonda makes a triumphant return to Broadway in Moisés Kaufman's '33 Variations,' a thoughtful meditation on art, mortality and the creative process",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Uses strong positive language ('triumphant return', 'thoughtful meditation') but this is only one excerpt from a longer review, so confidence is medium. The praise suggests solid recommendation territory. | GPT-4o: The excerpt uses strong positive language ('triumphant return', 'thoughtful meditation') suggesting a highly favorable view. Despite the single excerpt limitation, the tone indicates a strong recommendation. | Gemini: The excerpt uses the word \"triumphant,\" which indicates a strong positive sentiment. Given that it is only a single excerpt, the confidence is low. | Kimi: The single available excerpt uses strongly positive language ('triumphant,' 'thoughtful meditation') warranting the upper Positive range per protocols for limited excerpts, though the lack of full context necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:37:02.541Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

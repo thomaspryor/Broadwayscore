@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Liev Schreiber gives a towering performance as Eddie Carbone, the Brooklyn longshoreman whose obsession with his niece leads to his destruction.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Liev Schreiber gives a towering performance as Eddie Carbone, the Brooklyn longshoreman whose obsession with his niece leads to his destruction.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Liev Schreiber gives a towering performance as Eddie Carbone, the Brooklyn longshoreman whose obsession with his niece leads to his destruction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance ('towering') suggests positive review, but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises Schreiber's performance, indicating a positive view of his role. However, due to the single excerpt warning, the overall sentiment of the review is unclear, leading to a cautious, lower-end positive score. | Gemini: The excerpt focuses on a strong performance by the lead actor, suggesting a positive experience despite the limited information. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The sole available excerpt offers strong praise for Schreiber's 'towering' performance, indicating a positive assessment, though the limited text prevents a complete evaluation of the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:38:44.836Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

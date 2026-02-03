@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Peter and the Starcatcher is a theatrical treasure: a play that manages to be both sweetly nostalgic and bracingly inventive, combining the innocent wonder of children's literature with the sophisticated craft of adult theater.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Peter and the Starcatcher is a theatrical treasure: a play that manages to be both sweetly nostalgic and bracingly inventive, combining the innocent wonder of children's literature with the sophisticated craft of adult theater.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Peter and the Starcatcher is a theatrical treasure: a play that manages to be both sweetly nostalgic and bracingly inventive.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The critic calls it a 'theatrical treasure' with unqualified praise for being both nostalgic and inventive. The 80/100 original rating confirms strong positive recommendation in Rave territory. | GPT-4o: The review uses superlative language ('theatrical treasure') and praises the show for its nostalgic and inventive qualities, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"theatrical treasure\" and describes the play as \"sweetly nostalgic and bracingly inventive,\" indicating a positive recommendation. The original rating of 80 aligns with the Positive bucket. | Kimi: The critic's explicit 80 rating falls within the Positive range, and the review offers unqualified praise with superlatives like 'theatrical treasure' and 'bracingly inventive,' indicating a strong recommendation without reservations. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:46:30.525Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }
