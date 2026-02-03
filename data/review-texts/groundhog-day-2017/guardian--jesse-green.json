@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tim Minchin's songs are clever and catchy, and the show finds genuine emotion in its repetitive premise.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Tim Minchin's songs are clever and catchy, and the show finds genuine emotion in its repetitive premise.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (17 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tim Minchin's songs are clever and catchy, and the show finds genuine emotion in its repetitive premise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's 80 rating indicates positive territory, praising songs as 'clever and catchy' and finding 'genuine emotion' despite acknowledging a 'repetitive premise.' However, the extremely brief text limits confidence in the full assessment. | GPT-4o: The review praises the songs as 'clever and catchy' and acknowledges genuine emotion, aligning with the original score of 80, indicating a positive recommendation. | Gemini: The review highlights positive aspects like the clever and catchy songs and genuine emotion, suggesting a positive but not overwhelmingly enthusiastic recommendation. The original rating of 80 aligns with the 'Positive' bucket. | Kimi: The review praises the songwriting and emotional resonance while acknowledging the premise is repetitive, aligning with an 80/100 rating that indicates a solid but not unreserved recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:35:27.918Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

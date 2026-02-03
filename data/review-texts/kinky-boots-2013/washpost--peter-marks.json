@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What Harvey Fierstein and Cyndi Lauper have fashioned is a sweet, if formulaic, evening that manages to be both brazen and innocent, a drag-queen fairy tale with a pronounced taste for the politically correct.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "What Harvey Fierstein and Cyndi Lauper have fashioned is a sweet, if formulaic, evening that manages to be both brazen and innocent, a drag-queen fairy tale with a pronounced taste for the politically correct.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What Harvey Fierstein and Cyndi Lauper have fashioned is a sweet, if formulaic, evening that manages to be both brazen and innocent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses positive language ('sweet evening') but qualifies it as 'formulaic' and 'politically correct,' indicating a tepid recommendation rather than enthusiasm. | GPT-4o: The review describes the show as 'sweet' and 'brazen and innocent,' suggesting a positive tone, but notes it is 'formulaic,' indicating some reservations. | Gemini: The review describes the show as \"sweet\" and \"brazen and innocent\", which indicates a positive, but somewhat qualified, recommendation. The \"formulaic\" aspect brings the score down. | Kimi: The critic offers qualified praise, describing the show as 'sweet' and appreciating its ability to be 'both brazen and innocent,' but the explicit 'formulaic' caveat indicates significant reservations that prevent an unqualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:17:28.527Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 72,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

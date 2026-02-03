@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a gorgeous production that honors Dahl's dark whimsy while expanding it into something richer and more emotionally satisfying than either the book or the 1996 movie.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This is a gorgeous production that honors Dahl's dark whimsy while expanding it into something richer and more emotionally satisfying than either the book or the 1996 movie.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a gorgeous production that honors Dahl's dark whimsy while expanding it into something richer and more emotionally satisfying than either the book or the 1996 movie.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling it 'gorgeous' and 'richer and more emotionally satisfying' than source material, but excerpt is very brief which limits confidence in full critical assessment. | GPT-4o: The review uses strong positive language ('gorgeous production', 'richer and more emotionally satisfying') indicating a high level of enthusiasm and recommendation. | Gemini: The review uses strong positive language, calling the production \"gorgeous\" and \"richer and more emotionally satisfying\" than the source material. | Kimi: Unqualified praise calling the production 'gorgeous' and superior to both the original book and beloved 1996 film, with no critical caveats mentioned. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:49:16.139Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

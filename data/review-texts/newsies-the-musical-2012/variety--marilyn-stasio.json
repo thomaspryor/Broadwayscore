@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This spirited stage adaptation of the 1992 Disney movie musical about the newsboys strike of 1899 has enough old-fashioned pizzazz to charm families and Broadway tourists.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This spirited stage adaptation of the 1992 Disney movie musical about the newsboys strike of 1899 has enough old-fashioned pizzazz to charm families and Broadway tourists.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has enough old-fashioned pizzazz to charm families and Broadway tourists",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment with 'spirited' and 'pizzazz to charm,' though the qualified recommendation ('enough to charm families') suggests modest rather than enthusiastic praise. | GPT-4o: The review describes the show as having 'old-fashioned pizzazz' and being charming, which indicates a positive recommendation, particularly for families and tourists. However, the lack of superlatives or a strong must-see endorsement suggests some reservations. | Gemini: The review is positive, calling the show \"spirited\" and saying it has enough \"pizzazz\" to charm audiences. The phrase \"old-fashioned\" implies some reservations, but the overall tone is positive. | Kimi: The critic offers a clear recommendation highlighting the show's energy and charm, specifically noting it will appeal to families and tourists, though the praise is solid rather than ecstatic.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:09:56.099Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new production, directed by Daniel Goldstein, is a faithful, loving, and ultimately successful attempt to bring Godspell into the 21st century while preserving everything that made it special in the first place.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This new production, directed by Daniel Goldstein, is a faithful, loving, and ultimately successful attempt to bring Godspell into the 21st century while preserving everything that made it special in the first place.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new production is a faithful, loving, and ultimately successful attempt to bring Godspell into the 21st century.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'successful' and 'loving' describing the production, indicating a solid recommendation with praise for the direction and adaptation approach. | GPT-4o: The review uses positive language ('faithful, loving, and ultimately successful') indicating a strong recommendation for the production. | Gemini: The review uses strong positive language such as \"faithful, loving, and ultimately successful\" indicating a strong recommendation. | Kimi: The critic offers unqualified praise, describing the production as 'faithful, loving, and ultimately successful' with no reservations or negative caveats mentioned, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:53:16.416Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

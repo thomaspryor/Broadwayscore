@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This ripped-from-the-headlines musical about corporate greed and corruption has enough theatrical firepower to light up Times Square, but it burns out before generating sustained heat.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "This ripped-from-the-headlines musical about corporate greed and corruption has enough theatrical firepower to light up Times Square, but it burns out before generating sustained heat.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it burns out before generating sustained heat",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The review acknowledges the show's initial impact but ultimately suggests it fails to maintain that energy, leading to a mixed assessment. | Gemini: The review acknowledges the show's potential but ultimately finds it lacking sustained impact, suggesting a mixed experience. | Kimi: The critic acknowledges the show's theatrical strengths ('firepower to light up Times Square') but ultimately finds it lacks staying power ('burns out before generating sustained heat'), resulting in a neither positive nor negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:51:52.275Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

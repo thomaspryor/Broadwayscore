@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes this revival special is that it brings together four superbly well-matched actors who illuminate every facet of Mr. Lonergan's densely plotted, systematically ambiguous play.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "What makes this revival special is that it brings together four superbly well-matched actors who illuminate every facet of Mr. Lonergan's densely plotted, systematically ambiguous play.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes this revival special is that it brings together four superbly well-matched actors who illuminate every facet of Mr. Lonergan's densely plotted, systematically ambiguous play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the cast and their interpretation of the material, calling the revival 'special' with superlative language about the performances, though this appears to be an excerpt with limited context. | GPT-4o: The review highlights the exceptional quality of the actors and their ability to illuminate the play, suggesting a strong recommendation without reservations. | Gemini: The review uses the word \"special\" and praises the actors and the play, indicating a positive recommendation. | Kimi: The review offers unqualified praise for the ensemble's performances ('superbly well-matched,' 'illuminate every facet') and explicitly calls the revival 'special,' indicating a strong recommendation. Confidence is low due to the excerpt length of a single sentence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:32:50.199Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

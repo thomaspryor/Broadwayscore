@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The playwright Bess Wohl has written a funny, touching and ultimately wise comedy about marriage, family and the mysteries of human connection.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The playwright Bess Wohl has written a funny, touching and ultimately wise comedy about marriage, family and the mysteries of human connection.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The playwright Bess Wohl has written a funny, touching and ultimately wise comedy about marriage, family and the mysteries of human connection.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive evaluation with praise for the writing as 'funny, touching and ultimately wise,' but extremely brief excerpt limits confidence in full verdict. | GPT-4o: The review uses positive adjectives like 'funny', 'touching', and 'wise', indicating a strong recommendation. The tone is enthusiastic without reservations. | Gemini: The review uses positive language such as \"funny, touching and ultimately wise comedy\" indicating a positive recommendation. | Kimi: Single-sentence excerpt provides strong praise (funny, touching, wise) indicating clear approval, though brevity limits certainty about overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:58:01.280Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

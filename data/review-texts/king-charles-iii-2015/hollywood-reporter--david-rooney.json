@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is absorbing, intelligent drama that treats its characters with dignity while examining the fragility of democratic institutions and the weight of tradition in times of crisis.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This is absorbing, intelligent drama that treats its characters with dignity while examining the fragility of democratic institutions and the weight of tradition in times of crisis.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is absorbing, intelligent drama that treats its characters with dignity while examining the fragility of democratic institutions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('absorbing, intelligent') with thoughtful praise for the drama's themes and character treatment, though lacks enthusiastic superlatives for higher scoring. | GPT-4o: The review describes the show as 'absorbing' and 'intelligent,' indicating a positive assessment. However, the lack of superlatives or strong enthusiasm keeps it from being a rave. | Gemini: The review uses positive language such as \"absorbing\" and \"intelligent\" and praises the treatment of the characters, indicating a positive recommendation. | Kimi: The critic offers unqualified praise for the show's intelligence and dramatic quality, describing it as absorbing and treating characters with dignity. While the tone is clearly recommending, the brevity of this excerpt limits certainty about the overall verdict strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:12:34.620Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

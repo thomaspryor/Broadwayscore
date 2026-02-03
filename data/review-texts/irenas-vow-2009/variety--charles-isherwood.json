@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tovah Feldshuh gives a committed, deeply felt performance as the Polish Catholic housekeeper who saved the lives of 12 Jews during World War II, but Dan Gordon's play feels more like a lecture than drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Tovah Feldshuh gives a committed, deeply felt performance as the Polish Catholic housekeeper who saved the lives of 12 Jews during World War II, but Dan Gordon's play feels more like a lecture than drama.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dan Gordon's play feels more like a lecture than drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises Feldshuh's performance as 'committed, deeply felt' but criticizes the play itself as feeling 'more like a lecture than drama,' indicating neither a clear recommendation nor discouragement. | GPT-4o: The review praises Feldshuh's performance but criticizes the play's overall impact, describing it as more of a lecture than a drama, indicating a negative assessment. | Gemini: The review praises the lead performance but criticizes the play's writing, resulting in a mixed assessment. | Kimi: The critic offers high praise for Feldshuh's performance but fundamentally criticizes the play's dramatic structure. The extreme brevity of the text prevents a clear determination of whether the overall recommendation leans positive or negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:37:33.018Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Fat Ham is a riot of a play that manages to be both hilarious and deeply moving. James Ijames has created something truly special here—a work that honors Shakespeare while being entirely its own beast.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Fat Ham is a riot of a play that manages to be both hilarious and deeply moving. James Ijames has created something truly special here—a work that honors Shakespeare while being entirely its own beast.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fat Ham is a riot of a play that manages to be both hilarious and deeply moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong superlatives ('riot of a play', 'truly special', 'entirely its own beast') combined with the critic's own 80/100 rating indicate enthusiastic recommendation. The language suggests this transcends typical positive territory into rave. | GPT-4o: The review praises the play as both hilarious and deeply moving, indicating a strong recommendation. The original rating of 80 supports a solid positive classification. | Gemini: The review is overwhelmingly positive, calling the play a \"riot\" and \"truly special.\" The critic praises the playwright's creation and its ability to be both funny and moving, indicating a strong recommendation. | Kimi: The critic's explicit rating of 80 places this in the Positive range, and the review describes the show as 'truly special' with enthusiastic praise for its humor and emotional depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:02:47.776Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

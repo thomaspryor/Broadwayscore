@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This glorious revival of William Finn and James Lapine's 1992 Tony winner about a Jewish family in the early 1980s is a masterpiece of musical theater storytelling, performed by a cast that seems incapable of a false note.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This glorious revival of William Finn and James Lapine's 1992 Tony winner about a Jewish family in the early 1980s is a masterpiece of musical theater storytelling, performed by a cast that seems incapable of a false note.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (38 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This glorious revival is a masterpiece of musical theater storytelling, performed by a cast that seems incapable of a false note.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlatives ('glorious', 'masterpiece') with perfect cast praise and no caveats - clear rave recommendation. | GPT-4o: The review uses superlative language ('glorious', 'masterpiece') and praises the cast's performance, indicating an enthusiastic recommendation. | Gemini: The review uses the term \"masterpiece\" and praises the cast as being \"incapable of a false note,\" indicating a rave review. | Kimi: Unqualified praise using superlatives ('glorious', 'masterpiece') and explicit commendation of the cast with no reservations or caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:59:31.094Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

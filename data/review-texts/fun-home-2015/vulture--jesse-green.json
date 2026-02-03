@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Fun Home is a musical of such power and beauty that it seems to have been not just written but discovered, as if it always existed and was waiting for the right moment to reveal itself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Fun Home is a musical of such power and beauty that it seems to have been not just written but discovered, as if it always existed and was waiting for the right moment to reveal itself.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fun Home is a musical of such power and beauty that it seems to have been not just written but discovered",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Exceptional praise using transcendent language ('power and beauty', 'discovered' rather than created). This suggests the show achieves artistic perfection that feels inevitable and timeless. | GPT-4o: The review uses superlative language ('power and beauty', 'discovered') indicating an enthusiastic, must-see recommendation with no reservations. | Gemini: The review uses strong positive language such as \"power and beauty\" and suggests the musical is exceptional, indicating a rave review. | Kimi: The critic employs superlative language ('power and beauty') and metaphorical praise suggesting the musical is a discovered masterpiece rather than merely written, indicating an unreserved rave with no qualifications expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:18:05.135Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

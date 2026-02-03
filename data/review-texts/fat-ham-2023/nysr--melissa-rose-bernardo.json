@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "5/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the ensemble is as fabulous as ever",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with consistent superlative praise throughout - 'fabulous', 'crafty', 'seamless', 'makes a meal of both roles'. Despite truncation warning, the overwhelmingly positive tone and maximum star rating indicate a rave review. | GPT-4o: The review is filled with praise for the performances, direction, and adaptation. The critic's original 5/5 star rating strongly suggests a rave. Despite the text being truncated, the tone and content indicate a highly positive assessment. | Gemini: The review is overwhelmingly positive, highlighting the fabulous ensemble, Spears' delicate performance, and Crawford's booty-shaking performance. The critic praises the director for keeping the play tight in the transition to a larger house. The 5/5 star rating also indicates a strong positive recommendation. | Kimi: The critic's 5/5 rating and consistent praise for the 'clever' adaptation, 'fabulous' ensemble, and tight direction indicate an unreserved recommendation, though confidence is reduced due to text truncation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:02:27.405Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 78,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

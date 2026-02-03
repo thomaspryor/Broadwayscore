@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Dave Malloy's musical adaptation of a section of Tolstoy's War and Peace is a thrilling theatrical experience that makes ingenious use of its immersive staging at the Imperial Theatre.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Dave Malloy's musical adaptation of a section of Tolstoy's War and Peace is a thrilling theatrical experience that makes ingenious use of its immersive staging at the Imperial Theatre.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dave Malloy's musical adaptation of a section of Tolstoy's War and Peace is a thrilling theatrical experience that makes ingenious use of its immersive staging at the Imperial Theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('thrilling', 'ingenious') indicates enthusiastic recommendation, though the brief excerpt limits full assessment of the critic's complete verdict. | GPT-4o: The review describes the show as a 'thrilling theatrical experience' and praises the 'ingenious use' of staging, indicating strong enthusiasm and a must-see recommendation. | Gemini: The review uses strong positive language like \"thrilling\" and \"ingenious\" to describe the show, indicating a positive recommendation. | Kimi: The critic employs enthusiastic superlatives ('thrilling', 'ingenious') to praise the production's immersive staging and overall impact, indicating a strong recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:05:16.445Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

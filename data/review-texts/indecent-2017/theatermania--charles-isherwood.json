@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Paula Vogel's Indecent is a work of considerable ambition and genuine emotional power, a meditation on art, persecution, and the enduring strength of love that transcends boundaries of time and geography.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Paula Vogel's Indecent is a work of considerable ambition and genuine emotional power, a meditation on art, persecution, and the enduring strength of love that transcends boundaries of time and geography.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paula Vogel's Indecent is a work of considerable ambition and genuine emotional power",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language praising the work's ambition and emotional impact, though this appears to be an excerpt with the full verdict potentially cut off. | GPT-4o: The review uses strong positive language such as 'considerable ambition' and 'genuine emotional power', indicating a highly favorable opinion of the show. | Gemini: The review uses strong positive language like \"considerable ambition\" and \"genuine emotional power,\" indicating a positive recommendation. | Kimi: The excerpt uses superlative language praising the show's ambition, emotional impact, and thematic resonance without any visible reservations, indicating an enthusiastic recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:32:12.016Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

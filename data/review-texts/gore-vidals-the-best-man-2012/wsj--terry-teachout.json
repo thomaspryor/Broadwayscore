@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes 'The Best Man' worth reviving is that it shows us politicians who, however flawed, are also recognizably adult—something that can no longer be taken for granted.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "What makes 'The Best Man' worth reviving is that it shows us politicians who, however flawed, are also recognizably adult—something that can no longer be taken for granted.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes 'The Best Man' worth reviving is that it shows us politicians who, however flawed, are also recognizably adult",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic explicitly states the show is 'worth reviving' and finds value in its portrayal, but this appears to be a brief excerpt with limited evaluation of the current production's quality. | GPT-4o: The review suggests the show is 'worth reviving', indicating a positive recommendation. However, the lack of detailed evaluative content limits the confidence level. | Gemini: The review states the play is \"worth reviving\", indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic explicitly calls the show 'worth reviving,' recommending it for its portrayal of adult politicians despite their flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:31:33.800Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite the considerable talents of its leading players, this ambitious musical about the tempestuous relationship between composer Kurt Weill and lyricist-performer Lotte Lenya never quite finds its emotional center.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Despite the considerable talents of its leading players, this ambitious musical about the tempestuous relationship between composer Kurt Weill and lyricist-performer Lotte Lenya never quite finds its emotional center.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "never quite finds its emotional center",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite acknowledging the talents of the performers, the critic finds a fundamental flaw in the show's emotional core, indicating a mixed reception without clear recommendation. | GPT-4o: The review acknowledges the talents of the performers but criticizes the musical for lacking an emotional center, indicating a negative overall assessment. | Gemini: The review states that despite the talent of the leads, the musical never finds its emotional center, indicating a negative assessment. | Kimi: While the critic acknowledges the considerable talents of the cast, the verdict that the show 'never quite finds its emotional center' indicates a fundamental failure of the production, not merely a mixed experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:39:17.133Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

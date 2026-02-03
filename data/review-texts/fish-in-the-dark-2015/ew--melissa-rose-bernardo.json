@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "David's play is pleasant enough, but it feels more like a very long episode of Curb Your Enthusiasm than a fully realized theatrical work.",
   "originalScore": 72,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "David's play is pleasant enough, but it feels more like a very long episode of Curb Your Enthusiasm than a fully realized theatrical work.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "David's play is pleasant enough, but it feels more like a very long episode of Curb Your Enthusiasm than a fully realized theatrical work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls it 'pleasant enough' but clearly indicates it fails as theater by comparing it to TV and saying it's not 'fully realized theatrical work.' This is a mixed-to-negative assessment that doesn't recommend. | GPT-4o: The critic's original rating of 72 suggests a barely positive review. The text describes the play as 'pleasant enough,' indicating a mild recommendation despite reservations about its theatrical depth. | Gemini: The review states the play is \"pleasant enough\" which is a positive sentiment, but the comparison to a TV episode suggests it lacks depth. Given the original rating of 72, this falls into the lower end of the Positive bucket. | Kimi: While the critic offers faint praise calling the play 'pleasant enough,' they significantly criticize its theatrical depth, comparing it to a television episode. However, the critic's explicit rating of 72 confirms this falls within the qualified positive range rather than mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:27:58.106Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

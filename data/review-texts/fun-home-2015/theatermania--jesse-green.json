@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Fun Home is a musical that treats its subject matter with extraordinary delicacy and intelligence, creating something that feels both intimate and universal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Fun Home is a musical that treats its subject matter with extraordinary delicacy and intelligence, creating something that feels both intimate and universal.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fun Home is a musical that treats its subject matter with extraordinary delicacy and intelligence, creating something that feels both intimate and universal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Single sentence of clear praise using strong positive language ('extraordinary delicacy and intelligence', 'intimate and universal'), but extremely brief text limits confidence in full critical assessment. | GPT-4o: The review uses strong positive language ('extraordinary delicacy and intelligence') and suggests a universal appeal, indicating a highly favorable view. | Gemini: The review uses strong positive language like \"extraordinary delicacy and intelligence\" and describes the show as both \"intimate and universal,\" indicating a strong recommendation. | Kimi: The excerpt delivers unqualified praise using superlatives like 'extraordinary' and emphasizes the show's artistic achievement and emotional resonance, clearly indicating a strong recommendation despite the brevity of the provided text. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:17:37.323Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

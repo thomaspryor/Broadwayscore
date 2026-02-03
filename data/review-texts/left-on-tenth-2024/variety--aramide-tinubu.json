@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Margulies delivers a deeply personal and affecting performance that transforms what could have been a simple memoir adaptation into something genuinely moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Margulies delivers a deeply personal and affecting performance that transforms what could have been a simple memoir adaptation into something genuinely moving.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Margulies delivers a deeply personal and affecting performance that transforms what could have been a simple memoir adaptation into something genuinely moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single sentence excerpt praising lead performance and overall impact as 'genuinely moving', but extremely limited text makes full assessment difficult. | GPT-4o: The review praises the performance as 'deeply personal and affecting' and describes the show as 'genuinely moving', indicating a strong recommendation. The lack of additional context or reservations suggests a high score within the Rave bucket. | Gemini: The review praises the performance as \"deeply personal and affecting\" and states that it transforms the adaptation into \"something genuinely moving,\" indicating a positive recommendation. | Kimi: The critic offers strong praise for the lead performance ('deeply personal and affecting') and the overall emotional impact ('genuinely moving'), indicating a solid recommendation despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:25:32.766Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

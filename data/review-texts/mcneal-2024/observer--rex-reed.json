@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play is a mess, but McNeal is a fascinating character study that benefits from Robert Downey Jr.'s committed performance in his Broadway debut.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,61 @@
   "showScoreExcerpt": "The play is a mess, but McNeal is a fascinating character study that benefits from Robert Downey Jr.'s committed performance in his Broadway debut.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 62,
+    "confidence": "low",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is a mess, but McNeal is a fascinating character study that benefits from Robert Downey Jr.'s committed performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: Clear mixed verdict - explicitly calls the play 'a mess' but praises it as 'fascinating character study' with strong lead performance. No clear recommendation either way. | GPT-4o: The review describes the play as a 'mess', indicating a negative overall assessment, despite the praise for Downey Jr.'s performance. The negative tone about the play itself leads to a negative score. | Gemini: The review states the play is a mess, but highlights Downey Jr.'s performance as a benefit, resulting in a mixed assessment. | Kimi: Although the critic calls the play 'a mess,' they ultimately recommend it as a 'fascinating character study' driven by Downey Jr.'s committed Broadway debut, indicating the performance outweighs the script flaws. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:51:46.008Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 33,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

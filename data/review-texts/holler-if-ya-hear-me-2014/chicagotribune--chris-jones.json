@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This jukebox musical built around the songs of Tupac Shakur feels more like a lecture than a night of entertainment, weighed down by heavy-handed social messaging that overshadows the music.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This jukebox musical built around the songs of Tupac Shakur feels more like a lecture than a night of entertainment, weighed down by heavy-handed social messaging that overshadows the music.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This jukebox musical built around the songs of Tupac Shakur feels more like a lecture than a night of entertainment, weighed down by heavy-handed social messaging that overshadows the music.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment comparing the show unfavorably to a lecture rather than entertainment, criticizing heavy-handed messaging that overshadows the music. No positive elements mentioned to offset the criticism. | GPT-4o: The review criticizes the show for being overly didactic and overshadowing the music, indicating a negative recommendation. | Gemini: The review explicitly states the show feels more like a lecture than entertainment, indicating a negative experience and a lack of recommendation. | Kimi: The critic clearly states the show fails as entertainment, describing it as a lecture weighed down by heavy-handed messaging that overshadows the music, constituting a recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:54:26.020Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

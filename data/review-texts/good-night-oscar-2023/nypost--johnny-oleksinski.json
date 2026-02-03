@@ -16,12 +16,16 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hayes delivers a captivating performance as the neurotic, witty pianist, bringing both vulnerability and sharp comedic timing to the role.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (20 words)",
   "playbillVerdictUrl": "https://nypost.com/2023/04/24/good-night-oscar-review-sean-hayes-stars-in-off-key-play/",
   "sources": [
     "web-search",
     "playbill-verdict"
   ],
-  "textQuality": "truncated"
+  "rejectedAt": "2026-02-03T16:53:58.142Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt describing a performance, not a complete review with an evaluative verdict about the show.; openai: This text is a single sentence focusing on a performance, not a full review of the show.",
+  "promptVersion": "5.2.0"
 }

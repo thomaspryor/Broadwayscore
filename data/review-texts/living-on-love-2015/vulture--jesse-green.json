@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Living on Love is a farce that takes place in real time, and while that's an admirable discipline, it also means that every minute of stage time must earn its keep. Too many don't.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,53 @@
   "showScoreExcerpt": "Living on Love is a farce that takes place in real time, and while that's an admirable discipline, it also means that every minute of stage time must earn its keep. Too many don't.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic acknowledges the show's discipline but concludes that too many minutes fail to earn their keep, indicating the show doesn't work overall. | GPT-4o: The critic points out a structural issue with the play, suggesting that it fails to maintain engagement throughout its runtime. This indicates a negative assessment of the production. | Gemini: The critic states that \"too many\" minutes of stage time don't earn their keep, indicating a negative assessment of the show. | Kimi: The critic praises the structural discipline as admirable but implies the show fails to deliver sufficient content ('Too many don't'), suggesting uneven quality without issuing a clear recommendation for or against attendance. The extreme brevity indicates this is likely an excerpt, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:31:23.156Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -28,21 +28,43 @@ const path = require('path');
 const SHOWS_JSON_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
 const PLAYBILL_URLS_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
+const IBDB_IMAGE_CACHE_PATH = path.join(__dirname, '..', 'data', 'ibdb-image-cache.json');
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
+
+// Broadway.org CDN image transforms
+const BROADWAY_ORG_TRANSFORMS = {
+  square:    '?width=1080&height=1080&fit=cover&quality=85',
+  portrait:  '?width=720&height=1080&fit=cover&quality=85',
+  landscape: '?width=1920&height=800&fit=cover&quality=85',
+};
+
+function loadIbdbImageCache() {
+  try {
+    return JSON.parse(fs.readFileSync(IBDB_IMAGE_CACHE_PATH, 'utf8'));
+  } catch {
+    return { shows: {}, lastUpdated: null };
+  }
+}
+
+function saveIbdbImageCache(data) {
+  data.lastUpdated = new Date().toISOString();
+  fs.writeFileSync(IBDB_IMAGE_CACHE_PATH, JSON.stringify(data, null, 2) + '\n');
+}
 
 function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
-function fetchViaScrapingBee(url) {
+function fetchViaScrapingBee(url, { premiumProxy = false } = {}) {
   return new Promise((resolve, reject) => {
     if (!SCRAPINGBEE_API_KEY) {
       reject(new Error('SCRAPINGBEE_API_KEY not set'));
       return;
     }
 
-    const scrapingBeeUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
+    let scrapingBeeUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
+    if (premiumProxy) scrapingBeeUrl += '&premium_proxy=true';
 
     https.get(scrapingBeeUrl, (response) => {
       if (response.statusCode !== 200) {
@@ -87,6 +109,214 @@ function searchGoogleForTodayTix(showTitle) {
       response.on('error', reject);
     }).on('error', reject);
   });
+}
+
+// Search Google via ScrapingBee SERP API for IBDB production pages
+function searchGoogleForIBDB(showTitle, openingYear) {
+  return new Promise((resolve, reject) => {
+    if (!SCRAPINGBEE_API_KEY) {
+      reject(new Error('SCRAPINGBEE_API_KEY not set'));
+      return;
+    }
+
+    const yearStr = openingYear ? ` ${openingYear}` : '';
+    const query = `site:ibdb.com/broadway-production "${showTitle}"${yearStr}`;
+    const serpUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_API_KEY}&search=${encodeURIComponent(query)}`;
+
+    https.get(serpUrl, (response) => {
+      if (response.statusCode !== 200) {
+        reject(new Error(`HTTP ${response.statusCode}`));
+        return;
+      }
+
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          const organic = parsed.organic_results || [];
+          const results = organic
+            .filter(r => r.url && r.url.includes('/broadway-production/'))
+            .map(r => r.url);
+          resolve(results);
+        } catch {
+          reject(new Error('Failed to parse Google SERP response'));
+        }
+      });
+      response.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
+// Extract broadway.org CDN image URLs from IBDB page HTML
+// IBDB embeds broadway.org images for show posters and production photos
+function extractBroadwayOrgImages(html, showTitle) {
+  // Match broadway.org asset URLs (both direct and CDN domains)
+  const imgPattern = /(?:https?:\/\/(?:www\.)?broadway\.org\/assets\/shows(?:-media)?\/[^"'<>\s?]+|https?:\/\/cdn\.craft\.cloud\/[^"'<>\s?]+\/assets\/shows(?:-media)?\/[^"'<>\s?]+)/gi;
+  const allUrls = html.match(imgPattern) || [];
+
+  if (allUrls.length === 0) return null;
+
+  // Deduplicate by base filename
+  const seen = new Set();
+  const uniqueUrls = [];
+  for (const url of allUrls) {
+    const base = url.split('?')[0];
+    if (!seen.has(base)) {
+      seen.add(base);
+      uniqueUrls.push(base);
+    }
+  }
+
+  // Separate poster images (assets/shows/) from media (assets/shows-media/)
+  const posterUrls = uniqueUrls.filter(u => /\/assets\/shows\/[^/]+$/.test(u) && !/\/shows-media\//.test(u));
+  const mediaUrls = uniqueUrls.filter(u => /\/assets\/shows-media\//.test(u));
+
+  // Try to identify show-specific images via alt text
+  // IBDB uses alt="Show Title - Show Title Year" on show images
+  // Extract img tags with broadway.org src and matching alt text
+  const normalTitle = showTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
+  let bestPoster = null;
+
+  // Look for img tags with alt text matching the show
+  const imgTagPattern = /<img[^>]*alt="([^"]*)"[^>]*src="([^"]*broadway\.org[^"]*|[^"]*cdn\.craft\.cloud[^"]*)"[^>]*/gi;
+  const imgTagPattern2 = /<img[^>]*src="([^"]*broadway\.org[^"]*|[^"]*cdn\.craft\.cloud[^"]*)"[^>]*alt="([^"]*)"[^>]*/gi;
+
+  for (const pattern of [imgTagPattern, imgTagPattern2]) {
+    let match;
+    while ((match = pattern.exec(html)) !== null) {
+      const alt = pattern === imgTagPattern ? match[1] : match[2];
+      const src = pattern === imgTagPattern ? match[2] : match[1];
+      const normalAlt = alt.toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (normalAlt.includes(normalTitle) && /\/assets\/shows\//.test(src) && !/\/shows-media\//.test(src)) {
+        bestPoster = src.split('?')[0];
+        break;
+      }
+    }
+    if (bestPoster) break;
+  }
+
+  // Also check background-image styles for show poster
+  if (!bestPoster) {
+    const bgPattern = /background-image:\s*url\(['"]?((?:https?:\/\/(?:www\.)?broadway\.org|https?:\/\/cdn\.craft\.cloud)[^'")\s]+\/assets\/shows\/[^'")\s?]+)/gi;
+    let match;
+    while ((match = bgPattern.exec(html)) !== null) {
+      bestPoster = match[1].split('?')[0];
+      break;
+    }
+  }
+
+  // Do NOT fall back to first poster URL — it could be from a sidebar show.
+  // Only use images we're confident belong to the target show.
+  if (!bestPoster && mediaUrls.length === 0) return null;
+
+  // If we only have media URLs but no poster, verify media belongs to show
+  // by checking if the media filename contains a show-related slug
+  if (!bestPoster && mediaUrls.length > 0) {
+    const titleSlug = showTitle.toLowerCase().replace(/[^a-z0-9]+/g, '');
+    const hasRelevantMedia = mediaUrls.some(u => {
+      const filename = u.split('/').pop().toLowerCase().replace(/[^a-z0-9]+/g, '');
+      return filename.includes(titleSlug) || titleSlug.includes(filename.replace(/\d+$/, ''));
+    });
+    if (!hasRelevantMedia) return null;
+  }
+
+  // Build result with CDN transforms
+  const result = {
+    thumbnail: bestPoster ? bestPoster + BROADWAY_ORG_TRANSFORMS.square : null,
+    poster: bestPoster ? bestPoster + BROADWAY_ORG_TRANSFORMS.portrait : null,
+    hero: (mediaUrls[0] || bestPoster) ? (mediaUrls[0] || bestPoster) + BROADWAY_ORG_TRANSFORMS.landscape : null,
+  };
+
+  // Only return if we got at least a thumbnail or poster
+  if (!result.thumbnail && !result.poster) return null;
+  return result;
+}
+
+let ibdbImageCache = null;
+
+// Fetch show images from IBDB page (which embeds broadway.org CDN images)
+async function fetchFromIBDB(show) {
+  if (!ibdbImageCache) {
+    ibdbImageCache = loadIbdbImageCache();
+  }
+
+  // Check cache first — if we have a cached base URL, construct sized images directly
+  const cached = ibdbImageCache.shows[show.id];
+  if (cached && cached.posterBaseUrl) {
+    console.log(`   Using cached IBDB/Broadway.org image: ${cached.posterBaseUrl.split('/').pop()}`);
+    return {
+      thumbnail: cached.posterBaseUrl + BROADWAY_ORG_TRANSFORMS.square,
+      poster: cached.posterBaseUrl + BROADWAY_ORG_TRANSFORMS.portrait,
+      hero: (cached.mediaBaseUrl || cached.posterBaseUrl) + BROADWAY_ORG_TRANSFORMS.landscape,
+    };
+  }
+  if (cached && cached.notFound) {
+    return null; // Previously confirmed no images on IBDB
+  }
+
+  console.log(`   Trying IBDB/Broadway.org...`);
+
+  // Step 1: Find IBDB production URL via Google SERP
+  let ibdbUrl = null;
+  const openingYear = show.openingDate ? show.openingDate.substring(0, 4) : null;
+
+  try {
+    const results = await searchGoogleForIBDB(show.title, openingYear);
+    if (results.length > 0) {
+      // If we have an opening year, prefer URL containing that year
+      ibdbUrl = results.find(u => openingYear && u.includes(openingYear)) || results[0];
+    }
+  } catch (err) {
+    console.log(`   ⚠ IBDB SERP search failed: ${err.message}`);
+  }
+
+  // Fallback: construct URL from title slug
+  if (!ibdbUrl) {
+    const slug = show.title.toLowerCase()
+      .replace(/['']/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+    ibdbUrl = `https://www.ibdb.com/broadway-production/${slug}`;
+    console.log(`   Trying constructed IBDB URL: ${ibdbUrl}`);
+  }
+
+  await sleep(1500);
+
+  // Step 2: Scrape IBDB page (needs premium proxy)
+  try {
+    const html = await fetchViaScrapingBee(ibdbUrl, { premiumProxy: true });
+
+    // Check for redirect to homepage (production not found)
+    if (html.includes('Opening Nights in History') && !html.includes('Opening Date')) {
+      console.log(`   ✗ IBDB page not found (redirected to homepage)`);
+      ibdbImageCache.shows[show.id] = { notFound: true, lastChecked: new Date().toISOString() };
+      return null;
+    }
+
+    // Step 3: Extract broadway.org images
+    const images = extractBroadwayOrgImages(html, show.title);
+    if (images) {
+      console.log(`   ✓ Found images via IBDB/Broadway.org`);
+      // Cache the base URLs for future runs
+      const posterBase = images.thumbnail ? images.thumbnail.split('?')[0] : null;
+      const mediaBase = images.hero ? images.hero.split('?')[0] : null;
+      ibdbImageCache.shows[show.id] = {
+        ibdbUrl,
+        posterBaseUrl: posterBase,
+        mediaBaseUrl: mediaBase !== posterBase ? mediaBase : null,
+        lastChecked: new Date().toISOString()
+      };
+      return images;
+    }
+
+    console.log(`   ✗ No broadway.org images found on IBDB page`);
+    ibdbImageCache.shows[show.id] = { notFound: true, ibdbUrl, lastChecked: new Date().toISOString() };
+  } catch (err) {
+    console.log(`   ✗ IBDB page fetch failed: ${err.message}`);
+  }
+
+  return null;
 }
 
 // Detect shows with bad images (identical poster/thumbnail/hero from Playbill)
@@ -673,7 +903,13 @@ async function fetchShowImages(show, todayTixInfo, apiData) {
     console.log(`   ✗ No TodayTix ID available`);
   }
 
-  // If TodayTix failed, try Playbill fallback
+  // Step 3: Try IBDB → broadway.org images (poster + production photos)
+  const ibdbImages = await fetchFromIBDB(show);
+  if (ibdbImages && (ibdbImages.thumbnail || ibdbImages.poster)) {
+    return ibdbImages;
+  }
+
+  // Step 4: Playbill fallback (landscape OG image only)
   return await fetchFromPlaybill(show);
 }
 
@@ -774,8 +1010,9 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
     }
   }
 
-  // Save TodayTix ID cache once at end (not per-show)
+  // Save caches once at end (not per-show)
   saveTodayTixIds(todayTixIds);
+  if (ibdbImageCache) saveIbdbImageCache(ibdbImageCache);
 
   return results;
 }

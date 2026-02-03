@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Into the Woods is a stripped-down, intimate production that allows the brilliant score and lyrics to shine while maintaining the emotional complexity of Sondheim's masterpiece.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This revival of Into the Woods is a stripped-down, intimate production that allows the brilliant score and lyrics to shine while maintaining the emotional complexity of Sondheim's masterpiece.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of Into the Woods is a stripped-down, intimate production that allows the brilliant score and lyrics to shine while maintaining the emotional complexity of Sondheim's masterpiece.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear positive language calling it a 'masterpiece' with praise for how the production serves the material, though brief text limits confidence in assessment. | GPT-4o: The review uses strong positive language, praising the production as 'brilliant' and 'intimate', and refers to it as a 'masterpiece', indicating a highly enthusiastic recommendation. | Gemini: The review uses positive language such as \"brilliant score\" and \"masterpiece\" to describe the show, indicating a positive recommendation. | Kimi: The critic offers unqualified praise using superlatives 'brilliant' and 'masterpiece,' describing the revival as both emotionally complex and intimate with no negative caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:10:40.478Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 93,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

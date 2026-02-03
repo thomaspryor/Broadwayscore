@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This sparkling revival of the Stephen Schwartz-John-Michael Tebelak musical brings welcome warmth and intimacy to the Circle in the Square.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This sparkling revival of the Stephen Schwartz-John-Michael Tebelak musical brings welcome warmth and intimacy to the Circle in the Square.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (20 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This sparkling revival brings welcome warmth and intimacy to the Circle in the Square.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Uses positive language ('sparkling', 'welcome warmth') but this appears to be a truncated excerpt with no full critical evaluation or clear recommendation strength. | GPT-4o: The review uses positive language such as 'sparkling' and 'welcome warmth and intimacy,' indicating a strong recommendation without reservations. | Gemini: The review uses positive language such as \"sparkling revival\" and \"welcome warmth and intimacy,\" indicating a positive recommendation. | Kimi: The critic uses enthusiastic language ('sparkling,' 'welcome warmth') to praise the production's qualities, indicating a solid recommendation. Confidence is low due to the brevity of the provided text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:25:58.567Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

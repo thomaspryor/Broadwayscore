@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Broadway musical 'Hot Feet,' which opened last night at the Hilton Theater, is not so much a show as a very expensive jukebox with some fancy stepping attached.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 38,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,62 @@
   "showScoreExcerpt": "The Broadway musical 'Hot Feet,' which opened last night at the Hilton Theater, is not so much a show as a very expensive jukebox with some fancy stepping attached.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 38,
+    "confidence": "medium",
+    "range": {
+      "low": 33,
+      "high": 43
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "is not so much a show as a very expensive jukebox with some fancy stepping attached",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The critic dismisses the show as merely 'a very expensive jukebox' rather than a proper theatrical work, which is clearly negative evaluation despite acknowledging some quality in the dancing. | GPT-4o: The review dismisses the production as lacking substance, comparing it unfavorably to a jukebox with little value beyond its cost. This indicates a strong negative assessment. | Gemini: The review explicitly compares the show to a jukebox, indicating a lack of substance and originality, leading to a negative classification. | Kimi: The reviewer fundamentally denies the production artistic legitimacy by refusing to classify it as a 'show,' instead dismissing it as a commercial 'jukebox,' though the extremely brief excerpt limits confidence in the overall assessment. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:55:39.088Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 30,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  },
+  "sources": [
+    "web-search"
+  ]
 }

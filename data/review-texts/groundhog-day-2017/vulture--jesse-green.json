@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical version of Groundhog Day, which opened Thursday night at the August Wilson Theatre, is a surprisingly successful adaptation that manages to find new emotional depths in the familiar story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical version of Groundhog Day, which opened Thursday night at the August Wilson Theatre, is a surprisingly successful adaptation that manages to find new emotional depths in the familiar story.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "surprisingly successful adaptation that manages to find new emotional depths",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment calling it 'surprisingly successful' with praise for finding 'new emotional depths,' though brief excerpt limits confidence in full verdict. | GPT-4o: The review describes the adaptation as 'surprisingly successful' and praises its ability to find 'new emotional depths,' indicating a positive recommendation. However, the brevity of the review limits the confidence level. | Gemini: The review states that the musical is a \"surprisingly successful adaptation\", which indicates a positive recommendation, but the word \"surprisingly\" suggests some reservations. | Kimi: The critic describes the show as 'surprisingly successful' and praises it for finding 'new emotional depths,' indicating a clear recommendation. Confidence is low due to the brevity of the provided excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:01:17.786Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

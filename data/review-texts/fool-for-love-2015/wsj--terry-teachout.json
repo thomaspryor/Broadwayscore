@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What's missing is the claustrophobic intensity that made the original production so memorable. Instead of feeling trapped in a seedy motel room with these desperate characters, you're watching them from a comfortable distance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "What's missing is the claustrophobic intensity that made the original production so memorable. Instead of feeling trapped in a seedy motel room with these desperate characters, you're watching them from a comfortable distance.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What's missing is the claustrophobic intensity that made the original production so memorable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Critic identifies a significant flaw in the production's atmosphere and impact compared to expectations, suggesting disappointment without outright condemnation. | GPT-4o: The review criticizes the current production for lacking the intensity of the original, suggesting a lack of engagement and impact. The tone is clearly negative, focusing on what the production fails to deliver. | Gemini: The review explicitly states that the claustrophobic intensity of the original production is missing, leading to a less immersive and ultimately disappointing experience. | Kimi: The critic finds the Broadway transfer fails to recreate the essential intimate horror of the original, noting that the production keeps the audience at a 'comfortable distance' rather than immersing them in the characters' desperation. No redeeming qualities are mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:35:01.061Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

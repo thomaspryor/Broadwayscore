@@ -152,6 +152,27 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install chromium --with-deps
 
+      - name: Run unit tests
+        run: |
+          # Run all unit tests with tsx (provides TypeScript import support)
+          # Exclude ensemble.test.mjs (pre-existing ts-node compilation issue with scripts/tsconfig.json)
+          npx tsx --test \
+            tests/unit/biz-data-functions.test.mjs \
+            tests/unit/commercial-changes.test.mjs \
+            tests/unit/deep-research-guardian.test.mjs \
+            tests/unit/outlet-id-mapper.test.mjs \
+            tests/unit/parse-grosses-analysis.test.mjs \
+            tests/unit/sample.test.mjs \
+            tests/unit/sanity.test.mjs \
+            tests/unit/score-conversion-rules.test.mjs \
+            tests/unit/sec-edgar-scraper.test.mjs \
+            tests/unit/source-validator.test.mjs \
+            tests/unit/trade-press-scraper.test.mjs \
+            tests/unit/data-quality-pipeline.test.js \
+            tests/unit/integrity-report.test.js \
+            tests/unit/review-normalization.test.js \
+            tests/unit/validate-review-texts.test.js
+
       - name: Run E2E tests
         run: npx playwright test --project=chromium
         env:

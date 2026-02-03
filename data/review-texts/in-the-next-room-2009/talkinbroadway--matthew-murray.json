@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sarah Ruhl's In the Next Room (or the vibrator play) is a delicate and thoughtful examination of sexual awakening and emotional connection in the Victorian era that manages to be both funny and deeply moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Sarah Ruhl's In the Next Room (or the vibrator play) is a delicate and thoughtful examination of sexual awakening and emotional connection in the Victorian era that manages to be both funny and deeply moving.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a delicate and thoughtful examination of sexual awakening and emotional connection in the Victorian era that manages to be both funny and deeply moving",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'delicate and thoughtful' and 'funny and deeply moving', but very brief excerpt limits confidence in full assessment. | GPT-4o: The review praises the play as both 'funny and deeply moving,' indicating a strong recommendation without reservations. | Gemini: The review uses positive language such as \"delicate and thoughtful\" and \"funny and deeply moving,\" indicating a positive recommendation. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:29:58.571Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a pleasant enough diversion that should appeal to audiences nostalgic for simpler times, even if it never quite captures the effortless magic of the movie.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show is a pleasant enough diversion that should appeal to audiences nostalgic for simpler times, even if it never quite captures the effortless magic of the movie.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a pleasant enough diversion that should appeal to audiences nostalgic for simpler times, even if it never quite captures the effortless magic of the movie.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review describes the show as merely 'pleasant enough' and acknowledges it falls short of expectations compared to the source material. This is neither a recommendation nor a discouragement, placing it firmly in mixed territory. | GPT-4o: The review describes the show as 'pleasant enough' but notes it 'never quite captures the effortless magic of the movie,' indicating a mixed reception with some positive elements but lacking strong recommendation. | Gemini: The review is positive, calling the show a 'pleasant enough diversion,' but it also notes that it 'never quite captures the effortless magic of the movie,' indicating a reservation. | Kimi: The critic offers faint praise ('pleasant enough diversion') with significant reservations about the show falling short of the source material, recommending it only for nostalgic audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:15:02.066Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

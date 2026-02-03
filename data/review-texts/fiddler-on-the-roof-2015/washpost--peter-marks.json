@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This 'Fiddler' feels both sturdily traditional and surprisingly fresh, a revival that honors the original while finding new emotional depths in familiar material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This 'Fiddler' feels both sturdily traditional and surprisingly fresh, a revival that honors the original while finding new emotional depths in familiar material.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 'Fiddler' feels both sturdily traditional and surprisingly fresh, a revival that honors the original while finding new emotional depths in familiar material.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for the revival's balance of tradition and innovation, with specific appreciation for finding 'new emotional depths.' Strong positive language without reservations. | GPT-4o: The review praises the revival for balancing tradition with fresh emotional depth, indicating a strong recommendation. | Gemini: The review uses positive language like 'sturdily traditional,' 'surprisingly fresh,' and 'new emotional depths,' indicating a strong recommendation. | Kimi: The critic praises the revival for balancing traditional elements with surprising freshness and emotional resonance, indicating a clear recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:05:57.167Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

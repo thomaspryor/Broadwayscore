@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Nice Work If You Can Get It is exactly the kind of show Broadway needs more of: a smart, funny, beautifully crafted musical comedy that respects both its source material and its audience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Nice Work If You Can Get It is exactly the kind of show Broadway needs more of: a smart, funny, beautifully crafted musical comedy that respects both its source material and its audience.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nice Work If You Can Get It is exactly the kind of show Broadway needs more of: a smart, funny, beautifully crafted musical comedy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language calling it exactly what Broadway needs, with praise for being smart, funny, and beautifully crafted. Clear enthusiasm without reservation. | GPT-4o: The review uses strong positive language, praising the show as 'smart, funny, beautifully crafted' and expressing a desire for more shows like it on Broadway, indicating an enthusiastic recommendation. | Gemini: The review is very positive, using terms like \"smart, funny, beautifully crafted.\" The critic clearly recommends the show. | Kimi: The critic offers unqualified enthusiastic praise, calling the show 'exactly the kind of show Broadway needs more of' and using superlatives like 'beautifully crafted' with no reservations mentioned. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:11:52.948Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

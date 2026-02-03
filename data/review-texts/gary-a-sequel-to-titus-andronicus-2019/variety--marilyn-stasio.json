@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Taylor Mac has written a brilliant sequel to Shakespeare's bloodiest tragedy, turning the aftermath into a meditation on trauma, healing and the power of performance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Taylor Mac has written a brilliant sequel to Shakespeare's bloodiest tragedy, turning the aftermath into a meditation on trauma, healing and the power of performance.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Taylor Mac has written a brilliant sequel to Shakespeare's bloodiest tragedy, turning the aftermath into a meditation on trauma, healing and the power of performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: The critic calls the work 'brilliant' and praises Mac's achievement in creating a meaningful sequel to Shakespeare, indicating strong enthusiasm and recommendation. | GPT-4o: The review uses strong positive language, calling the play 'brilliant' and highlighting its thematic depth, indicating a highly favorable recommendation. | Gemini: The review uses the word \"brilliant\" and describes the play as a \"meditation on trauma, healing and the power of performance,\" indicating a very positive and enthusiastic recommendation. | Kimi: The excerpt uses superlative praise ('brilliant') with no reservations, indicating enthusiastic recommendation for this meditation on trauma and performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:20:26.594Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

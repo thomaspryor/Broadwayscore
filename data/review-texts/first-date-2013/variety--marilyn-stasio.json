@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This likable little musical about the perils of modern romance has a sweetly old-fashioned sensibility that should appeal to audiences looking for something light and cheery.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This likable little musical about the perils of modern romance has a sweetly old-fashioned sensibility that should appeal to audiences looking for something light and cheery.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This likable little musical about the perils of modern romance has a sweetly old-fashioned sensibility that should appeal to audiences looking for something light and cheery.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with 'likable' and 'should appeal to audiences,' but the qualifier 'little' and emphasis on being 'light' suggests modest rather than strong enthusiasm. | GPT-4o: The review describes the musical as 'likable' and 'sweetly old-fashioned,' suggesting a positive but not overly enthusiastic recommendation. It appeals to audiences seeking 'something light and cheery,' indicating a solid but modest endorsement. | Gemini: The review uses positive language such as \"likable\" and \"sweetly old-fashioned,\" suggesting a positive but not overwhelmingly enthusiastic recommendation. The phrase \"something light and cheery\" indicates a specific audience appeal. | Kimi: The critic describes the show as 'likable' and 'sweetly old-fashioned,' recommending it for audiences seeking light entertainment, indicating a modestly positive but unenthusiastic assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:07:44.706Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

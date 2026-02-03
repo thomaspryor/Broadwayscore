@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Audra McDonald brings raw power and vulnerability to the role of Rose in this revival that feels both classic and urgent.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Audra McDonald brings raw power and vulnerability to the role of Rose in this revival that feels both classic and urgent.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Audra McDonald brings raw power and vulnerability to the role of Rose in this revival that feels both classic and urgent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Positive language praising McDonald's performance and describing the revival as 'urgent,' but extremely brief excerpt limits confidence in overall assessment. | GPT-4o: The review uses strong, positive language ('raw power and vulnerability', 'classic and urgent') to describe the revival, indicating a highly enthusiastic recommendation. | Gemini: The review praises Audra McDonald's performance and describes the revival as both classic and urgent, indicating a positive assessment. | Kimi: Strong praise for the lead performance and production quality indicates a solid recommendation, though the brief excerpt limits context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:02:41.175Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

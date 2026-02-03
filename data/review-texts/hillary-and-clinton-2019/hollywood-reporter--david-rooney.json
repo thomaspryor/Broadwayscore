@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "While the play's exploration of power, ambition and marriage provides intermittent rewards, the drama feels more like an extended Saturday Night Live sketch than a penetrating character study.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "While the play's exploration of power, ambition and marriage provides intermittent rewards, the drama feels more like an extended Saturday Night Live sketch than a penetrating character study.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the drama feels more like an extended Saturday Night Live sketch than a penetrating character study",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges some positive elements ('intermittent rewards') but the SNL sketch comparison is clearly dismissive, suggesting the work lacks depth and substance. | GPT-4o: The review acknowledges some rewards but overall suggests the drama lacks depth, comparing it to a sketch show rather than a serious study, indicating a mixed impression. | Gemini: The review acknowledges some positive aspects but ultimately compares the drama unfavorably to an SNL sketch, suggesting a lack of depth. This indicates a mixed reaction. | Kimi: The critic acknowledges 'intermittent rewards' but the comparison to an SNL sketch suggests superficiality rather than the intended dramatic depth. The concession keeps it from being fully negative, but the overall assessment is disappointing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:13:11.579Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

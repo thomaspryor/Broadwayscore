@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a revival that works on every level, with a cast that understands both the material and the medium, and a production that serves the story without getting in its way.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This is a revival that works on every level, with a cast that understands both the material and the medium, and a production that serves the story without getting in its way.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a revival that works on every level, with a cast that understands both the material and the medium.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive recommendation with praise for all elements (cast, production, material understanding) though relatively brief review limits confidence. | GPT-4o: The review offers unqualified praise, stating the revival 'works on every level' and highlighting the cast's understanding of the material, indicating a strong recommendation. | Gemini: The review states that the revival 'works on every level' and praises the cast and production, indicating a strong positive recommendation. | Kimi: The critic offers comprehensive, unqualified praise for the revival's execution, cast, and production values, indicating strong approval without any reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:11:17.940Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

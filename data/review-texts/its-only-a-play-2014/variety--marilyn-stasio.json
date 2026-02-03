@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Terrence McNally's backstage comedy about the neurotic rituals of opening night may be formulaic, but it's also funny, and the cast headed by Matthew Broderick and Nathan Lane delivers the laughs with professional precision.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Terrence McNally's backstage comedy about the neurotic rituals of opening night may be formulaic, but it's also funny, and the cast headed by Matthew Broderick and Nathan Lane delivers the laughs with professional precision.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's also funny, and the cast headed by Matthew Broderick and Nathan Lane delivers the laughs with professional precision",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict acknowledging the formulaic nature but praising the humor and cast performances. The 'but it's also funny' structure signals recommendation despite reservations. | GPT-4o: The review acknowledges the formulaic nature of the play but emphasizes its humor and the strong performances by the cast, indicating a positive recommendation with some reservations. | Gemini: The review states the play is funny and the cast delivers the laughs, indicating a positive, but not rave, review. The 'formulaic' comment suggests reservations. | Kimi: While acknowledging the play is formulaic, the critic clearly recommends it as funny with praise for the professional cast performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:40:49.482Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

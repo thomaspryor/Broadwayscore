@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a musical of such emotional honesty and theatrical integrity that it restores your faith in the power of the medium to tell stories that matter.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This is a musical of such emotional honesty and theatrical integrity that it restores your faith in the power of the medium to tell stories that matter.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a musical of such emotional honesty and theatrical integrity that it restores your faith in the power of the medium to tell stories that matter.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise using superlatives about emotional honesty, theatrical integrity, and the power to restore faith in the medium - clear rave language with no caveats. | GPT-4o: The review uses strong superlatives like 'emotional honesty' and 'theatrical integrity' and suggests the show is a must-see by saying it 'restores your faith in the power of the medium.' | Gemini: The review expresses strong positive sentiment, stating that the musical restores faith in the medium's power. This indicates a rave review. | Kimi: Unqualified superlatives declaring the show restores faith in the theatrical medium indicate the highest possible recommendation without reservation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:40:37.326Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }
