@@ -181,6 +181,8 @@ const CONFIG = {
     'theatrely.com', 'amny.com', 'forward.com',
     // Sites with CAPTCHA that block Playwright
     'timeout.com',
+    // BroadwayNews: WordPress paywall, but Archive.org has excellent coverage (7-8 snapshots per URL)
+    'broadwaynews.com',
   ],
 
   // Minimum word count for valid review
@@ -1534,6 +1536,81 @@ async function fetchFromArchive(url) {
   throw new Error(`Insufficient text in archive: ${text?.length || 0} chars`);
 }
 
+/**
+ * Archive.org CDX multi-snapshot fetcher.
+ * Uses the CDX API to find multiple archived snapshots, then tries oldest-first
+ * (pre-paywall snapshots are more likely to have full text).
+ * Rate limited: 2s between snapshot fetches to respect CDX ~15 req/min limit.
+ */
+async function fetchFromArchiveCDX(url) {
+  if (!axios) {
+    throw new Error('axios not available');
+  }
+
+  // Query CDX API for snapshots
+  const cdxUrl = `http://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=10&from=2014&to=2026`;
+  const cdxResp = await axios.get(cdxUrl, { timeout: 15000 });
+
+  const rows = cdxResp.data;
+  if (!Array.isArray(rows) || rows.length < 2) {
+    throw new Error('No CDX snapshots found');
+  }
+
+  // First row is header: [urlkey, timestamp, original, mimetype, statuscode, digest, length]
+  const snapshots = rows.slice(1)
+    .filter(row => row[4] === '200' && (row[3] || '').includes('text/html'))
+    .sort((a, b) => a[1].localeCompare(b[1])); // oldest-first
+
+  if (snapshots.length === 0) {
+    throw new Error('No usable CDX snapshots (all non-200 or non-HTML)');
+  }
+
+  console.log(`    → CDX found ${snapshots.length} snapshots (oldest: ${snapshots[0][1]}, newest: ${snapshots[snapshots.length - 1][1]})`);
+
+  // Try up to 5 snapshots, oldest-first
+  const maxAttempts = Math.min(snapshots.length, 5);
+  let lastError = null;
+
+  for (let i = 0; i < maxAttempts; i++) {
+    const [, timestamp, original] = snapshots[i];
+    const archiveUrl = `http://web.archive.org/web/${timestamp}/${original}`;
+
+    try {
+      const response = await axios.get(archiveUrl, {
+        timeout: CONFIG.apiTimeout,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+        },
+      });
+
+      const html = response.data;
+      const text = extractTextFromHtml(html);
+
+      if (text && text.length > 500) {
+        console.log(`    → CDX snapshot ${timestamp} yielded ${text.length} chars`);
+        return {
+          html,
+          text,
+          archiveTimestamp: timestamp,
+          archiveUrl,
+        };
+      }
+
+      console.log(`    → CDX snapshot ${timestamp}: only ${text?.length || 0} chars, trying next...`);
+    } catch (err) {
+      console.log(`    → CDX snapshot ${timestamp} failed: ${err.message}`);
+      lastError = err;
+    }
+
+    // Rate limit: 2s between snapshot fetches
+    if (i < maxAttempts - 1) {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+
+  throw new Error(lastError?.message || `All ${maxAttempts} CDX snapshots had insufficient text`);
+}
+
 // ============================================================================
 // TIMEOUT URL RESOLVER - TimeOut merged reviews into listing pages
 // Their standalone review URLs (e.g., /suffs-review) now 404.
@@ -1824,6 +1901,7 @@ function buildTierContext(review) {
     _bail404: false,
     consecutive404Count: 0,
     _archiveTierRan: false,
+    _archiveCdxRan: false,
   };
 }
 
@@ -1877,6 +1955,18 @@ function buildTierChain(ctx, review) {
       execute: (url) => fetchFromArchive(url),
       onSuccess: (review, result) => { ctx._archiveTierRan = true; },
       onFailure: (error) => { ctx._archiveTierRan = true; },
+    },
+
+    // TIER 0.5: Archive.org CDX multi-snapshot (after Tier 0 fails for archive-first sites)
+    {
+      id: 'archive-cdx',
+      tierNumber: 0.5,
+      method: 'archive',
+      label: 'Archive.org CDX multi-snapshot',
+      shouldRun: () => ctx.isArchiveFirst && ctx._archiveTierRan,
+      execute: (url) => fetchFromArchiveCDX(url),
+      onSuccess: (review, result) => { ctx._archiveCdxRan = true; },
+      onFailure: (error) => { ctx._archiveCdxRan = true; },
     },
 
     // TIER 1: Playwright with stealth
@@ -1962,6 +2052,18 @@ function buildTierChain(ctx, review) {
       shouldRun: () => !!CONFIG.brightDataKey,
       execute: (url) => fetchWithBrightData(url),
       onFailure: (error) => { ctx.anyTierFailed = true; },
+    },
+
+    // TIER 3.5: Archive.org CDX multi-snapshot (final fallback for non-archive-first sites)
+    {
+      id: 'archive-cdx-final',
+      tierNumber: 3.5,
+      method: 'archive',
+      label: 'Archive.org CDX multi-snapshot (fallback)',
+      shouldRun: () => !ctx._archiveCdxRan,
+      execute: (url) => fetchFromArchiveCDX(url),
+      onSuccess: (review, result) => { ctx._archiveCdxRan = true; },
+      onFailure: (error) => { ctx._archiveCdxRan = true; },
     },
 
     // TIER 4: Archive.org (last resort)
