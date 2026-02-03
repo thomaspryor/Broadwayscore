@@ -67,7 +67,7 @@
       "recoupedDate": "1999",
       "recoupedWeeks": null,
       "recoupedSource": "Vanity Fair / Industry reports",
-      "notes": "Broadway's highest-grossing show of all time at $2B+. First show to hit $1B milestone (2013). Still running after 27+ years.",
+      "notes": "Broadway's highest-grossing show of all time at $2B+. First show to hit $1B milestone (2013). Still running after 27+ years. NOT eligible for SVOG (Disney is a publicly traded company, per Variety Mar 2021).",
       "deepResearch": {
         "verifiedFields": [
           "weeklyRunningCost",
@@ -109,7 +109,7 @@
       "recoupedDate": "2011-11",
       "recoupedWeeks": 36,
       "recoupedSource": "Hollywood Reporter / Variety",
-      "notes": "Recouped in ~9 months. Multiple touring and international productions. Investors received multiple returns.",
+      "notes": "Recouped in ~9 months. Multiple touring and international productions. Investors received multiple returns. Received $9.9M SVOG grant (per NY Business Journal Jul 2021).",
       "deepResearch": {
         "verifiedFields": [
           "recoupedDate"
@@ -165,13 +165,13 @@
     "six": {
       "designation": "Windfall",
       "capitalization": 5000000,
-      "capitalizationSource": "Broadway Journal / SEC filing",
+      "capitalizationSource": "Broadway Journal / SEC filing ($5M-$6.5M range)",
       "weeklyRunningCost": 400000,
       "recouped": true,
-      "recoupedDate": "2023-03",
+      "recoupedDate": "2021-12",
       "recoupedWeeks": null,
-      "recoupedSource": "Broadway News (Mar 26, 2023)",
-      "notes": "Low capitalization + strong grosses = quick recoupment. Received $10M SVOG grant (200% of $5M capitalization — largest SVOG-to-cap ratio among tracked shows). Reopened Oct 2021, recouped ~Dec 2022. Multiple touring productions. Weekly cost ~$400K. Recouped Mar 2023 (600th performance). $10M SVOG grant.",
+      "recoupedSource": "Playbill (Mar 23, 2023): 'As of December 2021, Broadway's SIX has recouped its investment.'",
+      "notes": "Low capitalization ($5-6.5M per SEC) + strong grosses = quick recoupment. Recouped by Dec 2021 (announced Mar 2023 retroactively). Received $10M SVOG grant (200% of $5M capitalization — largest SVOG-to-cap ratio among tracked shows). Was in previews when Broadway shut down Mar 2020. Reopened Oct 2021. Described as 'so cheap to run' on Reddit. Extended through Nov 2026. Multiple touring productions.",
       "costMethodology": "industry-estimate",
       "deepResearch": {
         "verifiedFields": [
@@ -181,7 +181,7 @@
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: ~$400K weekly. Recouped Mar 2023 (600th perf). $10M SVOG."
+        "notes": "Claude agent scrape: Playbill confirmed recoupment retroactive to Dec 2021 (not Mar 2023 announcement). $10M SVOG confirmed (Schumer list). Reddit: 'so cheap to run.'"
       }
     },
     "moulin-rouge": {
@@ -193,7 +193,7 @@
       "recoupedDate": "2022-11",
       "recoupedWeeks": 173,
       "recoupedSource": "Producer Carmen Pavlovic (confirmed mid-2023)",
-      "notes": "Recouped ~3 years after opening. Lavish production design. Has grossed $194M+ on Broadway. Received $9.9M SVOG grant + $15M insurance settlement during COVID shutdown. Estimated investor return 1.5-2.5x (Windfall confirmed). Closing April 2025. Weekly cost ~$1.3-1.4M. Recouped Nov 2022. $10M SVOG grant. $3M NY tax credit (among first to qualify).",
+      "notes": "Recouped ~3 years after opening. Lavish production design. Has grossed $194M+ on Broadway. Received $9.9M SVOG grant (via MRB Musical LLC, per NY Business Journal Jul 2021) + $15M insurance settlement during COVID shutdown. Estimated investor return 1.5-2.5x (Windfall confirmed). Closing April 2025. Weekly cost ~$1.3-1.4M. Recouped Nov 2022. $3M NY tax credit (among first to qualify).",
       "costMethodology": "industry-estimate",
       "deepResearch": {
         "verifiedFields": [
@@ -458,21 +458,24 @@
     "back-to-the-future": {
       "designation": "Flop",
       "capitalization": 23500000,
-      "capitalizationSource": "Forbes / Broadway Journal",
-      "weeklyRunningCost": null,
+      "capitalizationSource": "NYT / SEC filing (Oct 2024)",
+      "weeklyRunningCost": 980000,
+      "weeklyRunningCostSource": "Broadway Journal (Nov 6, 2023): weekly breakeven from production recoupment chart",
+      "costMethodology": "trade-reported",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Closed Jan 2025 after struggling to find audience. West End production more successful. High-tech production couldn't compensate for middling reviews.",
+      "notes": "Closed Jan 2025 without recouping despite $80M+ total ticket sales and 500+ performances. Broadway Journal: 'must gross at least $980,000 to break even each week.' West End production more successful. Received $3M NY state tax credit. NOT eligible for SVOG (was a London production during eligibility period).",
       "deepResearch": {
         "verifiedFields": [
           "recouped",
-          "designation"
+          "designation",
+          "weeklyRunningCost"
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: $23.5M cap. Grossed ~$1M/week vs ~$1.3M needed. Closed Jan 2025 without recouping. Touring planned."
+        "notes": "Claude agent scrape: $980K weekly breakeven (BJ production recoupment chart). $23.5M cap (NYT/SEC). $3M tax credit. Not SVOG eligible."
       }
     },
     "boop": {
@@ -968,7 +971,7 @@
       "recoupedDate": "2014-12",
       "recoupedWeeks": 38,
       "recoupedSource": "Industry analysis (Broadway grosses vs. cumulative costs)",
-      "notes": "Recouped within ~9 months (by mid-December 2014). Disney never announces recoupments -- per insider: 'recoupment is not a concept that makes sense in the Disney model' since they handle many services in-house. By May 2023: $561M+ grossed, 3,100+ performances. Received $3M NY theater tax credit. Disney's unique New Amsterdam lease pays 2% of gross as rent (vs standard fixed rent), affecting cost calculations.",
+      "notes": "Recouped within ~9 months (by mid-December 2014). Disney never announces recoupments -- per insider: 'recoupment is not a concept that makes sense in the Disney model' since they handle many services in-house. By May 2023: $561M+ grossed, 3,100+ performances. Received $3M NY theater tax credit. Disney's unique New Amsterdam lease pays 2% of gross as rent (vs standard fixed rent), affecting cost calculations. NOT eligible for SVOG (Disney is a publicly traded company, per Variety Mar 2021).",
       "deepResearch": {
         "verifiedFields": [
           "capitalization"
@@ -1026,21 +1029,27 @@
     "queen-of-versailles": {
       "designation": "Flop",
       "capitalization": 22500000,
-      "capitalizationSource": "Deadline / Broadway Journal",
-      "weeklyRunningCost": null,
+      "capitalizationSource": "NYT (Nov 2025), confirmed by Deadline/NY Post/EW",
+      "weeklyRunningCost": 850000,
+      "weeklyRunningCostSource": "Reddit Grosses Analysis (u/Boring_Waltz_9545)",
+      "costMethodology": "reddit-standard",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Closed early Dec 2025 after weak ticket sales. Stephen Schwartz score. Kristin Chenoweth star vehicle couldn't save production.",
+      "notes": "Closed Dec 21, 2025 after weak ticket sales (moved up from Jan 4). $22.5M capitalization (NYT). Weekly nut ~$850K but grosses ~$700-800K at 75-81% capacity. Stephen Schwartz score. Kristin Chenoweth star vehicle couldn't save production. Deadline (Dec 9, 2025): 'among this season's largest investment losses.'",
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "deepResearch": {
         "verifiedFields": [
           "recouped",
-          "designation"
+          "designation",
+          "weeklyRunningCost"
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: $20+M est. Closed Dec 21, 2025 without recouping. ~$700K/week gross vs ~$1M+ breakeven."
+        "notes": "Claude agent scrape: $850K weekly (Reddit GA). $22.5M cap (NYT confirmed by multiple outlets). Closed Dec 21, 2025 at 0% recoupment."
       }
     },
     "all-out": {
@@ -1309,48 +1318,55 @@
       "designation": "Fizzle",
       "capitalization": 8000000,
       "capitalizationSource": "Unconfirmed (industry estimate)",
-      "weeklyRunningCost": 625000,
-      "costMethodology": "industry-estimate",
+      "weeklyRunningCost": 675000,
+      "weeklyRunningCostSource": "Reddit Grosses Analysis post-mortem (u/Boring_Waltz_9545, Dec 8, 2024)",
+      "costMethodology": "reddit-standard",
       "recouped": false,
-      "notes": "Sutton Foster-led Encores! transfer to Hudson Theatre. $8M capitalization (unconfirmed industry estimate, not from SEC filing). Weekly running cost ~$625K (industry estimate). Average gross ~$760K/week at 92% capacity, $110 ATP. Limited run Aug-Nov 2024 (~16 weeks). Amy Sherman-Palladino adapted the book. Encores! origins kept costs relatively lean for a musical.",
+      "notes": "Sutton Foster-led Encores! transfer to Hudson Theatre. $8M capitalization (unconfirmed industry estimate). Reddit post-mortem: $650-$700K/week operating cost, $760K avg gross, 92% capacity, $110 ATP. Gross Less-Fees: $673K. 128 performances + 13 previews. Estimated operating loss $(1.0M)-$(285K). Did not come close to recouping. NYT Critics' Pick.",
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "deepResearch": {
         "verifiedFields": [
-          "designation"
+          "designation",
+          "weeklyRunningCost"
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: cap and weekly cost remain unconfirmed industry estimates. No SEC filing found. Corrected capitalizationSource from 'SEC filing' to 'Unconfirmed'."
+        "notes": "Claude agent scrape: $650-700K weekly (Reddit post-mortem). Estimated operating loss $(1.0M)-$(285K). Cap still unconfirmed."
       }
     },
     "cats-the-jellicle-ball": {
       "designation": "TBD",
-      "capitalization": null,
+      "capitalization": 16500000,
+      "capitalizationSource": "SEC Form D filing (Jellicles Can Ltd Liability Co, CIK 0002098419, filed Dec 9, 2025). Range: $15M-$18M.",
       "weeklyRunningCost": null,
       "recouped": false,
-      "notes": "Reimagined immersive production of Cats. Opening April 7, 2026 at PAC NYC. Transferred from sold-out Perelman Performing Arts Center run. Financial details not yet publicly available.",
+      "notes": "Reimagined immersive production of Cats. Opening April 7, 2026 at PAC NYC. Transferred from sold-out Perelman Performing Arts Center run. SEC filing under 'Jellicles Can Ltd Liability Co' shows $15M-$18M offering range (midpoint $16.5M used).",
       "deepResearch": {
         "verifiedFields": [
-          "designation"
+          "designation",
+          "capitalization"
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: No financial details yet. Industry estimates ~$8-10M."
+        "notes": "Claude agent scrape: SEC EDGAR found 'Jellicles Can Ltd Liability Co' Form D filed Dec 9, 2025. $15M-$18M range."
       }
     },
     "proof": {
       "designation": "TBD",
-      "capitalization": 9000000,
+      "capitalization": 6500000,
+      "capitalizationSource": "SEC Form D filing (Proof on Broadway Ltd Liability Co, CIK 0002098417, filed Dec 9, 2025). Range: $5M-$6.5M max.",
       "weeklyRunningCost": null,
       "recouped": false,
-      "notes": "Revival of David Auburn Pulitzer Prize-winning play. $9M capitalization (planned offering). Limited 16-week run Apr-Jul 2026. Co-produced by Mike Bosner and Thomas Kail.",
-      "capitalizationSource": "Variety via social media",
+      "notes": "Revival of David Auburn Pulitzer Prize-winning play. SEC Form D shows $5M min to $6.5M max capitalization (previously reported $9M from social media was incorrect). Limited 16-week run Apr-Jul 2026. Co-produced by Mike Bosner and Thomas Kail.",
       "deepResearch": {
         "verifiedFields": [
           "capitalization"
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: $9M planned offering. Limited 16-week run Apr-Jul 2026."
+        "notes": "Claude agent scrape: SEC EDGAR Form D (Dec 2025) shows $5M-$6.5M range, superseding earlier $9M social media report."
       }
     }
   }
