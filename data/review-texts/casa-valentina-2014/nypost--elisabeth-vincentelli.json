@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Harvey Fierstein's new play about cross-dressing heterosexual men in the early 1960s has a terrific premise but doesn't quite know what to do with it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Harvey Fierstein's new play about cross-dressing heterosexual men in the early 1960s has a terrific premise but doesn't quite know what to do with it.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has a terrific premise but doesn't quite know what to do with it",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges strong potential ('terrific premise') but expresses clear disappointment in the execution ('doesn't quite know what to do with it'), indicating neither recommendation nor strong discouragement. | GPT-4o: The review acknowledges a strong premise but criticizes the execution, suggesting the play fails to deliver on its potential. This indicates a negative assessment. | Gemini: The review acknowledges a strong premise but ultimately states the play doesn't fully capitalize on it, indicating a mixed or lukewarm reception. | Kimi: The critic praises the concept as 'terrific' but finds the execution lacking, indicating the play fails to capitalize on its strong premise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:05:13.284Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

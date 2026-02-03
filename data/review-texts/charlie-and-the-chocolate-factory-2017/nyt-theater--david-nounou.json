@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical is a visual feast that will delight children and adults alike, with stunning sets and costumes that bring Roald Dahl's beloved story to vivid life on the Broadway stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical is a visual feast that will delight children and adults alike, with stunning sets and costumes that bring Roald Dahl's beloved story to vivid life on the Broadway stage.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is a visual feast that will delight children and adults alike",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('visual feast', 'delight', 'stunning') but extremely brief excerpt lacks depth for full assessment of critic's overall recommendation. | GPT-4o: The review praises the visual elements and suggests the show will appeal to a broad audience, indicating a positive recommendation. | Gemini: The review praises the visual aspects of the production, calling it a \"visual feast\" that will delight both children and adults. This indicates a positive recommendation, although it's focused on a specific element. | Kimi: The review offers enthusiastic praise for the production design ('visual feast,' 'stunning sets and costumes') and promises it will 'delight' audiences, indicating a strong recommendation. Confidence is low due to the excerpt length (under 150 words).",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:10:03.740Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

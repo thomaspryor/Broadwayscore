@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the choral music is rich and rousing. And the choreography—kinetic, forceful movement by Camille A. Brown (Once on This Island)—positively electric.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with strong praise for performances and production elements, but critic notes McCraney has done deeper work elsewhere. Text appears truncated which affects confidence in final verdict. | GPT-4o: The review highlights strong performances, particularly Jeremy Pope's, and praises the music and choreography. The original 4/5 stars rating supports a positive classification. However, the text is truncated, so the final verdict may be missing, resulting in low confidence. | Gemini: Despite the truncated text, the review is mostly positive, highlighting Pope's performance, the songs, and the choreography. The 4/5 star rating also supports a positive classification. | Kimi: The critic awards 4/5 stars and offers enthusiastic praise for Jeremy Pope's performance, the 'rich and rousing' choral music, and 'positively electric' choreography. While noting that McCraney has explored similar themes with greater depth in other works like Moonlight, the overall verdict is strongly positive. The text appears truncated, but the available evaluative content and star rating clearly support a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:15:12.679Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

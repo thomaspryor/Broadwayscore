@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheerful revival of the 1968 off-Broadway musical is frothy fun, even if it doesn't quite justify its move to the Main Stem.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This cheerful revival of the 1968 off-Broadway musical is frothy fun, even if it doesn't quite justify its move to the Main Stem.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This cheerful revival of the 1968 off-Broadway musical is frothy fun, even if it doesn't quite justify its move to the Main Stem.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic calls it 'frothy fun' but questions whether it merits its Broadway transfer, indicating qualified enjoyment without strong recommendation. The 60/100 rating confirms mixed reception. | GPT-4o: The review describes the revival as 'frothy fun' but notes it doesn't fully justify its Broadway move. The original rating of 60 aligns with a mixed review, indicating some enjoyment but not a strong recommendation. | Gemini: The review is mixed, describing the show as \"frothy fun\" but questioning its Broadway run. The critic's rating of 60 aligns with the Mixed bucket. | Kimi: The critic's own 60/100 rating places this squarely in the Mixed bucket. While describing the show as 'frothy fun,' the reservation about its Broadway transfer indicates a qualified, middle-of-the-road assessment rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:29:14.948Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

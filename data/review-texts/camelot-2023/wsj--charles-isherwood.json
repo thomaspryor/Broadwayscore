@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This handsome revival of Lerner and Loewe's 1960 musical about King Arthur and his knights is blessed with a superb cast and sumptuous production values, but it can't quite overcome the show's inherent structural problems.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This handsome revival of Lerner and Loewe's 1960 musical about King Arthur and his knights is blessed with a superb cast and sumptuous production values, but it can't quite overcome the show's inherent structural problems.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (35 words)"
+  "contentTierReason": "Short text (35 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This handsome revival is blessed with a superb cast and sumptuous production values, but it can't quite overcome the show's inherent structural problems.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Clear mixed verdict - strong praise for cast and production design balanced against fundamental flaws in the show itself that prevent full recommendation. | GPT-4o: The review praises the cast and production values but highlights significant structural issues with the show, resulting in a mixed recommendation. | Gemini: The review acknowledges the show's structural problems but praises the cast and production values, indicating a recommendation with reservations. | Kimi: The review praises the cast and production values ('superb', 'sumptuous') but the 'but' clause delivers the decisive verdict: the show's structural problems remain unresolved. This creates a balanced mixed assessment—appreciating what's done well while acknowledging fundamental limitations that prevent a full recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:00:54.666Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

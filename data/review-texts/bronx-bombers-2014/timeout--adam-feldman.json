@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play feels like a missed opportunity, with too much reverence for its subject matter and not enough dramatic tension to make it compelling theater.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play feels like a missed opportunity, with too much reverence for its subject matter and not enough dramatic tension to make it compelling theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play feels like a missed opportunity, with too much reverence for its subject matter and not enough dramatic tension to make it compelling theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling it a 'missed opportunity' that lacks compelling dramatic elements. The 40/100 rating confirms this falls in the Negative bucket. | GPT-4o: The critic's original rating of 40 aligns with the negative bucket. The review describes the play as a 'missed opportunity' and lacking 'dramatic tension', indicating a clear lack of recommendation. | Gemini: The review explicitly states the play lacks dramatic tension and is not compelling, indicating a negative assessment. The critic's rating of 40 aligns with the negative bucket. | Kimi: The critic's explicit rating of 40/100 places this in the Negative bucket, and the review describes the show as a 'missed opportunity' that fails to be compelling theater.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:56:26.171Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

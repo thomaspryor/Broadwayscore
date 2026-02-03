@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mamet's minimalist two-hander feels more like an exercise than a fully realized drama, despite Pacino's committed performance.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mamet's minimalist two-hander feels more like an exercise than a fully realized drama, despite Pacino's committed performance.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (17 words)"
+  "contentTierReason": "Short text (17 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mamet's minimalist two-hander feels more like an exercise than a fully realized drama, despite Pacino's committed performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic's 40/100 rating clearly places this in Negative territory. Despite praising Pacino's performance, the overall verdict is that the play feels incomplete and underwhelming. | GPT-4o: The critic's original rating of 40 aligns with the negative bucket. The review describes the play as feeling like an 'exercise' rather than a 'fully realized drama,' indicating a lack of recommendation despite Pacino's performance. | Gemini: The review states the play feels like an exercise, not a fully realized drama, despite the performance. Given the critic's rating of 40, this is a negative review. | Kimi: The critic assigns a 40/100 rating and describes the play as an 'exercise' rather than fully realized drama, finding the material lacking even while praising Pacino's performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:13:33.142Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

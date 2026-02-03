@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play, which opened Wednesday at the Hayes Theater, is a marathon of misery that somehow manages to be both overwrought and undercooked.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 32,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play, which opened Wednesday at the Hayes Theater, is a marathon of misery that somehow manages to be both overwrought and undercooked.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 32,
+    "confidence": "medium",
+    "range": {
+      "low": 27,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a marathon of misery that somehow manages to be both overwrought and undercooked",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative assessment with harsh descriptors ('marathon of misery', 'overwrought and undercooked') from Jesse Green, indicating the critic does not recommend the show. | GPT-4o: The review uses strong negative language ('marathon of misery', 'overwrought and undercooked') indicating a strongly negative assessment with no redeeming qualities mentioned. | Gemini: The review explicitly states the play is a 'marathon of misery' and both 'overwrought and undercooked,' indicating a negative assessment. | Kimi: The critic describes the production as torturous to sit through ('marathon of misery') and fundamentally flawed in execution ('both overwrought and undercooked'), indicating a strong rejection. Confidence is low due to the brevity of the provided text. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:28:23.527Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 25,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

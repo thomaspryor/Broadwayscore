@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Diana is a musical that seems to have been written by someone who has heard of emotions but never personally experienced one.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 23,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Diana is a musical that seems to have been written by someone who has heard of emotions but never personally experienced one.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 23,
+    "confidence": "medium",
+    "range": {
+      "low": 18,
+      "high": 28
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Diana is a musical that seems to have been written by someone who has heard of emotions but never personally experienced one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | GPT-4o: The review is strongly negative, suggesting a lack of genuine emotional depth in the musical. The tone indicates a clear recommendation to avoid the show. | Gemini: The quote clearly indicates a negative opinion of the musical, suggesting it lacks genuine emotional depth. | Kimi: The critic delivers a devastating verdict suggesting the musical is emotionally hollow and artificially written, attacking the writers' fundamental inability to convey genuine feeling with no redeeming qualities mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:39:29.616Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 25,
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Pan"
+  }
 }
