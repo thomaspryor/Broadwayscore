@@ -691,6 +691,26 @@ Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
 
 **Parallel push conflicts (FIXED Feb 2026):** All 8 parallel-safe workflows now use robust push retry: `git checkout -- . && git clean -fd` before rebase, `-X theirs` for auto-conflict resolution, `rebase --abort` on failure, random 10-30s backoff, 5 retries. Fixed in: `gather-reviews.yml`, `rebuild-reviews.yml`, `scrape-nysr.yml`, `scrape-new-aggregators.yml`, `fetch-guardian-reviews.yml`, `process-review-submission.yml`, `review-refresh.yml`, `update-commercial.yml`.
 
+### LLM Ensemble Scoring — Operational Constraints
+
+**BEFORE triggering `llm-ensemble-score.yml`, ALWAYS calculate estimated runtime:**
+- 4-model ensemble (Claude + GPT-4o + Gemini + Kimi): ~0.66 min/review (~90 reviews/hour)
+- 3-model ensemble: ~0.5 min/review (~120 reviews/hour)
+- GitHub Actions job timeout: **6 hours (360 minutes)**
+- **Max safe batch: ~400 reviews** (400 × 0.66 = 264 min, well under 360)
+
+**The scoring pipeline has NO intermediate checkpointing.** Files are written to the CI runner's ephemeral disk during scoring, but the git commit only happens AFTER the pipeline exits successfully. If the job times out, ALL progress from that run is lost.
+
+**Full rescore procedure (~1,700+ reviews):**
+1. Batch 1: `--rescore --limit=400` (scores first 400 with new prompt version)
+2. Batch 2+: `--outdated --limit=400` (catches reviews still on old prompt version)
+3. Repeat `--outdated` batches until all are done (4-5 runs total)
+4. Final verification: `--outdated` with no limit (should find 0 to process)
+
+**Why `--outdated` works after batch 1:** The first `--rescore` batch updates `promptVersion` on scored files. Subsequent `--outdated` runs find files with older versions — exactly the remaining unscored ones.
+
+**Cost:** ~$0.045/review ($18/batch of 400, ~$80 for full corpus)
+
 ### Scoring Pipeline Details (Feb 2026)
 
 **Scoring hierarchy in `rebuild-all-reviews.js`:**
