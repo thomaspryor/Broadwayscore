@@ -5,7 +5,7 @@
   "criticName": "Elysa Gardner",
   "url": "https://www.usatoday.com/story/life/theater/2018/04/09/mean-girls-broadway-review/498525002/",
   "publishDate": "April 9, 2018",
-  "fullText": "The musical adaptation of the 2004 film is smart, sassy and surprisingly touching, with a book by Tina Fey that expands on the movie's themes while maintaining its wit.",
+  "fullText": "NEWSWilliamson County, TNAdd TopicJuvenile accused of making threat targeting Centennial and Independence high schools Andy HumblesThe TennesseanUpdated April 9, 2018, 11:48 a.m. ETA juvenile is in custody for a threat posted on social media targeting Centennial and Independence high schools in Williamson County.\n\nThe juvenile was taken into custody overnight, said Williamson County Sheriff's Office spokeswoman Sharon Puckett said.\n\nPolice believe there is no known threat at either Centennial or Independence high schools, Puckett said.\n\nNormal school activities are taking place Monday at both schools, Williamson County Schools spokeswoman Carol Birdsong said.\n\n\"We want to remind parents and students that any student making a threat will be prosecuted to the fullest extent of the law,\" Birdsong said in an email. \"In addition, that student will face school discipline. We have the full support of law enforcement and the juvenile court system.\"\n\nBirdsong requested that families should report issues of concern to law enforcement or school administrators.\n\nThere was also a previous threat investigated Sunday night in reference to Clovis High School in New Mexico that raised concerns locally because that school had the same initials as Centennial High School, Puckett said.\n\nA separate threat referenced Centennial and Independence and resulted in the juvenile arrest, Puckett said.\n\nReach Andy Humbles at ahumbles@tennessean.com or 615-726-5939 and on Twitter @ AndyHumbles.",
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of the 2004 film is smart, sassy and surprisingly touching, with a book by Tina Fey that expands on the movie's themes while maintaining its wit.",
   "originalScore": null,
@@ -72,5 +72,49 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "textWordCount": 218,
+  "archivePath": "data/archives/reviews/mean-girls-2018/usatoday--elysa-gardner_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T19:29:51.356Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 218 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wordCount": 218,
+  "tierReason": "Short text (218 words)"
 }
