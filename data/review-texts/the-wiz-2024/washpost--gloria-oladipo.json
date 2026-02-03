@@ -68,8 +68,8 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "archivePath": "data/archives/reviews/the-wiz-2024/washpost--gloria-oladipo_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T03:42:39.848Z",
-  "fetchMethod": "scrapingbee",
+  "textFetchedAt": "2026-02-03T04:43:55.548Z",
+  "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -80,19 +80,14 @@
       "tier": 1,
       "method": "playwright",
       "success": true
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": true
     }
   ],
-  "fetchTier": 2,
-  "sourceMethod": "scrapingbee",
+  "fetchTier": 1,
+  "sourceMethod": "playwright",
   "archiveOrgTimestamp": "20250723213555",
   "archiveOrgUrl": "http://web.archive.org/web/20250723213555/https://www.washingtonpost.com/entertainment/theater/2024/04/17/wiz-broadway-review/",
   "textIssues": [
-    "Word count too low: 219 (min: 300)",
+    "Word count too low: 96 (min: 300)",
     "Show title not found in text"
   ],
   "rescoreCompletedAt": "2026-01-29T14:31:52.132Z",
@@ -100,13 +95,13 @@
   "garbageReason": "Paywall/subscription prompt: \"members only\"",
   "garbageFixedAt": "2026-01-29T22:45:23.388Z",
   "contentTier": "truncated",
-  "wordCount": 219,
+  "wordCount": 96,
   "needsRescore": true,
-  "fullText": "Democracy Dies in DarknessReview by Gloria OladipoThe latest revival of “The Wiz” just wants to be fun. And that’s a problem.\n\nThe original was a rarity. When it launched in 1975, the musical won the Tony Award for best musical and was among a handful of Broadway productions at the time to feature an all-Black ensemble. Soulful, rich, drenched in color and magic, the original offered a vibrancy unseen before. Songs like “Home” and the funky “Ease on Down the Road” are etched into the American songbook.\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice.\n\nFilter IconClear checkbox label labelApply CancelConsent Leg.Interest checkbox label label checkbox label label checkbox label label Confirm My ChoicesYour Privacy [`dialog closed`]",
+  "fullText": "The new Broadway revival is charming, but at the cost of a broader artistic vision The latest revival of “The Wiz” just wants to be fun. And that’s a problem. The original was a rarity. When it launched in 1975, the musical won the Tony Award for best musical and was among a handful of Broadway productions at the time to feature an all-Black ensemble. Soulful, rich, drenched in color and magic, the original offered a vibrancy unseen before. Songs like “Home” and the funky “Ease on Down the Road” are etched into the American songbook.",
   "isFullReview": false,
-  "textWordCount": 219,
-  "textQuality": "partial",
+  "textWordCount": 96,
+  "textQuality": "truncated",
   "truncationSignals": [],
-  "textStatus": "incomplete",
-  "tierReason": "Short text (219 words)"
+  "textStatus": "truncated",
+  "tierReason": "Short text (96 words)"
 }
