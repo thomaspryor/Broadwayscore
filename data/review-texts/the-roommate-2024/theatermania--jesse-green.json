@@ -16,11 +16,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Patti LuPone and Mia Farrow make an unlikely but magnetic pair in Jen Silverman's dark comedy about two women who discover dangerous new sides of themselves.",
   "needsScoring": true,
-  "contentTier": "needs-rescrape",
-  "contentTierReason": "Wrong content detected - cleared for re-scrape and re-score",
+  "contentTier": "invalid",
+  "contentTierReason": "Wrong outlet attribution — duplicate of existing review at correct outlet",
   "textWordCount": 42,
-  "archivePath": "data/archives/reviews/the-roommate-2024/theatermania--jesse-green_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T23:22:13.517Z",
+  "archivePath": "data/archives/reviews/the-roommate-2024/theatermania--jesse-green_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T02:40:36.723Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -33,7 +33,7 @@
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "Skipped - known blocked site"
+      "error": "Skipped (known-blocked site)"
     },
     {
       "tier": 1.5,
@@ -66,5 +66,7 @@
   "garbageReason": "TheaterMania 404 page, not a review",
   "garbageFixedAt": "2026-02-02T19:53:54.659Z",
   "wordCount": 42,
-  "tierReason": "Short text (42 words)"
+  "tierReason": "Short text (42 words)",
+  "wrongAttribution": true,
+  "wrongAttributionNote": "Jesse Green writes for New York Times (nytimes.com), not TheaterMania. Proper review exists at correct outlet. URL was fabricated (shared article ID). Source: web-search bulk import."
 }

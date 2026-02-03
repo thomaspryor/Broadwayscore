@@ -62,33 +62,54 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
-  "archivePath": "data/archives/reviews/i-need-that-2023/wsj--charles-isherwood_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T03:06:50.532Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/i-need-that-2023/wsj--charles-isherwood_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T05:02:46.391Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
-  "sourceMethod": "archive",
+  "fetchTier": 3,
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20240217213718",
   "archiveOrgUrl": "http://web.archive.org/web/20240217213718/https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy-devito-broadway-roundabout-a6902a53",
-  "textIssues": [
-    "Word count too low: 98 (min: 300)"
-  ],
   "garbageFullText": "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy-devito-broadway-roundabout-a6902a53\n\nDanny DeVito Photo: Joan Marcus\n\nThe national pastime—I refer not to baseball, but to the acquisition of too much stuff and the refusal to get rid of a single dog-eared book, worn pair of shoes or old Playbill, as if life weren’t worth living without each—comes under sympathetic scrutiny in “I Need That,” a modest but likable, sentiment-spritzed comedy by Theresa Rebeck, on Broadway in a Roundabout Theatre Company production.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:22.924Z",
   "contentTier": "truncated",
-  "wordCount": 71,
-  "fullText": "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy-devito-broadway-roundabout-a6902a53\n\nDanny DeVito Photo: Joan Marcus\n\nThe national pastime—I refer not to baseball, but to the acquisition of too much stuff and the refusal to get rid of a single dog-eared book, worn pair of shoes or old Playbill, as if life weren’t worth living without each—comes under sympathetic scrutiny in “I Need That,” a modest but likable, sentiment-spritzed comedy by Theresa Rebeck, on Broadway in a Roundabout Theatre Company production.",
-  "isFullReview": false,
-  "textWordCount": 71,
-  "textQuality": "truncated",
-  "textStatus": "truncated",
+  "wordCount": 263,
+  "fullText": "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy-devito-broadway-roundabout-a6902a53\n\nDanny DeVito Joan MarcusThe national pastime—I refer not to baseball, but to the acquisition of too much stuff and the refusal to get rid of a single dog-eared book, worn pair of shoes or old Playbill, as if life weren’t worth living without each—comes under sympathetic scrutiny in “I Need That,” a modest but likable, sentiment-spritzed comedy by Theresa Rebeck, on Broadway in a Roundabout Theatre Company production.\n\nAmerican Airlines Theatre, 227 W. 42nd St., New York\n\n$69-$308, 212-719-1300, closes Dec. 30\n\nThe likability factor is considerably enhanced by the presence of Danny DeVito, who plays Sam, an elderly widower who lives happily if precariously amid a lifetime’s accumulation of what at first glance, and second and third, appears to be an unruly welter of useless possessions: ancient-looking luggage, magazines decaying into yellowing pulp, old board games, piles of books and rumpled clothing.\n\nMr. DeVito has long been a singular talent, not due to his diminutive height but to the force-field of his exuberant acting, which renders his small stature so quickly unnoticeable. As Sam moves nimbly around his castle of clutter, frequently and convincingly exclaiming “I’m spry!” to ward off accusations of potential decline, Mr. DeVito infuses the play, which is more a character study than a complex drama, with bustling energy and a warm if combative vitality.\n\nSam is playing defense against two loving antagonists: His friend of 30 years, Foster (Ray Anthony Thomas), stops by frequently and appears to be Sam’s only remaining visitor aside from Sam’s adult daughter, Amelia, who is played by Mr. DeVito’s daughter, Lucy DeVito.",
+  "isFullReview": true,
+  "textWordCount": 263,
+  "textQuality": "partial",
+  "textStatus": "partial",
   "_removedDesignation": {
     "designation": "Recommended",
     "removedAt": "2026-02-02T04:23:14.214Z",
@@ -97,5 +118,6 @@
     "dtliThumb": "Up",
     "bwwThumb": "Up"
   },
-  "tierReason": "Short text (71 words)"
+  "tierReason": "Short text (263 words)",
+  "truncationSignals": []
 }

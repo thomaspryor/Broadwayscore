@@ -73,8 +73,8 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 86,
-  "archivePath": "data/archives/reviews/suffs-2024/wsj--charles-isherwood_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T23:41:17.402Z",
+  "archivePath": "data/archives/reviews/suffs-2024/wsj--charles-isherwood_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T05:06:39.176Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -84,16 +84,16 @@
       "error": "No archive snapshot available"
     },
     {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "Skipped - known blocked site"
-    },
-    {
-      "tier": 1.5,
-      "method": "browserbase",
-      "success": false,
-      "error": "Insufficient text: 0 chars"
+      "error": "Skipped (known-blocked site)"
     },
     {
       "tier": 2,

@@ -73,7 +73,6 @@
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 25,
   "rescoreCompletedAt": "2026-02-02T03:40:49.485Z",
-  "contentTier": "invalid",
   "wordCount": 743,
   "_removedDesignation": {
     "designation": "Recommended",
@@ -83,5 +82,9 @@
     "dtliThumb": "Down",
     "bwwThumb": "Down"
   },
-  "isFullReview": false
+  "isFullReview": true,
+  "textWordCount": 743,
+  "tierReason": "Wrong production",
+  "textQuality": "full",
+  "contentTier": "invalid"
 }

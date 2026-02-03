@@ -379,8 +379,9 @@ async function scrapeNYSRReviews() {
       continue;
     }
 
-    // Match title to show
-    const match = matchTitleToShow(cleanTitle, shows);
+    // Match title to show (pass year for multi-production disambiguation)
+    const postYear = postDate ? new Date(postDate).getFullYear() : null;
+    const match = matchTitleToShow(cleanTitle, shows, postYear ? { year: postYear } : undefined);
     if (!match) {
       stats.skippedNoMatch++;
       continue;

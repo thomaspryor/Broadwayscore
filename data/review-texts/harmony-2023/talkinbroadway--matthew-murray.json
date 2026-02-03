@@ -5,7 +5,7 @@
   "criticName": "Matthew Murray",
   "url": "https://talkinbroadway.com/page/world/harmony-1123.html",
   "publishDate": "November 16, 2023",
-  "fullText": null,
+  "fullText": "Musical theatre classesTheatre memorabilia postersPlaywriting workshopsThe Repertory Theatre of St. LouisBroadway cast recordingsCincinnati Playhouse in the ParkTheater reviewsAlbuquerque Little TheatreGift certificates theatreLincoln Center\n\n Page does not exist\n\nLyric ArtsTheatre memorabilia postersTalkin Broadway merchandiseTheatre acting classesOnline theatre streamingRegional theatre tickets\n \n \n \n \n\n \n \n \n \n \n Share:",
   "isFullReview": false,
   "dtliExcerpt": "Harmony is a show that wants to be loved, and it's hard not to love it back, even when it stumbles over its own good intentions.",
   "originalScore": null,
@@ -64,7 +64,48 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "fullText was copy of excerpt from web-search import",
-  "textWordCount": 0
+  "textWordCount": 40,
+  "archivePath": "data/archives/reviews/harmony-2023/talkinbroadway--matthew-murray_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T04:07:41.971Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "excerpt",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 40 (min: 300)",
+    "Show title not found in text"
+  ],
+  "wordCount": 40,
+  "tierReason": "Short text (40 words)"
 }

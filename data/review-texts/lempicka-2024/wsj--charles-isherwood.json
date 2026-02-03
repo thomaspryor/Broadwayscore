@@ -5,29 +5,52 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/lempicka-review-broadway-musical-eden-espinosa-rachel-chavkin-519b3aca",
   "publishDate": "April 15, 2024",
-  "fullText": "https://www.wsj.com/articles/lempicka-review-broadway-musical-eden-espinosa-rachel-chavkin-519b3aca\n\nEden Espinosa Photo: Matthew MurphyNew York\n\n“Never let them see your brushstrokes,” admonishes the title character, the painter Tamara de Lempicka, in the Broadway musical based on her life. Unhappily, “Lempicka” often seems to be all visible brushstrokes, a neatly constructed but surprisingly conventional show that turns the wild, imperious and wayward woman into a fairly standard-issue heroine, enduring trauma and searching for lasting love while also trying to assert her identity as an artist.",
+  "fullText": "https://www.wsj.com/articles/lempicka-review-broadway-musical-eden-espinosa-rachel-chavkin-519b3aca\n\nEden Espinosa Matthew MurphyNew York\n\n“Never let them see your brushstrokes,” admonishes the title character, the painter Tamara de Lempicka, in the Broadway musical based on her life. Unhappily, “Lempicka” often seems to be all visible brushstrokes, a neatly constructed but surprisingly conventional show that turns the wild, imperious and wayward woman into a fairly standard-issue heroine, enduring trauma and searching for lasting love while also trying to assert her identity as an artist.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nMamdani’s Toughest Mayoral Transition: Moving a Cat Into Gracie Mansion\n\nHarry Macklowe Lost His 432 Park Spread. Now It’s Selling for Over $50 Million.\n\nHow Caribbean Food Became the Hottest Reservation\n\nThe Super Bowl’s Biggest Loser: The New York Jets\n\nMamdani Presses for Tax Hike on New York’s Wealthiest as Budget Deficit Looms",
   "showScoreExcerpt": "\"Visually, the show is a hodgepodge.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/lempicka-broadway",
   "originalScore": null,
   "assignedScore": 41,
   "source": "show-score",
   "dtliThumb": null,
-  "archivePath": "data/archives/reviews/lempicka-2024/wsj--charles-isherwood_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T02:56:47.217Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/lempicka-2024/wsj--charles-isherwood_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T05:03:18.062Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
       "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
     }
   ],
-  "fetchTier": 4,
-  "sourceMethod": "archive",
+  "fetchTier": 3,
+  "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20240705012343",
   "archiveOrgUrl": "http://web.archive.org/web/20240705012343/https://www.wsj.com/articles/lempicka-review-broadway-musical-eden-espinosa-rachel-chavkin-519b3aca",
   "textIssues": [
-    "Word count too low: 103 (min: 300)"
+    "Word count too low: 139 (min: 300)"
   ],
   "llmScore": {
     "score": 41,
@@ -78,11 +101,11 @@
     "modelAgreement": "2/3 models agree: Negative"
   },
   "contentTier": "truncated",
-  "wordCount": 76,
+  "wordCount": 139,
   "isFullReview": false,
-  "textWordCount": 76,
-  "textQuality": "partial",
-  "textStatus": "incomplete",
+  "textWordCount": 139,
+  "textQuality": "truncated",
+  "textStatus": "truncated",
   "_removedDesignation": {
     "designation": "Recommended",
     "removedAt": "2026-02-02T04:23:14.223Z",
@@ -91,5 +114,9 @@
     "dtliThumb": "none",
     "bwwThumb": "none"
   },
-  "tierReason": "Short text (76 words)"
+  "tierReason": "Short text (139 words)",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_junk"
+  ]
 }

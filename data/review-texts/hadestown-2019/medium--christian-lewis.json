@@ -9,7 +9,7 @@
   "originalScore": null,
   "assignedScore": 95,
   "source": "show-score",
-  "sourceMethod": "playwright",
+  "sourceMethod": "scrapingbee",
   "scoreSource": null,
   "llmScore": {
     "score": 95,
@@ -60,16 +60,32 @@
     "modelAgreement": "All 3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hadestown-2019/medium--christian-lewis_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T01:01:58.972Z",
-  "fetchMethod": "playwright",
+  "textFetchedAt": "2026-02-03T05:20:06.648Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    },
     {
       "tier": 1,
       "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
       "success": true
     }
   ],
-  "fetchTier": 1,
+  "fetchTier": 2,
   "archiveOrgTimestamp": "20190420104217",
   "archiveOrgUrl": "http://web.archive.org/web/20190420104217/https://medium.com/@christianlewis_11156/review-hadestown-is-rachel-chavkins-magnum-opus-57063dbc1117",
   "rescoreReason": "fullText added after excerpt-based scoring",
@@ -79,19 +95,16 @@
   "garbageReason": "Paywall/subscription prompt: \"Become a member\"",
   "garbageFixedAt": "2026-01-29T22:45:22.817Z",
   "contentTier": "truncated",
-  "wordCount": 218,
+  "wordCount": 231,
   "needsRescore": true,
-  "fullText": "After her production of Dave Malloy’s “Natasha, Pierre, and the Great Comet of 1812,” Rachel Chavkin had a lot to live up to. In that production she rebuilt the Imperial Theatre and staged an immersive, genre-defying, period-blurring electronic pop opera adaptation of Tolstoy. This time, with the help of writer composer Anais Mitchell, she adapts the story of Orpheus and Eurydice as a folk opera that offers a modern critique of capitalism. Chavkin has a talent for taking classic stories and giving them genius modern twists that make them speak to us in entirely new ways. Though “Great Comet” was magnificent, it is here in “Hadestown” that Chavkin has reached her apotheosis. Practically every single thing about “Hadestown” is perfect. It plays with form in new ways, forcing us to question what we know and believe about the genre. Its design is breath-taking, its performances masterful, and its direction superb. Everything about this masterpiece of a musical has Rachel Chavkin written all over it, which is the main reason why it is so effective. Chavkin has a very clear style that draws on ensemble work, evocative symbols, beloved stories, unexpected visual choices, purposeful anachronisms, and an open engagement with the process of storytelling. “Hadestown” has all of the Chavkin trademarks that we have grown to expect and love…",
+  "fullText": "After her production of Dave Malloy’s “Natasha, Pierre, and the Great Comet of 1812,” Rachel Chavkin had a lot to live up to. In that production she rebuilt the Imperial Theatre and staged an immersive, genre-defying, period-blurring electronic pop opera adaptation of Tolstoy. This time, with the help of writer composer Anais Mitchell, she adapts the story of Orpheus and Eurydice as a folk opera that offers a modern critique of capitalism. Chavkin has a talent for taking classic stories and giving them genius modern twists that make them speak to us in entirely new ways.\n\nThough “Great Comet” was magnificent, it is here in “Hadestown” that Chavkin has reached her apotheosis. Practically every single thing about “Hadestown” is perfect. It plays with form in new ways, forcing us to question what we know and believe about the genre. Its design is breath-taking, its performances masterful, and its direction superb. Everything about this masterpiece of a musical has Rachel Chavkin written all over it, which is the main reason why it is so effective.\n\nChavkin has a very clear style that draws on ensemble work, evocative symbols, beloved stories, unexpected visual choices, purposeful anachronisms, and an open engagement with the process of storytelling. “Hadestown” has all of the Chavkin trademarks that we have grown to expect and love…\n\nTheater Critic. Vassar College alum, current PhD candidate at the CUNY Graduate Center.",
   "isFullReview": false,
-  "textWordCount": 218,
-  "textQuality": "truncated",
-  "truncationSignals": [
-    "ends_with_ellipsis",
-    "no_ending_punctuation"
-  ],
-  "textStatus": "truncated",
+  "textWordCount": 231,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
   "textIssues": [
-    "Word count too low: 218 (min: 300)"
+    "Word count too low: 231 (min: 300)"
   ],
-  "tierReason": "Truncation detected: ends_with_ellipsis, no_ending_punctuation"
+  "tierReason": "Short text (231 words)"
 }

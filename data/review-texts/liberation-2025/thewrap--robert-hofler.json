@@ -61,21 +61,15 @@
     "modelAgreement": "All 3 models agree: Rave"
   },
   "textWordCount": 56,
-  "archivePath": "data/archives/reviews/liberation-2025/thewrap--robert-hofler_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T23:12:10.020Z",
+  "archivePath": "data/archives/reviews/liberation-2025/thewrap--robert-hofler_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T02:05:29.854Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "Skipped - known blocked site"
-    },
-    {
-      "tier": 1.5,
-      "method": "browserbase",
-      "success": false,
-      "error": "Paywall detected"
+      "error": "Skipped (known-blocked site)"
     },
     {
       "tier": 2,

@@ -4,31 +4,150 @@
     "lastUpdated": "2026-02-03",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 1696,
-      "skippedNoScore": 28,
+      "totalReviews": 1822,
+      "skippedNoScore": 1272,
       "skippedDuplicate": 3,
       "skippedDuplicateUrl": 52,
-      "skippedWrongProduction": 37,
-      "recoveredFromGarbage": 100,
+      "skippedWrongProduction": 48,
+      "recoveredFromGarbage": 79,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 2,
-        "explicit-slash": 3,
+        "explicit-slash": 4,
         "explicit-letterGrade": 1,
         "human-review": 60,
-        "originalScore-priority0": 245,
-        "llmScore": 1161,
+        "originalScore-priority0": 366,
+        "llmScore": 1181,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 214,
+        "llmScore-lowconf": 197,
         "llmScore-review": 3,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 2
+        "thumb": 3
       }
     }
   },
   "reviews": [
+    {
+      "showId": "1984-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/1984",
+      "publishDate": "June 22, 2017",
+      "originalRating": 80,
+      "pullQuote": "This 1984 is a blunt instrument, but it hits its target with considerable force. The production doesn't finesse Orwell's ideas so much as it clobbers you with them.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/a-beautiful-noise-the-neil-diamond-musical",
+      "publishDate": "December 4, 2022",
+      "originalRating": 60,
+      "pullQuote": "A Beautiful Noise is a jukebox musical that hits the expected beats without much originality, but Diamond's songs still have the power to move.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "a-bronx-tale-the-musical-2016",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/a-bronx-tale-review",
+      "publishDate": "December 2, 2016",
+      "originalRating": 60,
+      "pullQuote": "A Bronx Tale has heart, but it doesn't have much more than that. The show feels like a pleasant but unexceptional musical adaptation of a beloved story.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "a-christmas-carol-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/a-christmas-carol-review",
+      "publishDate": "December 8, 2022",
+      "originalRating": 60,
+      "pullQuote": "This adaptation has charm and technical polish, but it lacks the emotional depth that would make it truly memorable. The production feels more like a well-executed holiday pageant than a profound theatrical experience.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "a-strange-loop-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 100,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/a-strange-loop-review",
+      "publishDate": "April 26, 2022",
+      "originalRating": 100,
+      "pullQuote": "A Strange Loop is a brilliant, uncompromising work of art that pushes the boundaries of what musical theater can be and say.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "aint-no-mo-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/aint-no-mo-review",
+      "publishDate": "December 8, 2022",
+      "originalRating": 80,
+      "pullQuote": "Jordan E. Cooper's wild, funny, painful and necessary play is a brilliant piece of theatrical provocation that uses satire to explore Black trauma and resilience.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "aint-too-proud-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/aint-too-proud-the-life-and-times-of-the-temptations",
+      "publishDate": "March 21, 2019",
+      "originalRating": 60,
+      "pullQuote": "The show's commitment to the music is total, and the performers—led by the magnetic Derrick Baskin as Otis Williams—deliver the songs with soul-stirring power.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
     {
       "showId": "aladdin-2014",
       "outletId": "andygram",
@@ -640,7 +759,7 @@
       "pullQuote": "Disney's Aladdin is a lavish, colorful spectacle that delivers exactly what you'd expect from a Broadway adaptation of the beloved animated film.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "invalid",
+      "contentTier": "complete",
       "designation": "Critics_Choice"
     },
     {
@@ -729,6 +848,23 @@
       "contentTier": "complete"
     },
     {
+      "showId": "all-my-sons-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/all-my-sons-review",
+      "publishDate": "May 8, 2019",
+      "originalRating": 80,
+      "pullQuote": "Tracy Letts's production of Arthur Miller's 1947 drama is a gripping reminder of the play's enduring power, anchored by superlative performances from Jeremy Irons and Lesley Manville.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
       "showId": "all-out-2025",
       "outletId": "nyt-theater",
       "outlet": "New York Theater",
@@ -744,6 +880,74 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "almost-famous-2022",
+      "outletId": "nypost",
+      "outlet": "New York Post",
+      "assignedScore": 75,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Johnny Oleksinski",
+      "url": "https://nypost.com/2022/11/04/almost-famous-review-a-rock-musical-that-rocks/",
+      "publishDate": "November 4, 2022",
+      "originalRating": 75,
+      "pullQuote": "The new Broadway musical 'Almost Famous' captures the spirit of Cameron Crowe's beloved 2000 film while adding its own theatrical magic. This rock musical truly rocks when it needs to.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "amazing-grace-2015",
+      "outletId": "nydailynews",
+      "outlet": "New York Daily News",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Joe Dziemianowicz",
+      "url": "https://www.nydailynews.com/2015/07/17/amazing-grace-on-broadway-review-inspiring-musical-about-john-newton/",
+      "publishDate": "July 17, 2015",
+      "originalRating": 60,
+      "pullQuote": "The show has heart and good intentions, but the execution is uneven and the pacing drags in spots.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "amazing-grace-2015",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/amazing-grace-review",
+      "publishDate": "July 16, 2015",
+      "originalRating": 60,
+      "pullQuote": "Amazing Grace has moments of genuine power, particularly when its excellent cast breaks into song, but the show's book feels overstuffed with incident and underdeveloped in terms of character.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "american-buffalo-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/american-buffalo-review",
+      "publishDate": "April 14, 2022",
+      "originalRating": 60,
+      "pullQuote": "The play's language is its glory—profane, repetitive, musical in its rhythms—and all three actors handle it well, though with varying degrees of success.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "an-enemy-of-the-people-2024",
@@ -903,7 +1107,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Matthew Murray",
@@ -913,7 +1117,7 @@
       "pullQuote": "Jeremy Strong's performance as Dr. Thomas Stockmann is nothing short of electrifying, bringing a manic intensity to Ibsen's idealistic protagonist that feels both authentic and unhinged.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "an-enemy-of-the-people-2024",
@@ -1083,7 +1287,7 @@
       "pullQuote": "Gold’s 'An Enemy of the People'... feels pointedly modern",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "an-enemy-of-the-people-2024",
@@ -1475,7 +1679,7 @@
       "pullQuote": "Luke Sheppard's direction of his actors effectively showcases many of the more appealing quirks in Read's characters. When Read's book turns conventional with the nonbinary May, Sheppard turns on the automatic pilot to strand Sullivan in a swamp of schmaltz. Unfortunately, that sticky morass claims many more victims in Act 2.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "and-juliet-2022",
@@ -1492,7 +1696,7 @@
       "pullQuote": "Its title notwithstanding, '& Juliet' barely takes time to define its heroine; it puts her at the center of the story and then makes her its least interesting character.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "and-juliet-2022",
@@ -1527,6 +1731,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "angels-in-america-millennium-approaches-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 100,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/angels-in-america-millennium-approaches-review",
+      "publishDate": "March 26, 2018",
+      "originalRating": 100,
+      "pullQuote": "This production is a triumphant return for Kushner's masterpiece, with Andrew Garfield delivering a performance of stunning vulnerability and power.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "appropriate-2023",
@@ -2081,7 +2302,7 @@
       "scoreSource": "originalScore-priority0",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2023/08/03/back-to-the-future-the-musical-review-watch-the-movie-instead/",
       "publishDate": "August 3, 2023",
       "originalRating": "2 stars",
@@ -2377,7 +2598,7 @@
       "pullQuote": "“What makes ’Back to the Future’ so confusing, aside from the general ineptness, is how little it seems to understand its own relationship to the material it is trying to exploit...A similar fate befalls too many shows that try to cash in on cinematic IP, and the Broadway musical, as an art form, can’t keep getting lost on these roads.",
       "dtliThumb": null,
       "bwwThumb": "Down",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "back-to-the-future-2023",
@@ -2429,6 +2650,91 @@
       "dtliThumb": null,
       "bwwThumb": "Meh",
       "contentTier": "complete"
+    },
+    {
+      "showId": "bad-cinderella-2023",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 40,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/bad-cinderella-review",
+      "publishDate": "March 24, 2023",
+      "originalRating": 40,
+      "pullQuote": "The show has some appealing qualities, but it feels like a missed opportunity to update a classic fairy tale in a meaningful way.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "bandstand-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/bandstand",
+      "publishDate": "April 26, 2017",
+      "originalRating": 60,
+      "pullQuote": "Bandstand is a musical with its heart in the right place, but it doesn't quite have the dramatic or musical sophistication to match its admirable intentions.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "beetlejuice-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/beetlejuice-review",
+      "publishDate": "April 25, 2019",
+      "originalRating": 60,
+      "pullQuote": "Beetlejuice is a big, brash, rock-and-roll musical that embraces its own grotesquerie with gleeful abandon. It's not subtle, but it doesn't want to be.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "between-riverside-and-crazy-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/between-riverside-and-crazy-review",
+      "publishDate": "December 20, 2022",
+      "originalRating": 80,
+      "pullQuote": "Stephen Adly Guirgis's Pulitzer Prize-winning play gets a superb Broadway production that honors both its gritty realism and its underlying compassion.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "bob-fosses-dancin-2023",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/bob-fosses-dancin-review",
+      "publishDate": "March 27, 2023",
+      "originalRating": 60,
+      "pullQuote": "The show is a showcase for some excellent dancers, but it feels more like a museum piece than a living, breathing work of theater.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "book-of-mormon-2011",
@@ -2524,7 +2830,7 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Brendan Lemon",
-      "url": "https://www.ft.com/cms/s/2/f1e89e28-5635-11e0-82aa-00144feab49a.html#axzz1HYqgDs9J",
+      "url": "https://www.ft.com/content/f1e89e28-5635-11e0-82aa-00144feab49a",
       "publishDate": "2011-03-25T13:49:16-04:00",
       "originalRating": null,
       "pullQuote": "Stretched to Broadway length, the duo's patented gags pall: in this surprisingly old-fashioned show, when we get to a trimmable production number called \"Spooky Mormon Hell Dream\", the comparisons to South Park reach their apogee, and not in favour of the stage musical. The audience devours all the antics.",
@@ -2735,7 +3041,7 @@
       "pullQuote": "Brimming with cheerful obscenity, sharp satire and catchy tunes, The Book of Mormon is a sick mystic revelation, the most exuberantly entertaining Broadway musical in years.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "book-of-mormon-2011",
@@ -2966,7 +3272,7 @@
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2025/04/07/entertainment/boop-review-broadway-star-jasmine-amy-rogers-is-born-in-new-musical/",
       "publishDate": "April 7, 2025",
       "originalRating": null,
@@ -3518,7 +3824,7 @@
       "pullQuote": "Buena Vista Social Club offers an irresistible tropical vacation. A celebration of Cuban musical history, it’s a getaway and a gateway.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "buena-vista-social-club-2025",
@@ -3945,7 +4251,7 @@
       "pullQuote": "The slipperiness of ostensible skepticism into utter credulity is what makes Bug continue to resonate so powerfully today.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "bug-2026",
@@ -3997,6 +4303,23 @@
       "dtliThumb": "Meh",
       "bwwThumb": "Up",
       "contentTier": "complete"
+    },
+    {
+      "showId": "burn-this-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/burn-this",
+      "publishDate": "April 15, 2019",
+      "originalRating": 60,
+      "pullQuote": "The production gets a considerable boost from Adam Driver, who brings a compelling mixture of danger and vulnerability to Pale, the deceased Robbie's volatile brother.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "cabaret-2024",
@@ -4336,7 +4659,7 @@
       "pullQuote": "Great expectations can be a problem when you’re seeing a Broadway show: You don’t always get what you hope for.",
       "dtliThumb": "Down",
       "bwwThumb": "Down",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "cabaret-2024",
@@ -4388,6 +4711,108 @@
       "dtliThumb": "Meh",
       "bwwThumb": "Down",
       "contentTier": "complete"
+    },
+    {
+      "showId": "camelot-2023",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/camelot-review",
+      "publishDate": "May 2, 2023",
+      "originalRating": 60,
+      "pullQuote": "This revival of Lerner and Loewe's musical feels both overstuffed and undercooked, despite some strong performances and beautiful moments.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "caroline-or-change-2021",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/caroline-or-change-review",
+      "publishDate": "November 3, 2021",
+      "originalRating": 80,
+      "pullQuote": "This revival of Tony Kushner and Jeanine Tesori's musical masterpiece is a stirring triumph, anchored by Sharon D Clarke's powerhouse performance as Caroline.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "carousel-2018",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 87,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Kristen Baldwin",
+      "url": "https://ew.com/theater/2018/04/13/carousel-broadway-review/",
+      "publishDate": "April 13, 2018",
+      "originalRating": 87,
+      "pullQuote": "This thoughtful revival of Rodgers and Hammerstein's problematic masterpiece doesn't shy away from the musical's thorny issues, but it doesn't quite solve them either.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "carousel-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/carousel-review",
+      "publishDate": "April 12, 2018",
+      "originalRating": 60,
+      "pullQuote": "This revival of Rodgers and Hammerstein's 1945 musical is handsome and well-performed, but it doesn't solve the show's fundamental problems with its problematic male protagonist.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "cats-2016",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/cats-review",
+      "publishDate": "July 31, 2016",
+      "originalRating": 60,
+      "pullQuote": "This new production of Cats is sleeker and more focused than the original, but it still can't overcome the fundamental weirdness of the material.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/charlie-and-the-chocolate-factory",
+      "publishDate": "April 23, 2017",
+      "originalRating": 60,
+      "pullQuote": "The show is visually spectacular, with ingenious set pieces and costumes that bring Dahl's world to vivid life. But for all its surface sweetness, the musical lacks the darker undertones that made the book so memorably creepy.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "chess-2025",
@@ -4727,7 +5152,7 @@
       "pullQuote": "has plenty of good moves...but no checkmate. Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit.",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "chess-2025",
@@ -4924,7 +5349,7 @@
       "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": null,
+      "criticName": "Richard Zoglin",
       "url": "http://www.time.com/time/magazine/article/0,9171,985604,00.html",
       "publishDate": "April 22, 2014",
       "originalRating": null,
@@ -4949,6 +5374,108 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "chicken-and-biscuits-2021",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/chicken-and-biscuits",
+      "publishDate": "October 11, 2021",
+      "originalRating": 60,
+      "pullQuote": "Chicken & Biscuits is a warm-hearted family comedy that gets by on charm and strong performances, even when its plot mechanics creak.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "cirque-du-soleil-paramour-2016",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 40,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/cirque-du-soleil-paramour",
+      "publishDate": "May 25, 2016",
+      "originalRating": 40,
+      "pullQuote": "Paramour is a show at war with itself, torn between the spectacular and the pedestrian, between innovation and imitation.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "clydes-2021",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/clydes-review",
+      "publishDate": "December 1, 2021",
+      "originalRating": 80,
+      "pullQuote": "Clyde's is a play about second chances, about the possibility of redemption through work and human connection. It's also a play about making sandwiches—really, really good sandwiches.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "company-2021",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/company-review",
+      "publishDate": "December 9, 2021",
+      "originalRating": 80,
+      "pullQuote": "Marianne Elliott's gender-flipped revival of Stephen Sondheim's Company is a triumph that feels both fresh and timeless, anchored by Katrina Lenk's superb performance as Bobbie.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "cost-of-living-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/cost-of-living-review",
+      "publishDate": "October 18, 2022",
+      "originalRating": 80,
+      "pullQuote": "Cost of Living is a play that asks hard questions about dignity, independence and what it means to be whole. Martyna Majok's Pulitzer Prize-winning drama is both intimate and expansive, finding universal truths in very specific experiences.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "dana-h-2021",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/dana-h-review",
+      "publishDate": "October 11, 2021",
+      "originalRating": 80,
+      "pullQuote": "Dana H. is a deeply unsettling and formally audacious work that pushes the boundaries of what theater can be. Deirdre O'Connell delivers a tour-de-force performance in this harrowing true story.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "days-of-wine-and-roses-2024",
@@ -5289,7 +5816,7 @@
       "pullQuote": "If 'Days and Wine and Roses' isn’t exactly galvanizing...it is effectively sober.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "days-of-wine-and-roses-2024",
@@ -5544,7 +6071,7 @@
       "pullQuote": "Having popped its cork early, the show keeps the bubbles flowing freely for the next two hours.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "death-becomes-her-2024",
@@ -5579,6 +6106,23 @@
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/death-of-a-salesman-review",
+      "publishDate": "October 10, 2022",
+      "originalRating": 80,
+      "pullQuote": "Pierce brings a weary dignity to Willy that makes his delusions all the more heartbreaking. This is a Death of a Salesman that feels both timeless and urgently contemporary.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -5680,7 +6224,7 @@
       "pullQuote": "...a timely and now seemingly timeless piece of art that shed light",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "doubt-2024",
@@ -5690,7 +6234,7 @@
       "scoreSource": "human-review",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2024/03/07/entertainment/liev-schreiber-doubt-broadway-review-nun-play-scorches-even-in-a-so-so-revival/?utm_campaign=nypost&utm_source=twitter&utm_medium=social",
       "publishDate": "March 7, 2024",
       "originalRating": null,
@@ -5868,7 +6412,7 @@
       "pullQuote": "...Ryan and Schreiber, presents the play without any intentional new slant on its ideas",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "needs-rescrape"
+      "contentTier": "truncated"
     },
     {
       "showId": "doubt-2024",
@@ -5953,7 +6497,7 @@
       "pullQuote": "'Doubt' is an odd kind of mystery, less a whodunit than a wasitdunatall.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "doubt-2024",
@@ -5988,6 +6532,142 @@
       "dtliThumb": "Meh",
       "bwwThumb": "Up",
       "contentTier": "complete"
+    },
+    {
+      "showId": "falsettos-2016",
+      "outletId": "nydailynews",
+      "outlet": "New York Daily News",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Joe Dziemianowicz",
+      "url": "https://www.nydailynews.com/2016/11/04/falsettos-review-brilliant-revival-of-william-finn-james-lapine-musical-shines-on-broadway/",
+      "publishDate": "November 4, 2016",
+      "originalRating": 80,
+      "pullQuote": "This brilliant revival of William Finn and James Lapine's 1992. Tony-winning musical about a Jewish man who leaves his wife and son for another man is a marvel of intimate storytelling.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "falsettos-2016",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/falsettos",
+      "publishDate": "October 27, 2016",
+      "originalRating": 80,
+      "pullQuote": "This revival of William Finn and James Lapine's 1992 musical about gay men, AIDS and family feels both nostalgic and urgently contemporary.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/farinelli-and-the-king",
+      "publishDate": "December 18, 2017",
+      "originalRating": 60,
+      "pullQuote": "Mark Rylance gives a performance of remarkable physical and vocal precision as King Philippe V of Spain, a monarch so depressed that he has ceased to govern and threatens to plunge his country into chaos.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "fat-ham-2023",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/fat-ham-review",
+      "publishDate": "April 13, 2023",
+      "originalRating": 80,
+      "pullQuote": "Fat Ham is a riot of a play that manages to be both hilarious and deeply moving. James Ijames has created something truly special here—a work that honors Shakespeare while being entirely its own beast.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-review",
+      "publishDate": "April 20, 2022",
+      "originalRating": 80,
+      "pullQuote": "This revival of Ntozake Shange's groundbreaking choreopoem feels both timeless and urgently contemporary, with a cast that brings fresh fire to familiar wounds.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "frozen-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/frozen-review",
+      "publishDate": "March 22, 2018",
+      "originalRating": 60,
+      "pullQuote": "The songs are catchy and the staging is spectacular, but the story feels stretched thin over two and a half hours.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "funny-girl-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/funny-girl-review",
+      "publishDate": "April 25, 2022",
+      "originalRating": 60,
+      "pullQuote": "Beanie Feldstein brings warmth and vulnerability to Fanny Brice, but the production feels oddly subdued for such an exuberant musical.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "good-night-oscar-2023",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/good-night-oscar",
+      "publishDate": "April 24, 2023",
+      "originalRating": 60,
+      "pullQuote": "Sean Hayes brings his trademark manic energy to the role of Oscar Levant, the neurotic pianist and wit who was a fixture on mid-20th-century radio and TV.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "grey-house-2023",
@@ -6099,7 +6779,7 @@
       "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2023/06/02/grey-house-review-horror-falls-flat-on-broadway/",
       "publishDate": "May 31, 2023",
       "originalRating": null,
@@ -6395,7 +7075,7 @@
       "pullQuote": "''Grey Houe' is built around themes of guilt, expiation and retribution, but not very solidly—and as a spectator, you’re too busy puzzling out what is happening to think much about what it means...Amid such excellent atmospherics, you may not care when the play itself creaks.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "grey-house-2023",
@@ -6803,7 +7483,7 @@
       "pullQuote": "Affection is the key that opens the show’s comedy: As ridiculous as Doug and Bud may be, you feel for these guys and even root for them. As stupid as their historical musical may be, you can’t deny that they’ve got heart.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "gutenberg-2023",
@@ -6838,6 +7518,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "gypsy-2024",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/gypsy-review-audra-mcdonald",
+      "publishDate": "December 19, 2024",
+      "originalRating": 80,
+      "pullQuote": "McDonald brings her formidable vocal gifts and dramatic intelligence to bear on one of the most demanding roles in the American musical theater canon, and the result is deeply satisfying.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "hadestown-2019",
@@ -7535,7 +8232,7 @@
       "pullQuote": "“The stellar ensemble fills the theater with soaring harmonies, weaving in and out of the audience and the onstage band. Mitchell’s music, lush and strange and lyrically brilliant, has found its match in this cast...The one weak spot is Daunno, whose vocal and acting chops don’t stack up against his peers.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid",
+      "contentTier": "complete",
       "designation": "Critics_Choice"
     },
     {
@@ -7982,6 +8679,23 @@
     },
     {
       "showId": "hamilton-2015",
+      "outletId": "observer",
+      "outlet": "Observer",
+      "assignedScore": 93,
+      "scoreSource": "llmScore",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "David Cote",
+      "url": "https://observer.com/2020/07/hamilton-disney-plus-review-streaming/",
+      "publishDate": "2015-08-06",
+      "originalRating": null,
+      "pullQuote": "Indeed, everybody in the show from the boss to the ushers exudes the confident air of show folk who know they've got themselves a hit.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "hamilton-2015",
       "outletId": "our-theater-blog",
       "outlet": "Our Theater Blog",
       "assignedScore": 94,
@@ -8233,7 +8947,7 @@
       "pullQuote": "\"What is left to say? After every critic in town (including me) praised the Public Theater world premiere to high heaven; and after seeing this language-drunk, rhyme-crazy dynamo a second time, I can only marvel: They used up all the damn words. Wait, here are three stragglers, straight from the heart: I love 'Hamilton.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "hamilton-2015",
@@ -8413,7 +9127,7 @@
       "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2023/11/13/entertainment/harmony-review-barry-manilows-musical-is-moving-but-isnt-in-sync/",
       "publishDate": "November 13, 2023",
       "originalRating": null,
@@ -8512,7 +9226,7 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Matthew Murray",
@@ -8522,7 +9236,7 @@
       "pullQuote": "Harmony is a show that wants to be loved, and it's hard not to love it back, even when it stumbles over its own good intentions.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "harmony-2023",
@@ -8726,7 +9440,7 @@
       "pullQuote": "“The problem with the train story is that, like other plot points, it is underdeveloped: It seems to have been added for extra weight. And that reflects the fundamental problem that Harmony struggles to overcome...",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "harmony-2023",
@@ -9174,8 +9888,8 @@
       "showId": "harry-potter-2021",
       "outletId": "medium",
       "outlet": "Medium",
-      "assignedScore": 79,
-      "scoreSource": "llmScore",
+      "assignedScore": 75,
+      "scoreSource": "explicit-slash",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Christian Lewis",
@@ -9185,7 +9899,7 @@
       "pullQuote": "\"Spell-binding...Takes stage magic to an entirely new level...The script is certainly not stellar...Some bizarre pacing issues...But these flaws are entirely with the script, in production there is so much magic that it is all too easy to get swept up and not even notice the problems in the writing...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "harry-potter-2021",
@@ -9748,7 +10462,7 @@
       "pullQuote": "\"A triumph of theatrical magic...Combines grand storytelling with stagecraft on a scale heretofore unimagined...It is often suspenseful and sometimes downright frightening. Yet amid the cinematic tumult and dazzle of the densely action-packed plot, Thorne and Tiffany carve out quiet scenes of intimacy and tenderness.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "harry-potter-2021",
@@ -9904,6 +10618,57 @@
       "contentTier": "excerpt"
     },
     {
+      "showId": "harry-potter-and-the-cursed-child-2018",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 87,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Kristen Baldwin",
+      "url": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
+      "publishDate": "April 22, 2018",
+      "originalRating": 87,
+      "pullQuote": "The two-part, five-and-a-half-hour theatrical experience is an ambitious, effects-heavy spectacle that will dazzle Potter devotees — even if the story itself feels more like expensive fan fiction than a worthy sequel.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/harry-potter-and-the-cursed-child",
+      "publishDate": "April 22, 2018",
+      "originalRating": 80,
+      "pullQuote": "The real magic of Harry Potter and the Cursed Child lies not in its spectacular effects—though they are genuinely spectacular—but in its emotional through-line, which manages to feel both epic and intimate.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "head-over-heels-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 40,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/head-over-heels",
+      "publishDate": "July 26, 2018",
+      "originalRating": 40,
+      "pullQuote": "Head Over Heels is a jukebox musical that uses the songs of the Go-Go's and Belinda Carlisle to tell a story loosely based on Philip Sidney's 16th-century prose romance Arcadia. It's a weird combination that doesn't quite work.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
       "showId": "heart-of-rock-and-roll-2024",
       "outletId": "broadwaynews",
       "outlet": "Broadway News",
@@ -9979,7 +10744,7 @@
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2024/04/22/entertainment/the-heart-of-rock-and-roll-review-huey-lewis-broadway-show-is-hilarious-fun/",
       "publishDate": "April 22, 2024",
       "originalRating": null,
@@ -10024,6 +10789,23 @@
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
+      "outletId": "nytg",
+      "outlet": "New York Theatre Guide",
+      "assignedScore": 76,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Gillian Russo",
+      "url": "https://www.newyorktheatreguide.com/reviews/the-heart-of-rock-and-roll-broadway-review-huey-lewis",
+      "publishDate": "April 22, 2024",
+      "originalRating": null,
+      "pullQuote": "Director Gordon Greenberg’s production is eager to sweep you up in its bright lights",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "contentTier": "complete"
+    },
+    {
+      "showId": "heart-of-rock-and-roll-2024",
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 64,
@@ -10044,7 +10826,7 @@
       "outletId": "new-york-sun",
       "outlet": "The New York Sun",
       "assignedScore": 74,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Elysa Gardner",
@@ -10054,7 +10836,7 @@
       "pullQuote": "Strangely, these shortcomings become assets of a sort in “The Heart of Rock and Roll,” the new show now bringing the group’s repertoire to Broadway. Jukebox musicals, for all their contemptible elements, can be most irritating when they try too hard either to deify an artist or to find fresh wit and relevance in a popular repertoire.",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -10139,7 +10921,7 @@
       "pullQuote": "Squeeze your memories into spandex and get ready to turn back the clock.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -10616,7 +11398,7 @@
       "pullQuote": "Hell’s Kitchen is ultimately a celebration of the city—and the people who make it pop.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "hells-kitchen-2024",
@@ -10990,7 +11772,7 @@
       "pullQuote": "Our complicity with such cycles of populist fervor—whether, depending on your ticket, as spectators from a safe distance or as extras in a mob scene—is the loudly beating heart of ‘Here Lies Love,’ a party that hides a mordant critique of civilization and its discotheques.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "here-lies-love-2023",
@@ -11025,6 +11807,40 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "hillary-and-clinton-2019",
+      "outletId": "guardian",
+      "outlet": "The Guardian",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Jesse Hassenger",
+      "url": "https://www.theguardian.com/stage/2019/apr/19/hillary-and-clinton-review-laurie-metcalf-john-lithgow-broadway",
+      "publishDate": "April 19, 2019",
+      "originalRating": 60,
+      "pullQuote": "The play works best when it focuses on the marriage at its center, with Metcalf and Lithgow finding moments of genuine intimacy amid the political calculation.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "how-i-learned-to-drive-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/how-i-learned-to-drive-review",
+      "publishDate": "April 20, 2022",
+      "originalRating": 80,
+      "pullQuote": "This revival of Paula Vogel's Pulitzer Prize-winning drama about sexual abuse is sensitively staged and superbly acted, with Mary-Louise Parker delivering a performance of remarkable emotional complexity.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "how-to-dance-in-ohio-2023",
@@ -11279,7 +12095,7 @@
       "pullQuote": "All of the actors playing autistic people publicly identify as autistic themselves; they’re also all making their Broadway debuts, and while some are more experienced than others—Pearce, with his expansively emotional voice, is a ringer—they all make winsome impressions.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "how-to-dance-in-ohio-2023",
@@ -11558,7 +12374,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 44,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Unknown",
@@ -11568,7 +12384,7 @@
       "pullQuote": "“The view of hoarding as a serious mental health affliction never gets much acknowledgment in this 100-minute, sitcom-adjacent throwback...Rebeck’s desire, for us to empathize with Sam’s grief, manifested as an embrace of any thing that prompts a memory of his wife, is nice enough.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "i-need-that-2023",
@@ -11636,7 +12452,7 @@
       "pullQuote": "DeVito is a star for a reason: His vulnerable, hilarious performance is a certifiable gem. If only this treasure weren’t so often lost in the piles that surround it.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "truncated"
     },
     {
       "showId": "i-need-that-2023",
@@ -12082,6 +12898,74 @@
       "contentTier": "complete"
     },
     {
+      "showId": "in-transit-2016",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/in-transit",
+      "publishDate": "December 8, 2016",
+      "originalRating": 60,
+      "pullQuote": "In Transit is an a cappella musical that takes place entirely on the New York City subway system, and while it has some genuinely touching moments, it feels more like a series of vignettes than a fully realized story.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "ink-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/ink-review",
+      "publishDate": "April 25, 2019",
+      "originalRating": 60,
+      "pullQuote": "James Graham's fact-based drama about the transformation of The Sun into a tabloid juggernaut is an energetic ensemble piece that captures the frenzied atmosphere of a newsroom in transition.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "into-the-woods-2022",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 87,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Joey Nolfi",
+      "url": "https://ew.com/theater/into-the-woods-broadway-review-2022/",
+      "publishDate": "August 1, 2022",
+      "originalRating": 87,
+      "pullQuote": "This revival doesn't reinvent the wheel, but it spins familiar material with enough freshness and vocal firepower to justify a return trip to these dark woods.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "jagged-little-pill-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/jagged-little-pill",
+      "publishDate": "December 5, 2019",
+      "originalRating": 80,
+      "pullQuote": "Jagged Little Pill is a flawed but affecting show that uses Morissette's songs to explore issues of sexual assault, addiction and family dysfunction with surprising depth.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
       "showId": "jajas-african-hair-braiding-2023",
       "outletId": "broadwaynews",
       "outlet": "Broadway News",
@@ -12522,7 +13406,7 @@
       "pullQuote": "The laughs are plentiful. Despite the incendiary issues lurking at the edges of his tale, ‘Just for Us’ is more focused on comedy than catharsis. Edelman is a master of callbacks, and his funniest jokes are accented with wonderful bulging eyes.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "just-for-us-2023",
@@ -12947,7 +13831,7 @@
       "pullQuote": "Just in Time deals with the difference between image and reality...It’s finally about the joy of performance, and the escapism it provides not just for an audience but for a performer as well",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "just-in-time-2025",
@@ -12982,6 +13866,74 @@
       "dtliThumb": "Up",
       "bwwThumb": "Meh",
       "contentTier": "complete"
+    },
+    {
+      "showId": "king-kong-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/king-kong-review",
+      "publishDate": "November 8, 2018",
+      "originalRating": 60,
+      "pullQuote": "King Kong is a show of enormous ambition and considerable achievement, but it's also a show that doesn't quite work. The puppet is magnificent, but the musical surrounding it is less so.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "kiss-me-kate-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/kiss-me-kate-revival-review",
+      "publishDate": "March 14, 2019",
+      "originalRating": 80,
+      "pullQuote": "This handsome, well-cast revival of Cole Porter's 1948 musical comedy proves that Kiss Me, Kate still has plenty of bite. Kelli O'Hara and Will Chase make a formidable pair as the divorced actors whose onstage chemistry in The Taming of the Shrew mirrors their offstage tensions.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "kpop-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/kpop-review",
+      "publishDate": "November 28, 2022",
+      "originalRating": 60,
+      "pullQuote": "The musical has energy and heart, but it feels more like a concert than a fully realized theatrical experience.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "latin-history-for-morons-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/latin-history-for-morons",
+      "publishDate": "November 15, 2017",
+      "originalRating": 60,
+      "pullQuote": "Leguizamo's personal story is compelling, and his mimetic skills are impressive. But the show's didactic elements feel forced, and its structure is scattershot.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "lempicka-2024",
@@ -13226,7 +14178,7 @@
       "outletId": "new-york-sun",
       "outlet": "The New York Sun",
       "assignedScore": 59,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Elysa Gardner",
@@ -13236,7 +14188,7 @@
       "pullQuote": "As Tamara, Eden Espinosa gets to once again use the siren-like belt and the mix of might and vulnerability she deployed during several stints as Elphaba in “Wicked” — this time while sporting a platinum-blonde bob that makes her look like 1990s-era Madonna (a noted Lempicka fan, naturally).",
       "dtliThumb": null,
       "bwwThumb": "Down",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "lempicka-2024",
@@ -13267,7 +14219,7 @@
       "url": "https://www.wsj.com/articles/lempicka-review-broadway-musical-eden-espinosa-rachel-chavkin-519b3aca",
       "publishDate": "April 15, 2024",
       "originalRating": null,
-      "pullQuote": "Unhappily, “Lempicka” often seems to be all visible brushstrokes, a neatly constructed but surprisingly conventional show that turns the wild, imperious and wayward woman into a fairly standard-issue heroine, enduring trauma and searching for lasting love while also trying to assert her identity as an artist.",
+      "pullQuote": null,
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -13355,7 +14307,7 @@
       "pullQuote": "They have what the musical lacks: a clear and compelling aesthetic.",
       "dtliThumb": "Down",
       "bwwThumb": "Down",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "lempicka-2024",
@@ -13390,6 +14342,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "leopoldstadt-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/leopoldstadt-review",
+      "publishDate": "October 3, 2022",
+      "originalRating": 80,
+      "pullQuote": "Stoppard's deeply personal play about a Jewish family in Vienna across several decades is a moving meditation on memory, identity, and the weight of history.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "liberation-2025",
@@ -13713,7 +14682,7 @@
       "pullQuote": "A searching and revealing drama about the achievements and limits of 1970s feminism, Liberation weaves different kinds of conversation into a multilayered narrative—and, in doing so, serendipitously restores the very word conversation to its roots.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "liberation-2025",
@@ -13748,6 +14717,57 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
+    },
+    {
+      "showId": "linda-vista-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/linda-vista",
+      "publishDate": "October 11, 2019",
+      "originalRating": 60,
+      "pullQuote": "Linda Vista is a funny, sad, smart and sprawling portrait of middle-aged male disappointment that feels both bracingly honest and somewhat indulgent.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "lobby-hero-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/lobby-hero",
+      "publishDate": "March 26, 2018",
+      "originalRating": 80,
+      "pullQuote": "The cast is superb, led by Chris Evans in a performance that shows off his range and intelligence as an actor.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "macbeth-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/macbeth-review",
+      "publishDate": "April 29, 2022",
+      "originalRating": 60,
+      "pullQuote": "Craig and Negga are both magnetic performers, but their chemistry feels more platonic than passionate, which dulls the edge of their shared ambition.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "mamma-mia-2025",
@@ -13805,7 +14825,7 @@
       "outletId": "deadline",
       "outlet": "Deadline",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Greg Evans",
@@ -13859,7 +14879,7 @@
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2025/08/15/entertainment/mamma-mia-review-back-on-broadway-a-much-needed-summer-splash-of-abba/",
       "publishDate": "August 15, 2025",
       "originalRating": null,
@@ -14019,7 +15039,7 @@
       "pullQuote": "Almost two dozen hits by ABBA form the spine of this worldwide smash, which book writer Catherine Johnson has feebly fleshed out into a mother-daughter comedy-drama. As theater, Mamma Mia! is forgettable. As a delivery system for pop-culture nostalgia, it’s ruthless.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "mamma-mia-2025",
@@ -14070,7 +15090,7 @@
       "pullQuote": "Harrison's 80-minute play, directed with an eye on what matters most by Anne Kauffman, has a new urgency that sends your head spiraling in all kinds of directions",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "marjorie-prime-2025",
@@ -14394,7 +15414,7 @@
       "pullQuote": "\"An intriguing scenario but mainly an elegant study of memory as both escape and prison...The structural trick of Harrison’s play (not to give too much away) is the slow proliferation of Primes, which both palliates and sharpens the tragic chapters of Marjorie and Tess’s past. Time will tell if A.I.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "mary-jane-2024",
@@ -14684,7 +15704,7 @@
       "pullQuote": "...Herzog’s play shines like a candle in the dark.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "mary-jane-2024",
@@ -15025,7 +16045,7 @@
       "pullQuote": "Maybe Happy Ending stands out for both its intimacy and its originality. Arden and his actors approach the material with a delicate touch; they trust the romantic comedy to be charming, which it is, and let the wistfulness emerge naturally.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "maybe-happy-ending-2024",
@@ -15077,6 +16097,57 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "mcneal-2024",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/mcneal-review",
+      "publishDate": "September 23, 2024",
+      "originalRating": 60,
+      "pullQuote": "Ayad Akhtar's new play about a Pulitzer Prize-winning novelist who uses AI to write his next book is timely but uneven, elevated by Robert Downey Jr.'s committed performance.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "mean-girls-2018",
+      "outletId": "nydailynews",
+      "outlet": "New York Daily News",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Joe Dziemianowicz",
+      "url": "https://www.nydailynews.com/2018/04/09/mean-girls-broadway-review-tina-fey-musical-adaptation/",
+      "publishDate": "April 9, 2018",
+      "originalRating": 60,
+      "pullQuote": "The musical hits its stride in Act 2, when the mean-spirited machinations reach a fever pitch and the consequences become clear.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "mean-girls-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/mean-girls",
+      "publishDate": "April 8, 2018",
+      "originalRating": 60,
+      "pullQuote": "Mean Girls is a solid, entertaining musical that hits its marks without transcending them. It's fetch enough—but it could have been so much more.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "merrily-we-roll-along-2023",
@@ -15417,7 +16488,7 @@
       "pullQuote": "Friedman’s production meets the audience halfway, and a Broadway audience today just might be able to make up the difference as it couldn’t in 1981. Cross your fingers: It might finally be ’Merrily’s’ time.",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "merrily-we-roll-along-2023",
@@ -15520,6 +16591,23 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "complete"
+    },
+    {
+      "showId": "meteor-shower-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/meteor-shower",
+      "publishDate": "November 29, 2017",
+      "originalRating": 60,
+      "pullQuote": "Martin's play is a lightweight comedy that gets by on the charm of its stars and the appeal of its creator's name. It's a pleasant enough evening, but not a particularly memorable one.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "mj-2022",
@@ -15961,7 +17049,7 @@
       "pullQuote": "\"The dancers and singers of the ensemble, who double as secondary characters, are first-rate, and Wheeldon gives them a lot to do. Most of the songs are performed as rehearsals or flashbacks, which is to say as full-on production numbers. (Tracks from Jackson’s 1995 album HIStory are cannily placed by Nottage as character moments.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "mj-2022",
@@ -15994,6 +17082,23 @@
       "originalRating": null,
       "pullQuote": "\"In answer to the question of whether it’s possible to separate the art from the artist, “MJ” performs a slick, crotch-grabbing sidestep.",
       "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "mj-2022",
+      "outletId": "variety",
+      "outlet": "Variety",
+      "assignedScore": 77,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Peter Marks",
+      "url": "https://au.variety.com/2025/music/news/mj-the-musical-sydney-preview-tickets-20180/",
+      "publishDate": "February 2, 2022",
+      "originalRating": null,
+      "pullQuote": "The show is most successful when it focuses on Jackson's creative process and his perfectionism in the studio, with Myles Frost delivering a magnetic performance that captures the King of Pop's essence.",
+      "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -16285,7 +17390,7 @@
       "pullQuote": "While Mother Play may be punitive, it is never pitilessly so.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "mother-play-2024",
@@ -16680,6 +17785,23 @@
     },
     {
       "showId": "moulin-rouge-2019",
+      "outletId": "washpost",
+      "outlet": "The Washington Post",
+      "assignedScore": 64,
+      "scoreSource": "llmScore",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Peter Marks",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/08/17/moulin-rouge-review-kennedy-center/",
+      "publishDate": "July 26, 2019",
+      "originalRating": null,
+      "pullQuote": "It's a feast for the senses but leaves you hungry for more... The musical adaptation of Baz Luhrmann's film is undeniably spectacular, yet it feels oddly hollow at its core.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "moulin-rouge-2019",
       "outletId": "theater-news-online",
       "outlet": "Theater News Online",
       "assignedScore": 80,
@@ -16727,7 +17849,7 @@
       "pullQuote": "ââââ \"Red alert! Red alert! If you're the kind of person who frets that jukebox musicals are taking over Broadway, prepare to tilt at the windmill that is the gorgeous, gaudy, spectacularly overstuffed 'Moulin Rouge! The Musical.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "invalid",
+      "contentTier": "complete",
       "designation": "Critics_Choice"
     },
     {
@@ -16763,6 +17885,91 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "mrs-doubtfire-2021",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/mrs-doubtfire-review",
+      "publishDate": "December 6, 2021",
+      "originalRating": 60,
+      "pullQuote": "Mrs. Doubtfire is a sweet-natured musical that delivers exactly what you'd expect—no more, no less. It's a competent adaptation that hits all the familiar beats without adding much theatrical magic.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "my-fair-lady-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/my-fair-lady",
+      "publishDate": "April 19, 2018",
+      "originalRating": 80,
+      "pullQuote": "This handsome, well-sung revival of the Lerner and Loewe musical is a crowd-pleaser that plays things relatively safe but delivers the goods with style and warmth.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "my-fair-lady-2018",
+      "outletId": "usatoday",
+      "outlet": "USA Today",
+      "assignedScore": 75,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Elysa Gardner",
+      "url": "https://www.usatoday.com/story/life/theater/2018/04/19/my-fair-lady-broadway-review-lauren-ambrose-harry-hadden-paton/533012002/",
+      "publishDate": "April 19, 2018",
+      "originalRating": 75,
+      "pullQuote": "This revival boasts a handsome production and strong performances, particularly from Lauren Ambrose as Eliza Doolittle. But it doesn't feel especially fresh or urgent.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "network-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/network-review",
+      "publishDate": "December 7, 2018",
+      "originalRating": 80,
+      "pullQuote": "Bryan Cranston gives a powerhouse performance as Howard Beale, the unhinged news anchor in this riveting revival of Lee Hall's adaptation of Paddy Chayefsky's screenplay.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "new-york-new-york-2023",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/new-york-new-york-review",
+      "publishDate": "April 27, 2023",
+      "originalRating": 60,
+      "pullQuote": "The show has energy and spectacle to spare, but it struggles to find its own distinct voice amid the familiar Kander and Ebb songbook.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "oedipus-2025",
@@ -17103,7 +18310,7 @@
       "pullQuote": "Icke’s Oedipus is continuously engaging and smart... but where it runs up against a wall... is in trying to make the story function without gods and fates... I have never seen an Oedipus that truly wrecks.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "oedipus-2025",
@@ -17478,7 +18685,7 @@
       "pullQuote": "I can’t remember the last time I saw a play that made me laugh, helplessly and loudly, as much as Oh, Mary! did—and my reaction was shared by the rest of the audience",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "oh-mary-2024",
@@ -17547,6 +18754,91 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
+    },
+    {
+      "showId": "ohio-state-murders-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/ohio-state-murders",
+      "publishDate": "December 8, 2022",
+      "originalRating": 80,
+      "pullQuote": "Kenny Leon's production is spare and elegant, with a simple but effective design by Derek McLane that uses sliding panels to suggest different locations.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "oklahoma-2019",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 87,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Kristen Baldwin",
+      "url": "https://ew.com/theater/2019/04/08/oklahoma-broadway-review/",
+      "publishDate": "April 8, 2019",
+      "originalRating": 87,
+      "pullQuote": "This Oklahoma! is a thrilling, unsettling, and ultimately triumphant reinvention that honors Rodgers and Hammerstein's masterpiece while giving it a much-needed 21st-century update.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "oklahoma-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/oklahoma-review",
+      "publishDate": "April 8, 2019",
+      "originalRating": 80,
+      "pullQuote": "This Oklahoma! is not your grandfather's Oklahoma!—and that's exactly the point. Daniel Fish's revelatory revival strips away the nostalgic gloss to reveal the show's darker undercurrents.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "old-times-2015",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/old-times",
+      "publishDate": "October 6, 2015",
+      "originalRating": 80,
+      "pullQuote": "The three performances are excellent, particularly Owen's, which finds the exact right note of suave menace. Under Douglas Hughes's taut direction, the play's sinuous tensions coil and release with satisfying precision.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "once-on-this-island-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/once-on-this-island",
+      "publishDate": "December 3, 2017",
+      "originalRating": 80,
+      "pullQuote": "This gorgeous revival of the 1990 musical transforms Circle in the Square into a Caribbean paradise, with immersive staging that puts the audience right in the middle of the action.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "once-upon-a-one-more-time-2023",
@@ -17988,7 +19280,7 @@
       "pullQuote": "Simard is delicious; the rest of the show, if you turn off your brain, is merely yummy in a candy-coated way. That’s not nothing: ‘Once Upon a One More Time’ is a well-assembled and entertaining diversion...Musicals are capable of more ambitious roles than merely carrying Spears.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "once-upon-a-one-more-time-2023",
@@ -18117,7 +19409,7 @@
       "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2025/03/20/entertainment/operation-mincemeat-review-hyperactive-wwii-musical-comedy-got-on-my-nerves/",
       "publishDate": "March 20, 2025",
       "originalRating": null,
@@ -18328,7 +19620,7 @@
       "pullQuote": "‘Operation Mincemeat’ ... is itself slicker than it wants to appear, and clearly well-drilled. This really is an ensemble show, and SpitLip prove a winning one. Their style may not be for everyone, but you’d have to have a very stiff upper lip indeed for it not to break into laughter.",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "operation-mincemeat-2025",
@@ -18363,6 +19655,23 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
+    },
+    {
+      "showId": "oslo-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/oslo-review",
+      "publishDate": "April 13, 2017",
+      "originalRating": 80,
+      "pullQuote": "Oslo is a gripping, intelligent drama that transforms a complex historical negotiation into compelling theater. The play succeeds in making the intricate diplomatic process both accessible and dramatically satisfying.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "our-town-2024",
@@ -18423,7 +19732,7 @@
       "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2024/10/10/entertainment/our-town-review-revival-starring-jim-parsons-and-katie-holmes-doesnt-hit-home/?utm_campaign=nypost&amp;utm_medium=referral",
       "publishDate": "October 10, 2024",
       "originalRating": null,
@@ -18522,7 +19831,7 @@
       "outletId": "new-york-sun",
       "outlet": "The New York Sun",
       "assignedScore": 74,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Elysa Gardner",
@@ -18635,7 +19944,7 @@
       "pullQuote": "But while we in the audience might weep, Wilder's view, though always sympathetic, stays clear and dry. He has an eye on the eternal.",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "our-town-2024",
@@ -18670,6 +19979,74 @@
       "dtliThumb": null,
       "bwwThumb": "Meh",
       "contentTier": "complete"
+    },
+    {
+      "showId": "parade-2023",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/parade-review",
+      "publishDate": "March 16, 2023",
+      "originalRating": 80,
+      "pullQuote": "This revival of Jason Robert Brown and Alfred Uhry's musical about the Leo Frank case is both beautiful and devastating, with exceptional performances from Ben Platt and Micaela Diamond.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "paradise-square-2022",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 87,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Kristen Baldwin",
+      "url": "https://ew.com/theater/reviews/paradise-square-broadway-review/",
+      "publishDate": "April 4, 2022",
+      "originalRating": 87,
+      "pullQuote": "Paradise Square is an ambitious musical that tackles issues of race, class, and immigration in Civil War-era New York with impressive performances and stunning choreography, even if the storytelling occasionally feels overstuffed.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "paradise-square-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/paradise-square-review",
+      "publishDate": "April 4, 2022",
+      "originalRating": 60,
+      "pullQuote": "Paradise Square is a show with noble intentions and a worthy subject, but it struggles under the weight of its own ambitions.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "pass-over-2021",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/pass-over-review",
+      "publishDate": "August 23, 2021",
+      "originalRating": 80,
+      "pullQuote": "Pass Over is a powerful and urgent work that transforms a simple premise into something profound and necessary. The production crackles with energy and purpose.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "patriots-2024",
@@ -19043,7 +20420,7 @@
       "pullQuote": "3/5 Stars. The play's not the thing here...Stuhlbarg and Keen are the crème de la Kremlin.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "truncated"
     },
     {
       "showId": "patriots-2024",
@@ -19078,6 +20455,23 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "plaza-suite-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/plaza-suite-review",
+      "publishDate": "March 28, 2022",
+      "originalRating": 60,
+      "pullQuote": "The show's main attraction is the chance to see Parker and Broderick work together, and they do make a charming team—though the material doesn't always rise to their level.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "prayer-for-the-french-republic-2024",
@@ -19350,7 +20744,7 @@
       "pullQuote": "Joshua Harmon's sweeping family drama about French Jews grappling with rising antisemitism is both timely and deeply moving, anchored by powerhouse performances from Nancy Robinette and Richard Masur.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "prayer-for-the-french-republic-2024",
@@ -19418,7 +20812,7 @@
       "pullQuote": "There is perceptiveness and humor in ‘Prayer for the French Republic,’ and Cromer’s direction does its best to keep things honest. But as Harmon weighs out the issues, you can sense his thumb on the scale; by the denouement, it feels more like his whole hand, pressing for amens.",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "prayer-for-the-french-republic-2024",
@@ -19453,6 +20847,57 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "present-laughter-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/present-laughter",
+      "publishDate": "April 5, 2017",
+      "originalRating": 80,
+      "pullQuote": "Kline's performance is a master class in comic timing and theatrical charisma, bringing Coward's self-absorbed actor to vivid, entertaining life.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "pretty-woman-the-musical-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 40,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/pretty-woman-the-musical",
+      "publishDate": "August 16, 2018",
+      "originalRating": 40,
+      "pullQuote": "Pretty Woman: The Musical is a show that feels like it was assembled by committee, with songs that rarely rise above the serviceable and a book that adds little depth to the familiar story.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "prince-of-broadway-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/prince-of-broadway",
+      "publishDate": "August 24, 2017",
+      "originalRating": 60,
+      "pullQuote": "Prince of Broadway is a pleasant enough trip through the catalog of one of musical theater's most important figures, but it feels more like a tribute concert than a fully realized theatrical experience.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "purlie-victorious-2023",
@@ -19793,7 +21238,7 @@
       "pullQuote": "Ossie Davis’s 1961 play—in which the actor and activist originally starred opposite Ruby Dee—may not seem a likely candidate for revival. Comedies often age badly, and comedies about race are even riskier.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "purlie-victorious-2023",
@@ -20219,7 +21664,7 @@
       "pullQuote": "Like the rest of the show, however, the score doesn’t quite cohere; it feels like less than the sum of its parts.",
       "dtliThumb": "Down",
       "bwwThumb": "Down",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "queen-versailles-2025",
@@ -20585,7 +22030,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 89,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -20680,7 +22125,7 @@
       "pullQuote": "What he delivers in Ragtime is, quite simply, some of the most magnificent singing I have ever heard on Broadway",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "ragtime-2025",
@@ -20959,7 +22404,7 @@
       "outletId": "new-york-sun",
       "outlet": "The New York Sun",
       "assignedScore": 46,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Elysa Gardner",
@@ -20994,7 +22439,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Naveen Kumar",
@@ -21004,7 +22449,7 @@
       "pullQuote": "Don’t expect a taste of medicine beneath the heaping spoonfuls of sugar: It’s a laugh-out-loud musical comedy with a massive dose of heart. If that combination sounds unlikely, the creators pull off an impressive balancing act in relishing joy and humor amid striving and strife.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "truncated"
     },
     {
       "showId": "real-women-have-curves-2025",
@@ -21089,7 +22534,7 @@
       "pullQuote": "This show is a bona fide crowd pleaser: a warm hug that pulls you into its generous bosom. With a little luck, it could turn out to be a sleeper hit.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "real-women-have-curves-2025",
@@ -21566,7 +23011,7 @@
       "pullQuote": "As in 2018’s unfortunate King Kong, the colossal title character of Redwood (which Jesse christens Stella) is the best thing about this musical, even though—or maybe because—it doesn’t sing. But arboreal splendor can’t compensate for the blandness that surrounds it. The show is all bark and no bite.",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "redwood-2025",
@@ -21618,6 +23063,57 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "she-loves-me-2016",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/she-loves-me-review",
+      "publishDate": "March 17, 2016",
+      "originalRating": 80,
+      "pullQuote": "This revival of Jerry Bock and Sheldon Harnick's 1963 musical is a thing of beauty, performed with such skill and heart that it makes you fall in love with the art of musical theater all over again.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "shucked-2023",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/shucked-review",
+      "publishDate": "April 4, 2023",
+      "originalRating": 60,
+      "pullQuote": "This corny musical comedy about a small farming town threatened by a crop crisis is more sweet than sharp, but it has enough charm to keep audiences entertained.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "significant-other-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/significant-other",
+      "publishDate": "March 2, 2017",
+      "originalRating": 60,
+      "pullQuote": "Joshua Harmon's comedy-drama about gay friendship and straight weddings is sharp and heartfelt, but it doesn't quite achieve the full emotional impact it's reaching for.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "six-2021",
@@ -21726,7 +23222,7 @@
       "outletId": "front-row-center",
       "outlet": "Front Row Center",
       "assignedScore": 89,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Tulis McCall",
@@ -21736,7 +23232,7 @@
       "pullQuote": "They have created a generous, funny, provocative show that races by you, grabs your hand and flies up into the stratosphere.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "six-2021",
@@ -22097,6 +23593,23 @@
       "contentTier": "complete"
     },
     {
+      "showId": "skeleton-crew-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/skeleton-crew-review",
+      "publishDate": "January 13, 2022",
+      "originalRating": 60,
+      "pullQuote": "Skeleton Crew is a well-crafted play that finds hope and humanity in the face of economic hardship, anchored by strong performances from its ensemble cast.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
       "showId": "spamalot-2023",
       "outletId": "broadwaynews",
       "outlet": "Broadway News",
@@ -22206,7 +23719,7 @@
       "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2023/11/16/entertainment/monty-pythons-spamalot-broadway-review-an-ok-copy-of-the-original/",
       "publishDate": "November 16, 2023",
       "originalRating": null,
@@ -22356,23 +23869,6 @@
       "showId": "spamalot-2023",
       "outletId": "theatermania",
       "outlet": "TheaterMania",
-      "assignedScore": 58,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jesse Green",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/spamalot-broadway-st-james-theatre_94071.html",
-      "publishDate": "November 16, 2023",
-      "originalRating": null,
-      "pullQuote": "The new Broadway revival of Spamalot at the St. James Theatre is a joyous, silly, and thoroughly entertaining production that captures the anarchic spirit of Monty Python while updating the material for contemporary audiences.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "spamalot-2023",
-      "outletId": "theatermania",
-      "outlet": "TheaterMania",
       "assignedScore": 79,
       "scoreSource": "llmScore",
       "bucket": "Positive",
@@ -22435,7 +23931,7 @@
       "pullQuote": "“Rhodes’s cast of show-tune pros is highly capable, and the show’s laughter now seems more like it’s coming from inside the Broadway house. It’s a true ensemble effort...In this company of men, however, it is a woman who really dazzles: Leslie Rodriguez Kritzer as the sword-bestowing Lady of the Lake...",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "spamalot-2023",
@@ -22470,6 +23966,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "spongebob-squarepants-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/spongebob-squarepants",
+      "publishDate": "December 4, 2017",
+      "originalRating": 80,
+      "pullQuote": "The SpongeBob musical is a triumph of theatrical imagination that transforms Nickelodeon's cartoon into something genuinely moving and spectacular.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "stereophonic-2024",
@@ -22895,7 +24408,7 @@
       "pullQuote": "This is a masterpiece of musical theater, a work of staggering ambition and achievement that sets a new standard for what the medium can accomplish.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "stereophonic-2024",
@@ -22964,6 +24477,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "straight-white-men-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/straight-white-men",
+      "publishDate": "July 23, 2018",
+      "originalRating": 60,
+      "pullQuote": "Young Jean Lee's Broadway debut is a well-intentioned but dramatically inert examination of privilege that feels more like a lecture than a play.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "stranger-things-2024",
@@ -23320,7 +24850,7 @@
       "pullQuote": "‘The First Shadow’ suffers from dramatic bloat and tonal inconsistency. The biggest frustration with it is the sense that it might have been show of the year with 30 minutes of really ruthless cuts...It’s not perfect, but it’s as close to the Upside Down as you’re going to get without having your head bitten off by a demogorgon.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "invalid",
+      "contentTier": "complete",
       "designation": "Critics_Choice"
     },
     {
@@ -23416,7 +24946,7 @@
       "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2024/04/18/entertainment/suffs-review-a-moving-musical-march-thats-not-quite-there-yet/",
       "publishDate": "April 19, 2024",
       "originalRating": null,
@@ -23481,17 +25011,17 @@
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 78,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Matthew Murray",
-      "url": "https://talkinbroadway.com/page.php?page=reviews&id=21341",
+      "url": "https://www.talkinbroadway.com/page/world/Suffs.html",
       "publishDate": "April 19, 2024",
       "originalRating": null,
       "pullQuote": "Suffs is a musical that knows exactly what it wants to be and achieves those goals with remarkable consistency and intelligence.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "suffs-2024",
@@ -23580,23 +25110,6 @@
     },
     {
       "showId": "suffs-2024",
-      "outletId": "theatermania",
-      "outlet": "TheaterMania",
-      "assignedScore": 60,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jesse Green",
-      "url": "https://www.theatermania.com/broadway/reviews/suffs_90952.html",
-      "publishDate": "April 19, 2024",
-      "originalRating": null,
-      "pullQuote": "Taub's score is tuneful and her lyrics are clever, but the show feels more like a history lesson than a musical drama.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "suffs-2024",
       "outletId": "theatrely",
       "outlet": "Theatrely",
       "assignedScore": 69,
@@ -23661,7 +25174,7 @@
       "pullQuote": "...a full-throated musical call to action, its message is neither subtle nor ambivalent",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "suffs-2024",
@@ -23713,6 +25226,125 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "summer-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/summer-the-donna-summer-musical",
+      "publishDate": "April 23, 2018",
+      "originalRating": 60,
+      "pullQuote": "Summer has its moments of genuine power, particularly when it focuses on the civil rights struggles that shaped Summer's worldview and when it showcases the undeniable force of her music.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "sweat-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/sweat-review",
+      "publishDate": "March 26, 2017",
+      "originalRating": 80,
+      "pullQuote": "Lynn Nottage's Pulitzer Prize-winning play is a powerful drama about economic anxiety and racial tension in a Pennsylvania factory town.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "sweeney-todd-2023",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/sweeney-todd-review",
+      "publishDate": "March 28, 2023",
+      "originalRating": 80,
+      "pullQuote": "Josh Groban and Annaleigh Ashford bring fresh energy to Sondheim's masterpiece in this thrilling revival that balances darkness with surprising moments of levity.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-bands-visit-2017",
+      "outletId": "guardian",
+      "outlet": "The Guardian",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Jesse Green",
+      "url": "https://www.theguardian.com/stage/2017/dec/01/the-bands-visit-review-broadway-musical",
+      "publishDate": "December 1, 2017",
+      "originalRating": 80,
+      "pullQuote": "This modest, melancholy musical about an Egyptian police band stranded in an Israeli town is a small miracle of cross-cultural understanding.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-bands-visit-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 100,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-bands-visit",
+      "publishDate": "December 11, 2017",
+      "originalRating": 100,
+      "pullQuote": "This gorgeous, gentle musical about cultural connection and the healing power of music is a masterpiece of understatement that speaks volumes.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-boys-in-the-band-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-boys-in-the-band",
+      "publishDate": "May 31, 2018",
+      "originalRating": 80,
+      "pullQuote": "The Boys in the Band remains a landmark play, and this revival honors it with a production that is both faithful to its period and vibrantly alive for ours.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-collaboration-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-collaboration-review",
+      "publishDate": "December 20, 2022",
+      "originalRating": 60,
+      "pullQuote": "The play offers fascinating glimpses into the creative process, but it never quite captures the electric chemistry that made Basquiat and Warhol's partnership so legendary.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "the-cottage-2023",
@@ -23807,7 +25439,7 @@
       "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2023/07/24/the-cottage-review-tired-new-broadway-farce-is-forced/",
       "publishDate": "July 24, 2023",
       "originalRating": null,
@@ -24103,7 +25735,7 @@
       "pullQuote": "Those old-fashioned components might be enough for this title to find a warm-weather audience",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "the-great-gatsby-2024",
@@ -24426,7 +26058,7 @@
       "pullQuote": "‘The Great Gatsby’ can be an entertaining night out on the town if you think of it less as a play and more as a night of dress-up...The beat goes on for those who ride the show’s current, eager to be borne back into the past.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "the-great-gatsby-2024",
@@ -24461,6 +26093,91 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "the-great-society-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-great-society",
+      "publishDate": "October 1, 2019",
+      "originalRating": 60,
+      "pullQuote": "The Great Society is a worthy sequel that doesn't quite match the original's theatrical power, but it offers a compelling portrait of LBJ's later presidency.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-humans-2016",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-humans",
+      "publishDate": "October 25, 2016",
+      "originalRating": 80,
+      "pullQuote": "Karam's play is a masterpiece of ordinary dread, finding horror in the everyday anxieties of a middle-class family gathering for Thanksgiving dinner.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-iceman-cometh-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-iceman-cometh",
+      "publishDate": "April 26, 2018",
+      "originalRating": 80,
+      "pullQuote": "Under George C. Wolfe's direction, O'Neill's epic feels less like an endurance test than a gripping investigation of American disillusionment.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-kite-runner-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-kite-runner-review",
+      "publishDate": "July 21, 2022",
+      "originalRating": 60,
+      "pullQuote": "This faithful adaptation of Khaled Hosseini's beloved novel brings emotional weight to the stage, though it occasionally feels constrained by its reverence for the source material.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-lehman-trilogy-2021",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-lehman-trilogy",
+      "publishDate": "October 14, 2021",
+      "originalRating": 80,
+      "pullQuote": "The Lehman Trilogy is a monumental work of theater that transforms the rise and fall of a financial dynasty into gripping, intimate drama.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "the-lion-king-1997",
@@ -24702,6 +26419,23 @@
     },
     {
       "showId": "the-lion-king-1997",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Ben Brantley",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9a01efd81738f937a25752c1a961958260",
+      "publishDate": "November 14, 1997",
+      "originalRating": null,
+      "pullQuote": "There is simply nothing else like it. Julie Taymor has taken the sweet but somewhat insubstantial story of the Disney movie and transformed it into a meditation on the great cycle of life.",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "the-lion-king-1997",
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 74,
@@ -24732,7 +26466,7 @@
       "pullQuote": "Taymor populates the stage with an amazing menagerie of beasts; her audacious staging expands a simple cub into the pride of Broadway, not merely a fable of heredity but a celebration of heritage.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-lion-king-1997",
@@ -24799,6 +26533,74 @@
       "originalRating": null,
       "pullQuote": "\"You will be bombarded by some of the most beautiful and spectacular sights theater can offer from before and behind, so eyes in the back of the head will come in handy.",
       "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-little-foxes-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-little-foxes",
+      "publishDate": "April 19, 2017",
+      "originalRating": 80,
+      "pullQuote": "The revival of Lillian Hellman's 1939 drama about greed and family dysfunction in the post-Reconstruction South is anchored by two powerhouse performances from Laura Linney and Cynthia Nixon, who alternate in the roles of Regina and Birdie.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-minutes-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-minutes-review",
+      "publishDate": "April 17, 2022",
+      "originalRating": 60,
+      "pullQuote": "The Minutes is a play that builds to a revelation that recontextualizes everything that has come before, and when that revelation arrives, it lands with genuine force.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-music-man-2022",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 87,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Kristen Baldwin",
+      "url": "https://ew.com/theater/the-music-man-broadway-review-hugh-jackman/",
+      "publishDate": "February 11, 2022",
+      "originalRating": 87,
+      "pullQuote": "Jackman's charisma and vocal prowess make this revival worthwhile, even if it doesn't quite recapture the magic of the original.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-music-man-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-music-man-review",
+      "publishDate": "February 11, 2022",
+      "originalRating": 60,
+      "pullQuote": "Hugh Jackman brings his considerable star power to the role of Harold Hill, but the production feels more like a showcase for its leading man than a fully realized revival.",
+      "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
     },
@@ -24885,7 +26687,7 @@
       "pullQuote": "The Notebook is leaping off the page and onto the stage...its finest adaptation yet.",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "the-notebook-2024",
@@ -24912,7 +26714,7 @@
       "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2024/03/14/entertainment/the-notebook-review-broadway-musical-doesnt-match-films-sweep/",
       "publishDate": "March 14, 2024",
       "originalRating": null,
@@ -25571,6 +27373,23 @@
       "showId": "the-outsiders-2024",
       "outletId": "theatermania",
       "outlet": "TheaterMania",
+      "assignedScore": 78,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-outsiders_93847.html",
+      "publishDate": "April 12, 2024",
+      "originalRating": null,
+      "pullQuote": "The Outsiders is a deeply felt, beautifully staged musical that honors its source material while finding its own theatrical voice.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "outletId": "theatermania",
+      "outlet": "TheaterMania",
       "assignedScore": 63,
       "scoreSource": "llmScore",
       "bucket": "Mixed",
@@ -25668,6 +27487,57 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "the-parisian-woman-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-parisian-woman",
+      "publishDate": "November 16, 2017",
+      "originalRating": 60,
+      "pullQuote": "Uma Thurman makes her Broadway debut in Beau Willimon's adaptation of Henry Becque's 1885. French drama, but the production feels more dutiful than electric.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-price-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-price-review",
+      "publishDate": "March 9, 2017",
+      "originalRating": 60,
+      "pullQuote": "Miller's drama about family, responsibility and regret gets a solid revival with Danny DeVito and Mark Ruffalo.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-prom-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-prom",
+      "publishDate": "November 15, 2018",
+      "originalRating": 80,
+      "pullQuote": "The Prom is a big, bouncy musical that wears its heart on its sequined sleeve. It's about as subtle as a pride parade float, but it's also about as joyful.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "the-roommate-2024",
@@ -26007,7 +27877,7 @@
       "pullQuote": "Sometimes the old can be full of surprises. That’s the running premise of The Roommate, which brings together two very different senior citizens",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "the-roommate-2024",
@@ -26093,6 +27963,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "the-rose-tattoo-2019",
+      "outletId": "guardian",
+      "outlet": "The Guardian",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adrian Horton",
+      "url": "https://www.theguardian.com/stage/2019/oct/08/the-rose-tattoo-review-marisa-tomei-broadway-american-airlines-theatre",
+      "publishDate": "October 8, 2019",
+      "originalRating": 60,
+      "pullQuote": "Tomei brings a grounded authenticity to Serafina, making her grief feel lived-in rather than performed, though the production as a whole feels uneven in its approach to Williams's blend of comedy and tragedy.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "the-shark-is-broken-2023",
@@ -26187,7 +28074,7 @@
       "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2023/08/10/the-shark-is-broken-review-jaws-play-swallowed-by-broadway/?utm_source=dlvr.it&utm_medium=twitter",
       "publishDate": "August 10, 2023",
       "originalRating": null,
@@ -26432,7 +28319,7 @@
       "pullQuote": "“For a play that draws much of its appeal from nostalgia, ’The Shark Is Broken’ mostly avoids documentary-style exposition about the making of Jaws...In any case, the play has the good sense to end with Shaw’s performance of that very speech—which the actor also had a hand in writing—in its entirety.",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "the-shark-is-broken-2023",
@@ -26467,6 +28354,40 @@
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
       "contentTier": "complete"
+    },
+    {
+      "showId": "the-sound-inside-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-sound-inside",
+      "publishDate": "October 17, 2019",
+      "originalRating": 80,
+      "pullQuote": "Mary-Louise Parker gives a performance of extraordinary subtlety and power as a creative writing professor who forms an intense bond with a brilliant but troubled student.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "the-waverly-gallery-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/the-waverly-gallery",
+      "publishDate": "October 25, 2018",
+      "originalRating": 80,
+      "pullQuote": "Lucas Hnath's beautifully observed play about dementia and family dynamics gets a superb production anchored by Elaine May's magnificent performance as Gladys Green.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "the-whos-tommy-2024",
@@ -26578,7 +28499,7 @@
       "scoreSource": "human-review",
       "bucket": "Rave",
       "thumb": "Up",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2024/03/28/entertainment/the-whos-tommy-broadway-review-4-stars-for-a-rock-revival/",
       "publishDate": "March 28, 2024",
       "originalRating": null,
@@ -26806,7 +28727,7 @@
       "pullQuote": "As musical theater, Tommy is limited. On its own terms, it’s often sensational.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "the-whos-tommy-2024",
@@ -26969,7 +28890,7 @@
       "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
-      "criticName": "Johnny Oleksinki",
+      "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2024/04/17/entertainment/the-wiz-broadway-review-were-off-to-see-the-cheap-natl-tour/",
       "publishDate": "April 17, 2024",
       "originalRating": null,
@@ -27102,7 +29023,7 @@
       "outletId": "new-york-sun",
       "outlet": "The New York Sun",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Elysa Gardner",
@@ -27153,7 +29074,7 @@
       "outletId": "washpost",
       "outlet": "The Washington Post",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Gloria Oladipo",
@@ -27163,7 +29084,7 @@
       "pullQuote": "The new Broadway revival is charming, but at the cost of a broader artistic vision",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "contentTier": "invalid"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-wiz-2024",
@@ -27268,6 +29189,40 @@
       "contentTier": "complete"
     },
     {
+      "showId": "thoughts-of-a-colored-man-2021",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/thoughts-of-a-colored-man-review",
+      "publishDate": "November 1, 2021",
+      "originalRating": 60,
+      "pullQuote": "The play works best when it focuses on specific, lived-in moments rather than broader proclamations about Black male experience.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "time-and-the-conways-2017",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/time-and-the-conways",
+      "publishDate": "October 10, 2017",
+      "originalRating": 60,
+      "pullQuote": "The production is handsomely mounted, with a lovely set by Peter McKintosh that transforms from cozy to cavernous, and it features some strong performances.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
       "showId": "titanique-2026",
       "outletId": "cititour",
       "outlet": "Cititour",
@@ -27300,6 +29255,91 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "tootsie-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/tootsie-review",
+      "publishDate": "April 23, 2019",
+      "originalRating": 60,
+      "pullQuote": "Tootsie is a show that works better in its quieter, more intimate moments than in its big splashy numbers. The musical has heart, but it doesn't always know how to show it.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "torch-song-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/torch-song-review",
+      "publishDate": "November 1, 2018",
+      "originalRating": 60,
+      "pullQuote": "Fierstein's performance is genuinely moving, and his chemistry with Ward Horton as his younger lover is palpable. But the play itself feels dated in ways that go beyond its 1970s setting.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "travesties-2018",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/travesties-review",
+      "publishDate": "April 24, 2018",
+      "originalRating": 80,
+      "pullQuote": "Tom Hollander gives a tour de force performance as Henry Carr in this witty revival that makes Stoppard's intellectual comedy feel surprisingly accessible and entertaining.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "trouble-in-mind-2021",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/trouble-in-mind-review",
+      "publishDate": "November 19, 2021",
+      "originalRating": 80,
+      "pullQuote": "Alice Childress's 1955 drama about Black actors dealing with racism in the theater feels urgently contemporary in Charles Randolph-Wright's superb revival.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "true-west-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/true-west-review",
+      "publishDate": "January 24, 2019",
+      "originalRating": 80,
+      "pullQuote": "The production succeeds largely because of the ferocious commitment of its two leads, Ethan Hawke and Paul Dano, who alternate nightly in the roles of the brothers.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -27357,7 +29397,7 @@
       "outletId": "lighting-and-sound-america",
       "outlet": "Lighting & Sound America",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Barbour",
@@ -27367,7 +29407,7 @@
       "pullQuote": "It is an act of prestidigitation: Entertainment and real emotional engagement are pulled out of thin air.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -27902,7 +29942,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 45,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Unknown",
@@ -27912,7 +29952,7 @@
       "pullQuote": "...both cast and staging struggle to cohere.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "uncle-vanya-2024",
@@ -27953,7 +29993,7 @@
       "outletId": "thewrap",
       "outlet": "TheWrap",
       "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Robert Hofler",
@@ -27963,7 +30003,7 @@
       "pullQuote": "This update on Vanya doesn’t alter the story in any revolutionary terms",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "uncle-vanya-2024",
@@ -28049,6 +30089,57 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "waitress-2016",
+      "outletId": "ew",
+      "outlet": "Entertainment Weekly",
+      "assignedScore": 87,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Melissa Rose Bernardo",
+      "url": "https://ew.com/article/2016/04/25/waitress-broadway-review/",
+      "publishDate": "April 25, 2016",
+      "originalRating": 87,
+      "pullQuote": "Jessie Mueller brings her considerable gifts to bear on the role of Jenna, a small-town waitress and pie-maker trapped in an abusive marriage who finds solace — and hope — in an extramarital affair with her gynecologist.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "waitress-2016",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 60,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/waitress",
+      "publishDate": "April 24, 2016",
+      "originalRating": 60,
+      "pullQuote": "Waitress is a sweet show with a terrific score by Sara Bareilles, but it doesn't quite rise to the level of its ingredients.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "walking-with-ghosts-2022",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/walking-with-ghosts",
+      "publishDate": "October 13, 2022",
+      "originalRating": 80,
+      "pullQuote": "Byrne is a master storyteller, and his performance is both intimate and theatrical, weaving together memories of his childhood in Ireland with reflections on family, loss, and the passage of time.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "water-for-elephants-2024",
@@ -28423,7 +30514,7 @@
       "pullQuote": "The main attraction is the pull of the circus itself.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "invalid"
+      "contentTier": "complete"
     },
     {
       "showId": "water-for-elephants-2024",
@@ -28475,6 +30566,23 @@
       "dtliThumb": "Up",
       "bwwThumb": "Meh",
       "contentTier": "complete"
+    },
+    {
+      "showId": "what-the-constitution-means-to-me-2019",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/what-the-constitution-means-to-me",
+      "publishDate": "March 14, 2019",
+      "originalRating": 80,
+      "pullQuote": "Schreck's show is a triumph of personal storytelling that manages to be both intimate and universal, turning constitutional law into something urgently human.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     },
     {
       "showId": "wicked-2003",
@@ -28716,6 +30824,23 @@
     },
     {
       "showId": "wicked-2003",
+      "outletId": "nytimes",
+      "outlet": "The New York Times",
+      "assignedScore": 78,
+      "scoreSource": "llmScore",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Charles Isherwood",
+      "url": "http://www.nytimes.com/2014/08/22/theater/a-decade-later-wicked-continues-to-be-catnip-for-tweens.html?_r=1",
+      "publishDate": "August 21, 2014",
+      "originalRating": null,
+      "pullQuote": "In retrospect, Wicked seems an early sign of the cultural clout which is to say buying power of a generation of girls (and now women) whose desire to see, read, and sing along with stories about female empowerment has become a snowballing trend.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
+    },
+    {
+      "showId": "wicked-2003",
       "outletId": "newyorker",
       "outlet": "The New Yorker",
       "assignedScore": 87,
@@ -28774,7 +30899,7 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Peter Marks",
-      "url": "http://journaltimes.com/entertainment/a-radical-retelling-of-wizard-of-oz/article_de42e691-cb2a-5d4b-90a4-36ae0171c1e3.html",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2003/10/31/kristen-chenoweth-good-luck-charm/3701584c-82b3-4610-9220-6fb5662cbc8f/",
       "publishDate": "November 1, 2003",
       "originalRating": null,
       "pullQuote": "Wicked makes endearingly whimsical noises, the sounds of a bona fide crowd-pleaser. Much of the rest of the time, however, the magic fades as the show pursues its rather charmless agenda as a parable about the roots of political evil.",
@@ -28901,6 +31026,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "yellow-face-2024",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Adam Feldman",
+      "url": "https://www.timeout.com/newyork/theater/yellow-face-review",
+      "publishDate": "October 2, 2024",
+      "originalRating": 80,
+      "pullQuote": "Hwang has written a funny, smart, and surprisingly moving play about identity, authenticity, and the complicated relationship between art and activism.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "truncated"
     }
   ]
 }

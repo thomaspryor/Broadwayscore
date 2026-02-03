@@ -5,7 +5,7 @@
   "criticName": "Matthew Murray",
   "url": "https://www.talkinbroadway.com/page/world/nyc/nyc723.html",
   "publishDate": "March 18, 2024",
-  "fullText": null,
+  "fullText": "Theatre themed apparelBroadway themed experiencesMusical theatre soundtracksPlay scripts monologuesTheatre-themed merchandiseThe Repertory Theatre of St. LouisPlay scriptsLyric Arts Main Street StageTony Awards coveragePlay directing guides\n\n Page does not exist\n\nOff-Broadway theatre guideMusical theatre reviewsStage lighting equipmentArena StageRegional theater tickets\n \n \n \n \n\n \n \n \n \n \n Share:",
   "isFullReview": false,
   "dtliExcerpt": "Jeremy Strong's performance as Dr. Thomas Stockmann is nothing short of electrifying, bringing a manic intensity to Ibsen's idealistic protagonist that feels both authentic and unhinged.",
   "originalScore": null,
@@ -73,7 +73,48 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "fullText was copy of excerpt from web-search import",
-  "textWordCount": 0
+  "textWordCount": 39,
+  "archivePath": "data/archives/reviews/an-enemy-of-the-people-2024/talkinbroadway--matthew-murray_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T02:56:32.404Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "excerpt",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 39 (min: 300)",
+    "Show title not found in text"
+  ],
+  "wordCount": 39,
+  "tierReason": "Short text (39 words)"
 }

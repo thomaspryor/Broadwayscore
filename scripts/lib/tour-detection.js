@@ -118,7 +118,7 @@ const TOURING_VENUES = [
 const OFF_BROADWAY_PATTERNS = [
   /off[-\s]?broadway/i,
   /off[-\s]?off[-\s]?broadway/i,
-  /o\.?b\.?/i, // O.B. abbreviation
+  /\bo\.?b\.?\b/i, // O.B. abbreviation (word boundaries to avoid matching inside words like "JOB")
 ];
 
 /**

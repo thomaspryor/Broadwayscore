@@ -677,11 +677,129 @@ async function fetchShowImages(show, todayTixInfo, apiData) {
   return await fetchFromPlaybill(show);
 }
 
+// Process a single show: discover TodayTix ID, fetch images, update show object.
+// Returns { show, images, apiSourced } or null on failure.
+async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly) {
+  // Try matching against TodayTix API data (instant, no HTTP call)
+  const apiData = matchTodayTixShow(show.title, apiLookup);
+
+  // Cache API-discovered TodayTix ID
+  if (apiData && apiData.id) {
+    todayTixIds.shows[show.id] = { id: apiData.id, slug: null };
+  }
+
+  // When re-sourcing bad images, clear the cached TodayTix ID so we re-discover
+  if (badImagesOnly && todayTixIds.shows[show.id]) {
+    console.log(`   Clearing cached TodayTix ID for ${show.id} (re-discovering)`);
+    delete todayTixIds.shows[show.id];
+  }
+
+  // If no API match, try page-scrape discovery
+  let todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
+
+  if (!todayTixInfo && !apiData) {
+    todayTixInfo = await discoverTodayTixId(show.title);
+    if (todayTixInfo) {
+      todayTixIds.shows[show.id] = todayTixInfo;
+    }
+  }
+
+  // Fetch images: API data → page scrape → Playbill fallback
+  const images = await fetchShowImages(show, todayTixInfo, apiData);
+  return { show, images, apiSourced: !!apiData };
+}
+
+// Process shows in batches with concurrency.
+// API-sourced shows (instant) are separated from scrape-needing shows.
+async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency) {
+  const results = { success: [], failed: [], skipped: [] };
+
+  // Separate API-matched shows (instant, no rate limit needed) from scrape-needed shows
+  const apiShows = [];
+  const scrapeShows = [];
+  for (const show of shows) {
+    const apiData = matchTodayTixShow(show.title, apiLookup);
+    if (apiData) {
+      apiShows.push(show);
+    } else {
+      scrapeShows.push(show);
+    }
+  }
+
+  console.log(`  API-matched (instant): ${apiShows.length} shows`);
+  console.log(`  Need scraping: ${scrapeShows.length} shows`);
+  console.log(`  Concurrency: ${concurrency}\n`);
+
+  // Process API-matched shows first (fast, no rate limiting)
+  for (const show of apiShows) {
+    const result = await processOneShow(show, apiLookup, todayTixIds, badImagesOnly);
+    if (result && result.images) {
+      applyImages(result.show, result.images);
+      results.success.push(show.title);
+    } else {
+      results.failed.push(show.title);
+    }
+  }
+
+  if (apiShows.length > 0) {
+    console.log(`\n--- API phase done: ${results.success.length} success ---\n`);
+  }
+
+  // Process scrape-needed shows with concurrency
+  let processed = 0;
+  for (let i = 0; i < scrapeShows.length; i += concurrency) {
+    const batch = scrapeShows.slice(i, i + concurrency);
+    const batchResults = await Promise.allSettled(
+      batch.map(show => processOneShow(show, apiLookup, todayTixIds, badImagesOnly))
+    );
+
+    for (const settled of batchResults) {
+      if (settled.status === 'fulfilled' && settled.value && settled.value.images) {
+        applyImages(settled.value.show, settled.value.images);
+        results.success.push(settled.value.show.title);
+      } else {
+        const show = settled.status === 'fulfilled' ? settled.value?.show : batch[0];
+        results.failed.push(show?.title || 'unknown');
+      }
+    }
+
+    processed += batch.length;
+    if (scrapeShows.length > concurrency) {
+      console.log(`   [${processed}/${scrapeShows.length}] ${results.success.length} success, ${results.failed.length} failed`);
+    }
+
+    // Rate limit between batches (not between individual shows within a batch)
+    if (i + concurrency < scrapeShows.length) {
+      await sleep(2000);
+    }
+  }
+
+  // Save TodayTix ID cache once at end (not per-show)
+  saveTodayTixIds(todayTixIds);
+
+  return results;
+}
+
+// Apply fetched images to a show object, protecting existing local thumbnails
+function applyImages(show, images) {
+  const existingThumb = show.images?.thumbnail;
+  const hasLocalThumb = existingThumb && existingThumb.startsWith('/images/');
+  const newThumbIsNative = isNativeSquareUrl(images.thumbnail);
+
+  if (hasLocalThumb && !newThumbIsNative) {
+    console.log(`   ⚠ Keeping existing local thumbnail for ${show.id} (new source is poster crop)`);
+    images.thumbnail = existingThumb;
+  }
+
+  show.images = images;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
   const onlyMissing = args.includes('--missing');
   const badImagesOnly = args.includes('--bad-images');
+  const concurrency = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '5', 10);
 
   if (!SCRAPINGBEE_API_KEY) {
     console.error('ERROR: Set SCRAPINGBEE_API_KEY environment variable');
@@ -730,63 +848,8 @@ async function main() {
 
   console.log(`\nProcessing ${shows.length} shows...\n`);
 
-  const results = { success: [], failed: [], skipped: [] };
-
-  for (const show of shows) {
-    // Try matching against TodayTix API data (instant, no HTTP call)
-    const apiData = matchTodayTixShow(show.title, apiLookup);
-
-    // Cache API-discovered TodayTix ID
-    if (apiData && apiData.id) {
-      todayTixIds.shows[show.id] = { id: apiData.id, slug: null };
-      saveTodayTixIds(todayTixIds);
-    }
-
-    // When re-sourcing bad images, clear the cached TodayTix ID so we re-discover
-    if (badImagesOnly && todayTixIds.shows[show.id]) {
-      console.log(`   Clearing cached TodayTix ID for ${show.id} (re-discovering)`);
-      delete todayTixIds.shows[show.id];
-    }
-
-    // If no API match, try page-scrape discovery
-    let todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
-
-    if (!todayTixInfo && !apiData) {
-      todayTixInfo = await discoverTodayTixId(show.title);
-      if (todayTixInfo) {
-        todayTixIds.shows[show.id] = todayTixInfo;
-        saveTodayTixIds(todayTixIds);
-      }
-      await sleep(2000); // Rate limit
-    }
-
-    // Fetch images: API data → page scrape → Playbill fallback
-    const images = await fetchShowImages(show, todayTixInfo, apiData);
-
-    if (images) {
-      // Protect existing local thumbnails from being overwritten by poster crops.
-      // If the show already has a local thumbnail and the new source is a poster crop
-      // (not a native square), keep the existing thumbnail.
-      const existingThumb = show.images?.thumbnail;
-      const hasLocalThumb = existingThumb && existingThumb.startsWith('/images/');
-      const newThumbIsNative = isNativeSquareUrl(images.thumbnail);
-
-      if (hasLocalThumb && !newThumbIsNative) {
-        console.log(`   ⚠ Keeping existing local thumbnail (new source is poster crop, not native square)`);
-        images.thumbnail = existingThumb;
-      }
-
-      show.images = images;
-      results.success.push(show.title);
-    } else {
-      results.failed.push(show.title);
-    }
-
-    // Only rate-limit if we made HTTP calls (API-sourced images are instant)
-    if (!apiData) {
-      await sleep(2000);
-    }
-  }
+  // Use concurrent processing for large batches, sequential for small
+  const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency);
 
   // Save updated shows
   if (results.success.length > 0) {
