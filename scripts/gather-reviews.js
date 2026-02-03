@@ -1011,8 +1011,10 @@ function extractDTLIReviews(html, showId, dtliUrl) {
     // Extract thumb from BigThumbs image (BigThumbs_UP, BigThumbs_MEH, BigThumbs_DOWN)
     const thumbMatch = reviewHtml.match(/BigThumbs_(UP|MEH|DOWN)/i);
 
-    // Extract critic name from review-item-critic-name
-    const criticMatch = reviewHtml.match(/class="review-item-critic-name"[^>]*>(?:<a[^>]*>)?([^<]+)/i);
+    // Extract critic name — prefer ?s= query param (always has full name)
+    const criticSearchMatch = reviewHtml.match(/class="review-item-critic-name"[^>]*><a[^>]*href="[^"]*\?s=([^&"]+)/i);
+    // Fallback: capture all text content including across <br> tags
+    const criticTextMatch = reviewHtml.match(/class="review-item-critic-name"[^>]*>(?:<a[^>]*>)?([\s\S]*?)<\/(?:a|h2)>/i);
 
     // Extract date
     const dateMatch = reviewHtml.match(/class="review-item-date"[^>]*>([^<]+)/i);
@@ -1029,7 +1031,12 @@ function extractDTLIReviews(html, showId, dtliUrl) {
       const outletName = outletMatch[1].trim();
       const outletId = slugify(outletName);
       const thumb = thumbMatch ? thumbMatch[1].toUpperCase() : null;
-      let criticName = criticMatch ? criticMatch[1].replace(/<br\s*\/?>/gi, ' ').trim() : 'Unknown';
+      let criticName = 'Unknown';
+      if (criticSearchMatch) {
+        criticName = decodeURIComponent(criticSearchMatch[1]).trim();
+      } else if (criticTextMatch) {
+        criticName = criticTextMatch[1].replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+      }
       criticName = criticName.replace(/\s+/g, ' ').trim();
       const date = dateMatch ? dateMatch[1].trim() : null;
       let excerpt = excerptMatch ? excerptMatch[1].trim() : null;
