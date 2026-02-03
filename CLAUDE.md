@@ -222,6 +222,10 @@ data/
 
 **Deep Research Protection:** Shows with `deepResearch.verifiedFields` are protected from automated overwrites. Automated changes to verified fields are blocked and a GitHub issue is created for manual review. Protected shows: death-becomes-her, the-great-gatsby, stranger-things, operation-mincemeat, just-in-time, all-out.
 
+**Recoupment Verification Rules:** Never mark `recouped: true` without a specific trade press citation (Deadline, Variety, Playbill, Broadway Journal, Broadway News) or producer confirmation. Inferring recoupment from grosses math alone is insufficient — use `recouped: false` with `estimatedRecoupmentPct` instead. **Never infer recoupment from the show's designation** (e.g., "Easy Winner implies recoupment") — this is circular reasoning. The Roommate (2024) was incorrectly listed as recouped for months due to exactly this pattern. When in doubt, check: would a trade outlet have announced this? If yes and none did, recoupment likely didn't happen.
+
+**Public Data Exports:** After editing `data/commercial.json`, run `node scripts/generate-commercial-export.js` to regenerate `public/data/commercial.json` and `public/data/commercial.csv`. These are the files served to the website. The prebuild script handles this automatically on Vercel deploys, but manual edits require manual regeneration — otherwise the website will show stale data.
+
 **Key automation files:** `scripts/update-commercial-data.js` (main), `scripts/lib/deep-research-guardian.js`, `scripts/lib/source-validator.js`, `scripts/lib/parse-grosses.js`, `scripts/lib/trade-press-scraper.js`, `scripts/lib/sec-edgar-scraper.js`.
 
 ## Key Files
