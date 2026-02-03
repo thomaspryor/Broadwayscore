@@ -137,7 +137,7 @@
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: $11.5M cap, recouped Nov 2019 (~30 weeks). Received $10M SVOG grant. SEC EDGAR also found 'Young Are At the Gates LLC' ($19.5M, $19M capitalized) and 'Hadestown West End LLC' ($4.8M, $3.65M capitalized) — likely combined touring/international entities separate from original Broadway cap."
+        "notes": "GPT Deep Research: $11.5M cap, recouped Nov 2019 (~30 weeks). Received $10M SVOG grant. SEC EDGAR: 'Hadestown West End LLC' ($4.8M, $3.65M capitalized) found for West End transfer."
       }
     },
     "mj": {
@@ -416,21 +416,22 @@
     "suffs": {
       "designation": "Fizzle",
       "capitalization": 19000000,
-      "capitalizationSource": "SEC filing / NY Times",
+      "capitalizationSource": "SEC Form D/A filing (Young Are At the Gates LLC, CIK 0001953229, amended May 2024). $19M capitalized. Range: $17.5M min, $19.5M max.",
       "weeklyRunningCost": 1250000,
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Won Tony for Best Original Score but closed Jan 2025 without recouping. Shaina Taub won two Tonys. Weekly cost ~$1.2-1.3M. Needed ~$1.4M/week to recoup in a year but averaged ~$1.0M. Hillary Clinton co-producer. 30+ cast. SEC note: 'Wing Women On Broadway LLC' (Seaview Productions, CIK 0001822566) filed May 2022 with $6.75M max offering ($6,075,000 capitalized) — likely one of multiple funding entities. $19M total cap from NYT/SEC may include additional entities.",
+      "notes": "Won Tony for Best Original Score but closed Jan 2025 without recouping. Shaina Taub won two Tonys. Weekly cost ~$1.2-1.3M. Needed ~$1.4M/week to recoup in a year but averaged ~$1.0M. Hillary Clinton co-producer. 30+ cast. SEC entities: 'Young Are At the Gates LLC' ($19M capitalized, main Broadway entity — title references suffragists picketing at the White House gates) + 'Wing Women On Broadway LLC' ($6.75M, Seaview Productions — likely development/pre-Broadway entity).",
       "costMethodology": "industry-estimate",
       "deepResearch": {
         "verifiedFields": [
+          "capitalization",
           "weeklyRunningCost"
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "SEC EDGAR: 'Wing Women On Broadway LLC' (Seaview) shows $6.75M offering ($6,075,000 capitalized). Discrepancy vs $19M total cap — likely multiple funding entities. NYT/SEC combined figure retained."
+        "notes": "SEC EDGAR: 'Young Are At the Gates LLC' confirms $19M capitalized ($17.5M-$19.5M range). Separate 'Wing Women On Broadway LLC' ($6.75M) was likely earlier development entity. $19M cap now SEC-confirmed."
       }
     },
     "the-notebook": {
