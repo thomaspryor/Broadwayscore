@@ -18,59 +18,10 @@
   "showScoreExcerpt": "The production is handsomely mounted, with a detailed set by David Korins that convincingly evokes the claustrophobic confines of Annie's remote farmhouse. But the show feels more like an exercise in endurance than entertainment.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "llmScore": {
-    "score": 45,
-    "confidence": "high",
-    "range": {
-      "low": 40,
-      "high": 50
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "But the show feels more like an exercise in endurance than entertainment.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising the production design, the critic clearly does not recommend the show, describing it as an 'exercise in endurance' rather than entertainment, which is a clear negative verdict. | GPT-4o: The review acknowledges the quality of the set design but ultimately criticizes the show as lacking entertainment value, suggesting a negative overall impression. | Gemini: The review praises the set design but ultimately states the show is not entertaining, indicating a negative overall assessment. | Kimi: While the critic acknowledges handsome production values and detailed set design, the final verdict explicitly frames the show as something to endure rather than enjoy, constituting a clear recommendation against seeing it.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:00:29.061Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "geminiScore": 45,
-    "kimiScore": 45,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://www.nytimes.com/2015/11/16/theater/review-in-misery-with-bruce-willis-and-laurie-metcalf-the-ghost-of-productions-past.html?_r=0",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

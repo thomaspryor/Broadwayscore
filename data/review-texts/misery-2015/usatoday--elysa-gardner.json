@@ -18,59 +18,10 @@
   "showScoreExcerpt": "Bruce Willis makes a solid Broadway debut in this adaptation of Stephen King's psychological thriller, though the production doesn't quite achieve the sustained terror of the source material.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "llmScore": {
-    "score": 69,
-    "confidence": "medium",
-    "range": {
-      "low": 64,
-      "high": 74
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Bruce Willis makes a solid Broadway debut in this adaptation of Stephen King's psychological thriller, though the production doesn't quite achieve the sustained terror of the source material.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Praises Willis's debut as 'solid' but clearly states the production 'doesn't quite achieve' what it should. The 'though' construction signals significant reservation that prevents a positive recommendation. | GPT-4o: The review acknowledges a solid performance by Willis but notes the production fails to fully capture the source material's terror, leading to a mixed assessment. | Gemini: The review states that Bruce Willis makes a solid debut, but the production doesn't quite achieve the terror of the source material, indicating a positive but qualified recommendation. | Kimi: The critic offers qualified praise for Willis's performance ('solid') but criticizes the production for failing to capture the source material's terror, indicating a recommendation with reservations. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:00:52.321Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 72,
-    "kimiScore": 76,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 14,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://www.usatoday.com/story/life/theater/2015/11/15/bruce-willis-gamely-endures-misery-broadway-debut/75698442/",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

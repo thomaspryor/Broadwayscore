@@ -18,59 +18,10 @@
   "showScoreExcerpt": "This revival of Michael Frayn's 1982 comedy about a theatrical company's disastrous touring production has been assembled with the scrupulous care of a Swiss timepiece. But unlike a fine watch, it doesn't quite tick.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "llmScore": {
-    "score": 46,
-    "confidence": "medium",
-    "range": {
-      "low": 41,
-      "high": 51
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "But unlike a fine watch, it doesn't quite tick.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The review acknowledges the production's technical excellence ('scrupulous care of a Swiss timepiece') but finds it ultimately lifeless ('doesn't quite tick'). This balanced assessment with significant reservation places it in mixed territory. | GPT-4o: The review uses a metaphor to suggest the production is well-assembled but ultimately fails to deliver, indicating a negative assessment. | Gemini: The review starts with a positive setup but ends with a negative verdict: \"But unlike a fine watch, it doesn't quite tick.\" | Kimi: The critic acknowledges the production's meticulous craftsmanship but ultimately finds the comedy fails to function or engage effectively, delivering a verdict of competent execution without successful results.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:13:19.578Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 45,
-    "geminiScore": 45,
-    "kimiScore": 48,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 13,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://www.nytimes.com/2016/01/15/theater/review-michael-frayns-noises-off-returns-to-broadway.html?_r=1",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

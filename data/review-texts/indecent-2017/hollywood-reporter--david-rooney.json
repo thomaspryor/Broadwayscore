@@ -22,5 +22,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be just a brief description or tagline describing the play's themes, not an actual review with critical evaluation or recommendation.; openai: This text is a brief description of the play's themes without any evaluative content or recommendation.; kimi: This is a single-sentence descriptive blurb identifying the play's subject matter and themes, not a critical evaluation. It contains no recommendation, verdict, or assessment of production quality sufficient to determine whether audiences should see the show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/indecent-theater-review-894878",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

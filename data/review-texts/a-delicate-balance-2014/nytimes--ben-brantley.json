@@ -45,5 +45,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is a profile/interview article about Glenn Close's personal life in Maine, not a review of 'A Delicate Balance.' The text mentions the Broadway show only in passing and contains no critical evaluation of the production.; openai: This text is a mix of a personal story about Glenn Close and an error message, not a review of a Broadway show.; gemini: This is an article about Glenn Close's life and upcoming role in 'A Delicate Balance,' not a review of the production itself. It's a preview/profile piece.; kimi: This is a profile/interview article about Glenn Close's personal life in Maine and her upcoming return to Broadway, not a review of the production 'A Delicate Balance.' The text contains no critical evaluation of the show's performances, direction, or quality, and was published before the production began previews.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "playbillVerdictUrl": "http://www.nytimes.com/2014/11/21/theater/a-delicate-balance-revival-stars-john-lithgow-and-glenn-close.html",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

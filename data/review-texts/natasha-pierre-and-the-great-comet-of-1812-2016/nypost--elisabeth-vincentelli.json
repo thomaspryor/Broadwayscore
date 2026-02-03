@@ -18,59 +18,10 @@
   "showScoreExcerpt": "This show is a theatrical feast that engages all the senses, with Josh Groban delivering a performance that's both intimate and grand.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "llmScore": {
-    "score": 84,
-    "confidence": "medium",
-    "range": {
-      "low": 79,
-      "high": 89
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "This show is a theatrical feast that engages all the senses, with Josh Groban delivering a performance that's both intimate and grand.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear praise calling it a 'theatrical feast' and praising Groban's performance, but very brief excerpt limits confidence in full critical assessment. | GPT-4o: The review uses strong positive language ('theatrical feast', 'engages all the senses') and praises Josh Groban's performance, indicating a highly favorable view. | Gemini: The review uses positive language like \"theatrical feast\" and praises Josh Groban's performance, indicating a positive recommendation. | Kimi: The critic employs superlative language ('theatrical feast,' 'engages all the senses') and praises the lead performance without reservation, indicating a rave recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:09:07.055Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 80,
-    "kimiScore": 88,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 12,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://www.nypost.com/p/entertainment/theater/great_comet_shining_star_YMUPBYT1hdeDQ7RShsmGYP?utm_medium=rss&utm_content=Theater",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

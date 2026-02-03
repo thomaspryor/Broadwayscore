@@ -18,59 +18,10 @@
   "showScoreExcerpt": "Bruce Willis brings his action-hero persona to Stephen King's psycho-thriller, but Laurie Metcalf is the real draw in this effectively creepy Broadway adaptation.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "llmScore": {
-    "score": 75,
-    "confidence": "medium",
-    "range": {
-      "low": 70,
-      "high": 80
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "effectively creepy Broadway adaptation",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'effectively creepy' and highlights strong performances, particularly Metcalf as 'the real draw', indicating a positive but not enthusiastic recommendation. | GPT-4o: The review highlights Laurie Metcalf's performance as a strong point and describes the adaptation as 'effectively creepy,' suggesting a positive recommendation with some focus on specific elements. | Gemini: The review highlights the effectiveness of the adaptation and specifically praises Laurie Metcalf's performance, suggesting a positive experience despite mentioning Bruce Willis's action-hero persona. | Kimi: Brief excerpt praises Metcalf as the highlight and the adaptation as effectively creepy, indicating a solid recommendation despite brevity.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:58:20.787Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 75,
-    "geminiScore": 72,
-    "kimiScore": 78,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 6,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://variety.com/2015/legit/reviews/misery-review-broadway-bruce-willis-1201641055/",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }
