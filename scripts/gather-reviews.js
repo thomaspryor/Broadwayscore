@@ -225,6 +225,113 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
 }
 
 /**
+ * Fetch additional Show Score critic reviews via their pagination API.
+ * Show Score only renders 8 critic reviews in the initial page load.
+ * The remaining reviews are fetched via AJAX at /shows/{slug}/paginate_critic_reviews?page=N.
+ * Each page returns JSON: {"html": "<review tile HTML>"} with ~8 review tiles per page.
+ */
+async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId) {
+  const additionalReviews = [];
+
+  // Parse pagination attributes from the critic reviews scrollable block
+  const nextPagePathMatch = initialHtml.match(/data-next-page-path="([^"]+)"/);
+  const totalCountMatch = initialHtml.match(/js-show-page-v2__critic-reviews[^>]*data-total-count="(\d+)"/);
+
+  if (!nextPagePathMatch) return additionalReviews;
+
+  const nextPagePath = nextPagePathMatch[1]; // e.g., /shows/death-becomes-her-broadway/paginate_critic_reviews
+  const totalCount = totalCountMatch ? parseInt(totalCountMatch[1]) : 0;
+
+  if (totalCount <= 8) return additionalReviews; // No pagination needed
+
+  console.log(`    Show Score pagination: ${totalCount} total reviews, fetching remaining pages...`);
+
+  // Fetch additional pages (page 2, 3, etc.)
+  const maxPages = Math.ceil(totalCount / 8) + 1; // Safety margin
+  for (let page = 2; page <= maxPages; page++) {
+    const paginationUrl = `https://www.show-score.com${nextPagePath}?page=${page}`;
+
+    try {
+      const result = await searchAggregator('ShowScorePagination', paginationUrl);
+      if (!result.found || !result.html) break;
+
+      // The response is JSON with {"html": "..."} containing review tile HTML
+      let tileHtml = result.html;
+      try {
+        const parsed = JSON.parse(result.html);
+        tileHtml = parsed.html || '';
+      } catch (e) {
+        // If not JSON, use as-is (unlikely but safe fallback)
+      }
+
+      if (!tileHtml || tileHtml.length < 10) break; // Empty page = no more reviews
+
+      // Extract reviews from the tile HTML fragments
+      // Pattern: outlet from img alt, critic from member link, URL from "Read more" link
+      const tileRegex = /review-tile-v2 -critic[\s\S]*?<\/div>\s*<\/div>\s*<\/div>\s*<\/div>\s*<\/div>/gi;
+      const tiles = tileHtml.match(tileRegex) || [];
+
+      // Simpler approach: extract each review's data from the flat HTML
+      const outletRegex = /alt="([^"]+)"/g;
+      const criticRegex = /href="\/member\/[^"]*">([^<]+)<\/a>/g;
+      const urlRegex = /href="(https?:\/\/[^"]+)"[^>]*>Read more/gi;
+      const dateRegex = /review-tile-v2__date[^>]*>\s*([^<]+)/g;
+      const excerptRegex = /&quot;([^&]+)&quot;/g;
+
+      const outlets = [];
+      const critics = [];
+      const urls = [];
+      const dates = [];
+      let m;
+
+      while ((m = outletRegex.exec(tileHtml)) !== null) {
+        // Filter out non-outlet images (avatars, pixel images, etc.)
+        if (!m[1].includes('white-pixel') && !m[1].includes('user-avatar') && m[1].length > 2) {
+          outlets.push(m[1]);
+        }
+      }
+      while ((m = criticRegex.exec(tileHtml)) !== null) critics.push(m[1].trim());
+      while ((m = urlRegex.exec(tileHtml)) !== null) urls.push(m[1]);
+      while ((m = dateRegex.exec(tileHtml)) !== null) dates.push(m[1].trim());
+
+      const pageReviewCount = Math.max(outlets.length, urls.length);
+      for (let i = 0; i < pageReviewCount; i++) {
+        const outletRaw = outlets[i] || 'Unknown';
+        const outletId = normalizeOutlet(outletRaw);
+        const outletName = getOutletDisplayName(outletId);
+        const critic = critics[i] || 'Unknown';
+        const url = urls[i] || null;
+        const date = dates[i] || null;
+
+        if (url && !additionalReviews.some(r => r.url === url)) {
+          additionalReviews.push({
+            showId,
+            outlet: outletName,
+            outletId,
+            criticName: critic,
+            url,
+            publishDate: normalizePublishDate(date) || null,
+            source: 'show-score',
+          });
+        }
+      }
+
+      if (pageReviewCount === 0) break; // No more reviews
+      await sleep(300); // Rate limit
+    } catch (e) {
+      console.log(`    Pagination page ${page} error: ${e.message}`);
+      break;
+    }
+  }
+
+  if (additionalReviews.length > 0) {
+    console.log(`    Fetched ${additionalReviews.length} additional reviews via pagination`);
+  }
+
+  return additionalReviews;
+}
+
+/**
  * Try to find show on Did They Like It
  * Revival shows often use -bway or -broadway suffixes
  */
@@ -555,7 +662,10 @@ async function scrapeShowScoreWithPlaywright(url) {
       let navigated = false;
 
       // Method 1: Try to find and click the right arrow (multiple selectors)
+      // Show Score uses .js-scrollable-block__next-page-btn for the critic carousel
       const arrowSelectors = [
+        '.js-scrollable-block__next-page-btn',
+        '.scrollable-block__next-page-btn',
         'div[class*="critic"] button[class*="right"]',
         'div[class*="critic"] [class*="angle-right"]',
         'h2:has-text("Critic Reviews") + div button:last-child',
@@ -892,14 +1002,19 @@ function extractDTLIReviews(html, showId, dtliUrl) {
     const reviewHtml = match[1];
 
     // Extract outlet from img alt text (class="review-item-attribution")
+    // DTLI uses two HTML formats: old-style uses img.review-item-attribution with alt text,
+    // new-style (2024+) uses div.review_image with outlet name as text content
     const outletMatch = reviewHtml.match(/class="review-item-attribution"[^>]*alt="([^"]+)"/i) ||
-                        reviewHtml.match(/alt="([^"]+)"[^>]*class="review-item-attribution"/i);
+                        reviewHtml.match(/alt="([^"]+)"[^>]*class="review-item-attribution"/i) ||
+                        reviewHtml.match(/class="review_image"><div>([^<]+)<\/div>/i);
 
     // Extract thumb from BigThumbs image (BigThumbs_UP, BigThumbs_MEH, BigThumbs_DOWN)
     const thumbMatch = reviewHtml.match(/BigThumbs_(UP|MEH|DOWN)/i);
 
-    // Extract critic name from review-item-critic-name
-    const criticMatch = reviewHtml.match(/class="review-item-critic-name"[^>]*>(?:<a[^>]*>)?([^<]+)/i);
+    // Extract critic name — prefer ?s= query param (always has full name)
+    const criticSearchMatch = reviewHtml.match(/class="review-item-critic-name"[^>]*><a[^>]*href="[^"]*\?s=([^&"]+)/i);
+    // Fallback: capture all text content including across <br> tags
+    const criticTextMatch = reviewHtml.match(/class="review-item-critic-name"[^>]*>(?:<a[^>]*>)?([\s\S]*?)<\/(?:a|h2)>/i);
 
     // Extract date
     const dateMatch = reviewHtml.match(/class="review-item-date"[^>]*>([^<]+)/i);
@@ -916,7 +1031,12 @@ function extractDTLIReviews(html, showId, dtliUrl) {
       const outletName = outletMatch[1].trim();
       const outletId = slugify(outletName);
       const thumb = thumbMatch ? thumbMatch[1].toUpperCase() : null;
-      let criticName = criticMatch ? criticMatch[1].replace(/<br\s*\/?>/gi, ' ').trim() : 'Unknown';
+      let criticName = 'Unknown';
+      if (criticSearchMatch) {
+        criticName = decodeURIComponent(criticSearchMatch[1]).trim();
+      } else if (criticTextMatch) {
+        criticName = criticTextMatch[1].replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+      }
       criticName = criticName.replace(/\s+/g, ' ').trim();
       const date = dateMatch ? dateMatch[1].trim() : null;
       let excerpt = excerptMatch ? excerptMatch[1].trim() : null;
@@ -996,59 +1116,108 @@ async function searchBWWRoundup(show, year) {
 
 /**
  * Extract reviews from BWW Review Roundup HTML
+ * Uses two methods: BlogPosting JSON-LD entries (newer articles) and articleBody parsing (older)
  */
 function extractBWWRoundupReviews(html, showId, bwwUrl) {
-  const reviews = [];
+  let reviews = [];
 
-  // BWW Review Roundups have reviews in the article body
-  // Pattern: <strong>Critic Name, Outlet:</strong> review excerpt
-  // Or embedded in paragraphs with outlet names in bold
+  // Method 1: Extract from BlogPosting JSON-LD entries (newer BWW articles)
+  const scriptMatches = html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g);
+  for (const scriptMatch of scriptMatches) {
+    try {
+      const cleanedJson = scriptMatch[1].replace(/[\x00-\x1F\x7F]/g, ' ');
+      const json = JSON.parse(cleanedJson);
 
-  // Try to extract from JSON-LD articleBody first
+      if (json['@type'] === 'BlogPosting' && json.author) {
+        const authorName = Array.isArray(json.author) ? json.author[0]?.name : json.author?.name;
+        if (!authorName) continue;
+
+        let outletRaw = authorName;
+        let criticName = null;
+        if (authorName.includes(' - ')) {
+          const parts = authorName.split(' - ');
+          outletRaw = parts[0].trim();
+          criticName = parts[1]?.trim() || null;
+        }
+
+        const outletId = normalizeOutlet(outletRaw);
+        const outletName = getOutletDisplayName(outletId);
+        const quote = json.articleBody || json.description || '';
+
+        reviews.push({
+          showId,
+          outletId,
+          outlet: outletName,
+          criticName,
+          url: null,
+          bwwExcerpt: quote.substring(0, 300) + (quote.length > 300 ? '...' : ''),
+          bwwRoundupUrl: bwwUrl,
+          source: 'bww-roundup',
+        });
+      }
+    } catch (e) {
+      // Skip invalid JSON
+    }
+  }
+
+  if (reviews.length > 0) {
+    console.log(`    Extracted ${reviews.length} reviews from BWW roundup (BlogPosting)`);
+    return reviews;
+  }
+
+  // Method 2: Fall back to articleBody text parsing (older BWW articles)
   const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   if (jsonLdMatch) {
     try {
-      const jsonLd = JSON.parse(jsonLdMatch[1]);
+      const cleanedJson = jsonLdMatch[1].replace(/[\x00-\x1F\x7F]/g, ' ');
+      const jsonLd = JSON.parse(cleanedJson);
       const articleBody = jsonLd.articleBody || '';
+      const publishDate = jsonLd.datePublished || null;
 
-      // Common critic-outlet patterns
-      const criticPatterns = [
-        { pattern: /Ben Brantley.*?New York Times/i, outlet: 'The New York Times', outletId: 'nytimes' },
-        { pattern: /Jesse Green.*?(?:Vulture|New York Times)/i, outlet: 'Vulture', outletId: 'vulture' },
-        { pattern: /Frank Scheck.*?Hollywood Reporter/i, outlet: 'The Hollywood Reporter', outletId: 'hollywood-reporter' },
-        { pattern: /Marilyn Stasio.*?Variety/i, outlet: 'Variety', outletId: 'variety' },
-        { pattern: /David Cote.*?Time Out/i, outlet: 'Time Out New York', outletId: 'timeout' },
-        { pattern: /Michael Dale.*?BroadwayWorld/i, outlet: 'BroadwayWorld', outletId: 'broadwayworld' },
-        { pattern: /Mark Kennedy.*?Associated Press/i, outlet: 'Associated Press', outletId: 'ap' },
-        { pattern: /Joe Dziemianowicz.*?Daily News/i, outlet: 'New York Daily News', outletId: 'nydailynews' },
-        { pattern: /Elisabeth Vincentelli.*?(?:Post|Variety)/i, outlet: 'New York Post', outletId: 'nypost' },
-        { pattern: /Terry Teachout.*?Wall Street Journal/i, outlet: 'Wall Street Journal', outletId: 'wsj' },
-        { pattern: /Jeremy Gerard.*?Deadline/i, outlet: 'Deadline', outletId: 'deadline' },
-        { pattern: /Linda Winer.*?Newsday/i, outlet: 'Newsday', outletId: 'newsday' },
-        { pattern: /Elysa Gardner.*?USA Today/i, outlet: 'USA Today', outletId: 'usatoday' },
-        { pattern: /Chris Jones.*?Chicago Tribune/i, outlet: 'Chicago Tribune', outletId: 'chicagotribune' },
-      ];
+      if (articleBody) {
+        // Find where reviews start
+        const reviewStart = articleBody.indexOf("Let's see what the critics had to say");
+        const text = reviewStart > 0 ? articleBody.substring(reviewStart) : articleBody;
 
-      for (const { pattern, outlet, outletId } of criticPatterns) {
-        if (pattern.test(articleBody)) {
-          // Extract the critic name from the pattern match
-          const match = articleBody.match(pattern);
-          if (match) {
-            const criticName = match[0].split(',')[0].trim();
+        // Pattern: "Critic Name, Outlet:" followed by review text
+        const pattern = /([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+),\s+([A-Za-z][A-Za-z\s&'.]+):\s*([^]+?)(?=(?:[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+,\s+[A-Za-z][A-Za-z\s&'.]+:)|Photo Credit:|$)/g;
 
-            // Check if we already have this outlet
-            if (!reviews.some(r => r.outletId === outletId)) {
-              reviews.push({
-                showId,
-                outletId,
-                outlet,
-                criticName,
-                url: null,
-                bwwRoundupUrl: bwwUrl,
-                source: 'bww-roundup',
-              });
-            }
+        let match;
+        const seen = new Set();
+        while ((match = pattern.exec(text)) !== null) {
+          const criticName = match[1].trim();
+          const outletRaw = match[2].trim();
+          let quote = match[3].trim();
+
+          if (quote.length > 500) {
+            quote = quote.substring(0, 500);
+            const lastPeriod = quote.lastIndexOf('.');
+            if (lastPeriod > 200) quote = quote.substring(0, lastPeriod + 1);
+            quote += '...';
           }
+
+          const key = `${criticName.toLowerCase()}-${outletRaw.toLowerCase()}`;
+          if (seen.has(key)) continue;
+          seen.add(key);
+
+          // Filter out false positives
+          if (outletRaw.length < 2 || outletRaw.length > 60) continue;
+          if (outletRaw.match(/^(In|The|A|An|On|At|For|With|And|But|Or|If|So|As|By)$/i)) continue;
+
+          const outletId = normalizeOutlet(outletRaw);
+          const outletName = getOutletDisplayName(outletId);
+
+          reviews.push({
+            showId,
+            outletId,
+            outlet: outletName,
+            criticName,
+            url: null,
+            publishDate: normalizePublishDate(publishDate) || null,
+            bwwExcerpt: quote.substring(0, 300) + (quote.length > 300 ? '...' : ''),
+            bwwRoundupUrl: bwwUrl,
+            source: 'bww-roundup',
+          });
         }
       }
     } catch (e) {
@@ -1057,7 +1226,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
   }
 
   if (reviews.length > 0) {
-    console.log(`    Extracted ${reviews.length} reviews from BWW roundup`);
+    console.log(`    Extracted ${reviews.length} reviews from BWW roundup (articleBody)`);
   }
 
   return reviews;
@@ -1074,9 +1243,10 @@ function archiveAggregatorPage(aggregator, showId, url, html) {
 
   const archivePath = path.join(archiveDir, `${showId}.html`);
 
-  // Don't overwrite existing archives (preserve historical data)
+  // Refresh archives older than 14 days to capture newly added reviews
   if (fs.existsSync(archivePath)) {
-    return;
+    const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
+    if (age < 14) return;
   }
 
   const header = `<!--
@@ -1334,7 +1504,7 @@ async function gatherReviewsForShow(showId) {
   console.log('\n  === Show Score ===');
   const showScoreResult = await searchShowScore(show);
   if (showScoreResult) {
-    // Use pre-extracted reviews from Playwright if available (more complete)
+    // Extract initial reviews from page (first 8 visible in carousel)
     if (showScoreResult.reviews && showScoreResult.reviews.length > 0) {
       console.log(`    Playwright extracted ${showScoreResult.reviews.length} reviews directly`);
       for (const review of showScoreResult.reviews) {
@@ -1352,10 +1522,23 @@ async function gatherReviewsForShow(showId) {
         });
       }
     } else {
-      // Fall back to HTML extraction
+      // Fall back to HTML extraction for initial reviews
       const showScoreReviews = extractShowScoreReviews(showScoreResult.html, showId);
       foundReviews.push(...showScoreReviews);
     }
+
+    // Fetch remaining reviews via Show Score pagination API
+    // The initial page only shows 8 critic reviews; the rest are loaded via AJAX
+    const paginatedReviews = await fetchShowScorePaginatedReviews(
+      showScoreResult.url, showScoreResult.html, showId
+    );
+    for (const review of paginatedReviews) {
+      // Only add if not already found (avoid duplicates from initial extraction)
+      if (!foundReviews.some(r => r.url === review.url)) {
+        foundReviews.push(review);
+      }
+    }
+
     // Archive the page
     archiveAggregatorPage('show-score', showId, showScoreResult.url, showScoreResult.html);
   }
