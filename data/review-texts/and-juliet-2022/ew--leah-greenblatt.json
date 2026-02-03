@@ -16,12 +16,12 @@
   "scoreSource": "letter-grade",
   "scoreConfidence": "medium",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:22:15.002Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T01:54:00.925Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "dtliThumb": "Up",
@@ -89,8 +89,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ rating combined with phrases like 'nakedly joyful' and 'violent delight' indicate a positive recommendation, though the 'relentless' quality suggests some reservations. | GPT-4o: The original rating of B+ strongly suggests a positive review. The critic describes the show as 'nakedly joyful' and 'a violent delight,' indicating a strong recommendation despite some reservations about its eagerness to entertain. | Gemini: The critic gives the show a B+ and describes it as \"nakedly joyful,\" indicating a positive, though not rave, recommendation. The phrase \"relentless eagerness to entertain\" suggests a reservation.",
+    "keyPhrases": [
+      {
+        "quote": "There's something a little relentless about & Juliet's dogged eagerness to entertain, but nakedly joyful too: a violent delight, flipped for the TikTok era.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: B+ grade indicates solid positive recommendation. Critic acknowledges the show's flaws ('relentless', 'dogged eagerness') but concludes with appreciation for its 'nakedly joyful' nature and energy. | GPT-4o: The B+ rating suggests a positive review with some reservations. The critic acknowledges the show's eagerness to entertain and its joyful nature, indicating a recommendation despite some criticisms. | Gemini: The critic gives the show a B+ and describes it as \"nakedly joyful.\" While there are some reservations, the overall tone is positive. | Kimi: The B+ grade and enthusiastic phrases like 'violent delight' and 'nakedly joyful' indicate a solid recommendation, though the critic notes the show's 'relentless' eagerness to entertain.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -100,18 +106,20 @@
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 80,
+    "openaiScore": 78,
+    "geminiScore": 81,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreCompletedAt": "2026-02-02T03:22:15.002Z",
   "contentTier": "complete",

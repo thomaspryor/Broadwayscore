@@ -8,18 +8,18 @@
   "dtliExcerpt": "Even the most decadent denizens of Berlin in the Weimar era—such as a sinewy androgyne presiding as the Emcee at a nightclub where anything goes, sexually speaking—prove to be susceptible to the poisonous seductions of the ascendant Nazis in the theatrically sizzling if emotionally tepid Broadway revival of “Cabaret.”",
   "fullText": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neuwirth-broadway-revival-7905c413\n\nEddie Redmayne in ‘Cabaret’ on Broadway. Marc BrennerNew York\n\nEven the most decadent denizens of Berlin in the Weimar era—such as a sinewy androgyne presiding as the Emcee at a nightclub where anything goes, sexually speaking—prove to be susceptible to the poisonous seductions of the ascendant Nazis in the theatrically sizzling if emotionally tepid Broadway revival of “Cabaret.”",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 61,
   "dtliThumb": "Meh",
   "source": "dtli",
   "showScoreExcerpt": null,
   "bwwExcerpt": "Among Ms. Frecknall’s innovations is an emphasis on dance, with Julia Cheng’s choreography making inventive use of the stage space as the club performers romp, stomp and shimmy around Mr. Redmayne, engaging in ribald movement that at one point includes such unlikely sexually tinged props as a whisk and a toilet plunger. Their thickly applied makeup, skimpy costumes—a green macramé bikini?—and multicolored hair are suggestive more of “RuPaul’s Drag Race” than a seedy European club of the period,",
   "bwwThumb": "Meh",
   "llmScore": {
-    "score": 63,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic uses the contrasting phrase 'theatrically sizzling if emotionally tepid' which suggests visual/theatrical strengths but emotional weaknesses, indicating a mixed assessment rather than clear recommendation. | GPT-4o: The review describes the production as 'theatrically sizzling' but 'emotionally tepid,' indicating a mixed assessment. The use of 'sizzling' suggests some positive elements, but 'tepid' tempers the enthusiasm, leading to a mixed verdict. | Gemini: The review uses contrasting language, describing the production as \"theatrically sizzling\" but \"emotionally tepid,\" suggesting a mixed experience. The aggregator verdicts also indicate a flat or mixed reception.",
+    "keyPhrases": [
+      {
+        "quote": "theatrically sizzling if emotionally tepid Broadway revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic uses contradictory descriptors - 'theatrically sizzling' suggests visual/production strengths while 'emotionally tepid' indicates a significant flaw. This balanced praise/criticism pattern suggests a mixed verdict, though confidence is low due to limited excerpt. | GPT-4o: The review describes the production as 'theatrically sizzling' but 'emotionally tepid', indicating a mix of strong theatrical elements with a lack of emotional depth. The lack of full text and flat aggregator verdicts suggest a mixed review. | Gemini: The review excerpt describes the production as \"theatrically sizzling if emotionally tepid,\" indicating a mixed reaction. The aggregator verdicts also suggest a flat or mixed response. | Kimi: The critic offers qualified praise for the production's theatrical energy ('sizzling') while explicitly criticizing its emotional impact ('tepid'), creating a balanced mixed assessment consistent with 'Flat' aggregator ratings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:35:53.399Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:13:01.211Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 59,
-    "previousVersion": "3.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
+    "claudeScore": 58,
+    "openaiScore": 60,
     "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "contentTier": "truncated",
   "wordCount": 59,

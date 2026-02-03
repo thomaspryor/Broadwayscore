@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is consistently enthusiastic throughout, praising the music, performances, choreography, and design. The critic clearly loved both the Off-Broadway and Broadway versions, calling it delightful and expressing hope it stays on Broadway for a while. | GPT-4o: The review is overwhelmingly positive, describing the production as a 'pure delight' and a 'dazzling feast for the eyes and ears.' The critic's enthusiasm for the music, choreography, and scenic design strongly suggests a rave recommendation. | Gemini: The review is overwhelmingly positive, praising the music, choreography, design, and ensemble. The critic expresses hope that the show will stay on Broadway for a while, indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "It's a sound we don't get all that often on Broadway, and boy, do I hope it stays a while.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive review with enthusiastic language throughout. Critic calls it 'pure delight,' praises the music as 'delicious,' and describes the production as 'dazzling feast for the eyes and ears.' No significant reservations expressed. | GPT-4o: The review is filled with superlatives and enthusiastic praise, highlighting the music, choreography, and scenic design as exceptional. The critic expresses a strong positive sentiment throughout, indicating a must-see recommendation. | Gemini: The review is overwhelmingly positive, praising the music, choreography, design, and ensemble. The critic clearly enjoyed the show and recommends it. | Kimi: The critic consistently praises the production as a 'pure delight' with 'electrifying' choreography and 'stunning' design, offering an unreserved recommendation without significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:57:06.184Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:18:27.633Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "3.0.0"
+    "previousScore": 82,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 92,
-    "geminiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 84,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "showScoreExcerpt": null,
   "bwwExcerpt": null,

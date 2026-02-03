@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"They’re frighteningly convincing, as are most of the ghoulish effects and all the performers. Joe Mantello directs one hell of a show.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite truncation warning, the review's tone is clearly positive with phrases like 'as smart as it is scary' and the emphatic closing 'one hell of a show.' The critic praises performances, effects, and direction consistently. | GPT-4o: The review describes the show as 'smart' and 'scary' with 'frighteningly convincing' effects and performances. The phrase 'one hell of a show' indicates a strong, enthusiastic recommendation. | Gemini: Despite the truncated text, the phrase \"Joe Mantello directs one hell of a show\" indicates a positive recommendation. The additional context provided by the aggregator excerpt reinforces this assessment.",
+    "keyPhrases": [
+      {
+        "quote": "Joe Mantello directs one hell of a show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for direction and performances with enthusiastic language ('one hell of a show', 'frighteningly convincing'), but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt provides strong praise for the direction and performances, indicating a highly positive view. However, due to the single excerpt warning, confidence is low. | Gemini: The quote uses strong positive language such as \"frighteningly convincing\" and \"one hell of a show\", suggesting a positive recommendation. Given it's a single excerpt, I've scored it towards the higher end of the positive range. | Kimi: Extracted from malformed response",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:55:29.209Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:27:04.471Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "contentTier": "truncated",
   "wordCount": 203,

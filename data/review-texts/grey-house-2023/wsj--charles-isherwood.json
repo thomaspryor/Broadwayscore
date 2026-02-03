@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. McPherson has crafted a genuinely scary piece of theater that makes effective use of the intimate Lyceum Theatre space to create an atmosphere of mounting dread.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. McPherson has crafted a genuinely scary piece of theater that makes effective use of the intimate Lyceum Theatre space to create an atmosphere of mounting dread.",
   "llmScore": {
-    "score": 78,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the craft and effectiveness of the production, noting successful use of the space and atmosphere creation, indicating a positive recommendation though the excerpt is brief. | GPT-4o: The review praises the effectiveness of the production in creating a scary atmosphere, indicating a strong recommendation. | Gemini: The review explicitly states that the play is \"genuinely scary\" and effectively uses the theater space, indicating a positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Mr. McPherson has crafted a genuinely scary piece of theater that makes effective use of the intimate Lyceum Theatre space to create an atmosphere of mounting dread.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the craft and effectiveness of the production, calling it 'genuinely scary' and praising the use of space. However, confidence is low due to single excerpt warning - this could be cherry-picked from a mixed review. | GPT-4o: The excerpt praises the show as 'genuinely scary' and highlights effective use of the theater space, indicating a positive recommendation. The single excerpt warning suggests using the upper end of the Positive bucket. | Gemini: The review excerpt uses positive language such as \"genuinely scary\" and \"effective use\" to describe the play, suggesting a positive recommendation. Given that it is a single excerpt, I'm placing it on the higher end of the positive bucket. | Kimi: The excerpt offers unqualified praise for the play's scariness and technical execution, with 'genuinely scary' and 'effective use' indicating a clear recommendation, though without the superlatives that would suggest a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:56:45.765Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:40:12.618Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 81,
-    "geminiScore": 78,
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "contentTierReason": "fullText was copy of excerpt from web-search import",

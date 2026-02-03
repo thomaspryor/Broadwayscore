@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the bold effort, excellent cast, and top-notch creative elements while acknowledging some stretches feel 'dull or repetitive.' The critic clearly recommends it as a successful horror experience that 'stays with you.' | GPT-4o: The review describes 'Grey House' as a bold and well-acted production that leaves a lasting impression. Despite some moments of confusion, the overall tone is highly positive, with strong praise for the performances and production elements. | Gemini: The review acknowledges some flaws but ultimately praises the production's creepiness, performances, and creative choices, leading to a positive recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "Grey House shows him knocking on all the right doors.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the performances as 'excellent,' calls the creative choices 'top notch,' and notes the playwright is 'knocking on all the right doors.' However, acknowledges 'stretches that start to feel dull or repetitive' and that the playwright 'has a way to go' before matching masters of the genre. | GPT-4o: The review praises the production's atmosphere, acting, and creative choices, despite some noted dull moments. The final verdict is strongly positive, highlighting the show's impact and quality. | Gemini: The review is mostly positive, praising the acting, direction, and design. While noting some dull stretches, the overall impression is favorable, leading to a recommendation with reservations. | Kimi: Despite minor criticisms regarding repetitive stretches and the playwright's room for growth, the critic offers clear praise for the 'excellent' cast, 'perfectly ominous' direction, and 'fantastic' overall experience, strongly recommending the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:55:06.994Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:22:51.987Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 79,
     "openaiScore": 82,
     "geminiScore": 79,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“...a savvy tale that might be likened to a dark, lonely lake on a moonless night – scary enough on the surface, scarier still when one ponders what’s below the surface. There are some stretches that start to feel dull or repetitive, possibly the result of confusion as to what, exactly, is going on, but such moments fade with the next scream.”",

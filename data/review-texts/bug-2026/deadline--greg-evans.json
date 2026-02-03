@@ -7,17 +7,17 @@
   "publishDate": "January 12, 2026",
   "dtliExcerpt": "Together, the creative touches corralled by Cromer and his company build a world that’s unerringly, distressingly realistic, even when everything inside those soon-to-be tinfoil-covered walls loses all recognizable meaning.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 77,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:59:33.626Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 74,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises the creative team's world-building as 'unerringly realistic,' suggesting technical accomplishment. However, with only one curated quote available and the aggregator indicating positive reception, I'm scoring conservatively in the lower positive range due to limited context. | GPT-4o: The review excerpt highlights the effective and realistic world-building by the creative team, suggesting a positive view of the production. However, the mention of losing recognizable meaning introduces some reservation, leading to a conservative score within the Positive range. | Gemini: The excerpt suggests a positive assessment of the creative elements and realism, but the phrase \"distressingly realistic, even when everything inside those soon-to-be tinfoil-covered walls loses all recognizable meaning\" implies a potentially unsettling or confusing experience, warranting a score in the lower end of the positive range. Given the single excerpt warning, I am scoring conservatively.",
+    "keyPhrases": [
+      {
+        "quote": "Letts and his director and their cast don't take us in hand as they descend into the madness",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the excellent performances, particularly Coon's 'revelation' and the 'fine, nuanced' work of Smallwood, along with expert technical elements. However, notes that the play's prescient vision 'does little to enlighten us on the here and now' and calls the insanity 'too specific, too character-contained' for broader relevance. The balance of strong craft appreciation with thematic reservations places this in solid Positive territory. | GPT-4o: The review praises the production's resonance and the performances, but notes limitations in its broader relevance. The overall tone is positive with some reservations about its contemporary impact. | Gemini: The review is mostly positive, praising the performances, direction, and design. However, it also notes that the play doesn't fully enlighten us on the present day, suggesting a reservation. | Kimi: The critic offers extensive praise for the performances (calling Carrie Coon 'a revelation'), direction, and design elements, and describes the production as 'excellent' and 'unequivocally resonant.' However, significant reservations about the play's ability to enlighten contemporary audiences prevent this from being an unqualified rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:10:23.165Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:26:49.912Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 76,
+    "claudeScore": 76,
+    "openaiScore": 78,
     "geminiScore": 75,
+    "kimiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "textIssue": "too_short",
   "sourceMethod": "brightdata",

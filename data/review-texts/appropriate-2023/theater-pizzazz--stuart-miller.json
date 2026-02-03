@@ -33,13 +33,13 @@
   "sourceMethod": "playwright",
   "wordCount": 805,
   "tierReason": "Full review text",
-  "assignedScore": 80,
+  "assignedScore": 78,
   "llmScore": {
-    "score": 80,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -49,8 +49,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting script stumbles and muddied themes, the critic calls the play 'engrossing, entertaining and thought-provoking' with praise for performances, pacing, and design. The overall assessment is positive with reservations. | GPT-4o: The review praises the play's engrossing and thought-provoking nature, highlighting strong performances and effective direction. Despite some minor criticisms, the overall tone is positive, suggesting a strong recommendation. | Gemini: Despite some criticisms about the script and themes, the review concludes that the play is engrossing, entertaining, and thought-provoking, indicating a positive recommendation. The truncated text makes the confidence medium.",
+    "keyPhrases": [
+      {
+        "quote": "the play is engrossing, entertaining (and often funny) and thought-provoking",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the performances, direction, and design while acknowledging script flaws. The critic finds it 'engrossing' and 'entertaining' with an 'appropriate finish,' indicating a solid recommendation despite reservations about some character development and occasional cheap laughs. | GPT-4o: The review praises the play's engrossing and thought-provoking nature, with strong performances and direction. Some script issues are noted, but the overall tone is positive. The text is truncated, so the final verdict may be missing, leading to low confidence. | Gemini: Despite some reservations about muddied themes and cheap laughs, the review concludes that the play is engrossing, entertaining, and thought-provoking, indicating a positive recommendation. The truncated text lowers the confidence. | Kimi: While the text appears truncated, the available review strongly praises the casting as 'perfect,' the performances as excellent, and the play as 'engrossing' and 'thought-provoking,' with only minor criticisms regarding occasional script stumbles and cheap laughs.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,25 +65,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:42:18.549Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:17:15.195Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 79,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   }
 }

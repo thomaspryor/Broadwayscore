@@ -17,7 +17,7 @@
   "bwwExcerpt": "It's not that & Juliet is unenjoyable - it isn't. Somewhere beneath the bombast and repetition and overwrought-from-minute-one approach is a sweet(ish) and smart(ish) tale that gives voice to the marginalized and, not incidentally, provides fans of the music of Britney Spears, Backstreet Boys, Katy ...",
   "llmScore": {
     "score": 64,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 59,
       "high": 69
@@ -30,8 +30,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show is enjoyable but consistently criticizes its heavy-handed approach, describing it as bombastic, repetitive, and lacking subtlety. The aggregator excerpts confirm this mixed assessment with qualified positives. | GPT-4o: The review acknowledges some positive aspects, such as the show's diversity and musical appeal, but also criticizes its lack of subtlety and repetitive nature. The tone is neither fully positive nor negative, hence a mixed classification. | Gemini: The review states the show is not unenjoyable and that there is a sweet tale beneath the bombast. However, the review also points out flaws, so it's a positive but not rave review.",
+    "keyPhrases": [
+      {
+        "quote": "It's not that & Juliet is unenjoyable – it isn't.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show isn't unenjoyable and finds a 'sweet(ish) and smart(ish) tale' beneath the surface, but criticizes the 'bombast and repetition' and heavy-handed messaging. Mixed signals with qualified positives balanced by significant reservations. | GPT-4o: The review acknowledges some positive aspects, such as the diverse cast and the music, but criticizes the overall execution as bombastic and repetitive. The truncated nature of the text suggests caution, but the excerpts indicate a mixed reception. | Gemini: The review acknowledges some enjoyment and a sweet tale beneath the surface, but also criticizes the bombast, repetition, and lack of subtlety. The truncated text and mixed signals suggest a 'Mixed' score, with low confidence due to the missing conclusion. | Kimi: The review acknowledges the show is not unenjoyable and praises the design and two performances, but heavily criticizes the book as lacking subtlety and the musical approach as bombastic and browbeating, resulting in a lukewarm, qualified assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,9 +46,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:22:11.182Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T01:52:13.915Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
@@ -51,17 +57,19 @@
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 65,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "textIssue": "too_short",
   "textFetchedAt": "2026-01-25T13:49:09.698Z",

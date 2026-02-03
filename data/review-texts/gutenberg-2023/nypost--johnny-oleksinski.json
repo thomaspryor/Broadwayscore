@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Josh Gad and Andrew Rannells are absolutely delightful as Bud and Doug, two hapless musical theater writers who have penned what they believe is the next 'Hamilton.'",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Josh Gad and Andrew Rannells are absolutely delightful as Bud and Doug, two hapless musical theater writers who have penned what they believe is the next 'Hamilton.'",
   "llmScore": {
-    "score": 81,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses 'absolutely delightful' which is strong positive language about the lead performances. However, with only one excerpt available, there's some uncertainty about the overall verdict. | GPT-4o: The excerpt highlights the performances of Josh Gad and Andrew Rannells as 'absolutely delightful,' suggesting a strong positive impression of the show. Given the single excerpt warning, the score is placed at the upper end of the Positive bucket. | Gemini: The phrase \"absolutely delightful\" indicates a positive sentiment, suggesting the reviewer enjoyed the performances. With only one excerpt available, it's difficult to gauge the overall recommendation strength, but the positive language warrants a score on the higher end of the positive range.",
+    "keyPhrases": [
+      {
+        "quote": "Josh Gad and Andrew Rannells are absolutely delightful as Bud and Doug, two hapless musical theater writers who have penned what they believe is the next 'Hamilton.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performances ('absolutely delightful') suggests positive recommendation, but with only one excerpt available, confidence is low. Scored in upper Positive range given unqualified enthusiasm. | GPT-4o: The excerpt praises the performances of the lead actors as 'absolutely delightful,' suggesting a positive reception. However, due to the single excerpt warning, the confidence is low, and the score is set at the upper end of the Positive range. | Gemini: The excerpt praises the performances of Gad and Rannells, suggesting a positive experience. However, with only one excerpt available, the confidence is low, and the score is placed at the lower end of the positive range. | Kimi: The excerpt offers enthusiastic superlative praise for the lead performers ('absolutely delightful'), strongly suggesting a positive recommendation, though the single-excerpt limitation requires cautious interpretation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:57:21.771Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:48:28.349Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 82,
-    "geminiScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,

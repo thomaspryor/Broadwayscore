@@ -14,7 +14,7 @@
   "source": "dtli",
   "llmScore": {
     "score": 64,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 59,
       "high": 69
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the stars' talents and some funny moments but finds the show derivative, overly crude, and relying too heavily on the performers' rapport rather than strong material. | GPT-4o: The review highlights the strengths of the lead actors and some comedic elements but notes issues with the writing and humor that may not appeal to all audiences. The overall tone suggests a mixed reception with some enjoyable aspects. | Gemini: The review acknowledges flaws like derivative material and crude humor, but ultimately suggests it's worth seeing, especially for fans of the two leads. The critic notes the actors' skill and the potential for enjoyment if they deviate from the script.",
+    "keyPhrases": [
+      {
+        "quote": "On most nights, and if they feel free to deviate a tad from the script, that will be fun for at least their fans to watch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges the stars' talents and some effective moments but criticizes the show as derivative, overly crude, and reliant primarily on the actors' rapport rather than strong material. The conditional recommendation ('for at least their fans') suggests limited appeal. | GPT-4o: The review highlights the strengths of the lead actors and some comedic elements but also notes crude humor and divisive content. The critic acknowledges the show may appeal to fans of the stars but suggests it may not be universally appreciated. | Gemini: The review acknowledges the talent of the performers and the structure of the narrative gags, but also points out the derivative nature of the show, its reliance on the stars, and some crude humor. It doesn't strongly recommend or discourage seeing it. | Kimi: While praising Rannells and Gad as consummate pros and acknowledging the show has moments of fun, the critic finds the writing derivative, unoriginal, and overly crude, offering only a highly qualified recommendation limited to existing fans of the performers.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:57:18.526Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:47:14.250Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 61,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 65,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,

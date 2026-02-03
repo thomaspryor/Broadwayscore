@@ -35,7 +35,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear enthusiasm with 'maaaahvelous!' and praise for multiple production elements. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses enthusiastic language ('maaaahvelous!') and highlights positive aspects like costumes, sets, and comedic fun, suggesting a strong recommendation. However, with only one excerpt, confidence is low. | Gemini: The review excerpt uses enthusiastic language like \"maaaahvelous!\" and describes feeling like a kid again, indicating a positive experience. Given it's a single excerpt, I'm scoring it on the higher end of the positive range. | Kimi: Single excerpt expresses enthusiastic praise using superlatives ('maaaahvelous') and highlighting production strengths (costumes, sets, comedy), but limited context requires cautious scoring at upper end of Positive range per single-excerpt guidelines.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear enthusiasm with superlatives ('maaaahvelous') and positive emotional impact ('made me feel like a kid again'). Single excerpt warning requires caution, but the tone is unambiguously positive. | GPT-4o: The excerpt uses enthusiastic language ('maaaahvelous!') and highlights multiple positive aspects (costumes, sets, comedic fun). However, only one excerpt is available, so confidence is low. | Gemini: The review excerpt uses enthusiastic language like \"maaaahvelous!\" and describes feeling like a kid again, indicating a strong positive sentiment. Given that it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The critic uses exuberant superlatives and praises the production design and emotional effect, warranting an upper-range Positive score despite the limitation of a single curated excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,23 +45,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:42:09.455Z",
+    "scoredAt": "2026-02-03T01:19:20.749Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "5.1.0"
+    "previousScore": 82,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 85,
+    "openaiScore": 86,
     "geminiScore": 82,
     "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

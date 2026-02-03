@@ -89,10 +89,15 @@
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 50,
   "rescoreCompletedAt": "2026-02-02T03:23:40.034Z",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 568,
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "isFullReview": false
+  "isFullReview": false,
+  "rejectedAt": "2026-02-03T02:52:37.267Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be navigation menu content and website structure rather than an actual review - it's mostly repetitive show listings and navigation elements with only a headline fragment at the end.; openai: This text is a navigation menu or list of shows, not a review.",
+  "promptVersion": "5.2.0"
 }

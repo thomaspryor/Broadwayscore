@@ -9,17 +9,17 @@
   "dtliExcerpt": "If a genie had sprung from my teakettle last week and offered to grant me three wishes, I might impulsively have asked to be spared any more children’s musicals. Since a certain blockbuster feline arrived well over a decade ago, Broadway has been lapped by wave after wave of big, often gloppy songfests adapted from animated movies, mostly from the mother ship, Disney. So the prospect of Aladdin, promising another weary night in the presence of a spunky youngster and wisecracking animals, didn’t exactly set my heart racing. But this latest musical adapted from one of Disney’s popular movies, which opened on Thursday night at the New Amsterdam Theater, defied my dour expectations. As directed and choreographed (and choreographed, and choreographed) by Casey Nicholaw, and adapted by the book writer Chad Beguelin, Aladdin has an infectious and only mildly syrupy spirit. Not to mention enough baubles, bangles and beading to keep a whole season of RuPaul’s Drag Race contestants in runway attire.",
   "showScoreExcerpt": "\"This latest musical adapted from one of Disney’s popular movies defied my dour expectations...“Aladdin” has an infectious and only mildly syrupy spirit. Not to mention enough baubles, bangles and beading to keep a whole season of “RuPaul’s Drag Race” contestants in runway attire.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 80,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALADDIN-Opens-on-Broadway-Updating-LIVE-20140320",
   "dtliThumb": "Up",
   "designation": "Critics_Pick",
   "llmScore": {
-    "score": 78,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,12 +31,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "But this latest musical adapted from one of Disney's popular movies defied my dour expectations.",
+        "quote": "defied my dour expectations",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening skepticism about children's musicals, the critic finds the show 'infectiously spirited' with 'relentless razzle-dazzle' and praises standout performances, particularly Iglehart's show-stopping number. While noting generic elements and familiar Disney formula, the overall assessment is positive recommendation. | GPT-4o: The review begins with skepticism but ultimately praises the production's energy, humor, and performances, particularly James Monroe Iglehart's. The critic acknowledges formulaic elements but appreciates the show's entertaining qualities. | Gemini: The review is mostly positive, highlighting the energetic production and comedic elements, although noting some formulaic aspects. The critic was pleasantly surprised and recommends it. | Kimi: The critic admits initial skepticism about Disney adaptations but praises the show's energetic choreography, comedic performances (particularly Iglehart's Genie), and breezy humor, while acknowledging the plot remains generic formula.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening with skepticism about Disney musicals, the critic finds this production entertaining with 'infectious spirit' and praises the performances, particularly Iglehart's show-stopping number. The review acknowledges formulaic elements but recommends it for its 'relentless razzle-dazzle' and comedic energy. | GPT-4o: The review starts with low expectations but ultimately praises the show for its infectious spirit, humor, and entertaining performances, particularly highlighting the Genie and the production's razzle-dazzle. | Gemini: The review is generally positive, highlighting the show's energy, comedy, and performances, while acknowledging its reliance on familiar tropes. The critic ultimately finds it enjoyable despite initial reservations. | Kimi: The critic praises the energetic direction, comedic performances (particularly James Monroe Iglehart as the Genie), and lavish production design, calling the show 'almost maniacally entertaining' and acknowledging it defied his negative expectations. However, he notes that some songs are forgettable, the romantic leads are generic, and the plot relies on tired clichés, preventing it from being an unqualified rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,23 +46,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:39:11.016Z",
+    "scoredAt": "2026-02-03T01:17:03.452Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "5.1.0"
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 78,
+    "openaiScore": 82,
     "geminiScore": 77,
-    "kimiScore": 80,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -16,7 +16,7 @@
   "bwwThumb": "Meh",
   "llmScore": {
     "score": 63,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 58,
       "high": 68
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges 'many fine and entertaining moments' and praises specific performances, but criticizes the conceptual approach as unnecessary 'throat clearing' that 'defaces' the original's distinctive profile. The truncated text prevents seeing the full verdict. | GPT-4o: The review describes both positive and negative aspects of the production, noting fine and entertaining moments but also criticizing the conceptual approach. The tone suggests a mixed experience overall. | Gemini: The review expresses mixed feelings, praising some aspects (staging, performances) while criticizing others (the extreme concept). The overall impression is that it has good moments but is flawed.",
+    "keyPhrases": [
+      {
+        "quote": "The problem for me is that 'Cabaret' has a distinctive profile already. The extreme one offered here frequently defaces it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges 'many fine and entertaining moments' and praises individual performances, but clearly states the production 'frequently defaces' the original show's distinctive profile. However, the text is truncated mid-review, so the final verdict may be incomplete. | GPT-4o: The review contains both praise and criticism. While it highlights fine performances and moments, it also criticizes the conceptual approach and overall impact. The text is truncated, adding uncertainty to the final verdict. | Gemini: The review expresses reservations about the production's distinctive profile and conceptual doodling, but acknowledges fine and entertaining moments, particularly from the cast and staging. The text is truncated, which reduces confidence. | Kimi: The critic criticizes the immersive pre-show elements as 'conceptual doodling' that 'defaces' the classic material and compares the show to 'cough syrup cut with paint thinner,' but praises individual performances and 'fine and entertaining moments.' The text cuts off before a final verdict is clear.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:34:19.322Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:05:31.216Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "3.0.0"
+    "previousScore": 63,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
+    "geminiScore": 65,
+    "kimiScore": 58,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,

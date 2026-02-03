@@ -7,7 +7,7 @@
   "publishDate": "November 21, 2024",
   "showScoreExcerpt": "\"Megan Hilty and Jennifer Simard give boisterously funny performances as preening rivals\"",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 63,
   "source": "show-score",
   "needsFullText": true,
   "fetchedAt": "2026-01-24T20:00:00.000Z",
@@ -15,22 +15,28 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 75,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single positive quote about performances suggests recommendation, but extremely limited text makes full assessment impossible. | GPT-4o: The review highlights strong performances by the lead actors, suggesting an entertaining production. However, due to the lack of a full review and context, the recommendation is made with some reservations. | Gemini: The review excerpt highlights positive performances, suggesting a favorable, though possibly not rave, assessment. Given the truncated text, I'm assuming a positive but not overwhelmingly enthusiastic recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "As the plot grows more ludicrous and convoluted, the fun peters out like a slowly deflating helium balloon sagging to earth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Critic praises the leads' performances and early humor but finds the show loses momentum as it progresses, with meaningful themes getting lost in the production. Mixed verdict with no clear recommendation either way. | GPT-4o: The review praises the performances of Hilty and Simard but criticizes the plot for becoming ludicrous and losing its fun, indicating a mixed reception. | Gemini: The review praises the performances of the leads but notes that the plot becomes convoluted and the fun diminishes. This indicates a mixed reaction. | Kimi: The critic praises the show's humor and the lead performances as 'boisterously funny' and 'seductive,' but notes significant flaws including a convoluted plot that causes the fun to 'peter out' and a lack of thematic depth. The final verdict recommends the show primarily for its stars' compelling work.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:43:01.039Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:02:28.939Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 75,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 78,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/death-becomes-her-2024/wsj--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T03:05:33.368Z",

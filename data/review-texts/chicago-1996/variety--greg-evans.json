@@ -9,15 +9,15 @@
   "dtliExcerpt": "Any gripes about the producers of “Chicago” charging full-scale prices for a stripped-down show evaporate like vapors from bathtub gin the second Bebe Neuwirth &#038; Co. open the show with a pulse-quickening rendition of “All That Jazz.” This concert staging, wonderfully choreographed by Ann Reinking (with a credit to “the style of Bob Fosse”), is a bit more elaborate than when presented by City Center’s Encores series in the spring, but even if it weren’t, the performances, wit and sophistication of the show would more than earn a place on Broadway.",
   "showScoreExcerpt": "\"If the Kander & Ebb style can be described in one word, it’s showstopper. And though their detractors might argue that the tenacity can be wearying, they’ll find scant support for that position in “Chicago.” Even in a concert staging, the momentum starts high and gets higher.\"",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 93,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 87,
-    "confidence": "low",
+    "score": 93,
+    "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: Despite opening with acknowledgment of potential concerns about pricing, the critic delivers an overwhelmingly enthusiastic endorsement, calling it 'theater art' and praising virtually every aspect from performances to direction to choreography, concluding with rhetorical emphasis on its full artistic merit. | Gemini: Despite being truncated, the review is overwhelmingly positive, praising the performances, choreography, and overall production. The critic clearly enjoyed the show and indicates it's worth seeing.",
+    "keyPhrases": [
+      {
+        "quote": "If the Kander & Ebb style can be described in one word, it's showstopper.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite opening with potential concerns about pricing, the critic delivers unqualified praise throughout. Uses superlatives like 'dazzle,' 'thrilling,' 'theater art' and concludes with rhetorical question 'If that's not full-scale, what is?' indicating complete endorsement. | GPT-4o: The review is filled with enthusiastic praise for the performances, choreography, and overall production. Despite being a concert staging, it is described as a thrilling and dazzling experience. The truncated warning suggests caution, but the available text and aggregator context strongly indicate a rave review. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, praising the performances, choreography, and overall production. The critic clearly enjoyed the show and recommends it. | Kimi: The critic effusively praises the stripped-down concert staging as worthy of full-scale prices, highlighting the 'pulse-quickening' performances, 'wonderful' choreography, and 'terrific' score with superlatives like 'theater art' and concluding that it 'more than earn[s] a place on Broadway.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:57:18.370Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:37:04.871Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
-    "previousVersion": "3.0.0"
+    "previousScore": 87,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": null,
+    "openaiScore": 92,
     "geminiScore": 82,
+    "kimiScore": 94,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "textIssue": "too_short",
   "urlSource": "show-score",

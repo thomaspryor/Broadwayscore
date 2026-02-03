@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show is a love letter to the theater itself, and to the particular kind of madness that drives people to put on shows in the first place.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a love letter to the theater itself, and to the particular kind of madness that drives people to put on shows in the first place.",
   "llmScore": {
-    "score": 77,
+    "score": 71,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 66,
+      "high": 76
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite criticisms about length and some problematic elements, the review praises the leads' performances extensively, calls it 'very often funny,' and the aggregator excerpt frames it as a 'love letter to theater,' indicating overall positive recommendation with clear reservations. | GPT-4o: The review acknowledges the comedic talent and chemistry of the leads, but also highlights issues with pacing and certain comedic elements that fall flat. The truncated nature of the text suggests caution, but the overall tone indicates a mixed reception with some positive highlights. | Gemini: Despite some reservations about the show's length and a specific joke, the review praises the performances and chemistry of the leads, suggesting it's worth seeing for their performance.",
+    "keyPhrases": [
+      {
+        "quote": "Rannells and Gad are wonderfully matched and, it appears, having a real blast with each other.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Despite noting the show is too long and has some problematic elements, the critic praises the lead performances extensively, finds it 'very often funny', and describes the chemistry as 'indisputable'. The aggregator excerpt calling it 'a love letter to the theater' supports a positive verdict. Medium confidence due to truncated text possibly missing final recommendation. | GPT-4o: The review acknowledges the strong performances of Rannells and Gad and the show's comedic elements, but also notes issues with pacing and certain comedic choices. The truncated text suggests a mixed tone, with both praise and criticism. | Gemini: The review praises the performances of Rannells and Gad and finds the show funny, but also states that it feels padded and could be shorter. The truncated text and mixed signals lead to a \"low\" confidence score. | Kimi: The reviewer lavishes praise on Rannells and Gad's comic timing and chemistry, finding the show frequently funny and endearing, though criticizing its padded length and one tone-deaf running gag. The truncated text prevents certainty about the final verdict, but the aggregator excerpt suggests an affectionate view. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:58:17.489Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:00:47.082Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 66,
-    "geminiScore": 77,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
     "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
   },
   "previousUrl": "https://www.vulture.com/2023/10/gutenberg-the-musical-broadway-review.html",
   "urlDiscoveredAt": "2026-02-01T19:00:15.697Z",

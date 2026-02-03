@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds both productions conceptually flawed and boring, with clear structural issues, but acknowledges excellent supporting performances and strong production values, landing in mixed territory without a clear recommendation. | GPT-4o: The review highlights strong performances and production details but criticizes the lack of uncertainty and thrill in the narrative, leading to a mixed impression overall. | Gemini: The review praises supporting performances and some aspects of the staging, but criticizes the lead performances and finds the production somewhat boring and lacking in necessary uncertainty. This indicates a mixed overall assessment.",
+    "keyPhrases": [
+      {
+        "quote": "The answer seems too obvious. Which makes both productions seem if not reactionary then at least a little boring.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds the production technically proficient with excellent supporting performances but criticizes the lead performances as 'miscalibrated' and finds the overall interpretation lacking in doubt and ambiguity, making it 'boring.' Mixed assessment with more negatives than positives. | Gemini: The review points out flaws in the lead performances and finds the production somewhat boring, but acknowledges excellent supporting performances. It doesn't strongly recommend or discourage seeing the show. | Kimi: Despite praising the supporting cast and design elements, the critic finds the production boring and obvious, criticizing the miscalibrated lead performances for failing to maintain the play's essential ambiguity, resulting in a revival that removes the doubt from 'Doubt.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:54:45.158Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:17:47.548Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
+    "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
+    "claudeScore": 62,
+    "openaiScore": null,
     "geminiScore": 62,
+    "kimiScore": 45,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 39,

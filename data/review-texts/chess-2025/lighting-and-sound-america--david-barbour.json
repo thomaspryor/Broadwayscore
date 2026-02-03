@@ -21,7 +21,7 @@
   ],
   "llmScore": {
     "score": 64,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 59,
       "high": 69
@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Despite extensive criticisms of the book and some performances, the critic acknowledges the production's strengths (Tveit and Christopher's performances, the score, slick staging) and ends with a neutral invitation to readers to decide for themselves, suggesting qualified worth rather than a clear recommendation or dismissal. | GPT-4o: The review highlights significant flaws in the production, such as a problematic book and uneven performances, but also acknowledges strong performances by Aaron Tveit and Nicholas Christopher that make the show watchable. The truncated nature of the text suggests caution, but the overall tone leans towards mixed with some positive elements. | Gemini: Despite the many issues the reviewer has with the show's book and some performances, they highlight strong performances and the score's appeal, suggesting it's worth seeing for those elements. The truncated text makes it difficult to be more confident, but the overall tone leans positive.",
+    "keyPhrases": [
+      {
+        "quote": "After decades of wrangling, this problematic piece ends up where it started, offering the same things it has always had: An alluring (if imperfect) show, a couple of charged-up stars, and a shiny staging concept.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show's fundamental problems (weak book, problematic characters) but praises individual performances by Tveit and Christopher, plus production values. The final assessment suggests these elements 'are proving to be more than enough' - neither a clear recommendation nor dismissal. | GPT-4o: The review highlights strong performances and an 'irresistible' score but criticizes the book and overall coherence. The text is truncated, so the final verdict is unclear, leading to a low confidence score. | Gemini: The review praises the score and some performances, but criticizes the book and other aspects of the production. The overall tone is mixed, not strongly recommending or discouraging. | Kimi: The critic praises the 'irresistible' score and two lead performances (Tveit and Christopher) as 'watchable,' but heavily criticizes the 'silly, soapy book,' sound design, and Lea Michele's performance, ultimately calling it an 'alluring (if imperfect) show' that hasn't solved its fundamental narrative problems.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,28 +50,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:24:45.517Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:20:27.804Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 65,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",

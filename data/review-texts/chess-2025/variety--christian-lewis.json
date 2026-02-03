@@ -9,73 +9,66 @@
   "dtliExcerpt": "In its sweeping musical moments, it’s easy to see why “Chess” has diehard fans. However, there’s so much else that brings everything down: clunky plotting, nonsensical character motivations, and, here, a useless ensemble.",
   "showScoreExcerpt": "\"Although this 'Chess' match may not have produced a new champion, thereâs still some thrilling gameplay, especially from Michele and Christopher, who help provide insight into the magic of 'Chess' \"",
   "originalScore": null,
-  "assignedScore": 68,
+  "assignedScore": 71,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:59:51.138Z",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 68,
-    "confidence": "high",
+    "score": 71,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 72
+      "low": 66,
+      "high": 76
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 25,
-      "music": 80,
-      "performances": 82,
-      "direction": 45
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "there's still some thrilling gameplay, especially from Michele and Christopher, who help provide insight into the magic of 'Chess' and make this sometimes uneven game still feel entirely worth watching",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Despite this revival of 'Chess' making some wrong moves, it always remembers that the queen is the most powerful piece, wisely letting Michele shine like the star she is",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "Alas, the debate of whether 'Chess' can be saved or fixed must continue, for this is likely not the best iteration of the material",
-        "sentiment": "negative",
+        "quote": "this sometimes uneven game still feel entirely worth watching",
+        "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "The critic finds significant flaws in the book, direction, and production design but praises the performances (especially Michele and Christopher) and music enough to conclude it's 'entirely worth watching' despite being 'sometimes uneven.'",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review acknowledges significant structural and production problems with the musical but concludes it's 'entirely worth watching' primarily for Michele and Christopher's performances. The critic finds compelling moments amid the flaws, placing this in mixed territory with a lean toward the positive end due to the final recommendation. | GPT-4o: The review acknowledges significant flaws in the production, particularly in the book and direction, but praises the performances of Michele and Christopher. The overall tone is mixed, with both positive and negative elements highlighted. | Gemini: The review acknowledges flaws in the production, but ultimately concludes that it is \"entirely worth watching\" due to the performances of Michele and Christopher. This suggests a positive, but not rave, recommendation. | Kimi: While the critic heavily criticizes the book, direction, and production design as uneven and flawed, they ultimately recommend the show based on stellar performances from Lea Michele and Nicholas Christopher, explicitly calling it 'entirely worth watching.' | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
     "flags": {
-      "hasExplicitRecommendation": true,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-02T16:24:53.846Z",
-    "promptVersion": "5.1.0",
-    "inputTokens": 4144,
-    "outputTokens": 412,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:28:13.714Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 68,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 68,
-    "openaiScore": 65,
-    "scoreDelta": 3,
+    "claudeScore": 62,
+    "openaiScore": 67,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
   },
   "sourceMethod": "brightdata",
   "archivePath": "data/archives/reviews/chess-2025/variety--christian-lewis_2026-02-02.html",

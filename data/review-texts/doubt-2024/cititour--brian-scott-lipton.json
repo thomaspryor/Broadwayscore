@@ -9,26 +9,32 @@
   "bwwExcerpt": "Scott Ellis’ much-anticipated revival of John Patrick Shanley’s Pulitzer Prize-winning 2004 work “Doubt: A Parable,” now at the Roundabout Theatre Company’s recently renamed Todd Haimes Theatre, checks off all the previous boxes, for better and worse. Most importantly, though, it proves the case – beyond any doubt – what a well-structured theatrical work Shanley crafted.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 75,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the play's structure and Amy Ryan's performance as 'superb,' while acknowledging some casting issues with Schreiber. Overall tone is appreciative of the revival's merits. | GPT-4o: The review acknowledges the strengths of the play's structure and some performances, but highlights significant casting issues with Schreiber, which affects the overall impact. The critic's doubts about the casting and the effectiveness of the production suggest a mixed reception. | Gemini: The review praises the play's structure and Amy Ryan's performance, but criticizes Liev Schreiber's casting. Overall, it's a positive assessment with reservations about one of the lead actors.",
+    "keyPhrases": [
+      {
+        "quote": "checks off all the previous boxes, for better and worse",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the writing, Amy Ryan's performance, and the production design, but finds Schreiber significantly miscast in a key role. The critic appreciates the play's structure and themes while expressing clear reservations about a central performance, landing in mixed territory. | Gemini: The review praises the structure of the play and the performances of Ryan and Kazan, but criticizes Schreiber's casting. The overall tone is mixed, acknowledging both strengths and weaknesses. | Kimi: While the critic finds Liev Schreiber 'somewhat miscast' and notes the production succeeds 'for better and worse,' the overwhelming praise for Shanley's 'well-structured' play and Amy Ryan's 'superb' performance indicates a clear, if qualified, recommendation to see this revival.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:25:51.906Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:04:37.864Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 75,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 65,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 65,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "bwwThumb": "Up",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",

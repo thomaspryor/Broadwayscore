@@ -40,13 +40,13 @@
   "textQuality": "full",
   "textStatus": "complete",
   "sourceMethod": "brightdata",
-  "assignedScore": 75,
+  "assignedScore": 70,
   "llmScore": {
-    "score": 75,
+    "score": 70,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 65,
+      "high": 75
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -56,8 +56,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite numerous criticisms about the material and production values, the reviewer explicitly states they 'actually did' have a good time and praises the stars' chemistry and effort. The recommendation is qualified but positive. | GPT-4o: The review acknowledges the impressive chemistry and effort of the stars, but also highlights significant shortcomings in the show's premise and score. The critic enjoyed the experience but questions the show's Broadway placement, indicating a mixed but somewhat positive overall impression. | Gemini: The review indicates that the show is enjoyable due to the performances of the leads, but acknowledges the show's flaws and humble origins. The critic states they had a good time, but questions if it belongs on Broadway.",
+    "keyPhrases": [
+      {
+        "quote": "you'll laugh. You'll wince. You may even tear up a bit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic acknowledges significant structural and musical flaws but clearly had a good time and praises the stars' chemistry and effort. The positive experience and entertainment value outweigh the reservations. | GPT-4o: The review acknowledges the strong chemistry and effort of the lead actors, but criticizes the show's premise and music. The overall tone suggests enjoyment but with significant reservations about the production's fit for Broadway. | Gemini: The review is generally positive due to the stars' performances, but it acknowledges the show's humble roots and some problematic aspects of the premise and score. The critic enjoyed it but questions its Broadway suitability. | Kimi: Extracted from malformed response | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -66,28 +72,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:57:02.748Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:44:24.222Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 75,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 76,
     "openaiScore": 65,
-    "geminiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 62,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
   },
   "wordCount": 675,
   "tierReason": "Full review text"

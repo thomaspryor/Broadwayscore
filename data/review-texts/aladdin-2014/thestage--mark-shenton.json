@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"This big, busy, splashy family entertainment fits right in; it feels a bit generic, but it certainly delivers in terms of sheer eye-popping spectacle, and is sure to run and run.\"",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 75,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 76,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed praise acknowledging generic quality but emphasizing spectacle and commercial success prediction. Single excerpt limits confidence in overall verdict assessment. | GPT-4o: The review acknowledges the show as 'big, busy, splashy' and delivering 'eye-popping spectacle,' suggesting a positive experience despite being 'a bit generic.' The single excerpt indicates a positive tone, but the text quality warning suggests caution. | Gemini: The review says the show \"delivers in terms of sheer eye-popping spectacle\" and is \"sure to run and run\", but also notes that it \"feels a bit generic.\" This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The excerpt offers qualified praise, acknowledging the show feels generic but praising its visual spectacle and commercial potential, suggesting a mild recommendation tempered by the single-quote context.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the show is 'generic' but still recommends it for its spectacle and predicts commercial success. The positive verdict ('certainly delivers', 'sure to run and run') outweighs the generic criticism. Single excerpt warning requires low confidence. | GPT-4o: The review excerpt highlights the show's visual appeal and potential for longevity, suggesting a positive reception despite noting it feels 'a bit generic'. The single excerpt limitation reduces confidence. | Gemini: The review states that the show \"delivers in terms of sheer eye-popping spectacle\" and \"is sure to run and run\", but also notes that it \"feels a bit generic\". This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic acknowledges the show feels generic but praises its spectacle and predicts commercial success, indicating a mildly positive, qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,23 +46,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:43:31.269Z",
+    "scoredAt": "2026-02-03T01:20:09.947Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "5.1.0"
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 74,
+    "claudeScore": 72,
+    "openaiScore": 80,
     "geminiScore": 75,
-    "kimiScore": 74,
+    "kimiScore": 72,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

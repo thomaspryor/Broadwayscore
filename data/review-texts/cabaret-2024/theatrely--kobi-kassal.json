@@ -9,16 +9,16 @@
   "dtliExcerpt": "It was only a matter of time for the starry revival to make its way over here to New York, and I am happy to report that this Cabaret, which opened tonight at the August Wilson Theatre, is a thrilling sight to behold.",
   "bwwExcerpt": "Where I'm fascinated is that spark the production seems to have found over here in the States. I can't necessarily pinpoint what particlualy changed but the world Frecknall has created now works for me. The team has produced a stunning feat the likes of which Broadway has not experienced in a while. If London is any indication, we are in for a long healthy run with exciting new stars every few months, and I look forward to experiencing the wonderment of the Kit Kat Club again and again.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 91,
   "source": "dtli",
   "scrapedAt": "2026-01-23T18:00:00.000Z",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening with lukewarm feelings about the London production, the critic delivers an unambiguously enthusiastic recommendation for the Broadway version, calling it 'thrilling', 'astounding', and 'stunning feat' while expressing excitement to return multiple times. | GPT-4o: The review is overwhelmingly positive, praising the production as a 'thrilling sight to behold' and highlighting standout performances and innovative staging. The critic expresses excitement about experiencing the show multiple times, indicating a strong recommendation. | Gemini: Despite initial reservations about the London production, the critic clearly states that this Broadway production is a \"thrilling sight to behold\" and a \"stunning feat.\" The review is overwhelmingly positive, praising the performances, design, and overall experience.",
+    "keyPhrases": [
+      {
+        "quote": "The team has produced a stunning feat the likes of which Broadway has not experienced in a while.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Enthusiastic praise throughout with superlatives like 'thrilling sight to behold', 'astounding', and 'stunning feat'. The critic explicitly states the production now 'works' for them after previous reservations, and expresses excitement about seeing it 'again and again'. | GPT-4o: The review is filled with superlatives and praise for the production, performances, and transformation of the venue. The critic expresses excitement and high regard for the show, indicating a strong recommendation. | Gemini: The critic praises the production as a \"thrilling sight to behold\" and notes that the production has found a spark in the States. They also highlight the stunning performances and overall experience, indicating a strong positive recommendation. | Kimi: The critic delivers unqualified praise for the immersive staging and performances, declaring the Broadway transfer superior to the London production and a 'stunning feat,' while expressing eagerness to return multiple times.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:35:08.433Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:07:15.701Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 91,
+    "claudeScore": 89,
     "openaiScore": 92,
     "geminiScore": 82,
+    "kimiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
     "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "sourceMethod": "playwright",
   "bwwThumb": "Up",

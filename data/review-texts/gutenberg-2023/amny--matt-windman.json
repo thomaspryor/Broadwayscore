@@ -9,26 +9,32 @@
   "bwwExcerpt": "Rannells and Gad once again make a terrific pair of unlikely pals and earn many laughs. However, “Gutenberg!” was intended to be what the Polish theater theorist Jerzy Grotowski termed “Poor Theater,” built upon minimal production values and maximized imagination. On Broadway, it feels both overdone (with an elaborate set invoking an empty stage, instead of an actual empty stage, and a band instead of a single piano, losing its original charm) and undercooked (a slight, overextended, and rudimen",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 52,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 60,
+    "score": 52,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 47,
+      "high": 57
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Despite praising the leads' chemistry and some funny moments, the critic clearly finds the show overextended, tedious, and fundamentally flawed with unmemorable music and problematic content. | GPT-4o: The review highlights several significant issues with the production, such as an unmemorable score and a premise that doesn't hold up, but also acknowledges some funny moments and the chemistry between the leads. The tone suggests a mixed reception, with notable criticisms but also some redeeming qualities. | Gemini: The review points out flaws like an unmemorable score and a premise that makes little sense, but also acknowledges some funny lines and the chemistry between the leads, resulting in a mixed assessment. The truncated text makes it difficult to determine the final verdict, but the overall tone leans towards mixed.",
+    "keyPhrases": [
+      {
+        "quote": "There are some funny lines, but no more than an hour's worth of laughs in a two-person vaudeville routine that goes on for two hours, becoming tedious.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic finds the show largely tedious and unmemorable despite praising Gad and Rannells' performances. The antisemitism critique and overall assessment of it being 'deliberately bad' with unintentional badness suggests disappointment outweighs positives. | GPT-4o: The review criticizes the show's premise and execution, describing it as tedious with unmemorable music and a nonsensical plot. While there are some funny moments, the overall tone suggests disappointment. The text is truncated, so the final verdict may be missing, but the existing content leans negative. | Gemini: The review acknowledges some funny moments and the talent of the performers, but ultimately finds the show tedious and the premise weak. The truncated nature of the text lowers the confidence. | Kimi: The critic acknowledges some successful humor and theater-insider jokes, but emphasizes significant flaws including a tedious runtime, unmemorable score, and tone-deaf material. Given the truncated text warning and the absence of a clear final recommendation, the review falls in the Mixed range with substantial reservations. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:56:51.624Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:41:21.222Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 52,
+    "previousScore": 60,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 58,
-    "geminiScore": 62,
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 60,
+    "kimiScore": 58,
     "claudeBucket": "Negative",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
     "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
   },
   "dtliExcerpt": "On Broadway, it feels both overdone (with an elaborate set invoking an empty stage, instead of an actual empty stage, and a band instead of a single piano, losing its original charm) and undercooked (a slight, overextended, and rudimentary comic routine).",
   "sources": [

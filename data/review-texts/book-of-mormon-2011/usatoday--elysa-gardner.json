@@ -96,5 +96,11 @@
   "textQuality": "full",
   "textStatus": "complete",
   "rescoreCompletedAt": "2026-02-01T17:32:18.056Z",
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-03T02:47:43.141Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This is a review of the national touring production at ASU Gammage in Tempe, not the current Broadway run; openai: The review is about a production of 'The Book of Mormon' at ASU Gammage in Tempe, which is part of a national tour, not the current Broadway run.; gemini: This review is for a touring production at ASU Gammage, not the Broadway production.; kimi: This review covers the first national tour production at ASU Gammage in Tempe, Arizona, not the current Broadway run. While it references the show's Broadway origins, it explicitly evaluates the touring cast (Billy Harrigan Tighe, A.J. Holmes) and the regional venue performance rather than the Broadway production.",
+  "promptVersion": "5.2.0"
 }

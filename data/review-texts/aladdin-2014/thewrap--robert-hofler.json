@@ -35,7 +35,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds the book lacking in magic and questions cynical approach to introducing children to theater. However, this is only one excerpt and may not represent the full review verdict. | GPT-4o: The excerpt criticizes the book for lacking magic and questions its approach to introducing children to theater, suggesting a negative view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is negative, criticizing the book and humor. Given the single excerpt and negative tone, I've scored it as negative with low confidence. | Kimi: The critic unfavorably compares the show to The Book of Mormon, criticizes the book as cynical and lacking magic despite the fantastical source material, and questions whether children will appreciate its humor, indicating a recommendation against.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds the book lacks magic and questions the cynical approach to introducing children to theater. However, this is only one excerpt and may not represent the full review verdict. | GPT-4o: The excerpt criticizes the book for lacking magic and questions the approach to humor, suggesting a negative view. However, with only one excerpt, the full sentiment is unclear, leading to low confidence. | Gemini: The review excerpt expresses disappointment in the book and questions the humor's suitability for children. Given the negative tone and lack of positive comments, I've classified it as negative, but with low confidence due to the limited text. | Kimi: The excerpt criticizes the book for lacking magic despite the magical source material, questions whether the cynical humor is appropriate for children, and unfavorably compares the show to The Book of Mormon. While acknowledging 'clever' wordplay, the overall tone discourages attendance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,12 +45,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:44:23.219Z",
+    "scoredAt": "2026-02-03T01:21:11.757Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 44,
-    "previousVersion": "5.1.0"
+    "previousScore": 43,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 45,
@@ -61,7 +61,7 @@
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

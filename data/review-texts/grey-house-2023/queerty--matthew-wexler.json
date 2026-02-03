@@ -28,13 +28,13 @@
   "textQuality": "full",
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "assignedScore": 64,
+  "assignedScore": 63,
   "llmScore": {
-    "score": 64,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -44,8 +44,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review finds the show 'entertaining enough' but suggests alternative entertainment would be better value, indicating a lukewarm recommendation that neither strongly endorses nor condemns the production. | GPT-4o: The review acknowledges some entertaining aspects and atmospheric efforts but suggests the play doesn't fully deliver on its horror promise. The recommendation is lukewarm, indicating it may be worth seeing for some but not strongly recommended. | Gemini: The review ultimately recommends the show as \"entertaining enough\" for a specific audience, but suggests a haunted hotel might be a better value, indicating a positive but qualified recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Grey House is entertaining enough, but for the price of a Broadway ticket, an overnighter at a haunted hotel might do the trick.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges atmospheric strengths and solid performances but criticizes the confounding script and suggests cheaper alternatives might be better value, indicating lukewarm recommendation at best. | GPT-4o: The review describes the play as entertaining but suggests it doesn't fully deliver on its horror promise, with a recommendation that implies it's not worth the ticket price for everyone. | Gemini: The review acknowledges some entertainment value but ultimately suggests it's not worth the Broadway ticket price, implying a mixed experience. The comparison to a haunted hotel further weakens the recommendation. | Kimi: While praising Laurie Metcalf's reliability and the atmospheric design, the critic finds the script confounding and the horror elements underwhelming, ultimately suggesting alternative entertainment offers better value for the price.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,9 +60,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:56:04.027Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:33:56.880Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
@@ -65,17 +71,19 @@
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 65,
+    "kimiScore": 58,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "wordCount": 784,
   "tierReason": "Full review text"

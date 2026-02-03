@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout ('virtually perfect', 'wildly entertaining', 'delight of a holiday gift') and explicitly counters negative Broadway criticism, positioning this as definitive proof that movie adaptations can be excellent. | GPT-4o: The review is overwhelmingly positive, describing the show as 'virtually perfect' and 'wildly entertaining,' with standout performances. The critic uses strong language that indicates a must-see recommendation. | Gemini: The review uses extremely positive language such as \"virtually perfect\" and \"wildly entertaining\", indicating a strong recommendation. The critic clearly believes the musical is a triumph.",
+    "keyPhrases": [
+      {
+        "quote": "A virtually perfect big-budget, broad-appeal musical comedy that improves in every way over the 1992 film.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with superlatives throughout - 'virtually perfect,' 'wildly entertaining,' calls it a 'triumph' and 'life-force of a musical.' No meaningful reservations expressed. | GPT-4o: The review is filled with superlatives and unqualified praise, calling the show 'wildly entertaining' and 'a triumph'. The critic emphasizes the exceptional performances and the overall production quality, strongly recommending it as a must-see. | Gemini: The review is overwhelmingly positive, calling the show \"virtually perfect\" and stating that it \"improves in every way\" over the original film. The critic praises the performances, music, and overall entertainment value, indicating a strong recommendation. | Kimi: The critic offers unqualified praise with superlatives like 'virtually perfect' and 'wildly entertaining,' explicitly recommending the show as a 'delight of a holiday gift' with no reservations mentioned.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:25:32.151Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:52:50.363Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
+    "previousScore": 93,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
-    "geminiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 94,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/death-becomes-her-2024/deadline--greg-evans_2026-02-02.html",

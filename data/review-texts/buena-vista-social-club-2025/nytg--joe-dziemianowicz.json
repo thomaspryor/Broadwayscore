@@ -30,8 +30,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the show's infectious energy, explosive choreography, and authentic Cuban music, while acknowledging a slimmer plot. The positive tone and recommendation for specific audiences indicates a solid endorsement. | Gemini: The review is overwhelmingly positive, highlighting the vibrant music, exuberant choreography, and talented performers. While acknowledging a slender story, the critic emphasizes the show's infectious joy and cultural richness, leading to a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "It's easy to like a show that knows itself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is consistently positive throughout, praising the show as 'infectiously exuberant and joyous' with 'explosive' choreography. The critic clearly recommends it for multiple audiences and celebrates its vibrant energy, despite noting the story is 'slender.' | Gemini: The review is positive, highlighting the music and choreography, but notes the story is slender. The audience reviews are also positive, further supporting the score. | Kimi: The critic delivers consistent praise for the 'infectiously exuberant' music, 'explosive' choreography, and strong performances, recommending the show while acknowledging the plot is slender but effective.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,27 +46,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:56:25.573Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:15:17.157Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 77,
     "openaiScore": null,
-    "geminiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "dtli",

@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges strong vocal performances and entertaining moments but consistently points to fundamental story problems, excessive runtime, and calls it a 'hot mess' - neither recommending nor discouraging attendance. | GPT-4o: The review acknowledges the production's ambitious and entertaining elements, particularly the performances and music, but also highlights significant flaws in the story and execution. The overall tone suggests a mixed experience with both strengths and weaknesses. | Gemini: The review acknowledges the show's flaws, particularly the convoluted plot, but praises the performances and the overall experience as a \"rousing hot mess with outsize ambitions.\" This suggests a positive but not overwhelmingly enthusiastic recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "If the result is an unwieldy but rousing hot mess with outsize ambitions, maybe now we know how its chess prodigies feel.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges strong vocal performances and entertaining moments but finds the show fundamentally flawed with story problems, excessive length, and tonal inconsistencies. The final verdict explicitly calls it a 'hot mess' - neither a recommendation nor a complete dismissal. | GPT-4o: The review acknowledges strong performances and musical numbers but criticizes the convoluted plot and uneven script. The overall tone suggests a mixed experience with notable highlights. | Gemini: The review acknowledges strong performances and impressive musical moments but ultimately finds the story convoluted and the production unwieldy. It's a qualified recommendation. | Kimi: While the critic heavily criticizes the convoluted plot, thin characterizations, and excessive runtime, they enthusiastically recommend the show for its 'blow-your-hair-back' 1980s score and powerhouse performances by Lea Michele, Aaron Tveit, and Nicholas Christopher, calling it a 'rousing hot mess' that achieves its ultimate peak as a concert-like spectacle.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:24:56.855Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:29:30.449Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 65,
+    "kimiScore": 76,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "contentTier": "complete",
   "wordCount": 901,

@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses unambiguous praise throughout - calling it 'a real winner,' 'blissfully original,' praising the 'meticulously built production,' and describing performances as shining with talent. The review concludes with 'Being among the converted is what it's all about,' indicating total endorsement. | GPT-4o: The review is overwhelmingly positive, praising the originality, humor, and emotional impact of the show. The critic describes it as a 'real winner' and highlights the excellent performances, direction, and production quality, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"real winner\", \"blissfully original\", and praising various aspects of the production, including the music, direction, and performances. The critic clearly enjoyed the show and recommends it highly.",
+    "keyPhrases": [
+      {
+        "quote": "And, oh boy, it's a real winner.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Overwhelmingly positive review with superlatives throughout ('blissfully original', 'real winner', 'great old-fashioned musical') and no meaningful reservations. The critic praises every aspect from performances to design with infectious enthusiasm. | GPT-4o: The review is filled with superlatives and unqualified praise, calling the show 'a real winner' and 'blissfully original'. The critic describes the production as meticulously built and praises the performances, direction, and design. The tone is enthusiastic and strongly recommends the show. | Gemini: The review is overwhelmingly positive, using strong language like \"real winner\", \"blissfully original\", \"hilarious\", and \"great old-fashioned musical\". The critic praises multiple aspects of the show, including the writing, music, direction, and performances. | Kimi: The critic offers unqualified praise, calling the show a 'real winner' and 'great old-fashioned musical' while praising the score as 'consistently chipper and clever' and the production as 'meticulously built.' Despite noting brief slack patches, the overall tone is one of absolute enthusiasm and strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:47:14.424Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:43:39.561Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
-    "previousVersion": "3.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
     "geminiScore": 92,
+    "kimiScore": 94,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/book-of-mormon-2011/ny-daily-news--joe-dziemianowicz_2026-01-27.html",
   "textFetchedAt": "2026-01-27T06:09:04.084Z",

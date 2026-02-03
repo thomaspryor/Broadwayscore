@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges strong performances from the leads but identifies fundamental structural problems with the adaptation, indicating neither a clear recommendation nor dismissal. | GPT-4o: The review acknowledges the talents of the lead actors but notes the show struggles with its dramatic adaptation, suggesting a mixed reception. | Gemini: The review acknowledges the talent of the leads but states the show struggles, indicating a mixed assessment rather than a positive or negative one.",
+    "keyPhrases": [
+      {
+        "quote": "Kelli O'Hara and Brian d'Arcy James bring their considerable talents to this musical adaptation, but the show struggles to find its dramatic footing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt with classic mixed review structure: acknowledges strong lead performances but identifies fundamental problems with the adaptation itself. 'Struggles to find its dramatic footing' suggests significant structural issues that outweigh performer praise. | GPT-4o: The excerpt praises the performers but notes the show struggles dramatically. The single excerpt and text quality warning suggest a mixed review with some positive elements. | Gemini: The review praises the performers but states the show struggles. Given the limited excerpt, it's difficult to determine the overall recommendation, but it leans towards mixed. | Kimi: While the critic acknowledges the considerable talents of the lead performers, the emphasis on the show struggling to find its dramatic footing indicates a fundamental flaw in the adaptation that prevents a recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:50:17.879Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:43:12.450Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,
     "openaiScore": 65,
     "geminiScore": 62,
+    "kimiScore": 48,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "contentTierReason": "fullText was copy of excerpt from web-search import",

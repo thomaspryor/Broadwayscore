@@ -9,15 +9,15 @@
   "bwwExcerpt": "If Jacobs-Jenkins has the answers (and one suspects he does), he’s not sharing them. He’s savvy—and gutsy—enough to let his audience decide. In a way, Appropriate is his most traditional play, a deliberate homage to such playwrights as Tennessee Williams, Eugene O’Neill, and Tracy Letts, who create the best, most completely unhinged characters. Since the play’s 2014 off-Broadway premiere at Signature Theatre, we’ve seen, among other works, his daring deconstructive Dion Boucicault riff An Octoro",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": "4/5 stars",
-  "assignedScore": 81,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 81,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives 4/5 stars and uses enthusiastic language throughout, praising the performances ('deliciously vicious', 'smashing stage debut'), the staging ('magnificent'), and calling it an 'epic' drama with 'high-octane' energy, clearly recommending the production. | GPT-4o: The review provides a detailed and positive evaluation of the production, highlighting strong performances and direction. The 4/5 star rating indicates a strong recommendation, aligning with a high score in the Positive bucket. | Gemini: The critic gives the play 4 out of 5 stars, and while the review explores the play's themes and dysfunctional family dynamics, it ultimately frames the play as a worthwhile and thought-provoking experience, placing it in the positive bucket.",
+    "keyPhrases": [
+      {
+        "quote": "Jacobs-Jenkins is savvy—and gutsy—enough to let his audience decide.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for the playwright's skill, direction, and performances. Describes it as 'epic,' praises the cast as 'deliciously vicious' and 'smashing,' and calls the set design 'magnificent.' The critic shows clear admiration for the work's complexity and craft. | GPT-4o: The review awards 4/5 stars, indicating a positive assessment. The critic praises the direction and the play's emotional impact, while also highlighting the complexity and traditional homage of the play. The tone suggests a strong recommendation with some implied reservations about the play's demanding nature. | Gemini: The review is overwhelmingly positive, highlighting the play's high-octane drama, strong performances, and Jacobs-Jenkins's skill. The 4/5 star rating confirms a positive recommendation. | Kimi: The critic awards 4/5 stars and offers enthusiastic praise for the direction, performances, and writing, favorably comparing the playwright to American masters like Williams and O'Neill.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:22:41.691Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:14:09.173Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 82,
-    "geminiScore": 80,
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 81,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",

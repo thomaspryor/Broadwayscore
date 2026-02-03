@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the play's contemporary relevance and Letts' prescient writing, appreciates the performances (especially Coon), but notes directorial and casting issues in the first act that prevent this from being a rave. | Gemini: The review acknowledges a slow start and some casting issues, but ultimately praises the performances of Carrie Coon and Namir Smallwood, and the play's relevance. This suggests a positive, but not rave, recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Carrie Coon's Agnes is on point throughout, and she and Smallwood come together for a folie a deux that has fatal consequences.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite criticizing the first act as 'slack' and Smallwood's initial underplaying, the critic praises both leads' performances, especially Coon who is 'on point throughout,' and finds the play newly relevant and effective. The overall assessment is positive with reservations about pacing. | GPT-4o: The review acknowledges a slow start and some casting issues but ultimately praises the performances and relevance of the play, recommending it for its powerful second act and contemporary resonance. | Gemini: The review praises Coon's performance and the play's relevance, but notes a slow start and casting issues. Overall, it's a positive assessment with reservations. | Kimi: While criticizing the slack first act direction and initial underplaying, the reviewer praises Carrie Coon's performance throughout and Smallwood's powerful second act turn, concluding that the production ultimately delivers a chilling and effective folie a deux.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,27 +50,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:13.131Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:29:33.092Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
+    "claudeScore": 79,
+    "openaiScore": 78,
     "geminiScore": 75,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,

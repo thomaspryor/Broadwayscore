@@ -9,7 +9,7 @@
   "dtliExcerpt": "The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you’ll hear the tunes you loved in the 1992 movie. But the notion that “Disney Aladdin” somehow resurrects the spirit of the late Howard Ashman, who had the original inspiration for the movie and contributed most of its clever lyrics, is a joke. Restoring a person’s work without respecting his artistic sensibility is no tribute at all. If this super-costly Disney extravaganza doesn’t really represent Ashman’s artistic vision, whose vision does it reflect? Chad Beguelin (Elf, The Wedding Singer), who wrote the book and contributed new lyrics, obviously plays a significant role, as does Alan Menken, who scored the film and wrote new songs for the show. Even more so does helmer-choreographer Casey Nicholaw (The Book of Mormon), who stylistically turns the film’s romantic fairy-tale adventure into shtick comedy.",
   "showScoreExcerpt": "\"This super-costly extravaganza doesn't do justice to the movie, or to the spirit of the late Howard Ashman.\"",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 53,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:53:57.762Z",
@@ -17,14 +17,14 @@
   "dtliThumb": "Meh",
   "bwwExcerpt": "The magic-carpet ride is magical. The Cave of Wonders is wonderful. And yes, you'll hear the tunes you loved in the 1992 movie. But the notion that \"Disney Aladdin\" somehow resurrects the spirit of the late Howard Ashman, who had the original inspiration for the movie and contributed most of its cle...",
   "llmScore": {
-    "score": 62,
+    "score": 53,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 48,
+      "high": 58
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -38,7 +38,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Opening statement sets clear negative verdict. While praising individual elements like sets, costumes, and Iglehart's performance, the critic finds fundamental flaws in the adaptation's artistic vision and tone, calling changes 'disastrous' and questioning profit motives. | GPT-4o: The review praises certain elements like the magic-carpet ride and James Monroe Iglehart's performance, but criticizes the overall production for not respecting Howard Ashman's vision and for its over-the-top elements. The truncated nature of the text and mixed signals from the excerpts suggest a mixed review. | Gemini: The review praises some elements like the sets, costumes, and some performances (especially the Genie), but criticizes the book, lyrics, and overall tone. The truncated text makes it difficult to determine a stronger recommendation, but the overall tone is mixed. | Kimi: While the review praises the lavish production design, costumes, and James Monroe Iglehart's show-stopping performance as the Genie, it heavily criticizes the book, new lyrics, and adaptation choices as vulgar, disastrous, and disrespectful to the source material. The truncated ending and 'Flat' aggregator rating support a middle-of-the-road Mixed classification.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Opens with clear negative verdict and maintains critical tone throughout. Praises technical elements (sets, costumes, Iglehart's performance) but finds fundamental flaws in book, direction, and artistic vision. Calls changes 'disastrous' and jokes 'unspeakable.' | GPT-4o: The review criticizes the production for not respecting the original artistic vision and for its over-the-top execution, despite some praise for individual elements like the magic carpet ride and set design. The truncated nature of the text suggests caution, but the overall tone is negative. | Gemini: The review highlights both positive aspects (magic carpet ride, some performances, set design) and negative aspects (vulgar updates, annoying characters, overall spirit). The truncated nature makes a definitive positive or negative classification difficult, but the overall tone leans towards mixed. | Kimi: While praising James Monroe Iglehart's show-stopping performance and imaginative design elements, the critic fundamentally objects to the adaptation's 'shtick comedy' tone, 'disastrous' character changes, and commercial cynicism, suggesting the production prioritizes profit over artistic integrity. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,29 +48,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:47:26.275Z",
+    "scoredAt": "2026-02-03T01:23:17.840Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "5.1.0"
+    "previousScore": 62,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 45,
-    "openaiScore": 65,
+    "openaiScore": 40,
     "geminiScore": 62,
     "kimiScore": 60,
     "claudeBucket": "Negative",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 20,
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
   },
   "textFetchedAt": "2026-01-25T13:45:31.425Z",
   "textFetchMethod": "playwright",

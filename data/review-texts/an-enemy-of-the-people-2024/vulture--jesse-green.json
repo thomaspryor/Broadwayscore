@@ -65,7 +65,7 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
   },
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (21 words)",
   "previousUrl": "https://www.vulture.com/article/an-enemy-of-the-people-broadway-review.html",
   "urlDiscoveredAt": "2026-02-02T04:50:18.724Z",
@@ -104,5 +104,10 @@
   "duplicateTextOf": "vulture--sara-holdren.json",
   "rescoreCompletedAt": "2026-02-02T14:21:40.124Z",
   "wordCount": 319,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-03T01:39:09.919Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be fragments of website navigation, product alerts, and footer text rather than a complete review. The brief contextual note suggests mixed feelings but is too minimal to score meaningfully.; openai: The text primarily discusses Henrik Ibsen's play 'An Enemy of the People' and not a specific Broadway production.",
+  "promptVersion": "5.2.0"
 }

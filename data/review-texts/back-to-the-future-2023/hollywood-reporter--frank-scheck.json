@@ -9,17 +9,17 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "It’s a terrifically fun and amusing story that works nearly as well onstage as it did on film, although the original songs, as is so often the case with these adaptations, mainly come across as superfluous. Not that they’re all that bad, mind you.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 75,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening concerns about creative choices and derivative performances, the critic concludes it's 'terrifically fun' and 'works nearly as well onstage' - a clear positive recommendation with some reservations about originality. | GPT-4o: The review describes the production as fun and amusing, indicating a positive experience, though it notes that the original songs feel superfluous. This suggests a recommendation with some reservations. | Gemini: The review states the show is \"terrifically fun and amusing\" and works nearly as well as the film, indicating a positive recommendation, although the reviewer notes the songs are \"superfluous\".",
+    "keyPhrases": [
+      {
+        "quote": "What is surprising is how effective and damn fun it all is.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening with cynicism about screen-to-stage adaptations, the critic finds the show 'effective and damn fun' with impressive technical elements and engaging performances. Acknowledges it doesn't break creative ground and songs are generic, but still recommends it as entertaining Broadway fare. | GPT-4o: The review acknowledges the show's lack of originality but praises its effectiveness and entertainment value, highlighting the technical elements and performances. The overall tone is positive, recommending the show despite some reservations about the music. | Gemini: The review is generally positive, highlighting the fun story and technical elements, but notes the original songs are superfluous. It's a recommended show with reservations. | Kimi: While acknowledging the unoriginal adaptation and generic songs, the reviewer delivers a clear recommendation based on the show's entertainment value, praising it as 'damn fun' and 'terrifically fun' with impressive technical elements.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:33.507Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:25:29.916Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 79,
     "openaiScore": 78,
-    "geminiScore": 75,
+    "geminiScore": 78,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwThumb": "Up",
   "sources": [

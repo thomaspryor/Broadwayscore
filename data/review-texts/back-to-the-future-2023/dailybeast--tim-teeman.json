@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges significant flaws (overlong, underdeveloped characters) but ultimately finds the show entertaining and effective, noting the audience was 'locked in, seduced, happy' and calling it 'winning froth' that succeeds at what it sets out to do. | Gemini: The review highlights several positive aspects such as the visuals, performances, and songs, while also acknowledging flaws like the length and underdeveloped characters. The overall tone suggests a recommendation with reservations, placing it in the 'Positive' bucket.",
+    "keyPhrases": [
+      {
+        "quote": "Back to the Future is a night of winning froth—of striking visuals, a few very good performances, and perfectly fine songs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges significant flaws (overlong, underdeveloped characters) but ultimately finds the show entertaining and successful at what it sets out to do, calling it 'winning froth' and noting both he and the audience were visibly happy throughout. | GPT-4o: The review acknowledges flaws such as underdeveloped characters and an overlong runtime, but ultimately describes the show as an 'amiably rollicking reanimation' and 'a night of winning froth,' indicating a positive recommendation with some reservations. | Gemini: The review is positive, highlighting the show's entertainment value and technical spectacle, despite acknowledging flaws in the plot and character development. | Kimi: While the critic notes substantial flaws including underwritten female characters, an overlong runtime, and a weak central performance, the review ultimately describes the show as 'amiably rollicking' and 'winning froth' that leaves audiences 'seduced, happy' and the critic with a 'dopey smile throughout.' The technical spectacle and Roger Bart's performance provide enough entertainment value to constitute a recommendation, albeit a qualified one.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,27 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:08.335Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:23:29.926Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 77,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 74,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,

@@ -7,18 +7,18 @@
   "publishDate": "March 26, 2014",
   "showScoreExcerpt": "\"The stage is alive from beginning to end. It's a spectacle of lights and sound...Iglehart was a most lovable Genie, and the audience ate him up. It's not often you see a standing ovation partial.\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 91,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "sourceMethod": "archive",
   "scoreSource": "enhanced-sentiment-lean-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 92,
+    "score": 91,
     "confidence": "high",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,14 +28,8 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "You really need to see this to believe it.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Unqualified enthusiasm throughout with superlatives like 'spectacle,' standing ovation in Act 1, and explicit 'Don't walk...RUN' recommendation. Clear rave language. | Gemini: The review is overwhelmingly positive, using phrases like \"alive from beginning to end\", \"spectacle of lights and sound\", \"perfect pair\", and urging readers to \"RUN\" to see it. | Kimi: The review offers unqualified praise for the performances, spectacle, and audience response, with explicit directives to see the show ('Don't walk….RUN') and descriptions of mid-show standing ovations.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Unqualified enthusiastic praise throughout with superlatives ('spectacle', 'perfect pair', 'so good') and explicit strong recommendation to 'RUN' to see it. Standing ovation in first act reinforces exceptional quality. | Gemini: The review uses strong positive language like \"alive from beginning to end\", \"spectacle\", \"adorable\", \"perfect pair\", and \"lovable\". The critic urges readers to \"RUN\" to see the show, indicating a rave review. | Kimi: The review delivers unreserved praise for the performances, spectacle, and audience response, culminating in an urgent 'RUN' recommendation without any reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,22 +39,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:44:46.876Z",
+    "scoredAt": "2026-02-03T01:21:32.178Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "5.1.0"
+    "previousScore": 92,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": null,
     "geminiScore": 90,
-    "kimiScore": 93,
+    "kimiScore": 90,
     "claudeBucket": "Rave",
     "geminiBucket": "Rave",
     "kimiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -34,7 +34,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt suggests a positive evaluation of the production's ability to highlight relevant themes, but the lack of full context and the 'curated excerpts' warning necessitate a cautious, low-confidence score. | Gemini: The excerpt suggests a positive assessment of the production's relevance and insight, but the lack of context makes it difficult to gauge the overall strength of the recommendation. | Kimi: The excerpt uses the positive qualifier 'deftly' to praise the production's skillful handling of political themes, indicating a favorable assessment, though the limited excerpt length prevents higher confidence or score.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt suggests a positive view of the production's relevance and execution. However, due to the limited text, the confidence is low. | Gemini: The excerpt is positive, but very brief. The aggregator suggests a positive reception, so I'm scoring it as positive with low confidence. | Kimi: The excerpt offers specific praise for the production's skill ('deftly') in connecting the material to contemporary themes, indicating a favorable assessment of this Broadway production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,12 +44,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:55:03.685Z",
+    "scoredAt": "2026-02-03T01:29:42.934Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.1.0"
+    "previousScore": 75,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": null,

@@ -16,7 +16,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 64,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 59,
       "high": 69
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and review language clearly indicate mixed feelings - praising the stars' chemistry and some clever writing while criticizing the thin material and questioning the Broadway transfer. | GPT-4o: The review acknowledges the strong performances of Gad and Rannells and some clever writing, but criticizes the show's humor and length. The original 3/5 star rating aligns with a mixed assessment, highlighting both strengths and weaknesses. | Gemini: The review is generally positive, highlighting the performances of Gad and Rannells. However, it notes the show's thin charms and the fact that the humor might not be for everyone, indicating a recommendation with reservations. The 3/5 star rating also supports a positive but not rave classification.",
+    "keyPhrases": [
+      {
+        "quote": "Much of the writing is undeniably clever, and there are some fun surprises, including an elaborate set reveal that seems awfully expensive for a single laugh, albeit a big one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with balanced critique: praises Gad and Rannells' chemistry and performances but finds the material thin and overextended for Broadway. Clear reservations about venue size, length, and limited comedic material, but acknowledges audience enjoyment and star quality. | GPT-4o: The review provides a balanced view, praising the performances of Gad and Rannells and some clever writing, but criticizing the show's humor and length. The original 3/5 star rating aligns with a mixed verdict. | Gemini: The review is mixed, noting the show's thin charms and meta-humor don't translate as well to Broadway, but praising Gad and Rannells' performances and chemistry. The 3/5 star rating also indicates a mixed assessment. | Kimi: The 3/5 star rating and conditional verdict indicate a middle-ground assessment. While praising Gad and Rannells' performances as 'elevating the proceedings considerably,' the critic finds the material 'not particularly funny,' the songs 'instantly forgettable,' and the two-hour runtime 'bloated,' concluding that the show's 'thin charms' don't translate well to the large Broadway venue.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,9 +45,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:57:25.623Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:49:26.321Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
@@ -50,17 +56,19 @@
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 65,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 49,

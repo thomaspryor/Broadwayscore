@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic gives 4/5 stars and concludes positively, praising Rogers' star-making performance and the show's worthiness despite criticizing the overstuffed book and pacing issues. The final verdict clearly endorses the production. | Gemini: The critic gives the show 4/5 stars and despite mentioning some flaws, the overall tone is positive, especially regarding Jasmine Amy Rogers' performance. The truncated text makes it slightly less confident, but the star rating and positive comments point to a recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Whether in trousers or a skirt, she shows enough versatility to cement her status as a major new Broadway talent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for Rogers' star-making performance and production values, but acknowledges significant flaws in the book and pacing that keep it from being a rave. | GPT-4o: The review praises Jasmine Amy Rogers's performance and the show's visual and musical elements, despite noting issues with the book and some songs. The original 4/5 rating and positive excerpts suggest a solid recommendation with some reservations. | Gemini: The review is mostly positive, praising the lead performance and stagecraft. However, it also notes issues with the book and some of the songs. The 4/5 star rating suggests a positive recommendation with reservations. | Kimi: The critic awards 4/5 stars and delivers enthusiastic praise for Jasmine Amy Rogers's 'star-making turn' and the visual spectacle, acknowledging significant flaws in the overstuffed book and generic ballads but concluding that the lead performance redeems the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:15:00.874Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:54:13.870Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 79,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 77,

@@ -28,13 +28,13 @@
   "textQuality": "full",
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "assignedScore": 92,
+  "assignedScore": 94,
   "llmScore": {
-    "score": 92,
+    "score": 94,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -44,8 +44,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review concludes with an unequivocal declaration that this is 'the best new musical of the Broadway season' and consistently praises every aspect from performances to direction, with phrases like 'truly mesmerizing,' 'touching and unforgettable,' and 'welcome...with such fanfare.' | GPT-4o: The review is overwhelmingly positive, praising the performances, music, and direction, and concludes with a strong endorsement as the best new musical of the season, indicating a rave recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, music, direction, and overall impact of the show. The critic explicitly calls it the \"best new musical of the Broadway season,\" indicating a very strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Days of Wine and Roses is the best new musical of the Broadway season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: The review concludes with the superlative declaration that this is 'the best new musical of the Broadway season,' which is unqualified praise. The critic consistently praises the performances as 'truly mesmerizing,' 'touching and unforgettable,' and the overall production with enthusiasm throughout. | GPT-4o: The review offers unqualified praise for the performances, music, and overall production, culminating in a strong endorsement as the best new musical of the season. This places it firmly in the Rave category. | Gemini: The review is overwhelmingly positive, praising the performances of the leads, the music, and the direction. The critic calls it \"the best new musical of the Broadway season.\" | Kimi: The critic offers unqualified praise across all elements—performances, writing, direction, and design—explicitly declaring it the best new musical of the season with no reservations or caveats.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,26 +60,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T02:26:29.677Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:43:29.679Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 92,
     "openaiScore": 95,
-    "geminiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 7,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "wordCount": 732,
   "tierReason": "Full review text"

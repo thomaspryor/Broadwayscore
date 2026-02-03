@@ -9,18 +9,18 @@
   "dtliExcerpt": "Shakespeare’s Juliet singing Britney Spears’ “Oops…I Did It Again” is certainly a surprising and unexpected juxtaposition. While there is every reason to be skeptical of a Shakespearean jukebox musical, “& Juliet” makes it work remarkably well. It’s the most fun you’ll have in a Broadway theater right now.",
   "showScoreExcerpt": "\"What the show lacks in plotting, it more than makes up for musically. It is a jukebox, but itâs a smart one, using the songs in deft, humorous and unexpected ways.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "dtli",
   "needsFullText": false,
   "fetchedAt": "2026-01-23T04:57:21.504Z",
   "dtliThumb": "Up",
   "bwwExcerpt": "All this could have come across as a high school English class assignment, but Read manages to make it work. He clearly has respect for and knowledge of the source material but also isn't afraid to highlight just how ridiculous the play really is. (As we are reminded here, Romeo and Juliet only knew each other for four days.) Though he keeps the characters true to the original, there are slight tweaks for modern sensibility, as when Anne brings Juliet's age up from 13 (yikes) to her mid-20s.",
   "llmScore": {
-    "score": 80,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,8 +30,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite noting some flaws in plotting and visual elements, the critic clearly recommends the show with enthusiasm, calling it 'exactly the show Broadway needs right now' and praising it as 'fun, exuberant, supremely joyful, hilarious, and excellently performed.' | GPT-4o: The review is overwhelmingly positive, praising the show's fun, joy, and excellent performances. Despite some minor criticisms, the overall tone is enthusiastic and recommends the show as a must-see, aligning with a 'Rave' classification. | Gemini: Despite some reservations about the plot and feminism, the review is overwhelmingly positive, calling it \"the most fun you’ll have in a Broadway theater right now\" and praising the performances and overall joyful experience. The truncated text doesn't detract from the clear positive sentiment.",
+    "keyPhrases": [
+      {
+        "quote": "It's the most fun you'll have in a Broadway theater right now.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite some critiques of plotting and visual elements, the critic is clearly enthusiastic with strong praise for performances, music integration, and overall experience. The final paragraph confirms this is 'exactly the show Broadway needs right now' with superlatives like 'supremely joyful' and 'excellently performed.' | GPT-4o: The review praises the show for its fun, exuberance, and excellent performances, despite some minor criticisms. The overall tone is highly positive, suggesting a strong recommendation. | Gemini: Despite the truncated text, the review is overwhelmingly positive, calling the show fun, exuberant, supremely joyful, and hilarious. The critic clearly recommends it. | Kimi: While the critic offers enthusiastic praise ('most fun you'll have,' 'exactly the show Broadway needs right now') and strong recommendations for the performances and music, substantial criticisms of the plotting, generic visuals, and muddled ending keep this from being an unqualified rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,28 +46,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:22:32.416Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:01:56.694Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 81,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
+    "claudeScore": 81,
+    "openaiScore": 82,
     "geminiScore": 82,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "textIssue": "too_short",
   "textFetchedAt": "2026-01-25T13:50:14.436Z",

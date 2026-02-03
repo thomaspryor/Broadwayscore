@@ -66,5 +66,11 @@
   },
   "contentTier": "excerpt",
   "contentTierReason": "fullText was copy of excerpt from web-search import",
-  "textWordCount": 0
+  "textWordCount": 0,
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-03T02:16:43.164Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at Second Stage Theater, which is not the current Broadway run.; kimi: The review explicitly covers the production at Second Stage Theater, which is an Off-Broadway venue, not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

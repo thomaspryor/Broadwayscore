@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "“Doubt: A Parable” sets up a fascinating power play between two very unequal forces, and it’s thrilling to watch Amy Ryan’s nun and Liev Schreiber’s priest duke it out for 90 minutes on stage. A feisty revival of John Patrick Shanley’s play opened Thursday at the Roundabout’s Todd Haimes Theatre.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 79,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,8 +33,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic explicitly calls the production 'a real winner' and praises the performances, particularly the dynamic between Ryan and Schreiber. Despite some comparative commentary, the overall assessment is clearly positive. | GPT-4o: The review is highly enthusiastic about the production, praising the performances, direction, and humor. The critic describes it as a 'real winner' and highlights the thrilling dynamic between the lead actors, indicating a strong recommendation. | Gemini: The review explicitly calls the production \"a real winner\" and praises the performances, indicating a positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "It's also nice to report that the first production into the newly renamed theater is a real winner.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Critic calls the revival 'a real winner' and 'thrilling to watch' with consistent praise for the lead performances and direction. Strong recommendation despite comparison critiques of the film version. | GPT-4o: The review is filled with enthusiastic praise for the performances, direction, and humor of the production. The critic describes it as a 'real winner' and highlights the thrilling nature of the play, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the production a \"real winner\" and praising the performances of the leads. The critic highlights the humor and power play aspects of the play, indicating a strong recommendation. | Kimi: The critic offers consistent praise for the performances, calling the lead actors 'thrilling' and the direction effective, while declaring the production a 'real winner' with no significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +49,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:31:31.493Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:15:25.065Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,

@@ -9,7 +9,7 @@
   "dtliExcerpt": "With a zippy score, terrific tap numbers choreographed by director Jerry Mitchell, energetic performances from a top-notch cast, and a plot that doesn’t tax your brain, Boop! is one of the feel-good musicals of the year.",
   "showScoreExcerpt": "\"With a zippy score, terrific tap numbers...Boop! is one of the feel-good musicals of the year.\"",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "textFetchedAt": "2026-01-25T14:14:04.184Z",
@@ -17,11 +17,11 @@
   "archivePath": "data/archives/reviews/boop-2025/theatermania--pete-hempstead_2026-01-25.html",
   "sourceMethod": "dtli",
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic enthusiastically recommends this as escapist entertainment that succeeds in its goals, praising performances, choreography, and production values while acknowledging it doesn't aim for depth. | Gemini: The review is overwhelmingly positive, highlighting the show's escapism, energetic performances, and feel-good nature. The critic clearly enjoyed the production and recommends it as a diverting experience.",
+    "keyPhrases": [
+      {
+        "quote": "Boop! is one of the feel-good musicals of the year.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive review with consistent praise throughout - calls it 'one of the feel-good musicals of the year,' praises performances, direction, and production values extensively, and recommends it as escapist entertainment that delivers on its promise. | GPT-4o: The review is filled with enthusiastic praise for the show's escapism, performances, and production elements, describing it as a 'bright, colorful extravaganza' and 'one of the feel-good musicals of the year.' The critic clearly recommends it as a must-see experience. | Gemini: The review is overwhelmingly positive, using phrases like \"bright, colorful extravaganza\", \"charming songs\", \"high-stepping choreography\", and \"one of the feel-good musicals of the year\". The critic clearly enjoyed the show and recommends it. | Kimi: The critic offers enthusiastic praise for the performances, choreography, and design, calling it a 'feel-good musical of the year' and highlighting its value as escapist entertainment, with only minor reservations about one performer's vocals.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,27 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:54.955Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:02:16.695Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "sources": [
     "dtli"

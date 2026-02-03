@@ -8,15 +8,15 @@
   "bwwExcerpt": "Under the assured direction of Scott Ellis, the revival’s cast is unfaltering in its convictions – we believe that they believe every word they say. If Father Flynn is lying – he’s the only character that has reason to – Schreiber doesn’t let on, a real achievement given that he’s not only squaring off against one tough nun, but several decades now of headlines and heightened public awareness of church atrocities.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 80,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening concerns about cultural context potentially undermining the play's premise, the critic ultimately affirms the production 'holds up as well as it does – and it really does' with strong praise for the 'top-tier cast' and 'assured direction.' | GPT-4o: The review acknowledges potential issues with the play's premise due to real-world events but praises the production's strong cast and direction, indicating a solid recommendation. | Gemini: The review acknowledges the play's dated aspects but ultimately states that it \"holds up\" due to the strong cast and direction, indicating a positive recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "That the play holds up as well as it does – and it really does – is due in large part to a top-tier cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the play's challenges in the modern context but strongly praises the 'top-tier cast' and their 'unfaltering' performances. The assessment is that the play 'holds up as well as it does – and it really does' with consistent praise for all four lead performances and direction. | GPT-4o: The review praises the cast and direction, noting the play's continued effectiveness despite changes in societal context. The critic highlights strong performances and direction, indicating a positive recommendation. | Gemini: The review acknowledges the play's age and changing context, but ultimately praises the cast and direction, indicating a positive experience despite reservations. The critic highlights the strong performances and the production's ability to keep the audience engaged. | Kimi: The review consistently praises the top-tier cast, assured direction, and design while noting the play remains compelling despite changing cultural contexts, offering strong recommendation without significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:25:55.282Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:05:08.174Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 75,
+    "claudeScore": 81,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "That the play holds up as well as it does – and it really does – is due in large part to a top-tier cast that the Roundabout Theater Company has assembled, an ensemble that keeps us guessing from beginning to end.",

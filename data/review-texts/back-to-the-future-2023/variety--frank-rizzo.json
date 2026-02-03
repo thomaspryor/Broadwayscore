@@ -9,7 +9,7 @@
   "showScoreExcerpt": "“...with the frequent breaking of the fourth wall and the milking of some meta moments, you wonder what exactly the show’s aiming to be: a self-aware joke for fans or a thrill ride with sincerity.”",
   "bwwExcerpt": "In a story that hearkens back to 1955, you could wish this musical’s creators had considered what made musical theater so great in that golden era. Perhaps they might have crafted something more fresh and tuneful, with goosebump moments that come not from hydraulics but from theatrical know-how. Sometimes looking at the past with fresh eyes can lead to a new road forward, but with “Back to the Future,” time just stands still.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 60,
   "source": "show-score",
   "textFetchedAt": "2026-01-25T13:52:34.860Z",
   "textFetchMethod": "playwright",
@@ -18,11 +18,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 61,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic expresses uncertainty about the show's purpose and effectiveness, questioning its coherence between meta-humor and genuine thrills, which indicates ambivalence rather than clear recommendation. | GPT-4o: The review suggests uncertainty about the show's direction and purpose, indicating a mixed reception. The critic questions the show's intent, which implies it may not fully succeed in its execution. | Gemini: The review questions the show's aim and suggests it might be more for fans than a universally appealing experience, indicating a mixed assessment.",
+    "keyPhrases": [
+      {
+        "quote": "you wonder what exactly the show's aiming to be: a self-aware joke for fans or a thrill ride with sincerity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic expresses uncertainty about the show's identity and purpose, indicating mixed feelings rather than a clear recommendation either way. However, confidence is low due to extremely limited excerpt text. | GPT-4o: The excerpt suggests uncertainty about the show's identity and effectiveness, indicating a mixed impression. The lack of a clear recommendation or discouragement fits the Mixed bucket. | Gemini: The excerpt questions the show's aim and purpose, suggesting uncertainty about its effectiveness. This indicates a mixed or neutral stance. | Kimi: The excerpt criticizes the production for tonal confusion and unclear artistic identity, questioning whether it aims to be self-aware comedy or sincere thriller. With only this excerpt available and BroadwayWorld rating it 'Flat,' a middle-range Mixed score with low confidence is appropriate.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:19.551Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:36:22.788Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 48,
-    "previousVersion": "3.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 58,
     "openaiScore": 60,
     "geminiScore": 62,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",

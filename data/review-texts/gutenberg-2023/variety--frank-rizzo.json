@@ -9,15 +9,15 @@
   "bwwExcerpt": "In the end, it’s not “Gutenberg” the show but rather this odd coupling of comedic pals, both on stage and off, that delights. Hats off to them.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 65,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds the show's material increasingly tiresome and uninspired, but celebrates the lead performances as genuinely delightful, creating a mixed recommendation focused on the stars rather than the show itself. | GPT-4o: The review acknowledges the entertainment value of the performances by Gad and Rannells, but criticizes the show's concept, songs, and overall engagement. The praise for the actors is counterbalanced by the critique of the show's content, leading to a mixed verdict. | Gemini: The review is mixed on the show itself, but strongly praises the performances of Gad and Rannells, making it ultimately a positive experience worth seeing for their chemistry.",
+    "keyPhrases": [
+      {
+        "quote": "The real fun, however — and there is much of it — lies in simply watching Gad and Rannells run riot.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises the lead performances enthusiastically but finds the show itself tiresome and unengaging, especially in the second act. The verdict is that the stars' chemistry is delightful but can't overcome weak material. | GPT-4o: The review highlights the performances of Gad and Rannells as the main source of enjoyment, but criticizes the show itself for its uninspired songs and tiring schtick. The overall tone suggests a mixed experience, with the comedic duo being the redeeming factor. | Gemini: The review praises the comedic duo but finds the show itself lacking, with tiresome schtick and uninspired songs. It acknowledges fun moments but ultimately finds the show uneven. | Kimi: The critic finds the show's book, songs, and gimmicks tiresome and uninspired, but delivers a clear recommendation based entirely on the exceptional comedic chemistry and performances of Josh Gad and Andrew Rannells.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:58:13.041Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:00:00.106Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
+    "previousScore": 65,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 68,
-    "geminiScore": 77,
+    "openaiScore": 60,
+    "geminiScore": 65,
+    "kimiScore": 76,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"The real fun, however — and there is much of it — lies in simply watching Gad and Rannells run riot, riff with each other, play with the audience, and just have a grand old time once again playing sweet, deluded dreamers...In the end, it’s not 'Gutenberg' the show but rather this odd coupling of comedic pals, both on stage and off, that delights. Hats off to them.\"",

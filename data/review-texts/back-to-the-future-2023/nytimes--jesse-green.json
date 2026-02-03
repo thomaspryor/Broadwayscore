@@ -9,7 +9,7 @@
   "showScoreExcerpt": "“...I have to admit that the car alone might be worth a ticket. It fills a deep Broadway longing for large objects performing audience flyovers — and, like the dear departed arthritic chandelier, may be doing so for the foreseeable future.”",
   "bwwExcerpt": "mechanical, busy, distracting, foggy. Though large, it's less a full-scale new work than a semi-operable souvenir.",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 61,
   "source": "show-score",
   "textFetchedAt": "2026-01-25T13:51:31.899Z",
   "textFetchMethod": "archive.org",
@@ -18,11 +18,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 61,
+    "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: Green finds significant flaws in the adaptation - calling it 'mechanical, busy, distracting, foggy' and questioning why the musical exists at all - but concludes the spectacular staging effects, particularly the DeLorean, might justify a ticket. | Gemini: The review acknowledges significant flaws in the adaptation, particularly the shallowness and lack of depth added by the new songs. However, it ultimately suggests the spectacle and stagecraft, especially the DeLorean, make it worth seeing, pushing it into the 'Positive' bucket.",
+    "keyPhrases": [
+      {
+        "quote": "Though large, it's less a full-scale new work than a semi-operable souvenir.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Green acknowledges impressive stagecraft and the DeLorean's wow factor but finds the musical mechanically faithful without depth, calling it a 'semi-operable souvenir.' His reluctant admission that 'the car alone might be worth a ticket' suggests qualified interest rather than clear recommendation. | GPT-4o: The review highlights issues with the adaptation and questions the need for the musical, but acknowledges the impressive stagecraft and spectacle. The overall tone suggests ambivalence, with some positive elements but significant reservations. | Gemini: The review praises the stagecraft and car, but criticizes the music, book, and faithfulness to the movie. It's a mixed bag with no clear recommendation. | Kimi: While praising the impressive DeLorean effects and stagecraft as potentially worth the ticket price, the critic fundamentally questions the adaptation's existence, finding the new songs generic, the direction mechanical, and the material shallower than the original film.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:44.466Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:30:17.631Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 47,
-    "previousVersion": "3.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 48,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "sources": [

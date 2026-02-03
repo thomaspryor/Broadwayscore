@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging flaws in the book updates, the critic clearly recommends the show based on the exceptional vocal performances of the three leads and the audience's enthusiastic response. | GPT-4o: The review acknowledges some flaws in the production updates but highlights the powerful performances of the lead actors and the audience's enthusiastic response, indicating a strong recommendation to see the show. | Gemini: The review highlights strong performances and vocal talent, while acknowledging some issues with the updated book. The overall tone suggests a positive experience, making it a recommended show with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "Together and apart, the three of them had my audience cheering and whooping after nearly every song.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed assessment of the book updates but enthusiastic praise for the three lead performances, which the critic identifies as the show's biggest draw. Audience reaction described as highly positive. | GPT-4o: The review praises the lead performances and highlights audience enthusiasm, suggesting a strong recommendation despite some criticism of the updated elements. | Gemini: The review highlights the strong performances of the leads and the overall vocal power, while acknowledging some issues with the updated book. This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: While the critic notes mixed results with the updated book (criticizing heavy-handed CIA/KGB elements but praising snappy dialogue), the review centers on the three leads as the essential reason to see the show, citing their powerful vocals and the audience's enthusiastic response.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:35.820Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:23:41.654Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 82,
-    "geminiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "sourceMethod": "playwright",
   "sources": [

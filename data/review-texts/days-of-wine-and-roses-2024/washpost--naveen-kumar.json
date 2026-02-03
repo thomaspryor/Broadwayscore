@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"There are plenty of joys and sorrows to play even in a straightforward cautionary tale.\"",
@@ -18,11 +18,11 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises O'Hara's transcendent performance and Guettel's gorgeous score, but finds significant flaws in the shallow characterization, predictable plot, and uneven dramatic structure that prevent full recommendation. | GPT-4o: The review praises the performances, particularly O'Hara's, and the musical score, while acknowledging some shortcomings in the depth of the male lead's character and the predictability of the plot. Overall, the critic finds enough merit in the performances and music to recommend the show, albeit with some reservations. | Gemini: The review praises O'Hara's performance and the score, but criticizes the plot and the depth of the male lead. The final line suggests it's worth seeing for the performances despite the flaws.",
+    "keyPhrases": [
+      {
+        "quote": "O'Hara's performance comes to feel like a vivid portrait in search of a worthy context.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises O'Hara's transcendent performance and Guettel's gorgeous score, but finds significant flaws in the book's rudimentary framework and lack of character development for Joe. The review acknowledges 'plenty of joys and sorrows' but ultimately finds the material insufficient for the star talent involved. | GPT-4o: The review praises the performances, particularly O'Hara's, and the musical score, while noting some shortcomings in character depth and plot. The overall tone suggests a positive recommendation with some reservations about the material. | Gemini: The review praises O'Hara's performance and the score, but notes the plot's mundanity and Joe's lack of depth. It's a qualified recommendation, focusing on the performances as a primary draw. | Kimi: While the critic finds the book uneven and the addiction arc predictable, the review strongly praises Kelli O'Hara's transcendent performance and Guettel's gorgeous score, ultimately recommending the production for its stars.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:25:28.613Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:51:48.214Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 61,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 78,
+    "openaiScore": 77,
     "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 16,
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "complete",

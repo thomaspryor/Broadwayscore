@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises the spectacular stagecraft and some performances but criticizes the score as 'soulless' and says the show 'sputters to a halt' during songs, concluding it's running down the clock rather than truly succeeding. | GPT-4o: The review highlights impressive technical achievements and some standout performances, but criticizes the musical's songs and overall execution. The positive aspects are counterbalanced by significant reservations, leading to a mixed verdict. | Gemini: The review is mostly positive, highlighting the impressive stagecraft and performances, but criticizes the songs as \"soulless\" and \"obligatory.\" This suggests a recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "Like a broken-down DeLorean, the show sputters to a halt almost any time the characters start singing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises technical aspects and performances but heavily criticizes the score as 'soulless' and 'obligatory.' The mixed verdict acknowledges both spectacle and significant flaws without a clear recommendation. | GPT-4o: The review praises the technical aspects and nostalgic appeal but criticizes the songs as 'soulless' and 'obligatory'. The overall tone is mixed, acknowledging both strengths and significant weaknesses. | Gemini: The review praises the spectacle and nostalgia but criticizes the songs, resulting in a positive but qualified recommendation. | Kimi: While the critic praises the jaw-dropping stagecraft and performances as a 'technical marvel,' they criticize the score as 'soulless' and 'groanworthy,' noting that the show 'sputters to a halt' during musical numbers, resulting in a fitfully entertaining but uneven production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:16.385Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:35:07.067Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 59,
-    "previousVersion": "3.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 75,
+    "kimiScore": 64,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 59,

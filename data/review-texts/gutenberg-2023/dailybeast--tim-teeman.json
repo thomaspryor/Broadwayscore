@@ -40,13 +40,13 @@
   "textQuality": "full",
   "textStatus": "complete",
   "sourceMethod": "brightdata",
-  "assignedScore": 81,
+  "assignedScore": 82,
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -56,8 +56,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic explicitly states they 'wholeheartedly recommend' the show and describes it as a 'gleeful riot' with excellent performances and direction, concluding audiences will leave 'smiling widely, thankful for musical theater.' | GPT-4o: The review is overwhelmingly positive, highlighting the show's humor, performances, and direction. The critic wholeheartedly recommends it despite the week's somber context, indicating a strong endorsement. | Gemini: The review opens with a slight hesitation due to current events, but quickly pivots to a recommendation for the show as a source of laughter and escapism. The critic highlights the strengths of the performers and the comedic writing, indicating a positive, though not rave, experience.",
+    "keyPhrases": [
+      {
+        "quote": "It feels strange, in a week of such tragedy, violence, and gravity, to wholeheartedly recommend the opening of something as deliciously silly as Gutenberg! The Musical!",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic opens with an unqualified 'wholeheartedly recommend' and maintains enthusiastic praise throughout, calling it a 'gleeful riot' with 'excellent direction' and promising audiences will 'head into the night smiling widely, thankful for musical theater.' Despite acknowledging its silliness, the tone is consistently celebratory. | GPT-4o: The review is filled with praise for the performances, direction, and comedic elements, culminating in a strong recommendation to see the show for its humor and entertainment value. The tone is enthusiastic, with no significant reservations. | Gemini: The review is overwhelmingly positive, calling the show a \"gleeful riot\" and stating that you'll leave \"smiling widely, thankful for musical theater—and all-round silliness.\" | Kimi: The critic explicitly states they 'wholeheartedly recommend' the show, describing it as a 'gleeful riot' with 'excellent direction,' 'fabulous' writing, and 'lovely comic chemistry' between the leads. Despite acknowledging its silliness, the review offers unqualified praise and promises a thoroughly enjoyable experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -66,28 +72,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:57:10.776Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:45:21.242Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 92,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
     "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "wordCount": 1431,
   "tierReason": "Full review text"

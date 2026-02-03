@@ -36,7 +36,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: High praise for lead performances with superlative language ('great American actors', 'sight to see'), but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt praises the performances of Strong and Imperioli, highlighting their exceptional talent. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The excerpt focuses on praising the performances of the actors, particularly Jeremy Strong, indicating a positive experience. Given the limited text, I'm placing it in the upper end of the positive bucket with low confidence. | Kimi: The excerpt delivers enthusiastic praise for the lead performances, calling Strong one of the greats and the work 'a sight to see,' though the single-quote limitation prevents assessing the full production's verdict.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: High praise for both lead actors with superlative language ('one of the great American actors'), but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt praises the performances of Strong and Imperioli highly, indicating a strong recommendation for the acting. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is highly positive about the performances of the two leads, using strong language like \"one of the great American actors.\" Given the limited text, I'm scoring it as positive with high end score, but with low confidence due to the single excerpt. | Kimi: The excerpt offers superlative praise for the lead performances, describing Strong's work as 'a sight to see' and calling him one of the great American actors of his generation, indicating a strong recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,23 +46,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:55:40.659Z",
+    "scoredAt": "2026-02-03T01:30:18.345Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.1.0"
+    "previousScore": 82,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 81,
+    "claudeScore": 81,
+    "openaiScore": 82,
     "geminiScore": 82,
-    "kimiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

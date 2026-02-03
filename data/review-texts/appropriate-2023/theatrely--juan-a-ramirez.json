@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Rave | Claude: The critic explicitly calls this a 'masterwork' and 'astonishing work,' praising every element from writing to performances to production design with superlative language throughout. | Gemini: The review uses extremely strong positive language, calling the play a \"masterwork\" and \"spellbinding.\" The critic clearly believes this is an exceptional and important piece of theater.",
+    "keyPhrases": [
+      {
+        "quote": "Appropriate is a masterwork the likes of which crop up a handful of times per generation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review uses superlative language throughout ('astonishing work', 'spellbinding', 'masterwork') and explicitly calls it a generational achievement. The critic praises every element from writing to performances to design, with no meaningful reservations. | GPT-4o: The review is filled with superlatives and unqualified praise, describing the production as 'spellbinding' and 'astonishing,' and calling it a 'masterwork.' The critic's language is enthusiastic and strongly recommends the show. | Gemini: The review uses strong, positive language like \"spellbinding\", \"astonishing\", and \"masterwork\". The critic clearly believes this is a must-see show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:13.906Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:18:24.881Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 95,
-    "previousVersion": "3.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": null,
-    "geminiScore": 95,
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": null,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Branden Jacobs-Jenkins’ play Appropriate, premiering on Broadway in a spellbinding Second Stage Theatre production after an off-Broadway run nearly a decade ago, is an astonishing work of American fact and fiction.",

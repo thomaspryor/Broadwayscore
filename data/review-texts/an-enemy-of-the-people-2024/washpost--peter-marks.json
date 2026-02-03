@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jeremy Strong brings his intensity from 'Succession' to this revival of Ibsen's play, delivering a performance that is both compelling and occasionally overwrought.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Jeremy Strong brings his intensity from 'Succession' to this revival of Ibsen's play, delivering a performance that is both compelling and occasionally overwrought.",
   "needsScoring": true,
   "llmScore": {
-    "score": 64,
+    "score": 69,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges Strong's compelling performance but notes it's 'occasionally overwrought,' suggesting both strengths and flaws without a clear recommendation either way. | GPT-4o: The review acknowledges a compelling performance but notes it is occasionally overwrought, suggesting a mixed impression overall. | Gemini: The review highlights a compelling performance, but also notes it's 'occasionally overwrought,' suggesting a positive but not rave recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Jeremy Strong brings his intensity from 'Succession' to this revival of Ibsen's play, delivering a performance that is both compelling and occasionally overwrought.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt describes Strong's performance as both 'compelling' (positive) and 'occasionally overwrought' (negative criticism). This balanced assessment with both praise and criticism suggests a mixed verdict, though limited text makes confidence low. | GPT-4o: The excerpt highlights both positive and negative aspects of Jeremy Strong's performance, suggesting a mixed impression. The lack of full context and the single excerpt warning further reduce confidence. | Gemini: The review excerpt describes Strong's performance as \"compelling,\" which is positive, but also \"occasionally overwrought,\" indicating a reservation. Given the single excerpt, confidence is low. | Kimi: Single excerpt offers qualified praise for Strong's performance, finding it compelling despite occasional excess, suggesting a cautious recommendation in the lower Positive range. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:57:47.321Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T01:40:37.354Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 75,
+    "kimiScore": 72,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
   },
   "contentTier": "excerpt",
   "contentTierReason": "fullText was copy of excerpt from web-search import",

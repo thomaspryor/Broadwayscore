@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the performances (especially Coon and Smallwood), design elements, and finds the production more relevant and compelling than when originally seen, though maintains some analytical distance rather than enthusiastic recommendation. | GPT-4o: The review praises the performances, especially Carrie Coon's, and highlights the intensity and relevance of the production. The critic expresses surprise at the play's continued impact and relevance, suggesting a strong recommendation. | Gemini: The review is generally positive, highlighting strong performances and design elements. While it acknowledges the play's disturbing themes, it ultimately praises the production's intensity and relevance, suggesting it is worth seeing despite its unsettling nature.",
+    "keyPhrases": [
+      {
+        "quote": "Coon just roars her way through this show, more vulnerable than she appeared to be in 2000 and a tad more fragile, only adding to the stakes and the overall quality of her work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the performances extensively, especially Coon and Smallwood, calls the design 'intensifying hyper-realistic' with 'gorgeous vistas,' and finds the production more relevant and impactful than before. While there's substantial context about previous productions, the assessment of this Broadway revival is clearly positive. | Gemini: The review is generally positive, highlighting strong performances and design elements, while also noting the play's increased relevance in today's society. It's not a rave, but a solid recommendation. | Kimi: The review offers strong praise for Carrie Coon's 'roaring' performance and Namir Smallwood's revelatory turn, along with the hyper-realistic design. While noting the play's dark, paranoid nature, the critic emphasizes its renewed relevance and capacity to shock, clearly endorsing this revival.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,22 +42,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:09:56.850Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:24:59.901Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 80,
-    "geminiScore": 78,
+    "claudeScore": 79,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

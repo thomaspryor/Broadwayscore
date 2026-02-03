@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"Liev Schreiber’s performance cuts through a somber and confining single act\"",
@@ -19,22 +19,28 @@
     "show-score"
   ],
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The review acknowledges strong elements like Schreiber's performance and modern relevance, but concludes the story worked better in film format and criticizes the 'wordy dialogue' and confining structure. | Gemini: The review is generally positive, highlighting the play's relevance and Schreiber's performance. However, it also notes that the moral lesson worked better in the film version, indicating some reservations.",
+    "keyPhrases": [
+      {
+        "quote": "Uncomfortable and thought-provoking, the themes of 'Doubt' have never been more urgent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review praises the play's relevance and Schreiber's performance, but concludes that the material 'worked best in the 2008 film' due to theatrical constraints. Mixed signals throughout with no clear recommendation. | GPT-4o: The review praises the play's themes and relevance, highlighting Schreiber's performance and the production's intrigue. However, it notes the wordy dialogue and suggests the story worked better in the film adaptation, indicating some reservations. | Gemini: The review is generally positive, highlighting Schreiber's performance and the play's thought-provoking themes, but notes that the moral lesson worked best in the film version, indicating some reservations. | Kimi: The critic praises Schreiber's standout performance, the beautifully designed set, and the play's modern relevance and urgency, while criticizing the wordy dialogue and noting the material worked better in the 2008 film adaptation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,27 +49,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:31:50.398Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:16:04.494Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "3.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 76,
     "geminiScore": 75,
+    "kimiScore": 77,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,

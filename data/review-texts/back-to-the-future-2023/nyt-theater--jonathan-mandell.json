@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review criticizes the musical as a missed opportunity that relies too heavily on nostalgia and technical spectacle, but acknowledges the impressive design work and some appealing musical moments. The truncated text and aggregator context suggesting 'Up' prevents a lower score. | GPT-4o: The review highlights the impressive stage design and special effects as redeeming features, despite some criticisms about the lack of innovation in the adaptation. The positive aspects, particularly the design team's efforts, suggest a recommendation, but the truncated text and mixed elements lower the confidence. | Gemini: Despite reservations about the score and choreography, the review praises the stage design and special effects, particularly the DeLorean. The performances are described as competent, and the overall experience is likened to a thrilling theme park ride, suggesting a positive, albeit qualified, recommendation. The truncated text makes it difficult to be certain of the final verdict.",
+    "keyPhrases": [
+      {
+        "quote": "The fiery, flying, booming, suddenly disappearing DeLorean car feels like something of a theme park ride – but here's the beauty part of their stubborn unwillingness to depart from the movie.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite criticizing the show as overly faithful to the movie and missing opportunities for reimagining, the critic praises the spectacular design work, technical achievements, and performances. The DeLorean 'redeems this musical' and the production is described as thrilling spectacle. Truncated text limits confidence, but aggregator context suggests positive verdict. | GPT-4o: The review highlights the impressive stage design and special effects centered around the DeLorean, but criticizes the musical for being a missed opportunity to reimagine the story and for its strict adherence to the original movie. The text is truncated, so the final verdict is unclear, leading to a low confidence score. | Gemini: The review is generally positive, highlighting the impressive stage design and special effects, particularly the DeLorean. While the reviewer notes some shortcomings in the score and choreography, the overall experience seems enjoyable, making it a qualified recommendation. | Kimi: While criticizing the adaptation as overly faithful to the film and a 'lost opportunity,' the reviewer praises the 'spectacular' design, 'thrilling' effects, and well-cast performances, ultimately deeming the spectacle redeeming and the experience worthwhile despite reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:22:57.841Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:28:54.683Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 69,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 74,
-    "geminiScore": 79,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Positive",
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 17,
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "sources": [
     "bww-roundup"

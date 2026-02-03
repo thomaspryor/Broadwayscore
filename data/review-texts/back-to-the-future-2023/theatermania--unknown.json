@@ -9,13 +9,13 @@
   "sources": [
     "nyc-theatre"
   ],
-  "assignedScore": 75,
+  "assignedScore": 79,
   "llmScore": {
-    "score": 75,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -25,8 +25,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'perfectly disorienting' and 'eye-popping illusions' suggests positive assessment of the production's visual elements, but with only one curated excerpt available, the overall verdict remains unclear. | GPT-4o: The excerpt highlights the impressive visual aspects of the production, suggesting a positive experience. However, without more context, it's unclear if there are significant reservations, leading to a conservative score within the Positive range. | Gemini: The review excerpt highlights a positive aspect of the show (the illusions and sensory experience), suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt and lack of overall context, a score in the middle of the 'Positive' range is appropriate.",
+    "keyPhrases": [
+      {
+        "quote": "It's a perfectly disorienting sensory overload, and Chris Fisher takes full advantage with his eye-popping illusions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the visual/technical elements as 'eye-popping' and 'perfectly disorienting' in a positive way, but extremely limited text makes full verdict unclear. | GPT-4o: The excerpt praises the show as a 'perfectly disorienting sensory overload' with 'eye-popping illusions,' suggesting a strong positive impression. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt describes the show as a \"perfectly disorienting sensory overload\" and praises the illusions. Due to the single excerpt, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the production's illusions and sensory design using words like 'perfectly' and 'eye-popping,' indicating a clearly positive assessment of this element, though the single-excerpt format limits confidence in the overall verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -35,28 +41,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:31:32.629Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:33:23.267Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 77,
-    "geminiScore": 75,
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "stub",
   "contentTierReason": "No text content"

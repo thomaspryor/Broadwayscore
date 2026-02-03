@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the cast, direction, and design team while appreciating the show's atmospheric qualities and mysterious elements, despite acknowledging unanswered questions. | GPT-4o: The review praises the production for its mood, direction, and design, indicating a positive recommendation despite the play's unanswered questions and ambiguity. | Gemini: The review highlights the strengths of the production, including the cast, direction, and design, while also acknowledging the unanswered questions and ambiguous nature of the play. This suggests a positive but not overwhelmingly enthusiastic recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "the greatest strength of this production of Grey House is the consistency of its preternatural mood",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the cast commitment, direction, and design team extensively, highlighting the production's atmospheric success. While acknowledging the enigmatic nature and unanswered questions, the tone is appreciative rather than frustrated, focusing on what works well. | GPT-4o: The review praises the production's mood, direction, and design, indicating a positive reception. However, it also notes the play leaves many questions unanswered, suggesting some reservations. | Gemini: The review highlights the play's preternatural mood and the contributions of the cast, director, and design team, indicating a positive experience despite the unanswered questions and potential for confusion. | Kimi: The review offers consistent praise for the fully committed cast, sharply focused direction, and effective design elements that create an air of disquietude, clearly recommending the show as a well-crafted atmospheric experience despite noting its unanswered questions.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:56:11.368Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:34:56.550Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 76,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
+    "openaiScore": 76,
     "geminiScore": 75,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
@@ -101,13 +109,12 @@
   "textQuality": "full",
   "textStatus": "complete",
   "sourceMethod": "brightdata",
-  "rescoreCompletedAt": "2026-02-02T03:26:34.640Z",
+  "rescoreCompletedAt": "2026-02-03T05:34:56.550Z",
   "duplicateTextOf": "talkinbroadway--howard-miller.json",
   "wordCount": 639,
   "tierReason": "Full review text",
   "garbageFullText": "Theatre Review by Howard Miller - June 1, 2023\n\nGrey House by Levi Holloway. Directed by Joe Mantello. Scenic design by Scott Pask. Costume design by Rudy Mance. Lighting design by Natasha Katz. Sound design by Tom Gibbons. Hair and wig design by Katie Gell and Robert Pickens. Makeup design by Christina Grant. Associate director Logan Reed. Voice coach Gigi Buffington. Movement consultant Ellenore Scott. Music supervisor and a cappella arranger Or Matias . Director of artistic sign language Andrew Morrill.\nCast: Laurie Metcalf, Tatiana Maslany, Paul Sparks, Sophia Anne Caruso, Millicent Simmonds, Colby Kipnes, Alyssa Emily Marvin, Eamon Patrick O'Connell, and Cyndi Coyne.\nTheater: Lyceum Theatre, 149 West 45th Street (Between Broadway and 6th Avenue)\nTickets: Telecharge.com\n\nThe year is 1977, the same year, by the way, that Stephen King's horror novel \"The Shining\" was published. (There are so many referential nods in the play, it almost invites seeking out such \"Easter eggs\"). Two travelers, Henry (Paul Sparks) and Max (Tatiana Maslany), driving in a blizzard, are stranded when their car smashes into a deer. The vehicle is badly damaged, and Henry suffers a broken leg. But somehow Max manages to drag him and herself to a nearby cabin in the woods, where they are welcomed in by its inhabitants: five enigmatic children, their caregiver (Laurie Metcalf), and a never-to-be-explained character known as The Ancient (Cyndi Coyne).\n\nAs the designated \"mom\" to this odd little brood, Metcalf's character, Raleigh, quickly makes it clear she is no more in charge than is the Ancient. It's the kids, dressed mostly in night clothes and looking like they belong in M. Night Shyamalan's The Village, who run the show. They are Marlow (Sophia Anne Caruso), the eldest and the leader of the pack; Bernie (Millicent Simmonds), who communicates in American Sign Language; Squirrel (Colby Kipnes), who apparently lives up to her name, as we learn she has chewed off the cord to the telephone, rendering it functionless (or is it???); and a character known as A1656, the origin of whose name we learn late in the show. There is also a clingy, sweet-faced boy, played by Eamon Patrick O'Connell, who may bring to mind the little boy played by Billy Mumy in the classic episode of \"The Twilight Zone\" known as \"It's a Good Life.\"\n\nThere you have the basic setup. More details would turn this review into a full-fledged spoiler. However, I will say that the playwright and director Joe Mantello are content, determined even, with sending us out filled with unanswered questions. Questions about happenstance versus predestination; questions about just punishments; questions about purgatory and hell (where does that frequently open cellar door lead to, and how real is the game of \"Show and Hell\" that Max is \"invited\" to join?). Questions about what really is in those jars of \"moonshine\" that Henry is happy to imbibe. And even questions about the origin of the play's title, which may be a play on the children's book \"Grey Mouse.\"\n\nEven with the likely post-performance discussions and musings about \"meaning,\" the greatest strength of this production of Grey House is the consistency of its preternatural mood. That is all thanks to its fully committed cast, to Joe Mantello's sharply focused direction, and to the design team of Scott Pask, whose set draws us into both the seen and unseen areas of the cabin; Rudy Mance, whose costumes provide both contemporary and appropriately dated looks that help us differentiate between the living and the dead; and Natasha Katz's lighting and Tom Gibbons' sound design that gives the entire production its air of disquietude. I like that word \"disquietude.\" It is the best description I can think of for Grey House. Nothing that jumps out at you, just a series of inexplicable and ominous moments that hold things together until the very end.",
   "garbageReason": "Wrong critic: fullText is Howard Miller review, not Matthew Murray",
   "garbageFixedAt": "2026-02-02T19:44:12.890Z",
-  "needsRescore": true,
   "truncationSignals": []
 }

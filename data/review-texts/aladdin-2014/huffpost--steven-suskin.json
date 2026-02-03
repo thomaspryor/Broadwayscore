@@ -13,15 +13,15 @@
   "_removedScore": "1/5",
   "_removedScoreReason": "HuffPost doesn't use star ratings for theater reviews. This was incorrectly extracted from BWW roundup. Review is clearly positive ('considerable win for Disney').",
   "_removedAt": "2026-01-31T23:45:00.000Z",
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -38,7 +38,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic explicitly calls it 'a considerable win for Disney' and predicts long-term success, despite acknowledging flaws like padded songs and sitcom-easy jokes. Praises standout performances and production numbers while noting it's 'Better than Little Mermaid, Aida and Tarzan, though not exactly a knockout.' | GPT-4o: The review praises the production's standout moments and performances, particularly Iglehart's Genie, while noting some weaknesses in the first act and new songs. Overall, it recommends the show as a success for Disney. | Gemini: The review is generally positive, highlighting Iglehart's performance and the 'Friend Like Me' number. While noting some shortcomings, it concludes with a recommendation, calling it a 'considerable win' for Disney. | Kimi: While the reviewer notes several flaws including a weak first act and over-amplified sound, the verdict is clearly positive, praising James Monroe Iglehart's performance as 'delirious' and calling it a 'considerable win' that will entertain crowds, though explicitly 'not exactly a knockout'.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic clearly recommends the show as 'a considerable win for Disney' and predicts long-term success, while acknowledging it's 'not perfect' and 'not exactly a knockout.' The positive verdict outweighs the reservations. | GPT-4o: The review praises the show as a 'considerable win for Disney' and highlights standout performances, especially by Iglehart. While it notes some flaws, the overall tone is positive, recommending the show for its entertainment value. | Gemini: The review is generally positive, highlighting Iglehart's performance and the 'Friend Like Me' number. While it notes some shortcomings, the overall assessment is favorable, suggesting it's a 'considerable win' for Disney. | Kimi: The reviewer calls the show a 'considerable win' that will entertain crowds for seasons, praising James Monroe Iglehart's performance and specific production numbers, while noting it is 'not exactly a knockout' and has a restrained first act.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,23 +48,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:33:35.896Z",
+    "scoredAt": "2026-02-03T01:12:44.727Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
-    "previousVersion": "5.1.0"
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 80,
+    "openaiScore": 78,
     "geminiScore": 77,
     "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

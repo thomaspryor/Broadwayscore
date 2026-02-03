@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Because the revival of \"Chicago\" is so wildly entertaining, I'm hesitant to call it important, always an ugly adjective for a reviewer to use...What makes this revival important, is that it reminds us that musicals are about songs and performers, not scenery. When you have material and performances as dynamic as this, you don't need chandeliers.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chicago",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 93,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 92,
+    "score": 93,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic calls the show 'wildly entertaining' and 'important,' praises virtually every element from performances to direction, and concludes it reminds us what great musical theater should be. | GPT-4o: The review is overwhelmingly positive, praising the performances, choreography, and production elements. The critic describes the show as 'wildly entertaining' and 'important,' indicating a strong recommendation to see it. | Gemini: The review is overwhelmingly positive, praising the performances, choreography, direction, and score. The critic explicitly states the show is \"wildly entertaining\" and \"important\", indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Because the revival of 'Chicago' is so wildly entertaining, I'm hesitant to call it important but I'm afraid I must.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'wildly entertaining,' 'sensational,' 'fabulous,' and 'impeccably.' The critic calls it 'important' and praises every element from performances to direction to design. | Gemini: The review is overwhelmingly positive, using terms like \"wildly entertaining\", \"sensational\", \"fabulous\", and \"impeccably\". The critic clearly recommends seeing the show. | Kimi: The critic lavishes unqualified praise on the revival, calling it 'wildly entertaining,' a 'great musical,' and 'important,' while using superlatives like 'sensational,' 'fabulous,' and 'impeccable' for the cast and creative team, resulting in an overwhelmingly positive endorsement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,22 +43,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:56:25.279Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:32:53.276Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 87,
-    "previousVersion": "3.0.0"
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
+    "claudeScore": 92,
+    "openaiScore": null,
     "geminiScore": 82,
+    "kimiScore": 94,
     "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

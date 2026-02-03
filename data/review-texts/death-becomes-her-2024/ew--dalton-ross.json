@@ -9,16 +9,16 @@
   "dtliExcerpt": "The fact that the new Broadway show did away with the movie’s super campy opener of Meryl Streep’s “Me” — the film's only musical number, incidentally — and replaced it with the even campier “For the Gaze” tells you everything you need to know about the new production and its mission to go bigger and bawdier at every turn.",
   "showScoreExcerpt": "âItâs a mission that succeeds more often than not.â",
   "originalScore": "B",
-  "assignedScore": 74,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "Up",
   "sourceMethod": "scrapingbee",
   "llmScore": {
-    "score": 74,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B rating and phrase 'succeeds more often than not' indicates a positive but qualified recommendation, suggesting the show works well overall despite some shortcomings. | GPT-4o: The original rating of 'B' and the phrase 'succeeds more often than not' suggest a generally positive view with some reservations. The aggregator context also indicates a positive leaning. | Gemini: The quote indicates a generally positive assessment, but with some reservations, aligning with a 'Positive' bucket and a score in the middle of the range. The B rating also supports this classification.",
+    "keyPhrases": [
+      {
+        "quote": "It's a mission that succeeds more often than not.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The quote indicates qualified success ('more often than not' suggests some failures), aligning with the B grade and 'Up' aggregator verdict, but extremely limited text requires low confidence. | GPT-4o: The original rating of B suggests a positive review with some reservations. The key quote indicates that the show is generally successful, aligning with a positive but not overwhelmingly enthusiastic recommendation. Confidence is low due to the limited excerpt. | Gemini: The quote indicates a positive but not overwhelmingly enthusiastic assessment. The 'more often than not' suggests some reservations. | Kimi: The B rating and qualified praise ('succeeds more often than not') indicate the show is good but not exceptional, representing a clear but measured recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:40:36.016Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:53:59.596Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 76,
     "openaiScore": 75,
     "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/death-becomes-her-2024/ew--dalton-ross_2026-01-26.html",
   "textFetchedAt": "2026-01-26T23:10:13.733Z",

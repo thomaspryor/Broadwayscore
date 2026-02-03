@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 88,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "The only major criticism to level at “Days of Wine and Roses” is that it took Guettel so long to write his third musical, which can easily take its place as one of the few great musicals of this century.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 91,
+    "score": 88,
     "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 83,
+      "high": 93
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -33,8 +33,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening with potential concerns about accessibility, the critic delivers an overwhelmingly positive assessment, calling it one of the few great musicals of this century and praising virtually every element from performances to direction to the innovative score. | GPT-4o: The review is overwhelmingly positive, praising the unique score, the performances, and the production's direction. The critic's only complaint is about the time it took to create the musical, not the quality of the production itself, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and adaptation. The critic concludes that it is one of the few great musicals of this century, indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "The only major criticism to level at 'Days of Wine and Roses' is that it took Guettel so long to write his third musical, which can easily take its place as one of the few great musicals of this century.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with superlatives like 'truly awesome performances' and calling it 'one of the few great musicals of this century.' The only criticism is that it took too long to create, which is actually praise in disguise. | GPT-4o: The review is overwhelmingly positive, praising the music, performances, and direction. The critic considers it one of the great musicals of the century, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and adaptation. The critic calls it \"one of the few great musicals of this century.\" | Kimi: Unreserved praise across all elements—score, book, direction, and performances—culminating in the declaration that it 'can easily take its place as one of the few great musicals of this century.' | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +49,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:51:54.834Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:50:42.629Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "3.0.0"
+    "previousScore": 91,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 87,
-    "openaiScore": 95,
+    "claudeScore": 83,
+    "openaiScore": 92,
     "geminiScore": 82,
-    "claudeBucket": "Rave",
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 87,

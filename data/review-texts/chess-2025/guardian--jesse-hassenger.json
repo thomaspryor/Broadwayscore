@@ -27,13 +27,13 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "assignedScore": 60,
+  "assignedScore": 61,
   "llmScore": {
-    "score": 60,
-    "confidence": "high",
+    "score": 61,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -43,8 +43,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic uses 'uneven results' in the subtitle and concludes it 'still feels like an album in search of a bigger, better show.' While praising individual performances and musical numbers, the overall assessment is lukewarm with significant reservations about the book and coherence. | Gemini: The review highlights both positive and negative aspects of the production. While praising the music and some performances, it criticizes the book and overall impact. The final sentiment leans towards the show being an interesting but ultimately flawed experience.",
+    "keyPhrases": [
+      {
+        "quote": "Chess remains an oddity and a novelty, held up by the Abba-level catchiness of numbers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds the show disappointing despite acknowledging some strong elements like Pinkham's performance and catchy songs. The overall assessment is that it fails to justify its revival, with weak character development and forced contemporary updates that don't serve the material. | GPT-4o: The review describes the production as uneven with some appealing elements but ultimately lacking in substance, suggesting a mixed reception. | Gemini: The review is mixed, praising the music and some performances but criticizing the book and overall impact. It acknowledges the show's novelty and catchiness but ultimately finds it lacking. | Kimi: The review praises the catchy score and several performances (particularly Pinkham) and the visual design, but criticizes the book as underwritten, the political updates as shoehorned, and the central character dynamics as stiff. The critic concludes it still feels like a concept album in search of a better show, indicating significant reservations despite admirable elements.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,29 +59,32 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:37:39.480Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:19:18.852Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 48,
-    "previousVersion": "5.0.0"
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text",
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": null,
+    "claudeScore": 45,
+    "openaiScore": 58,
     "geminiScore": 62,
-    "claudeBucket": "Mixed",
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "_removedDesignation": {
     "designation": "Recommended",

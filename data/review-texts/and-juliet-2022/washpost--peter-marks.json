@@ -14,7 +14,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 77,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 72,
       "high": 82
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with context about jukebox musicals, the critic clearly recommends the show with phrases like 'You'll be a contented ticket holder' and 'I was more happily engaged this time,' describing it as entertaining with 'fine voices and even better dancing.' | GPT-4o: The review describes the show as breezy and campy with fine voices and dancing, indicating a positive experience. The critic notes being 'happily engaged' and the audience's energy, suggesting a strong recommendation despite the genre's limitations. | Gemini: The review indicates enjoyment and engagement, but also acknowledges the show's specific appeal and the jukebox musical trend. It's a positive recommendation, but with a caveat.",
+    "keyPhrases": [
+      {
+        "quote": "You'll be a contented ticket holder. But only if you want it that way.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic gives a qualified recommendation, praising the entertainment value, performances, and production design while acknowledging it's 'strictly for kicks' and has a 'silly plot.' The positive verdict is clear but comes with caveats about expectations. | GPT-4o: The review describes the show as 'breezy and campy' with 'fine voices and even better dancing,' and the critic expresses enjoyment and engagement despite initial tempered expectations. This indicates a positive recommendation with some reservations about the jukebox musical format. | Gemini: The review is generally positive, noting fine voices, good dancing, and an upbeat energy. While acknowledging the jukebox musical trend, the critic found the show engaging and enjoyable. | Kimi: The critic recommends the show as 'strictly for kicks' with fine performances and dancing, acknowledging its silly plot but praising the execution and energy, ultimately finding it a satisfying, well-produced entertainment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:46.049Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:04:10.807Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 69,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 82,
-    "geminiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 79,
+    "geminiScore": 77,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,

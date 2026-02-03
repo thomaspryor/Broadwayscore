@@ -80,7 +80,12 @@
   "duplicateTextOf": "nytimes--jesse-green.json",
   "archiveOrgTimestamp": "20250724233526",
   "archiveOrgUrl": "http://web.archive.org/web/20250724233526/https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 360,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-03T04:47:52.642Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about JavaScript, making it impossible to determine the critic's final verdict; openai: The text is truncated and ends with a technical error message, indicating the full review is not accessible.",
+  "promptVersion": "5.2.0"
 }

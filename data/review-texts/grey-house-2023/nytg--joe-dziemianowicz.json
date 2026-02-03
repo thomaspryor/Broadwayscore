@@ -10,17 +10,17 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "showScoreExcerpt": "“One wishes the series of scenes built to a deeper, more full-scale sense of dread. In terms of fright nights, ’Grey House’ is entertaining, albeit middle of the road.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway",
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -30,8 +30,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic explicitly calls it 'entertaining, albeit middle of the road' and notes it 'doesn't deliver intense shivers' while acknowledging fine performances and atmospheric production elements. This is clearly mixed territory - not recommended nor discouraged. | GPT-4o: The review acknowledges the production's strengths in atmosphere and performance but criticizes its lack of intensity and clarity, ultimately describing it as 'middle of the road'. | Gemini: The review acknowledges the show's strengths (cast, direction, design) and entertainment value, but ultimately finds it lacking in delivering intense chills or a deeper sense of dread. The phrase \"entertaining, albeit middle of the road\" indicates a positive but not enthusiastic recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "In terms of fright nights, Grey House is entertaining, albeit middle of the road.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show is 'entertaining' and praises the ensemble and production elements, but consistently notes it 'falls short,' 'doesn't deliver intense shivers,' and is 'middle of the road.' This is a classic mixed review - neither recommending nor discouraging attendance. | GPT-4o: The review acknowledges the show's strengths in atmosphere and ensemble but criticizes its lack of intense chills and clarity, leading to a mixed verdict. | Gemini: The review acknowledges the talent involved and the atmospheric production, but ultimately finds it lacking in intense shivers and a deeper sense of dread. The verdict is mixed, leaning towards a mild recommendation. | Kimi: While praising the ensemble cast and atmospheric production design, the critic finds the play too vague to deliver effective chills and ultimately labels it middle-of-the-road entertainment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,9 +46,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:55:53.447Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:31:58.778Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
@@ -50,18 +56,20 @@
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 75,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "kimiScore": 63,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "dtliExcerpt": "Although the 110-minute production oozes mystery and a ghostly vibe, it doesn’t deliver intense shivers. It’s too vague to stir psychological chills or, for that matter, good old-fashioned goosebumps. It’s as much a head-scratcher as it is a hair-raiser.",
   "sources": [

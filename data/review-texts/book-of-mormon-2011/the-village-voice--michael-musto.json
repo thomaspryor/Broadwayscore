@@ -6,7 +6,7 @@
   "url": "https://www.villagevoice.com/2011/03/24/book-of-mormon-broadway-review/",
   "publishDate": "2011-03-24",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 82,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "The show--done by the South Park guys with the help of an Avenue Q writer--manages the high-wire feat of spoofing religion, poverty, and Jesus, while throwing in AIDS jokes and songs about closeted Mormons \"turning it off\"--and virtually everyone leaves happy!",
@@ -19,11 +19,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,8 +33,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic praises the show's ability to handle controversial material successfully and notes that audiences are leaving satisfied, indicating a positive recommendation despite only having one excerpt available. | GPT-4o: The excerpt highlights the show's ability to tackle controversial topics with humor and leave the audience satisfied, suggesting a strong positive reception. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Rave range. | Gemini: The quote suggests a generally positive experience, but the lack of full text and the description of potentially offensive humor warrant a score in the middle of the 'Positive' bucket.",
+    "keyPhrases": [
+      {
+        "quote": "manages the high-wire feat of spoofing religion, poverty, and Jesus, while throwing in AIDS jokes and songs about closeted Mormons \"turning it off\"--and virtually everyone leaves happy!",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language describing the show as managing a 'high-wire feat' and noting 'virtually everyone leaves happy.' However, this is only a single curated excerpt so confidence is low. | GPT-4o: The excerpt praises the show's ability to handle controversial topics with humor and notes that 'virtually everyone leaves happy,' indicating a strong positive reception. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt describes the show as successfully spoofing sensitive topics and leaving audiences happy, indicating a positive recommendation. Given it is a single excerpt, I am scoring it at the higher end of the positive range. | Kimi: The excerpt praises the production's ability to successfully navigate difficult satirical material while maintaining audience satisfaction, indicating a clear recommendation. However, confidence is low given only one curated excerpt is available.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +49,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:47:48.186Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:46:55.390Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 84,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "fetchMethod": "brightdata",
   "fetchAttempts": [

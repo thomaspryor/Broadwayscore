@@ -87,5 +87,11 @@
     "hadPositiveThumb": false,
     "dtliThumb": "none",
     "bwwThumb": "none"
-  }
+  },
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-03T03:11:07.230Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about an off-Broadway production, not the current Broadway run.; kimi: This review explicitly covers the Off-Broadway production at Atlantic Theater Company's Linda Gross Theater ('now off Broadway'), not a Broadway production.",
+  "promptVersion": "5.2.0"
 }

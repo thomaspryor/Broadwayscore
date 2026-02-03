@@ -15,7 +15,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 64,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 59,
       "high": 69
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 star rating and review content clearly indicate a mixed assessment - the critic acknowledges the high-quality production elements and originality while criticizing the frustrating vagueness and lack of narrative momentum, ultimately suggesting it's worth seeing despite significant flaws. | GPT-4o: The review highlights both strengths, such as the originality and strong performances, and significant weaknesses, like the frustrating vagueness and lack of narrative momentum. The original 3/5 star rating suggests a mixed reception. | Gemini: The review acknowledges flaws in the play's vagueness and lack of thematic texture, but ultimately praises its originality and the performances, especially Laurie Metcalf's. The critic suggests seeing it with friends for discussion, indicating a level of engagement that leans towards a recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "The purposeful vagueness proves more frustrating than intriguing for much of the play's running time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with clear mixed signals - praises originality, cast, and production values but finds the vagueness 'more frustrating than intriguing' and notes narrative momentum issues. Recommends seeing with friends but acknowledges major flaws. | GPT-4o: The review acknowledges the originality and strong performances but criticizes the play's vagueness and lack of narrative momentum. The 3/5 star rating suggests a mixed reception, with both positive and negative elements. | Gemini: The review acknowledges originality and strong production elements but ultimately finds the play frustrating and lacking thematic resonance. The 3/5 star rating aligns with a mixed assessment. | Kimi: The 3/5 star rating reflects the critic's view that while the production features first-rate design and performances, the play's frustrating ambiguity and lack of narrative momentum make it a divisive experience recommended primarily for its originality rather than its storytelling.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:55:49.896Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:31:24.752Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 77,
+    "geminiScore": 65,
+    "kimiScore": 64,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,

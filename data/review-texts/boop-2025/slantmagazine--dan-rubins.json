@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 77,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite opening with criticisms about plot and lyrics, the reviewer concludes the show is 'joyously irresistible' and 'a rollicking good time,' praising performances, direction, and overall entertainment value. | Gemini: The review acknowledges many flaws but ultimately finds the show \"joyously irresistible,\" indicating a positive recommendation. The critic highlights strong performances and enjoyable aspects despite the plot and lyrical issues.",
+    "keyPhrases": [
+      {
+        "quote": "Boop!, for all its unmissably ramshackle flaws, is joyously irresistible.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges significant flaws (plot nonsense, weak backstory, clunky lyrics) but concludes the show is 'joyously irresistible' and 'a rollicking good time.' The positive verdict outweighs the criticisms. | GPT-4o: The review acknowledges several flaws in the production but ultimately describes it as 'joyously irresistible' with a 'rollicking good time,' indicating a positive recommendation despite reservations. | Gemini: The review acknowledges flaws but ultimately finds the show \"joyously irresistible.\" This indicates a positive recommendation with reservations. | Kimi: While the review extensively catalogs structural problems (nonsensical plot, clunky lyrics, underdeveloped characters), it ultimately delivers an enthusiastic recommendation based on the show's exuberant performances, rollicking energy, and impish heart, calling it 'irresistible' and a 'rollicking good time.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,27 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:40.620Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:01:05.783Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 84,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 84,

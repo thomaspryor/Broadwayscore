@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the material's brilliance, Ryan's soul-shaking performance, and strong casting while noting directorial issues. The final assessment affirms the play's worth despite noted shortcomings. | Gemini: The review praises the performances and the brilliance of the play itself, but criticizes the direction as being somewhat slack. Overall, the review leans towards a positive recommendation, albeit with reservations about the direction.",
+    "keyPhrases": [
+      {
+        "quote": "If this Doubt leaves room for growth, there is still none left as to the play's intense brilliance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the material as brilliant, finds Amy Ryan 'soul-shakingly effective,' and commends the cast and design. However, he criticizes Scott Ellis' direction as 'slack where suffocating tension is demanded,' preventing this from being a stronger positive. | Gemini: The review praises the material and performances, especially Amy Ryan, but criticizes the direction as \"slack.\" This suggests a positive but not rave recommendation. | Kimi: While praising Amy Ryan's 'soul-shakingly effective' performance and the 'brilliance of the material,' the critic finds Scott Ellis's direction 'slack' and lacking tension. The recommendation is qualified but positive overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:31:20.386Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:14:02.417Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 76,
     "openaiScore": null,
-    "geminiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "She’s matched by her castmates, as well as David Rockwell’s exquisite church set, which rotates to fold in on itself even as its cloistered garden provides a glimmer of hopeful ascent. If this Doubt leaves room for growth, there is still none left as to the play’s intense brilliance.",

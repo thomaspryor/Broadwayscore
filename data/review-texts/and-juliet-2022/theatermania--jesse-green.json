@@ -64,7 +64,12 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
   },
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "contentTierReason": "fullText was copy of excerpt from web-search import",
-  "textWordCount": 0
+  "textWordCount": 0,
+  "rejectedAt": "2026-02-03T01:58:53.194Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a plot summary with no evaluative content or critical assessment - it only describes what the show is about without any opinion on its quality or recommendation.; openai: The text provided is a plot summary without any evaluative content or opinion on the production.; gemini: This is a plot summary, not a review with evaluative content.; kimi: The provided text contains only a plot summary describing the show's premise (a jukebox musical reimagining Romeo and Juliet with Max Martin songs) without any evaluative content, critical opinion, or recommendation regarding the production's quality.",
+  "promptVersion": "5.2.0"
 }

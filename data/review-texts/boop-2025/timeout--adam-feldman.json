@@ -23,13 +23,13 @@
     "web-search"
   ],
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:18:32.480Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:05:48.778Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 82,
@@ -104,8 +104,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 rating and phrase about delivering what it promises with a grinning audience indicates solid entertainment value, though the caveat about not changing your brain suggests pleasant but not transcendent theater. | Gemini: The review excerpt indicates an enjoyable experience and a positive outcome, aligning with a 'Positive' bucket. The 4/5 rating further supports this classification.",
+    "keyPhrases": [
+      {
+        "quote": "This musical will not change your brain in any way, but it delivers what it promises: a big Broadway production that leaves you grinning",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 rating indicates positive recommendation. Text suggests modest expectations but satisfied delivery - 'delivers what it promises' and 'leaves you grinning' are positive outcomes despite acknowledging limited impact. Confidence low due to truncated excerpt. | GPT-4o: The review suggests the show is enjoyable and delivers on its promises, aligning with a 4/5 star rating. However, it notes that it won't change your brain, indicating some limitations. | Gemini: The review excerpt indicates a positive experience, stating the show delivers on its promises and leaves the audience grinning. The 4/5 rating also suggests a positive assessment, although the 'will not change your brain' comment implies some reservations. | Kimi: 4/5 rating with clear praise for the show's entertainment value and star performance, acknowledging it prioritizes fun over intellectual depth. Score based on curated excerpt only.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -114,18 +120,21 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

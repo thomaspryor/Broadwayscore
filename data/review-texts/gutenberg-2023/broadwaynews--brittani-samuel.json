@@ -7,15 +7,15 @@
   "publishDate": "October 13, 2023",
   "fullText": "Scott Brown and Anthony King’s goofy, self-flagellating musical about a musical about Johannes Gutenberg liberates itself from any real purpose for our real pleasure. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Gutenberg! The Musical!” Before Johannes Gutenberg invented the printing press and permanently altered the course of human history, he hung out with town drunks, scolded young flower girls for being anti-Semitic and experienced sexual tension with a lustful German wench named Helvetica. Or at least, he “probably” did. That vague deduction of history comes from Bud (Josh Gad) and Doug (Andrew Rannells), a luckless musical writing duo centering their next big project (their magnum hopeless, if you will) on the famed German tinker. The meta-gag is, however, that Bud and Doug are actually characters in Scott Brown and Anthony King’s real-life show, “Gutenberg! The Musical!,” debuting now on Broadway. With all of this pseudo-historical absurdity, Brown and King’s dotty comedy ultimately grounds itself in the likeability of its frontmen: Gad and Rannells. Two-handers run the risk of tilting in favor of one performer over the other, but Gad and Rannells strike perfect comedic balance. The two deliver pitch-perfect utterances of the musical’s aptly amateur score and fearlessly play every physical bit and wisecrack to the audience, as director Alex Timbers demands. They are winning leading men — even as their antics on a bare-bones, brick-backed set (scenic design by Scott Pask) rarely surmount to much beyond a SNL sketch with the aftertaste of “follow your wildest dreams” inspiration. The entire show might be better suited for the late-night slot at a comedy club as opposed to Broadway. At the James Earl Jones Theatre, people (myself included) giggled throughout. At the Bell House, they’d be falling on the floor.",
   "originalScore": null,
-  "assignedScore": 65,
+  "assignedScore": 63,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 65,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 60,
-      "high": 70
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -25,8 +25,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic praises the performers and acknowledges audience enjoyment but suggests the show doesn't belong on Broadway, indicating it's not quite recommended for the venue despite its entertainment value. | GPT-4o: The review acknowledges the comedic talents of the leads and the humor of the show, but suggests it lacks the substance expected of a Broadway production, making it more suitable for a comedy club setting. | Gemini: The review is generally positive, highlighting the comedic balance and winning performances of the leads, but suggests it might be better suited for a smaller venue. The reviewer admits to giggling throughout the show.",
+    "keyPhrases": [
+      {
+        "quote": "The entire show might be better suited for the late-night slot at a comedy club as opposed to Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises the lead performances and notes audience enjoyment ('people giggled throughout'), but ultimately finds the show insubstantial for Broadway, comparing it to an SNL sketch and suggesting it belongs in a smaller venue. | GPT-4o: The review praises the performances of Gad and Rannells but suggests the show is more appropriate for a comedy club than Broadway, indicating a mixed reception. | Gemini: The review is generally positive, highlighting the comedic performances of Gad and Rannells. However, it also suggests the show might be better suited for a comedy club, indicating some reservations about its Broadway suitability. | Kimi: The critic praises Gad and Rannells' comedic chemistry and admits to giggling throughout, but suggests the show is lightweight 'SNL sketch' material better suited for a comedy club than Broadway, indicating enjoyment without a strong recommendation for the production's scale.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -35,28 +41,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:56:54.996Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:41:59.683Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 65,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 67,
+    "openaiScore": 65,
     "geminiScore": 75,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "dtliExcerpt": "Two-handers run the risk of tilting in favor of one performer over the other, but Gad and Rannells strike perfect comedic balance.",
   "sources": [

@@ -9,17 +9,17 @@
   "showScoreExcerpt": "Concerts disguised as musicals annoy me.",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/buena-vista-social-club",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "show-score",
   "dtliThumb": null,
   "textFetchedAt": "2026-01-27T05:19:43.907Z",
   "fetchMethod": "playwright",
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite significant criticisms of plot weakness and character relationships, the critic explicitly recommends seeing the show, praising its music, staging, and bold approach to musical theater conventions. | GPT-4o: The critic acknowledges weaknesses in plot and character relationships but ultimately recommends the show for its unique musical and staging elements. The overall tone is positive, highlighting the show's defiance of conventions and its bold contribution to musical theater. | Gemini: Despite criticisms of the plot and acting, the reviewer ultimately recommends the show for its unique staging, choreography, and music, calling it \"exciting\" and a \"bold, unique contribution.\"",
+    "keyPhrases": [
+      {
+        "quote": "It is worth seeing and supporting for its defiance of conventions and the bold, unique contribution it makes to the musical the world.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite significant criticisms about weak plot and character relationships, the critic explicitly recommends seeing it and praises its unique contribution to musical theater, placing it in the positive range. | GPT-4o: The review acknowledges weaknesses in plot and character relationships but praises the music, staging, and choreography. It recommends the show for its unique approach and defiance of conventions, suggesting it is worth seeing despite some reservations. | Gemini: The review acknowledges plot weaknesses but ultimately recommends the show for its music, staging, choreography, and defiance of conventions. The phrase \"worth seeing and supporting\" indicates a positive recommendation. | Kimi: While the critic criticizes the weak plot and lack of character chemistry, they praise the music, staging, and choreography, ultimately delivering a clear recommendation with the explicit verdict 'worth seeing'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:56:48.180Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:16:46.056Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "dtliExcerpt": "Concerts disguised as musicals annoy me.\n\nRead more",
   "mergedFrom": [

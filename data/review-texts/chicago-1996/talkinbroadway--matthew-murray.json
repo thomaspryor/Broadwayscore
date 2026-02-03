@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"Chicago is as good now as it's ever been--a heartening experience, a life-affirming dedication to the magic and art of theatre, and something that absolutely should not be missed. Though all shows must eventually close, the glory and genius of Chicago should be celebrated while it's here, and with any luck, it will still be gracing and energizing Broadway for many years to come.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/chicago",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 92,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/chicago-1996/talkin-broadway--matthew-murray_2026-01-27.html",
@@ -37,11 +37,11 @@
   "fetchTier": 3,
   "sourceMethod": "brightdata",
   "llmScore": {
-    "score": 94,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -51,8 +51,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses unambiguously enthusiastic language throughout, calling it a 'heartening experience' and 'life-affirming' that 'absolutely should not be missed,' with praise for nearly every element of the production. | GPT-4o: The review is overwhelmingly positive, highlighting the production's superb condition, top-flight talent, and its status as a tribute to the magic of theatre. The critic explicitly states it 'absolutely should not be missed,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the production's energy, talent, and dedication to the art of theatre. The critic explicitly states that the show \"should not be missed,\" indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "At the very least, Chicago is as good now as it's ever been.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Enthusiastic praise throughout with explicit must-see language ('absolutely should not be missed'), calls it 'life-affirming' and celebrates the production's excellence across all elements. | GPT-4o: The review is filled with superlatives and enthusiastic praise for the production, performances, and overall experience, with no significant reservations or criticisms, making it a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the production, performances, and overall experience. The critic explicitly states that the show \"absolutely should not be missed.\" | Kimi: The critic offers unqualified praise for the performances, direction, and production values, explicitly urging readers not to miss this 'terrific' revival while celebrating its legacy and vitality.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -61,28 +67,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:25:07.690Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:33:33.477Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 91,
     "openaiScore": 95,
-    "geminiScore": 82,
+    "geminiScore": 83,
+    "kimiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,

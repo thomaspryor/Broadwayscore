@@ -9,17 +9,17 @@
   "bwwExcerpt": "Clearly relishing their juicy roles, the dream cast has been impeccably directed by Lila Neugebauer, who burnishes the comedy and cruelty to a bright sheen. Her production would not cohere and hurtle as it does without its superbly unified design. The collective dots creates the perfect spacious, seen-better-days living room with genteel touches from the past. A pastoral mock-fresco adorns one wall, a vintage chandelier dangles from above and allows lighting designer Jane Cox the chance to cast",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 86,
+    "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 81,
+      "high": 91
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite engaging with deeply uncomfortable subject matter and morally reprehensible characters, the critic praises the 'virtuosic dramatic control,' 'dream cast,' and 'impeccable' direction, ultimately recommending this challenging but well-crafted production. | Gemini: The review highlights the play's virtuosic dramatic control and emotional intelligence, praising the performances and direction, while also acknowledging the challenging nature of spending time with the characters. Overall, it leans towards a positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Her production would not cohere and hurtle as it does without its superbly unified design.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Despite acknowledging the challenging subject matter and unlikeable characters, the critic praises the 'dream cast,' 'impeccably directed' production, and 'superbly unified design.' The review celebrates the virtuosic dramatic control and recommends the show for its artistic merits. | GPT-4o: The review is filled with praise for the production, direction, and performances, describing it as a 'far stronger production' and highlighting the 'superbly unified design'. The critic's enthusiasm and detailed commendation indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the writing, performances, direction, and design elements. The critic highlights the play's virtuosic control and emotional intelligence, making it a strong recommendation. | Kimi: Despite the critic's opening rhetorical question about spending time with 'these creeps,' the review delivers unqualified praise for the playwright's 'virtuosic dramatic control,' the 'dream cast' with 'outstanding' performances, 'impeccably directed' production, and 'superbly unified design.' The sensory description of the finale as 'nothing will prepare you for the sensory barrage' and the philosophical weight given to the play's questions indicate a deeply enthusiastic recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:47:42.000Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:16:23.271Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 91,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“Clearly relishing their juicy roles, the dream cast has been impeccably directed by Lila Neugebauer, who burnishes the comedy and cruelty to a bright sheen. Her production would not cohere and hurtle as it does without its superbly unified design.”",

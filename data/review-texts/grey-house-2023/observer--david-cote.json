@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 43,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 48
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic calls the play 'pretentious pulp,' describes it as 'whimsical and incoherent,' and says it 'flubs the genre test,' clearly recommending against seeing it despite praising the design work. | GPT-4o: The critic describes the play as pretentious, incoherent, and failing the genre test. Despite some praise for the design team, the overall tone is negative, suggesting that the production is not worth seeing. | Gemini: The review is largely negative, criticizing the play's writing, lack of internal logic, and reliance on clichés. While praising the design elements, the overall assessment is that the play fails as a horror story and is not worth seeing.",
+    "keyPhrases": [
+      {
+        "quote": "Here, there's only the mounting dread that you're trapped in a pretentious trauma-drama using horror tropes to diminishing effect.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic systematically dismantles the play as 'pretentious pulp,' 'tedious,' and 'incoherent.' While praising the design team's work, the overall verdict is clearly negative, warning that audiences who pay for this show won't be as lucky as the playwright who won the production lottery. | GPT-4o: The review is overwhelmingly negative, criticizing the play's lack of coherence, overuse of horror clichés, and pretentiousness. Despite some praise for the design team, the overall verdict is strongly against seeing the show. | Gemini: The review is largely negative, criticizing the play's pretentiousness, incoherence, and lack of internal logic, despite acknowledging the efforts of the cast and design team. | Kimi: While praising the design team and acknowledging the cast's efforts, the critic fundamentally rejects the play as pretentious, incoherent, and tedious, explicitly suggesting audiences should not pay to see it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:56:00.539Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:32:55.744Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 44,
+    "previousScore": 43,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 42,
-    "geminiScore": 45,
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 44,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
+    "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 3,
+    "kimiBucket": "Negative",
+    "scoreDelta": 24,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

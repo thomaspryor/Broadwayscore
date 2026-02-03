@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"To really do its work, Bug needs to get under our skin, and here it never quite does. Weâve got to feel not only the ick but the itch.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/bug-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review praises Coon's performance but criticizes the direction and production for failing to achieve the necessary visceral impact, concluding the show doesn't fully succeed in its goals. | Gemini: The review praises Carrie Coon's performance but ultimately finds the production lacking in its ability to create a truly unsettling experience. It acknowledges the play's potential but suggests this production doesn't fully realize it.",
+    "keyPhrases": [
+      {
+        "quote": "But to really do its work, Bug needs to get under our skin, and here it never quite does.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises Coon's performance and acknowledges the play's inherent qualities, but clearly states the production fails to achieve its essential effect. The critic finds the direction too distant and the venue problematic for the material's impact. | GPT-4o: The review praises Carrie Coon's performance but criticizes the production for not fully delivering the intended impact. The overall tone suggests a mixed reception, with some positive elements but significant reservations about the production's effectiveness. | Gemini: The review praises Coon's performance but finds the production lacking in its ability to create a truly unsettling atmosphere. It acknowledges the play's potential but ultimately finds this production falling short. | Kimi: While praising Carrie Coon's 'naked courage' and committed performance as Agnes, the critic finds David Cromer's direction too detached and wry to achieve the necessary visceral horror, leaving the production feeling contained and unaffecting despite the evocative set design.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:52.938Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:53:24.579Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "3.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 65,
+    "kimiScore": 65,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "dtliExcerpt": "Letts’s play is a sordid, spiky creature, a two-hour descent into a pit of paranoia within the dingy walls of an Oklahoma motel room. It’s also an acting showcase, especially for its female lead, and Coon tears into the tragic arc of troubled club waitress Agnes White with her characteristic naked courage. But to really do its work, Bug needs to get under our skin, and here it never quite does. We’ve got to feel not only the ick but the itch — the ­gnawing sensation that, for all their ­delusions, the protagonists might not actually be nuts. Even if they are, their nightmarish conviction should stick with us. We should walk away struggling to shake the feeling something’s crawling up our backs.",
   "bwwExcerpt": "The performance is forceful enough for this Bug to operate chiefly as a character study. Despite the cesspits of ­conspiracy-think that pollute contemporary politics, the specific paranoia of Letts’s ­characters — bugs under the skin, brainwashing, ­nefarious doctors in government labs — feels less blazingly relevant than comparatively quaint.",

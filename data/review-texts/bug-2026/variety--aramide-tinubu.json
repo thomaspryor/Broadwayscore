@@ -8,7 +8,7 @@
   "fullText": "Thirty years after it initially debuted in London, Pulitzer Prize-winning playwright Tracy Letts' \"Bug\" is finally getting its Broadway bow. Directed by Obie Award winner David Cormer, the disturbing psychological horror thriller is an intense and unnerving examination of paranoia, love and life-altering delusion. The play stars \"The Gilded Age's\" Carrie Coon (who also happens to be Letts' spouse) as Agnes, a lonely, drug-dependent waitress who spends most of her time sequestered away in the motel room she calls home. An unlikely encounter with Gulf War veteran, Peter (Namir Smallwood), strips her of her sanity. Manic, disturbing and relentless, \"Bug\" gets under the audience’s skin and remains there long after the final curtain drops.​\"Bug\" opens in a seedy motel in Oklahoma in the 1990s. Flickers of the time period are made plain through the musical choices wafting through the radio. Agnes is seen stumbling around the motel room in cut-off shorts and a tank top as she alternates between drinking wine and smoking crack cocaine out of a pipe. As her friend and fellow waitress R.C. (a stellar Jennifer Engstrom) looks on, Agnes screens calls from her ex-husband Jerry (Steve Key), who has recently been released from prison. On this particular evening, R.C. has brought along a new friend, Peter, whose unassuming demeanor but intriguing musings fascinate Agnes.​When R.C. is forced to leave early, Agnes invites Peter to stay. What begins as a low-stakes sexual encounter soon becomes a full-fledged relationship, one that devolves as Peter becomes increasingly obsessed with the bugs he claims are overtaking their room. The pair cling to each other over the coming weeks despite R.C's increasing mistrust of Peter and Jerry's determination to weasel his way back into Agnes’ life. As the couple grows closer, the audience learns more about Peter's military past and paranoia as he slowly drags Agnes into his manic delusions.​\"Bug\" is as intimate as it is intense. The set, designed by Takeshi Kata, drops the audience right into this specific place and time. The lightning, helmed by Heather Gilbert, and the sound, spearheaded by Josh Schmidt, also keep the play tightly grounded, though the production may have worked even better in a smaller theater. Additionally, midway through Act II, there is a shocking set change that reveals just how deep into their psychosis Agnes and Peter have sunk. Moreover, amid Agnes and Peter's continued descent toward insanity, the story remains convincing because of the characters’ obvious affection and mutual obsession. It's pretty apparent they are causing each other immense harm. However, their actions stem from a place of love, companionship, humor and understanding, which makes the tale especially heartbreaking.​The performances are also outstanding. From his initial introduction, it’s obvious Peter is off-center. Still, he isn't outwardly menacing. His musings can be bizarre, but he has a tenderness and earnestness that draw both the audience and Agnes toward him, especially in contrast to the volatile, cruel Jerry. Yet, Coon's performance as Agnes is \"Bug's\" lightning rod. Even though she has not appeared on a Broadway stage since 2012's \"Who's Afraid of Virginia Woolf,\" fans have gotten to know her as the shrewd and ambitious Bertha Russell in “Gilded\" as well as the emotionally vulnerable Laurie Duffy in \"The White Lotus.\" Coon’s Agnes is a broken woman desperately looking for companionship following the devastating loss of her son and the physical and emotional violence inflicted on her by her ex-husband. Agnes’ longing is at the forefront of Coon's performance, making it all the more devastating to watch her trade one horror for another.​Despite having a runtime of just under two hours, there is so much packed into \"Bug” from isolation to mental illness and the human desire for connection. Though it's a story set 30 years ago, it shows how easily people succumb to cult-like behavior and conspiratorial thinking, especially when they are looking to fill a void. In the end, the play showcases how an infestation can spread and expand, quickly becoming something too terrifying and monstrous to contain.",
   "bwwExcerpt": "“Bug” is as intimate as it is intense. The set, designed by Takeshi Kata, drops the audience right into this specific place and time. The lightning, helmed by Heather Gilbert, and the sound, spearheaded by Josh Schmidt, also keep the play tightly grounded, though the production may have worked even better in a smaller theater. Additionally, midway through Act II, there is a shocking set change that reveals just how deep into their psychosis Agnes and Peter have sunk. Moreover, amid Agnes and Peter’s continued descent toward insanity, the story remains convincing because of the characters’ obvious affection and mutual obsession. It’s pretty apparent they are causing each other immense harm. However, their actions stem from a place of love, companionship, humor and understanding, which makes the tale especially heartbreaking.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 81,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Carrie-Coon-Namir-Smallwood-and-More-Star-in-BUG-on-Broadway-20260108",
   "sourceMethod": "archive",
@@ -18,11 +18,11 @@
   "dtliThumb": "Up",
   "showScoreExcerpt": "â 'Bug is as intimate as it is intense...The performances are also outstanding.\"",
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review consistently praises the performances as 'outstanding,' calls Coon's work a 'lightning rod,' and describes the production as 'intense,' 'convincing,' and effectively crafted. While acknowledging the disturbing content, the critic clearly appreciates the theatrical achievement. | Gemini: The review is overwhelmingly positive, highlighting the intense and unsettling nature of the play, the outstanding performances, and the effective set design. While noting the production might have worked better in a smaller theater, the overall assessment is a recommendation to see the show.",
+    "keyPhrases": [
+      {
+        "quote": "Manic, disturbing and relentless, 'Bug' gets under the audience's skin and remains there long after the final curtain drops.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Consistent praise throughout - calls performances 'outstanding,' production 'intense and unnerving,' and emphasizes the lasting impact on audiences. No significant reservations expressed. | GPT-4o: The review is filled with praise for the production's intensity, performances, and emotional impact. It describes the play as 'intense and unnerving,' with 'outstanding' performances, and highlights its lasting effect on the audience. | Gemini: The review is overwhelmingly positive, praising the performances, set design, and the play's ability to get under the audience's skin. The critic highlights the outstanding performances and the play's exploration of relevant themes. | Kimi: The reviewer delivers enthusiastic praise for Carrie Coon's 'lightning rod' performance and the production's technical elements, calling the play 'outstanding' and 'heartbreaking' with only a minor reservation about the theater size.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:35.570Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:52:54.370Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/bug-2026/variety--aramide-timubu_2026-01-26.html",
   "textFetchedAt": "2026-01-26T15:27:41.407Z",

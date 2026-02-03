@@ -8,17 +8,17 @@
   "showScoreExcerpt": "“The musical has been staged in lavish style...And the DeLorean, with its glowing neon trim, has been glamorized effectively...But the musical as a whole never achieves liftoff, or even the stage equivalent of 88 miles an hour. It cruises along in a low gear for almost three hours.”",
   "bwwExcerpt": "In the unlikely event that I find myself inside a plutonium-fueled DeLorean—I suppose today it would be a Tesla—capable of transporting me to the past, and thus enabling me to alter my future, fairly high on the list of life changes I’d consider would be somehow avoiding having to view the sluggish slog that is the stage adaptation of “Back to the Future.”",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 43,
   "source": "show-score",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 44,
+    "score": 43,
     "confidence": "high",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 38,
+      "high": 48
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Despite acknowledging production values, the critic clearly states the show fails to achieve momentum and 'cruises along in a low gear,' indicating a negative recommendation. | GPT-4o: The review highlights the production's failure to engage or excite, despite its lavish staging, suggesting a negative overall assessment. | Gemini: The review highlights lavish staging but ultimately states the musical fails to take off, indicating a negative assessment despite some positive aspects.",
+    "keyPhrases": [
+      {
+        "quote": "But the musical as a whole never achieves liftoff, or even the stage equivalent of 88 miles an hour.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic acknowledges production strengths but clearly states the show fails to deliver overall, describing it as cruising in low gear rather than achieving what it should. | GPT-4o: The review acknowledges the lavish staging and effective glamorization of the DeLorean but criticizes the musical for lacking energy and excitement, suggesting it 'cruises along in a low gear.' | Gemini: The review acknowledges the lavish staging but ultimately states that the musical never achieves liftoff, indicating a negative overall assessment. The truncated text and aggregator context support this. | Kimi: While acknowledging lavish production values and effective staging of the DeLorean, the critic's verdict pivots on 'But' to condemn the show as failing to achieve liftoff, cruising in 'low gear' for three hours—a clear recommendation against seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:37.139Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:37:07.560Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 15,
-    "previousVersion": "3.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 45,
+    "claudeScore": 45,
+    "openaiScore": 40,
     "geminiScore": 45,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 3,
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/back-to-the-future-2023/wsj--charles-isherwood_2026-02-02.html",
   "textFetchedAt": "2026-02-02T02:42:37.511Z",

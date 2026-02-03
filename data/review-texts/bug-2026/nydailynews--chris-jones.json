@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with context about the play's evolution, the critic praises the performances extensively, calls the production work 'intensifying hyper-realistic,' and notes how the material has gained relevance and power over time. | GPT-4o: The review highlights strong performances, particularly by Carrie Coon, and effective design work, suggesting a positive experience. However, the review is lengthy and somewhat ambiguous, with some focus on the play's history and context, leading to a medium confidence level. | Gemini: The review highlights strong performances and impactful design, suggesting a worthwhile experience despite the play's potentially disturbing themes. The critic praises the actors and the overall quality of the production.",
+    "keyPhrases": [
+      {
+        "quote": "Coon just roars her way through this show, more vulnerable than she appeared to be in 2000 and a tad more fragile, only adding to the stakes and the overall quality of her work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the production with enthusiastic endorsement of Coon's performance ('roars her way through'), calling Smallwood 'a revelation,' praising the design work as 'intensifying hyper-realistic' with 'gorgeous vistas,' and noting how the material feels more relevant now. The critic clearly recommends seeing this production. | GPT-4o: The review praises the performances, particularly Carrie Coon's, and the design work, indicating a strong production. However, the review also reflects on the play's themes and context, suggesting some reservations about its plausibility and impact. | Gemini: The review praises the performances of Coon and Smallwood and the design work, but also notes that the play's impact has lessened over time. This suggests a positive but not rave recommendation. | Kimi: The critic offers strong praise for the lead performances (particularly Carrie Coon's 'roaring' intensity and Namir Smallwood's revelatory turn) and the hyper-realistic design work, while noting the production's timely societal resonance. Despite extensive historical context about previous productions, the verdict on this Broadway revival is clearly favorable with no significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:11:07.598Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:31:14.875Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 78,
-    "geminiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 77,
+    "geminiScore": 77,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/bug-2026/ny-daily-news--chris-jones_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:53:06.221Z",

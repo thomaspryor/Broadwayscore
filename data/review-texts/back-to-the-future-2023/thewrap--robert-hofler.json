@@ -10,20 +10,20 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 30,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 41,
-    "confidence": "high",
+    "score": 30,
+    "confidence": "medium",
     "range": {
-      "low": 36,
-      "high": 46
+      "low": 25,
+      "high": 35
     },
-    "bucket": "Negative",
+    "bucket": "Pan",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic systematically criticizes nearly every aspect - songs are 'derivative' and 'dreary,' performances are lackluster, direction is 'vulgar' or 'incomprehensible,' and jokes are 'lame.' The only praise is for technical effects. | GPT-4o: The review is predominantly critical, highlighting the lackluster music, unamusing performances, and poor direction. The critic suggests the production is not worth seeing, especially given the negative comparison to other works. | Gemini: The review is overwhelmingly negative, criticizing the score, jokes, direction, and performances. The reviewer clearly did not enjoy the show and does not recommend it.",
+    "keyPhrases": [
+      {
+        "quote": "The songs and jokes are dreary, and some of the sight gags that director John Rando has provided are lame.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Consistently negative throughout with harsh criticism of songs ('derivative'), performances ('switched it to autopilot'), direction ('vulgar', 'incomprehensible'), and book. Acknowledges some technical achievements but overall verdict is clearly against recommendation. | GPT-4o: The review is overwhelmingly negative, criticizing the music, performances, direction, and humor. The only praise is for the DeLorean car's effects, which is not enough to redeem the overall negative assessment. | Gemini: The review is largely negative, criticizing the score, jokes, direction, and some of the performances. While the DeLorean car is praised, the overall assessment is unfavorable. | Kimi: The reviewer delivers a thorough pan, criticizing the derivative score, dreary jokes, vulgar direction, and unamusing performances, with only the car staging receiving faint praise and the final line expressing relief at not sitting close to the stage. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:05.417Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:34:27.618Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "5.0.0"
+    "previousScore": 41,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 40,
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 22,
     "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
+    "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 2,
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 40,

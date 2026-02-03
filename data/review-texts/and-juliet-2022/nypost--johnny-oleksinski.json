@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the show is fun and entertaining ('sporadically fun', 'empty-headed good time') but criticizes the plot, writing, and shallow use of pop songs. The recommendation to 'ignore the plot entirely and pretend you're at a concert' suggests qualified enjoyment rather than genuine recommendation. | Gemini: The review acknowledges some fun aspects, particularly the music and performances, but criticizes the plot and writing. It suggests enjoying it as a concert experience, indicating a mixed recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "This sporadically fun musical is an empty-headed good time if you ignore the plot entirely and pretend you're at a concert.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show is 'sporadically fun' and 'an empty-headed good time' but criticizes the weak book, forced jokes, and mind-numbing repetitive score. Mixed signals throughout with no clear recommendation either way. | GPT-4o: The review acknowledges some fun and enjoyment in the musical, particularly through the pop songs and performances, but criticizes the plot and humor as lacking substance. The overall tone suggests a mixed experience with some redeeming qualities. | Gemini: The review acknowledges some enjoyment but ultimately finds the plot weak and the music repetitive, leading to a mixed recommendation. | Kimi: While the critic praises the cast's energy and acknowledges the show is sporadically entertaining, they heavily criticize the 'loony' book, static music arrangements, and groan-worthy jokes, ultimately advising audiences to ignore the plot and treat it as a concert with alcohol rather than substantial theater.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:58:34.632Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T01:55:08.399Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 60,
     "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "dtliExcerpt": "This sporadically fun musical from — where else! — Great Britain with a loony book by David West Read suggests this idea is somehow very feminist; that taking a dagger for your poisoned man is the ultimate failure of the Bechdel test.",
   "sources": [

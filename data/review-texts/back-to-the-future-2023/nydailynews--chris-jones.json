@@ -8,7 +8,7 @@
   "showScoreExcerpt": "“Frenetically paced, relentlessly comedic and visually chaotic, “Back to the Future: The Musical” is aimed squarely at middle America...But the show still misses opportunity after opportunity to make people actually feel.”",
   "bwwExcerpt": "misses opportunity after opportunity to make people actually feel",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 43,
   "source": "show-score",
   "textFetchedAt": "2026-01-30T16:03:46.381Z",
   "textFetchMethod": "playwright",
@@ -17,22 +17,28 @@
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 59,
-    "confidence": "high",
+    "score": 43,
+    "confidence": "medium",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 38,
+      "high": 48
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: While acknowledging some pleasures like Roger Bart's performance and the DeLorean effect, the critic fundamentally finds the show disappointing for failing to capture the emotional depth of the source material, calling it cartoonish and lacking truth. | GPT-4o: The review highlights several flaws in the production, such as lack of emotional connection and reliance on cliches, but acknowledges some entertaining elements like Roger Bart's performance and the DeLorean scene. This suggests a mixed experience with some redeeming qualities. | Gemini: The review highlights significant flaws, particularly the lack of emotional depth and reliance on cartoonish cliches. However, it acknowledges moments of appeal, especially Roger Bart's performance and the DeLorean scene, leading to a mixed assessment.",
+    "keyPhrases": [
+      {
+        "quote": "This show still misses opportunity after opportunity to make people actually feel.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite acknowledging some positive elements (Bart's performance, the flying DeLorean), the critic consistently criticizes the show's lack of emotional truth, cheap choices, and failure to capitalize on the source material's strengths. The review expresses clear disappointment with the production's artistic choices. | GPT-4o: The review criticizes the show for lacking emotional depth and making 'easier, cheaper choices.' While there are some positive mentions of individual performances, the overall tone is negative, focusing on missed opportunities and a lack of truth. | Gemini: The review acknowledges some appealing moments, particularly Roger Bart's performance and the DeLorean scene, but criticizes the show for lacking depth, making cheap choices, and failing to connect emotionally. It's neither a strong recommendation nor a strong discouragement. | Kimi: While praising Roger Bart's performance and the DeLorean spectacle, the critic consistently criticizes the production for being chaotic, cartoonish, and missing the emotional poignancy of the source material, citing a 'lack of truth' and failure to connect.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:37.696Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:26:00.117Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
-    "previousVersion": "5.0.0"
+    "previousScore": 59,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 58,
+    "claudeScore": 45,
+    "openaiScore": 42,
     "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 42,

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 20,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "It’s difficult to say what’s more embarrassing: the people in Disney outfits out on the street or the chorus at the Broadhurst in costumes that look just as seedy and smelly. Pooph, anyone?",
@@ -19,13 +19,13 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 41,
+    "score": 20,
     "confidence": "medium",
     "range": {
-      "low": 36,
-      "high": 46
+      "low": 15,
+      "high": 25
     },
-    "bucket": "Negative",
+    "bucket": "Pan",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -33,8 +33,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic delivers a scathing review with relentless negative language, calling it 'total tedium' and comparing staging to 'seedy and smelly' costumes, with the only positive being one actor's performance. | GPT-4o: The review is overwhelmingly negative, criticizing the musical's lack of conflict, poor costumes, uninspired music, and unfunny book. The critic suggests the show is tedious and embarrassing, with only a single performance offering any relief from the overall disaster. | Gemini: The review is overwhelmingly negative, criticizing the source material, costumes, music, and overall direction. The critic finds the show tedious and embarrassing, indicating a clear lack of recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "It's 'boop-oop-a-doop' for a show that needs a good spritz of Pooph.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Devastating pan with relentless criticism of every element - book, music, costumes, direction. The critic calls it 'total tedium' and suggests the costumes look 'seedy and smelly,' offering no redeeming qualities. | GPT-4o: The review is overwhelmingly negative, describing the show as tedious and poorly executed with unoriginal music and unfunny writing. The few positive comments about Erich Bergen do not redeem the overall negative assessment. | Gemini: The review is largely negative, criticizing the source material choice, costumes, music, and overall plot. While one performer is praised, the overall assessment is unfavorable. | Kimi: While the critic acknowledges one supporting performance as a brief highlight, the overall verdict is devastating: the book is 'relentlessly unfunny,' the costumes among the 'ugliest' on Broadway, the staging potentially the 'worst' of the season, and the show itself 'total tedium' and 'embarrassing.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +49,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:18:14.082Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:04:47.316Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 18,
-    "previousVersion": "3.0.0"
+    "previousScore": 41,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 15,
-    "geminiScore": 40,
-    "claudeBucket": "Negative",
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 44,
+    "kimiScore": 22,
+    "claudeBucket": "Pan",
     "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 27,
+    "kimiBucket": "Pan",
+    "scoreDelta": 26,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "modelAgreement": "3/4 models agree: Pan"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 30,

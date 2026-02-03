@@ -35,7 +35,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with consistent criticism of direction as 'gimmickry,' adaptation as 'dumbed-down,' and overall production as 'messy and ill-conceived.' Praises Strong's performance but condemns the production choices and most of the ensemble. | GPT-4o: The review expresses significant disappointment with the production's direction and execution, despite acknowledging the performances of the lead actors. The original 2/5 star rating aligns with a negative verdict, but the text is truncated, so the final verdict may be missing. | Gemini: Despite praising Jeremy Strong's performance, the review is largely negative, criticizing the direction, adaptation, and ensemble cast. The 2/5 star rating also indicates a negative assessment. | Kimi: The 2/5 star rating and sustained criticism of the direction, adaptation gimmicks, and miscast ensemble outweigh qualified praise for the lead performances. The critic finds the production dumbed-down and ill-conceived despite excellent work from Strong and Imperioli.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with consistent criticism of director's gimmicky approach, poor ensemble casting, and overall execution. Despite praising the two leads, the critic finds the production fundamentally flawed and questions its worth. | GPT-4o: The review is largely negative, criticizing the production's gimmickry and miscasting, despite some praise for the lead actors. The original 2/5 stars rating suggests a negative verdict, but the text is truncated, so the final verdict might be missing. | Gemini: Despite praising Jeremy Strong's performance, the review is largely negative, criticizing the direction, adaptation, and ensemble cast. The 2/5 star rating and description of the production as \"messy and ill-conceived\" indicate a negative overall assessment. | Kimi: The critic awards 2/5 stars and describes the production as 'messy and ill-conceived' with 'gimmickry' that dumbs down the material. While praising the two leads, the overall verdict warns against the director's approach and finds the adaptation flawed.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,12 +45,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:56:53.567Z",
+    "scoredAt": "2026-02-03T01:31:37.861Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 44,
-    "previousVersion": "5.1.0"
+    "previousScore": 41,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 38,

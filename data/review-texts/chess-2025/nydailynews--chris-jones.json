@@ -8,7 +8,7 @@
   "dtliExcerpt": "This is the Broadway show of the fall that some will claim to dislike and yet most everyone will enjoy, even if that has to be in secret. Happily, that’s a match for one of the main themes of a 1980s musical that always saw geopolitics, even the dangers of nuclear proliferation, as games played by those who merely enjoyed the strategizing.",
   "showScoreExcerpt": "\"This is the Broadway show of the fall that some will claim to dislike and yet most everyone will enjoy, even if that has to be in secret. \"",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 81,
   "source": "dtli",
   "dtliThumb": "Up",
   "urlSource": "show-score",
@@ -18,11 +18,11 @@
   "archivePath": "data/archives/reviews/chess/nydailynews--chris-jones_2026-02-01.html",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 79,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite acknowledging the show's absurdities and moral emptiness, the critic clearly recommends it as an entertaining guilty pleasure, praising the performances, songs, and direction while suggesting audiences will enjoy it even if they won't admit it. | Gemini: The review acknowledges the show's flaws but ultimately recommends it due to the strong performances and enjoyable music. The critic clearly enjoyed the production despite its absurdity.",
+    "keyPhrases": [
+      {
+        "quote": "This is the Broadway show of the fall that some will claim to dislike and yet most everyone will enjoy, even if that has to be in secret.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging the show's absurdity and moral emptiness, the critic clearly recommends it as an entertaining guilty pleasure, praising the performances as 'bravissimo' and Michele as exceeding expectations. | GPT-4o: The review praises the performances, direction, and music, describing the show as a 'guilty musical pleasure' and a standout of the season. The tone is enthusiastic with strong recommendations to see the show. | Gemini: The review is overwhelmingly positive, highlighting the strong performances, the anthemic score, and the overall enjoyment of the show despite its absurd plot. The critic clearly recommends seeing it, calling it a \"guilty musical pleasure\". | Kimi: The critic acknowledges the absurd plot and amoral characters but enthusiastically praises the powerhouse lead performances and classic score, clearly recommending the show as an entertaining 'guilty musical pleasure' that most will enjoy.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:02.050Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:20:58.899Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "sources": [
     "dtli",

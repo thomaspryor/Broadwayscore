@@ -8,7 +8,7 @@
   "fullText": "A password will be e-mailed to you.\n\n196437bf79439434be63200839d788ec\n\nby Daniel GraugnardMarch 24, 2014, 3:24 pmMarch 24, 2014, 3:24 pmMarch 24, 2014, 3:24 pmStage\n >\n\nby Daniel GraugnardMarch 24, 2014, 3:24 pmMarch 24, 2014, 3:24 pmMarch 24, 2014, 3:24 pmStage\n >\n\nI’m sure that even the most well-rounded theater goer will concede that Disney has the innate ability to keep Broadway vibrant and hopping, or in other words, kid-friendly. Not only that, but Broadway has provided Disney with a steady stream of cash. Let’s not forget the commercial success The Lion King has had since it opened in 1997, opening the floodgates for even more Disney musicals crowding Broadway, upsetting many critics.\n\nStill, I give Disney credit for the amount of work and production value imbued in their musicals. After all, they spend years and millions of dollars on the artistic work in their productions, giving us undeniably fun experiences. Aladdin, Disney’s latest Broadway musical, is no exception. Director-choreographer Casey Nickolaw delivers a typical, yet fantastic musical experience, with plenty of dancing, music (including “A Whole New World”), fight scenes and magic carpet rides.\n\nYou’ve probably seen the film, so I’m going to wager you know the story. Our hero is the titular street rat, Aladdin (Adam Jacobs) with a carefree attitude who sets his eyes on the high-life and the princesses, Jasmine, (Courtney Reed) living it. And when he finally has it all, things inevitably go wrong thanks to an overly ambitious villain – a typical Disney formula. The only thing left out of the stage version is Robin Williams, who supplied his brilliant, comedic voice acting as Genie in the original film. Instead we get James Monroe Iglehart (Memphis, The Whiz), who is acceptable with the help of some of the exhilarating dance numbers, such as in “A Friend Like Me.”\n\nAs far as a Disney musical goes, Aladdin is unsurprisingly pretty good. A fun treat for the kids for sure, and even the adults who loathe Disney’s theatrical presence will find themselves enjoying the show.\n\nALADDIN IS NOW PLAYING AT THE PRICE EDWARD THEATRE ON LONDON’S WEST END",
   "showScoreExcerpt": "\"A fun treat for the kids for sure, and even the adults who loathe Disney's theatrical presence will find themselves enjoying the show.\"",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textFetchedAt": "2026-02-02T23:14:15.300Z",
@@ -18,11 +18,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -39,7 +39,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review gives clear positive recommendation despite some reservations. The critic acknowledges typical Disney formula but praises production values and says even Disney critics will enjoy it. The aggregator excerpt confirms this positive stance. | Gemini: The review is generally positive, calling it a \"fun treat\" and saying adults who dislike Disney will still enjoy it. The truncated text and smaller outlet reduce confidence. | Kimi: While the text is flagged as potentially truncated, the available content delivers a clear recommendation, calling the show a 'fantastic musical experience' and 'undeniably fun,' though it notes the Disney formula is 'typical' and the Genie is merely 'acceptable' rather than a match for Robin Williams.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review offers a clear positive recommendation despite acknowledging Disney formula and Robin Williams' absence. The critic calls it 'unsurprisingly pretty good' and says even Disney skeptics will enjoy it, indicating solid recommendation with mild reservations. | Gemini: The review is generally positive, calling it a \"fun treat\" and \"pretty good.\" However, the truncated text and the phrase \"unsurprisingly pretty good\" suggest some reservations, leading to a score in the middle of the positive range. | Kimi: While the critic notes the 'typical' Disney formula and finds the Genie replacement merely 'acceptable,' the overall verdict praises a 'fantastic musical experience' with 'undeniably fun' production values, explicitly recommending it for both children and skeptical adults.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -49,22 +49,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:45:57.276Z",
+    "scoredAt": "2026-02-03T01:22:32.606Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "5.1.0"
+    "previousScore": 77,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": null,
-    "geminiScore": 77,
+    "geminiScore": 75,
     "kimiScore": 78,
     "claudeBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

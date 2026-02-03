@@ -33,8 +33,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite noting the show runs too long, the critic enthusiastically praises the performances, choreography, design, and entertainment value, clearly recommending it as a fun theatrical experience. | GPT-4o: The review highlights the show's fun, escapism, and impressive performances, despite mentioning it could be shorter. The overall tone is positive and recommends the show as an enjoyable experience. | Gemini: The review is largely positive, highlighting the fun and escapism the show offers, despite acknowledging that it runs too long. The critic praises the performances, music, and choreography, leading to a recommendation with minor reservations.",
+    "keyPhrases": [
+      {
+        "quote": "you will likely have more fun at Boop! than in many other theaters this spring",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation despite noting the show runs too long. Praises performances, songs, choreography, and design while acknowledging flaws. Overall enthusiastic tone with specific praise for entertainment value. | GPT-4o: The review praises the show as a fun and escapist experience with impressive choreography and design, despite noting it could be shorter. The overall tone is enthusiastic and recommends the show. | Gemini: The review is generally positive, highlighting the fun and escapism of the show, despite noting that it runs too long. The critic praises the performances, songs, and choreography. | Kimi: The reviewer enthusiastically praises the performances, choreography, design, and book, explicitly stating audiences will have more fun here than at many other shows this season, though noting the runtime is excessive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +49,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:15:05.497Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:54:49.494Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 79,
     "openaiScore": 82,
-    "geminiScore": 80,
+    "geminiScore": 79,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,

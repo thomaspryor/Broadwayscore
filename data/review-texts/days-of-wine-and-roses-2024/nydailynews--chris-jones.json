@@ -16,7 +16,7 @@
   "bwwThumb": "Meh",
   "llmScore": {
     "score": 77,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 72,
       "high": 82
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite expressing some reservations about structure and wishing it were bigger or smaller, the critic praises the performances as 'exquisite and courageous,' calls Guettel's compositional gifts 'incomparable,' and concludes it's 'beautifully directed, acted, written and composed.' The positive final assessment outweighs the structural criticisms. | Gemini: The review expresses admiration for the production's direction, acting, writing, and composition, ultimately recommending it despite some reservations about its scope and focus.",
+    "keyPhrases": [
+      {
+        "quote": "The show is caught in the middle, but it's still a beautifully directed, acted, written and composed piece.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises the performances, direction, and Guettel's compositional gifts while identifying significant structural problems. The review concludes that the show is 'caught in the middle' but still worthwhile - classic mixed verdict. | GPT-4o: The review praises the musical's direction, performances, and composition, despite noting some structural and thematic issues. The overall tone suggests a recommendation, albeit with some reservations about the execution. | Gemini: The review is mostly positive, praising the direction, acting, writing, and composition. However, the critic expresses reservations about the show's scope and missed opportunities for deeper emotional exploration, resulting in a score in the middle of the 'Positive' bucket. | Kimi: The critic praises Guettel's incomparable compositional gifts and the exquisite, courageous lead performances, calling the piece beautifully directed and written, while noting reservations about the plot-heavy structure and desire for more existential depth.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,27 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:50:32.257Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:44:07.509Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": null,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
+    "claudeScore": 65,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "sources": [
     "dtli",

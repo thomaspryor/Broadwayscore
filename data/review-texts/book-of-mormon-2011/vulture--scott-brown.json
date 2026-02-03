@@ -38,8 +38,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'often uproarious,' praising it as delivering beyond expectations, and describing multiple elements as exceptional including the 'astonishingly good' supporting cast. | GPT-4o: The review is overwhelmingly positive, describing the show as 'uproarious' and 'spiritually up-tempo,' and praises the production's ability to exceed its hype. The critic's enthusiastic language and the absence of significant reservations indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"uproarious\", \"spiritually up-tempo\", and stating that the show delivers even more than its hype promised. This indicates a strong recommendation and places it firmly in the Rave bucket.",
+    "keyPhrases": [
+      {
+        "quote": "The Book of Mormon, arriving after months of hype, somehow delivers even more than its ridiculously felicitous advance buzz promised.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Overwhelmingly positive review with superlative language throughout ('miracle,' 'astonishingly good,' 'uniquely winning') and clear recommendation that the show exceeds even high expectations. | GPT-4o: The review is filled with superlatives and praises the show as a must-see, highlighting its humor, creativity, and impact. The critic's enthusiastic tone and lack of reservations place it firmly in the Rave category. | Gemini: The review is overwhelmingly positive, using strong language like \"uproarious\" and stating that it exceeds the hype. The critic clearly recommends seeing the show. | Kimi: The review is overwhelmingly enthusiastic, calling the show a 'miracle' that exceeds its hype, with superlatives for the music, direction, and performances. Minor caveats about Act One pacing and lead chemistry cannot dim the radiant recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,9 +54,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:23:36.750Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:49:52.076Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 93,
@@ -60,16 +66,18 @@
     "claudeScore": 92,
     "openaiScore": 95,
     "geminiScore": 92,
+    "kimiScore": 93,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "sources": [
     "reviews-json-stub",

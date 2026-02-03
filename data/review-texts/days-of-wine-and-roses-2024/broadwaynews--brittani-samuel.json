@@ -12,7 +12,7 @@
   "source": "dtli",
   "llmScore": {
     "score": 44,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 39,
       "high": 49
@@ -25,8 +25,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic systematically critiques the show's fundamental flaws - rushed character development, poor score-performer match, and lack of emotional depth. While acknowledging some positive elements like chemistry and direction, the overall assessment is clearly negative with no recommendation to see it. | GPT-4o: The review consistently highlights the lack of depth and emotional engagement in the production, criticizing the development of core themes and the suitability of the performances. The tone suggests disappointment and a lack of recommendation. | Gemini: The review points out flaws in the story and score, but praises the actors' chemistry and direction. The overall impression is that the show has some redeeming qualities but is ultimately flawed.",
+    "keyPhrases": [
+      {
+        "quote": "But this musical — a passion-lacking passion project from collaborators Adam Guettel and Craig Lucas — doesn't go down easy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict calling it a 'passion-lacking passion project' that 'doesn't go down easy.' While praising O'Hara and James' chemistry, the critic finds fundamental flaws in the book's development of core themes and character relationships. | GPT-4o: The review criticizes the musical for its lack of depth in exploring core themes and questions the development of the main characters' relationship. Despite some praise for the actors' chemistry, the overall tone is negative, focusing on the production's shortcomings. | Gemini: The review is largely negative, criticizing the lack of development in the core themes and the script's shortcomings, despite acknowledging the actors' chemistry and direction. The overall assessment is that the musical doesn't succeed in delivering a compelling experience. | Kimi: While acknowledging the lead actors give fine performances, the critic severely criticizes the underdeveloped book, ill-fitting score, and lack of emotional depth, concluding that chemistry alone cannot sustain the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -35,28 +41,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:49:19.988Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:38:45.301Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 37,
-    "previousVersion": "3.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 45,
-    "geminiScore": 62,
+    "geminiScore": 45,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "dtliExcerpt": "Though the material hinges on a turbulent relationship and a harmful disease, fans of Broadway A-listers will delight in watching O’Hara and James throw themselves into the heavy material for nearly two hours.",
   "sources": [

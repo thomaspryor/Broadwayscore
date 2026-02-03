@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite noting some flaws in plotting and choreography, the critic is clearly enthusiastic, calling it 'exactly the show Broadway needs right now' and praising it as 'fun, exuberant, supremely joyful, hilarious, and excellently performed.' | GPT-4o: The review is overwhelmingly positive, highlighting the show's fun, exuberance, and excellent performances. The critic describes it as exactly what Broadway needs, indicating a strong recommendation. | Gemini: Despite some reservations about the plot and feminism, the critic ultimately gives a very positive recommendation, calling it exactly what Broadway needs right now.",
+    "keyPhrases": [
+      {
+        "quote": "It's the most fun you'll have in a Broadway theater right now.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive recommendation with enthusiastic language throughout. Despite some noted flaws (plotting issues, mixed visuals), the critic clearly loves the show and calls it exactly what Broadway needs right now. | GPT-4o: The review is overwhelmingly positive, praising the musical's fun, joy, and excellent performances. It highlights the show's successful integration of pop music and its diverse, talented cast, making it a must-see production. | Gemini: The review is overwhelmingly positive, calling the show \"the most fun you'll have in a Broadway theater right now\" and praising the performances, music, and overall joyful experience. While there are some minor criticisms, the overall recommendation is strong. | Kimi: The critic praises the show as 'the most fun you'll have in a Broadway theater right now' and highlights excellent performances and smart musical integration, though notes minor flaws in plotting and visual design.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:21:53.987Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:02:57.792Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 95,
+    "claudeScore": 81,
+    "openaiScore": 92,
     "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",

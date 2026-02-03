@@ -68,7 +68,12 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 359,
-  "isFullReview": false
+  "isFullReview": false,
+  "rejectedAt": "2026-02-03T01:33:44.680Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence with a JavaScript error message, making it impossible to determine the critic's final verdict or recommendation.; openai: The text includes a technical error message indicating issues with retrieving the full article content, making it unscoreable.; gemini: The review is truncated and incomplete, ending with a message about JavaScript and inability to retrieve content.",
+  "promptVersion": "5.2.0"
 }

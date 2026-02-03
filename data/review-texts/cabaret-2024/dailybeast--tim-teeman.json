@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Those performers—led by movie star Eddie Redmayne as the Emcee, Gayle Rankin as Sally Bowles, Ato Blankson-Wood as American fish-out-of-water Cliff, Bebe Neuwirth as Fraulein Schneider and Steven Skybell as Herr Schultz—are impressively operating on a small, raised, circular plinth, surrounded on all sides by the audience. Working within this self-imposed physical constraint, director Rebecca Frecknall produces clever and piercing thrill after thrill.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,8 +33,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the immersive production design, strong performances (especially Redmayne and supporting cast), and direction, but notes lack of chemistry between the leads and questions about the overall experience concept. | GPT-4o: The review is overwhelmingly positive, highlighting the immersive experience, impressive performances, and innovative direction. Despite minor criticisms of character chemistry, the overall tone and detailed praise suggest a highly enthusiastic recommendation. | Gemini: The review is largely positive, praising the immersive production, performances, and direction. However, it notes a lack of chemistry between Cliff and Sally, indicating reservations.",
+    "keyPhrases": [
+      {
+        "quote": "This production wants you to have immense fun, and to never forget the well-known horrors just over its horizon.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the immersive production design, strong performances (especially Redmayne, Neuwirth, Skybell), and direction, but notes significant chemistry issues between the leads. Overall tone is appreciative of the theatrical experience despite reservations. | GPT-4o: The review praises the immersive production, performances, and direction, highlighting the show's ability to entertain while conveying serious themes. The critic's tone is enthusiastic and recommends the show despite minor reservations about character chemistry. | Gemini: The review praises the immersive production, strong performances (especially Redmayne, Neuwirth, and Skybell), and direction, while noting a lack of chemistry between Cliff and Sally. Overall, it leans towards a positive recommendation. | Kimi: The review offers enthusiastic praise for the immersive production design, direction, choreography, and most performances (particularly Redmayne, Rankin, Neuwirth, and Skybell), calling it a 'wow-transformation' and 'sharp, dark wonderland.' While it notes significant reservations about the lack of chemistry between the two leads, the overall verdict strongly recommends the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +49,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:41.033Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:57:27.096Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 92,
-    "geminiScore": 78,
+    "claudeScore": 77,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 16,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 84,

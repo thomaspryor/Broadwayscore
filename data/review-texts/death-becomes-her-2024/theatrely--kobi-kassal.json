@@ -7,18 +7,18 @@
   "publishDate": "November 21, 2024",
   "fullText": "In a world of perpetual film adaptations coming to the stage, I am pleased to report that Death Becomes Her is an utterly ridiculous and extremely entertaining new musical — one that is a welcome addition to the Broadway landscape. Based on the 1992 cult classic film of the same name, Death Becomes Her, which opens tonight at the Lunt-Fontanne Theatre, just might be the best new musical of the season so far.\n\nJust as in the film, we follow narcissistic actress Madeline Ashton (Megan Hilty) and her bestie/frenemy author Helen Sharp (Jennifer Simard) who have spent years attempting to outdo each other. When Madeline steals Helen's fiancé, Helen goes on a spree for revenge leading to both ladies taking a mysterious potion that offers eternal youth — what could go wrong, eh?\n\nHilty and Simard both deliver two delicious tour-de-force performances that are equally hilarious and enthralling. It's no easy feat taking on characters made famous by Meryl Streep and Goldie Hawn, but when you have two of Broadway's best, you know you are in good hands. It is a thrill to see Hilty back on the boards (she was last on Broadway in 2016 in Noises Off, and it's been 15 years since 9 to 5) and getting to see Simard finally get her moment in the sun is a win for the American theatre, culture, and all of us.\n\nChristopher Sieber charms as always as Ernest Menville, the one stuck in the middle of a love triangle with the two leading ladies and Michelle Williams, of Destiny's Child fame, brings her superb vocal talents to the stage. Josh Lamon is delightfully hilarious as Stefan, Madeline's assistant and the ensemble overall are all top notch.\n\nApart from the stunning performances, where Death Becomes Her truly wins is in the score by Julia Mattison and Noel Carey. Although this is their first Broadway credit, I imagine this is just the beginning for this duo. A vibrant melodic sound permeates the Lunt-Fontanne from big Broadway showstoppers to comical ballads that won't soon leave your head. Marco Pennette's book does a great job at taking a film made over 30 years ago and making it feel fresh for today.\n\nChristopher Gattelli steers the ship as director and choreographer and has cooked up Broadway comedy-gold. With glorious costumes from Paul Tazewell and stunning scenic design by Derek McLane, the creative team overall works well to create a visually stunning sight to behold.\n\nDeath Becomes Her is a smart, brilliant adaptation that honors the original without fighting too hard at making sure it recreates every moment from the film. It's clear the team has worked hard to put together one fun night of theatre, and boy do they deliver. I don't think I stopped smiling from the first downbeat to the final curtain call. It's high camp and Broadway heaven, need I say more?",
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "scrapedAt": "2026-01-24T00:00:00.000Z",
   "sourceMethod": "playwright",
   "dtliExcerpt": "Death Becomes Her is a smart, brilliant adaptation that honors the original without fighting too hard at making sure it recreates every moment from the film. It’s clear the team has worked hard to put together one fun night of theatre, and boy do they deliver. I don’t think I stopped smiling from the first downbeat to the final curtain call. It’s high camp and Broadway heaven, need I say more?",
   "llmScore": {
-    "score": 93,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout, calling it 'the best new musical of the season so far,' 'Broadway heaven,' and stating they 'don't think I stopped smiling.' This is clearly an enthusiastic must-see recommendation. | GPT-4o: The review is overwhelmingly positive, praising the performances, score, direction, and overall production quality. The critic describes it as 'a smart, brilliant adaptation' and indicates a strong recommendation by stating they 'don't think I stopped smiling from the first downbeat to the final curtain call.' | Gemini: The review is overwhelmingly positive, using phrases like \"utterly ridiculous and extremely entertaining\", \"welcome addition to the Broadway landscape\", \"best new musical of the season so far\", and \"Broadway heaven\". The critic clearly loved the show, making it a Rave.",
+    "keyPhrases": [
+      {
+        "quote": "Just might be the best new musical of the season so far.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'best new musical of the season,' 'Broadway heaven,' 'utterly ridiculous and extremely entertaining,' and 'I don't think I stopped smiling.' No reservations or caveats expressed. | GPT-4o: The review is filled with superlatives and enthusiastic praise for performances, direction, and production elements. The critic describes it as 'the best new musical of the season so far' and 'high camp and Broadway heaven', indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the show \"utterly ridiculous and extremely entertaining\" and \"the best new musical of the season so far.\" It praises the performances, score, book, direction, and design, concluding that it's \"high camp and Broadway heaven.\" | Kimi: The critic offers unqualified enthusiasm across all production elements, calling the performances 'tour-de-force', the direction 'comedy-gold', and declaring it 'Broadway heaven' and possibly the best new musical of the season with no reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:18.555Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:59:46.711Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
-    "previousVersion": "3.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "geminiScore": 92,
+    "claudeScore": 91,
+    "openaiScore": 93,
+    "geminiScore": 83,
+    "kimiScore": 93,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "showScoreExcerpt": null,
   "bwwExcerpt": "Death Becomes Her is a smart, brilliant adaptation that honors the original without fighting too hard at making sure it recreates every moment from the film. It’s clear the team has worked hard to put together one fun night of theatre, and boy do they deliver. I don’t think I stopped smiling from the first downbeat to the final curtain call. It’s high camp and Broadway heaven, need I say more?",

@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: Despite acknowledging the corrosively downbeat subject matter and some structural issues, the critic praises the leads as 'astonishing' and calls the show 'cathartic' and 'deeply felt,' indicating a clear recommendation. | Gemini: The review is largely positive, highlighting the performances of the leads and the score, while acknowledging some issues with the story's predeterminism. The overall tone suggests a recommendation, albeit with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "The one-act musical becomes a cathartic, deeply felt tonic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear praise for the leads' 'astonishing' performances and Guettel's 'gorgeous' score, calling it 'cathartic' and 'deeply felt' despite acknowledging the downbeat subject matter and some structural issues. | Gemini: The review is mostly positive, highlighting the performances of the leads and the score, while acknowledging the downbeat subject matter and some predictability in the plot. The overall tone suggests a recommendation with reservations. | Kimi: While acknowledging the bleak subject matter and predetermined plot may grate some viewers, the critic delivers enthusiastic praise for the lead performances ('astonishing', 'heavenly') and Guettel's score, ultimately recommending the show as a powerful theatrical experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:51:46.736Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:49:50.973Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 79,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 79,
     "openaiScore": null,
-    "geminiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Transferring to Broadway after a well-received premiere at the Atlantic last summer, Kelli O’Hara and Brian d’Arcy James give astonishing voice to two lovers drowning in alcoholism. The subject matter is almost corrosively downbeat but, with its two leads at the top of their game, the one-act musical becomes a cathartic, deeply felt tonic.",

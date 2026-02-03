@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show succeeds in capturing the essence of the beloved film while adding its own theatrical magic, with impressive special effects and energetic performances that bring the DeLorean time machine to vivid life on stage.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The show succeeds in capturing the essence of the beloved film while adding its own theatrical magic, with impressive special effects and energetic performances that bring the DeLorean time machine to vivid life on stage.",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 71,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 66,
+      "high": 76
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear positive language with 'succeeds', 'theatrical magic', and praise for effects and performances indicates a solid recommendation. | GPT-4o: The review highlights the show's success in capturing the film's essence and praises its theatrical magic, special effects, and performances, indicating a strong positive recommendation. | Gemini: The review highlights the show's success in adapting the film and praises the special effects and performances, indicating a positive overall experience.",
+    "keyPhrases": [
+      {
+        "quote": "The musical is not only set in the same two years as the movie, it sticks to the basic plot, changing only the most blatantly anachronistic details.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic praises the spectacular design and effects work extensively, calling it 'thrilling' and comparing it to a 'theme park ride,' but criticizes the musical for being a 'lost opportunity' that's too faithful to the source material and becomes 'an exercise in nostalgia (and in marketing)' rather than meaningful adaptation. The tone suggests appreciation for technical achievements but disappointment with the creative choices. | GPT-4o: The review acknowledges impressive stage design and special effects but criticizes the musical for being a missed opportunity to reimagine the story, relying heavily on nostalgia and familiar elements from the movie. | Gemini: The review highlights the impressive stage design and special effects, particularly the DeLorean, while acknowledging the serviceable score and competent cast. Despite some reservations about the strict adherence to the movie, the overall experience is deemed worthwhile. | Kimi: While criticizing the show's strict adherence to the movie and calling the score merely serviceable, the reviewer extensively praises the spectacular design and special effects as thrilling and redeeming qualities, ultimately recommending the show for its visual spectacle. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,34 +48,36 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:58:24.014Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:28:27.165Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (35 words)",
   "previousUrl": "https://newyorktheater.me/2023/08/18/back-to-the-future-the-musical-broadway-review/",
   "urlDiscoveredAt": "2026-02-02T15:12:48.372Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 1005,
@@ -91,5 +99,6 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230923201831/https://newyorktheater.me/2023/08/03/back-to-the-future-broadway-review/",
   "duplicateTextOf": "nyt-theater--jonathan-mandell.json",
   "wordCount": 1005,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-03T02:28:27.165Z"
 }

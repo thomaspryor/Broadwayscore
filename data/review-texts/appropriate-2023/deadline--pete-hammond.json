@@ -64,7 +64,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (36 words)",
   "previousUrl": "https://deadline.com/2023/12/appropriate-broadway-review-branden-jacobs-jenkins-1235662077/",
   "urlDiscoveredAt": "2026-02-02T15:35:21.077Z",
@@ -111,5 +111,10 @@
   "archiveOrgTimestamp": "20240820195128",
   "archiveOrgUrl": "http://web.archive.org/web/20240820195128/https://deadline.com/2024/03/appropriate-broadway-review-1235671187/",
   "wordCount": 1283,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-03T02:09:14.761Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "openai: The text is primarily an editor's note and cast listing, with no evaluative content or critic's opinion about the current Broadway production.; kimi: The review text explicitly refers to the Off-Broadway premiere at the Helen Hayes Theater ('opening tonight at the Helen Hayes Theater' on December 18), not the current Broadway commercial transfer production at the Belasco Theatre.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "bwwExcerpt": "BOOP! The Musical proves that bringing Betty Boop to life on stage is a worthy endeavor, even if only for the spectacle of it all.",
   "showScoreExcerpt": "\" 'BOOP! The Musical' proves that bringing Betty Boop to life on stage is a worthy endeavor, even if only for the spectacle of it all.\"",
   "originalScore": "A",
-  "assignedScore": 89,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
   "urlSource": "show-score",
@@ -21,11 +21,11 @@
   "scoreSource": "letter-grade",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 89,
+    "score": 86,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 81,
+      "high": 91
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 'A' rating combined with superlative language like 'dazzling,' 'best of Broadway,' and 'sparkling' indicates strong enthusiasm and recommendation. | GPT-4o: The original rating of 'A' and the positive language in the excerpt suggest a highly favorable view. The description of the musical as 'big, dazzling' and showcasing 'the best of Broadway' indicates a strong recommendation. | Gemini: The review uses positive language like \"dazzling\" and \"best of Broadway\" to describe the musical, indicating a positive recommendation. The A rating from the critic further supports this classification.",
+    "keyPhrases": [
+      {
+        "quote": "The big, dazzling musical showcases the best of Broadway, with sparkling costumes, transformative sets, and tap dancing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: The critic's 'A' rating and praise for 'dazzling' production values and 'best of Broadway' indicates a strong positive recommendation, though limited excerpt prevents full assessment of any reservations. | GPT-4o: The review excerpt uses highly positive language ('big, dazzling', 'best of Broadway') and the original rating of 'A' suggests a strong recommendation. However, the lack of full text limits confidence. | Gemini: The review excerpt uses positive language like \"dazzling\" and \"best of Broadway\", indicating a positive recommendation. The \"A\" rating from the critic also suggests a positive assessment. However, due to the limited text, the confidence is low. | Kimi: The critic awards an 'A' rating and deploys superlatives ('dazzling', 'best of Broadway', 'transformative') without reservation, clearly placing this in the highest tier of recommendation despite the excerpt-only format. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,28 +51,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:17:19.712Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:59:54.791Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "3.0.0"
+    "previousScore": 89,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 81,
     "openaiScore": 90,
     "geminiScore": 80,
-    "claudeBucket": "Rave",
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
   "bwwThumb": "Up",
   "sources": [

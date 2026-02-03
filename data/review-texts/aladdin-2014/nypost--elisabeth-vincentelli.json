@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Broadway version of 'Aladdin' is a whole new wonderful world that dazzles with spectacular sets, costumes and choreography.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The Broadway version of 'Aladdin' is a whole new wonderful world that dazzles with spectacular sets, costumes and choreography.",
   "needsScoring": true,
   "llmScore": {
-    "score": 82,
+    "score": 83,
     "confidence": "high",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 78,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -39,7 +39,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('wonderful world', 'dazzles', 'spectacular') suggests enthusiastic recommendation, but single excerpt limits confidence in full verdict. | GPT-4o: The excerpt provides strong praise for the production's visual elements, using words like 'dazzles' and 'spectacular'. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt uses strong positive language like \"dazzles\" and \"wonderful world\", suggesting a strong recommendation. Given it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the production's spectacle using words like 'dazzles' and 'spectacular,' indicating a strong recommendation, though the limited single-excerpt context warrants reduced confidence.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise with superlative language ('dazzles', 'spectacular', 'wonderful world'), but only one excerpt available so confidence is low. Positive tone suggests upper range of Positive bucket. | GPT-4o: The excerpt provides strong praise for the production elements, using words like 'wonderful' and 'dazzles', suggesting a highly positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"dazzles\" and \"wonderful world\", indicating a positive review. However, since it is a single excerpt, the confidence is low. | Kimi: The excerpt offers unambiguous enthusiasm with words like 'dazzles' and 'spectacular,' indicating a strong recommendation. However, as a single curated quote, it warrants the upper end of the Positive bucket (80-84) rather than a Rave classification, with low confidence due to limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -49,16 +49,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:37:24.704Z",
+    "scoredAt": "2026-02-03T01:14:41.795Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.1.0"
+    "previousScore": 82,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 82,
+    "openaiScore": 83,
     "geminiScore": 82,
     "kimiScore": 83,
     "claudeBucket": "Positive",

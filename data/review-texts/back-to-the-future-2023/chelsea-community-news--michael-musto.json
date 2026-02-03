@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the show's entertainment value and production quality while suggesting it's commercial but well-executed. However, with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review describes the show as 'lavish' and 'never slows down,' suggesting an entertaining production. However, the mention of it being 'a big, flashy, speeding car' implies some reservations, leading to a positive but not overwhelmingly enthusiastic score. | Gemini: The review describes the show as \"lavish\" and \"flashy\" and \"apt for today's Broadway\", suggesting a positive, albeit somewhat qualified, recommendation. The aggregator context also indicates a positive reception.",
+    "keyPhrases": [
+      {
+        "quote": "The show is lavish and never slows down, at times coming off like something that might belong at Madison Square Garden.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses positive descriptors like 'lavish' and 'slick special effects' while noting it 'never slows down', but describes it as formulaic ('big, flashy, speeding car') fitting 'today's Broadway' formula. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt describes the show as 'lavish' and 'never slows down', suggesting a positive view of its energy and production values. However, the lack of a full review and the mention of it being like a 'big, flashy, speeding car' implies some reservations, leading to a mildly positive score. | Gemini: The review describes the show as \"lavish\" and notes that it \"never slows down.\" While the comparison to Madison Square Garden might be a slight reservation, the overall tone suggests a positive, albeit somewhat qualified, recommendation. Given the single excerpt, confidence is low. | Kimi: The excerpt praises the production values and pacing, endorsing it as slick commercial entertainment apt for Broadway, though with a tone suggesting spectacle over depth. Given the single-excerpt limitation and mildly positive language, it scores in the lower Positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:44.933Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:22:24.410Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 66,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 76,
+    "claudeScore": 73,
+    "openaiScore": 74,
     "geminiScore": 75,
+    "kimiScore": 72,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "dateSource": "extracted-from-url",
   "contentTier": "excerpt",

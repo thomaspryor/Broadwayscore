@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "This is a rare Broadway show that actually succeeds in scaring the bejesus out of you. 'Grey House' is a genuinely creepy thriller that will have you jumping out of your seat.",
@@ -19,11 +19,11 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 44,
+    "score": 43,
     "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 38,
+      "high": 48
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -33,8 +33,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review is consistently critical throughout, calling the script 'a mess', criticizing performances as lacking grip, and concluding with a dismissive pun that suggests the show is boring rather than scary. | GPT-4o: The review consistently criticizes the play for failing to deliver on its horror premise, lacking tension, and having a messy script. The final line dismisses the play entirely, indicating a strong recommendation to avoid it. | Gemini: The review is largely negative, criticizing the play's lack of terror, weak script, and uninspired performances. The critic explicitly states the execution is far worse than its inspirations and the second half is a slog.",
+    "keyPhrases": [
+      {
+        "quote": "Welcome to the House of 1,000 Snoozes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict throughout with criticism of weak execution, poor script, and lack of engaging performances. Despite acknowledging some striking visual elements, the overall recommendation is against seeing it. | GPT-4o: The review is overwhelmingly negative, criticizing the play's inability to deliver horror effectively, lack of gripping performances, and a script described as a 'mess.' The tone is dismissive and the verdict is clear, placing it in the Pan category. | Gemini: The review is largely negative, criticizing the play's lack of tension, forced moods, and overall execution. While praising the set design, the critic ultimately finds the script a mess and the experience underwhelming. | Kimi: While the critic praises Scott Pask's set design and Laurie Metcalf's performance, the overall verdict strongly discourages seeing the show, calling the second half 'a slog' and concluding with the pun 'House of 1,000 Snoozes' to indicate it is boring and ineffective as horror.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,9 +49,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:55:36.466Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:28:15.333Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 44,
@@ -54,17 +60,19 @@
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 20,
-    "geminiScore": 45,
+    "geminiScore": 44,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 25,
+    "kimiBucket": "Negative",
+    "scoreDelta": 24,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 41,

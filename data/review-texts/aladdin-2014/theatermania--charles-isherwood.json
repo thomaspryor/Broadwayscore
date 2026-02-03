@@ -39,7 +39,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation for target audience (families) but with notable reservation about not matching the source material's magic. Single excerpt limits confidence. | GPT-4o: The excerpt suggests a positive experience for families, though it notes the show doesn't fully capture the magic of the original film. Given the limited text and mild positivity, a lower score within the Positive range is appropriate. | Gemini: The review is positive, stating it should please families, but it does have a reservation about not capturing the magic of the animated film. Given the single excerpt, confidence is low. | Kimi: The excerpt offers qualified praise ('colorful, energetic') but includes significant reservations about the show failing to match its source material, limiting the recommendation to family audiences specifically rather than general acclaim.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: This is a qualified recommendation - the critic says it 'should please families' but notes it falls short of expectations. Single excerpt warning and positive language suggests lower end of Positive bucket. | GPT-4o: The excerpt suggests a generally positive impression, highlighting the show's appeal to families and its energetic nature, but notes it falls short of the animated film's magic. Given the single excerpt and text quality warning, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The review is positive, stating it should please families, but it also notes that it doesn't quite capture the magic of the animated film, indicating reservations. Given that it is a single excerpt, the confidence is low. | Kimi: The excerpt offers a qualified recommendation limited to family audiences, praising the energy and color while explicitly noting the production fails to match the original film's magic. As a single curated excerpt, the overall verdict may not be fully represented.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -49,15 +49,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:42:28.454Z",
+    "scoredAt": "2026-02-03T01:19:32.083Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "5.1.0"
+    "previousScore": 73,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 73,
     "openaiScore": 72,
     "geminiScore": 75,
     "kimiScore": 72,

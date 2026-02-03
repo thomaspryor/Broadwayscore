@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Lafayette family's sins are not just personal but generational, and the play's horror lies not in any supernatural elements but in the very real damage that racism inflicts across time.",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The Lafayette family's sins are not just personal but generational, and the play's horror lies not in any supernatural elements but in the very real damage that racism inflicts across time.",
   "needsScoring": true,
   "llmScore": {
-    "score": 89,
+    "score": 93,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is overwhelmingly positive, praising the playwright's craft, the direction, and performances with sophisticated analysis. The critic calls it 'sharp,' praises the 'top-notch cast,' and provides deep appreciation for the complex themes and execution. | GPT-4o: The review is filled with praise for the writing, direction, and performances, describing the play as sharp, complex, and electrifying. The critic highlights the successful risk-taking by the director and cast, making it a compelling and must-see production. | Gemini: The critic praises the direction and performances, highlighting the play's ability to make the audience consider uncomfortable truths. While acknowledging the challenging subject matter, the review ultimately recommends seeing the production.",
+    "keyPhrases": [
+      {
+        "quote": "Neugebauer has bravely steered in the opposite direction. She and her actors are taking the risk of taking these people seriously.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: This is an extraordinarily detailed, intellectually engaged rave review that treats the play as essential theater. Green uses sophisticated literary analysis, compares it to James Baldwin, and praises both the writing and performances with deep admiration. The length and thoughtfulness of analysis itself signals this is major theater worthy of serious critical attention. | Gemini: The review praises the direction and performances, highlighting the risk taken in portraying the characters seriously. While acknowledging the play's challenging themes, the overall tone is positive and recommends seeing it. | Kimi: The review offers unqualified praise for the production, direction, and performances (particularly Paulson and Stoll), describing the writing as 'devastatingly credible' and 'electrically' complex, with no significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,22 +48,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:21:57.860Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:20:05.785Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
+    "previousScore": 89,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 94,
     "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

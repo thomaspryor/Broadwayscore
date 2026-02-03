@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": "2 stars",
-  "assignedScore": 44,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 44,
-    "confidence": "medium",
+    "score": 42,
+    "confidence": "high",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic gives 2 stars and delivers a consistently negative assessment, calling it a 'bloated gizmo nobody asked for' with 'awful' songs and criticizing most elements while acknowledging only minor positives like one actor's performance. | GPT-4o: The critic's 2-star rating and the review's focus on the lack of heart, poor songs, and overall disappointment with the adaptation strongly indicate a negative verdict. The critic explicitly states that the musical fails to engage, despite some enjoyable moments. | Gemini: The review highlights both positive and negative aspects. While praising the DeLorean effects and Casey Likes' performance, it criticizes the songs, the necessity of the musical adaptation, and Roger Bart's portrayal of Doc Brown. The overall tone suggests a mixed experience, leaning towards lukewarm.",
+    "keyPhrases": [
+      {
+        "quote": "But please stop singing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2-star review with clear negative verdict despite praising the lead performer and some production elements. Critic calls it a 'bloated gizmo nobody asked for' and says it 'left me cold and uninvolved.' | GPT-4o: The review is largely negative, highlighting the lack of heart, forgettable music, and the failure to justify its existence as a stage musical. The critic's original 2-star rating aligns with a negative classification. | Gemini: The review is mostly negative, citing tuneless songs, lack of heart, and a perplexing existence as a stage musical. Despite praising the DeLorean and the lead actor, the overall verdict is that it's not worth seeing. | Kimi: Extracted from malformed response",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:43.441Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:26:59.094Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 35,
-    "previousVersion": "5.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 45,
-    "geminiScore": 62,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 25,

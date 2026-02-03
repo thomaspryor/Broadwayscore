@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Strong and Imperioli both bring a vigorous contemporary affect to the material.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 90,
+    "score": 87,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 82,
+      "high": 92
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is filled with admiring language about the production's innovations, praising the directors' vision, the performances, and the staging choices. The critic consistently uses positive descriptors and celebrates how the production revitalizes Ibsen's work. | GPT-4o: The review is filled with praise for the innovative direction, the performances, and the overall impact of the production. The critic highlights the profound and pleasurable nature of the adaptation, indicating a strong recommendation to see the show. | Gemini: The review is largely positive, praising the adaptation and performances, while noting the production's ability to make the play relevant and engaging. The critic highlights the strengths of the leads and the creative choices, indicating a recommendation despite any potential reservations.",
+    "keyPhrases": [
+      {
+        "quote": "Herzog and Gold have cleared away any fustiness and have drawn out Enemy's inherent muscularity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Consistently enthusiastic praise throughout for direction, performances, and staging innovation. Critic celebrates the creative choices and finds deep meaning in the adaptation, with no significant reservations expressed. | GPT-4o: The review is filled with praise for the innovative direction, the performances, and the overall production. The critic highlights the profound and pleasurable nature of the adaptation, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, praising the adaptation, direction, and performances. The critic highlights the play's relevance and impact, making it a strong recommendation. | Kimi: The critic offers unqualified praise for the production's innovative staging, powerful performances, and searing adaptation, using superlatives like 'profound,' 'thrilling,' and 'muscular' without significant reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:22:05.806Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T01:40:04.317Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
+    "previousScore": 90,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 82,
     "openaiScore": 92,
-    "geminiScore": 80,
-    "claudeBucket": "Rave",
+    "geminiScore": 81,
+    "kimiScore": 91,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
   "sources": [
     "show-score",

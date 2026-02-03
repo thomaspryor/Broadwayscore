@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Back to the Future: The Musical is a competent, if unspectacular, adaptation that hits the expected beats without much innovation or surprise.",
   "originalScore": 60,
-  "assignedScore": 61,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Back to the Future: The Musical is a competent, if unspectacular, adaptation that hits the expected beats without much innovation or surprise.",
   "needsScoring": true,
   "llmScore": {
-    "score": 61,
+    "score": 60,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic's own 60 rating and description of the show as 'competent, if unspectacular' with no innovation places this squarely in mixed territory - neither recommended nor discouraged. | GPT-4o: The original rating of 60 aligns with a mixed review, and the text describes the show as competent but lacking innovation, indicating a neutral stance. | Gemini: The review uses terms like 'competent' and 'unspectacular,' indicating a middle-ground assessment. The critic's own rating of 60 aligns with the 'Mixed' bucket.",
+    "keyPhrases": [
+      {
+        "quote": "It's a dopamine hit for the lifelong fans, a commercial love letter that dodges risk to give you the smoothest possible ride back to your past.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic gives a 60/100 rating and delivers mixed praise - acknowledging it's entertaining and well-executed but criticizing lack of innovation, muddled musical language, and shallow character development. Recommends primarily for existing fans. | GPT-4o: The review describes the musical as competent and faithful to the original film, but lacking innovation and depth. The critic's original rating of 60 aligns with a mixed verdict, indicating that while the show has enjoyable elements, it does not offer much beyond nostalgia for fans. | Gemini: The review acknowledges the show's appeal to diehard fans and its zippy, loud, and stylish nature, but also points out its lack of innovation and depth. The critic's own rating is 60.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +48,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:58:21.456Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:25:01.975Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 60,
-    "geminiScore": 62,
+    "geminiScore": 60,
+    "kimiScore": null,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -69,7 +77,6 @@
   "previousUrl": "https://www.theguardian.com/stage/2023/aug/04/back-to-the-future-the-musical-review-broadway",
   "urlDiscoveredAt": "2026-02-02T15:37:38.996Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 970,
@@ -103,5 +110,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 970,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-03T02:25:01.975Z"
 }

@@ -9,7 +9,7 @@
   "showScoreExcerpt": "“ ‘Back to the Future’ emerges, and continues to be regarded, as a funny, cult-classic romp. The musical adaptation... honors all these views at once and gives ‘Back to the Future’ the larger-than-life presentation it deserves.”",
   "bwwExcerpt": "It's an odd paradox, that Back to the Future assumes prior familiarity with the film such that the players need little introduction, while positing nearly every character as worthy of substantial exploration. Chalk it up, perhaps, to the fact that two of the movie's creators are involved: Bob Gale adapted the musical's book from his and Robert Zemeckis's screenplay, and",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "show-score",
   "archivePath": "data/archives/reviews/back-to-the-future-2023/nytg--gillian-russo_2026-01-25.html",
   "textFetchedAt": "2026-01-25T04:00:31.163Z",
@@ -17,11 +17,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the spectacular design, strong performances, and successful adaptation while noting some pacing issues with the score. The critic clearly recommends the show despite minor flaws. | Gemini: The review is largely positive, highlighting the spectacle and performances. While it notes some issues with the songs and character development, the overall impression is that the show is worth seeing.",
+    "keyPhrases": [
+      {
+        "quote": "The whole production is clearly eager, desperate even, to thrill you at every second.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Four-star review with consistent praise for design, performances, and spectacle. Despite noting some score redundancy, the critic celebrates the production's energy and emotional moments, clearly recommending it as a thrilling theatrical experience. | GPT-4o: The review praises the production's design and performances, noting its immersive and thrilling nature. However, it also mentions some issues with the score and character development, indicating some reservations. | Gemini: The review is generally positive, praising the design and performances, but notes some issues with the songs and character development. It ultimately recommends the show, but with reservations. | Kimi: The critic praises the immersive design, energetic staging, and strong performances (particularly Roger Bart and Casey Likes) as giving the film the 'larger-than-life presentation it deserves,' but criticizes the repetitive score and structural issues with character introductions.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,27 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:30.030Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:29:23.771Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 81,
-    "previousVersion": "3.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",

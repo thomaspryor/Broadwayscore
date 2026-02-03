@@ -9,15 +9,15 @@
   "bwwExcerpt": "Yes, it’s kid-friendly. Yes, it’s visually slick. But it’s also toothless. A show about a boundary-pushing cartoon icon shouldn’t feel this safe or generic. Betty Boop may be ready for her close-up, but this isn’t the vehicle she deserves. You are better off watching the original animated shorts on YouTube.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 41,
   "source": "dtli",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 44,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The critic finds the show 'painfully underwhelming' with 'thin plot,' 'sluggish pacing,' and 'relentlessly bland music,' concluding with a clear recommendation to skip it in favor of the original shorts. | Gemini: The review is largely negative, citing issues with the plot, music, and overall execution. The critic explicitly recommends watching the original cartoons instead, indicating a lack of recommendation for the musical.",
+    "keyPhrases": [
+      {
+        "quote": "You are better off watching the original animated shorts on YouTube.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict with explicit advice to skip the show in favor of free alternatives. Despite acknowledging some technical merits, the critic finds it 'painfully underwhelming,' 'toothless,' and 'not the vehicle she deserves.' | GPT-4o: The review expresses significant disappointment with the show, describing it as 'painfully underwhelming' and 'toothless'. While acknowledging some positive elements like staging and certain performances, the overall recommendation is negative, suggesting audiences skip the show in favor of watching the original cartoons. | Gemini: The review is largely negative, citing a thin plot, sluggish pacing, bland music, and a lack of originality. The critic ultimately suggests watching the original cartoons instead. | Kimi: While acknowledging polished visuals and committed performances, the critic finds the show 'painfully underwhelming,' with bland music, a thin plot, and muddled messaging, ultimately advising audiences to watch the original cartoons instead of buying tickets.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:14:28.817Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:51:50.890Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 37,
-    "previousVersion": "3.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": null,
+    "claudeScore": 38,
+    "openaiScore": 40,
     "geminiScore": 45,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 3,
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "dtliExcerpt": "Yes, it’s kid-friendly. Yes, it’s visually slick. But it’s also toothless. A show about a boundary-pushing cartoon icon shouldn’t feel this safe or generic. Betty Boop may be ready for her close-up, but this isn’t the vehicle she deserves. You are better off watching the original animated shorts on YouTube.",
   "sources": [

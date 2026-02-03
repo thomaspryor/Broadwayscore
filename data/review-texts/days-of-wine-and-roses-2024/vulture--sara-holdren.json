@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"...the show evokes a specific kind of quietly disheartened sigh.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/days-of-wine-and-roses-broadway",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "high",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic praises the stellar performances and vocal talents of O'Hara and James but ultimately finds the material limiting and didactic, describing it as 'great talents put in the service of material that will almost expand to accommodate them, but not quite.' | Gemini: The review praises the performances of O'Hara and James but finds the material somewhat lacking, resulting in a positive but not rave recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Despite all that vocal brilliance—and the leads' real chemistry—the show evokes a specific kind of quietly disheartened sigh.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: While the critic lavishes praise on O'Hara and James's performances, calling them 'at the peak of their artistry' with 'radiant' vocals and 'real chemistry,' the overall assessment is disappointment with the material itself. The show is described as 'constrained, a little narrow and flat' with 'stultifying neatness' that 'can't quite bust out of the cincher of didacticism.' This is a classic mixed review where exceptional performances cannot elevate flawed source material. | GPT-4o: The review praises the performances and vocal talents of the leads but criticizes the material for feeling constrained and didactic. The overall tone suggests a mixed reception, acknowledging strengths but highlighting significant limitations. | Gemini: The review praises the performances of O'Hara and James but finds the material itself constrained and didactic, leading to a mixed overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:52:18.930Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:51:17.045Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "3.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": null,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "bwwExcerpt": "Of course, there is a perspective from which too much grousing about Days of Wine and Roses feels unkind: Lucas has been sober for 19 years, Guettel went through his own journey to sobriety more recently, and O’Hara has told the story of a woman thanking her after the show and whispering, in parting, “23 years.” If the show—if any show—strikes someone, somewhere, for some reason, to the heart, well, so shines a good deed in a weary world. And yet… I hunger for more. O’Hara and James are capable",
   "bwwThumb": "Meh",

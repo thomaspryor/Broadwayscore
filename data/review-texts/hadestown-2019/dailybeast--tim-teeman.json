@@ -8,7 +8,7 @@
   "fullText": null,
   "bwwExcerpt": "n Vernon, The Low Anthem's Ben Knox Miller and activist folk hero Ani DiFranco joined Mitchell and Brown in the leads). But the work's musical integrity and proletariat spirit remains largely intact. Tim Teeman, Daily Beast : Hadestown has so much fun telling, as it puts it, this \"sad tale\" that even though this retelling of a well-trodden Greek myth feels slight, it also makes for a joyful performance. Ana&iuml;s Mitchell's musical, which opens on Broadway tonight at the Walter Kerr Theatre (to September 1), is delicious to look at and listen to-truly, my new earworm is \"Way Down Hadestown\"-even if its story is as wan as its central couple. Michael Sommers, New York Stage Review : A new Broadway musical that takes audiences to hell and back, Hadestown looks and sounds terrific, and yet it lacks something vital. Drawn from a classical Greek legend, the musical somehow reminds me of a handsome ancient statue that is missing its head. Elysa Gardner, New York Stage Review : For starters,",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
@@ -16,11 +16,11 @@
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,8 +30,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Critics praise the production values ('delicious to look at and listen to', 'looks and sounds terrific') but consistently note significant flaws - the story feels 'slight' and 'wan', and it 'lacks something vital'. This suggests appreciation for craft but reservations about substance. | GPT-4o: The review excerpt describes the performance as 'joyful' and 'delicious to look at and listen to,' indicating a positive experience despite noting the story feels 'slight.' This suggests a recommendation with some reservations about the narrative depth. | Gemini: The review excerpt indicates a positive experience, describing the performance as \"joyful\" and \"delicious to look at and listen to.\" However, it also notes that the story feels \"slight,\" suggesting reservations. Given the single excerpt, I'm placing it in the lower-middle of the positive range.",
+    "keyPhrases": [
+      {
+        "quote": "Hadestown has so much fun telling this 'sad tale' that it makes for a joyful performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Tim Teeman finds the show 'joyful' and 'delicious to look at and listen to' but notes the story 'feels slight' and is 'wan.' This is a qualified positive recommendation. Single excerpt warning applies - confidence is low. | GPT-4o: The excerpt describes the performance as 'joyful' and 'delicious to look at and listen to,' indicating a positive experience despite noting the story feels 'slight.' The single excerpt suggests a positive tone, but the lack of full context lowers confidence. | Gemini: The review excerpt indicates a positive experience, describing the performance as \"joyful\" and \"delicious to look at and listen to.\" However, the reviewer also notes that the story feels \"slight,\" suggesting reservations. Due to the limited excerpt, confidence is low. | Kimi: The critic praises the show's visual and musical pleasures, calling it 'delicious' and 'joyful' with an infectious score, while criticizing the slightness of the retold myth and weak central story. With only one excerpt available, confidence is reduced.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,28 +46,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:58:54.654Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:07:32.398Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 80,
+    "claudeScore": 74,
+    "openaiScore": 74,
     "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 18,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "sources": [
     "bww-roundup"

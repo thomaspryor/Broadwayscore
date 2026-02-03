@@ -8,17 +8,17 @@
   "bwwExcerpt": "Chalk it up to theatrical arts of the first order – acting, direction, book and Guettel’s mesmerizing operatic bebop – that we’re soon hand-in-shaky hand with characters who haven’t a clue how to break the cycle of whiskey-ice-repeat. We’re transported back in time by Kirstin’s lovely sleeveless, A-line cocktail dress (Dede Ayite designed the costumes, showing, among other things, how you really do Barbie), a delightful look that quickly enough gives way to ratty old Baby Jane Hudson bathrobes.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 89,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic praises every element as 'theatrical arts of the first order' and calls the show 'sumptuous from start to finish,' indicating strong enthusiasm despite the serious subject matter. | GPT-4o: The review praises the production as 'sumptuous from start to finish' and highlights the 'theatrical arts of the first order,' indicating a strong recommendation. The critic is clearly impressed by the acting, direction, and overall production quality. | Gemini: The review describes the production as immersive and well-executed, praising the acting, direction, writing, and music. The critic is drawn into the world of the characters, indicating a positive experience.",
+    "keyPhrases": [
+      {
+        "quote": "Somehow, despite its somber theme, Days of Wine and Roses is sumptuous from start to finish, a resplendent melding of music and acting and storytelling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong positive language throughout ('sumptuous from start to finish', 'resplendent melding', 'theatrical arts of the first order') with detailed praise for all production elements and no significant reservations expressed. | Gemini: The review is overwhelmingly positive, using words like \"sumptuous\" and \"resplendent\" to describe the show. The critic clearly recommends seeing it. | Kimi: The critic offers unqualified praise for the performances, direction, score, and design, describing the production as 'theatrical arts of the first order' and 'mesmerizing' with no significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:25:16.645Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:41:00.918Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 89,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 80,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"despite its somber theme, Days of Wine and Roses is sumptuous from start to finish\"",

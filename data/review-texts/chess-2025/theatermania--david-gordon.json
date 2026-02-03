@@ -6,27 +6,33 @@
   "url": "https://www.theatermania.com/news/review-chess-returns-to-broadway-with-checkmate-vocals-and-a-checked-out-book_1812218/",
   "publishDate": "November 16, 2025",
   "originalScore": null,
-  "assignedScore": 70,
+  "assignedScore": 64,
   "source": "dtli",
   "needsFullText": true,
   "scrapedAt": "2026-01-23T21:59:39.027Z",
   "llmScore": {
-    "score": 70,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "medium",
     "range": {
-      "low": 65,
-      "high": 75
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic acknowledges strong performances and production values but criticizes the book, pacing ('laborious sit'), and meta-commentary, concluding it delivers what you paid for but doesn't solve the show's fundamental problems. | Gemini: The review acknowledges flaws in the musical itself, but praises the performances and overall production value, suggesting it's worth seeing for the cast and spectacle.",
+    "keyPhrases": [
+      {
+        "quote": "This rare revival delivers exactly what you paid for: Tveit, Michele, Christopher, and Cruz belt their faces off and look sexy as hell while doing it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges significant problems with the book and meta-commentary but praises the performances and staging. The final verdict suggests it delivers on its promise despite being flawed, placing it in mixed territory that leans slightly positive due to the performance quality. | GPT-4o: The review acknowledges strong performances and production elements but criticizes the book and humor, suggesting a mixed experience overall. The production is described as accessible yet laborious, indicating a mixed recommendation. | Gemini: The review praises the performances and staging but criticizes the book and length, resulting in a mixed assessment. It acknowledges accessibility but notes it's still laborious. | Kimi: Despite significant criticism of the book as unsuccessful and the runtime as laborious, the critic strongly praises the performances and high-gloss production, ultimately endorsing the revival as delivering exactly what audiences paid for.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -35,27 +41,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:38:56.893Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:24:31.108Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "5.0.0"
+    "previousScore": 70,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 77,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 16,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "sourceMethod": "archive",
   "dtliExcerpt": "Chess has always been a great score in search of a good book, and writer Danny Strong believes he’s cracked the code by reframing it as a self-referential examination of Cold War-era American and Russian relations, filled with a healthy dose of humor and antipathy. He hasn’t. But it’s nice to hear the score live.",

@@ -32,13 +32,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240119130904/https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-appropriate-broadway-review-20231219-ccqq4wgb4vg35ovtaalmimvfuy-story.html",
   "wordCount": 691,
   "tierReason": "Full review text",
-  "assignedScore": 92,
+  "assignedScore": 93,
   "llmScore": {
-    "score": 92,
+    "score": 93,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -48,8 +48,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlative language comparing it to award-winning productions, calls it 'ruthless and riveting,' predicts it will be 'an unexpectedly big hit,' and describes performances as extraordinary with time racing by. | GPT-4o: The review is overwhelmingly positive, highlighting the exceptional ensemble acting, riveting production, and intense performances, particularly by Sarah Paulson. The critic predicts it will be an unexpectedly big hit, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the ensemble acting, direction, and the play's relevance. The critic predicts it will be a 'big hit' and highlights the engaging and intense nature of the production.",
+    "keyPhrases": [
+      {
+        "quote": "Not since Steppenwolf Theatre Company's 'August: Osage County' has Broadway seen such a blistering display of ensemble acting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'blistering,' 'riveting,' 'on fire,' and 'sight to behold.' Critic predicts it will be 'an unexpectedly big hit' and uses prestigious comparisons to acclaimed productions. | GPT-4o: The review is filled with superlatives and strong praise for the ensemble acting and production, comparing it to a highly acclaimed past production. The critic predicts it will be a big hit and describes the experience as riveting and rewarding. | Gemini: The review is overwhelmingly positive, praising the ensemble acting and the play's relevance. The critic predicts it will be a big hit and highlights the intense and destructive family dynamic. | Kimi: The critic compares the production favorably to 'August: Osage County,' praises it as 'ruthless and riveting,' predicts it will be a 'big hit,' and expresses unreserved enthusiasm for the ensemble and direction with no significant caveats.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,25 +64,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:42:15.285Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:06:20.354Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 92,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
-    "openaiScore": 95,
+    "claudeScore": 92,
+    "openaiScore": 92,
     "geminiScore": 82,
+    "kimiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Rave"
   }
 }

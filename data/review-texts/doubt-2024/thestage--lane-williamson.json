@@ -9,29 +9,35 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 61,
+    "score": 42,
     "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt describes structural problems (imbalance, wobbling, underpowered climax) and casting issues, but only one excerpt available limits confidence in full verdict assessment. | GPT-4o: The review highlights significant issues with the production's balance and climax, suggesting a mixed experience. However, there is praise for individual performances, indicating some positive elements. | Gemini: The review highlights both positive aspects (Bernstine's performance) and negative aspects (imbalance, underpowered confrontation), suggesting a mixed experience overall. The word \"wobbles\" indicates an unevenness that prevents a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "The electric confrontation between Aloysius and Flynn is underpowered and prevents the play from reaching its climax.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The excerpt describes fundamental problems with the production - imbalanced performances, underpowered key scenes, and miscalibrated direction. While praising individual efforts, the overall assessment is clearly negative about the production's effectiveness. | GPT-4o: The review highlights significant issues with the production, such as imbalance and underpowered key scenes. While there is some praise for individual performances, the overall tone suggests disappointment and a lack of recommendation. | Gemini: The review states the production wobbles and the confrontation is underpowered, preventing the play from reaching its climax. While Ryan is applauded, the overall assessment is negative. | Kimi: The excerpt criticizes the central dramatic confrontation as underpowered and faulting the production's balance, while praising Quincy Tyler Bernstine as 'excellent' and acknowledging the lead's effort, suggesting a mixed assessment with significant reservations about the show's effectiveness.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,28 +46,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:31:23.493Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:14:48.922Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 45,
-    "previousVersion": "3.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 60,
-    "geminiScore": 62,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 62,
     "claudeBucket": "Negative",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/doubt-2024/thestage--lane-williamson_2026-01-28.html",
   "textFetchedAt": "2026-01-28T23:38:06.855Z",

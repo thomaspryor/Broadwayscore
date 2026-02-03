@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Book of Mormon is that rarest of Broadway commodities: a new musical that's both hilariously funny and toe-tappingly entertaining, while also being smart, sophisticated, and surprisingly sweet.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The Book of Mormon is that rarest of Broadway commodities: a new musical that's both hilariously funny and toe-tappingly entertaining, while also being smart, sophisticated, and surprisingly sweet.",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite significant criticisms about conventional Broadway tropes and missed opportunities, the critic clearly recommends this as the 'freshest and funniest' musical in seasons and praises its subversive nature, spiritual elements, and what musicals 'are supposed to be.' | GPT-4o: The review acknowledges the show's originality and humor, calling it the freshest and funniest in several seasons, despite noting some missed opportunities and conventional elements. This suggests a positive recommendation with some reservations. | Gemini: The review is largely positive, highlighting the show's freshness and humor, but points out flaws and inconsistencies that prevent it from being a 'Rave'. The reviewer acknowledges the show's strengths while also noting its shortcomings, leading to a 'Positive' classification with a score reflecting the mixed feelings.",
+    "keyPhrases": [
+      {
+        "quote": "The Book of Mormon is that rarest of Broadway commodities: a new musical that's both hilariously funny and toe-tappingly entertaining, while also being smart, sophisticated, and surprisingly sweet.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite extensive criticism of Broadway conventions and some creative choices, the critic calls it 'the freshest and funniest to open in several seasons' and praises its spiritual, sentimental moments as 'what musicals are supposed to be.' | GPT-4o: The review praises the show as 'freshest and funniest' despite some criticisms about conventional elements and missed opportunities. The truncated text warning suggests caution, but the available content leans positive. | Gemini: Despite criticisms of being too \"Broadway\" and some stale jokes, the reviewer acknowledges the show's freshness and humor. The truncated text makes the final verdict uncertain, but the overall tone leans positive. | Kimi: While criticizing the conventional 'Broadway' elements and direction as a 'colossal letdown' given the creators' potential, the reviewer ultimately hails the show as 'the freshest and funniest to open in several seasons' and praises the second act as 'brilliant' and 'moving,' with the final scenes described as 'what musicals are supposed to be.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:22:05.472Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:45:25.830Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
+    "claudeScore": 76,
     "openaiScore": 78,
-    "geminiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",

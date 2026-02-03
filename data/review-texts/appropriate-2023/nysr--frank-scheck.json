@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars and calls it 'the standout of the Broadway season,' praising the 'galvanizing staging,' 'stellar cast,' and noting it makes 'an already powerful play even more powerful' with 'brilliant performances' throughout. | GPT-4o: The review is overwhelmingly positive, describing the production as 'revelatory' and 'galvanizing,' with a 'stellar cast' and 'superb production elements.' The critic's 5/5 star rating and the statement that it's the standout of the season further solidify its classification as a rave. | Gemini: The critic gives the play 5/5 stars and calls the production a \"revelatory staging\" and the \"standout of the Broadway season thus far.\" The review is overwhelmingly positive, praising the cast, direction, and production elements.",
+    "keyPhrases": [
+      {
+        "quote": "It's the standout of the Broadway season thus far.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with unqualified praise throughout. Called 'standout of the Broadway season', 'galvanizing', 'revelatory staging' with 'stellar cast' and 'brilliant performances'. No reservations expressed. | GPT-4o: The review is overwhelmingly positive, with phrases like 'revelatory staging', 'stellar cast', and 'superb production elements'. The critic's 5/5 stars rating and the description of the play as the standout of the season indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the production \"revelatory\" and \"the standout of the Broadway season thus far.\" The critic praises the stellar cast, direction, and production elements, indicating a must-see experience. The 5/5 star rating reinforces this assessment. | Kimi: The critic awards 5/5 stars and unreservedly praises the production as 'revelatory,' 'galvanizing,' and the season's standout, commending brilliant performances, superb design, and tremendous theatricality with only a minor quibble about one actor's vocal projection.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:46:51.555Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:13:15.496Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 94,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 95,
     "openaiScore": 95,
-    "geminiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

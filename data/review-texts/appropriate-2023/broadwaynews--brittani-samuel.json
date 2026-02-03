@@ -25,8 +25,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review praises every element of the production using superlative language like 'masterful script,' calls it merit-worthy, and describes the experience as breathtaking. The critic's enthusiasm is unmistakable throughout. | GPT-4o: The review is overwhelmingly positive, praising the script, direction, set design, and performances, particularly highlighting Sarah Paulson's role. The language used indicates a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, praising the script, design, ensemble, and direction. The critic highlights Sarah Paulson's performance and emphasizes the play's ability to keep the audience engaged throughout its duration.",
+    "keyPhrases": [
+      {
+        "quote": "When plays demonstrate as much merit as 'Appropriate,' it's difficult to identify which star in director Lila Neugebauer's galaxy shines brightest.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'masterful,' 'hypnotizing synergy,' and calling it difficult to choose what shines brightest because everything is excellent. The critic is breathless with admiration for script, direction, design, and performances. | GPT-4o: The review is filled with superlatives and praises every aspect of the production, from the script to the performances, particularly highlighting Sarah Paulson's role. The critic expresses a strong recommendation, indicating the show is a must-see. | Gemini: The review is overwhelmingly positive, praising the script, design, direction, and especially Sarah Paulson's performance. The critic highlights the play's ability to keep the audience captivated and emphasizes the complexity of the characters. | Kimi: The review offers unqualified praise for the 'masterful' script, 'hypnotizing' ensemble synergy, and 'anxiety-inducing' direction, with particular acclaim for Sarah Paulson's 'raw, menacing and darkly hilarious' performance, containing no significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -35,28 +41,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:45:30.582Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:05:38.210Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 92,
-    "previousVersion": "3.0.0"
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 91,
+    "claudeScore": 92,
     "openaiScore": 92,
     "geminiScore": 82,
+    "kimiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
     "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "dtliExcerpt": "When plays demonstrate as much merit as “Appropriate,” it’s difficult to identify which star in director Lila Neugebauer’s galaxy shines brightest. Is it Branden Jacobs-Jenkins’ masterful script, laced with insightful irony and biting prose? Is it scenic design collective dots’ lifelike erection of the aging home, littered with racist relics? Or is it the hypnotizing synergy of this ensemble, all of whom balance the horrible actions and the redeeming hearts of these human beings with ease? Yes to all.",
   "sources": [

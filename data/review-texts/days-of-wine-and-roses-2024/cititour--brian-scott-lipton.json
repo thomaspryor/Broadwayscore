@@ -9,15 +9,15 @@
   "bwwExcerpt": "Even then, at the very least, you will be unbearably grateful to have heard the clarion, celestial voices of the wonderful Kelli O’Hara, in her finest stage performance to date as the naïve secretary Kirsten Arnesen, and the sublime Brian D’Arcy James as the more worldly PR man Joe Clay, who fall in love with each other and the bottle.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 80,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the questionable premise of musicalizing this material and notes casting age issues, but ultimately recommends the show based on stellar performances and emotional impact, calling it moving despite reservations. | GPT-4o: The review praises the performances of the lead actors, the music, and the production quality, indicating a strong recommendation despite some initial skepticism about the adaptation. | Gemini: The review expresses reservations about the musicalization of the source material but ultimately recommends the show due to the performances of the leads and the quality of the music. The critic states that you will be moved.",
+    "keyPhrases": [
+      {
+        "quote": "Unless you have a heart of stone, you will be moved.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review acknowledges fundamental questions about why this material was musicalized and notes some issues (age-inappropriate casting), but ultimately recommends the show based on exceptional lead performances and Guettel's strong score. The critic is clearly moved by the production despite reservations. | GPT-4o: The review is highly positive, praising the performances of the lead actors and the musical score. Despite some initial skepticism about the adaptation, the critic finds the production moving and the performances compelling. | Gemini: The review is overwhelmingly positive, praising the performances of O'Hara and D'Arcy James, the score, and the direction. While it questions the need for a musical adaptation, it ultimately recommends seeing it. | Kimi: Despite initial skepticism about musicalizing the source material, the critic delivers a clear verdict praising O'Hara's finest stage performance to date and D'Arcy James's sublime work, assuring audiences they will be moved by the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:25:13.636Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:39:30.200Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 79,
     "openaiScore": 82,
-    "geminiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",

@@ -32,13 +32,13 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251017053024/https://www.amny.com/entertainment/theater/chaos-erupts-in-dark-family-comedy-appropriate/",
   "wordCount": 404,
   "tierReason": "Full review text",
-  "assignedScore": 79,
+  "assignedScore": 78,
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -48,8 +48,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging the play's confusing and distasteful elements, the critic concludes it's 'genuinely compelling and satisfying theater' and praises the 'hell of a production' with strong performances. | GPT-4o: The review acknowledges some enigmatic and bizarre elements but ultimately praises the production as 'genuinely compelling and satisfying,' indicating a strong positive recommendation. | Gemini: The review acknowledges potentially off-putting elements but ultimately concludes the play is \"genuinely compelling and satisfying,\" indicating a positive recommendation with some reservations.",
+    "keyPhrases": [
+      {
+        "quote": "While one might find much of the play to be distasteful or bizarre, it makes for genuinely compelling and satisfying theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging the play's challenging and potentially off-putting elements, the critic concludes it's 'genuinely compelling and satisfying theater' with praise for the production and performances. | GPT-4o: The review acknowledges some potentially off-putting elements but ultimately praises the production as 'compelling and satisfying,' indicating a recommendation to see it. | Gemini: The review acknowledges potentially off-putting elements but ultimately concludes that the play is \"genuinely compelling and satisfying,\" indicating a positive recommendation, albeit with reservations. | Kimi: The critic praises the 'hell of a production' and ensemble performances (particularly Paulson), concluding the play is 'genuinely compelling and satisfying theater' despite potentially disturbing content, indicating a solid recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -58,25 +64,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:42:11.710Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:05:04.974Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   }
 }

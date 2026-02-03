@@ -9,15 +9,15 @@
   "bwwExcerpt": "It’s probably a good thing there’s no intermission in Days of Wine and Roses, the musical adaptation of Blake Edwards’s 1962 film. The harrowing and hugely captivating Broadway production wastes no time diving into the toll that alcoholism takes on married couple Kirsten and Joe Clay, and it’s doubtful any audience member would be inclined to pony up for a mid-show sippy cup of Chardonnay. Director Michael Greif’s production is shot through with heartache and hangovers, and worth all the squirmi",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 80,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises this as a 'surprising success' that is 'hugely captivating' and 'worth all the squirming in your seat,' calling the production one that 'soars above after-school special level problem pieces' with strong performances from the leads. | Gemini: The review is overall positive, highlighting the captivating nature of the production and the strong performances. While acknowledging the difficult subject matter, the critic ultimately recommends seeing the show.",
+    "keyPhrases": [
+      {
+        "quote": "Greif's production soars above after-school special level 'problem pieces' and serves up something equally sobering and zippy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive review praising the production as 'hugely captivating,' 'worth all the squirming,' and describing it as 'soaring above' typical addiction dramas. Enthusiastic about performances, direction, and sophisticated treatment of difficult material. | GPT-4o: The review is filled with praise for the production's emotional impact, performances, and unique take on the addiction narrative. The critic describes it as 'hugely captivating' and 'worth all the squirming in your seat,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the captivating nature of the production, the effective use of music, and the strong performances of the leads. The critic explicitly states it is \"worth all the squirming in your seat.\" | Kimi: The critic calls the show a 'surprising success' that is 'hugely captivating,' praising the 'intoxicating' lead performances and sophisticated score while offering an unqualified recommendation despite the dark subject matter.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:50:14.794Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:42:10.006Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 83,
-    "previousVersion": "5.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dateUnknown": true,

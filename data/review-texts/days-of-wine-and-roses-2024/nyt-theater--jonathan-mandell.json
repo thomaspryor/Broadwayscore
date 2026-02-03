@@ -9,15 +9,15 @@
   "bwwExcerpt": "Brian d’Arcy James and Kelli O’Hara return to Broadway for the first time together since 2002 to portray a couple who fall in love with alcohol as much as with one another in this musical adaptation of a dark story that was first a television drama in the 1950s, then a movie. They last performed together on Broadway in a musical adaptation of another dark movie set in the 1950s, “Sweet Smell of Success.” They were relative newcomers then. It’s thrilling to see them back together for his sixteen",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic acknowledges significant flaws with the dated source material and story choices, but consistently praises the stellar performances of the leads and Guettel's brilliant score, concluding that the strengths outweigh the weaknesses. | Gemini: The review highlights the dated aspects of the story but ultimately praises the performances of the two leads, Kelli O'Hara and Brian d'Arcy James, and the clever songs, indicating a positive recommendation despite reservations about the story's relevance.",
+    "keyPhrases": [
+      {
+        "quote": "The two stars carry 'Days of Wine and Roses,' their exquisite voices bringing out the brilliance of Adam Guettel's jazz-inflected, often operatic score.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite concerns about the dated source material and story choices, the critic consistently praises the central performances and score, concluding that the 'shortcomings still pale beside O'Hara and James' rendering of the sharp dialogue and the clever songs.' | GPT-4o: The review praises the performances of O'Hara and James, as well as the music, while acknowledging the dated aspects of the story. The overall tone is positive, recommending the show for its strong performances despite some reservations about the material. | Gemini: The review acknowledges dated aspects and story issues, but ultimately praises the performances of O'Hara and James, making it a positive recommendation with reservations. | Kimi: While the critic finds the 1950s story dated and questions the choice to revive it, he consistently praises the two leads' performances and Guettel's score as brilliant and credible, concluding that these strengths justify the Broadway transfer despite the material's flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:51:15.595Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:45:45.395Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 70,
-    "previousVersion": "3.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 77,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

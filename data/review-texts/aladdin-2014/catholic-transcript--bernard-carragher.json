@@ -35,7 +35,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'F-U-N' and 'treat for the eye and ear', but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt describes the show as 'F-U-N' and a 'treat for the eye and ear,' indicating a strong positive impression. Given the single excerpt warning, the score is placed in the upper range of Positive. | Gemini: The review excerpt uses enthusiastic language like \"F-U-N\" and \"treat for the eye and ear\", indicating a positive recommendation. Given that it's a single excerpt, I've placed the score towards the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the show's craftsmanship and entertainment value, calling it 'F-U-N' and a 'treat for the eye and ear,' indicating a clear positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('F-U-N', 'treat for the eye and ear', 'craftily assembled') but only one excerpt available, so confidence is low. The enthusiasm suggests upper Positive range. | GPT-4o: The excerpt describes the production as 'F-U-N' and 'a treat for the eye and ear,' indicating a strong positive impression. Given the single excerpt warning, the score is set at the upper end of the Positive range. | Gemini: The excerpt uses enthusiastic language like \"F-U-N\" and \"treat for the eye and ear,\" indicating a positive review. Given it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic, unqualified praise describing the show as 'F-U-N' and 'craftily assembled,' warranting a score in the upper Positive range, though the single available excerpt limits certainty about the overall verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,15 +45,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:30:07.155Z",
+    "scoredAt": "2026-02-03T01:08:56.665Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 82,
-    "previousVersion": "5.1.0"
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 81,
     "openaiScore": 82,
     "geminiScore": 81,
     "kimiScore": 82,

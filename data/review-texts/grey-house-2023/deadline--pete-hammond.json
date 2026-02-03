@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This is a haunted house thriller that works on Broadway, thanks to a committed cast led by Laurie Metcalf and a production that knows how to deliver genuine scares.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a haunted house thriller that works on Broadway, thanks to a committed cast led by Laurie Metcalf and a production that knows how to deliver genuine scares.",
   "llmScore": {
-    "score": 80,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the bold effort, excellent cast performances, and top-notch creative elements, while acknowledging some stretches feel dull or repetitive. Overall tone is appreciative of the theatrical achievement despite minor flaws. | GPT-4o: The review praises the production's boldness, acting, and creative choices, describing it as 'fantastic' and highlighting its impact on the audience. Despite noting some dull stretches, the overall tone is highly positive and recommends the play enthusiastically. | Gemini: The review acknowledges some flaws (dull stretches, confusion) but ultimately leans positive, praising the performances, direction, and overall experience. The final paragraph explicitly states it was \"fantastic\" and well-acted, recommending it despite its disturbing nature.",
+    "keyPhrases": [
+      {
+        "quote": "Grey House shows him knocking on all the right doors.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the bold effort, excellent cast, top-notch creative elements, and effective horror atmosphere. While noting some repetitive stretches, the overall assessment is strongly positive with consistent praise for performances, direction, and design. | GPT-4o: The review praises the production's boldness, acting, and creative choices, despite noting some dull stretches. The overall tone is enthusiastic, highlighting the show's impact and quality. | Gemini: The review acknowledges some dull moments but overall recommends the show, calling it \"fantastic\" and noting its disturbing and thought-provoking nature. The praise for the acting and creative choices further supports a positive assessment. | Kimi: Despite noting occasional dull or repetitive stretches, the critic lavishes praise on the performances ('excellent,' 'terrific'), direction, and design, calling the production 'fantastic' in a closing personal endorsement and stating it 'stays with you.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:55:12.308Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:23:42.120Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 82,
     "openaiScore": 82,
     "geminiScore": 79,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",

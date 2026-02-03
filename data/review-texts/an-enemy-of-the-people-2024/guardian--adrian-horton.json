@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Strong brings his trademark intensity to Dr Thomas Stockmann, a scientist who discovers the water supply in his Norwegian town is contaminated, but his performance occasionally tips into caricature.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Strong brings his trademark intensity to Dr Thomas Stockmann, a scientist who discovers the water supply in his Norwegian town is contaminated, but his performance occasionally tips into caricature.",
   "needsScoring": true,
   "llmScore": {
-    "score": 76,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,12 +34,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "at least a night of good New York theater",
+        "quote": "At least a night of good New York theater.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises Strong's performance as 'bravura' and describes the production as 'good New York theater' while acknowledging some jarring elements. The positive elements (performances, staging, thematic relevance) outweigh the criticisms, but the truncated ending and mixed tone prevent a higher score. | GPT-4o: The review praises Jeremy Strong's performance and the immersive staging, suggesting a positive experience. However, the text is truncated, and the final verdict may be missing, leading to a cautious score with low confidence. | Gemini: The review acknowledges some jarring elements but concludes that the production is \"at least a night of good New York theater\" due to the actors and staging. The truncated text lowers confidence. | Kimi: The review offers consistent praise for Jeremy Strong's 'bravura' performance and calls the adaptation 'rousing' and 'ably directed', while noting reservations about the production's heavy-handed contemporary parallels and occasionally jarring directorial choices. The truncated ending suggests caution, but the available text clearly recommends the show as 'at least a night of good New York theater'.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges Strong's strong performance and effective staging while noting some jarring modern adaptations. Despite reservations about certain directorial choices, the final assessment is positive - calling it 'good New York theater.' Confidence is medium due to truncated text potentially missing fuller verdict. | GPT-4o: The review praises Jeremy Strong's performance and the immersive staging, indicating a positive experience overall. However, it notes some jarring elements in the adaptation, suggesting reservations. The text is truncated, so the final verdict is missing, leading to low confidence. | Gemini: The review acknowledges both strengths (Strong's performance, immersive staging) and weaknesses (jarring dialogue). The overall tone suggests a qualified recommendation, but the truncated text makes it difficult to be certain. | Kimi: While the review notes several flaws—jarring contemporary dialogue updates, a thin supporting role, and tacky sponsorship—it consistently praises Jeremy Strong's performance as a 'showcase' and concludes that the immersive staging and veteran cast deliver 'at least a night of good New York theater,' constituting a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -49,18 +49,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:54:37.994Z",
+    "scoredAt": "2026-02-03T01:29:23.736Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "5.1.0"
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 75,
+    "openaiScore": 76,
     "geminiScore": 75,
-    "kimiScore": 78,
+    "kimiScore": 73,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

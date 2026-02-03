@@ -14,66 +14,59 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 78,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 82,
+      "book": null,
       "music": null,
-      "performances": 85,
-      "direction": 75
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
         "quote": "It's still funny and sophisticated. The jokes are biting and some lines are impressively abrasive.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "The first-rate cast plunges into the depths of the Lafayettes' psychic damage with performances that highlight, with subtle heart, the desperation brought on by collective delusion.",
-        "sentiment": "positive",
-        "strength": 5
-      },
-      {
-        "quote": "Neugebauer's fine direction instead leans into the acid drama of fraught sibling relationships.",
-        "sentiment": "positive",
+        "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "The critic consistently praises the performances as 'first-rate,' calls the writing 'sophisticated,' and appreciates the direction as 'fine,' with only minor reservations about the shift away from satire.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the performances as 'first-rate' and 'superb', calls the play 'funny and sophisticated', and highlights the 'fine direction'. While noting it edges away from satire toward drama, the overall assessment is appreciative of the production's qualities and performances. | GPT-4o: The review praises the play's humor, sophistication, and direction, while noting a shift from satire to drama. The truncated nature of the text suggests caution, but the provided excerpts indicate a generally positive assessment. | Gemini: The review is mostly positive, highlighting the performances, direction, and set design. However, the truncated text and the phrase \"less satirically charged, more measured version\" suggest some reservations, placing it in the positive but not rave category. | Kimi: The review praises the direction as 'fine,' the cast as 'first-rate' and 'excellent,' and the play as 'funny and sophisticated,' though it notes the production is more measured than satirical. While the text is truncated, the evaluative content present is consistently positive.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
-      "comparesToPrevious": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-02T16:24:35.876Z",
-    "promptVersion": "5.1.0",
-    "inputTokens": 4358,
-    "outputTokens": 355,
-    "textSource": {
-      "type": "fullText",
-      "status": "truncated",
-      "field": "fullText",
-      "confidence": "low",
-      "reasoning": "Truncated text - may be missing final verdict"
-    }
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:11:40.360Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 75,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
-    "needsReviewReasons": []
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,

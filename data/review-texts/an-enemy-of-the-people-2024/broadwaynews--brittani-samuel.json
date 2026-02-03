@@ -32,7 +32,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises Jeremy Strong's performance and some ambitious directorial choices, but finds the overall production 'tepid' and 'blasé' where it should be 'ferocious.' Mixed elements with no clear recommendation either way. | GPT-4o: The review highlights strong performances by Jeremy Strong but criticizes the overall production for lacking the ferocity and risk expected from Ibsen's work. The director's ambitious attempts are noted but ultimately seen as unsuccessful, leading to a mixed verdict. | Gemini: The review praises Jeremy Strong's performance and Herzog's adaptation but criticizes the overall tepidness and unbalanced performances. The reviewer also notes the director's ambitious but wobbly attempts to excite, resulting in a mixed assessment. | Kimi: While praising Jeremy Strong's standout performance and Amy Herzog's expert adaptation, the critic finds Sam Gold's direction wobbly and the overall production disappointingly tepid, lacking the ferocity and risk that Ibsen's material requires.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises Strong's performance and Herzog's adaptation but finds the overall production lacking in the ferocity Ibsen intended. The director's ambitious attempts don't fully succeed, and the critic explicitly craves more from the production. | GPT-4o: The review praises Jeremy Strong's performance but criticizes the overall production as tepid and lacking the ferocity expected from Ibsen's work. The critic notes ambitious directorial choices but finds them lacking in execution, leading to a mixed impression. | Gemini: The review praises Jeremy Strong's performance and Herzog's adaptation, but criticizes the direction as tepid and unbalanced. The critic seems more impressed by the climate activists than the production itself, suggesting a mixed experience. | Kimi: While praising Jeremy Strong's performance and Amy Herzog's adaptation, the critic finds the production 'tepid,' 'wobbly,' and a 'disappointment,' criticizing Sam Gold's direction for failing to deliver the necessary ferocity and risk that the material demands.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,23 +42,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:52:37.109Z",
+    "scoredAt": "2026-02-03T01:26:56.923Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
-    "previousVersion": "5.1.0"
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 58,
+    "openaiScore": 60,
     "geminiScore": 62,
-    "kimiScore": 46,
+    "kimiScore": 45,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Negative",
-    "scoreDelta": 16,
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

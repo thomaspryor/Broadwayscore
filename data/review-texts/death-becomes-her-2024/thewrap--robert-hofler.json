@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite opening with concerns about adaptations and noting some disappointments, the critic celebrates the show's embracing of tackiness, praises multiple performances, and ends positively comparing it favorably to recent productions. | GPT-4o: The review acknowledges some flaws, such as the music being 'merely serviceable' and a specific disappointment with a show segment, but overall it highlights strong performances, clever dialogue, and effective use of the source material, leading to a positive recommendation. | Gemini: The review is generally positive, highlighting strong performances and comedic elements, while acknowledging some shortcomings in the music and one specific scene. The overall tone suggests the show is enjoyable despite its flaws.",
+    "keyPhrases": [
+      {
+        "quote": "it's fun to see a show that talks one on one to its core audience",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the performances, particularly Hilty and Simard, and appreciates the show's embrace of camp and tackiness. Despite some reservations about the music and Michelle Williams' casting, the overall tone is positive with clear enjoyment of the theatrical experience. | GPT-4o: The review acknowledges some flaws, such as the music being 'merely serviceable' and a lack of authority in Michelle Williams' performance. However, it praises the dialogue, comedic elements, and some performances, indicating a positive recommendation with some reservations. | Gemini: The review is generally positive, highlighting the performances of Sieber and Simard, and noting improvements over the source material. While there are some reservations, the overall tone suggests a recommendation. | Kimi: The critic argues the musical improves on the source film by leaning into camp, praising the direction, Grand Guignol effects, and comic performances (particularly Simard and Hilty), despite reservations about the merely serviceable music and one disappointing scene.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:26.813Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:00:30.661Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 66,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/death-becomes-her-2024/thewrap--robert-hofler_2026-01-26.html",

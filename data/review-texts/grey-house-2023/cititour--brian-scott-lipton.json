@@ -10,26 +10,32 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 52,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 52,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 47,
+      "high": 57
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The title calls it 'Dark and Dull' and the critic describes 'uneven material' with pacing problems and confusion about the ending. However, they praise the 'uniformly superb performances' and director's work with actors, suggesting mixed rather than negative. | GPT-4o: The review acknowledges strong performances and commitment from the cast, but criticizes the pacing and clarity of the play's conclusion. The truncated text suggests caution, but the available content points to a mixed reception. | Gemini: The review calls the play \"dark yet dull\" but praises the performances and direction. The truncated text and mixed signals suggest a 'Mixed' classification, leaning slightly negative due to the 'dull' comment.",
+    "keyPhrases": [
+      {
+        "quote": "As always, director Joe Mantello has gotten uniformly superb performances from everyone on stage; the cast gets a gold star for their commitment to this uneven material.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic praises the performances but calls the play 'dark yet dull' and criticizes pacing issues and confusing plot resolution. The BWW excerpt confirms negative assessment with 'uneven material' and structural problems. | GPT-4o: The review acknowledges superb performances but criticizes the pacing and clarity of the play. The truncated text and mixed aggregator context suggest a mixed review with notable strengths and weaknesses. | Gemini: The review calls the play \"dark yet dull\" and \"uneven material,\" but praises the performances and direction. The truncated nature and mixed signals lead to a lower confidence score. | Kimi: While the critic praises the cast's 'superb performances' and commitment, they describe the play as 'dull' and 'uneven' with 'limping' pacing and a confusing, unsatisfying ending. The truncated text warrants low confidence, but the negative assessment is consistent throughout. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:54:59.187Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:20:51.082Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 52,
+    "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
+    "claudeScore": 45,
+    "openaiScore": 58,
     "geminiScore": 62,
-    "claudeBucket": "Mixed",
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 56,

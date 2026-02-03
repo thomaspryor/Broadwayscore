@@ -35,7 +35,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for Herzog's 'cracking adaptation,' Strong's performance staying in character during protests, and Gold's smooth direction. However, text appears truncated so final verdict may be missing, warranting medium confidence. | GPT-4o: The review provides a generally positive assessment of the production, highlighting the fresh and immediate feel of the adaptation and the effective performances. However, the text is truncated and may be missing a final verdict, leading to a lower confidence level. | Gemini: The review highlights the play's relevance and Strong's performance, but the truncated nature and lack of a clear concluding statement make the confidence medium. The 4/5 star rating also suggests a positive leaning. | Kimi: The review carries a 4/5 star rating with consistent praise for Herzog's 'cracking adaptation,' Gold's direction, and Strong's performance, though the truncated text may be missing final qualifying remarks.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars indicates positive recommendation. Review praises Herzog's 'cracking adaptation', Strong's performance staying in character during protest, and Gold's smooth direction. However, text is truncated and lacks a clear final verdict section, reducing confidence. | GPT-4o: The review provides a generally positive assessment of the production, highlighting the freshness and immediacy of the adaptation and the strong performances, particularly by Jeremy Strong. The original 4/5 star rating supports a positive classification. However, the text is truncated, which introduces some uncertainty about the final verdict. | Gemini: The review highlights the play's relevance and Strong's performance, and the critic's 4/5 star rating indicates a positive recommendation. However, the truncated text and lack of a clear concluding statement lower the confidence. | Kimi: The critic awards 4/5 stars and consistently praises Herzog's 'cracking' adaptation, Gold's direction, and Strong's performance, while appreciating the production's timely relevance. Despite truncation, the evaluative tone is clearly appreciative with no significant criticisms.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,23 +45,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:57:21.288Z",
+    "scoredAt": "2026-02-03T01:32:38.068Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.1.0"
+    "previousScore": 79,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 79,
     "openaiScore": 78,
     "geminiScore": 78,
-    "kimiScore": 79,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

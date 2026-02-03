@@ -9,15 +9,15 @@
   "bwwExcerpt": "this new production, directed by Scott Ellis and starring Schreiber and Amy Ryan, stands on its own. Like its forebears, the revival, which runs through mid-April, keeps things simple – four well-acted performances with a powerful alchemy of faith and righteousness, judicious costumes by Linda Cho, a set by David Rockwell that economically transforms from principal’s office, exterior walled garden and spare pulpit at St Nicholas’s parish in the Bronx, 1964. The stage version carries the subtitle",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The critic praises the performances as 'note-perfect' and 'well-acted', says the show 'stands on its own' despite heavy precedent, and describes it as 'provocative and absorbing' with 'magnetism' that makes 90 minutes feel like half that. Despite some reservations about the discomfiting tone and subject matter context, the overall assessment is clearly positive. | Gemini: The review acknowledges the weight of the subject matter and previous productions, but ultimately praises the performances and the play itself, indicating a positive, though not rave, recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "It's no doubt fascinating to watch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the performances as 'note-perfect' and 'magnetism of the performances', describes the 90-minute show as breezing by, and calls it 'fascinating to watch' despite finding it 'discomfiting'. The review acknowledges the production 'stands on its own' and is 'absorbing', indicating a clear recommendation despite reservations about the subject matter. | GPT-4o: The review praises the performances, direction, and the production's ability to stand on its own despite heavy context. The tone is positive and recommends the show as a fascinating and absorbing experience. | Gemini: The review praises the performances and the play's structure, noting that the show \"breezes by.\" While acknowledging the heavy context and potential discomfort, the overall assessment is positive. | Kimi: The critic offers consistent praise for the 'note-perfect' performances and direction, calling the revival 'fascinating to watch' and noting it 'stands on its own' despite the weight of previous productions. While noting one performance is initially mechanical, the overall tone is decidedly favorable with clear recommendation implied.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:15.355Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:05:34.191Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
+    "claudeScore": 79,
+    "openaiScore": 84,
     "geminiScore": 78,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dateUnknown": true,

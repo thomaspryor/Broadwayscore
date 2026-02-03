@@ -8,19 +8,19 @@
   "showScoreExcerpt": null,
   "bwwExcerpt": "So, in summary: a gifted cast with thankless roles, a hokey book that takes no chances, and an abysmal score that drags everything down. All that’s left is spectacle. And let’s be honest; the car is the star. Designed by",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 21,
   "source": "bww-roundup",
   "sourceMethod": "brightdata",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 41,
-    "confidence": "high",
+    "score": 21,
+    "confidence": "medium",
     "range": {
-      "low": 36,
-      "high": 46
+      "low": 16,
+      "high": 26
     },
-    "bucket": "Negative",
+    "bucket": "Pan",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Negative | Claude: The excerpt clearly criticizes multiple core elements (cast roles, book, score) with strongly negative language like 'thankless,' 'hokey,' and 'abysmal.' However, given this is a single curated excerpt and the text cuts off mid-sentence, I'm scoring conservatively within the negative range. | Gemini: The review excerpt is overwhelmingly negative, citing issues with the roles, book, and score. The only positive mentioned is the spectacle, but it's framed as the only thing left due to the other failings.",
+    "keyPhrases": [
+      {
+        "quote": "a gifted cast with thankless roles, a hokey book that takes no chances, and an abysmal score that drags everything down",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Despite being a single excerpt, the language is devastatingly negative: 'thankless roles,' 'hokey book,' 'abysmal score.' The critic systematically dismantles every element except spectacle. This reads as a clear pan, though confidence is low due to truncated text. | GPT-4o: The excerpt is strongly negative, criticizing the book and score while noting the cast's roles as thankless. The focus on spectacle over substance suggests a poor overall impression. | Gemini: The review excerpt is overwhelmingly negative, describing the book as hokey, the score as abysmal, and the roles as thankless. This clearly indicates a pan. | Kimi: The excerpt delivers a harsh assessment of the book, score, and material while only praising the spectacle (the car) and the wasted talent of the cast, indicating a clear negative recommendation despite isolated bright spots.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:58.863Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:30:52.617Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 25,
-    "previousVersion": "3.0.0"
+    "previousScore": 41,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": null,
-    "geminiScore": 40,
-    "claudeBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 2,
+    "claudeScore": 22,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 42,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
   },
   "archivePath": "data/archives/reviews/back-to-the-future-2023/observer--david-cote_2026-01-26.html",
   "textFetchedAt": "2026-01-26T20:04:40.463Z",

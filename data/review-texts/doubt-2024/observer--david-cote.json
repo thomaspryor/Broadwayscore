@@ -13,7 +13,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 86,
-    "confidence": "low",
+    "confidence": "medium",
     "range": {
       "low": 81,
       "high": 91
@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Rave, gemini=Positive | Claude: The critic declares this one of the top ten American dramas of the century, calls it Shanley's finest work, praises the casting as 'spot on', and describes the production as 'classically balanced, fiendishly focused, lean and eloquent' with an 'impressive revival'. | Gemini: The review is largely positive, praising the performances and design. While it notes some minor issues, the overall tone suggests a recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Not only is Doubt in the top ten American dramas of this century, but Sister Aloysius is one of the greatest stage characters in decades.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Critic calls it one of the top 10 American dramas of the century, praises performances extensively (especially Schreiber and Ryan), lauds the design team, and describes it as 'classically balanced, fiendishly focused, lean and eloquent.' Despite some minor reservations about casting choices, the overall assessment is clearly a rave. | GPT-4o: The review is filled with high praise for the production, performances, and writing, describing it as 'impressive', 'finest work', and 'classically balanced'. The critic provides no significant reservations, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, design, and the play itself. The critic calls it Shanley's finest work and highlights its enduring relevance. | Kimi: The critic praises the revival as 'impressive' and 'beautifully designed,' hails the play as Shanley's finest work and one of the top American dramas of the century, and commends magnetic lead performances, offering only minor reservations about one supporting role. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,27 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:30:48.888Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:12:26.449Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
-    "previousVersion": "5.0.0"
+    "previousScore": 86,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 91,
-    "openaiScore": null,
-    "geminiScore": 80,
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 11,
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Rave, gemini=Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
   },
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",

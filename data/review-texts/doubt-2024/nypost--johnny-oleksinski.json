@@ -36,7 +36,7 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240410100011/https://nypost.com/2024/03/07/entertainment/liev-schreiber-doubt-broadway-review-nun-play-scorches-even-in-a-so-so-revival/?utm_campaign=nypost&utm_source=twitter&utm_medium=social",
   "llmScore": {
     "score": 74,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 69,
       "high": 79
@@ -49,8 +49,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends seeing the show despite acknowledging significant production issues, emphasizing that Shanley's script elevates even a 'so-so' production and calling it 'one of the best plays of the millennium.' | GPT-4o: The review acknowledges the production's shortcomings, particularly in the chemistry between the lead actors and the pacing, but ultimately recommends seeing it due to the strength of the play itself. The critic finds the script riveting and considers the play a classic, which outweighs the production's flaws. | Gemini: The review acknowledges flaws in the production, particularly the lack of chemistry between the leads and the direction, but ultimately concludes that seeing even a 'merely adequate' production of such a strong play is worthwhile.",
+    "keyPhrases": [
+      {
+        "quote": "Still, you could do worse than attend a merely adequate production of one of the best plays of the millennium.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive recommendation despite criticizing the production's execution. The critic calls the script 'immaculate' and 'one of the best plays of the millennium,' ultimately advising audiences to see it even in this flawed revival. | GPT-4o: The review praises the script as a classic but finds the production merely adequate, with performances not fully clicking and direction lacking impact. Mixed signals about the overall experience. | Gemini: The review acknowledges shortcomings in the production, particularly the chemistry between the leads and the direction, but ultimately recommends seeing the play due to the strength of the script itself. | Kimi: While the critic praises Shanley's script as an 'immaculate' classic and 'one of the best plays of the millennium,' they find this specific revival merely 'adequate' with mismatched leads and sluggish direction that 'rides the brakes.' The final recommendation is qualified but positive: attend for the writing despite the production's shortcomings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,28 +65,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:30.166Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:06:58.557Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 69,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 74,
-    "geminiScore": 74,
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 1,
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "contentTier": "complete",
   "wordCount": 606,

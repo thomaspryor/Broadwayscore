@@ -9,15 +9,15 @@
   "fullText": "“Willkommen, bienvenue, welcome” to the newest Cabaret revival on Broadway. Considering all of the ingenuity, energy, and expense that went into creating and designing the 75-minute immersive preshow for the new Broadway revival of “Cabaret” (in which audience members are led through narrow alleyways into art deco speakeasy bars overflowing with champagne and liquor and featuring roaming dancers and musicians), not to mention the reconstruction of the theater itself into an in-the-round nightclub space (with a new onstage mezzanine level and newly-installed ledges for holding drinks in between rows of seats), one might easy forget about the musical itself. One of the most daring and politically-edged musicals of Broadway’s golden age, “Cabaret,” which premiered in 1966 in a groundbreaking production directed by Hal Prince and starring Joel Grey as the mysterious Emcee, follows Cliff, an American writer, who travels to Berlin in the early 1930s and observes how Hitler’s rise to power was greeted by the city’s inhabitants with a mix of open arms, indifference, and weary resignation. What made the musical so revolutionary, in addition to its political content and disturbing visuals, was how the plot was indirectly reflected in elaborate production numbers taking place at the Kit Kat Klub, the nightclub ruled over by the Emcee and featuring diva performer Sally Bowles. Over the years, “Cabaret” has become a creature of repeated reinvention and reexamination, including Bob Fosse’s 1972 film adaptation (which overhauled the script and score with an eye towards cinematic realism) and the sexy-chic 1998 Broadway revival (led by Alan Cumming as the Emcee and the late Natasha Richardson as Sally, who were followed by numerous replacements), which was remounted at Studio 54 in 2014. The cultural and political turmoil evoked in “Cabaret,” including the rise of antisemitism and threat of violent fascism, has probably never felt more urgent during the show’s 60-year-history than it does today. (Of course, one wishes that the state of the world was such that “Cabaret” felt less relevant and more improbable.) The new Broadway revival (which premiered in London in 2021 and directed by Rebecca Frecknall) stars film actor Eddie Redmayne (who last appeared on Broadway in 2010 in “Red”) as the Emcee and Scottish actress Gayle Rankin (“Perry Mason”) as the reckless and hedonistic Sally, who are joined by Ato-Blankson Wood (“Slave Play”) as Cliff, Tony Award winner Bebe Neuwirth as the pragmatic landlady Fraulein Schneider, and Steven Skybell (“Fiddler on the Roof in Yiddish”) as the Jewish fruit seller Herr Schultz. Staged in the round (with circular patterns of choreography and a center-stage platform that rises and falls), it builds upon the environmental atmosphere, decadent flare and gender fluidity of the 1997 production (and maintains its version of the script and score), though ultimately becoming more tawdry, bleak and unsettling than before. Whereas Cumming’s Emcee openly mocked the Third Reich (and ultimately became one of its victims), Redmayne’s impish, physically and vocally-twisted Emcee is closer in style to Joel Grey’s sinister interpretation of the character, as a demonic clown who metaphorically reflects the rise of the Nazi regime. Rankin’s self-absorbed and demanding Sally is rough and raw and unapologetically unsympathetic, whereas Wood makes for a sensitive Cliff (making the most of a rather flavorless role) and Neuwirth and Skybell are endearing and full of personality. One might question whether the lengthy prologue enhances or takes away from the musical itself, which together last approximately four hours (imagine sitting through “Macbeth” in its entirety after attending “Sleep No More”) and whether some of the other production choices and characterizations are too extreme. However, it all makes for an exciting, edgy, and painstakingly-detailed production. August Wilson Theatre, 245 W. 52nd St., kitkat.club.",
   "isFullReview": true,
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 78,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 75,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt uses strong positive language ('exciting', 'edgy', 'painstakingly-detailed') suggesting a recommendation, but with only one cherry-picked quote available, I'm scoring conservatively in the lower positive range. | GPT-4o: The excerpt describes the production as 'exciting' and 'edgy,' which suggests a positive experience. Despite the single excerpt warning, the language used indicates a recommendation to see the show. | Gemini: The phrase \"exciting, edgy, and painstakingly-detailed production\" suggests a positive experience, but the use of \"however\" indicates potential reservations. Given the single excerpt warning, a score in the middle of the positive range is appropriate.",
+    "keyPhrases": [
+      {
+        "quote": "However, it all makes for an exciting, edgy, and painstakingly-detailed production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges some questionable choices but ultimately calls it 'exciting, edgy, and painstakingly-detailed,' with praise for the performances and production values. | GPT-4o: The review praises the production's ingenuity, energy, and detailed design, despite some reservations about the lengthy prologue and extreme choices. The overall tone is positive, recommending the show for its exciting and edgy qualities. | Gemini: The review acknowledges potential drawbacks (lengthy prologue, extreme choices) but concludes with a positive assessment, calling it \"exciting, edgy, and painstakingly-detailed.\" | Kimi: The critic praises the immersive staging and strong performances (particularly Redmayne and Rankin) as exciting and edgy, but expresses significant reservations about the four-hour runtime, questioning whether the lengthy preshow enhances or detracts from the musical itself.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,29 +43,31 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:52:49.689Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:55:33.360Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 77,
-    "geminiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 75,
   "textWordCount": 612,
@@ -92,5 +100,6 @@
   "duplicateTextOf": "amny--emlyn-travis.json",
   "contentTier": "complete",
   "wordCount": 612,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-03T03:55:33.360Z"
 }

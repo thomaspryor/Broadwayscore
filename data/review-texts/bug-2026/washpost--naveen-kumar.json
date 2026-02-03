@@ -9,17 +9,17 @@
   "showScoreExcerpt": "\"The sensationally unnerving Broadway premiere of 'Bug'... reads like an origin story for our climate of mistrust and isolation.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/bug-broadway",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 76,
+    "score": 87,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 82,
+      "high": 92
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The word 'sensationally' suggests strong positive impact, and describing it as an 'origin story' for current themes indicates artistic relevance and depth, though the excerpt is too brief for higher confidence. | GPT-4o: The use of 'sensationally unnerving' suggests a highly positive reception, indicating a strong recommendation to see the show. | Gemini: The phrase \"sensationally unnerving\" suggests a positive experience, but the lack of a more explicit recommendation and the truncated text make it a cautious positive.",
+    "keyPhrases": [
+      {
+        "quote": "The sensationally unnerving Broadway premiere of 'Bug,' a taut psychological drama by Tracy Letts, reads like an origin story for our climate of mistrust and isolation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | GPT-4o: The review is filled with superlatives and praises the production's relevance, performances, and direction. The critic describes it as 'sensationally unnerving' and highlights the 'bravura performance' of Carrie Coon, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the performances of the leads and the direction. The critic uses strong language like \"bravura performance\" and \"magnificent\" to describe Coon's acting, indicating a strong recommendation. | Kimi: The review offers unqualified praise for Carrie Coon's 'magnificent' and 'shattering' performance, David Cromer's 'jittery, haunting finesse,' and the 'sensationally unnerving' production, with no significant reservations or criticisms. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:13:56.081Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:54:03.144Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 92,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
   "dtliExcerpt": "As Agnes, Coon is loose-limbed, quick-witted and frank, with a fragility that flits close to the surface. She’s magnificent onstage, returning to Broadway for the first time since Steppenwolf’s 2012 revival of “Who’s Afraid of Virginia Woolf” (co-starring Letts, whom she married the next year). Though Agnes is lightly sketched around a formative trauma, Coon inhabits her with specificity and shattering intensity, as she’s engulfed in Peter’s twisted fears involving tiny bugs.",
   "sources": [

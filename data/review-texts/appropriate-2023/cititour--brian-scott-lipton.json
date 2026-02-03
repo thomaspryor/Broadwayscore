@@ -9,15 +9,15 @@
   "bwwExcerpt": "Raucous laughs. Loud gasps. Stunned silence. All turn out to be appropriate responses to “Appropriate,” Branden Jacobs-Jenkins’ provocative play, now getting a belated – and yes, excellent -- Broadway production via Second Stage at the Hayes Theater.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses consistently positive language throughout, calling it 'excellent,' 'singular,' and praising the production and performances extensively. The review emphasizes what will 'haunt you long after the curtain comes down.' | GPT-4o: The review is overwhelmingly positive, highlighting the play's provocative nature, excellent production, and standout performances. The critic uses strong language to convey that this is a must-see production. | Gemini: The review is overwhelmingly positive, highlighting excellent performances and direction. While mentioning the play's length and potentially haunting nature, the overall tone suggests a strong recommendation with minor reservations.",
+    "keyPhrases": [
+      {
+        "quote": "it's a singular work that commands our attention, especially in Lila Neugebauer's excellently calibrated production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise throughout with terms like 'excellent,' 'superb,' 'magnificent,' and 'brilliantly designed.' The critic finds the production compelling and well-executed across performances and direction, with only minor quibbles about pacing. | Gemini: The review is overwhelmingly positive, using terms like \"excellent\", \"superb\", \"magnificent\", and \"first-rate\" to describe various aspects of the production. The critic clearly recommends seeing the show. | Kimi: The review offers unqualified enthusiasm, repeatedly calling the production 'excellent' and 'singular' while praising the direction, design, and performances with superlatives like 'superb,' 'magnificent,' and 'brilliantly designed.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,22 +43,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:22:36.654Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:06:50.857Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 89,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "kimiBucket": "Rave",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

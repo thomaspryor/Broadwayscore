@@ -40,13 +40,13 @@
   "textQuality": "full",
   "textStatus": "complete",
   "sourceMethod": "brightdata",
-  "assignedScore": 76,
+  "assignedScore": 77,
   "llmScore": {
-    "score": 76,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -56,8 +56,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges significant flaws (bloated runtime, clunky songs, overstuffed book) but concludes with a positive recommendation, emphasizing the superb performances and great songs as reasons to see it. | GPT-4o: The review acknowledges the show's convoluted plot and some less effective elements, but ultimately highlights the strong performances and memorable music, recommending it as a worthwhile experience. | Gemini: The critic ultimately recommends the show due to the performances, despite acknowledging flaws in the book and pacing. The pun at the end seals the positive, but not rave, assessment.",
+    "keyPhrases": [
+      {
+        "quote": "Still, thanks to its superb stars, 'Chess' remains a knight – I mean night -- to remember.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging flaws like an overstuffed book and bloated runtime, the critic recommends the show for its superb vocal performances and catchy score, ending with a positive pun that suggests it's worth seeing. | GPT-4o: The review highlights strong performances and memorable music, despite noting issues with the book and pacing. The overall tone suggests a recommendation, especially for fans of the music and cast, but with some reservations about the production's execution. | Gemini: The review is mostly positive, highlighting the superb performances of the stars and the catchy score, while acknowledging the convoluted plot and some clunky songs. The final verdict is a recommendation, albeit with reservations. | Kimi: While the critic criticizes the convoluted book, bloated runtime, and some clunker songs, the review strongly praises the 'mind-blowing' vocals of Lea Michele, Aaron Tveit's 'best-ever Broadway performance,' and the 'irresistibly catchy score,' explicitly recommending the show as 'a night to remember.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -66,26 +72,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T02:26:18.399Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:17:14.309Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 76,
+    "kimiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "wordCount": 825,
   "tierReason": "Full review text"

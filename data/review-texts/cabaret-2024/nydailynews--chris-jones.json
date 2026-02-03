@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic explicitly states the production is 'not worth seeing' and calls it an 'unfortunate shebang,' criticizing both the gimmicky interactive elements and the performances, with only two actors receiving praise. | GPT-4o: The review criticizes the production for prioritizing an 'interactive' experience over the quality of the show itself, describing it as a 'naked attempt to offer a value-added experience.' The critic finds the production lacking in eroticism and vulnerability, and ultimately not worth seeing, except for a couple of performances. | Gemini: The review is overwhelmingly negative, criticizing the production's concept, execution, and performances (except for two actors). The critic clearly states the show is not worth seeing.",
+    "keyPhrases": [
+      {
+        "quote": "None of this would matter, arguably, if the production within this naked attempt to offer a value-added experience to increase revenue was worth seeing. Alas, outside of Bebe Neuwirth's and Steven Skybell's Fraulein Schneider and Herr Schultz, it's not.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic systematically dismantles the production, calling it 'unfortunate,' criticizing the lead performances as ineffective, and finding the immersive concept misguided. Only two supporting performers are praised while the leads and overall production are rejected. | GPT-4o: The review is overwhelmingly negative, criticizing the production's concept, performances, and commercialization. The critic finds the show lacking in emotional engagement and authenticity, with only minor praise for two performers. | Gemini: The review is largely negative, criticizing the production's concept, performances (except for Neuwirth and Skybell), and overall execution. The critic clearly does not recommend seeing it. | Kimi: The critic explicitly states the production is not worth seeing, criticizing the immersive concept as inappropriate for the material and finding fault with most lead performances, despite praising two supporting actors.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:33:29.728Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:01:06.866Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 23,
-    "previousVersion": "3.0.0"
+    "previousScore": 42,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 45,
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 44,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
+    "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "kimiBucket": "Negative",
+    "scoreDelta": 24,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 23,

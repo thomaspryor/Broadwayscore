@@ -7,15 +7,15 @@
   "publishDate": "March 8, 2024",
   "fullText": "Ellis’ staging of this tense drama begs for more traction, energy and, ultimately, direction. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Doubt: A Parable.” The script of John Patrick Shanley’s triumphant religious drama “Doubt: A Parable'' overwhelms audiences with heartbreak. There is the ache of Sister Aloysius, a guarded older nun at St. Nicholas Catholic School, who suspects wrongdoing but has little autonomy to stop it. There is the unseen, but much-discussed ache of young Donald Muller, the first Black student at St. Nicholas who is often beaten by his father. There is even the ache of Father Flynn, a parish priest accused of misconduct, so confounded by desire and despair that he yearns for God's direction in his life. Now, too, is the pain of watching such a quietly captivating and complex play yearn for theatrical direction in Roundabout Theatre Company’s lifeless revival. There is little physical action in Shanley’s parable — characters don’t do much aside from talking and strolling the melancholic mid-century Catholic school grounds. The only activity of the play is the act of accusation, so we rely on an ensemble — preferably a tighter one more committed to relaying the play’s high stakes than director Scott Ellis gathers here — to guide us through all of Shanley’s nefarious themes. To be fair, this “Doubt” is up against grave odds — namely the hospitalization of its original leading actor, Tyne Daly, and the hasty substitution of actor Amy Ryan as Sister Aloysius. Ryan’s rapid assumption of the role is evident. And while her use of a teleprompter under these circumstances is plenty forgivable, her lack of intimidation and ferociousness (key elements to the character’s multidimensionality when married with her radical empathy for the alleged victims) is not. Perhaps, with more time for Ryan to settle into the habit, I could write a very different review. But until then, this play about faith will continue to commit the ultimate theatrical sin — boredom.",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 43,
   "dtliThumb": "Down",
   "source": "dtli",
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 43,
+    "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 38,
+      "high": 48
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -25,8 +25,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The review explicitly calls the revival 'lifeless' and concludes with the damning assessment that it commits 'the ultimate theatrical sin — boredom.' Despite acknowledging extenuating circumstances with the lead actor substitution, the critic finds the production fundamentally disappointing. | GPT-4o: The review criticizes the lack of energy and direction in the production, the performance of the lead actor, and ultimately concludes that the play is boring, indicating a negative recommendation. | Gemini: The review expresses disappointment with the production, citing issues with direction, casting, and overall engagement. The critic explicitly states the play commits the \"ultimate theatrical sin - boredom,\" indicating a negative assessment.",
+    "keyPhrases": [
+      {
+        "quote": "this play about faith will continue to commit the ultimate theatrical sin — boredom",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The review calls the revival 'lifeless' and concludes it commits 'the ultimate theatrical sin — boredom.' While acknowledging extenuating circumstances with casting changes, the critic finds the production lacks energy, direction, and fails to convey the play's high stakes. | GPT-4o: The review criticizes the production for lacking energy and direction, describes it as 'lifeless,' and concludes with a strong negative verdict about it being boring, which places it firmly in the Pan category. | Gemini: The review expresses disappointment with the production's direction and energy, ultimately finding it boring. While acknowledging the challenges with the cast change, the overall assessment is negative. | Kimi: The critic describes the revival as 'lifeless' and committing 'the ultimate theatrical sin — boredom,' criticizing the direction and Amy Ryan's under-rehearsed performance while acknowledging the script's quality, resulting in a clear recommendation against seeing this production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -35,28 +41,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:28:53.623Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:03:53.907Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 38,
-    "previousVersion": "3.0.0"
+    "previousScore": 42,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
+    "openaiScore": 20,
     "geminiScore": 45,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
+    "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "dtliExcerpt": "Perhaps, with more time for Ryan to settle into the habit, I could write a very different review. But until then, this play about faith will continue to commit the ultimate theatrical sin — boredom.",
   "sources": [

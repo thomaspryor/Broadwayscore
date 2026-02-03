@@ -7,16 +7,16 @@
   "publishDate": "March 20, 2025",
   "dtliExcerpt": "Faults in the sometimes wooden acting from principal cast members (some of whom, to be fair, come from the music world) are eclipsed by the sonic brilliance of it all.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T22:02:08.338Z",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 63,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt criticizes acting quality but praises the music as 'brilliant' and suggests it overcomes the acting flaws. With only one cherry-picked excerpt available, I'm scoring conservatively in the mixed range. | GPT-4o: The review acknowledges issues with the acting but highlights the 'sonic brilliance,' suggesting a balance of positive and negative elements. The single excerpt and aggregator context suggest a mixed verdict. | Gemini: The review acknowledges flaws in acting but praises the music. This suggests a mixed experience where the strengths outweigh the weaknesses but not enough for a positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Faults in the sometimes wooden acting from principal cast members (some of whom, to be fair, come from the music world) are eclipsed by the sonic brilliance of it all.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt acknowledges significant acting flaws but suggests the musical elements redeem these problems. 'Eclipsed by brilliance' implies the positives outweigh negatives, but with major caveats. Low confidence due to single curated quote. | GPT-4o: The excerpt acknowledges issues with acting but highlights the 'sonic brilliance' as a redeeming quality. The overall tone suggests a mixed review with notable positive elements, aligning with the aggregator's 'Flat' verdict. | Gemini: The review acknowledges faults in acting but suggests they are overshadowed by the music. This indicates a mixed but slightly positive assessment. | Kimi: The critic explicitly states that faults in the acting are 'eclipsed by' the sonic brilliance, indicating the positive elements outweigh the negatives, though the significant criticism of principal performances keeps this in the barely-positive range. Confidence is low due to single-excerpt availability.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:54:58.073Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:08:59.601Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 62,
+    "openaiScore": 65,
     "geminiScore": 62,
+    "kimiScore": 72,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/buena-vista-social-club-2025/broadwaynews--brittani-samuel_2026-01-30.html",
   "textFetchedAt": "2026-01-30T18:36:19.044Z",

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -18,22 +18,28 @@
     "reviews-json-stub"
   ],
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic gives a clearly positive assessment of 'Boop!' calling it a 'creative triumph' with a 'sensational star-making turn,' but delivers a negative verdict on 'Smash,' saying it 'stalls out' and 'doesn't move with verve or purpose.' The overall recommendation is split between the two shows. | GPT-4o: The review praises 'Boop!' for its creative triumph and engaging performances, but criticizes 'Smash' for lacking narrative drive and failing to stand on its own. This results in a mixed verdict, with 'Boop!' being highlighted positively while 'Smash' is seen as faltering. | Gemini: The review contrasts \"Smash\" unfavorably with \"Boop!\", noting that \"Smash\" falters in transforming the source material into something fresh. While praising some performances and jokes, the review ultimately concludes that the musical doesn't make a winning case for why people should see it.",
+    "keyPhrases": [
+      {
+        "quote": "Where 'Boop!' excels and 'Smash' falters is in transforming a familiar persona or property into something fresh and wholly theatrical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: This is a dual review that strongly praises 'Boop!' ('splendid showcase', 'creative triumph', 'convincing modern makeover') while criticizing 'Smash' ('thinly conceived', 'stalls out', 'doesn't move with verve or purpose'). Since it's reviewing Smash specifically, the negative assessment of that show dominates the overall recommendation. | Gemini: The review clearly favors \"Boop!\" over \"Smash,\" stating that \"Smash\" falters and is caught in an anodyne screen-to-stage limbo. The critic finds the show misguided and lacking verve or purpose. | Kimi: While praising the cast's vocal performances, the critic finds the show thinly conceived, lacking narrative drive, and ultimately failing to justify why audiences should attend.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:23:56.090Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:08:23.631Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 42,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,

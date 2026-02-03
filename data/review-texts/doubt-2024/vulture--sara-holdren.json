@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"...Doubt is still a sharp and sturdy piece of writing.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/doubt-a-parable",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 62,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic acknowledges the play's quality ('sharp and sturdy piece of writing') and some strong performances, but finds this production 'conspicuously steady' and 'frozen in amber' rather than galvanizing, with direction that doesn't push past expectations. | Gemini: The review acknowledges the play's strengths but criticizes the production's traditionalist approach and some of the performances, resulting in a recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "While Ellis's ensemble doesn't lag behind the play, neither are they quite pushed to light a fire under it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the writing as 'sharp and sturdy' and acknowledges strong individual performances (especially Bernstine), but finds the production 'conspicuously steady' rather than galvanizing, with direction that doesn't push past expectations and performances that feel restrained. | GPT-4o: The review acknowledges the play's strong writing but criticizes the production for feeling 'frozen in amber' and lacking the dynamism needed to fully realize the text's potential. The performances are noted as competent but not fully engaging, leading to a mixed impression. | Gemini: The review acknowledges the play's strengths but finds the production somewhat lacking in energy and impact. It praises individual performances but notes a disconnect between them, resulting in a mixed overall assessment. | Kimi: The critic finds the production too traditionalist and restrained ('frozen in amber'), with uneven performances that fail to capture the play's potential, though acknowledging the text remains sturdy and occasionally effective.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:32:04.713Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:17:06.526Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "3.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "openaiScore": 60,
+    "geminiScore": 65,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "bwwExcerpt": "Director Scott Ellis is happy not to push past the expected. David Rockwell’s set dutifully revolves between stony, ivy-twined cloister courtyard and massy mahogany office. Ryan wears the same severe bonnet and glasses that Streep and Cherry Jones wore before her. Mikaal Sulaiman’s straightforward sound design gives us crows cawing, children at play, and kyries between scenes. And, while one needn’t belabor the point, seven of the eight-person central production team are men. The famous faces on",
   "bwwThumb": "Up",

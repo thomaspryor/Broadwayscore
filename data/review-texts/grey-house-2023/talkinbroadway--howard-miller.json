@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the cast commitment, direction, and design work while appreciating the atmospheric mood, though focuses more on craft elements than overall enthusiasm. | GPT-4o: The review praises the production's mood, direction, and design, indicating a positive experience despite the ambiguity of the play's meaning. The critic appreciates the atmosphere and the committed performances, suggesting it is worth seeing. | Gemini: The review highlights the show's strengths in mood, cast commitment, direction, and design, suggesting a positive experience despite the unanswered questions and potential ambiguity.",
+    "keyPhrases": [
+      {
+        "quote": "the greatest strength of this production of Grey House is the consistency of its preternatural mood",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the production's atmospheric consistency, committed performances, and design elements. While acknowledging unanswered questions, the critic appreciates the intentional mood and craftsmanship without major reservations. | GPT-4o: The review highlights the production's strong atmosphere and committed cast, praising the direction and design elements. While it notes unanswered questions and a lack of clarity in the plot, the overall tone suggests a positive recommendation, particularly for those interested in mood and design. | Gemini: The review highlights the production's strengths, particularly the mood and design elements, and praises the cast and direction. While it acknowledges unanswered questions, the overall tone is positive, suggesting it's worth seeing despite the ambiguity. | Kimi: While acknowledging the play's ambiguous narrative and unanswered questions, the critic praises the 'fully committed cast,' 'sharply focused direction,' and effective design elements that create a consistent air of 'disquietude.' The review treats the mystery as an intentional strength rather than a flaw, recommending the production for its technical and atmospheric achievements.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:56:07.696Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:34:20.394Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 76,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 76,
-    "geminiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 78,

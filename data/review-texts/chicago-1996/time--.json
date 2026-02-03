@@ -9,26 +9,32 @@
   "fullText": "In that dicey district known as Broadway, there are no sure bets, but reviving a cherished old musical comes close. Find a Rodgers and Hammerstein gem that's been away for a while or dust off a fondly remembered piece of froth like A Funny Thing Happened on the Way to the Forum, and nostalgic theatergoers will probably beat a path to your stage door.\n\nBut Chicago, the 1975 musical about a '20s nightclub floozy who becomes a celebrity after shooting her lover, doesn't really fall into that category. Artifacts from the '70s (the comeback of bell-bottoms notwithstanding) haven't aged long enough...\n \n\n To continue reading: or Log-In\n\n \n\n \n\n \n\n \n\n \n\n \n\n Vignette StoryServer 5.0 Tue May 28 18:18:48 2013 \n\n \n \n \n Sign In",
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 75,
   "dtliThumb": null,
   "source": "dtli",
   "llmScore": {
-    "score": 62,
+    "score": 75,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 70,
+      "high": 80
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This excerpt only provides general commentary about Broadway revivals without evaluating any specific production. Given the single excerpt warning and lack of evaluative content about a particular show, scoring conservatively in the mixed range. | GPT-4o: The excerpt suggests a cautious optimism about reviving classic musicals but lacks a clear recommendation or critique of the current production. The single quote's focus on nostalgia implies mixed sentiments, leading to a conservative score in the mixed range. | Gemini: The excerpt suggests a positive outlook, indicating that the revival of a classic musical is likely to attract an audience. Given the single excerpt warning, I'm scoring conservatively.",
+    "keyPhrases": [
+      {
+        "quote": "Find a Rodgers and Hammerstein gem that's been away for a while or dust off a fondly remembered piece of froth like A Funny Thing Happened on the Way to the Forum, and nostalgic theatergoers will probably beat a path to your stage door.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt suggests a positive sentiment towards reviving cherished musicals, implying that such productions attract audiences. However, the lack of specific praise or detailed evaluation of the current production limits the confidence in the verdict. | Gemini: The excerpt suggests a positive outlook for the revival, indicating it will likely be well-received by audiences. Given it's a single excerpt, I'm scoring it cautiously at the lower end of the positive range. | Kimi: The excerpt characterizes the revival as a 'sure bet' that audiences will flock to, indicating a clear recommendation, though the single curated quote and lack of specific production details warrant low confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,29 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:52:57.714Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:36:07.643Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 62,
+    "claudeScore": null,
+    "openaiScore": 72,
     "geminiScore": 72,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 116,
@@ -88,5 +95,6 @@
   ],
   "contentTier": "truncated",
   "wordCount": 116,
-  "tierReason": "Truncation detected: paywall_or_login_prompt, no_ending_punctuation"
+  "tierReason": "Truncation detected: paywall_or_login_prompt, no_ending_punctuation",
+  "rescoreCompletedAt": "2026-02-03T04:36:07.643Z"
 }

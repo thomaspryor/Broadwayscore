@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Strong's performance is commanding and nuanced, bringing a contemporary urgency to Ibsen's prescient tale of truth versus power.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Strong's performance is commanding and nuanced, bringing a contemporary urgency to Ibsen's prescient tale of truth versus power.",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite extensive critical analysis and some reservations about the adaptation's choices, the critic explicitly states the production 'has much to recommend it' and praises Strong's performance as worthy of future stage work, indicating a clear positive recommendation. | GPT-4o: The review praises the production's use of the theater's unique structure, the performances, particularly Jeremy Strong's, and the thematic richness of the adaptation. Despite some minor reservations about the adaptation's approach, the overall tone is enthusiastic and recommends the show. | Gemini: The review is largely positive, highlighting strong performances and effective staging, but it also expresses reservations about the adaptation's approach to the central conflict. The final recommendation is positive but not without caveats.",
+    "keyPhrases": [
+      {
+        "quote": "This production has much to recommend it, and Strong in particular should return to the stage as often as he can.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises Strong's performance, Imperioli's work, Gold's direction, and the innovative use of the theater space, while noting some reservations about the adaptation's choices. The clear statement 'much to recommend it' indicates a positive recommendation despite the critiques. | GPT-4o: The review praises the performances, especially Jeremy Strong's, and the use of the theater's unique structure. While there are some reservations about the adaptation's approach, the overall tone is positive, recommending the production. | Gemini: The review is generally positive, highlighting strong performances and effective staging, but also notes a lack of deeper unsettling themes, leading to a recommendation with reservations. | Kimi: The critic praises the performances (particularly Strong and Imperioli), staging, and use of the in-the-round theater, calling the production engaging and stunning, but criticizes the adaptation for letting the audience off the hook too easily thematically.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:21:35.787Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T01:37:08.758Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (18 words)",

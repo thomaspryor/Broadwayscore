@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"So why is Aladdin a bit of a chore? Even the best of what the writers offer doesn’t seem to stick very long; if it weren’t for Nicholaw’s merciless flogging, you feel the story would simply evaporate in the desert heat.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 62,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -34,7 +34,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Green acknowledges Disney's technical excellence and craft ('jaw-dropping moments', 'consistently delightful' music) but finds the show emotionally hollow and overly calculated. He calls it 'a bit of a chore' and questions whether audiences can care about anything when everything is designed to prevent taking it seriously. This is classic mixed review territory - respecting the artistry while finding the overall experience unsatisfying. | Gemini: The review acknowledges the show's strengths (catchy music, impressive staging) but criticizes its lack of depth, over-reliance on sarcasm, and failure to take risks. The overall tone is ambivalent, placing it in the Mixed bucket. | Kimi: While praising James Monroe Iglehart's showstopping performance, Casey Nicholaw's energetic choreography, and the lavish production design, the critic finds the show emotionally empty and calls it a 'bit of a chore,' ultimately viewing it as a professionally executed but artistically hollow corporate product.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Green acknowledges the technical excellence and crowd-pleasing elements but finds the show fundamentally hollow and emotionally unengaging. He praises specific aspects (Nicholaw's direction, Menken's music, production values) while criticizing the sanitized tone and lack of genuine stakes. | Gemini: The review acknowledges some positive aspects like the music and certain performances, but ultimately finds the show somewhat lacking in depth and emotional resonance, resulting in a mixed assessment. | Kimi: While acknowledging the polished direction, design, and James Monroe Iglehart's show-stopping performance, the critic ultimately finds the production emotionally vacant and unsatisfying, describing it as a 'meaningless fling' and a 'chore' that produces 'diminishing returns' for discerning theatergoers.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,28 +44,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:48:25.828Z",
+    "scoredAt": "2026-02-03T01:24:14.418Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 67,
-    "previousVersion": "5.1.0"
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": null,
     "geminiScore": 62,
-    "kimiScore": 58,
+    "kimiScore": 48,
     "claudeBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 4,
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "dtliExcerpt": "The show is gorgeous to look at, but it's also exhausting — like being trapped in a very expensive, very loud toy store.",
   "sources": [

@@ -10,26 +10,32 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": "3/5 stars",
-  "assignedScore": 75,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 75,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 star rating and critic's mixed assessment indicate a qualified recommendation. While Finkle praises the performances (especially Caruso and Metcalf) and acknowledges the show will entertain those who understand its intentions, he also notes the plot's challenging intricacies may confuse some patrons and suggests the dark vision might diminish enjoyment for those seeking lighter thrills. | GPT-4o: The review provides a balanced view, noting both the strengths in performances and the potential confusion in the plot. The original 3/5 star rating suggests a mixed reception, with some positive elements but also significant reservations. | Gemini: The review is generally positive, highlighting strong performances and the play's ability to be \"scarily entertained.\" However, it also mentions potential confusion with the plot and a darkness that might affect enjoyment, indicating reservations. The 3/5 star rating also supports a positive but not rave classification.",
+    "keyPhrases": [
+      {
+        "quote": "Spectators who get Holloway's full intentions will not only declare themselves scarily entertained but will continue considering the charges.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: 3/5 stars with balanced assessment. Praises performances (especially Caruso and Metcalf) and finds it 'scarily entertained,' but notes the plot's challenging intricacies may result in 'head-scratching' and suggests the dark vision 'might cast shadows on the enjoyment.' Neither strongly recommends nor discourages. | GPT-4o: The review provides a mix of praise for performances and atmosphere but notes potential confusion with the plot. The 3/5 star rating suggests a mixed reception with some positive elements. | Gemini: The review is mostly positive, highlighting the performances and spooky atmosphere. The critic notes potential confusion with the plot but ultimately suggests it's a worthwhile experience, aligning with a 3/5 star rating. | Kimi: The 3/5 star rating reflects a mixed assessment that praises the performances (particularly Metcalf and Caruso) and atmospheric production design, but criticizes the confusing plot intricacies and warns that the overly dark vision may alienate audience members seeking lighter entertainment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:55:41.093Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:29:00.600Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
+    "previousScore": 75,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 77,
-    "claudeBucket": "Positive",
+    "geminiScore": 75,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,

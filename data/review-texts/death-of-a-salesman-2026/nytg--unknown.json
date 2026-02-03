@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,13 +20,13 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 92,
+    "score": 83,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 78,
+      "high": 88
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is overwhelmingly positive, praising every major performance and directorial choice, with the critic expressing they would 'gladly stay longer' - a clear enthusiastic endorsement that places this firmly in rave territory. | GPT-4o: The review is overwhelmingly positive, highlighting the depth and layers added to the production, the compelling performances, and the transformative nature of the play. The critic expresses a strong desire to continue watching, indicating a highly enthusiastic recommendation. | Gemini: The critic explicitly states they would gladly stay longer to watch the story continue, indicating a strong positive recommendation. The review praises the performances and direction, further solidifying this assessment.",
+    "keyPhrases": [
+      {
+        "quote": "Even after nearly three and a half hours of Death of a Salesman, I'd gladly stay longer to watch that story continue.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout for the performances, direction, and production's fresh perspective on the classic. The critic finds new depth and meaning, praises all lead performances extensively, and ends with enthusiastic endorsement wanting more. | GPT-4o: The review is filled with praise for the performances, direction, and the depth added by the casting choices. The critic expresses a strong desire to continue watching the story, indicating a highly positive reception. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and the play's enduring relevance. The critic explicitly states they would gladly watch the story continue, indicating a strong recommendation. | Kimi: The reviewer consistently praises the production's conceptual depth, direction, and performances (particularly Wendell Pierce and Sharon D Clarke), offering an enthusiastic endorsement that transcends the play's lengthy runtime.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,28 +50,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:25:48.250Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:03:05.639Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
+    "claudeScore": 83,
+    "openaiScore": 92,
     "geminiScore": 82,
-    "claudeBucket": "Rave",
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",

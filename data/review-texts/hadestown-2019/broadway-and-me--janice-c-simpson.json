@@ -78,5 +78,11 @@
   "previousLlmScore": 68,
   "rescoreCompletedAt": "2026-02-02T03:26:57.965Z",
   "contentTier": "complete",
-  "wordCount": 1153
+  "wordCount": 1153,
+  "wrongShow": true,
+  "rejectedAt": "2026-02-03T06:04:07.250Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a multi-show roundup reviewing three different productions (Be More Chill, Hadestown, and Oklahoma!) rather than a single show review that can be scored; openai: The review discusses multiple shows, including 'Be More Chill', 'Hadestown', and 'Oklahoma!', but the focus is on off-Broadway productions that have transferred to Broadway. The review does not clearly focus on a single current Broadway production.",
+  "promptVersion": "5.2.0"
 }

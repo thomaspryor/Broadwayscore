@@ -36,7 +36,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise ('stunning', 'sparkles', 'treat') suggests enthusiastic recommendation, but confidence is low due to limited text availability. | GPT-4o: The excerpt provides strong praise for the production's visual elements and overall experience, suggesting an enthusiastic recommendation. However, the single excerpt warning indicates that this may not represent the full review, so confidence is low. | Gemini: The single excerpt is very positive, using words like \"stunning\" and \"sparkles.\" Given the single excerpt warning, I am scoring on the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise using superlatives like 'stunning' and 'treat,' indicating a strong positive recommendation consistent with the upper Positive range, though the single-quote limitation necessitates low confidence.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language with 'stunning,' 'sparkles,' and 'treat' suggests enthusiastic praise. Single excerpt warning noted - using upper Positive range due to clearly positive tone. | GPT-4o: The excerpt provides strong positive language ('stunning', 'sparkles', 'a treat'), indicating an enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The single excerpt is highly positive, using words like \"stunning\" and \"sparkles.\" Given the single excerpt warning, I'm scoring at the higher end of the positive range. | Kimi: The excerpt provides enthusiastic praise with words like 'stunning' and 'treat,' but confidence is low as only a single curated quote is available, which may not represent the full review sentiment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,23 +46,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:39:46.730Z",
+    "scoredAt": "2026-02-03T01:17:21.750Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
-    "previousVersion": "5.1.0"
+    "previousScore": 82,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 82,
     "geminiScore": 82,
-    "kimiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

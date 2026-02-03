@@ -7,7 +7,7 @@
   "publishDate": "March 20, 2014",
   "showScoreExcerpt": "\"You're going to have a great time at Aladdin, despite its conflict-starved filler of a book. But are you really going for the dramaturgy? No, you're going to see sexy actors sing and dance.\"",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "textFetchedAt": "2026-01-30T16:09:07.333Z",
@@ -17,11 +17,11 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 78,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -38,7 +38,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with the critic explicitly stating audiences will 'have a great time' and praising the spectacular production values, performances, and magical stagecraft, while acknowledging story weaknesses don't derail the entertainment value. | GPT-4o: The review acknowledges significant issues with the story and character development, but praises the spectacle, performances, and overall entertainment value, leading to a positive recommendation with some reservations. | Gemini: The review is mostly positive, highlighting the spectacle, performances, and magic tricks, but notes a weak book. It ultimately recommends seeing the show for its entertainment value. | Kimi: The critic praises the stunning design, choreography, and lead performances (particularly Iglehart and Jacobs) as a 'fantastic spectacle,' while criticizing the book as 'clunky' and 'conflict-starved,' but ultimately delivers a clear recommendation to see the show for its entertainment value.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation despite significant reservations about the book and story. Praises spectacular production values, performances, and overall entertainment value while acknowledging dramatic weaknesses. | GPT-4o: The review praises the spectacle, performances, and stagecraft, while noting significant issues with the book and character development. Despite these reservations, it strongly suggests that audiences will enjoy the show. | Gemini: The review is overall positive, highlighting the spectacle, performances, and magic tricks, but notes the weak book and some tepid moments. It recommends seeing the show despite its flaws. | Kimi: While criticizing the clunky book and weak villain, the reviewer enthusiastically recommends the show for its spectacular staging, performances, and magic, promising audiences a great time.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,23 +48,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:42:58.011Z",
+    "scoredAt": "2026-02-03T01:19:44.787Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "5.1.0"
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
+    "claudeScore": 76,
     "openaiScore": 78,
     "geminiScore": 77,
-    "kimiScore": 80,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

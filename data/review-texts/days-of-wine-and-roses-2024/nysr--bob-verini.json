@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The 4/5 star rating indicates a positive recommendation, supported by praise for the bold reinterpretation, outstanding performances by O'Hara and d'Arcy James, and the production's artistic merits, despite some reservations about pacing and structure. | Gemini: The critic gives the show 4 out of 5 stars and describes the musical as a \"bold reinterpretation\" with many strengths. While acknowledging changes from the source material, the review ultimately praises the performances, music, and direction, indicating a positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Understanding the roots of dependency starts by acknowledging that people do drugs because it feels better doing them than not doing them.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: 4/5 stars with consistent praise for performances, direction, and creative choices. While noting some structural issues with the adaptation, the critic clearly recommends the production and finds meaningful artistic value in its approach to addiction. | Gemini: The review is overwhelmingly positive, praising the performances, music, and direction. The critic highlights the show's insightful exploration of addiction, making it a worthwhile and impactful experience, and gives it 4/5 stars. | Kimi: The critic awards 4/5 stars and consistently praises the bold reinterpretation, the performances of O'Hara and d'Arcy James at the peak of their powers, and Guettel's sophisticated score, while offering only minor reservations about the plot structure and melodic memorability.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,27 +47,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:50:46.681Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:45:07.286Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "3.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
+    "claudeScore": 78,
     "openaiScore": null,
-    "geminiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 65,

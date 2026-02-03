@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"All that adds up to a rousing evening at the theater, if also something less than a great musical.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/buena-vista-social-club",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 77,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly calls it 'a rousing evening at the theater' and praises the music, performances, and choreography extensively, while acknowledging the book's limitations don't prevent an enjoyable experience. | GPT-4o: The review acknowledges the show's limitations, particularly in its book, but praises the music and performances, suggesting it's a worthwhile experience for theatergoers. | Gemini: The review acknowledges the show's flaws, particularly the thin book, but ultimately describes it as a \"rousing evening\" and highlights the strength of the music and performances. This indicates a positive but not rave recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "All that adds up to a rousing evening at the theater, if also something less than a great musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls it 'a rousing evening at the theater' and praises the music, performances, and choreography extensively, but acknowledges it falls short of being 'a great musical' due to the thin book. This is a solid positive recommendation with clear reservations. | GPT-4o: The review acknowledges the strengths of the music and performances but criticizes the book and overall depth, suggesting it is more of a tribute concert than a fully realized musical. | Gemini: The review is generally positive, highlighting the music, performances, and choreography. While it acknowledges the thin book and limited ambition, it ultimately describes the show as a 'rousing evening.' | Kimi: The critic praises the streamlined production, vibrant performances, and kinetic staging, calling it a 'rousing evening' despite noting the thin book and modest ambitions that keep it from being a truly great musical.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:57:34.387Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:21:00.219Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 71,
-    "previousVersion": "3.0.0"
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 75,
-    "geminiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 77,
+    "kimiScore": 79,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "dtliExcerpt": "All that adds up to a rousing evening at the theater, if also something less than a great musical. With its book whittled down so much and its careful hedging to only speaking the broadest generalities about Cuba’s history, Buena Vista Social Club only aims modestly high, just above the level of a tribute concert.",
   "sources": [

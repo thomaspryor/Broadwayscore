@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Gold's production...skillfully balances the play’s history and its timeliness.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 79,
   "source": "show-score",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 81,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,7 +34,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review consistently praises the production with phrases like 'skillfully balances,' 'beautifully integrates,' and highlights Strong's 'expert' performance. The final verdict recommends it for both seasoned theatregoers and newcomers, with 90% audience rating cited as additional support. | Gemini: The review is positive, highlighting the relevance of the play, the performances, and the unique staging. The critic clearly recommends seeing the production. | Kimi: The review consistently praises the direction, performances (particularly Jeremy Strong), and staging while highlighting the production's timely relevance, concluding with a clear recommendation for both seasoned theatregoers and newcomers to Ibsen.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear positive recommendation with praise for Strong's performance, effective direction balancing historical and contemporary elements, and innovative staging choices. The concluding verdict explicitly recommends it to audiences. | Gemini: The review is overall positive, highlighting the relevance of the play, the performances, and the unique staging. The critic clearly recommends seeing the production. | Kimi: The review consistently praises the production's direction, performances (particularly Jeremy Strong), design, and relevance, recommending it for both seasoned theatregoers and newcomers to Ibsen.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,22 +44,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:57:58.638Z",
+    "scoredAt": "2026-02-03T01:33:14.620Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.1.0"
+    "previousScore": 81,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 79,
     "openaiScore": null,
     "geminiScore": 81,
-    "kimiScore": 83,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

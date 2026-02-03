@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"Brown and King have packed the show with numbers that manage to be both entertaining and as clunky as a ’67 station wagon. And composed a piece that might be a bit more fitting in a cabaret than in a Broadway theater. That is, of course, until you secure the services of the cutest couple on Broadway.\"",
@@ -18,11 +18,11 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 79,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly enjoys the show and recommends it, praising the leads' chemistry and the humor, though notes it might be better suited for cabaret than Broadway and calls it a 'funny little double act.' | GPT-4o: The review highlights the strong chemistry and comedic talent of the lead actors, the cleverness of the production, and its ability to provide humor and entertainment, making it a highly recommended show. | Gemini: The review is generally positive, highlighting the chemistry of the leads and the humor of the show. However, it also notes that the show might be better suited for a cabaret than a Broadway theater, indicating some reservations.",
+    "keyPhrases": [
+      {
+        "quote": "The show is an endearing showcase for mischievous clowns.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment calling it 'endearing,' praising the 'ideal' casting and performances, and describing it as entertainment that provides 'chiropractic adjustment to the psyche.' However, acknowledges it's 'a bit more fitting in a cabaret than a Broadway theater' and calls the original material 'ghastly,' keeping it in lower positive range. | GPT-4o: The review highlights the strong performances of Rannells and Gad and the show's comedic appeal, while noting its limitations as a Broadway production. The overall tone is positive, recommending the show for its humor and performances. | Gemini: The review is positive, highlighting the chemistry of the leads and the humor of the show, but also notes that the show might be more fitting for a cabaret than Broadway. | Kimi: Marks celebrates the irresistible comic chemistry between Rannells and Gad, calling the casting 'ideal' and promising abundant laughter, while acknowledging the show itself is a slight, modest entertainment better suited to cabaret than a Broadway house.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:58:25.383Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:02:03.536Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
+    "claudeScore": 76,
+    "openaiScore": 78,
     "geminiScore": 78,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,

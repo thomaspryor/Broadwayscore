@@ -11,7 +11,7 @@
   "source": "dtli",
   "llmScore": {
     "score": 87,
-    "confidence": "low",
+    "confidence": "medium",
     "range": {
       "low": 82,
       "high": 92
@@ -31,28 +31,28 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The critic calls this 'one of the best play revivals of the current season' and consistently praises the adaptation, direction, cast performances, and production design. Despite acknowledging some challenging content, the overall assessment is strongly positive with enthusiasm for the performances and staging. | GPT-4o: The review is filled with superlatives and strong praise for the production, direction, and performances, indicating a must-see recommendation. The critic highlights the show's relevance, impressive cast, and innovative staging. | Gemini: The review is overwhelmingly positive, calling the production \"smart, sharp, and relevant\" and one of the best play revivals of the season. The praise for the cast and direction is also strong. | Kimi: The review offers unqualified praise, calling the production 'smart, sharp and relevant,' 'taut and exactingly-directed,' and comparing it favorably to other acclaimed revivals. The critic praises the cast, direction, adaptation, and staging without significant reservation, clearly recommending it as essential viewing. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive review with explicit high praise ('one of the best revivals'), excellent cast performances noted, and detailed appreciation for direction and adaptation. Despite acknowledging controversial content, the critic celebrates the production's intelligence and relevance. | GPT-4o: The review is filled with superlatives and strong praise for the production, direction, and performances, describing it as one of the best revivals of the season. The critic highlights the cast's impressive skills and the production's effective use of the theater space. | Gemini: The review is overwhelmingly positive, calling it \"smart, sharp and relevant\" and \"one of the best play revivals of the current season.\" The praise for the cast and direction further supports a positive classification. | Kimi: The review offers unqualified praise across all production elements—Herzog's 'smart, sharp' adaptation, Gold's 'exactingly-directed' staging, and excellent ensemble performances—explicitly ranking it among the season's best with no reservations or caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:53:02.289Z",
+    "scoredAt": "2026-02-03T01:27:25.100Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.1.0"
+    "previousScore": 87,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 83,
     "openaiScore": 92,
     "geminiScore": 82,
-    "kimiScore": 92,
+    "kimiScore": 91,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
@@ -60,12 +60,10 @@
     "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "4-way bucket disagreement"
-    ],
+    "needsReview": false,
+    "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "No bucket consensus - using median score"
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
   "dtliExcerpt": "But have no doubt: Audiences on any every night of this limited 16-week run at Circle in the Square will witness a taut and exactingly directed production. Sam Gold’s An Enemy Of The People is one of the best play revivals of the current season to date, right up there with Purlie Victorious, besting Doubt and even Gold’s own, shakier Macbeth starring Daniel Craig in 2022.",
   "sources": [

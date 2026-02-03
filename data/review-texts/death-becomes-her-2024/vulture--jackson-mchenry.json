@@ -9,15 +9,15 @@
   "showScoreExcerpt": "â...hard to dislike and ultimatelyâas a medical examiner might say of these womenâwithout a heartbeat.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/death-becomes-her-broadway",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "llmScore": {
-    "score": 62,
+    "score": 64,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The critic acknowledges the show's entertainment value and strong performances but consistently criticizes its lack of emotional depth and missed opportunities for meaningful exploration of its themes. | Gemini: The review acknowledges the show's strengths (performances, humor, some songs) but ultimately finds it lacking depth and becoming repetitive. The final line indicates a lack of strong feeling either way.",
+    "keyPhrases": [
+      {
+        "quote": "The conceit's cleverly nipped and tucked, the work of fine theatrical plastic surgery, hard to dislike and ultimately—as a medical examiner might say of these women—without a heartbeat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the performances, songs, and camp entertainment value but consistently criticizes the show's lack of emotional depth and second act problems. The final verdict describes it as 'hard to dislike' but ultimately heartless. | GPT-4o: The review praises the performances and humor but criticizes the lack of depth and emotional engagement, suggesting a mixed reception with both strengths and weaknesses. | Gemini: The review praises aspects like the performances and humor, but criticizes the lack of depth and emotional resonance, leading to a mixed overall assessment. | Kimi: While praising Megan Hilty and Jennifer Simard's comedic performances, the witty songs, and the first-act energy, the critic finds the second act stalls and laments the show's refusal to explore deeper emotional territory, concluding it is virtuosically impressive but ultimately heartless.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:42:57.488Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:01:49.613Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 67,
-    "previousVersion": "3.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 63,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "dtliExcerpt": "They leave us with a wink and meta-joke, a song about how they’ll never have an ending, but if they did, it might go a little like this … The conceit’s cleverly nipped and tucked, the work of fine theatrical plastic surgery, hard to dislike and ultimately—as a medical examiner might say of these women—without a heartbeat.",
   "sources": [

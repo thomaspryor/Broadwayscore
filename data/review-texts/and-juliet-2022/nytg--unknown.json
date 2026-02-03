@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 75,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges entertainment value and production strengths but criticizes script problems and momentum issues. The final line suggests it works for audiences seeking light entertainment, indicating a qualified, mixed recommendation. | GPT-4o: The review acknowledges some flaws in the script and narrative but emphasizes the show's entertainment value, vibrant visuals, and engaging music. The positive tone suggests it's worth seeing for those looking for a lighthearted experience, despite the truncated text. | Gemini: The review highlights both positive and negative aspects, but the concluding statement suggests that audiences seeking lighthearted entertainment will enjoy the show. The truncated nature of the text makes it difficult to definitively assess the overall recommendation, but the aggregator excerpts and final sentence point towards a positive, albeit qualified, verdict.",
+    "keyPhrases": [
+      {
+        "quote": "Theatregoers out for a silly good time likely won't care as they hum along with & Juliet.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting flaws like momentum sags and script issues, the critic emphasizes the show's entertainment value, vibrant visuals, and strong performances. The final recommendation suggests audiences seeking fun will enjoy it. | GPT-4o: The review describes the show as 'cheeky and eager-to-entertain' with 'zippy energy' and 'vibrant visuals,' indicating a positive experience despite some criticisms. The truncated nature of the text and lack of a final verdict suggest caution, but the tone leans towards a positive recommendation. | Gemini: The review is mostly positive, highlighting the energy, visuals, and performances, but notes some script issues and sagging momentum. The truncated text and mixed signals lead to a lower confidence score. | Kimi: The review praises the performances, staging, and energetic fun while acknowledging significant script issues and plot holes, ultimately recommending it as entertaining for those seeking light 'silly' entertainment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,28 +51,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:21:50.950Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T01:58:13.663Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 76,
-    "geminiScore": 79,
-    "claudeBucket": "Mixed",
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 17,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",

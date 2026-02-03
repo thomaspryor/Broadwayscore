@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical, with songs by Adam Guettel and a book by Craig Lucas, turns the 1962 film into a harrowing but ultimately hopeful meditation on addiction and recovery.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, with songs by Adam Guettel and a book by Craig Lucas, turns the 1962 film into a harrowing but ultimately hopeful meditation on addiction and recovery.",
   "llmScore": {
-    "score": 79,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the central performances as 'superb' and calls the score 'sumptuous,' describing the production as 'tone-perfect' and noting significant improvements from its previous iteration. However, the text appears truncated and mentions some issues with the opening scene being 'perplexing' and 'too sparely written.' | GPT-4o: The review praises the performances, score, and production as superb and tone-perfect, indicating a strong recommendation. Despite some critique of the opening scene, the overall tone is highly positive, highlighting the show's depth and emotional impact. | Gemini: The review praises the performances and score, and notes the production's tone. While it mentions a perplexing opening scene, the overall assessment is positive, indicating a recommendation with some reservations.",
+    "keyPhrases": [
+      {
+        "quote": "Deeper, wiser and warmer than it was in its premiere at Off Broadway’s Atlantic Theater Company last year.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review praises the performances, score, and production, describing it as 'astonishing' and 'tone-perfect'. Despite noting a perplexing opening scene, the overall tone is highly positive, with strong recommendations for the current production. | Gemini: Despite the truncated text, the review is clearly positive, praising the performances, score, and production. The critic notes the show's depth and warmth compared to previous productions. | Kimi: Despite the truncated text, the available review contains unqualified raves for the performances ('superb'), score ('sumptuous'), and production ('tone-perfect'), with only a minor reservation about the opening scene. The critic calls the show 'astonishing' and notes it has grown 'deeper, wiser and warmer' since Off-Broadway, indicating an enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,22 +47,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:51:24.247Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:46:59.512Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 80,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "claudeScore": null,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

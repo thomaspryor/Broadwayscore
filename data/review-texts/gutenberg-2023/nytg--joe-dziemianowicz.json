@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds the show entertaining and praises the performances, but notes significant flaws like excessive length and diminishing returns, indicating a qualified recommendation. | GPT-4o: The review highlights the comedic talents of the lead actors and the cleverness of the show, while noting its overstuffed nature and diminishing returns. Despite these reservations, the overall tone is positive, recommending the show for its humor and performances. | Gemini: The review is generally positive, highlighting the talents of the leads and the cleverness of the show. However, it also notes that the show is too long and overstuffed, indicating reservations. Therefore, it's a positive review with some caveats.",
+    "keyPhrases": [
+      {
+        "quote": "The show is a roughly 2-hour sketch – one that's clever and filled with laughs but too long and overstuffed to ward off diminishing returns.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Review acknowledges significant flaws (too long, overstuffed, diminishing returns) but consistently praises the performances and finds it amusing and entertaining. The positive elements and showcase for the stars outweigh the reservations. | GPT-4o: The review praises the performances and comedic elements, calling it clever and filled with laughs, but notes it is too long and overstuffed. The overall tone is positive, recommending it for its humor and performances despite some reservations about its length. | Gemini: The review is generally positive, highlighting the talents of the leads and the cleverness of the show, but notes that it's too long and overstuffed, indicating a recommendation with reservations. | Kimi: While the critic finds the show overstuffed and overlong with diminishing returns, they consistently praise the two leads as a 'prime showcase' and find the comedy clever and amusing, ultimately recommending it for the performances.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:57:38.562Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:51:59.297Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 76,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
+    "claudeScore": 76,
     "openaiScore": 78,
     "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwThumb": "Meh",
   "showScoreExcerpt": "“The show is a roughly 2-hour sketch – one that’s clever and filled with laughs but too long and overstuffed to ward off diminishing returns. Still, the production provides a prime showcase for the talents of Josh Gad and Andrew Rannells”",

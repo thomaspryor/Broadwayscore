@@ -7,29 +7,35 @@
   "publishDate": "2011-03-24",
   "fullText": null,
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 73,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "bwwExcerpt": "Trey Parker and Matt Stone, the naughty boys of \"South Park,\" have teamed up with Robert Lopez, one of the co-creators of \"Avenue Q,\" and the results of their collaboration are pretty much what you'd expect: slick and smutty. \"The Book of Mormon\" is the first musical to open on Broadway since \"La Ca...",
   "sourceMethod": "stub",
   "scoreSource": null,
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 73,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 68,
+      "high": 78
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt describes the show as 'slick and smutty' which could be either praise or criticism depending on context. With only a truncated excerpt available, I'm scoring conservatively in the mixed range due to insufficient evidence of clear recommendation either way. | GPT-4o: The review describes the show as 'slick and smutty,' which suggests a mixed tone, highlighting both production quality and potentially divisive content. The lack of a full verdict and the single excerpt warning suggest a conservative score within the mixed range. | Gemini: The review excerpt describes the show as \"slick and smutty,\" which suggests a generally positive, albeit potentially controversial, experience. Given the limited text, a score in the lower end of the positive range is appropriate.",
+    "keyPhrases": [
+      {
+        "quote": "\"The results of their collaboration are pretty much what you'd expect: slick and smutty.\"",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt suggests a mildly positive tone by describing the show as 'slick and smutty,' which aligns with the creators' known style. However, the lack of a complete verdict and the single excerpt warning reduce confidence. | Gemini: The excerpt describes the show as \"slick and smutty,\" which suggests a positive but potentially controversial experience. Given the limited excerpt, a score in the lower end of the positive range is appropriate. | Kimi: Single excerpt offers qualified praise ('slick') tempered by content description ('smutty'), suggesting the show meets expectations without exceeding them. Truncated text and single-quote limitation warrant low confidence and lower-end Positive score per guidelines.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:49.125Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:51:09.802Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
-    "previousVersion": "5.0.0"
+    "previousScore": 64,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
+    "claudeScore": null,
+    "openaiScore": 72,
     "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "kimiScore": 72,
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
     "reviews-json-stub",

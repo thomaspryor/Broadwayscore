@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds the play derivative and overly metaphorical but appreciates the scares and makes a case for more horror on Broadway. Mixed praise with qualified recommendation for the genre attempt. | GPT-4o: The review acknowledges the play's familiar horror tropes and mixed execution, but appreciates its attempt to bring horror to Broadway. The critic finds some elements unsettling and praises certain performances, but notes the play's lack of clarity and occasional silliness. | Gemini: The review acknowledges flaws and familiar tropes, but ultimately finds the production worthwhile for bringing horror to Broadway. The reviewer highlights effective elements like the set design and some performances, suggesting a qualified recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "If it doesn't fully succeed on its own terms, it's at least a solid reminder that terror is as worthy of drama as any other kind of spectacle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds the play derivative and explains its flaws (silly dialogue, unclear mythology, heavy-handed messaging) but appreciates the performances, staging tricks, and Broadway's attempt at horror theater. The verdict is neither recommendation nor discouragement. | GPT-4o: The review acknowledges the play's use of familiar horror tropes and praises certain performances and production elements, but also notes issues with clarity and effectiveness of the play's message. The overall tone suggests a mixed reception with some appreciation for its ambition. | Gemini: The review acknowledges the play's flaws and reliance on tropes, but also appreciates the attempt to bring horror to Broadway. It's a mixed bag with some effective elements. | Kimi: While the critic notes significant flaws including a confusing mythology, silly horror tropes, and uneven tone, they ultimately praise the genuinely unsettling scares, strong performances (particularly from Metcalf, Sparks, and Maslany), and the refreshing novelty of capital-H horror on Broadway. The review acknowledges the play doesn't fully succeed on its own terms but finds enough merit in the execution and atmosphere to recommend it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:56:39.768Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:39:15.040Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 69,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 65,
+    "kimiScore": 74,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "bwwExcerpt": "I won’t try to explain what exactly is going on in the Grey House, both in order to avoid spoiling the plot and because I’m not entirely sure myself. (The production sent over a PDF explaining the lore to critics after they attended, which may be a sign that things aren’t entirely clear in the performance.) I’ll just say that Holloway inches toward a double-underlined, not exactly groundbreaking message about how men treat women, though the more the play tried to emphasize its insights, the less",
   "bwwThumb": "Up",

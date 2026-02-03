@@ -16,7 +16,7 @@
   "bwwThumb": null,
   "llmScore": {
     "score": 76,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 71,
       "high": 81
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic explicitly recommends audiences 'swarm to Bug' and calls it 'a welcome departure,' praising the performances as 'special effects' despite noting structural flaws in the first act. | GPT-4o: The review highlights strong performances and the unique genre as reasons to see the show, despite noting some flaws in the pacing and credibility of the plot. The overall tone suggests a positive recommendation with some reservations. | Gemini: The review acknowledges flaws like a slow first act, but ultimately praises the performances of Coon and Smallwood and notes the play's exploration of intimacy. The final statement suggests reasons to see the show, indicating a positive, though not rave, recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Between fine acting and the chance to see a seldom-represented genre on stage, theatregoers have reasons to swarm to Bug.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear recommendation despite acknowledging significant flaws like an 'uneventful first act' and credibility issues. Praises performances and rarity of thriller genre on Broadway. | GPT-4o: The review praises the performances and the uniqueness of the genre on Broadway but criticizes the pacing and credibility of the plot. The overall tone suggests a mixed reception with some highlights. | Gemini: The review acknowledges flaws (uneven first act, strained credulity) but ultimately recommends it due to the strong performances and the rarity of thrillers on Broadway. | Kimi: While criticizing the uneven first act and plot credibility issues, the reviewer ultimately recommends the production based on exceptional lead performances by Coon and Smallwood and its value as a rare Broadway thriller.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:12:02.083Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:43:30.768Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,

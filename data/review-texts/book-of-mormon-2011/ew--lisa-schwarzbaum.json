@@ -9,7 +9,7 @@
   "bwwExcerpt": "A: Teaming with Avenue Q co-creator Robert Lopez (South Park creators Matt Stone and Trey Parker) to wrote a perfect book, music, and lyrics, they honor the traditions of great song-and-dance musical theater in all the best ways: Every detail of the production - choreographed with typical brilliance by Spamalot's Casey Nicholaw and codirected by Nicholaw and Parker - serves a purpose.",
   "showScoreExcerpt": "\"An exhilarating Broadway musical at once revolutionary and classic, funny and obscene, uncompromising in production standards and unafraid of just about anything else.\"",
   "originalScore": "B",
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
   "urlSource": "show-score",
@@ -23,11 +23,11 @@
   "dtliExcerpt": "Don’t expect to find any members of the Mormon faith protesting outside “The Book of Mormon,” a tuneful, unabashedly silly and absolutely uproarious new musical by Matt Stone and Trey Parker.",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 81,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -37,8 +37,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses strongly positive language like 'exhilarating' and 'uncompromising in production standards' with the B rating and 'Up' aggregator verdict confirming a clear recommendation. | GPT-4o: The review uses highly positive language such as 'exhilarating', 'revolutionary', and 'uncompromising', indicating a strong recommendation. The original B rating also aligns with a positive assessment. | Gemini: The review uses the word \"exhilarating\" and describes the musical in a positive light, suggesting a recommendation. The B rating also indicates a positive but not rave review.",
+    "keyPhrases": [
+      {
+        "quote": "An exhilarating Broadway musical at once revolutionary and classic, funny and obscene, uncompromising in production standards and unafraid of just about anything else.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with 'exhilarating' and 'uncompromising in production standards,' plus B rating suggests solid positive recommendation. Confidence medium due to limited excerpt text. | GPT-4o: The excerpt uses strong positive language ('exhilarating', 'revolutionary', 'uncompromising') indicating a rave review. The original rating of B suggests a strong positive leaning towards rave, but the lack of full text reduces confidence. | Gemini: The quote is overwhelmingly positive, using words like \"exhilarating\" and \"uncompromising.\" Given the B rating and the positive language, I placed it in the positive bucket with a high score. | Kimi: The critic employs superlatives including 'exhilarating,' 'revolutionary,' and 'uncompromising' to praise the production's boldness and quality, indicating strong enthusiasm consistent with a solid B grade.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,28 +53,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:23:20.136Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:40:41.311Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "originalScoreNormalized": 85,
   "scoreExtractedFrom": "fullText",

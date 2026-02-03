@@ -9,26 +9,32 @@
   "showScoreExcerpt": "\"Climate activists disrupting Jeremy Strong was the best part of the play\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review describes the revival as 'stolid' (negative) but calls the protest moment an 'invigorating coup' (positive). The text appears heavily truncated, cutting off before the critic's full assessment. | GPT-4o: The review describes the production as invigorating, suggesting a positive experience despite some reservations about the revival being stolid. The overall tone leans towards recommending the show. | Gemini: The review describes the revival as \"stolid\" but ultimately \"invigorating,\" suggesting a positive but not overwhelmingly enthusiastic recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Sharp. Witty. Thoughtful. But the production's puzzling lack of fire originates with the good doctor himself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises Herzog's adaptation and production design but finds Strong's central performance underwhelming and lacking passion. The critic notes good elements but concludes the revival is 'stolid' and needed real protesters to inject energy. | GPT-4o: The review acknowledges some positive aspects like the adaptation and performances but highlights a lack of passion and fire, particularly in Jeremy Strong's performance. The overall tone suggests a mixed reception with both strengths and weaknesses. | Gemini: The review acknowledges positive aspects like the adaptation and design, but criticizes the lack of fire and Strong's subdued performance, resulting in an overall mixed assessment. | Kimi: The review praises Herzog's adaptation as 'Sharp. Witty. Thoughtful' and acknowledges strong design work and appealing supporting performances, but finds Jeremy Strong's lead performance 'placid' and lacking fire, resulting in a 'weirdly underwhelming' revival that fails to fully ignite Ibsen's drama.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:39:50.670Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T01:40:17.990Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 35,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 75,
-    "geminiScore": 75,
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "contentTier": "complete",
   "wordCount": 744,

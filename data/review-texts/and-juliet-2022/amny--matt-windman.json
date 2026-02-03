@@ -9,7 +9,7 @@
   "dtliExcerpt": null,
   "showScoreExcerpt": "\"The glam, glossy, and tongue-in-cheek new jukebox musical '& Juliet' proposes an intriguing solution to the dilemma faced every year by high school English teachers who struggle over how to get their students interested in Shakespeare.\"",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "show-score",
   "dtliThumb": null,
   "designation": null,
@@ -21,11 +21,11 @@
   "scoreSource": "sentiment-strong-negative",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges the show's entertainment value and catchy songs but criticizes the book as 'tedious and didactic' with 'one-dimensional characterizations,' landing in mixed territory without a clear recommendation. | GPT-4o: The review acknowledges some flaws, such as the winding nature of the book and one-dimensional characterizations, but ultimately highlights the show's entrancing flair, catchy music, and strong performances, leading to a positive recommendation. | Gemini: The review highlights both positive and negative aspects, but ultimately leans towards a recommendation due to the 'entrancing' flare and catchy songs. The book is described as 'tedious and didactic,' but the performances are praised.",
+    "keyPhrases": [
+      {
+        "quote": "the fashionable flare and youthful exuberance on display in '& Juliet' are often entrancing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges entertainment value and strong performances but finds the book 'tedious and didactic' with 'one-dimensional' characters. Praises songs and staging while suggesting future attempts might be better. | GPT-4o: The review acknowledges some issues with the book being tedious and didactic, but overall praises the performances, direction, and music, recommending the show for its fashionable flare and youthful exuberance. | Gemini: The review acknowledges flaws in the book and characterizations, but praises the performances, music integration, and overall energy, leading to a positive but qualified recommendation. | Kimi: While the critic finds the book tedious and didactic with one-dimensional characters, they praise the fresh performances (particularly Wolfe and Szot), clever song integration, and entrancing production values, ultimately recommending the show for its youthful energy and catchy score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,28 +51,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:57:37.732Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T01:42:47.501Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 78,
+    "openaiScore": 76,
     "geminiScore": 75,
+    "kimiScore": 77,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 16,
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "rescoreReason": "low-conf: prompt=5.0.0, delta=13, upgrading to V5 + 3 models",
   "previousLlmScore": 69,

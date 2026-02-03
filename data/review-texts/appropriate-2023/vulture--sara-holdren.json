@@ -9,15 +9,15 @@
   "showScoreExcerpt": "“Neugebauer is doing fine work with the whole ensemble, and Paulson and Stoll provide a supercharged core.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 93,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
+    "score": 93,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic delivers an extraordinarily detailed, intellectually engaged review that praises every aspect - writing, direction, and performances. The analysis is deeply appreciative of the play's complexity and craft, with no meaningful reservations expressed. | GPT-4o: The review is overwhelmingly positive, praising the direction, performances, and writing with a deep appreciation for the complexity and execution of the production. The critic's admiration for the play's ability to tackle difficult themes with nuance and depth indicates a strong recommendation. | Gemini: The review praises the performances and direction, highlighting the play's complexity and the cast's ability to make the characters relatable despite their flaws. While acknowledging the challenging subject matter, the critic ultimately recommends seeing the production.",
+    "keyPhrases": [
+      {
+        "quote": "Jacobs-Jenkins's writing lives entirely and electrically in the space of 'and.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Extensive, deeply analytical praise throughout. The critic demonstrates profound engagement with both the play's artistry and its moral complexity, calling it 'sharp,' praising the 'supercharged core' performances, and describing the playwright's 'ludic precision.' This is clearly a rave review that treats the work as essential theater. | Gemini: The review praises the direction and performances, highlighting the risk taken in portraying the characters with depth. While acknowledging the play's challenging themes, the critic ultimately recommends seeing it for its insightful portrayal of complex characters. | Kimi: The review offers unqualified praise for Jacobs-Jenkins's 'electric' writing, Neugebauer's sensitive direction, and the 'absolutely fearsome' performances of Paulson and Stoll. The critic engages deeply with the work's complexity, finding the production devastatingly credible and sharp, with no significant reservations expressed.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,21 +43,22 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:22:49.054Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:20:36.350Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 92,
-    "geminiScore": 80,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 93,
     "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
     "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,

@@ -109,8 +109,13 @@
   ],
   "sourceMethod": "scrapingbee",
   "textQualityOverride": "batch-fix-2026-01-30",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 560,
   "rescoreCompletedAt": "2026-02-02T03:26:24.410Z",
-  "isFullReview": false
+  "isFullReview": false,
+  "rejectedAt": "2026-02-03T05:19:09.343Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be website navigation menus and repeated show listings, not a review of any specific production; openai: This text appears to be a list of show titles and venues, not a review.; kimi: This text consists primarily of website navigation menus (repeated lists of show titles, 'Skip to content' links, and venue information) rather than actual review content. No evaluative critique of the show is present.",
+  "promptVersion": "5.2.0"
 }

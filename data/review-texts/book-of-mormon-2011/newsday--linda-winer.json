@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review uses unmistakably enthusiastic language like 'exhilarating' and 'uncompromising in production standards' with no qualifying negatives, indicating a strong recommendation despite the limited excerpt. | GPT-4o: The review uses highly enthusiastic language, describing the musical as 'exhilarating', 'revolutionary', and 'uncompromising', which strongly indicates a rave review. | Gemini: The review uses highly positive language such as \"exhilarating,\" \"revolutionary,\" and \"uncompromising,\" indicating a rave review.",
+    "keyPhrases": [
+      {
+        "quote": "An exhilarating Broadway musical at once revolutionary and classic, funny and obscene, uncompromising in production standards and unafraid of just about anything else.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Strong superlatives like 'exhilarating', 'revolutionary', and 'uncompromising in production standards' indicate enthusiastic praise. However, confidence is medium due to excerpt-only format - the full review verdict may have nuances not captured here. | GPT-4o: The excerpt uses strong positive language ('exhilarating', 'revolutionary', 'uncompromising') indicating a highly favorable view. However, the lack of full context lowers confidence. | Gemini: The review excerpt uses strong positive language such as \"exhilarating\", \"revolutionary\", and \"uncompromising\", indicating a rave review. | Kimi: The excerpt uses unambiguous superlatives ('exhilarating,' 'revolutionary') and praises the show's boldness and high production standards, indicating strong enthusiasm despite the limited text available.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:47:05.860Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:43:18.273Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 91,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 90,
-    "geminiScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 88,
+    "kimiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 2,
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "showScoreExcerpt": "\"An exhilarating Broadway musical at once revolutionary and classic, funny and obscene, uncompromising in production standards and unafraid of just about anything else.\"",
   "contentTier": "truncated",

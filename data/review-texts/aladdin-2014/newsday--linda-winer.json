@@ -16,7 +16,7 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 79,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 74,
       "high": 84
@@ -36,7 +36,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('awesome', 'enjoyable', 'cheerful') with enthusiasm for the production. However, confidence is medium due to limited excerpt that may not capture the full verdict. | GPT-4o: The review excerpt describes the production as 'awesome' and 'an enjoyable throwback,' indicating a positive reception. However, due to the text quality warning and lack of full context, confidence is low. | Gemini: The review uses positive language like \"awesome\", \"enjoyable\", and \"cheerful production\", indicating a positive recommendation. The \"almost modest\" suggests some reservations, but overall the tone is positive. | Kimi: The critic enthusiastically praises the spectacle as 'awesome' and describes Casey Nicholaw's production as 'cheerful' and an 'enjoyable throwback to old-time musical comedy,' clearly recommending the show.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language throughout with 'awesome,' 'enjoyable,' and praise for the production's scale and direction. However, confidence is medium due to truncated text that may not capture full verdict. | GPT-4o: The review praises the production as 'awesome' and 'enjoyable,' highlighting its cheerful nature and effective translation of the animated film to stage. The positive tone and specific praise for the production's scale and style indicate a strong recommendation. | Gemini: The review uses positive language like \"awesome,\" \"enjoyable,\" and \"cheerful.\" While it doesn't express overwhelming enthusiasm, it clearly recommends seeing the show, placing it in the Positive bucket. The excerpted nature of the review lowers the confidence. | Kimi: The critic uses enthusiastic language ('awesome', 'awesomeness', 'enjoyable') to praise the production's blend of spectacle and human scale, clearly recommending the show despite the excerpt format.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,16 +46,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:35:34.271Z",
+    "scoredAt": "2026-02-03T01:13:47.029Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 79,
-    "previousVersion": "5.1.0"
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 77,
-    "openaiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 82,
     "geminiScore": 78,
     "kimiScore": 80,
     "claudeBucket": "Positive",

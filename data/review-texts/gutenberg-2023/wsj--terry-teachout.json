@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is consistently funny, and Mr. Gad and Mr. Rannells are both accomplished musical-comedy performers who know how to put a song across.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is consistently funny, and Mr. Gad and Mr. Rannells are both accomplished musical-comedy performers who know how to put a song across.",
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the show as consistently funny with accomplished performers, indicating a positive recommendation, though the excerpt is brief and may not capture the full critical assessment. | GPT-4o: The review highlights the consistent humor of the show and praises the performances of the lead actors, suggesting a strong positive recommendation. | Gemini: The review highlights positive aspects like humor and strong performances, suggesting a recommendation, but lacks the enthusiasm for a 'Rave' classification.",
+    "keyPhrases": [
+      {
+        "quote": "The show is consistently funny, and Mr. Gad and Mr. Rannells are both accomplished musical-comedy performers who know how to put a song across.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising performances and humor suggests positive assessment, but limited text and qualified language ('consistently funny' rather than superlatives) indicates modest recommendation rather than strong enthusiasm. | GPT-4o: The excerpt praises the show's humor and the performances of the lead actors, indicating a positive sentiment. However, due to the single excerpt warning, the confidence is low, and the score is set at the lower end of the Positive range. | Gemini: The review excerpt praises the show's humor and the performers' abilities, suggesting a positive experience. However, due to the limited text, the confidence is low. | Kimi: Single excerpt offers clear praise for the show's humor and lead performances, warranting a score in the upper Positive range per instructions for clearly positive isolated quotes, though confidence is reduced due to limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:58:32.042Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:02:54.752Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 75,
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "contentTierReason": "fullText was copy of excerpt from web-search import",

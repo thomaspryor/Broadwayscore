@@ -9,15 +9,15 @@
   "bwwExcerpt": "One strength of the 90-minute intermissionless piece is its refusal to offer any easy explanation of addiction’s origins, on the assumption that explanations don’t carry much meaning when the alcoholic’s throes are what need to be immediately addressed. When Kirsten and Joe first spend time together at a waterfront, she tells him that she prefers to watch the water farther out. The water immediately below her, she insists, is too dirty. That’s all the rationale needed to set the parameters for t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 77,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The use of 'beautifully executed' suggests positive assessment, but with only a fragment available and quotes around 'beautifully,' the full context and strength of recommendation is unclear. | GPT-4o: The use of the word 'beautifully' suggests a positive assessment of the musical's execution, indicating a recommendation. However, due to the lack of full context, the confidence is medium. | Gemini: The review excerpt uses the word \"beautifully\" to describe the execution of the musical, indicating a positive, but not rave, assessment.",
+    "keyPhrases": [
+      {
+        "quote": "'Days of Wine and Roses,' a 'beautifully' executed musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt provides a positive descriptor ('beautifully executed'), indicating a recommendation. However, due to the limited text and lack of full context, the confidence is low. | Gemini: The quote indicates a positive assessment, but the limited text and excerpt-only warning suggest a lower confidence score. | Kimi: Brief excerpt offers unambiguous praise for the production's execution ('beautifully executed'), indicating a solid positive assessment, though limited context prevents higher confidence or score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,22 +43,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:50:00.345Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:41:29.175Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 65,
-    "previousVersion": "3.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 80,
+    "claudeScore": null,
+    "openaiScore": 75,
     "geminiScore": 75,
-    "claudeBucket": "Positive",
+    "kimiScore": 76,
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

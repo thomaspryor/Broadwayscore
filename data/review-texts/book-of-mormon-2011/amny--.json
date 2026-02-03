@@ -9,15 +9,15 @@
   "fullText": "Photo credit: \"The Book of Mormon\" (Joan Marcus)\n\nDon't expect to find any members of the Mormon faith protesting outside \"The Book of Mormon,\" a tuneful, unabashedly silly and absolutely uproarious new musical by Matt Stone and Trey Parker.\n\nAssisted by \"Avenue Q\" composer Robert Lopez and \"Drowsy Chaperone\" director Casey Nicholaw, the \"South Park\" creators parody Mormonism while also celebrating the power of religion — any religion — to give people hope in the face of despair.\n\nThe story begins with Elder Price and Elder Cunningham — two male Mormon teens from Salt Lake City — finishing their missionary training and being shipped off to Uganda to try to baptize the inhabitants of a small village.\n\nOnce there, they learn that Africa is nothing like \"The Lion King.\" They are confronted with warlords, death, AIDS and famine. In a brilliant production number, the Ugandans explain their philosophy of \"Hasa Diga Eebowai,\" the translation of which cannot be printed in this publication.\n\nPrice, the cockiest student of his class, is disheartened by his inability to make a difference.\n\nCunningham, an outcast who has yet to actually read the Book of Mormon, impulsively starts to preach his own religious teachings that derive from \"Star Wars\" and \"Lord of the Rings.\" His stories, designed to speak directly to his new audience, are surprisingly effective.\n\nWhile the plot is somewhat thin and occasionally feels like an overextended sketch, the musical ultimately comes across as fresh, smart and heartfelt.\n\nAs you'd probably expect, the show's potty-mouth creators do not refrain from using explicit language. But in spite of the curse words, \"The Book of Mormon\" is an upbeat, even sentimental musical that combines Rodgers & Hammerstein, \"Les Miz\"-style powerhouse ballads and tap dancing.\n\nThe cast, led by Josh Gad, Andrew Rannells and Nikki M. James, is uniformly excellent and marked by endless energy and enthusiasm.\n\nIf you go: \"The Book of Mormon\" plays an open run at the Eugene O'Neill Theatre. 230 W. 49th St., 212-239-6200, bookofmormononbroadway.com.\n\nDr. Dre says the hologram Tupac may come back.\n\nCool!\n \n Yuck, kinda creepy\n \n Still waiting for Biggie's turn!\n\nHave a comment or news tip? We want to hear it! Find us on Twitter and Facebook.\n\n240 W 35th St.,9th Floor NY, NY 10001\n\n646.293.9499 | Fax: 212.239.2828Contact Us am-letters@am-ny.com",
   "isFullReview": true,
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 80,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses strongly positive descriptors like 'uproarious' and 'tuneful', but with only one excerpt available, I'm scoring conservatively within the positive range. | GPT-4o: The review uses highly positive language such as 'tuneful,' 'unabashedly silly,' and 'absolutely uproarious,' suggesting a strong recommendation. The lack of protest from the Mormon faith is mentioned humorously, implying the show's success in handling its subject matter. The single excerpt warning suggests scoring conservatively within the bucket. | Gemini: The excerpt describes the musical as \"tuneful, unabashedly silly and absolutely uproarious,\" which suggests a positive experience. Given the single excerpt warning, I'm scoring conservatively within the positive range.",
+    "keyPhrases": [
+      {
+        "quote": "the musical ultimately comes across as fresh, smart and heartfelt",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic finds the show 'absolutely uproarious,' 'fresh, smart and heartfelt' with 'uniformly excellent' cast, but notes the plot is 'somewhat thin' and 'occasionally feels like an overextended sketch.' Clear positive recommendation despite reservations. | GPT-4o: The review praises the musical as 'uproarious,' 'fresh, smart and heartfelt,' and highlights the excellent cast. Despite noting a 'thin' plot, the overall tone is highly positive, aligning with the aggregator's 'Up' verdict. | Gemini: The review is generally positive, describing the show as \"uproarious,\" \"fresh, smart and heartfelt.\" Despite mentioning a thin plot, the overall tone suggests a recommendation. | Kimi: Despite noting the plot is somewhat thin, the reviewer offers enthusiastic praise calling the show 'absolutely uproarious,' 'brilliant,' and the cast 'uniformly excellent,' clearly recommending the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,29 +43,31 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:52:10.871Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:37:35.873Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 88,
-    "geminiScore": 75,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 382,
@@ -85,5 +93,6 @@
   "duplicateTextOf": "amny--matt-windman.json",
   "contentTier": "complete",
   "wordCount": 382,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-03T02:37:35.873Z"
 }

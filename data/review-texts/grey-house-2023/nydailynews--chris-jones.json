@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic praises the artistic choices and backing of the young writer, but expresses significant concerns about audience comprehension and expectations, suggesting a genuinely mixed assessment with both positive and negative elements. | GPT-4o: The excerpt suggests a mixed reception with appreciation for the writer's boldness, but also notes potential audience confusion and question marks, indicating a mixed but interesting experience. | Gemini: The reviewer seems to appreciate the play's unconventional nature and the director's support, but also anticipates audience confusion, suggesting a mildly positive recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "Good for him, and for Mantello for backing this young writer all the way, but I bet there will be plenty of question marks on the audience feedback surveys.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows appreciation for the writer and director's artistic choices but expresses concern about audience confusion and reception. The 'good for him' suggests artistic respect but predicting audience confusion indicates mixed overall assessment. | GPT-4o: The excerpt indicates a mixed reaction, highlighting the play's unconventional nature and potential audience confusion. While there is praise for the writer's boldness, the overall impression suggests a lack of clarity and potential audience disconnect. | Gemini: The review excerpt suggests the play is unconventional and may not appeal to everyone, indicating a mixed reception. The critic acknowledges the writer's choices but anticipates audience confusion. | Kimi: The excerpt praises the playwright's refusal to pander and the director's commitment to the young writer, indicating respect for the artistic vision, despite acknowledging the play's strangeness may confuse audiences. With only one excerpt available, this falls in the lower Positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:55:32.572Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:27:29.704Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 72,
+    "openaiScore": 67,
+    "geminiScore": 62,
+    "kimiScore": 73,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

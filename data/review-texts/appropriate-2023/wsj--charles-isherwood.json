@@ -9,26 +9,32 @@
   "showScoreExcerpt": "\"This being a drama firmly grounded in the hallowed miserable-American-family tradition, by the conclusion all the secrets have tumbled out, and the ugly bones of long-held resentments have been picked over. And over, and over—the play runs nearly three hours.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/appropriate-broadway",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 53,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 59,
+    "score": 53,
     "confidence": "medium",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 48,
+      "high": 58
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic emphasizes repetitive, tedious plotting and excessive length as major flaws. The dismissive tone about secrets being 'picked over. And over, and over' suggests frustration with the production's pacing and structure. | GPT-4o: The excerpt suggests a critique of the play's length and repetitive nature, indicating a mixed reception. The lack of positive language and the focus on the play's exhaustive nature suggest neither a strong recommendation nor a strong discouragement. | Gemini: The review excerpt suggests the play is long and repetitive, which indicates a mixed or slightly negative sentiment. Given the single excerpt warning, I'm scoring it in the middle of the 'Mixed' bucket.",
+    "keyPhrases": [
+      {
+        "quote": "the play runs nearly three hours",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The excerpt criticizes the play as repetitive ('And over, and over') and overlong (nearly three hours), suggesting tedium. However, with only one excerpt available, the full verdict may be more nuanced. | GPT-4o: The excerpt criticizes the play for being overly long and repetitive in its exploration of family drama, suggesting a negative view. However, with only one excerpt, the confidence is low. | Gemini: The excerpt describes the play as a typical miserable family drama, suggesting a somewhat negative or at least unenthusiastic view. The length is also mentioned negatively. | Kimi: While acknowledging the play's place in the 'miserable-American-family' tradition, the critic emphasizes excessive repetition ('And over, and over') and criticizes the nearly three-hour runtime, suggesting the drama becomes tedious. With only one excerpt available, confidence is low. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:49:09.700Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:21:35.968Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 59,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 60,
-    "geminiScore": 58,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 60,
+    "kimiScore": 60,
     "claudeBucket": "Negative",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 15,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
   },
   "contentTier": "truncated",
   "wordCount": 267,

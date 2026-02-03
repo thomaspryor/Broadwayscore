@@ -9,15 +9,15 @@
   "bwwExcerpt": "Pay attention to those loud, annoying cicadas – they seem to have a story to tell. At least they do in Branden Jacobs-Jenkins superb, marvelously performed Appropriate, the Second Stage production opening tonight at the Helen Hayes Theater with one of the best casts – headed by an astonishing Sarah Paulson – on Broadway. A blistering family drama directed by Lila Neugebauer (easily matching her exemplary work in 2018’s The Waverly Gallery), Appropriate is a wicked cacophony of nerve-wrenching my",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-APPROPRIATE-Opens-on-Broadway-20231217",
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 93,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review uses multiple superlative terms ('superb', 'astonishing', 'exemplary', 'one of the best casts') and praises every element from writing to direction to performances, concluding with high praise for the ending's emotional force and stagecraft. | GPT-4o: The review is filled with superlatives such as 'superb', 'marvelously performed', and 'astonishing', indicating a strong, enthusiastic recommendation. The critic praises the direction, cast, and emotional impact, suggesting it is a must-see production. | Gemini: The review uses extremely positive language like \"superb,\" \"marvelously performed,\" \"one of the best casts,\" and \"astonishing Sarah Paulson,\" clearly indicating a rave review.",
+    "keyPhrases": [
+      {
+        "quote": "A blistering family drama directed by Lila Neugebauer, Appropriate is a wicked cacophony of nerve-wrenching mystery, old resentments and laugh-out-loud comedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'superb,' 'astonishing,' 'exemplary,' and 'stunning.' Critic praises every element - writing, direction, performances, design, and stagecraft - with no meaningful reservations. | GPT-4o: The review is filled with superlatives and praises the production, direction, and performances, particularly highlighting the emotional force and stagecraft. The critic uses strong positive language, indicating a must-see recommendation. | Gemini: The review is overwhelmingly positive, praising the writing, direction, performances, and stagecraft. The critic uses strong positive language like \"superb\" and \"marvelously performed\" and highlights the strength of the cast. | Kimi: Unqualified praise across all production elements with superlatives like 'superb,' 'astonishing,' and 'stunning'; the critic praises the writing, direction, cast, and design without reservation, calling it one of the best casts on Broadway.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:49:06.510Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:08:07.688Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 91,
+    "previousScore": 93,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
-    "geminiScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 93,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“...’Appropriate’ provides an ending that’s remarkable in its emotional force and stunning in its stagecraft. Neugebauer, Jacobs-Jenkins and their very fine cast resurrect the spirits of history and leave them abandoned, clamorous, implacable and going nowhere anytime soon.”",

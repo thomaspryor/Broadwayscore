@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Josh Gad and Andrew Rannells are absolutely delightful as Doug and Bud, two hapless dreamers who believe they've created the next great Broadway musical.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Josh Gad and Andrew Rannells are absolutely delightful as Doug and Bud, two hapless dreamers who believe they've created the next great Broadway musical.",
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges flaws (Gad's shtick has fallen out of favor, humor could be nastier) but praises the performances, finds the show entertaining, and concludes positively with 'Here, one could find a worse deal' - indicating it's worth seeing despite imperfections. | GPT-4o: The review acknowledges some flaws, such as the humor needing more edge, but overall praises the performances and the show's commentary on musical theatre. The recommendation is clear, albeit with some reservations about the humor. | Gemini: The review is generally positive, highlighting the talent and the show's comedic elements, but notes some areas for improvement. The final line suggests it's worth seeing despite its flaws.",
+    "keyPhrases": [
+      {
+        "quote": "The talent onstage is unimpeachable, and their characters' grief at the state of Broadway finances extends far beyond backroom production teams.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds the show 'perfectly silly' with 'unimpeachable' talent, catchy songs, and effective comedy, though notes it could be elevated from 'good to great' with more edge. The positive outweighs the reservations. | Gemini: The review is generally positive, highlighting the talent of the performers and the show's commentary on musical theatre. However, it also notes that the humor could be nastier to elevate it from good to great. | Kimi: The reviewer praises the performances as 'unimpeachable' and calls the show a 'sweet love letter to musical theatre,' but explicitly states it could have been elevated from 'good to great' with nastier humor, offering a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,22 +47,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:57:56.534Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:55:39.282Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 77,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

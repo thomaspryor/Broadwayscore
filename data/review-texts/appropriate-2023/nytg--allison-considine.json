@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: This is explicitly labeled a 'five-star review' and concludes with clear recommendation language. The critic praises every element from performances to design, calling it a 'thrilling match' with 'stellar cast' and 'remarkable' performances. | GPT-4o: The review is overwhelmingly positive, highlighting the play's subversive nature, stellar cast, and remarkable design elements. The critic's use of 'five-star review' and 'well worth the buzz' strongly indicates a rave recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, cast, design, and writing. The concluding sentence explicitly states the show is \"well worth the buzz,\" indicating a recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Appropriate is well worth the buzz.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Five-star review with consistent praise throughout - 'thrilling match', 'stellar cast', 'remarkable display of range', 'standout transition', and concluding 'well worth the buzz'. No significant reservations expressed. | GPT-4o: The review is a five-star rating with consistent praise for the writing, direction, performances, and design. The critic uses superlatives like 'stellar cast' and 'remarkable display of range,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, cast, design, and writing. The final line, \"Appropriate is well worth the buzz,\" seals the positive recommendation. | Kimi: The review explicitly identifies itself as a five-star review and offers unqualified praise for the script, performances, and design, calling the production 'well worth the buzz' with no reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:47:13.331Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:15:10.889Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "3.0.0"
+    "previousScore": 93,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 90,
     "openaiScore": 95,
-    "geminiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "“The sound design, by Bray Poor and Will Pickens, transports audiences into the sweltering discomfort of the South with the overpowering sound of the cicadas that continue throughout the show. ‘Appropriate’ is well worth the buzz.”",

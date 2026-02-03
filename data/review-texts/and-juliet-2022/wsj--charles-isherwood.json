@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This jukebox musical built around the songs of Max Martin is a candy-colored confection that manages to be both silly and surprisingly sweet.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "This jukebox musical built around the songs of Max Martin is a candy-colored confection that manages to be both silly and surprisingly sweet.",
   "needsScoring": true,
   "llmScore": {
-    "score": 75,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review describes it as a 'candy-colored confection' that is 'surprisingly sweet,' indicating enjoyment despite acknowledging its silliness. The positive tone suggests a recommendation, though not enthusiastic. | GPT-4o: The review describes the musical as 'silly and surprisingly sweet,' which suggests an enjoyable experience despite its light nature. The tone is positive, indicating a recommendation. | Gemini: The review uses positive language like \"sweet\" and describes the show as a \"confection,\" indicating a recommendation, albeit perhaps with some reservations due to the \"silly\" aspect.",
+    "keyPhrases": [
+      {
+        "quote": "This jukebox musical built around the songs of Max Martin is a candy-colored confection that manages to be both silly and surprisingly sweet.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show as 'surprisingly sweet' which is positive, but 'silly' and 'candy-colored confection' suggest lighter entertainment rather than strong praise. With only one curated quote available, confidence is low and score reflects cautious positive assessment. | GPT-4o: The excerpt describes the show as 'silly and surprisingly sweet,' indicating a positive tone. However, the single excerpt warning suggests the possibility of cherry-picking, so the confidence is low. | Gemini: The review describes the show as a \"candy-colored confection\" that is \"silly and surprisingly sweet,\" indicating a positive, though perhaps not overwhelmingly enthusiastic, recommendation. Given the single excerpt, a mid-range positive score is appropriate. | Kimi: The excerpt offers unqualified praise, describing the show as a delightful 'confection' that succeeds in being 'surprisingly sweet,' indicating a clear recommendation. Score reflects the upper range for a clearly positive single excerpt, with low confidence due to limited text availability.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:58:01.701Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:04:44.283Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 78,
-    "geminiScore": 75,
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "contentTierReason": "fullText was copy of excerpt from web-search import",

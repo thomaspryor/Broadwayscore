@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening hesitations and various criticisms (calling it 'silly,' critiquing choreography, noting plot issues), the critic ultimately admits to being 'won over' and praises key performances and the Max Martin score's excellence. | GPT-4o: The review expresses initial hesitation but acknowledges being won over by the show's charm. However, it also highlights several criticisms, such as the 'overproduced theme park diversion' feel and 'nonsensical wokeness'. The overall tone suggests a mixed experience with some enjoyable elements. | Gemini: The review expresses initial hesitation but ultimately admits to being won over by the show's enchantment. While pointing out flaws like overproduction and nonsensical wokeness, the reviewer praises the performances of Lorna Courtney and Betsy Wolfe, as well as the score. The overall tone suggests a positive, albeit qualified, recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "I'll cave to having been won over by its in-your-face enchantment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite initial hesitation and multiple criticisms (basic choreography, nonsensical wokeness, plot issues), the critic is ultimately won over by the performances and spectacle, calling it enchanting and praising the leads who 'put the show on their able backs.' | GPT-4o: The review expresses mixed feelings, acknowledging the show's enchantment and strong performances but criticizing its premise and execution as silly and overproduced. The tone suggests neither a strong recommendation nor a clear dismissal. | Gemini: The review is mostly positive, despite some reservations about the show's silliness and wokeness. The critic admits to being won over by its enchantment, and praises the performances of Courtney and Wolfe. | Kimi: Though the critic finds the show silly, overproduced, and uneven, they are ultimately won over by the strong performances (particularly Lorna Courtney and Betsy Wolfe) and the excellent Max Martin score, recommending it as fun entertainment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:59:01.473Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:00:02.810Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
-    "previousVersion": "5.0.0"
+    "previousScore": 75,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 75,
     "openaiScore": 65,
-    "geminiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "textFetchedAt": "2026-01-25T13:47:31.587Z",
   "textFetchMethod": "playwright",

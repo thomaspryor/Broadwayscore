@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "This puzzling, undercooked, but still arresting play, set in 1977, knows and accords to the genre conventions from whence it derives.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 63,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -33,8 +33,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges being engaged and tense throughout, praises individual performances (especially Metcalf), and appreciates the technical elements, but ultimately finds the play 'undercooked,' confusing, and irritating rather than thrilling, with an unsatisfying ending that doesn't execute properly. | GPT-4o: The review acknowledges the play's arresting and tense qualities but criticizes its lack of clarity and unsatisfying payoff. The critic finds the production puzzling and ultimately irritating, indicating a mixed reception. | Gemini: The review highlights both positive and negative aspects, ultimately concluding that the show is strange and baffling, with tension but also grating elements. The reviewer doesn't explicitly recommend or discourage seeing it.",
+    "keyPhrases": [
+      {
+        "quote": "That is not to say a bad time was had, but rather, for good and ill, Grey House is the strangest show on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds the play 'puzzling, undercooked, but still arresting' and acknowledges being 'tense in your seat for the duration' while praising individual performances. However, they criticize the unclear storytelling, poor execution of the ending, and note that needing email explanations suggests the play isn't being understood. The overall tone is neither recommendation nor discouragement. | GPT-4o: The review describes the play as 'puzzling, undercooked, but still arresting' with both positive and negative elements. The critic notes the actors' hard work but criticizes the play's lack of clarity and unsatisfying conclusion, resulting in a mixed verdict. | Gemini: The review is mixed, praising the atmosphere and acting but criticizing the confusing plot and unsatisfying ending. The critic uses phrases like \"puzzling, undercooked, but still arresting\" and notes that the play \"irritates rather than thrills\". | Kimi: While praising Laurie Metcalf and Sophia Anne Caruso as 'masterclass' performers and acknowledging effective technical elements, the critic finds the play 'undercooked,' confusing enough to require a post-show explanatory email, and ultimately 'irritates rather than thrills' with a payoff that prompts 'All that for this?'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +49,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:55:03.442Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:21:41.426Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": 60,
     "geminiScore": 62,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 57,

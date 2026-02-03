@@ -6,7 +6,7 @@
   "url": "https://www.vulture.com/2019/12/re-reviewing-the-book-of-mormon-and-hamilton-in-2019.html",
   "publishDate": "2011-03-24",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 61,
   "source": "reviews-json-stub",
   "needsFullText": true,
   "archivePath": "data/archives/reviews/book-of-mormon-2011/vulture--jesse-green_2026-02-01.html",
@@ -16,11 +16,11 @@
   "scoreConfidence": "medium",
   "showScoreExcerpt": "\"The Book of Mormon, arriving after months of hype, somehow delivers even more than its ridiculously felicitous advance buzz promised: It’s an often uproarious, spiritually up-tempo satire not just of Mormonism, and not just religion in general, but of (no kidding) Occidental civilization itself.\"",
   "llmScore": {
-    "score": 63,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -30,8 +30,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges loving both shows originally but finds significant flaws upon revisiting - Mormon's 'grimly unfunny' racism and Hamilton's casting issues and hollowed-out audience experience. Neither strongly recommended nor discouraged. | GPT-4o: The review reflects a mixed opinion on both shows. While the critic acknowledges the initial impact and strengths of both productions, they express significant reservations about how The Book of Mormon has aged, particularly its racial insensitivity. The review of Hamilton also notes a decline in energy and audience engagement over time. The overall tone suggests appreciation for past achievements but disappointment with current iterations. | Gemini: The review expresses disappointment in both shows, noting that The Book of Mormon hasn't aged well due to its racist jokes and that Hamilton has lost some of its original impact due to casting changes and a shift in audience dynamics. While acknowledging the shows still have redeeming qualities, the overall tone is mixed, suggesting they are not as impactful as they once were.",
+    "keyPhrases": [
+      {
+        "quote": "Both shows have aged in different ways, revealing flaws that complicate their earlier triumphs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Green acknowledges both shows remain technically proficient with moments of brilliance, but expresses significant disappointment about aging issues - racism in Mormon, casting problems in Hamilton, and changed cultural context. Neither enthusiastically recommended nor dismissed. | Gemini: The review expresses both praise and disappointment with the current production of Hamilton, noting a decline in firework charisma and a sense of hollowness, while still acknowledging the brilliance of Miranda's songs and the show's overall impact. | Kimi: While acknowledging the technical proficiency of both productions and the brilliance of the original material, the critic finds The Book of Mormon has aged into 'painful racism' and Hamilton has developed a 'hollowness' in its current commercialized form, suggesting both shows have lost their original impact and relevance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,22 +46,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:23:33.149Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:49:17.359Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 61,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": null,
     "geminiScore": 62,
+    "kimiScore": 58,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -27,13 +27,13 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "assignedScore": 78,
+  "assignedScore": 81,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 81,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -43,8 +43,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review concludes positively, praising the new book, direction, and performances while acknowledging this revival has found success where the original didn't. The 'magic happening on Broadway' opening and 'winning strategy' conclusion clearly recommend seeing it. | GPT-4o: The review is highly positive, praising the new book, performances, direction, and choreography. The critic describes the production as finding its 'winning strategy,' suggesting a strong recommendation. | Gemini: The review is generally positive, highlighting the strengths of the revival and its winning strategy. While acknowledging the star power of Tveit and Michele, it emphasizes the importance of the ensemble and overall production, suggesting a worthwhile experience.",
+    "keyPhrases": [
+      {
+        "quote": "Broadway's Chess may spotlight its stars, but this revival proves every piece matters in a Cold War musical that finally finds its winning strategy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise throughout with phrases like 'there's some magic happening,' 'deliciously dry performance,' 'electric,' and 'formidable collaborator.' The concluding verdict declares this revival has found its 'winning strategy,' indicating enthusiastic recommendation. | GPT-4o: The review praises the new production of Chess for its strong performances, direction, and choreography, describing it as a 'winning strategy.' The critic highlights the engaging elements and suggests that the revival is successful, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the ensemble work, choreography, and the show finally finding its winning strategy. While acknowledging the draw of the stars, it emphasizes the importance of every element, indicating a solid but not overwhelmingly enthusiastic recommendation. | Kimi: The review is overwhelmingly enthusiastic, praising the new book, performances, and direction as 'magic' and a 'winning strategy' with only minor caveats.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,29 +59,31 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:36:42.362Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:15:12.017Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
-    "previousVersion": "5.0.0"
+    "previousScore": 78,
+    "previousVersion": "5.1.0"
   },
   "contentTier": "complete",
   "contentTierReason": "Full review text",
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
+    "claudeScore": 82,
+    "openaiScore": 82,
     "geminiScore": 78,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   }
 }

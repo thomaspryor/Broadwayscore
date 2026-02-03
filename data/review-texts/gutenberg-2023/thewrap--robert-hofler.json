@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 40,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "There is a legendary anecdote, perhaps apocryphal but probably not, that after a performance of “The Addams Family” on Broadway, Elaine Stritch visited Nathan Lane backstage and told the star, “They’re not paying you enough.” That goes double for the musical “Gutenberg!,” which opened Thursday at the James Earl Jones Theatre. It manages to waste the talent of not one but two very talented performers.",
@@ -19,11 +19,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 41,
+    "score": 40,
     "confidence": "medium",
     "range": {
-      "low": 36,
-      "high": 46
+      "low": 35,
+      "high": 45
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -33,8 +33,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic clearly states the musical is 'absolutely dreadful' with 'witless and relentlessly repetitive' material, explicitly saying 'Gutenberg!' is not' worth sitting through despite praising the performers' efforts. | GPT-4o: The review is overwhelmingly negative, criticizing the musical's witless songs, repetitive book, and incomprehensible story. The critic explicitly states that 'Gutenberg!' is not worth sitting through, indicating a strong recommendation to avoid the show. | Gemini: The review is overwhelmingly negative, criticizing the writing, story, and overall entertainment value. The critic explicitly states that the show is not worth seeing.",
+    "keyPhrases": [
+      {
+        "quote": "They're asking us to be entertained by a two-hander staging of an absolutely dreadful musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic calls the musical 'absolutely dreadful' with 'witless and relentlessly repetitive' songs, despite praising the leads' performances and chemistry. Clear negative recommendation. | GPT-4o: The review is overwhelmingly negative, criticizing the show's book, songs, and concept as 'witless' and 'repetitive'. Despite acknowledging the talent of the performers, it ultimately advises against seeing the show. | Gemini: The review is largely negative, describing the musical as dreadful, witless, and relentlessly repetitive. While praising the performers' efforts, the critic ultimately does not recommend the show. | Kimi: While praising the lead performers' chemistry and commitment, the critic condemns the material as 'witless' and 'relentlessly repetitive,' explicitly stating the show is not worth sitting through and compares it to one of the worst Broadway musicals of the century.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +49,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:58:04.813Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:59:10.234Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 44,
+    "previousScore": 41,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
+    "claudeScore": 38,
     "openaiScore": 20,
     "geminiScore": 40,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Pan",
     "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
     "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 25,

@@ -31,13 +31,13 @@
   ],
   "textStatus": "partial",
   "sourceMethod": "playwright",
-  "assignedScore": 89,
+  "assignedScore": 93,
   "llmScore": {
-    "score": 89,
+    "score": 93,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -47,8 +47,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite truncated text, the review opens with clear superlatives ('superb', 'marvelously performed', 'astonishing', 'one of the best casts on Broadway') and consistently praises all elements including direction, performances, and stagecraft throughout. | GPT-4o: The review uses highly positive language to describe the play, particularly praising the performances, direction, and emotional impact. Despite the truncation warning, the text strongly suggests a rave review, emphasizing the play's powerful themes and outstanding production quality. | Gemini: Despite being truncated, the review contains strong positive language, praising the performances and direction. The phrase \"superb, marvelously performed\" indicates a positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "At least they do in Branden Jacobs-Jenkins superb, marvelously performed Appropriate, the Second Stage production opening tonight at the Helen Hayes Theater with one of the best casts – headed by an astonishing Sarah Paulson – on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being truncated, the review contains overwhelming praise throughout: 'superb,' 'marvelously performed,' 'one of the best casts,' 'astonishing,' 'blistering,' 'exemplary work,' 'wicked cacophony,' 'stunning coup de théâtre,' and 'remarkable in its emotional force.' The critic consistently praises every element from performances to direction to design. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, praising the writing, performances, and direction. The critic uses strong positive language like \"superb\", \"marvelously performed\", and \"astonishing\". | Kimi: The review delivers unqualified praise for the production, describing it as 'superb' and 'marvelously performed' with an 'astonishing' Sarah Paulson leading an exemplary ensemble. The direction, design, and writing are all celebrated with superlatives, and the conclusion lauds the 'stunning' stagecraft and emotional force.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,20 +63,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:55:26.917Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:11:06.604Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 89,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 80,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 94,
     "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 10,
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -34,7 +34,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic calls it an 'uneven production' and notes many problems (dim lighting, stiff acting, questionable choices) but praises specific elements like Strong's performance and the town meeting sequence. No clear recommendation either way. | GPT-4o: The review highlights both strengths and weaknesses of the production. While it praises certain sequences and performances, it also notes questionable design choices and stiff acting, leading to a mixed overall impression. | Gemini: The review highlights both positive and negative aspects of the production. While praising Strong and Imperioli's performances and the town meeting sequence, it also criticizes the design and directorial choices, as well as the stiff acting in the first half. | Kimi: The reviewer praises Strong's performance and the town meeting scene but criticizes questionable design choices and stiff acting in the first half, explicitly calling it an 'uneven production' despite its timely relevance.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic calls it an 'uneven production' and criticizes the first half's design choices and stiff acting, but praises the town meeting sequence and environmental theater aspects. No clear recommendation either way. | GPT-4o: The review highlights both strengths and weaknesses of the production, noting questionable design choices and stiff acting, but also praises specific scenes like the town meeting sequence. The overall tone suggests a mixed experience with some standout moments. | Gemini: The review is mixed, praising the town meeting sequence but criticizing the design, direction, and acting in the first half. The overall assessment is that it's an uneven production. | Kimi: While the critic praises Jeremy Strong's performance and the immersive town meeting sequence as 'great environmental theater,' they explicitly label the show an 'uneven production' and criticize the first half's 'questionable design choices,' dim lighting, and 'stiff and stodgy' acting, offering no clear recommendation to attend.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,18 +44,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-02T23:51:53.942Z",
+    "scoredAt": "2026-02-03T01:26:32.993Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 63,
-    "previousVersion": "5.1.0"
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 63,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",

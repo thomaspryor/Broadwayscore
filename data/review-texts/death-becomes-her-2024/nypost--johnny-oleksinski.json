@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing the mediocre songs and weak second act, the critic clearly recommends the show based on the outstanding lead performances and entertainment value, calling it 'fun and fabulous.' | GPT-4o: The review highlights the strong comedic performances of the lead actresses, which elevate the production despite its musical shortcomings. The overall tone is positive, with specific praise for the entertainment value provided by the stars, suggesting a recommendation to see the show. | Gemini: The review praises the performances of the leads and the visual effects, but criticizes the songs and the second act. The overall tone is positive, suggesting the show is enjoyable despite its flaws.",
+    "keyPhrases": [
+      {
+        "quote": "Even if the musical doesn't have a discernible heartbeat, Hilty and Simard ensure 'Death Becomes Her' stays fun and fabulous.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation based on stellar lead performances that overcome weak songs. Critic acknowledges significant flaws (mediocre music, too many songs) but consistently praises the stars and concludes the show 'stays fun and fabulous.' | GPT-4o: The review praises the performances of Hilty and Simard, highlighting their comedic skills and ability to keep the show entertaining. However, it notes the musical's songs are mediocre and the second act lacks drive, indicating some reservations. | Gemini: The review praises the performances of the leads and the visual effects, but criticizes the songs and the second act. Overall, it's a positive review with reservations. | Kimi: While the critic finds the songs mediocre and the second act lacking drive, he delivers a clear recommendation based on the sensational, risk-taking comedic performances of Megan Hilty and Jennifer Simard, calling the show 'fun and fabulous' despite its weaknesses.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:41:05.233Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:55:19.049Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
-    "previousVersion": "5.0.0"
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "openaiScore": 77,
+    "geminiScore": 77,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "dtliExcerpt": "Even if the musical doesn’t have a discernible heartbeat, Hilty and Simard ensure “Death Becomes Her” stays fun and fabulous.",
   "sources": [

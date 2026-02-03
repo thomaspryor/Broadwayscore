@@ -9,26 +9,32 @@
   "showScoreExcerpt": "“ ‘Back to the Future’ simply tries to hold up its plutonium-weight source material.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/back-to-the-future-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 51,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 51,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 46,
+      "high": 56
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges technical competence but criticizes the show for being too faithful to the source material without adding meaningful commentary or depth, describing it as impressive but not compelling. | GPT-4o: The review highlights the show's fidelity to the original film without offering new insights or depth, suggesting it is more of a spectacle than a compelling adaptation. The truncated nature of the text leaves room for potential positive conclusions, but the overall tone suggests a lack of strong recommendation. | Gemini: The review acknowledges the spectacle and faithful recreation but criticizes the lack of originality and deeper exploration of themes. The truncated text makes it difficult to determine a definitive recommendation, but the overall tone suggests a mixed reaction.",
+    "keyPhrases": [
+      {
+        "quote": "Back to the Future simply tries to hold up its plutonium-weight source material.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic consistently criticizes the show's lack of innovation or commentary, calling it a 'beat-by-beat translation' that 'curves back toward homage rather than expanding or complicating the original.' While acknowledging some technical competence, the overall assessment is negative, suggesting the adaptation doesn't justify its existence as theater. | GPT-4o: The review highlights the show's fidelity to the original movie, noting that it doesn't expand or complicate the source material. While the stagecraft is praised, the lack of new commentary or innovation results in a mixed assessment. The text is truncated, so the final verdict may be missing, leading to low confidence. | Gemini: The review acknowledges the spectacle and faithful recreation but ultimately finds it lacking in originality and depth, resulting in a mixed assessment. The truncated text makes the final verdict less clear. | Kimi: While acknowledging the stagecraft is 'well managed' and the translation technically impressive, the critic finds the show artistically hollow—an overly faithful reproduction that fails to add commentary or depth to the source material, with new songs that 'slide right off' compared to the original soundtrack. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:23:09.451Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:36:54.857Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 61,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 42,
     "openaiScore": 58,
     "geminiScore": 62,
-    "claudeBucket": "Mixed",
+    "kimiScore": 44,
+    "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
   },
   "bwwExcerpt": "What Back to the Future does deliver instead of commentary on the original is a beat-by-beat translation of its set pieces. The DeLorean arrives onstage at the same time as Bart’s Doc, and actor and car split the entrance applause. When Marty gets inside and guns for 88 miles per hour, the screens around the stage blur behind him. (I felt right back in that Universal Studios amusement-park ride.",
   "sources": [

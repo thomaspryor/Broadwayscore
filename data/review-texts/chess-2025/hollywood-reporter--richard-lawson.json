@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls the show 'a draw' between competing elements, which is the definition of mixed - neither positive nor negative but genuinely split. | GPT-4o: The critic describes the show as a 'draw' between sincerity and snark, suggesting an even balance of positive and negative elements, leading to a mixed verdict. The lack of a clear recommendation or discouragement supports a mixed classification. | Gemini: The review excerpt explicitly states a 'draw,' indicating a mixed or neutral assessment. This suggests the reviewer neither strongly recommends nor discourages seeing the show.",
+    "keyPhrases": [
+      {
+        "quote": "In the unending battle between sincerity and snark, I'm afraid I have to call this particular showdown a draw.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly calls it 'a draw' between positive and negative elements, which is the definition of mixed. However, confidence is low due to truncated excerpt. | GPT-4o: The excerpt suggests a balanced view, neither fully positive nor negative, indicating a mixed review. The lack of additional context or a full verdict lowers confidence. | Gemini: The phrase \"call this particular showdown a draw\" suggests a mixed or neutral assessment. Confidence is low due to the limited excerpt. | Kimi: The critic explicitly calls the show a 'draw' between opposing qualities, indicating a balanced mixed verdict without clear recommendation for or against seeing it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:37:47.688Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:19:40.645Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "3.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 60,
     "geminiScore": 62,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "textIssue": "truncated",
   "sourceMethod": "stub",

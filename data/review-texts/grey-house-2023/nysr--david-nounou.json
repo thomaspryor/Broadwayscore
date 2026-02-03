@@ -18,7 +18,7 @@
   "showScoreExcerpt": "Grey House is a haunting and atmospheric thriller that successfully translates the gothic horror genre to the Broadway stage, though it occasionally stumbles under the weight of its own ambitious staging.",
   "llmScore": {
     "score": 64,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 59,
       "high": 69
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 rating and review tone clearly indicate mixed reception - the critic acknowledges strong performances and production values but finds the play 'more frustrating than intriguing' with narrative issues, ultimately recommending it as an experience worth having despite its flaws. | GPT-4o: The review highlights both strengths and weaknesses, praising the cast and production design but criticizing the play's vagueness and lack of narrative momentum. The original 3/5 star rating aligns with a mixed assessment. | Gemini: The review acknowledges flaws in the play's vagueness and lack of thematic texture, but ultimately finds it original and praises the performances and production design. The 3/5 star rating also indicates a positive but not rave review.",
+    "keyPhrases": [
+      {
+        "quote": "The bigger problem is that the purposeful vagueness on display here proves more frustrating than intriguing for much of the play's running time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with balanced criticism: praises originality, cast, and production values but finds the narrative frustrating and lacking thematic depth. Recommends seeing with friends but acknowledges significant flaws. | GPT-4o: The review acknowledges the originality and strong performances but criticizes the play's vagueness and lack of narrative momentum, leading to a mixed verdict. | Gemini: The review acknowledges originality and strong production elements but ultimately finds the play frustrating and lacking thematic resonance. The 3/5 star rating also indicates a mixed assessment. | Kimi: The critic awards 3/5 stars and praises the first-rate cast, direction, and design as working at the top of their game, while criticizing the play's narrative momentum and frustrating ambiguity, resulting in a mixed verdict that acknowledges the show's originality but questions its effectiveness.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:55:45.790Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:30:13.356Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 76,
+    "geminiScore": 65,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",

@@ -9,27 +9,33 @@
   "dtliExcerpt": "The band takes the final bow in Buena Vista Social Club, the new musical at the Gerald Schoenfeld Theatre on Broadway—and that’s as it should be. The music is so good, the performances so alive, and the band so sexy that I frequently found myself wondering: Couldn’t this just be a concert?",
   "showScoreExcerpt": "\"The music is so good, the performances so alive, and the band so sexy\"",
   "originalScore": null,
-  "assignedScore": 70,
+  "assignedScore": 64,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T21:59:35.874Z",
   "llmScore": {
-    "score": 70,
-    "confidence": "low",
+    "score": 64,
+    "confidence": "high",
     "range": {
-      "low": 65,
-      "high": 75
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic praises the music, performances, and production values extensively but criticizes the book as 'mediocre' and questions why it needed to be a musical at all rather than a concert. | Gemini: The review acknowledges flaws in the book but praises the production values, music, and performances. The truncated text makes it difficult to ascertain a strong recommendation, but the overall tone suggests a positive, albeit qualified, experience.",
+    "keyPhrases": [
+      {
+        "quote": "A great work of musical drama it's not, but does that matter?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic consistently praises the music, performances, and production values as exceptional, but finds the book mediocre and questions why it needs to be a musical at all rather than just a concert. The repeated questioning 'Why can't this just be a concert?' reveals fundamental reservations about the show's theatrical justification, despite acknowledging its musical excellence. | GPT-4o: The review praises the music and performances but criticizes the book as mediocre and questions the necessity of the musical format. The text is truncated, so the final verdict may be missing, leading to a low confidence score. | Gemini: The review praises the production values, music, and performances but criticizes the book and questions the need for it to be a musical. The truncated text makes the final verdict somewhat unclear, but the overall tone suggests a mixed reaction. | Kimi: The review lavishly praises the musicianship, performances, and production design but repeatedly criticizes the book as 'mediocre,' 'overstuffed,' and questions why it isn't simply a concert. With the text truncated and aggregator rating it 'Flat,' the overall assessment balances strong positives against significant structural flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:57:02.611Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:17:23.904Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
-    "previousVersion": "3.0.0"
+    "previousScore": 70,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 77,
+    "openaiScore": 66,
+    "geminiScore": 65,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/buena-vista-social-club-2025/theatermania--zachary-stewart_2026-01-27.html",

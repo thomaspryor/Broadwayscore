@@ -36,8 +36,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The B+ grade and positive language about the production's effectiveness in creating tension and surprises indicates a clear recommendation, despite the limited excerpt. | GPT-4o: The critic's original rating of B+ aligns with a positive recommendation. The review highlights the production's effective use of tension and surprise, suggesting a strong execution that is worth seeing. | Gemini: The critic gives the production a B+ and highlights the tension and surprises, indicating a positive experience and recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "The Broadway production capitalizes on discomfort, keeping tension taut and surprises around every corner.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: B+ grade indicates positive recommendation. Praises production for maintaining tension and delivering surprises, though limited excerpt prevents fuller assessment. | GPT-4o: The B+ rating indicates a positive review. The text describes the production as effectively creating tension and surprise, suggesting a recommendation despite the unsettling nature of the content. | Gemini: The critic gives the show a B+ grade and highlights the skin-crawling effect and tension, indicating a positive experience. | Kimi: The B+ grade and praise for the production's effective tension and atmosphere indicate a strong recommendation, though the excerpt-only format limits certainty about the full verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,28 +52,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:10:26.944Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:27:30.584Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 85,
-    "previousVersion": "3.0.0"
+    "previousScore": 80,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 82,
+    "openaiScore": 78,
     "geminiScore": 81,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwThumb": "Up",
   "rescoreReason": "scored on brief excerpt, now has fullText",

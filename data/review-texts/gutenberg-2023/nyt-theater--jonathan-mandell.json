@@ -9,15 +9,15 @@
   "bwwExcerpt": "“Gutenberg! The Musical!” is deliberately bad – that’s the central joke of it – but much of what’s bad about it isn’t deliberate. The score is largely unmemorable. The premise makes little sense. There are some funny lines, but no more than an hour’s worth of laughs in a show that’s a two-hour, two-person vaudeville routine that becomes tedious. There is also one joke that is almost shockingly unfunny.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 40,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 40,
+    "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 35,
+      "high": 45
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic finds the show deliberately and unintentionally bad, with an unmemorable score, nonsensical premise, and insufficient laughs to sustain its length, clearly indicating they do not recommend it. | GPT-4o: The review highlights several negative aspects, including an unmemorable score, a nonsensical premise, and a tedious runtime, with only occasional humor. The tone suggests a clear recommendation to skip the show. | Gemini: The review explicitly states that the show is 'deliberately bad' but also unintentionally bad, citing issues with the score, premise, and overall tedium. This indicates a negative assessment.",
+    "keyPhrases": [
+      {
+        "quote": "There are some funny lines, but no more than an hour's worth of laughs in a show that's a two-hour, two-person vaudeville routine that becomes tedious.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment citing unmemorable score, senseless premise, and tedium despite acknowledging some funny moments. The aggregator context confirms this negative verdict. | GPT-4o: The review highlights significant flaws, such as an unmemorable score and nonsensical premise, leading to a negative verdict. The mention of some funny lines is not enough to outweigh the overall negative tone. | Gemini: The review states that the show is \"deliberately bad\" but also that \"much of what's bad about it isn't deliberate.\" The reviewer finds the score unmemorable, the premise nonsensical, and the show tedious, leading to a negative assessment. | Kimi: The critic finds the show tedious and unfunny despite a few laughs, criticizing the unmemorable score and nonsensical premise, indicating a clear recommendation against seeing the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:57:35.642Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:51:01.066Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 41,
+    "previousScore": 42,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
+    "claudeScore": 38,
     "openaiScore": 40,
     "geminiScore": 45,
+    "kimiScore": 38,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "bwwThumb": "Down",
   "rescoreReason": "fullText added after excerpt-based scoring",

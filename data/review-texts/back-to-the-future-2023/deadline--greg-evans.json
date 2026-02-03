@@ -9,7 +9,7 @@
   "showScoreExcerpt": "“With a cast directed to exaggerate every joke, gesture and facial expression – only the always reliable Roger Bart, who plays the eccentric genius inventor Doc Brown, has the chops and instincts to nail the over-the-topness...With a show like ’Back To The Future: The Musical,’ comparisons are, like resistance, futile. And your kids are gonna love it.”",
   "bwwExcerpt": "Still, nothing on stage here measures up to the screen version, except the obvious: The live special effects, most notably a final sequence in which 1955 Doc climbs to the top of that clock tower during a lightning storm, with Marty speeding the DeLorean through town. The lighting and video projections that have so far provided some amusement come to fruition here, and Back To The Future: The Musical finally and fully justifies its transition from screen to stage.",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 62,
   "source": "show-score",
   "textFetchedAt": "2026-01-25T13:50:33.521Z",
   "textFetchMethod": "playwright",
@@ -18,11 +18,11 @@
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 69,
-    "confidence": "low",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The critic acknowledges the show has significant problems (bombastic direction, lackluster music, overacting) but finds it becomes 'enjoyable-enough' and praises the final 20 minutes as justifying the stage adaptation. This is classic mixed territory - neither a recommendation nor a pan. | Gemini: The review is mixed, but ultimately leans positive. While the critic notes several flaws, they also acknowledge enjoyable aspects, particularly the special effects and the final sequence. The phrase \"enjoyable-enough thrill park ride\" suggests a qualified recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Back To The Future gradually settles in to an enjoyable-enough thrill park ride, with its special effects, video projections and lighting finally paying off in the final 20 minutes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds significant flaws (bombastic direction, generic music, overacting) but acknowledges the show works as entertainment, especially in its technical spectacle. The measured tone and 'enjoyable-enough' verdict places this in the mixed category without strong recommendation either way. | GPT-4o: The review acknowledges some positive elements, particularly the special effects and final sequence, but overall expresses disappointment with the music and direction, suggesting a mixed experience. | Gemini: The review is mixed, praising the special effects and some performances, but criticizing the music and direction. It ultimately settles into an \"enjoyable-enough\" experience, suggesting a lukewarm recommendation. | Kimi: The critic describes a 'mostly lackluster experience' with criticized direction, generic music, and overacting, but acknowledges the final sequence 'finally and fully justifies its transition' and calls the overall result 'enjoyable-enough' without strongly recommending or discouraging attendance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,27 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:29:22.797Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:24:02.804Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
-    "previousVersion": "3.0.0"
+    "previousScore": 69,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "openaiScore": 60,
+    "geminiScore": 65,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",

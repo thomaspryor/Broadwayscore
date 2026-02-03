@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing the music and plot as uninspired, the critic praises the design team's magic, Roger Bart's performance, and concludes it 'works' as entertainment, ending with an enthusiastic exclamation. | GPT-4o: The review praises the design team and specific performances, particularly Roger Bart's, while acknowledging the show has weaknesses in plot and music. The thrilling design elements and engaging performances make it worth seeing despite these flaws. | Gemini: The review praises the design elements and Roger Bart's performance, stating the show \"works\" and is \"entertainment.\" While it acknowledges weaknesses in the music and choreography, the overall tone is positive, recommending it for the spectacle and performances.",
+    "keyPhrases": [
+      {
+        "quote": "Back to the Future works in a way that, say, a show like King Kong failed to do, by giving us familiar and likeable human characters to follow.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite criticizing the music as 'uninspired' and plot issues, the critic praises the design team's 'magic,' Roger Bart's performance, and concludes 'Now that's entertainment!' with clear recommendation that it 'works.' | GPT-4o: The review praises the design elements and Roger Bart's performance, indicating a recommendation to see the show. However, it notes the music and choreography are less impressive, suggesting some reservations. | Gemini: The review praises the design elements and Roger Bart's performance, calling the climactic scene \"almost worth the price of admission.\" While noting weaknesses in the music and choreography, the overall verdict is positive. | Kimi: While sharply criticizing the uninspired score, serviceable choreography, and derivative plot, the reviewer ultimately recommends the show for its spectacular design elements and Roger Bart's scene-stealing performance, concluding it succeeds as entertainment where similar spectacles have failed.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:23:01.132Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:33:00.468Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 76,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 50,

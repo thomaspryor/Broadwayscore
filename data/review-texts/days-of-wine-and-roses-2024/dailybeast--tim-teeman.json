@@ -93,5 +93,11 @@
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
-  "wordCount": 1419
+  "wordCount": 1419,
+  "wrongShow": true,
+  "rejectedAt": "2026-02-03T04:39:53.606Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "openai: The review text discusses two different shows, 'Days of Wine and Roses' and 'The Comeuppance', making it unclear which is the target show for scoring.; kimi: This review covers the Off-Broadway production of 'Days of Wine and Roses' at the Atlantic Theater Company, not a Broadway production. The text also reviews 'The Comeuppance' at Signature Theatre (also Off-Broadway), confirming this is not a Broadway theater review.",
+  "promptVersion": "5.2.0"
 }

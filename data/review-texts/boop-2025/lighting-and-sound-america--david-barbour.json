@@ -9,7 +9,7 @@
   "showScoreExcerpt": "â..such lively, lighthearted funâ¦you might as well sit back and surrender.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/boop-the-musical-broadway",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/boop-2025/lighting-sound-america--david-barbour_2026-01-27.html",
@@ -28,11 +28,11 @@
   ],
   "sourceMethod": "playwright",
   "llmScore": {
-    "score": 80,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -42,8 +42,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging significant plot weaknesses, the critic praises the performances, design, and entertainment value, concluding it's 'surprisingly sophisticated and filled with an unquenchable spirit of fun.' | GPT-4o: The review highlights the show's lively and entertaining nature, praising performances, staging, and design. Despite noting plot weaknesses, the overall tone is positive, suggesting it's worth seeing for its fun and energy. | Gemini: Despite acknowledging plot frailties, the review highlights the show's fun, lively nature and strong performances, suggesting a positive, albeit reserved, recommendation. The truncated text makes it difficult to be more definitive.",
+    "keyPhrases": [
+      {
+        "quote": "Boop! offers such lively, lighthearted fun so much of the time, you might as well sit back and surrender.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging significant plot weaknesses and structural issues, the critic recommends the show for its entertainment value, stellar performances (especially Rogers), and production quality. The final line 'Boop! is one musical that earns its exclamation point' reinforces the positive verdict. | GPT-4o: The review acknowledges the show's narrative weaknesses but emphasizes its lively entertainment value and strong performances, particularly by Jasmine Amy Rogers. The tone suggests a recommendation despite some reservations about coherence. | Gemini: Despite noting plot frailties, the review concludes that the show offers \"lively, lighthearted fun\" and is worth surrendering to. The truncated text and mixed signals lower the confidence. | Kimi: While the critic heavily criticizes the incoherent book and unresolved plot, the overall verdict is enthusiastic about the 'dazzling staging,' 'inventive design,' and star performance, ultimately recommending audiences surrender to the 'unquenchable spirit of fun.' The truncation warning warrants medium confidence despite the apparently complete positive conclusion.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,28 +58,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:23:44.078Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:55:20.891Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 82,
+    "openaiScore": 79,
     "geminiScore": 79,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 77,

@@ -15,7 +15,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 70,
-    "confidence": "low",
+    "confidence": "medium",
     "range": {
       "low": 65,
       "high": 75
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: claude=Mixed, gemini=Positive | Claude: The review praises the spectacular technical elements and DeLorean effects while criticizing weak songs, dated politics, and lack of fresh writing. The verdict suggests it works for fans but has clear limitations. | Gemini: The review highlights impressive visuals and nostalgic appeal, but notes dated aspects and underwhelming songs. It's recommended for fans of the movie despite its flaws.",
+    "keyPhrases": [
+      {
+        "quote": "If you already harbor affection for the original movie, there's a high probability that the nostalgic currency will court your purchase.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review praises the spectacular production values and lead performances but criticizes the weak songs, dated politics, and lack of fresh revelations in the writing. The conditional recommendation ('if you harbor affection for the movie') and focus on spectacle over substance places this in mixed territory. | GPT-4o: The review highlights the show's visual spectacle and nostalgic appeal, making it entertaining for fans of the original movie. However, it notes the dated aspects of the story and some underwhelming musical numbers, suggesting a recommendation with reservations. | Gemini: The review highlights the impressive spectacle and performances, but notes the dated politics and underwhelming songs. It recommends seeing it if you have affection for the original movie, but not to expect fresh revelations. | Kimi: The critic praises the visual spectacle and lead performances but finds the book an unoriginal retread, the songs uneven, and the politics dated, recommending the show only to those with nostalgic attachment to the film. | Buckets: claude=Mixed, openai=Positive, gemini=Positive, kimi=Mixed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:31:25.663Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T02:32:10.169Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 67,
-    "previousVersion": "3.0.0"
+    "previousScore": 70,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
-    "geminiScore": 78,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 64,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 16,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: claude=Mixed, gemini=Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 67,

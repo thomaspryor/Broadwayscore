@@ -8,15 +8,15 @@
   "bwwExcerpt": "When Gutenberg! The Musical! debuted Off Broadway 17 years ago, critics wondered whether it was ready for Broadway. Perhaps they should have asked whether Broadway was ready for Gutenberg! All these years later, the answer to both is yes. Not only has the musical been fine-tuned and shined-up, but a Shucked-era Broadway is clearly in the mood for some absurdly silly good fun.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is consistently positive throughout, praising the performances, direction, and humor while noting the show has been 'fine-tuned and shined-up' for Broadway. The critic clearly recommends it as smart, funny entertainment. | GPT-4o: The review is overwhelmingly positive, highlighting the show's humor, performances, and successful transition to Broadway. The critic praises the production's spirit, humor, and the performances of Gad and Rannells, making it a must-see recommendation. | Gemini: The review is overwhelmingly positive, highlighting the humor, performances, and overall fun of the show. While noting that the score isn't particularly memorable, the critic still recommends the show.",
+    "keyPhrases": [
+      {
+        "quote": "gleefully self-aware theater parody that's smart enough to tickle the aficionados and flat-out funny enough to bring in outsiders",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive review with consistent praise for performances, direction, and entertainment value. Critic finds it 'absurdly silly good fun' and praises the leads' chemistry, calling them Broadway's leading comedy duo. Minor reservations about forgettable score don't diminish overall enthusiastic recommendation. | GPT-4o: The review is filled with enthusiastic praise for the performances, humor, and production quality. It highlights the show's appeal to both theater aficionados and general audiences, emphasizing its 'absurdly silly good fun' and strong performances by Gad and Rannells. | Gemini: The review is positive, highlighting the show's humor and the performances of Gad and Rannells. The critic clearly recommends the show, calling it \"absurdly silly good fun\" and praising its self-awareness. | Kimi: The review offers strong praise for the comedic performances (calling them impeccable and cementing the leads as a top Broadway duo), direction, and production design, with only minor reservations about the pastiche score's memorability.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:57:14.505Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:46:28.587Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
+    "claudeScore": 82,
     "openaiScore": 92,
-    "geminiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "Not only has the musical been fine-tuned and shined-up, but a Shucked-era Broadway is clearly in the mood for some absurdly silly good fun.",

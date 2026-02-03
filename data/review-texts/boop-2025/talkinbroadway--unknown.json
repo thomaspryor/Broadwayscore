@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The excerpt highlights multiple positive elements (star-making performance, appealing veterans, engaging supporting cast) suggesting recommendation, but with only one curated quote available, I'm scoring conservatively in the lower positive range. | Gemini: The review highlights several positive aspects of the production, including the lead performance and supporting cast, suggesting a positive but not overwhelmingly enthusiastic recommendation. Given that it is a single excerpt, I am scoring conservatively.",
+    "keyPhrases": [
+      {
+        "quote": "'Boop! The Musical'...features a star-making performance by its lead, an appealing pair of veterans, an adorable puppy marionette, and a pour-it-on supporting cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this cherry-picked quote highlights multiple positive performance elements ('star-making performance', 'appealing veterans', 'pour-it-on supporting cast'). Given the clearly positive tone and multiple praised elements, scoring in upper Positive range despite low confidence due to limited text. | GPT-4o: The excerpt highlights several positive elements, including a 'star-making performance' and an 'appealing pair of veterans', suggesting a generally favorable view. However, due to the single excerpt warning, the confidence is low, and the score is on the lower end of the Positive range. | Gemini: The excerpt highlights several positive aspects of the show, including a 'star-making performance' and an 'adorable puppy marionette,' suggesting a strong recommendation. Given it's a single excerpt, I'm scoring towards the higher end of the positive range. | Kimi: The excerpt provides enthusiastic praise for the lead performance, supporting cast, and production elements, indicating a clear recommendation despite the limited available context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,30 +51,33 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T20:58:55.076Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T03:01:37.135Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 74,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 82,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "textWordCount": 1170,
@@ -110,5 +119,6 @@
   "archiveOrgTimestamp": "20250523133902",
   "archiveOrgUrl": "http://web.archive.org/web/20250523133902/https://www.talkinbroadway.com/page/world/BooptheMusical.html",
   "wordCount": 1170,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-03T03:01:37.135Z"
 }

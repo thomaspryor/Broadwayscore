@@ -99,9 +99,14 @@
   "textQuality": "partial",
   "textStatus": "partial",
   "sourceMethod": "brightdata",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (114 words)",
   "rescoreCompletedAt": "2026-02-02T00:24:33.055Z",
   "wordCount": 2618,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-03T05:25:42.113Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is an interview with Kelly Clarkson about her album 'chemistry' and talk show, not a review of a Broadway production; openai: The text is an interview with Kelly Clarkson about her album and personal experiences, not a review of a Broadway show.; gemini: This is an interview with Kelly Clarkson about her new album, not a review of a Broadway show.; kimi: This text is an interview with Kelly Clarkson about her album 'Chemistry,' her Las Vegas residency, and her talk show. It contains no evaluation or critique of any Broadway theatrical production.",
+  "promptVersion": "5.2.0"
 }

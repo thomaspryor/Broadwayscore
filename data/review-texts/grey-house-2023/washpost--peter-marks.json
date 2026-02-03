@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GREY-HOUSE-Opens-on-Broadway-20230529",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 53,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "The supernatural thriller 'Grey House' succeeds in creating an atmosphere of dread, but the payoff doesn't quite match the buildup of suspense.",
@@ -20,22 +20,28 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 59,
-    "confidence": "high",
+    "score": 53,
+    "confidence": "medium",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 48,
+      "high": 58
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges some positives (Metcalf's performance, the set design) but finds the play fundamentally unsatisfying, neither terrifying nor profound, with tolerance 'limited' for most audiences. | GPT-4o: The review highlights some enjoyable performances and set design but criticizes the play for lacking terror and depth. The critic expresses a lack of engagement with the plot and an overall sense of disappointment with the production's execution. | Gemini: The review highlights some positive aspects like Laurie Metcalf's performance and the set design, but ultimately finds the play lacking in both terror and depth, resulting in a mixed assessment.",
+    "keyPhrases": [
+      {
+        "quote": "The play itself exists in a sort of gray zone — neither particularly terrifying nor profound.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Critic praises individual performances (especially Metcalf) and set design, but finds the play fundamentally disappointing with 'ponderous knots' and insufficient payoff. The metaphor of sinking back in seat rather than perching on edge clearly indicates lack of engagement. | GPT-4o: The review highlights the play's failure to deliver on its horror and thematic ambitions, describing it as lacking in terror and profundity. Despite some praise for performances, the overall tone is negative, emphasizing disappointment and lack of engagement. | Gemini: The review acknowledges some positive aspects like Metcalf's performance and the set design, but ultimately finds the play lacking in both terror and profundity, placing it in the 'Mixed' category. | Kimi: While the critic praises Metcalf's performance and the set design, the overall verdict is that the play is a 'lesser rank' thriller that gets lost in 'ponderous knots' and 'murky moralizing,' failing to deliver either terror or profundity. The reviewer explicitly states losing interest and sinking back into the seat rather than being engaged, indicating a recommendation against seeing the show despite isolated bright spots. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,28 +50,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:56:43.191Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T05:40:00.734Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
+    "previousScore": 59,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 58,
+    "openaiScore": 45,
     "geminiScore": 62,
+    "kimiScore": 48,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 4,
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 41,

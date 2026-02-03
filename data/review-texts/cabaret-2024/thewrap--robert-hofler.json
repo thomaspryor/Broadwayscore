@@ -33,8 +33,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite praise for the theater design and staging innovations, the critic fundamentally rejects the production's core concept and finds the performances abrasive and problematic, concluding it doesn't work. | GPT-4o: The review praises the set design and some aspects of the production but criticizes the direction and thematic choices. The critic finds the updated themes unsuccessful, indicating a mixed reception overall. | Gemini: The review is largely critical of the direction and choices made in this revival, particularly regarding the portrayal of the characters and the show's themes. The critic explicitly states that certain aspects \"don't work\".",
+    "keyPhrases": [
+      {
+        "quote": "It didn't work at Loyola and it doesn't work now on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic praises the physical production and design but fundamentally rejects the directorial concept, stating it 'doesn't work' and criticizing the core interpretive choices as problematic and ineffective. | GPT-4o: The review praises the theater redesign and some aspects of the production, but criticizes the directorial choices and overall concept, leading to a mixed verdict. | Gemini: The review is largely negative, criticizing the direction and choices made in this revival, particularly the emphasis on gay subtext and the portrayal of the Emcee and Sally Bowles. | Kimi: While praising Tom Scutt's immersive theater redesign and Rebecca Frecknall's staging, the critic fundamentally rejects the production's concept of the Kit Kat Club as a gay bar, finding it morally confused and the central performances (except Rankin) mannered and abrasive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +49,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:35:12.984Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T04:09:44.830Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 39,
-    "previousVersion": "3.0.0"
+    "previousScore": 44,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 65,
+    "openaiScore": 60,
     "geminiScore": 45,
+    "kimiScore": 45,
     "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
     "geminiBucket": "Negative",
-    "scoreDelta": 23,
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 53,

@@ -9,15 +9,15 @@
   "fullText": null,
   "isFullReview": false,
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 80,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 77,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses clearly positive language - 'sustained, contained intensity', 'intimate, refreshing revival', and 'continually absorbing' - indicating recommendation, though the single excerpt limits confidence in the full verdict. | GPT-4o: The review highlights a strong performance by Jeremy Strong and describes the revival as 'refreshing' and 'continually absorbing,' indicating a positive recommendation. However, due to the single excerpt warning, the score is conservatively placed in the middle of the Positive range. | Gemini: The review excerpt praises Jeremy Strong's performance and calls the revival 'refreshing' and 'absorbing,' suggesting a positive experience overall, but the single excerpt and lack of a direct recommendation warrant a score in the middle of the 'Positive' range.",
+    "keyPhrases": [
+      {
+        "quote": "Jeremy Strong gives a performance of sustained, contained intensity that keeps this intimate, refreshing revival continually absorbing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this could be cherry-picked praise from a mixed review. However, calling the revival 'refreshing' and 'continually absorbing' suggests positive assessment beyond just Strong's performance. Given aggregator context shows 'Up' and strong praise language, scoring upper Positive range but with low confidence due to limited text. | GPT-4o: The excerpt praises Jeremy Strong's performance and describes the revival as 'intimate' and 'refreshing', indicating a positive reception. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises Jeremy Strong's performance and calls the revival \"refreshing\" and \"continually absorbing,\" suggesting a positive but not overwhelmingly enthusiastic recommendation. Given it's a single excerpt, confidence is low. | Kimi: Single excerpt describes the revival as 'refreshing' and 'continually absorbing,' with strong praise for the lead performance indicating a clear positive recommendation, though the limited context warrants reduced confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,27 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T14:51:55.094Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T01:41:06.399Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 79,
-    "geminiScore": 75,
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0,

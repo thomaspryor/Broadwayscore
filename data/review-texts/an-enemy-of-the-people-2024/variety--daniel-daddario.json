@@ -9,16 +9,16 @@
   "showScoreExcerpt": "\"An actorly, Broadway face-off between Jeremy Strong and Michael Imperioli\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 78,
   "source": "show-score",
   "dtliThumb": "Up",
   "dtliExcerpt": "This production has much to recommend it, and Strong in particular should return to the stage as often as he can. But it's hard not to feel as though this “Enemy of the People,” in which as rootable as possible a hero is ground down by the forces of evil, ended up presenting an opportunity for the audience to put themselves on trial, and then, with a sigh of relief, exonerate themselves.",
   "llmScore": {
-    "score": 76,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Claude: The review praises the innovative staging, Strong's performance, and Imperioli's transformation, with appreciative language about how well the production uses its venue, though it's an incomplete excerpt that may be building to stronger conclusions. | Gemini: The review praises the staging and performances, indicating a positive experience overall. The critic highlights the effective use of the theater's structure and the strong performances of the actors.",
+    "keyPhrases": [
+      {
+        "quote": "This production has much to recommend it, and Strong in particular should return to the stage as often as he can.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the production's innovative staging, Strong's performance as 'well-calibrated' and 'breathtaking,' and Imperioli's 'fantastic' counterpoint work. Despite thoughtful criticism about the adaptation making the hero too sympathetic, the overall verdict is 'This production has much to recommend it' with Strong encouraged to return to stage. | GPT-4o: The review praises the production's use of the theater space and the performances, particularly Jeremy Strong's. However, it notes some missed opportunities in the adaptation, suggesting a positive but slightly reserved recommendation. | Gemini: The review is mostly positive, highlighting Strong and Imperioli's performances and the staging, but notes the adaptation lets the audience off the hook too easily, thus a recommendation with reservations. | Kimi: The review offers strong praise for the performances, particularly Jeremy Strong and Michael Imperioli, and the innovative staging, but concludes with significant reservations about the adaptation's tendency to let the audience off the hook morally.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,27 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:39:40.608Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T01:38:05.001Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.0.0"
+    "previousScore": 76,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": null,
-    "geminiScore": 75,
+    "claudeScore": 77,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
