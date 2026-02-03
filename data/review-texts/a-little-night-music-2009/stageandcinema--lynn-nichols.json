@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Catherine Zeta-Jones brings her movie-star glamour to Broadway as the worldly Desiree, but her voice, while pleasant, lacks the depth and richness that the role demands.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
-    "score": 60,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Brief excerpt acknowledges positives (glamour) but identifies a significant vocal deficiency for the lead role. Too short to assess full recommendation. | GPT-4o: The review acknowledges Zeta-Jones's glamour but criticizes her vocal performance as lacking depth. This suggests a mixed opinion, neither strongly recommending nor discouraging attendance. | Gemini: The review acknowledges Zeta-Jones' glamour but critiques her vocal performance, suggesting a mixed assessment rather than a clear recommendation. | Kimi: The excerpt presents a balanced but qualified assessment, praising the star's glamour while criticizing her vocal performance as inadequate for the role's demands.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: This appears to be a brief excerpt focusing only on one performer's vocal performance, with mixed assessment (pleasant but lacking depth). Too limited to determine overall show recommendation. | GPT-4o: The review highlights Zeta-Jones' glamour but criticizes her vocal performance as lacking depth. This suggests a mixed assessment, with no clear recommendation or discouragement. | Gemini: The review praises Zeta-Jones' glamour but criticizes her vocal performance, indicating a mixed assessment. | Kimi: Brief excerpt offers balanced assessment praising the star's glamour while criticizing her vocal suitability for the role, without issuing a clear see-it-or-skip-it verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:16:26.664Z",
+    "scoredAt": "2026-02-03T11:18:43.424Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 60,
     "openaiScore": 60,
     "geminiScore": 62,
-    "kimiScore": 58,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

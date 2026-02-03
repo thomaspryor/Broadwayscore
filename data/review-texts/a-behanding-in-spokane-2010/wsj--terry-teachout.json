@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. McDonagh has written a play that is more interested in shock than character, and while it contains some genuinely funny moments, it never quite coheres into a satisfying whole.",
   "originalScore": null,
-  "assignedScore": 53,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
   "llmScore": {
-    "score": 53,
+    "score": 61,
     "confidence": "medium",
     "range": {
-      "low": 48,
-      "high": 58
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Clear mixed verdict - acknowledges funny moments but criticizes lack of character development and overall coherence. Neither recommends nor discourages viewing. | GPT-4o: The review criticizes the play for prioritizing shock over character and failing to cohere into a satisfying whole, despite some funny moments. This indicates a negative overall assessment. | Gemini: The review acknowledges funny moments but ultimately states the play doesn't fully cohere, indicating a mixed or neutral stance. | Kimi: While the critic acknowledges 'genuinely funny moments,' the overall verdict is that the play fails to cohere into a satisfying whole, indicating a recommendation against seeing it. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Critic acknowledges some positive elements (funny moments) but finds fundamental flaws in character development and overall structure. No clear recommendation either way. | GPT-4o: The review criticizes the play for prioritizing shock over character and failing to cohere into a satisfying whole, indicating a lack of recommendation despite acknowledging some funny moments. | Gemini: The review acknowledges some funny moments but ultimately finds the play unsatisfying and lacking coherence. This suggests a mixed or lukewarm reception. | Kimi: The critic acknowledges genuinely funny moments but criticizes the play for prioritizing shock over character and failing to cohere into a satisfying whole, resulting in a neither recommend nor discourage stance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:33:51.786Z",
+    "scoredAt": "2026-02-03T10:36:17.126Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,17 +60,17 @@
     "claudeScore": 58,
     "openaiScore": 45,
     "geminiScore": 62,
-    "kimiScore": 48,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
+    "kimiBucket": "Mixed",
     "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   }
 }

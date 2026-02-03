@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory (55-69). The review acknowledges the show 'captures nostalgic charm' but qualifies with 'overstuffed', indicating neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the show's nostalgic charm but notes it can feel overstuffed, aligning with the critic's original rating of 60, indicating a mixed review. | Gemini: The review acknowledges the charm of the adaptation but also notes that it feels overstuffed, indicating a mixed assessment. The critic's rating of 60 aligns with the Mixed bucket. | Kimi: The review offers balanced praise for nostalgic charm against criticism of being overstuffed, consistent with the critic's 60/100 rating placing it in the mixed range.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory. Acknowledges the show captures charm but criticizes it as overstuffed, indicating neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the show's nostalgic charm but also notes it feels overstuffed, aligning with the critic's original rating of 60, indicating a mixed reception. | Gemini: The review acknowledges the charm of the adaptation but also notes that it feels overstuffed, suggesting a mixed experience. The critic's rating of 60 aligns with the Mixed bucket. | Kimi: The critic's explicit 60/100 rating indicates a mixed reception, balancing nostalgic charm against an overstuffed presentation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:56:26.073Z",
+    "scoredAt": "2026-02-03T10:59:37.591Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael R. Jackson's Pulitzer Prize-winning musical is a raw, uncompromising work of art that challenges audiences while delivering moments of profound beauty and devastating honesty.",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
-    "score": 90,
-    "confidence": "high",
+    "score": 91,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Strong praise calling it a 'work of art' with 'profound beauty and devastating honesty.' However, confidence is medium due to the very brief excerpt that may not represent the full review verdict. | GPT-4o: The review uses strong, positive language such as 'raw, uncompromising work of art' and 'profound beauty and devastating honesty', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"raw, uncompromising work of art,\" \"profound beauty,\" and \"devastating honesty,\" indicating a rave review. | Kimi: The critic employs unqualified superlatives including 'work of art,' 'profound beauty,' and 'devastating honesty' without any reservations, indicating an enthusiastic must-see recommendation.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong positive language ('profound beauty', 'devastating honesty') positioning it as important art, though 'challenges audiences' suggests it's not easy entertainment. Clear recommendation despite being demanding. | GPT-4o: The review uses strong, positive language like 'raw, uncompromising work of art' and 'profound beauty and devastating honesty,' indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"raw, uncompromising work of art\", \"profound beauty\", and \"devastating honesty\", indicating a rave review. | Kimi: The review employs superlatives like 'work of art', 'profound beauty', and 'devastating honesty' without any critical reservations, indicating a strong recommendation in the Rave category.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:36:22.794Z",
+    "scoredAt": "2026-02-03T11:37:05.943Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 82,
     "openaiScore": 92,
     "geminiScore": 88,
-    "kimiScore": 90,
-    "claudeBucket": "Rave",
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "kimiBucket": "Rave",
-    "scoreDelta": 4,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   }
 }

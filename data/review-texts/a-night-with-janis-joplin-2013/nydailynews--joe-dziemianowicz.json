@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mary Bridget Davies captures the rock legend's tortured soul and lets it rip with a voice that's raw, powerful and poignant.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
   "llmScore": {
-    "score": 75,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the lead performance with vivid descriptors ('raw, powerful and poignant'), but this appears to be a brief excerpt focusing only on one element of the production. Low confidence due to very limited text. | Gemini: The review praises the performance of Mary Bridget Davies, highlighting her voice and portrayal of the character. This indicates a positive recommendation. | Kimi: The critic delivers strong praise for the central performance, describing it as raw and poignant. While the excerpt is too brief to assess the overall production quality, the enthusiastic tone regarding the lead suggests a positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single sentence praising the lead performance with strong adjectives (raw, powerful, poignant), but extremely brief text provides limited context for full assessment. | Gemini: The review praises the performance of Mary Bridget Davies, highlighting her voice as raw, powerful, and poignant, indicating a positive recommendation. | Kimi: This excerpt offers enthusiastic praise for the central performance using strong descriptors like 'raw, powerful and poignant,' indicating a solid recommendation, though the extreme brevity limits confidence in the overall assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:22:46.927Z",
+    "scoredAt": "2026-02-03T11:24:07.652Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,11 +60,11 @@
     "claudeScore": 76,
     "openaiScore": null,
     "geminiScore": 75,
-    "kimiScore": 75,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

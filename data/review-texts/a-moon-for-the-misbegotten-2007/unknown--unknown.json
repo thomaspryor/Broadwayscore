@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,11 +22,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance ('luminous', 'heart-wrenching') but only one excerpt available from unknown source makes full assessment impossible. Upper Positive range due to clearly positive language. | GPT-4o: The excerpt praises Wilson's performance as 'luminous' and describes her emotional depth, suggesting a positive view of her portrayal. However, with only one excerpt, the overall sentiment is uncertain, so a low confidence score at the upper end of Positive is appropriate. | Gemini: The excerpt focuses on a strong positive assessment of Wilson's performance, suggesting a positive overall experience despite the limited context. | Kimi: The excerpt offers enthusiastic praise for the lead performance using words like 'luminous' and 'heart-wrenching,' indicating a positive reception, though the single-excerpt format limits certainty about the overall verdict.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance using elevated language ('luminous', 'heart-wrenching') suggests positive verdict, but single excerpt from unknown source requires caution and low confidence. | GPT-4o: The excerpt praises Wilson's performance as 'luminous' and describes a powerful emotional transformation. Given the single excerpt warning, this suggests a strong positive impression, but the confidence is low due to the limited text. | Gemini: The excerpt focuses on a strong positive assessment of Wilson's performance, suggesting a positive overall experience. Given the single excerpt warning, I'm placing the score on the higher end of the positive range. | Kimi: Extracted from malformed response",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:21:59.756Z",
+    "scoredAt": "2026-02-03T11:23:20.681Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,14 +61,14 @@
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 80,
-    "geminiScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 82,
     "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

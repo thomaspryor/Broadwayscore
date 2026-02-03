@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "A Christmas Story The Musical is a sweet, nostalgic trip down memory lane that captures the essence of the beloved film while adding its own theatrical magic.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language ('sweet', 'theatrical magic', 'captures the essence') indicates recommendation, but brief length and lack of superlatives keeps it in mid-Positive range. | GPT-4o: The review describes the show as 'sweet' and 'nostalgic' with 'theatrical magic', indicating a positive recommendation with no reservations. | Gemini: The review uses positive language such as \"sweet\" and \"captures the essence\" indicating a positive recommendation. | Kimi: The review offers unambiguous praise with phrases like 'sweet, nostalgic' and 'theatrical magic,' clearly recommending the show despite the brief text length.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'sweet', 'nostalgic', and 'theatrical magic', but brief excerpt limits confidence in full critical assessment. | GPT-4o: The review uses positive language such as 'sweet', 'nostalgic', and 'theatrical magic', indicating a strong recommendation with no reservations. | Gemini: The review uses positive language such as \"sweet\" and \"captures the essence\" indicating a positive recommendation, although not overwhelmingly enthusiastic. | Kimi: The critic offers unqualified praise using warm descriptors like 'sweet,' 'nostalgic,' and 'theatrical magic,' clearly endorsing the show as a successful stage adaptation of the film.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:54:18.065Z",
+    "scoredAt": "2026-02-03T10:56:45.304Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,14 +58,14 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 80,
+    "openaiScore": 82,
     "geminiScore": 75,
-    "kimiScore": 78,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

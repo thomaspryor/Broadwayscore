@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the lead performance as 'astonishing.' Given the single excerpt warning and the strong praise word choice, scoring in upper Positive range, but low confidence due to lack of full review context. | GPT-4o: The excerpt provides strong praise for the lead performance, which suggests a positive view of the show. However, the lack of additional context or evaluation of other aspects of the production limits confidence in the overall sentiment. | Gemini: The single excerpt is strongly positive about the lead performance, suggesting a positive overall review. Given the limited information, confidence is low. | Kimi: The excerpt uses the superlative 'astonishing' to praise the lead performance, indicating clear enthusiasm. Following the single-excerpt guidance for clearly positive quotes, this falls in the upper Positive range (80-84).",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise ('astonishing') for the lead performance suggests positive recommendation, but extremely limited text makes full verdict unclear. | GPT-4o: The excerpt provides strong praise for Mary Bridget Davies' performance, indicating a positive view of her role. However, the lack of context about the rest of the production and the single excerpt warning suggest a cautious approach, resulting in a lower-end Positive score. | Gemini: The single excerpt available is highly positive about the lead performance. Given the limited information, a positive score is warranted, leaning towards the higher end due to the strong praise. | Kimi: The single available excerpt contains strong superlative praise ('astonishing') for the lead performance, indicating a positive recommendation. Following the guidance for clearly positive single excerpts, the score falls in the upper Positive range (80-84), though confidence is low due to limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:26:15.786Z",
+    "scoredAt": "2026-02-03T11:25:58.967Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -63,12 +63,12 @@
     "claudeScore": 82,
     "openaiScore": 72,
     "geminiScore": 82,
-    "kimiScore": 83,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 11,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

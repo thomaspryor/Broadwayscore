@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise with superlatives like 'sumptuous' and 'thoroughly engaging,' plus a clear recommendation that audiences will be 'delighted.' No reservations expressed. | GPT-4o: The review uses strong positive language ('sumptuous', 'thoroughly engaging') and indicates a broad appeal, suggesting a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"sumptuous\" and \"thoroughly engaging\" and states that it \"should delight audiences of all ages\", indicating a strong recommendation. | Kimi: The critic offers unqualified praise using superlatives like 'sumptuous' and 'perfect blend,' explicitly recommending the show for all audiences with no reservations or caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language with 'sumptuous,' 'thoroughly engaging,' and 'should delight audiences of all ages' indicates enthusiastic recommendation with no reservations expressed. | GPT-4o: The review uses strong positive language ('sumptuous', 'thoroughly engaging', 'delight audiences of all ages') indicating a highly enthusiastic recommendation without reservations. | Gemini: The review is overwhelmingly positive, using words like \"sumptuous\" and \"thoroughly engaging.\" The phrase \"should delight audiences of all ages\" is a strong recommendation. | Kimi: The critic offers unqualified praise using superlatives like 'sumptuous' and 'perfect blend,' explicitly recommending the show for audiences of all ages with no reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:42:25.257Z",
+    "scoredAt": "2026-02-03T10:45:05.029Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,12 +60,12 @@
     "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 92,
+    "kimiScore": 90,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 10,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

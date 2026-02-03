@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Positive language like 'roaring back to life' and praise for cast understanding suggests recommendation, but very brief excerpt limits confidence in full assessment. | GPT-4o: The review uses strong positive language ('roaring back to life') indicating a highly enthusiastic recommendation. The mention of the cast's understanding of the play's elements suggests a high level of praise for the production. | Gemini: The review states that the production brings the play 'roaring back to life' and praises the cast's understanding of the text, indicating a positive recommendation. | Kimi: The excerpt offers enthusiastic praise for the revival ('roaring back to life') and the cast's understanding of the material, indicating a strong recommendation despite the brevity of the text.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive language ('roaring back to life') with praise for direction and cast, but this appears to be a truncated excerpt with very limited text for assessment. | GPT-4o: The review uses strong positive language ('roaring back to life') and praises both the direction and the cast's understanding of the play, indicating a highly favorable opinion. | Gemini: The review explicitly states that the production brings the play 'roaring back to life' and praises the cast's understanding of the text, indicating a positive recommendation. | Kimi: Though this appears to be an excerpt rather than a full review, the language is unambiguously enthusiastic ('roaring back to life') with strong praise for both direction and performances. The high-end Positive score reflects the vigorous endorsement while the low confidence acknowledges the limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:31:18.656Z",
+    "scoredAt": "2026-02-03T11:31:52.835Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

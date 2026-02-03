@@ -65,7 +65,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brantley acknowledges the show's flaws (rambles, overly long, familiar material) but ultimately appreciates Crystal's charm and the emotional resonance of the piece. The tone is warm and the review treats it as a worthwhile experience despite reservations. | GPT-4o: The review highlights the nostalgic and sentimental appeal of the show, praising Crystal's charm and comedic timing, while noting the show's length as a drawback. Overall, it recommends the show for its nostalgic value and Crystal's performance. | Gemini: The review is generally positive, highlighting Crystal's charm and the show's nostalgic appeal, but notes that the show rambles and some jokes are dated. It's a recommendation with reservations. | Kimi: While noting the show's excessive length and dated material, the critic praises Crystal's polished delivery and nostalgic charm, recommending it as a warmly affectionate portrait that delivers potent pleasures despite its flaws.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brantley appreciates Crystal's charm and comedic skill while noting the show's excessive length. The tone is affectionate and the critique is constructive rather than dismissive, indicating a solid recommendation. | GPT-4o: The review highlights the show's nostalgic and sentimental appeal, praising Crystal's charm and comedic delivery. While it notes the show's length and some jokes being dated, the overall tone is positive, recommending it for its warmth and humor. | Gemini: The review is generally positive, highlighting Crystal's charm and the nostalgic appeal of the show, but also notes that the jokes may not be as fresh today. It's a qualified recommendation. | Kimi: While Brantley criticizes the show's length ('rambles for two-and-a-half easy-to-trim hours') and notes the material feels dated, he praises Crystal's 'old-school charm' and 'polish,' ultimately affirming the nostalgic experience as warmly enjoyable.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -75,22 +75,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:23:54.108Z",
+    "scoredAt": "2026-02-03T10:25:43.216Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 75,
+    "claudeScore": 76,
     "openaiScore": 76,
     "geminiScore": 75,
-    "kimiScore": 76,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -20,7 +20,7 @@
   "contentTierReason": "Short text (23 words)",
   "llmScore": {
     "score": 63,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 58,
       "high": 68
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges both negative aspects (bloody mess, violent, profane, deeply twisted) and positive elements (often very funny), but the opening characterization as 'a bloody mess' suggests overall disappointment despite finding humor in it. | GPT-4o: The review describes the play as a 'bloody mess' but acknowledges it is 'often very funny', indicating a mixed reception with both negative and positive elements. | Gemini: The review acknowledges both positive (funny) and negative (bloody mess, violent, profane, twisted) aspects, resulting in a mixed assessment. | Kimi: The critic describes the play as a 'bloody mess' figuratively while acknowledging it is 'often very funny,' indicating significant flaws balanced by entertainment value. The extreme brevity suggests this is an excerpt or truncated text, warranting low confidence.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review acknowledges both significant problems ('bloody mess literally and figuratively') and positive elements ('often very funny'), suggesting a balanced but ultimately lukewarm assessment without a clear recommendation either way. | GPT-4o: The review acknowledges both negative aspects ('bloody mess') and positive elements ('very funny'), resulting in a mixed assessment. | Gemini: The review acknowledges the play is a \"bloody mess\" but also states that it is \"often very funny\", indicating a positive, but qualified, recommendation. | Kimi: The critic explicitly calls the play a figurative 'mess' while acknowledging it is 'often very funny,' creating a balanced mixed assessment without a clear recommendation. Confidence is low due to the brevity of the provided text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:31:32.092Z",
+    "scoredAt": "2026-02-03T10:33:56.037Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,18 +59,18 @@
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
+    "geminiScore": 72,
     "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
+    "geminiBucket": "Positive",
     "kimiBucket": "Mixed",
-    "scoreDelta": 3,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   }
 }

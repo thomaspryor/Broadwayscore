@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the lead performance with positive descriptors ('wonder to behold', 'genuinely earned'), but text appears truncated so full critical verdict may be missing. | GPT-4o: The review uses strong positive language ('a wonder to behold') and praises the transformation as 'genuinely earned,' indicating a highly enthusiastic recommendation. | Gemini: The review praises Campbell Scott's performance as Scrooge, calling it a 'wonder to behold' and highlighting the genuine transformation. This indicates a positive recommendation. | Kimi: Though only an excerpt, the text offers enthusiastic praise for Campbell Scott's performance as 'a wonder to behold' that is 'genuinely earned,' indicating a strong recommendation despite the limited context.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the lead performance with 'wonder to behold' and 'genuinely earned' transformation, but confidence is low due to extremely brief excerpt that may not represent the full review verdict. | GPT-4o: The review uses strong positive language ('wonder to behold') and praises the transformation as 'genuinely earned,' indicating a high level of recommendation. | Gemini: The review praises Campbell Scott's performance as Scrooge, calling it a \"wonder to behold\" and highlighting its transformative quality. This indicates a positive assessment and recommendation. | Kimi: Rex Reed offers unqualified superlatives for the lead performance ('wonder to behold,' 'transformative'), indicating a clear recommendation despite the brevity of the excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,14 +50,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:41:34.907Z",
+    "scoredAt": "2026-02-03T10:43:46.436Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 81,
     "openaiScore": 90,
     "geminiScore": 80,
     "kimiScore": 82,

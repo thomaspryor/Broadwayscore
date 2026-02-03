@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This handsome new staging of 'A Christmas Carol' at the Lyceum Theatre offers a respectable if not revelatory take on the Dickens classic, with Campbell Scott bringing a welcome subtlety to Scrooge.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
   "llmScore": {
-    "score": 74,
-    "confidence": "medium",
+    "score": 73,
+    "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 68,
+      "high": 78
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review is clearly positive with praise for the staging ('handsome') and lead performance ('welcome subtlety'), but the qualifier 'respectable if not revelatory' indicates measured enthusiasm rather than strong recommendation. | GPT-4o: The review describes the production as 'respectable if not revelatory,' indicating a mixed assessment. While there is praise for Campbell Scott's performance, the overall recommendation is lukewarm. | Gemini: The review describes the staging as \"handsome\" and \"respectable,\" indicating a positive but not overwhelmingly enthusiastic assessment. The phrase \"if not revelatory\" suggests some reservations. | Kimi: The critic praises the 'handsome' staging and Scott's 'welcome subtlety' but qualifies the recommendation as 'respectable if not revelatory,' indicating a solid production that is worth seeing but not groundbreaking.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review uses positive language ('handsome', 'respectable', 'welcome subtlety') but explicitly states it's 'not revelatory', indicating a qualified positive recommendation without strong enthusiasm. | GPT-4o: The review describes the production as 'respectable' and praises Campbell Scott's performance, indicating a positive but not overly enthusiastic recommendation. | Gemini: The review uses the word \"respectable\" which indicates a positive but not overwhelmingly enthusiastic recommendation. The phrase \"if not revelatory\" suggests reservations. | Kimi: The critic offers qualified praise for the handsome staging and Scott's subtle performance, but the caveat that it is 'not revelatory' keeps it in the lower range of positive recommendations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:46:41.062Z",
+    "scoredAt": "2026-02-03T10:49:38.681Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 65,
-    "geminiScore": 74,
-    "kimiScore": 76,
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "geminiScore": 72,
+    "kimiScore": 72,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 11,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   }
 }

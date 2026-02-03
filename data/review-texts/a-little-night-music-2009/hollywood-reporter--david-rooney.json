@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Catherine Zeta-Jones makes a commanding Broadway debut in this handsome revival of Stephen Sondheim's masterpiece, though her vocals are more stylish than stirring.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -66,11 +66,11 @@
   "wordCount": 595,
   "tierReason": "Full review text",
   "llmScore": {
-    "score": 75,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -87,7 +87,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Calls it a 'handsome revival' of a 'masterpiece' with praise for Zeta-Jones's 'commanding' debut, but qualifies her vocals as lacking emotional impact. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises Zeta-Jones' performance and the production's appearance, indicating a positive view. However, the caveat about her vocals being 'more stylish than stirring' suggests some reservations. Given the single excerpt warning, the score is set at the lower end of the positive range. | Gemini: The review excerpt praises Zeta-Jones and calls the revival 'handsome' and the show a 'masterpiece', but notes that her vocals are 'more stylish than stirring', indicating a reservation. Given the single excerpt, confidence is low. | Kimi: The excerpt offers qualified praise—complimenting Zeta-Jones's stage presence and the production design while explicitly criticizing her vocals. As a single curated quote, it suggests mild approval warranting the lower end of the Positive range.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Calls it Sondheim's 'masterpiece' and a 'handsome revival' with Zeta-Jones making a 'commanding' debut, but qualifies her vocals as 'more stylish than stirring.' Single excerpt warning applies - this sounds mildly positive with reservations, so scored at lower end of Positive range. | GPT-4o: The excerpt praises Zeta-Jones' performance and describes the revival as 'handsome,' indicating a positive view. However, the mention of her vocals being 'more stylish than stirring' suggests some reservations. Given the single excerpt warning, a score at the lower end of the Positive range is appropriate. | Gemini: The review praises Zeta-Jones' performance and calls the revival 'handsome,' but notes her vocals are 'more stylish than stirring,' indicating a reservation. Given the limited excerpt, confidence is low. | Kimi: The excerpt offers strong praise for Zeta-Jones's commanding stage presence and the handsome production values, but includes a specific reservation about her vocal performance being more stylish than emotionally stirring, suggesting a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -97,22 +97,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:14:46.048Z",
+    "scoredAt": "2026-02-03T11:17:07.306Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 74,
     "openaiScore": 80,
     "geminiScore": 75,
-    "kimiScore": 73,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

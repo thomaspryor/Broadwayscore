@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "In its transfer to Broadway, 'A Strange Loop' remains a singular achievement: a musical that is both deeply personal and broadly resonant, managing to be simultaneously raw and sophisticated.",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
-    "score": 87,
+    "score": 86,
     "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 81,
+      "high": 91
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear praise calling it a 'singular achievement' with positive descriptors like 'deeply personal and broadly resonant' and 'raw and sophisticated', indicating strong recommendation. | GPT-4o: The review uses superlatives like 'singular achievement' and praises the show for being both 'deeply personal and broadly resonant', indicating a strong, enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language like \"singular achievement\" and highlights the show's unique qualities, indicating a strong recommendation. | Kimi: The critic describes the show as a 'singular achievement' with unqualified praise for its emotional resonance and sophistication, using superlative language that indicates a must-see recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling it a 'singular achievement' with multiple positive qualities (personal, resonant, raw, sophisticated). Clear recommendation despite brief text. | GPT-4o: The review describes the show as a 'singular achievement' and praises its ability to be both 'deeply personal and broadly resonant', indicating a strong, enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"singular achievement\" and highlights the show's unique qualities, indicating a strong recommendation. | Kimi: The reviewer unequivocally praises the Broadway transfer as a 'singular achievement,' offering unqualified acclaim for its emotional resonance and sophisticated execution. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:34:51.889Z",
+    "scoredAt": "2026-02-03T11:35:35.490Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 92,
+    "claudeScore": 82,
+    "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 92,
+    "kimiScore": 90,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 11,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

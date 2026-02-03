@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The problem with '13' isn't that it's a musical about teenagers performed by teenagers. It's that it's a bad musical about teenagers performed by teenagers.",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
-    "score": 43,
+    "score": 44,
     "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 48
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The problem with '13' isn't that it's a musical about teenagers performed by teenagers. It's that it's a bad musical about teenagers performed by teenagers.",
+        "quote": "It's that it's a bad musical about teenagers performed by teenagers.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic explicitly calls it 'a bad musical' which is a clear negative verdict. The phrasing suggests disappointment rather than a complete pan. | GPT-4o: The review is strongly negative, stating that the musical is bad without any redeeming qualities. The critic's tone is dismissive and critical. | Gemini: The review explicitly states that it is a 'bad musical' and therefore it is a negative review. | Kimi: The critic explicitly labels the show as 'bad' with no positive qualifiers or mitigating praise, indicating a clear negative recommendation. The confidence is low due to the extreme brevity of the excerpt.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Direct, unambiguous negative assessment calling it 'a bad musical' with no redeeming qualities mentioned in the excerpt. | GPT-4o: The review is clearly negative, emphasizing that the musical is bad, with no redeeming qualities mentioned. | Gemini: The critic states the musical is \"bad\", indicating a negative review. | Kimi: The critic delivers an unambiguous negative verdict by explicitly labeling the show 'bad,' with no redeeming qualities or counterbalancing praise offered.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:06:58.230Z",
+    "scoredAt": "2026-02-03T10:08:44.857Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,7 +60,7 @@
     "claudeScore": 45,
     "openaiScore": 20,
     "geminiScore": 45,
-    "kimiScore": 40,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Pan",
     "geminiBucket": "Negative",

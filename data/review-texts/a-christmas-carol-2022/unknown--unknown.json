@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with measured praise for the script's wit and detail, but the 'lonelier affair' framing suggests some reservations. Limited text warrants cautious positive score. | GPT-4o: The excerpt suggests a neutral tone, describing the production as 'lonelier' and noting the script's adherence to Dickens' version with 'keen wit.' Without a clear recommendation or discouragement, it falls into the Mixed category. | Gemini: The review excerpt suggests a positive but not overwhelmingly enthusiastic assessment, praising the script's wit and detail while noting a \"lonelier affair.\" Given the single excerpt and truncated nature, confidence is low, but the tone leans positive. | Kimi: The excerpt praises the production's 'keen wit' and 'gimlet detail' while appreciating its avoidance of excessive sentimentality, indicating a positive though measured reception. As only one excerpt is available, confidence is low.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt praises the script's wit and detail while noting it's 'lonelier' - suggests thoughtful adaptation but cautious tone. Low confidence due to limited text. | GPT-4o: The excerpt suggests a neutral tone, noting the script's adherence to Dickens' original with a mix of sentimentality and wit. The lack of clear positive or negative language leads to a mixed classification. | Gemini: The excerpt suggests a positive view of the script and its adherence to Dickens' original, highlighting its wit and detail. Given that it's a single excerpt, confidence is low, but the tone is positive enough for a low-end 'Positive' score. | Kimi: Extracted from malformed response",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,17 +53,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:50:30.749Z",
+    "scoredAt": "2026-02-03T10:52:24.667Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 74,
+    "claudeScore": 72,
     "openaiScore": 65,
     "geminiScore": 75,
-    "kimiScore": 73,
+    "kimiScore": 74,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",

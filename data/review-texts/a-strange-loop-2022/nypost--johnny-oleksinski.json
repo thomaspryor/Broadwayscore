@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Uses strong praise language ('genuine original', 'crackles with wit, heart') and highlights the show's Pulitzer Prize. The enthusiastic tone and multiple positive attributes indicate a strong recommendation. | GPT-4o: The review uses strong positive language ('genuine original', 'crackles with wit, heart and stunning vocals') indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"genuine original\", \"crackles with wit, heart and stunning vocals\", indicating a strong recommendation. | Kimi: The critic employs unqualified superlatives ('genuine original', 'stunning vocals') and enthusiastic verbs ('crackles') to praise the production, with no reservations or caveats mentioned.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong positive language with 'genuine original' and 'crackles with wit, heart and stunning vocals' indicates enthusiastic recommendation without reservations. | GPT-4o: The review uses superlatives like 'genuine original' and 'crackles with wit, heart and stunning vocals,' indicating a strong, enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"genuine original\" and \"crackles with wit, heart and stunning vocals,\" indicating a positive recommendation. | Kimi: Unreserved praise calling the show a 'genuine original' with wit, heart, and stunning vocals; no caveats or criticisms present.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:33:01.023Z",
+    "scoredAt": "2026-02-03T11:34:22.013Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

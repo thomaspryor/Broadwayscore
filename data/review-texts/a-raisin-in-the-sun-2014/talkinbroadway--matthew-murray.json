@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival proves that Hansberry's masterpiece remains as potent and relevant today as it was more than half a century ago, and that in the right hands it can still move audiences to tears and inspire them to action.",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (39 words)",
   "llmScore": {
-    "score": 87,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This revival proves that Hansberry's masterpiece remains as potent and relevant today as it was more than half a century ago",
+        "quote": "This revival proves that Hansberry's masterpiece remains as potent and relevant today as it was more than half a century ago.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling it a 'masterpiece' that remains 'potent and relevant' with power to 'move audiences to tears and inspire them to action.' Clear enthusiastic recommendation despite brief text. | GPT-4o: The review uses strong, unqualified praise, calling the show a 'masterpiece' and highlighting its emotional and inspirational impact, indicating a rave review. | Gemini: The review uses strong positive language such as \"masterpiece\", \"potent\", \"relevant\", \"move audiences to tears\", and \"inspire them to action\", indicating a strong recommendation. | Kimi: The critic unreservedly praises the revival as a 'masterpiece' that is 'potent and relevant,' emphasizing its power to move audiences to tears and inspire action with no reservations mentioned. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Calls the work a 'masterpiece' that 'moves audiences to tears and inspires them to action' with unqualified praise for the revival's continued relevance and emotional power. | GPT-4o: The review uses strong, unqualified praise, calling the production a 'masterpiece' that remains 'potent and relevant,' indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language, calling the play a 'masterpiece' that is 'potent and relevant' and can 'move audiences to tears and inspire them to action.' | Kimi: The critic employs the highest praise ('masterpiece') and emphasizes the production's emotional impact and contemporary relevance, offering an unqualified endorsement without reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:27:33.342Z",
+    "scoredAt": "2026-02-03T11:27:52.825Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 88,
     "openaiScore": 92,
     "geminiScore": 82,
-    "kimiScore": 93,
-    "claudeBucket": "Positive",
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 11,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   }
 }

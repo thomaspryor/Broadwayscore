@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The new Broadway production of 'A Christmas Carol' is a handsome, well-intentioned effort that never quite finds its theatrical footing despite strong performances and impressive design elements.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The new Broadway production of 'A Christmas Carol' is a handsome, well-intentioned effort that never quite finds its theatrical footing",
+        "quote": "well-intentioned effort that never quite finds its theatrical footing",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Despite acknowledging strong performances and design, the critic clearly states the production 'never quite finds its theatrical footing,' indicating fundamental issues that prevent recommendation. | GPT-4o: The review acknowledges strong performances and impressive design but ultimately suggests the production lacks impact, resulting in a mixed assessment. | Gemini: The review acknowledges positive aspects like strong performances and design but ultimately states that the production \"never quite finds its theatrical footing,\" indicating a mixed or neutral assessment. | Kimi: The review acknowledges strong performances and impressive design (positive elements) but concludes the production 'never quite finds its theatrical footing' (significant criticism). Without a clear recommendation or rejection, this falls into mixed territory.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Despite acknowledging strong performances and design, the critic clearly states the production 'never quite finds its theatrical footing,' indicating significant structural problems that prevent a recommendation. | GPT-4o: The review acknowledges strong performances and design but ultimately suggests the production does not fully succeed, indicating a mixed reception. | Gemini: The review acknowledges positive aspects like strong performances and design but ultimately states that the production doesn't quite find its theatrical footing, indicating a mixed or neutral assessment. | Kimi: The critic praises the performances and design elements but states the production 'never quite finds its theatrical footing,' indicating fundamental issues that prevent a clear recommendation without outright panning it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,14 +50,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:48:36.630Z",
+    "scoredAt": "2026-02-03T10:50:16.582Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
     "kimiScore": 62,
@@ -65,7 +65,7 @@
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 7,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

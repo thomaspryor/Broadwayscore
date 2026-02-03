@@ -20,7 +20,7 @@
   "contentTierReason": "Short text (20 words)",
   "llmScore": {
     "score": 80,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 75,
       "high": 85
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language praising both technical and performance elements. 'Delivers the goods' indicates solid recommendation, though lacks superlatives for higher score. | GPT-4o: The review uses positive language such as 'lavish', 'impressive', and 'heartfelt', indicating a strong recommendation to see the show. | Gemini: The review uses positive language such as \"lavish,\" \"impressive,\" and \"heartfelt,\" indicating a strong recommendation. The phrase \"delivers the holiday goods\" further reinforces this positive assessment. | Kimi: The review offers consistent praise for the production's spectacle, technical elements, and performances, clearly recommending it as holiday entertainment without significant reservations.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation praising both technical elements and performances, using affirming language like 'delivers the goods' and 'impressive.' | GPT-4o: The review praises the show as a 'lavish, old-fashioned spectacle' with 'impressive technical wizardry and heartfelt performances,' indicating a strong recommendation without reservations. | Gemini: The review uses positive language like \"lavish,\" \"impressive,\" and \"heartfelt,\" indicating a strong recommendation. | Kimi: The critic offers unqualified praise for the production values and performances, using words like 'lavish,' 'impressive,' and 'heartfelt' to describe a successful holiday entertainment, though the brevity of the excerpt limits confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,14 +50,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:52:01.431Z",
+    "scoredAt": "2026-02-03T10:53:59.316Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 77,
+    "claudeScore": 76,
     "openaiScore": 82,
     "geminiScore": 81,
     "kimiScore": 80,
@@ -65,7 +65,7 @@
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

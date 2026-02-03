@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory (55-69). 'Pleasant but unexceptional' indicates neither recommendation nor discouragement - exactly what Mixed represents. | GPT-4o: The critic's original rating of 60 aligns with a Mixed review. The text describes the show as 'pleasant but unexceptional,' indicating a lukewarm recommendation. | Gemini: The review states that the show has heart but is otherwise unexceptional, indicating a mixed reaction. The critic's rating of 60 aligns with the 'Mixed' bucket. | Kimi: The critic acknowledges the show has 'heart' but ultimately deems it 'unexceptional' and lacking substance, matching the provided 60/100 rating which falls squarely in the Mixed range.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating aligns with Mixed bucket. Acknowledges the show 'has heart' and is 'pleasant' but finds it 'unexceptional,' indicating neither strong recommendation nor discouragement. | GPT-4o: The critic's original rating of 60 places it in the Mixed bucket. The review describes the show as having heart but being otherwise unexceptional, aligning with a mixed assessment. | Gemini: The critic explicitly states the show is 'pleasant but unexceptional,' indicating a mixed reaction. The score aligns with the critic's rating of 60. | Kimi: The critic acknowledges the show has 'heart' but explicitly calls it 'unexceptional' with limited merits beyond that, indicating a lukewarm middle-ground assessment that neither recommends nor discourages attendance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:35:39.979Z",
+    "scoredAt": "2026-02-03T10:37:45.188Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

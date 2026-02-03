@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival proves that Fuller's play remains as potent and necessary today as it was nearly four decades ago, and that when performed with this level of commitment and insight, it can still pack a devastating punch.",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
   "llmScore": {
-    "score": 86,
+    "score": 89,
     "confidence": "medium",
     "range": {
-      "low": 81,
-      "high": 91
+      "low": 84,
+      "high": 94
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This revival proves that Fuller's play remains as potent and necessary today as it was nearly four decades ago",
+        "quote": "This revival proves that Fuller's play remains as potent and necessary today as it was nearly four decades ago.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language ('potent and necessary', 'devastating punch') with praise for both the material's relevance and the production's execution ('commitment and insight'). Clear recommendation despite brief excerpt. | GPT-4o: The review uses strong positive language ('potent', 'necessary', 'devastating punch') indicating a highly enthusiastic recommendation without reservations. | Gemini: The review indicates that the play is still relevant and impactful, especially when performed with commitment and insight, suggesting a strong positive recommendation. | Kimi: The critic employs superlatives ('potent,' 'necessary,' 'devastating punch') to praise the revival's emotional impact and continued relevance, indicating strong enthusiasm for the production despite the brevity of the provided text. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise calling the revival 'potent and necessary' with performances that 'pack a devastating punch,' indicating an enthusiastic recommendation. | GPT-4o: The review describes the revival as 'potent and necessary' with a 'devastating punch', indicating strong praise and a must-see recommendation. | Gemini: The review states the play is \"potent and necessary\" and can \"pack a devastating punch\", indicating a strong positive recommendation. | Kimi: The critic employs strongly laudatory language ('potent,' 'necessary,' 'devastating punch') to praise the production's impact and execution, indicating enthusiastic endorsement despite the brevity of the provided excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,18 +50,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:29:20.346Z",
+    "scoredAt": "2026-02-03T11:29:30.663Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 88,
     "openaiScore": 92,
     "geminiScore": 82,
-    "kimiScore": 90,
-    "claudeBucket": "Positive",
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
@@ -70,7 +70,7 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   }
 }

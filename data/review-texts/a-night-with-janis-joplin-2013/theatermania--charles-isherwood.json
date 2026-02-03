@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the lead performance as 'powerhouse' and calls the show a 'moving tribute', but this appears to be a brief excerpt that may not capture the full review's verdict. | GPT-4o: The review praises the lead performance as a 'powerhouse' and describes the show as a 'moving tribute,' indicating a strong positive recommendation. | Gemini: The review praises the lead performance and calls the show a \"moving tribute,\" indicating a positive recommendation. | Kimi: While brief, the review offers unqualified praise for the lead performance and describes the show as a 'moving tribute' with no caveats or criticisms mentioned.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for the lead performance and calling it a 'moving tribute,' but the brief excerpt limits confidence in the overall assessment. | GPT-4o: The review praises the lead performance as a 'powerhouse' and describes the show as a 'moving tribute', indicating a strong recommendation. | Gemini: The review praises the lead performance as a \"powerhouse\" and a \"moving tribute,\" indicating a positive recommendation. | Kimi: The critic offers unqualified praise for the lead performance and describes the show as a 'moving tribute,' indicating a strong recommendation despite the excerpt's brevity.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:25:55.645Z",
+    "scoredAt": "2026-02-03T11:25:30.303Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,19 +58,19 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 82,
+    "openaiScore": 90,
     "geminiScore": 80,
-    "kimiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   }
 }

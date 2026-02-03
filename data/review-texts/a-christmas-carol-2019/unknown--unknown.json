@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,11 +22,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 76,
+    "score": 73,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 68,
+      "high": 78
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt describes the script favorably ('keen wit and gimlet detail') but notes it's 'lonelier' - suggests mild praise with qualifications. Low confidence due to single cherry-picked quote warning. | GPT-4o: The excerpt suggests a production that is faithful to Dickens' original, with a mix of wit and detail, but describes it as a 'lonelier affair'. The lack of clear positive or negative language indicates a mixed verdict. Confidence is low due to the single excerpt warning. | Gemini: The excerpt suggests a positive, but somewhat reserved, recommendation due to the mention of 'lonelier affair' and 'cut the goose-fat sentimentality'. Given it's a single excerpt, confidence is low. | Kimi: Single excerpt praises the adaptation's 'keen wit' and 'gimlet detail' while valuing its unsentimental approach, indicating a clearly positive view. Scored at upper end of Positive range per instructions for clearly positive single excerpts, with low confidence due to limited context.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows measured appreciation for the script's authenticity and wit, but 'lonelier affair' suggests some distance. With only one curated quote available, confidence is low and score reflects cautious positive assessment. | GPT-4o: The excerpt highlights a unique aspect of the production but does not clearly recommend or discourage attendance. The mention of 'keen wit and gimlet detail' suggests some positive elements, but the overall tone is neutral, leading to a mixed classification. | Gemini: The excerpt suggests a positive assessment, highlighting the script's wit and detail while acknowledging the potential for sentimentality. Given it's a single excerpt, confidence is low. | Kimi: The excerpt praises the production's script for its 'keen wit' and 'gimlet detail,' offering a positive assessment of the adaptation's literary quality. However, the single-excerpt format and lack of explicit recommendation language warrant a lower-end Positive score and low confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,22 +53,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:45:02.067Z",
+    "scoredAt": "2026-02-03T10:45:55.523Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 72,
     "openaiScore": 65,
     "geminiScore": 75,
-    "kimiScore": 81,
+    "kimiScore": 73,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 16,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

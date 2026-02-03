@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single sentence excerpt that offers measured praise for balancing intimacy and spectacle, but lacks explicit recommendation language or fuller evaluation. Confidence low due to extremely brief text. | GPT-4o: The review praises the adaptation for balancing intimacy and spectacle, suggesting a strong recommendation. However, the brief text limits the depth of evaluation, leading to medium confidence. | Gemini: The review states that the adaptation captures both intimacy and spectacle, suggesting a positive experience, but it is not overwhelmingly enthusiastic. | Kimi: The critic praises the production for successfully balancing intimacy and spectacle, indicating a solid recommendation despite the brief excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single sentence fragment suggests positive assessment of the adaptation's balance of intimacy and spectacle, but extremely limited text provides insufficient context for a full evaluation. | GPT-4o: The review praises the adaptation for successfully balancing intimacy and spectacle, indicating a strong positive reception. However, the brief nature of the text limits the depth of evaluation, resulting in medium confidence. | Gemini: The review states that the adaptation captures both the intimacy of the original story and the spectacle of a big-budget musical, indicating a positive overall assessment. | Kimi: The critic praises the production for successfully balancing the original story's intimacy with modern spectacle, offering a clear recommendation despite the brevity of the review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:43:51.470Z",
+    "scoredAt": "2026-02-03T10:45:31.252Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,7 +60,7 @@
     "claudeScore": 76,
     "openaiScore": 80,
     "geminiScore": 75,
-    "kimiScore": 76,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

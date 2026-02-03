@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Despite being a single excerpt, the language is exceptionally enthusiastic with superlatives like 'singular sensation' and promises audiences will 'fall head over heels in love.' This is clear rave language even in isolation. | GPT-4o: The excerpt uses highly enthusiastic language ('head over heels in love', 'singular sensation'), suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The single quote available is very positive, suggesting a strong recommendation. Given the limited text, confidence is low. | Kimi: The excerpt employs exuberant, unqualified praise ('head over heels in love,' 'singular sensation') that clearly indicates a strong recommendation. However, per the single-excerpt protocol, the score is capped at the upper end of the Positive range to account for potential cherry-picking. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong enthusiastic language ('fall head over heels in love', 'singular sensation') indicates a rave review, but confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt uses strong, enthusiastic language ('head over heels in love', 'singular sensation') indicating a rave review. However, confidence is low due to the single excerpt warning. | Gemini: The single excerpt is highly positive, suggesting a strong recommendation. Given the limited text, confidence is low, but the language points to the upper end of the 'Positive' bucket. | Kimi: Single excerpt contains enthusiastic superlatives ('head over heels in love', 'singular sensation') indicating strong praise, but confidence is low due to risk of cherry-picking from limited curated text. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:39:16.617Z",
+    "scoredAt": "2026-02-03T10:41:44.084Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -62,13 +62,13 @@
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 83,
-    "kimiScore": 84,
+    "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

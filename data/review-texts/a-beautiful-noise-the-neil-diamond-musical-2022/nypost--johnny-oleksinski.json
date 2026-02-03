@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is at its best when Diamond's hits are unleashed in their full glory, and the audience gets to sing along to 'Sweet Caroline' and 'Cracklin' Rosie.'",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
-    "score": 72,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 67,
-      "high": 77
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review highlights the enjoyment of the musical numbers but lacks depth and context to provide a strong recommendation. The focus on audience participation suggests a positive experience, but the limited text prevents a higher confidence score. | Gemini: The review focuses on the enjoyment of the audience singing along to the hits, suggesting a positive but somewhat limited appeal. Due to the short length, confidence is low. | Kimi: The qualified phrasing 'at its best' implies the show has inconsistent quality, excelling during musical numbers but potentially weaker elsewhere. The single-sentence excerpt appears truncated, limiting certainty about the overall verdict.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | GPT-4o: The review highlights the enjoyment of specific moments but does not provide a clear overall recommendation or critique of the production as a whole. The focus on audience participation suggests some appeal, but the lack of broader evaluation results in a mixed classification. | Gemini: The review is positive, highlighting the enjoyment of Diamond's hits, but it's brief and lacks a comprehensive evaluation, so confidence is low. | Kimi: The excerpt praises the musical performances but the qualified phrasing 'at its best' implies the show is inconsistent or weaker during non-musical moments. Given this appears to be a truncated single sentence, confidence is low.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:28:44.471Z",
+    "scoredAt": "2026-02-03T10:31:21.499Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,10 +58,10 @@
   },
   "ensembleData": {
     "claudeScore": null,
-    "openaiScore": 72,
+    "openaiScore": 65,
     "geminiScore": 72,
     "kimiScore": 62,
-    "openaiBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "kimiBucket": "Mixed",
     "scoreDelta": 10,
@@ -70,6 +70,6 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Mixed"
   }
 }

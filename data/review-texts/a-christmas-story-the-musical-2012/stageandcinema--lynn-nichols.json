@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language ('sweet', 'nostalgic', 'charm') with praise for capturing the source material and adding theatrical value, but brief excerpt limits confidence in full assessment. | GPT-4o: The review describes the show as 'sweet' and 'nostalgic', capturing the essence of the beloved film while adding theatrical charm. This indicates a positive recommendation. | Gemini: The review uses positive language such as \"sweet\" and \"charm\" and states that it captures the essence of the beloved film, indicating a positive recommendation. | Kimi: The critic offers warm praise for the adaptation, noting it successfully captures the film's essence while adding theatrical charm. The descriptors 'sweet' and 'nostalgic' indicate a solid recommendation, though the brief length prevents a higher confidence rating.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language ('sweet', 'charm', 'captures the essence') indicates recommendation, but brief text and lack of stronger superlatives keeps it in mid-Positive range. | GPT-4o: The review describes the show as 'sweet' and 'nostalgic' with 'theatrical charm,' indicating a positive recommendation. However, the brevity of the review and lack of detailed evaluation suggest a moderate level of enthusiasm. | Gemini: The review uses positive language such as \"sweet\" and \"captures the essence\" indicating a positive recommendation, but it is not overly enthusiastic, so it falls into the positive bucket. | Kimi: The reviewer praises the adaptation for capturing the film's essence while adding theatrical charm, using warm adjectives like 'sweet' and 'nostalgic' that clearly recommend the show despite the mild tone.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:56:00.653Z",
+    "scoredAt": "2026-02-03T10:58:28.214Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,14 +58,14 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
+    "openaiScore": 76,
     "geminiScore": 75,
     "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

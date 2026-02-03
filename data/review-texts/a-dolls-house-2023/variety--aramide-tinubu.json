@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jessica Chastain delivers a powerhouse performance as Nora Helmer in Jamie Lloyd's striking revival of Henrik Ibsen's 'A Doll's House,' which transforms the classic into a riveting contemporary thriller.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -61,11 +61,11 @@
   "wordCount": 1184,
   "tierReason": "Full review text",
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -77,12 +77,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "What's left is a beautiful, spacious clarity about what this oft-produced play is about.",
+        "quote": "In this revival, what's left is a beautiful, spacious clarity about what this oft-produced play is about.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the production's 'beautiful, spacious clarity,' highlights strong performances (especially Chastain and Thornton's chemistry), and appreciates the stripped-down directorial approach. While analytical rather than effusive, the tone is consistently appreciative of the artistic choices. | Gemini: The review praises the clarity and skill of the actors, highlighting the impact of the stripped-down production. While not a rave, it's a positive assessment of the production's core elements. | Kimi: Extracted from malformed response",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises Lloyd's stripped-down direction as creating 'beautiful, spacious clarity,' commends Herzog's adaptation and the performances (especially Chastain and Thornton), and finds the minimalist approach effective rather than lacking. Strong positive language throughout with no significant reservations. | Gemini: The review praises the clarity and skill of the actors, and while it notes the stripped-down nature of the production, it ultimately finds it to be a worthwhile and insightful experience. The praise for the performances, especially the chemistry between Nora and Dr. Rank, contributes to a positive overall assessment. | Kimi: The critic praises the minimalist production for creating 'beautiful, spacious clarity' and highlights strong performances, particularly Jessica Chastain's chemistry with Michael Patrick Thornton, resulting in a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -92,21 +92,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:03:31.486Z",
+    "scoredAt": "2026-02-03T11:06:24.321Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 79,
+    "claudeScore": 82,
     "openaiScore": null,
     "geminiScore": 78,
-    "kimiScore": 81,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

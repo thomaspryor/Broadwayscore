@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Edward Albee's 1966 Pulitzer Prize-winning play is a masterclass in theatrical precision, with Glenn Close delivering a performance of stunning emotional complexity.",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
-    "score": 90,
-    "confidence": "high",
+    "score": 92,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This revival of Edward Albee's 1966 Pulitzer Prize-winning play is a masterclass in theatrical precision",
+        "quote": "This revival of Edward Albee's 1966 Pulitzer Prize-winning play is a masterclass in theatrical precision, with Glenn Close delivering a performance of stunning emotional complexity.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Calls the revival a 'masterclass' and praises Close's 'stunning emotional complexity' - strong positive language indicating enthusiastic recommendation, though excerpt is brief. | GPT-4o: The review uses superlative language like 'masterclass' and 'stunning emotional complexity', indicating a strong, enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"masterclass\" and \"stunning emotional complexity,\" indicating a highly favorable opinion and a rave recommendation. | Kimi: The excerpt uses unequivocal superlatives ('masterclass', 'stunning') to praise both the production and lead performance, indicating strong enthusiasm despite the text appearing truncated.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise calling it a 'masterclass' with 'stunning' performance, but limited text prevents fuller assessment of overall recommendation strength. | GPT-4o: The review uses superlative language ('masterclass', 'stunning emotional complexity') to describe the production and performance, indicating a strong, enthusiastic recommendation. | Gemini: The review uses the term \"masterclass\" and praises Glenn Close's performance as \"stunning emotional complexity\", indicating a very positive and enthusiastic recommendation. | Kimi: Unqualified praise employing superlatives ('masterclass', 'stunning') with no reservations or caveats mentioned.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:58:31.073Z",
+    "scoredAt": "2026-02-03T11:02:07.355Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 82,
     "openaiScore": 92,
-    "geminiScore": 92,
-    "kimiScore": 88,
-    "claudeBucket": "Rave",
+    "geminiScore": 90,
+    "kimiScore": 93,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "kimiBucket": "Rave",
-    "scoreDelta": 4,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Frank Langella brings his customary gravity and intelligence to the role of Thomas More, but even his commanding presence can't save this leaden revival.",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
   "llmScore": {
-    "score": 43,
+    "score": 44,
     "confidence": "high",
     "range": {
-      "low": 38,
-      "high": 48
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict - acknowledges Langella's strong performance but states it 'can't save' the 'leaden revival', indicating the production fails despite good elements. | GPT-4o: The review acknowledges Frank Langella's strong performance but ultimately describes the production as 'leaden' and unsalvageable, indicating a negative verdict. | Gemini: The review acknowledges Langella's performance but ultimately states that even he cannot save the revival, indicating a negative overall assessment. | Kimi: While praising Langella's commanding performance, the critic explicitly states the revival is 'leaden' and unsavable, delivering a clear verdict against seeing the show.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict - praising Langella's performance but dismissing the production as 'leaden' and unsaveable despite the star's efforts. | GPT-4o: The review acknowledges Frank Langella's strong performance but ultimately describes the revival as 'leaden,' indicating a negative overall assessment. | Gemini: The review praises Langella's performance but ultimately states that even he cannot save the revival, indicating a negative overall assessment. | Kimi: While the critic praises Frank Langella's performance, the explicit verdict that his presence 'can't save this leaden revival' indicates a clear recommendation against seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:18:06.511Z",
+    "scoredAt": "2026-02-03T11:20:18.431Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 40,
+    "claudeScore": 42,
+    "openaiScore": 45,
     "geminiScore": 45,
     "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

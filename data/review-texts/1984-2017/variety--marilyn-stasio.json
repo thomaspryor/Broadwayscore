@@ -78,7 +78,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls it a 'stunning production' and praises it as 'visceral theater,' which are strong positive indicators. However, with only one excerpt available, confidence is low as the full verdict may differ. | GPT-4o: The excerpt uses strong, positive language ('stunning', 'visceral theater') suggesting a highly favorable view of the production. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt uses strong positive language like \"stunning\" and describes the production as \"visceral theater.\" Given the single excerpt, I'm scoring it at the higher end of the positive range, but with low confidence. | Kimi: Single excerpt employs strong superlatives ('stunning,' 'visceral') indicating enthusiastic approval, but per instructions for cherry-picked single excerpts, scores in upper Positive range (80-84) with low confidence.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls it a 'stunning production' and praises it as 'visceral theater,' indicating strong positive assessment. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt uses strong positive language ('stunning', 'visceral') indicating a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"stunning\" and describes a powerful theatrical experience. Given that it's a single excerpt, I'm placing it at the higher end of the positive bucket. | Kimi: Strong praise using words like 'stunning' and 'visceral' indicates a clear recommendation for the production's emotional impact, though the single-excerpt format requires caution.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -88,7 +88,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:19:04.437Z",
+    "scoredAt": "2026-02-03T10:21:34.120Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

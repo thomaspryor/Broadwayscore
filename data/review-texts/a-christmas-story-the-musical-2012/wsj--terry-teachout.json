@@ -20,7 +20,7 @@
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
     "score": 78,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 73,
       "high": 83
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the adaptation's tone and faithfulness to source material, but the excerpt appears incomplete and lacks stronger superlatives or explicit recommendation language that would push it higher in the Positive range. | GPT-4o: The review praises the show for capturing the spirit of the original story and balancing sweetness and humor effectively, indicating a solid recommendation. | Gemini: The review uses positive language to describe the show, indicating a recommendation with some reservations, as it highlights specific qualities that make it enjoyable. | Kimi: The critic offers clear praise for the show's balanced tone and successful adaptation of the source material, commending it for avoiding sentimentality and crude humor while maintaining the story's integrity.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment praising the show's tone and faithful adaptation, but brief excerpt limits confidence in overall verdict strength. | GPT-4o: The review provides clear praise for the show's balance and faithfulness to the source material, indicating a strong positive recommendation. | Gemini: The review is positive, highlighting the show's sweetness, humor, and faithfulness to the source material. It's a clear recommendation, though not overwhelmingly enthusiastic. | Kimi: The critic offers unqualified praise for the show's tone and adaptation, describing it as successfully balancing sentiment and humor while respecting the source material.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:57:34.615Z",
+    "scoredAt": "2026-02-03T11:01:00.766Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 80,
+    "claudeScore": 77,
+    "openaiScore": 82,
     "geminiScore": 78,
     "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

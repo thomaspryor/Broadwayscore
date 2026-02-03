@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Under Kenny Leon's direction, this Broadway revival of Charles Fuller's Pulitzer Prize-winning drama crackles with tension and delivers a powerful punch that resonates deeply in our current moment.",
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -61,11 +61,11 @@
   "wordCount": 730,
   "tierReason": "Full review text",
   "llmScore": {
-    "score": 87,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -82,7 +82,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language throughout ('crackerjack revival', 'superb ensemble', 'powerhouse direction', 'knock-your-socks-off drama') with detailed praise for performances and direction. The critic's enthusiasm is clear and sustained. | GPT-4o: The review is filled with superlatives and enthusiastic praise for the direction and ensemble, describing the production as a 'knock-your-socks-off drama' with 'intense emotional passion and intellectual courage.' | Gemini: The review is overwhelmingly positive, praising the direction, ensemble, and the play itself. Phrases like \"crackerjack revival\" and \"knock-your-socks-off drama\" indicate a strong recommendation. | Kimi: The review offers unreserved praise for Kenny Leon's direction and the ensemble cast, using superlatives like 'crackerjack,' 'superb,' and 'knock-your-socks-off' while emphasizing the production's powerful emotional impact without any noted reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'crackerjack revival,' 'superb ensemble,' 'knock-your-socks-off drama,' and 'powerhouse direction.' The critic shows genuine enthusiasm and recommends the production without any reservations. | GPT-4o: The review is filled with superlatives and praises the production, direction, and performances without reservation. The critic uses strong language to convey the impact and quality of the show, indicating a highly enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"crackerjack revival\", \"packs plenty of dramatic tension\", and \"knock-your-socks-off drama\". The critic praises the direction and ensemble, indicating a strong recommendation. | Kimi: The critic deploys unqualified superlatives including 'crackerjack,' 'superb,' 'powerhouse,' and 'knock-your-socks-off' to praise the direction, ensemble, and dramatic impact without reservation, accompanied by enthusiastic exclamations like 'Now, that's what I call a play!'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -92,18 +92,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:30:45.267Z",
+    "scoredAt": "2026-02-03T11:31:29.805Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 83,
+    "claudeScore": 92,
     "openaiScore": 92,
     "geminiScore": 82,
-    "kimiScore": 90,
-    "claudeBucket": "Positive",
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
@@ -112,7 +112,7 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   }
 }

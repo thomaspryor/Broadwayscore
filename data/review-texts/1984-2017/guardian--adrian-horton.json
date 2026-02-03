@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Clear praise calling it 'brilliant' with strong descriptors like 'visceral' and 'uncompromising', but this appears to be an excerpt with limited context for full assessment. | GPT-4o: The review uses strong positive language ('brilliant', 'genuinely harrowing') to describe the adaptation, indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"brilliant\" and \"uncompromising\" to describe the adaptation, indicating a rave review. | Kimi: The critic employs superlatives ('brilliant', 'visceral') and praises the production's uncompromising artistic vision and emotional impact without reservation, indicating an enthusiastic recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses strong praise language 'brilliant' and 'visceral, uncompromising' while acknowledging the challenging nature. The combination of 'brilliant' with 'harrowing' suggests high artistic merit despite difficult content. | GPT-4o: The review uses strong positive language ('brilliant', 'genuinely harrowing') to describe the adaptation, indicating an enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"brilliant\" and \"uncompromising\" to describe the adaptation, indicating a rave review. | Kimi: The critic deploys unqualified superlatives ('brilliant', 'visceral') to praise the adaptation's uncompromising execution and emotional impact, indicating an enthusiastic recommendation despite the harrowing subject matter.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:15:39.719Z",
+    "scoredAt": "2026-02-03T10:17:22.013Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,8 +58,8 @@
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 90,
+    "openaiScore": 92,
+    "geminiScore": 88,
     "kimiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",

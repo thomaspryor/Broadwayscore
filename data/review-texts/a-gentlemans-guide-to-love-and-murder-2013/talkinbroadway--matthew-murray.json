@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "A Gentleman's Guide to Love and Murder is a musical that knows exactly what it wants to be: a delicious throwback to the golden age of musical comedy, when wit trumped spectacle and clever plotting could carry a show.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (39 words)",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Positive language ('delicious throwback', 'knows exactly what it wants to be') suggests recommendation, but text appears truncated so confidence is reduced. | GPT-4o: The review praises the show as a 'delicious throwback' with 'wit' and 'clever plotting,' suggesting strong enthusiasm and a must-see recommendation. | Gemini: The review describes the show as a \"delicious throwback\" with \"wit\" and \"clever plotting,\" indicating a positive recommendation. | Kimi: The critic offers strong praise calling the show a 'delicious throwback' with clever plotting and wit, indicating a solid recommendation, though the brief excerpt limits confidence.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Positive language ('delicious', 'knows exactly what it wants to be') praising the show's clear identity and successful execution of its concept, though the excerpt appears truncated which limits confidence. | Gemini: The review describes the show as a \"delicious throwback\" and highlights its wit and clever plotting, indicating a positive recommendation. | Kimi: The critic offers clear praise for the show's purposeful identity as a 'delicious' throwback emphasizing wit and clever plotting over spectacle, indicating a solid recommendation despite the brevity of the excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:10:00.485Z",
+    "scoredAt": "2026-02-03T11:11:18.796Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,19 +58,18 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 90,
+    "openaiScore": null,
     "geminiScore": 75,
-    "kimiScore": 82,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

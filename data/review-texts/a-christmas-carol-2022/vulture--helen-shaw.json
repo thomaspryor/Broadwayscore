@@ -9,18 +9,67 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a marvel of theatrical engineering, with ghosts that materialize from thin air and a stage that transforms into a snow-covered London street with breathtaking speed.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a marvel of theatrical engineering, with ghosts that materialize from thin air and a stage that transforms into a snow-covered London street with breathtaking speed.",
-  "contentTier": "invalid",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "rejectedAt": "2026-02-03T10:51:35.471Z",
-  "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be a single descriptive sentence about technical effects, not a complete review with critical evaluation or recommendation; openai: The text is a description of technical aspects of the show without any evaluative content or overall recommendation.",
-  "promptVersion": "5.2.0"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a marvel of theatrical engineering, with ghosts that materialize from thin air.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review uses strong positive language ('marvel', 'breathtaking') to describe the production's technical achievements, indicating a highly favorable impression. | Gemini: The review uses strong positive language such as \"marvel of theatrical engineering\" and \"breathtaking speed\", indicating a positive recommendation. | Kimi: The critic uses superlatives ('marvel', 'breathtaking') to praise the production's technical achievements and transformative staging effects, indicating strong approval. Confidence is low due to the brevity of the excerpt provided.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:53:28.659Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

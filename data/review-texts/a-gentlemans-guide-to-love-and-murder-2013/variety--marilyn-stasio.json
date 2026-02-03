@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('charming', 'wickedly funny', 'surprisingly touching') indicates recommendation, but brief text limits confidence in exact placement within positive range. | GPT-4o: The review uses positive descriptors like 'charming', 'wickedly funny', and 'surprisingly touching', indicating a strong recommendation with no reservations. | Gemini: The review uses positive language such as \"charming\", \"lighthearted romp\", \"wickedly funny\", and \"surprisingly touching\", indicating a positive recommendation. | Kimi: The critic delivers an enthusiastic endorsement, describing the show as 'wickedly funny' and 'surprisingly touching' without noting any significant flaws, indicating a strong recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'charming' and 'lighthearted romp,' plus dual praise for being both 'wickedly funny and surprisingly touching' indicates strong recommendation without reservations. | GPT-4o: The review describes the show as 'charming', 'wickedly funny', and 'surprisingly touching', indicating a strong positive recommendation with no reservations. | Gemini: The review uses positive language such as \"charming,\" \"lighthearted,\" \"wickedly funny,\" and \"surprisingly touching,\" indicating a positive recommendation. | Kimi: The critic offers unqualified praise using positive descriptors (charming, wickedly funny, surprisingly touching) with no reservations mentioned, indicating a solid recommendation despite the brevity of the text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:12:03.343Z",
+    "scoredAt": "2026-02-03T11:13:36.827Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 79,
+    "claudeScore": 81,
     "openaiScore": 82,
-    "geminiScore": 80,
-    "kimiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear mixed verdict with 'uneven results' balanced by acknowledgment that 'when it works' it achieves poignancy. Neither strongly recommends nor discourages. | GPT-4o: The review acknowledges the show's unevenness but highlights moments of poignancy, indicating a mixed reception with some positive elements. | Gemini: The review acknowledges the show's ambition but notes its inconsistent execution, resulting in a mixed assessment. | Kimi: The critic explicitly cites 'uneven results' and praises the production only conditionally ('when it works'), indicating genuine reservations that balance against the acknowledged moments of emotional impact.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review describes 'uneven results' but acknowledges when the show works it achieves 'surprising poignancy.' Classic mixed review that neither strongly recommends nor discourages. | GPT-4o: The review acknowledges both uneven results and moments of surprising poignancy, indicating a mixed reception with some positive elements. | Gemini: The review acknowledges the show's ambition but also its unevenness, leading to a mixed assessment. | Kimi: The review acknowledges 'uneven results' and an 'unruly' structure while praising the poignancy when the production works, resulting in a balanced, non-committal assessment without a clear recommendation to see or skip.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:08:58.066Z",
+    "scoredAt": "2026-02-03T11:10:13.954Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

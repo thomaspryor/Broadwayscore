@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a show that couldn't be more relevant today, and under the sure direction of Jeffrey L. Page and Diane Paulus it comes alive in ways that feel fresh and urgent.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Positive language about relevance and direction making it feel 'fresh and urgent', but extremely brief excerpt limits confidence in full assessment. | GPT-4o: The review uses strong positive language, highlighting the show's relevance and the directors' successful execution, suggesting a highly favorable view. | Gemini: The review states the show is relevant and comes alive under the direction, indicating a positive recommendation. | Kimi: The critic offers strong praise for the show's contemporary relevance and the directors' 'sure' hand, describing the production as 'fresh and urgent' with no reservations expressed.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for relevance and direction with positive language ('comes alive', 'fresh and urgent'), but this appears to be a brief excerpt limiting confidence in the full verdict. | GPT-4o: The review praises the show's relevance and the directors' ability to make it feel 'fresh and urgent,' indicating a strong recommendation. | Gemini: The review states that the show \"comes alive in ways that feel fresh and urgent\", indicating a positive recommendation. | Kimi: The critic offers unqualified praise for the direction and describes the production as 'fresh and urgent' with strong contemporary relevance, indicating a solid recommendation despite the excerpt's brevity.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:08:34.417Z",
+    "scoredAt": "2026-02-03T10:09:58.804Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 80,
     "openaiScore": 90,
     "geminiScore": 80,
-    "kimiScore": 80,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

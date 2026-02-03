@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language with 'deliriously entertaining' and praise for balancing sophisticated and silly elements, though brief excerpt limits full assessment. | GPT-4o: The review uses highly positive language ('deliriously entertaining', 'sophisticated and silly'), indicating a strong recommendation without reservations. | Gemini: The review uses enthusiastic language like \"deliriously entertaining\" and describes the show as both sophisticated and silly, indicating a strong positive recommendation. | Kimi: The review offers unqualified enthusiastic praise using the superlative 'deliriously entertaining' and celebrates the show's tonal sophistication without any caveats, indicating a strong recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language with 'deliriously entertaining' and praise for balancing sophisticated and silly elements indicates enthusiastic recommendation. | GPT-4o: The review uses strong positive language like 'deliriously entertaining' and 'sophisticated and silly', indicating a highly enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"deliriously entertaining\" and highlights the show's successful combination of different elements, indicating a strong recommendation. | Kimi: The critic offers enthusiastic praise describing the show as 'deliriously entertaining' and celebrating its successful balance of sophistication and silliness, indicating a strong recommendation despite the brevity of the excerpt. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:10:30.065Z",
+    "scoredAt": "2026-02-03T11:12:04.672Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

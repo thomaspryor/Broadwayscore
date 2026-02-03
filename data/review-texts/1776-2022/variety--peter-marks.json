@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new production of '1776' is a bold reimagining that breathes fresh life into the familiar material, with stellar performances and thoughtful direction that makes the founding fathers feel urgently relevant.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
-    "score": 82,
+    "score": 86,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 81,
+      "high": 91
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This new production of '1776' is a bold reimagining that breathes fresh life into the familiar material, with stellar performances and thoughtful direction that makes the founding fathers feel urgently relevant.",
+        "quote": "This new production of '1776' is a bold reimagining that breathes fresh life into the familiar material.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for the production as 'bold reimagining' with 'stellar performances' and 'thoughtful direction.' The phrase 'breathes fresh life' and 'urgently relevant' indicates strong enthusiasm without reservation. | GPT-4o: The review uses strong positive language ('bold reimagining', 'stellar performances', 'urgently relevant') indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"bold reimagining\", \"fresh life\", \"stellar performances\", and \"urgently relevant\", indicating a strong recommendation. | Kimi: The critic employs unequivocal praise ('bold,' 'stellar,' 'thoughtful direction') with no reservations, indicating an enthusiastic recommendation despite the excerpt's brevity.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear praise with strong positive language ('bold reimagining', 'stellar performances', 'urgently relevant') and no caveats or reservations expressed. | GPT-4o: The review uses strong positive language ('bold reimagining', 'breathes fresh life') and highlights 'stellar performances' and 'thoughtful direction', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"bold reimagining,\" \"fresh life,\" \"stellar performances,\" and \"urgently relevant,\" indicating a strong recommendation. | Kimi: The critic offers unqualified praise using superlatives like 'stellar' and 'bold,' strongly endorsing the production as urgently relevant without any reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:13:45.366Z",
+    "scoredAt": "2026-02-03T10:15:10.955Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,17 +60,17 @@
     "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 83,
+    "kimiScore": 90,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
+    "kimiBucket": "Rave",
     "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   }
 }

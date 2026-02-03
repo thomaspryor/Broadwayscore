@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This stage adaptation of George Orwell's dystopian novel is a mercilessly intense experience that burrows under your skin and stays there.",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
   "llmScore": {
-    "score": 86,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 81,
-      "high": 91
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise describing the adaptation as 'mercilessly intense' with lasting impact. The vivid imagery of 'burrows under your skin and stays there' suggests a powerful, memorable theatrical experience deserving strong recommendation. | GPT-4o: The review uses strong, positive language to describe the production as an intense and memorable experience, suggesting a high level of recommendation. | Gemini: The review uses strong positive language like \"mercilessly intense\" and states that the experience \"burrows under your skin and stays there,\" indicating a strong recommendation. | Kimi: The critic employs visceral, emphatic language ('mercilessly intense,' 'burrows under your skin') to describe a powerfully affecting production with lasting impact, indicating enthusiastic admiration despite the excerpt's brevity. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the production's impact and lasting effect, describing it as 'mercilessly intense' that 'burrows under your skin and stays there' - clear positive evaluation of the show's power and effectiveness. | GPT-4o: The review uses strong, positive language to describe the show as an intense and memorable experience, indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language, describing the experience as \"mercilessly intense\" and stating that it \"burrows under your skin and stays there,\" indicating a highly impactful and recommended production. | Kimi: The critic employs visceral, enthusiastic language ('mercilessly intense', 'burrows under your skin') to praise the production's powerful emotional impact and lasting resonance, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:16:15.435Z",
+    "scoredAt": "2026-02-03T10:17:58.243Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,18 +59,18 @@
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 90,
-    "geminiScore": 81,
-    "kimiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 9,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   }
 }

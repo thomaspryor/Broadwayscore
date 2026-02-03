@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Langella's transformative performance that elevates the material, though the critic notes the play itself is 'somewhat static'. The performance praise is emphatic enough to drive a positive recommendation. | GPT-4o: The review praises Langella's performance as transformative, elevating the play to a 'riveting examination'. The strong language indicates a highly positive recommendation. | Gemini: The review praises Langella's performance as transformative, turning a static play into a riveting experience, indicating a strong positive recommendation. | Kimi: The critic offers superlative praise for Langella's performance ('towering integrity', 'quiet power') and declares the production 'riveting' despite noting the source material is 'somewhat static', indicating a strong recommendation.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Langella's transformative performance that elevates the material, though acknowledges the play itself is 'somewhat static'. The word 'riveting' indicates a positive recommendation despite structural limitations. | GPT-4o: The review praises Langella's performance as transformative, elevating the play to a riveting experience. This strong endorsement places it in the Rave category. | Gemini: The review praises Langella's performance as transformative, turning a 'somewhat static play' into a 'riveting examination.' This indicates a strong positive recommendation. | Kimi: The critic gives exceptional praise to Langella's performance ('towering integrity,' 'quiet power') and states that it transforms the play into a 'riveting examination,' though noting the underlying material is somewhat static.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:19:39.998Z",
+    "scoredAt": "2026-02-03T11:21:52.767Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,8 +59,8 @@
   "ensembleData": {
     "claudeScore": 81,
     "openaiScore": 90,
-    "geminiScore": 82,
-    "kimiScore": 84,
+    "geminiScore": 81,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

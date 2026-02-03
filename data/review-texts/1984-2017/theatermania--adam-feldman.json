@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production succeeds in creating a visceral sense of the totalitarian nightmare that Orwell imagined, with moments of genuine terror and claustrophobia.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
-    "score": 76,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The production succeeds in creating a visceral sense of the totalitarian nightmare that Orwell imagined.",
+        "quote": "The production succeeds in creating a visceral sense of the totalitarian nightmare that Orwell imagined, with moments of genuine terror and claustrophobia.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic states the production 'succeeds' in its goals and creates 'genuine terror', which is positive evaluation. However, this appears to be a very brief excerpt, so confidence is low. | GPT-4o: The review highlights the production's success in evoking the intended atmosphere, suggesting a positive recommendation. However, the lack of additional context or details about the overall production limits the confidence level. | Gemini: The review states that the production \"succeeds\" and creates a visceral sense of the nightmare, indicating a positive recommendation, although not an overwhelmingly enthusiastic one. | Kimi: The critic explicitly states the production 'succeeds' in delivering effective atmosphere and emotional impact, using unambiguous positive language, though the brevity of this excerpt limits certainty about the overall verdict.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the production 'succeeds' in its core artistic goals with effective atmosphere, but this appears to be an excerpt with limited evaluative content to assess full recommendation strength. | GPT-4o: The review praises the production for effectively capturing the intended atmosphere of Orwell's work with 'moments of genuine terror and claustrophobia,' indicating a positive assessment. | Gemini: The review indicates the production is successful in creating a visceral and terrifying experience, suggesting a positive but not overwhelmingly enthusiastic recommendation. | Kimi: Brief excerpt offers clear praise for the production's atmospheric effectiveness and ability to generate genuine emotional impact, though limited context prevents a more definitive assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:18:08.162Z",
+    "scoredAt": "2026-02-03T10:20:45.722Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,14 +58,14 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 76,
+    "openaiScore": 80,
     "geminiScore": 75,
-    "kimiScore": 78,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

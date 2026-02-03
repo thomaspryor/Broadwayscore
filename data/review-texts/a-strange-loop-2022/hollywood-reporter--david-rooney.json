@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlatives ('demands to be seen', 'singular work of art') with substantive artistic praise about the form and themes, indicating essential viewing. | GPT-4o: The review uses strong language indicating a must-see recommendation, describing the show as a 'singular work of art' that 'demands to be seen'. | Gemini: The review uses strong, positive language such as \"demands to be seen\" and \"singular work of art\", indicating a rave review. | Kimi: The critic employs the strongest possible recommendation language ('demands to be seen,' 'singular work of art') with no qualifications or reservations, indicating an unqualified rave.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Explicit must-see language ('demands to be seen') combined with superlative praise ('singular work of art') and deep artistic validation. Clear rave recommendation. | GPT-4o: The review uses strong, unqualified praise ('demands to be seen', 'singular work of art') indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"demands to be seen\" and \"singular work of art\", indicating a rave review. | Kimi: The critic employs unqualified superlatives ('singular work of art', 'demands to be seen') with no reservations, indicating the highest level of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:32:22.437Z",
+    "scoredAt": "2026-02-03T11:33:25.686Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

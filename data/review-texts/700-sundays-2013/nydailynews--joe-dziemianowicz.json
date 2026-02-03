@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for Crystal's performance and the show's emotional impact, with language indicating a solid positive recommendation that aligns with the 80 rating. | GPT-4o: The review highlights the show's emotional impact and Crystal's performance, aligning with the original rating of 80, indicating a solid recommendation. | Gemini: The review praises Crystal's performance and the show's emotional impact, indicating a positive recommendation. The original rating of 80 supports this classification. | Kimi: The review offers clear praise for Crystal's performance and the show's emotional resonance, describing it as a 'touching tribute' that 'resonates long after the final bow,' consistent with the provided 80/100 rating.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating aligns with positive territory. Language is appreciative ('warmth and wit', 'touching tribute', 'resonates long after') but lacks superlatives for rave territory. | GPT-4o: The review praises the show for its emotional impact and the performance of Crystal, aligning with the critic's original rating of 80, indicating a solid recommendation. | Gemini: The review praises Crystal's performance and the show's emotional impact, indicating a positive recommendation. The original rating of 80 aligns with this assessment. | Kimi: The critic gives the show an 80/100 rating and describes it as a touching, resonant celebration of family with praise for Crystal's performance, indicating a solid recommendation without reaching the highest ecstasy of a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:22:52.609Z",
+    "scoredAt": "2026-02-03T10:24:40.540Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show captures much of the movie's charm and humor, though it occasionally feels padded in its translation to the stage.",
   "originalScore": null,
-  "assignedScore": 73,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
   "llmScore": {
-    "score": 73,
-    "confidence": "high",
+    "score": 74,
+    "confidence": "medium",
     "range": {
-      "low": 68,
-      "high": 78
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Acknowledges the show's charm and humor but notes it feels padded, indicating a qualified positive recommendation. | GPT-4o: The review highlights the show's charm and humor, indicating a generally positive reception, but notes it feels padded, suggesting some reservations. | Gemini: The review states that the show captures much of the movie's charm and humor, indicating a positive experience, but notes that it occasionally feels padded, which suggests a reservation. | Kimi: The critic praises the production for successfully translating the film's charm and humor to the stage, but the reservation about padding keeps this in the lower end of positive recommendations.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Acknowledges positive qualities (charm, humor) but expresses significant reservation about pacing/structure. The 'though' signals mixed feelings without clear recommendation. | GPT-4o: The review notes that the show retains the charm and humor of the movie, indicating a positive view, though it mentions some padding in the stage adaptation. This suggests a solid recommendation with some reservations. | Gemini: The review is generally positive, noting that the show captures the movie's charm and humor, but it also mentions that it occasionally feels padded. This suggests a recommendation with reservations. | Kimi: The review validates the production's success in translating the source material's appealing qualities while explicitly noting structural flaws, indicating a qualified recommendation rather than an unreserved endorsement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:57:00.958Z",
+    "scoredAt": "2026-02-03T11:00:21.687Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 74,
+    "claudeScore": 62,
+    "openaiScore": 75,
     "geminiScore": 75,
     "kimiScore": 72,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   }
 }

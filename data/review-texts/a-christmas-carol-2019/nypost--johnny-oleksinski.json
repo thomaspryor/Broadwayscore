@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive assessment calling it fresh and necessary, but extremely brief excerpt limits confidence in full review context. | GPT-4o: The review praises the adaptation as 'fresh and necessary,' implying a strong recommendation. The language suggests it stands out positively among other adaptations. | Gemini: The review explicitly states that the musical succeeds where others have failed and feels fresh and necessary, indicating a strong positive recommendation. | Kimi: The critic offers unqualified praise, stating the production succeeds where other adaptations failed and explicitly calling it 'fresh and necessary,' indicating a strong recommendation. Confidence is low due to the brevity of the provided text.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive language ('succeeds', 'fresh and necessary') but extremely brief excerpt limits confidence in full assessment. | GPT-4o: The review praises the show for feeling 'fresh and necessary,' suggesting it stands out positively among other adaptations. The language indicates strong approval. | Gemini: The review explicitly states that the show \"succeeds\" and feels \"fresh and necessary,\" indicating a strong positive recommendation. | Kimi: The critic offers strong praise stating the adaptation succeeds where others failed, calling it 'fresh and necessary,' indicating a clear recommendation without extreme hyperbole.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:41:01.554Z",
+    "scoredAt": "2026-02-03T10:43:14.993Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,7 +60,7 @@
     "claudeScore": 76,
     "openaiScore": 90,
     "geminiScore": 81,
-    "kimiScore": 83,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

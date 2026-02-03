@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Clear positive language ('powerful revival', 'urgently relevant') but extremely brief excerpt limits confidence in full assessment. | GPT-4o: The review uses strong, positive language ('powerful revival', 'urgently relevant') indicating a highly favorable opinion of the production. | Gemini: The review uses the word \"powerful\" to describe the revival and states that it feels \"urgently relevant,\" indicating a positive recommendation, though brief.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic describes this as a 'powerful revival' that feels 'urgently relevant,' indicating a clear positive recommendation. However, confidence is low due to the extremely brief text that appears to be an excerpt or truncated review. | GPT-4o: The review describes the revival as 'powerful' and 'urgently relevant,' indicating a strong recommendation without reservations. | Gemini: The review uses the word \"powerful\" to describe the revival and states that it feels \"urgently relevant\" to the current moment, indicating a positive recommendation, though brief. | Kimi: The critic describes the revival as 'powerful' and 'urgently relevant,' offering clear praise and recommendation despite the brevity of the excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,26 +50,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:30:12.649Z",
+    "scoredAt": "2026-02-03T11:30:20.392Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 76,
     "openaiScore": 90,
     "geminiScore": 75,
-    "kimiScore": null,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   }
 }

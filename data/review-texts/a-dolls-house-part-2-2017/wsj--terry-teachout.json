@@ -9,18 +9,67 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Metcalf's performance is nothing short of magnificent—brash, funny, passionate and ultimately moving. She makes you believe that this older, harder Nora really could have walked out on her family all those years ago.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Metcalf's performance is nothing short of magnificent—brash, funny, passionate and ultimately moving. She makes you believe that this older, harder Nora really could have walked out on her family all those years ago.",
-  "contentTier": "invalid",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "rejectedAt": "2026-02-03T11:08:26.722Z",
-  "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be a brief excerpt or quote focusing only on one performance, lacking the context and comprehensive evaluation needed for a full review score.; openai: The text is a brief excerpt focusing solely on a single performance, lacking a comprehensive evaluation of the show itself.",
-  "promptVersion": "5.2.0"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Metcalf's performance is nothing short of magnificent—brash, funny, passionate and ultimately moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Enthusiastic praise for the lead performance with superlative language ('magnificent', 'ultimately moving'), but this appears to be a brief excerpt focusing only on one element of the production. | Gemini: The review focuses on the positive aspects of the performance, specifically praising Ms. Metcalf's portrayal of the character. The use of 'magnificent' indicates a strong positive sentiment. | Kimi: Though brief, the excerpt offers unqualified superlative praise for the lead performance using words like 'magnificent' and 'moving' with no caveats, indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:09:47.054Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

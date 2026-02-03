@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is theater at its most punishing — and vital. The production succeeds in making Orwell's nightmare feel like an inescapable present-day reality.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
   "llmScore": {
-    "score": 85,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 85,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The production succeeds in making Orwell's nightmare feel like an inescapable present-day reality.",
+        "quote": "This is theater at its most punishing — and vital.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for the production's effectiveness and relevance, calling it 'vital' theater, though acknowledging it's 'punishing' - indicates a strong positive recommendation for serious theatergoers. | GPT-4o: The review uses strong language to describe the production as 'punishing' and 'vital', indicating a powerful and impactful experience. The critic's use of 'succeeds' suggests a high level of achievement in the production's goals. | Gemini: The review uses strong positive language like \"vital\" and states that the production \"succeeds\", indicating a positive recommendation. | Kimi: The critic employs superlatives ('most vital', 'succeeds') to praise the production's effectiveness and contemporary relevance, framing its intensity as a virtue rather than a flaw. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise calling the theater 'vital' and crediting the production with successfully creating an inescapable reality. The language suggests this is must-see theater despite being challenging. | GPT-4o: The review uses strong language to describe the production as both 'punishing' and 'vital', indicating a powerful and impactful experience. The success in making Orwell's nightmare feel relevant today suggests a high level of effectiveness and importance. | Gemini: The review uses strong positive language like \"vital\" and states that the production \"succeeds\" in making the nightmare feel real. This indicates a strong recommendation. | Kimi: The critic employs superlatives ('most punishing — and vital') and unreserved praise for the production's success in making Orwell's work feel urgently contemporary, indicating a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:20:13.131Z",
+    "scoredAt": "2026-02-03T10:22:37.759Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 88,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 88,
-    "claudeBucket": "Positive",
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 8,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   }
 }

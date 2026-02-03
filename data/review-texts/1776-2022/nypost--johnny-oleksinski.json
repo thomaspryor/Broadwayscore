@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The current revival of '1776' at the American Airlines Theatre is performed by an all-female, nonbinary and trans cast, which sounds like a stunt but actually works quite well.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 74,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single sentence fragment praising the casting approach with qualified approval. Low confidence due to extremely brief excerpt that may not represent the full review verdict. | GPT-4o: The review acknowledges a potentially gimmicky casting choice but concludes it 'works quite well', indicating a positive view. However, the text is short and lacks detailed evaluation, so confidence is low. | Gemini: The review states that the casting choice \"works quite well,\" indicating a positive, albeit reserved, recommendation. | Kimi: The critic gives a qualified but clear endorsement, stating that the diverse casting concept works well despite initial skepticism. The phrase 'works quite well' indicates a solid positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Positive assessment that the casting choice 'works quite well' despite initial skepticism, but extremely brief excerpt limits confidence in full recommendation strength. | Gemini: The review states that the casting choice \"works quite well,\" indicating a positive, though perhaps slightly reserved, recommendation. | Kimi: The critic offers a qualified recommendation, praising the unconventional casting concept for working well despite potential stunt-like perceptions, though the extremely brief excerpt limits certainty about the overall verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:10:52.013Z",
+    "scoredAt": "2026-02-03T10:11:26.855Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,19 +58,18 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 74,
+    "openaiScore": null,
     "geminiScore": 72,
-    "kimiScore": 78,
+    "kimiScore": 75,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Positive"
   }
 }

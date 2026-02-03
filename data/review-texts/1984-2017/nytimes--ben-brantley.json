@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "delivering a visceral theatrical experience that leaves audiences shaken",
+        "quote": "This unflinching adaptation delivers a visceral theatrical experience that leaves audiences shaken.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language with 'visceral theatrical experience' and 'relentlessly intense' indicating high recommendation, though lacks explicit must-see language for Rave territory. | GPT-4o: The review uses strong positive language such as 'unflinching adaptation', 'visceral theatrical experience', and 'relentlessly intense', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"unflinching,\" \"timely,\" \"timeless,\" and \"visceral theatrical experience.\" It clearly recommends seeing the show. | Kimi: The review offers unqualified enthusiastic praise, describing the production as 'visceral,' 'relentlessly intense,' and 'timeless' with no reservations mentioned, indicating a powerful must-see theatrical experience. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for the adaptation's impact and intensity ('visceral', 'relentlessly intense', 'leaves audiences shaken'), with positive descriptors like 'timely and timeless'. However, the excerpt is brief and lacks explicit recommendation language. | GPT-4o: The review uses strong positive language, describing the production as 'unflinching', 'timely and timeless', and 'visceral', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"unflinching,\" \"timely and timeless,\" and \"visceral theatrical experience,\" indicating a positive recommendation. | Kimi: The critic offers unqualified praise using superlatives like 'visceral,' 'unflinching,' and 'relentlessly intense,' delivering a clear recommendation without reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:17:43.132Z",
+    "scoredAt": "2026-02-03T10:20:01.093Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,13 +59,13 @@
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 90,
-    "geminiScore": 82,
+    "geminiScore": 81,
     "kimiScore": 90,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 8,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
