@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new 'Pippin' turns what was once a wan philosophical musical into a sexy, death-defying breath-stopper that runs on pure adrenaline and the intimation of mortality that makes adrenaline mean something.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new 'Pippin' turns what was once a wan philosophical musical into a sexy, death-defying breath-stopper that runs on pure adrenaline",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Brantley praises a complete transformation from 'wan' to 'sexy, death-defying breath-stopper' with vivid superlatives indicating an essential theatrical experience. | GPT-4o: The review uses strong, enthusiastic language, describing the production as a 'sexy, death-defying breath-stopper' that 'runs on pure adrenaline,' indicating a highly positive recommendation. | Gemini: The review uses strong positive language like \"sexy, death-defying breath-stopper\" and \"runs on pure adrenaline\" indicating a strong recommendation. | Kimi: The critic uses superlative language ('death-defying breath-stopper,' 'pure adrenaline') to praise the revival's exciting transformation, indicating an unqualified, enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:45:53.289Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

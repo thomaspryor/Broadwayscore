@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's an interesting evening, this \"Waiting for Godot,\" spent in the company of very capable actors, for sure.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls it 'interesting' with 'very capable actors' but frames it as challenging to sell to regular audiences. The neutral language and qualified praise suggests mixed reception rather than clear recommendation. | GPT-4o: The excerpt describes the production as 'interesting' and praises the actors as 'very capable.' However, the single excerpt and lack of a clear rating suggest a mild positive sentiment, leading to a lower score within the Positive range. | Gemini: The review excerpt indicates a positive experience with capable actors, but the phrase \"interesting evening\" and the mention of \"blowing cobwebs off\" suggest reservations or a less enthusiastic endorsement. Given the single excerpt, confidence is low. | Kimi: The excerpt offers mild praise for the performances ('very capable actors') and direction ('blown some cobwebs off'), suggesting a successful if unexciting production. With only one curated excerpt available, the score is conservatively placed at the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:36:24.701Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

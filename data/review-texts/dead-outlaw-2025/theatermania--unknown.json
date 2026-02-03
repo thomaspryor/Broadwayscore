@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An unmistakable sign that musical theater is entering a thrilling new era of unlikely stories told in unexpected ways",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Compares the show to classic musicals like Oklahoma! and Gypsy, declares it represents a 'thrilling new era' of theater, and ends with emphatic praise that the 'American musical is alive and kicking ass.' This is clearly a rave review with superlative language and historical comparisons. | GPT-4o: The excerpt uses strong, enthusiastic language comparing the show to iconic musicals and describing it as a thrilling new era for musical theater. Despite the caution about a single excerpt, the tone is clearly rave. | Gemini: The review uses strong positive language, comparing the show to classics and stating that it reflects the spirit of the country. The conclusion that \"the American musical is alive and kicking ass\" indicates a rave review. | Kimi: The critic compares the show to legendary musicals Oklahoma! and Gypsy, declaring it signals a thrilling new era for the art form and that the American musical is 'alive and kicking ass,' indicating the highest possible enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:50:46.820Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 93,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

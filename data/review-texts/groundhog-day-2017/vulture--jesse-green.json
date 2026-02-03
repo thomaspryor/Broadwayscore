@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical version of Groundhog Day, which opened Thursday night at the August Wilson Theatre, is a surprisingly successful adaptation that manages to find new emotional depths in the familiar story.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a surprisingly successful adaptation that manages to find new emotional depths",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('surprisingly successful', 'manages to find new emotional depths') indicates a recommendation, but brief excerpt limits confidence in full assessment. | GPT-4o: The review describes the adaptation as 'surprisingly successful' and highlights its ability to find 'new emotional depths', indicating a positive recommendation. | Gemini: The review states that the musical is a 'surprisingly successful adaptation,' indicating a positive recommendation, but the 'surprisingly' suggests some reservations. | Kimi: The review offers genuine praise calling the show a 'surprisingly successful adaptation' that finds 'new emotional depths,' indicating a solid recommendation. Confidence is low due to the brevity of this excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:37:40.188Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 77
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

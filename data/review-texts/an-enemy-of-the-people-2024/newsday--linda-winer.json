@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Don't be put off by any grumbles about the conversational, tightened two-hour adaptation that the Manhattan Theatre Club uses for the rare Broadway production of this timely classic. Yes, British playwright Rebecca Lenkiewicz tosses off the occasional jarring anachronism -- \"cash cow,\" \"restraining ...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Don't be put off by any grumbles about the conversational, tightened two-hour adaptation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic actively counters negative opinions with 'Don't be put off,' suggesting a positive stance despite acknowledging some flaws. However, with only a partial excerpt available, confidence is low. | GPT-4o: The excerpt suggests a recommendation to see the show despite some reservations about the adaptation. The warning not to be 'put off' implies an overall positive view, but the lack of full context and potential reservations about the adaptation lead to a lower score within the Positive bucket. | Gemini: The review advises not to be put off by grumbles, suggesting an overall positive sentiment despite potential reservations. However, due to the limited excerpt, confidence is low. | Kimi: The critic actively advises readers to ignore negative criticism ('grumbles') and see this 'timely classic,' though the acknowledgment of 'jarring anachronisms' and defensive tone indicate a qualified rather than enthusiastic recommendation. Single excerpt and truncation limit confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:39:52.650Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

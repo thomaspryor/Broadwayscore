@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Lehman Trilogy proves an unalloyed theatrical triumph.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with superlative praise throughout ('unalloyed theatrical triumph', 'stagecraft at its finest', 'never less than enthralling'). Despite minor quibbles about narration, the overall verdict is enthusiastically positive with language indicating this is essential viewing. | GPT-4o: The review is overwhelmingly positive, describing the production as a 'triumph' and praising the performances, staging, and overall execution. The original 5/5 stars rating supports a high score in the Rave bucket. The text is truncated, but the existing content strongly indicates a rave verdict. | Gemini: Despite the length and complex subject matter, the critic describes the production as an \"unalloyed theatrical triumph\" and praises the performances, staging, and overall effect. The 5/5 star rating further supports a rave classification. | Kimi: The critic awards 5/5 stars and describes the production as an 'unalloyed theatrical triumph' and 'stagecraft at its finest,' with consistent superlatives for the performances, staging, and direction, dismissing the sole criticism as a 'small quibble.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:12:43.317Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

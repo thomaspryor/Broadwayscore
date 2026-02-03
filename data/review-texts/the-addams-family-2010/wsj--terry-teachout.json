@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Addams Family is a thoroughly professional piece of commercial Broadway craftsmanship that does exactly what it sets out to do, which is to entertain families without insulting the intelligence of the adults.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The Addams Family is a thoroughly professional piece of commercial Broadway craftsmanship that does exactly what it sets out to do, which is to entertain families without insulting the intelligence of the adults.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Addams Family is a thoroughly professional piece of commercial Broadway craftsmanship that does exactly what it sets out to do",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the show's professionalism and effectiveness at entertaining its target audience without being condescending, though the measured tone suggests solid rather than enthusiastic recommendation. | GPT-4o: The review describes the show as professional and entertaining, indicating a positive recommendation. The mention of not insulting adult intelligence suggests some reservations, but overall it's a solid recommendation. | Gemini: The review is positive, stating that the show is \"thoroughly professional\" and achieves its goal of entertaining families. However, the phrase \"without insulting the intelligence of the adults\" suggests a slight reservation, indicating it's not a rave. | Kimi: The critic offers clear praise for the show's professional execution and its success in achieving its entertainment goals, representing a solid recommendation though without enthusiastic superlatives.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:01:14.877Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of the 2005 Broadway musical based on Alice Walker's novel and Steven Spielberg's film is a joyous celebration that hits all the right emotional notes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "John Doyle's ravishing revival of 'The Color Purple' is a joyous celebration that hits all the right emotional notes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite truncation, the review is overwhelmingly positive throughout with superlatives like 'ravishing revival,' 'radiant,' 'thrilling,' and detailed praise for performances, direction, and design. The aggregator excerpt confirms this is 'a joyous celebration,' indicating a rave-level recommendation. | GPT-4o: The review is filled with superlatives and praise for the performances, production, and music. Despite the text being truncated, the available content strongly suggests a rave review. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the performances, direction, and design. The aggregator excerpt also confirms a positive verdict. | Kimi: Despite truncated text, the available content offers unqualified praise for performances (Hudson 'radiant', Brooks 'shakes the house', Erivo 'brings the audience roaring to its feet'), direction ('minimialist production maximizes strength and beauty'), and design ('brilliantly illustrates'), with superlatives like 'ravishing', 'thrilling', and 'perfectly cast' throughout.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:04:37.213Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 91,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

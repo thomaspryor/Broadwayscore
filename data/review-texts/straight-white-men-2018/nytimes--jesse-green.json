@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Young Jean Lee's 'Straight White Men' is a play that seems to know exactly what it's doing even when its characters don't. It's a comedy about privilege that doesn't let anyone, including the audience, off the hook.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Young Jean Lee's 'Straight White Men' is a play that seems to know exactly what it's doing even when its characters don't. It's a comedy about privilege that doesn't let anyone, including the audience, off the hook.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a comedy about privilege that doesn't let anyone, including the audience, off the hook.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Praises the playwright's control and thematic execution, calling it a knowing comedy that challenges audiences. Positive assessment but brief text limits confidence. | Gemini: The review describes the play as knowing what it's doing and being a comedy about privilege, which suggests a positive, albeit potentially challenging, experience. | Kimi: The excerpt offers clear praise for the play's intelligence and craft, describing it as an effective, challenging comedy. However, the text is under 50 words, warranting low confidence as the full scope of the critic's assessment is unavailable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:55:33.675Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

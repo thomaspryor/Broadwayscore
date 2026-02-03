@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Noël Coward's 'Private Lives' starring Kim Cattrall and Paul Gross is a polished production that captures the wit and sophistication of the original, though it occasionally feels more dutiful than inspired.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The revival of Noël Coward's 'Private Lives' starring Kim Cattrall and Paul Gross is a polished production that captures the wit and sophistication of the original, though it occasionally feels more dutiful than inspired.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a polished production that captures the wit and sophistication of the original, though it occasionally feels more dutiful than inspired",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review acknowledges the production's technical merits and faithfulness to Coward's work, but the key qualifier 'more dutiful than inspired' suggests a competent but not particularly engaging experience that neither strongly recommends nor discourages attendance. | GPT-4o: The review describes the production as polished and capturing the original's qualities, indicating a positive recommendation despite noting it feels 'more dutiful than inspired'. | Gemini: The review is generally positive, noting the production captures the wit and sophistication of the original, but it also mentions that it occasionally feels more dutiful than inspired, indicating a reservation. | Kimi: The critic commends the production's polish and fidelity to Coward's text while noting it lacks inspiration, suggesting a solid but not essential revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:48:38.757Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

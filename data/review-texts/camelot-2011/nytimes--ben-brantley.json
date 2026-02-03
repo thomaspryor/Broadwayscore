@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This 'Camelot' doesn't inspire the sort of passion that makes audiences fall in love with shows. It's a handsome, well-intentioned production that feels more dutiful than enchanting.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This 'Camelot' doesn't inspire the sort of passion that makes audiences fall in love with shows. It's a handsome, well-intentioned production that feels more dutiful than enchanting.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a handsome, well-intentioned production that feels more dutiful than enchanting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges positive qualities ('handsome, well-intentioned') but ultimately finds it lacking in the passion and enchantment that would make it recommendable. 'Dutiful' suggests competent but uninspiring. | GPT-4o: The excerpt suggests a production that is visually appealing and well-meaning but lacks the magic to truly captivate audiences. The tone is balanced, neither strongly recommending nor discouraging attendance, which fits the Mixed bucket. | Gemini: The review describes the production as \"handsome\" and \"well-intentioned\" but lacking passion and enchantment, suggesting a mixed or lukewarm reception. | Kimi: The critic acknowledges the production is well-intentioned and handsome but finds it emotionally hollow, noting it fails to inspire passion and feels dutiful rather than magical.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:47:19.253Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

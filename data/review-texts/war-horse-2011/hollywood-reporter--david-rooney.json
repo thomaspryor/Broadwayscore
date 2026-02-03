@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The puppetry is so convincing that within minutes you forget you're watching inanimate objects manipulated by visible handlers and start believing in the horses as living, breathing creatures with distinct personalities.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T20:32:53.251Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt describing puppetry technique, not a complete review with an evaluative verdict about whether to see the show.; openai: The text is about the puppetry of horses, which suggests it is likely about 'War Horse' or a similar production, not the target show.",
+  "promptVersion": "5.2.0"
 }
