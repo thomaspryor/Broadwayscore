@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 21,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 21,
+    "confidence": "medium",
+    "range": {
+      "low": 16,
+      "high": 26
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a car wreck of clichés",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Multiple critics deliver scathing assessments: 'car wreck of clichés,' comparing it to previous 'low point,' calling elements 'accidental camp' and 'filler.' This represents consensus critical rejection. | GPT-4o: The review excerpt is strongly negative, describing the show as a 'car wreck of clichés' with a 'bad score' and 'sluggish' elements. The tone suggests a deep pan, but confidence is low due to the single excerpt warning. | Gemini: The review excerpt is overwhelmingly negative, calling the show a \"car wreck of clichés\" and comparing it unfavorably to \"Margaritaville.\" The critic expresses disappointment and finds the story, music, and dancing to be filler. | Kimi: The single available excerpt contains strongly negative assessments from multiple critics ('car wreck of clichés,' 'bad score,' 'sluggish marionette,' 'filler'), indicating a pan, though confidence is low due to limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:29:10.183Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 25,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

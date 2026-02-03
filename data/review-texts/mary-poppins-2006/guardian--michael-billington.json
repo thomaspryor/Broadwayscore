@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What we get is a show that combines the Disney movie's sentimental populism with spectacular stage effects that include Mary Poppins flying over the stalls.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T17:58:00.831Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or fragment that provides only plot description without any critical evaluation or recommendation; openai: The text provided is a brief description of the show's elements without any evaluative content or clear recommendation.",
+  "promptVersion": "5.2.0"
 }

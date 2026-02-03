@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show feels more like a fan's scrapbook than a fully realized theatrical experience, jumping from one Lennon song to another without much connective tissue or dramatic arc.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show feels more like a fan's scrapbook than a fully realized theatrical experience, jumping from one Lennon song to another without much connective tissue or dramatic arc.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 46,
+    "confidence": "high",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show feels more like a fan's scrapbook than a fully realized theatrical experience",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear criticism of the show's structure and theatrical quality, comparing it unfavorably to a 'scrapbook' and stating it lacks dramatic coherence. | GPT-4o: The review criticizes the show for lacking a cohesive theatrical experience and dramatic arc, suggesting it is not worth seeing. | Gemini: The review uses negative language such as \"fan's scrapbook\" and criticizes the lack of connective tissue and dramatic arc, indicating a negative assessment. | Kimi: The critic criticizes the show's lack of narrative cohesion and dramatic structure, comparing it unfavorably to a scrapbook. While not a devastating pan, the assessment clearly indicates the production fails to achieve its theatrical ambitions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:38:20.775Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Craig and Negga are both compelling actors, but they seem to be performing in different plays — he in a psychological thriller, she in a mythic tragedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Craig and Negga are both compelling actors, but they seem to be performing in different plays — he in a psychological thriller, she in a mythic tragedy.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Craig and Negga are both compelling actors, but they seem to be performing in different plays.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | GPT-4o: The review highlights a fundamental disconnect in the performances, suggesting a lack of cohesion in the production. While the actors are praised individually, the overall impression is negative due to this disparity. | Gemini: The review acknowledges the actors' individual strengths but points out a fundamental disconnect in their performances, suggesting an unevenness in the overall production. This indicates a mixed assessment. | Kimi: The critic offers genuine praise for the individual performances ('compelling') but levels a significant criticism about the production's lack of cohesion. The brief excerpt suggests a fundamental tonal mismatch undermines the show, though the overall recommendation is unclear given the limited text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:56:02.915Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

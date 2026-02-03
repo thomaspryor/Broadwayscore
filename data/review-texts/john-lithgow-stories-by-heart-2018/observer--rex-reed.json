@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lithgow's evening of storytelling is a master class in the art of performance, demonstrating why he remains one of our most versatile and compelling actors.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Lithgow's evening of storytelling is a master class in the art of performance, demonstrating why he remains one of our most versatile and compelling actors.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lithgow's evening of storytelling is a master class in the art of performance, demonstrating why he remains one of our most versatile and compelling actors.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Rex Reed calls it a 'master class' and praises Lithgow as 'most versatile and compelling' - clear rave language, though brief excerpt limits full context. | GPT-4o: The review offers unqualified praise for Lithgow's performance, describing it as a 'master class' and highlighting his versatility and compelling nature, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"master class\", \"versatile\", and \"compelling\", indicating a strong recommendation. | Kimi: Though brief, the excerpt delivers unqualified praise with superlatives like 'master class' and 'most versatile,' indicating a strong recommendation despite the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:24:47.542Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

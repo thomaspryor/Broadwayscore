@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Hawke's Macbeth is a fascinating failure, a performance that seems to be wrestling with its own demons in ways that don't always serve the play.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Mr. Hawke's Macbeth is a fascinating failure, a performance that seems to be wrestling with its own demons in ways that don't always serve the play.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Hawke's Macbeth is a fascinating failure, a performance that seems to be wrestling with its own demons in ways that don't always serve the play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls it a 'fascinating failure' - acknowledging interest and merit ('fascinating') while clearly stating it doesn't work ('failure', 'don't always serve the play'). This balanced assessment with no clear recommendation places it in mixed territory. | GPT-4o: The review describes the performance as a 'fascinating failure,' indicating a mix of intrigue and disappointment. The phrase suggests some merit but ultimately a lack of success in serving the play. | Gemini: The review describes the performance as a \"fascinating failure,\" which suggests a mixed reaction. It neither recommends nor discourages seeing the show. | Kimi: The critic explicitly labels the production a 'failure,' indicating it does not achieve its aims, though the 'fascinating' qualifier suggests some redeeming interest in the attempt rather than total dismissal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:55:05.235Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

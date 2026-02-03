@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Birbiglia has become expert at finding the comedy in catastrophe, and the show builds to a climax that manages to be both hilarious and genuinely moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Birbiglia has become expert at finding the comedy in catastrophe, and the show builds to a climax that manages to be both hilarious and genuinely moving.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Birbiglia has become expert at finding the comedy in catastrophe, and the show builds to a climax that manages to be both hilarious and genuinely moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for Birbiglia's skill and the show's emotional impact, calling it both hilarious and moving. However, this appears to be a brief excerpt, so confidence is low due to limited context. | GPT-4o: The review highlights the show's ability to balance humor with emotional depth, suggesting a strong recommendation. | Gemini: The review praises Birbiglia's expertise and highlights the show's comedic and moving climax, indicating a positive, though not overwhelmingly enthusiastic, recommendation. | Kimi: The excerpt offers enthusiastic praise for the show's emotional and comedic climax, with words like 'hilarious' and 'genuinely moving' indicating a strong recommendation, though the brevity of the text limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:07:09.809Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

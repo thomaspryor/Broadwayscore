@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kinky Boots is a feel-good musical that wears its big heart on its sequined sleeve, delivering exactly the kind of uplifting entertainment that Broadway does best when it puts its mind to it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Kinky Boots is a feel-good musical that wears its big heart on its sequined sleeve, delivering exactly the kind of uplifting entertainment that Broadway does best when it puts its mind to it.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kinky Boots is a feel-good musical that wears its big heart on its sequined sleeve, delivering exactly the kind of uplifting entertainment that Broadway does best.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive recommendation with praise for the show as uplifting entertainment that represents Broadway at its best, though without extreme superlatives that would push it into Rave territory. | GPT-4o: The review uses highly positive language, describing the show as 'feel-good' and 'uplifting entertainment,' indicating a strong recommendation. | Gemini: The review uses the phrase \"feel-good musical\" and \"uplifting entertainment\", indicating a positive recommendation. | Kimi: The critic describes the show as 'feel-good' with a 'big heart,' praising it as exemplary uplifting Broadway entertainment without reservations, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:30:17.563Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

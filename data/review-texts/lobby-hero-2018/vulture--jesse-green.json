@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Kenneth Lonergan's 2001 play about moral quandaries in a Manhattan apartment building lobby benefits enormously from its starry cast, particularly Michael Cera's expertly calibrated performance as the hapless night watchman Jeff.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The revival of Kenneth Lonergan's 2001 play about moral quandaries in a Manhattan apartment building lobby benefits enormously from its starry cast, particularly Michael Cera's expertly calibrated performance as the hapless night watchman Jeff.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival benefits enormously from its starry cast, particularly Michael Cera's expertly calibrated performance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the cast and specifically highlights Cera's performance as 'expertly calibrated,' but this appears to be an excerpt with limited evaluative content to assess the full recommendation. | GPT-4o: The review highlights the strong performances, especially Michael Cera's, as a significant positive aspect of the production. However, the review is brief and lacks a comprehensive evaluation, leading to a medium confidence level. | Gemini: The review highlights the strength of the cast, particularly Michael Cera's performance, suggesting a positive experience overall. | Kimi: The critic explicitly states the revival 'benefits enormously' from its cast, specifically praising Michael Cera's performance as 'expertly calibrated,' indicating a clear recommendation based on the strength of the acting. Confidence is low due to the brevity of the excerpt provided.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:46:38.445Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

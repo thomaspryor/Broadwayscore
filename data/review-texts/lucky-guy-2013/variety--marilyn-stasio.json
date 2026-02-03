@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tom Hanks makes his Broadway debut in Nora Ephron's final play, a loving tribute to tabloid journalism that's as messy and sprawling as the newspaper business itself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Tom Hanks makes his Broadway debut in Nora Ephron's final play, a loving tribute to tabloid journalism that's as messy and sprawling as the newspaper business itself.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a loving tribute to tabloid journalism that's as messy and sprawling as the newspaper business itself",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This appears to be just an excerpt or headline rather than a full review. The description 'messy and sprawling' could be positive (authentic) or negative (unfocused), making the verdict unclear from this limited text. | Gemini: The review describes the play as 'messy and sprawling,' which suggests a mixed or neutral assessment rather than a strong recommendation or condemnation. The 'loving tribute' aspect adds a slightly positive tone, but the overall impression is ambivalent. | Kimi: The critic describes the play as a 'loving tribute,' indicating appreciation, while the 'messy and sprawling' characterization suggests structural imperfections that keep it from being a clean rave. The extreme brevity of the text prevents a definitive verdict on the recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:52:36.393Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

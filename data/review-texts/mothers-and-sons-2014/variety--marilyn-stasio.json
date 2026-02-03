@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Terrence McNally's new play 'Mothers and Sons' is a tender, thoughtful meditation on grief, acceptance and the possibility of forgiveness between two people who have every reason to mistrust each other.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Terrence McNally's new play 'Mothers and Sons' is a tender, thoughtful meditation on grief, acceptance and the possibility of forgiveness between two people who have every reason to mistrust each other.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Terrence McNally's new play 'Mothers and Sons' is a tender, thoughtful meditation on grief, acceptance and the possibility of forgiveness",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive descriptors like 'tender' and 'thoughtful' indicate appreciation, but the brief excerpt lacks explicit recommendation language or stronger evaluative content to determine intensity of praise. | GPT-4o: The review uses positive language such as 'tender' and 'thoughtful', indicating a recommendation to see the play. | Gemini: The review uses positive language such as \"tender\" and \"thoughtful\", indicating a recommendation, although without strong enthusiasm. | Kimi: The critic employs warmly appreciative adjectives ('tender', 'thoughtful') to characterize the play as a meaningful meditation on serious themes, indicating a clear recommendation despite the brief excerpt provided.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:10:32.367Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

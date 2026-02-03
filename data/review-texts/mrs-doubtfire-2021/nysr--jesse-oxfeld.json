@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mrs. Doubtfire is a silly confection, with a standard-issue heartwarming point. But it works.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for McClure's performance and overall entertainment value. Despite noting some weaknesses (clunky exposition, unmemorable songs), the critic repeatedly emphasizes that 'it works' and calls it 'very entertaining, very successful.' The positive verdict is clear despite truncated text. | GPT-4o: The review provides a generally positive assessment, highlighting McClure's successful performance and the show's entertaining nature, despite some reservations about the script and song memorability. The original 4/5 star rating supports a positive classification. | Gemini: Despite some reservations about mirroring the movie too closely, the critic finds the show entertaining and successful overall. The 4/5 star rating also supports a positive classification. However, the truncated text lowers the confidence. | Kimi: The critic awards 4/5 stars and delivers a clear recommendation, praising McClure's performance and calling the show a 'very entertaining, very successful, very good time' that 'works,' though noting the songs are unmemorable and the opening exposition is clunky.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:12:18.123Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

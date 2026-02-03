@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical has an old-fashioned, earnest quality that grows on you, and the cast attacks the material with infectious enthusiasm.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical has an old-fashioned, earnest quality that grows on you, and the cast attacks the material with infectious enthusiasm.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (20 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical has an old-fashioned, earnest quality that grows on you, and the cast attacks the material with infectious enthusiasm.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language about the show 'growing on you' and praising cast enthusiasm, though 'old-fashioned' suggests some reservation. Clear recommendation despite brief length. | GPT-4o: The review highlights the show's 'earnest quality' and 'infectious enthusiasm' of the cast, indicating a positive recommendation with some reservations about its old-fashioned nature. | Gemini: The review expresses a positive sentiment, noting that the musical's quality grows on the viewer and the cast is enthusiastic, suggesting a recommendation with some reservations. | Kimi: The critic praises the cast's infectious enthusiasm and notes the show's earnest quality grows on the audience, indicating a warm recommendation despite the brief text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:05:31.725Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

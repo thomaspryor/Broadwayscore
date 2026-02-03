@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This musical about cheerleaders who withhold sex until their basketball team starts winning is surprisingly sweet and funny, with a terrific cast led by Patti Murin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This musical about cheerleaders who withhold sex until their basketball team starts winning is surprisingly sweet and funny, with a terrific cast led by Patti Murin.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "surprisingly sweet and funny, with a terrific cast led by Patti Murin",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment calling the show 'surprisingly sweet and funny' with praise for the 'terrific cast'. Brief excerpt limits confidence but tone is clearly favorable. | GPT-4o: The review describes the show as 'surprisingly sweet and funny' with a 'terrific cast', indicating a positive recommendation. However, the brevity of the review and lack of detailed evaluation suggests some reservations, leading to a mid-range Positive score. | Gemini: The review uses positive language such as 'surprisingly sweet and funny' and 'terrific cast,' indicating a positive recommendation. | Kimi: Clear positive recommendation praising the show as sweet and funny with a terrific cast, though the brevity suggests this may be an excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:53:35.853Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

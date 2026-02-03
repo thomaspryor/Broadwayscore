@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Broadway musical about a giant ape and his blonde obsession is technically spectacular but emotionally hollow, a triumph of engineering over imagination.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This Broadway musical about a giant ape and his blonde obsession is technically spectacular but emotionally hollow, a triumph of engineering over imagination.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Broadway musical about a giant ape and his blonde obsession is technically spectacular but emotionally hollow, a triumph of engineering over imagination.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Clear negative verdict calling the show 'emotionally hollow' and criticizing it as 'engineering over imagination' despite acknowledging technical spectacle. The contrast between technical achievement and emotional emptiness indicates disappointment rather than a complete pan. | GPT-4o: The review praises the technical aspects but criticizes the emotional impact, indicating a mixed reception. | Gemini: The review acknowledges technical achievements but criticizes the lack of emotional depth, resulting in a mixed assessment. | Kimi: The critic offers genuine praise for the technical achievement ('spectacular') but ultimately criticizes the show's lack of emotional core and imagination, resulting in a conflicted assessment that neither clearly recommends nor rejects the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:28:37.298Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's as if Mr. Willis and Ms. Metcalf had shown up at the behest of a 'Misery' fan club to share memories of our enjoyment of the book and movie and to chuckle over how they once scared the wits out of us.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt suggests the production feels distant and nostalgic rather than genuinely thrilling, with atmospherics described as 'gentle' rather than intense. However, with only one curated excerpt available, the full verdict remains unclear. | GPT-4o: The excerpt suggests a playful, nostalgic take on the source material rather than a compelling theatrical experience. The tone is more reflective and amused rather than strongly positive or negative, indicating a mixed reception. | Gemini: The review describes the play as having a nostalgic distance from the source material, suggesting it's more of a gentle reminder than a truly thrilling experience. This indicates a mixed reaction, neither strongly recommending nor discouraging. | Kimi: The excerpt describes the production as relying on nostalgic affection for the source material rather than delivering its own thrills, with 'gentle, teasing' atmosphere replacing genuine tension. Without the full review context, this suggests a mixed reception that acknowledges the show's appeal to fans but notes its lack of dramatic urgency.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:08:42.325Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

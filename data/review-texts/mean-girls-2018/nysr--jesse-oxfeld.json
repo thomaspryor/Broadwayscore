@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mean Girls delightfully fun and funny, silly and sweet, energetic and adorable, sarcastic but good-hearted.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for performances, direction, and overall entertainment value. Despite raising diversity concerns, the critic calls it a 'triumph' and emphasizes its excellence throughout. | GPT-4o: The review praises the show as 'delightfully fun and funny' with strong performances and direction. Despite noting a lack of diversity, the overall tone is positive, aligning with the original 4/5 stars. | Gemini: The review is mostly positive, praising the fun and energetic nature of the show and the performances. The critic does have a quibble about the lack of diversity, but overall the tone is positive, and the 4/5 star rating supports this. | Kimi: The critic awards 4/5 stars and delivers consistent praise for the performances ('spectacularly performed'), direction ('triumph'), and book, calling it an 'excellent show.' However, significant criticism about the show being 'incredibly white and straight' prevents a rave classification. Confidence is medium due to truncation warning.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:04:11.429Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

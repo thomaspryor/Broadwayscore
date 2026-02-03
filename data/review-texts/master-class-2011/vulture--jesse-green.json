@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Patti LuPone's Maria Callas is a force of nature, imperious and vulnerable, demanding perfection from her students while revealing her own artistic insecurities.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T17:59:56.932Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single descriptive sentence about a performance, not a complete review with an evaluative verdict or recommendation.; openai: This text is a brief character description without evaluative content or a clear verdict on the production.",
+  "promptVersion": "5.2.0"
 }

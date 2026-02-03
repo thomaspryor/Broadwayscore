@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The verbatim transcript of Reality Winner's FBI interrogation becomes a mesmerizing theater piece that puts the audience in the room where it happened.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The verbatim transcript of Reality Winner's FBI interrogation becomes a mesmerizing theater piece that puts the audience in the room where it happened.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The verbatim transcript of Reality Winner's FBI interrogation becomes a mesmerizing theater piece that puts the audience in the room where it happened.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls the production 'mesmerizing' and praises its immersive quality, indicating a positive recommendation, though the brevity limits confidence in the assessment. | GPT-4o: The review uses strong positive language ('mesmerizing') suggesting a highly compelling and engaging production, indicating a rave recommendation. | Gemini: The review uses the word \"mesmerizing\" to describe the play, which indicates a positive recommendation. However, it is a short review, so I am scoring it as positive with reservations. | Kimi: The critic describes the show as 'mesmerizing' and praises its immersive theatrical power, indicating strong approval despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:13:57.887Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

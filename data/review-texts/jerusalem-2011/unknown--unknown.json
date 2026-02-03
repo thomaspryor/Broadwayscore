@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rylance's titanic performance as the gypsy Rooster really is one for the ages.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite being a single excerpt, the language is unqualifiedly superlative: 'titanic performance...one for the ages' and 'mighty force of irrepressible live theatre.' The combination of praising both lead performance and the play itself with such strong language indicates a rave review. | GPT-4o: The excerpt provides strong praise for both the lead performance and the play itself, describing it as a 'mighty force of irrepressible live theatre'. Despite the single excerpt warning, the language suggests a highly enthusiastic recommendation. | Gemini: The excerpt praises Rylance's performance as 'titanic' and the play as a 'mighty force', indicating a strong positive sentiment. Given it's a single excerpt, confidence is low, but the language suggests a high positive score. | Kimi: The excerpt contains unambiguous superlatives ('titanic performance,' 'one for the ages,' 'mighty force') indicating enthusiastic endorsement typical of a rave review. Confidence is reduced to 'low' due to the single-excerpt format, which may not capture the full review's nuance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:20:32.737Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

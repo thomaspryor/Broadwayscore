@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical's Kong is undeniably a marvel of engineering and artistry, a wire-and-fur creature that towers above the stage with remarkable verisimilitude. But the beast's magnificence only serves to highlight how disappointingly ordinary everything else about this production is.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical's Kong is undeniably a marvel of engineering and artistry, a wire-and-fur creature that towers above the stage with remarkable verisimilitude. But the beast's magnificence only serves to highlight how disappointingly ordinary everything else about this production is.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (39 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the beast's magnificence only serves to highlight how disappointingly ordinary everything else about this production is.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict calling the production 'disappointingly ordinary' despite praising the technical achievement of Kong itself. The 'but' construction emphasizes that technical prowess cannot save an otherwise weak show. | GPT-4o: The review praises the engineering of Kong but finds the rest of the production ordinary, leading to a negative overall assessment. | Gemini: The review praises the Kong puppet but criticizes everything else, resulting in a mixed assessment. | Kimi: The reviewer praises the Kong puppet as a technical marvel but explicitly states that everything surrounding it is disappointingly ordinary, indicating the show is not worth seeing despite its spectacle.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:29:35.281Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

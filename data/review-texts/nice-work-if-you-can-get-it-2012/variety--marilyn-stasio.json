@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This old-fashioned musical comedy has all the right ingredients — a witty book, gorgeous Gershwin songs and a company of Broadway pros who know how to put over both the jokes and the melodies.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This old-fashioned musical comedy has all the right ingredients — a witty book, gorgeous Gershwin songs and a company of Broadway pros who know how to put over both the jokes and the melodies.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This old-fashioned musical comedy has all the right ingredients — a witty book, gorgeous Gershwin songs and a company of Broadway pros who know how to put over both the jokes and the melodies.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for multiple elements (book, songs, performances) with positive descriptors like 'witty' and 'gorgeous,' but lacks the superlatives or explicit enthusiasm that would push into Rave territory. | GPT-4o: The review praises the show for its witty book, gorgeous songs, and skilled performances, indicating a strong recommendation. | Gemini: The review lists positive qualities of the show, including the book, songs, and cast, indicating a strong recommendation. | Kimi: The critic enthusiastically praises the show's essential components—book, music, and cast—describing them as 'all the right ingredients' for a successful old-fashioned musical comedy, indicating a strong recommendation without reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:22:24.351Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

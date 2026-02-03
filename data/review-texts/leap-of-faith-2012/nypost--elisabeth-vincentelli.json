@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show feels like a rough draft that's been rushed to Broadway before it was ready. The pacing is sluggish, the jokes are stale and the characters are cardboard cutouts.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 32,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show feels like a rough draft that's been rushed to Broadway before it was ready. The pacing is sluggish, the jokes are stale and the characters are cardboard cutouts.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 32,
+    "confidence": "medium",
+    "range": {
+      "low": 27,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show feels like a rough draft that's been rushed to Broadway before it was ready.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative assessment with multiple criticisms (sluggish pacing, stale jokes, cardboard characters) and explicit statement it wasn't ready for Broadway. | GPT-4o: The review describes the show as unprepared with sluggish pacing, stale jokes, and cardboard characters, indicating a strong negative assessment. | Gemini: The review uses negative language such as \"rough draft,\" \"sluggish,\" \"stale,\" and \"cardboard cutouts,\" indicating a negative assessment. | Kimi: The critic offers uniformly negative criticism, condemning the pacing, writing, and character development as unfinished and subpar with no redeeming qualities mentioned. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:35:56.992Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 25,
+    "geminiScore": 45,
+    "kimiScore": 22,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

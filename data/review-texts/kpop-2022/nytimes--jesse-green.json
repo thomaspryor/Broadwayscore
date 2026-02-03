@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical 'KPOP,' which opened on Broadway on Sunday, is more of a multimedia experience than a traditional book musical, and though it has undeniable energy and spectacle, it lacks the emotional depth that might make it more than just a flashy tribute to the Korean pop phenomenon.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical 'KPOP,' which opened on Broadway on Sunday, is more of a multimedia experience than a traditional book musical, and though it has undeniable energy and spectacle, it lacks the emotional depth that might make it more than just a flashy tribute to the Korean pop phenomenon.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (48 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it has undeniable energy and spectacle, it lacks the emotional depth that might make it more than just a flashy tribute",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges positive elements (energy, spectacle) but finds significant shortcomings in emotional depth, calling it 'just a flashy tribute' rather than substantive theater. | GPT-4o: The review acknowledges the show's energy and spectacle but criticizes its lack of emotional depth, resulting in a mixed verdict. | Gemini: The review acknowledges the show's energy and spectacle but criticizes its lack of emotional depth, resulting in a mixed assessment. | Kimi: The review acknowledges strong production values ('undeniable energy and spectacle') but ultimately finds the show superficial due to its lack of emotional depth, creating a balanced but limiting assessment that falls between recommendation and dismissal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:32:36.579Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

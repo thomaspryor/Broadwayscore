@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The gender-flipped revival of 'Kiss Me, Kate' at Studio 54 is a smart, spirited production that gives the 1948 musical's battle-of-the-sexes premise a welcome contemporary twist.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "The gender-flipped revival of 'Kiss Me, Kate' at Studio 54 is a smart, spirited production that gives the 1948 musical's battle-of-the-sexes premise a welcome contemporary twist.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The gender-flipped revival of 'Kiss Me, Kate' at Studio 54 is a smart, spirited production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear positive language ('smart, spirited') with praise for the contemporary approach, but this appears to be just an opening line or excerpt, limiting confidence in the full assessment. | Gemini: The review uses positive language like \"smart\" and \"spirited\" and states that the production gives a \"welcome contemporary twist\", indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic offers unqualified praise, describing the production as 'smart' and 'spirited' with a 'welcome' contemporary twist, indicating a clear recommendation despite the brief text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:32:06.276Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

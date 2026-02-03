@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This British import is a theatrical triumph that combines Tim Minchin's witty songs with Dennis Kelly's smart book to create something truly special.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This British import is a theatrical triumph that combines Tim Minchin's witty songs with Dennis Kelly's smart book to create something truly special.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This British import is a theatrical triumph that combines Tim Minchin's witty songs with Dennis Kelly's smart book to create something truly special.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise calling it a 'theatrical triumph' and 'truly special' with positive assessment of both music and book elements. | GPT-4o: The review uses strong, unqualified praise such as 'theatrical triumph' and 'truly special', indicating a highly enthusiastic recommendation. | Gemini: The review uses the phrase \"theatrical triumph\" and \"truly special\", indicating a rave review. | Kimi: Unreserved enthusiasm with superlatives ('triumph', 'truly special') indicates a strong recommendation, though the brevity of the text warrants lower confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:00:23.205Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

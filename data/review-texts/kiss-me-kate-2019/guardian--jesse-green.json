@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of the 1948 musical proves that Cole Porter's songs and the show's backstage romance still have the power to charm, even if the Taming of the Shrew framework feels increasingly dated.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This revival of the 1948 musical proves that Cole Porter's songs and the show's backstage romance still have the power to charm, even if the Taming of the Shrew framework feels increasingly dated.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cole Porter's songs and the show's backstage romance still have the power to charm",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment of the music and romance elements that 'have the power to charm,' but acknowledges the dated framework as a reservation. Classic positive-with-caveats review. | GPT-4o: The review acknowledges the charm of the songs and romance, indicating a positive impression, but notes the dated framework as a reservation. | Gemini: The review indicates that the show is still charming despite feeling dated, suggesting a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic affirms that the revival successfully showcases the enduring appeal of Porter's score and the central romance, qualifying the praise with a reservation about the dated framework.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:31:09.432Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

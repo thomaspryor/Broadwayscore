@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Santiago-Hudson is such a dynamic, charismatic performer that it's easy to overlook the fact that the piece is sometimes difficult to follow.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for Santiago-Hudson's performance and the show's emotional impact. Critic acknowledges structural issues (confusing narrative, overly broad humor) but finds the tribute moving and the performance compelling enough to recommend. | GPT-4o: The review praises the performance and emotional impact of the show, despite noting some narrative confusion and reliance on broad humor. The 4/5 star rating aligns with a strong positive recommendation with minor reservations. | Gemini: The review is positive overall, highlighting Santiago-Hudson's performance and the tribute to Nanny, but notes some issues with the narrative and humor. The 4/5 star rating supports a positive classification. | Kimi: The 4/5 star review praises Santiago-Hudson's virtuoso solo performance and the production's emotional depth while noting occasional narrative confusion and broad humor, resulting in a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:34:31.608Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

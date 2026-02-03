@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Daniel Craig and Ruth Negga bring psychological depth to their roles as the murderous Scottish couple, but Sam Gold's production feels more like a chamber piece than a full-scale tragedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Daniel Craig and Ruth Negga bring psychological depth to their roles as the murderous Scottish couple, but Sam Gold's production feels more like a chamber piece than a full-scale tragedy.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Daniel Craig and Ruth Negga bring psychological depth to their roles as the murderous Scottish couple, but Sam Gold's production feels more like a chamber piece than a full-scale tragedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises lead performances but criticizes the production's scope and impact. The 'but' construction suggests the production limitations outweigh the performance strengths. Low confidence due to very brief excerpt. | GPT-4o: The review praises the performances of the lead actors but suggests that the production itself falls short of expectations for a full-scale tragedy, indicating a mixed reception. | Gemini: The review praises the actors but criticizes the production, resulting in a mixed assessment. | Kimi: The critic offers genuine praise for the lead performances ('psychological depth') but criticizes the production's scale and approach, resulting in a balanced assessment that neither clearly recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:55:34.562Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

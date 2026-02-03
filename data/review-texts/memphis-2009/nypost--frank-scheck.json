@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical 'Memphis' proves that when it comes to rock 'n' roll on Broadway, sometimes all you need is a good beat and infectious energy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The new musical 'Memphis' proves that when it comes to rock 'n' roll on Broadway, sometimes all you need is a good beat and infectious energy.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "proves that when it comes to rock 'n' roll on Broadway, sometimes all you need is a good beat and infectious energy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive assessment praising the show's beat and energy, though the brief excerpt limits confidence in the full scope of the critic's evaluation. | GPT-4o: The review highlights the musical's strong beat and infectious energy, suggesting a positive experience. The tone is enthusiastic, but the brevity of the review limits the confidence level. | Gemini: The review is positive, highlighting the good beat and infectious energy of the show, suggesting it's enjoyable despite potential shortcomings. | Kimi: The critic offers a clear endorsement praising the show's musical energy and entertainment value, placing it firmly in the positive range despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:05:12.930Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

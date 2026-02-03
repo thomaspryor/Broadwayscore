@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though the show boasts incredible production values and several stirring numbers, the musical ultimately feels more like a tourist attraction than a fully realized piece of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Though the show boasts incredible production values and several stirring numbers, the musical ultimately feels more like a tourist attraction than a fully realized piece of theater.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical ultimately feels more like a tourist attraction than a fully realized piece of theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Review acknowledges strong production values and musical moments but delivers a clear negative verdict comparing it to a tourist attraction rather than legitimate theater. | GPT-4o: The review acknowledges some positive aspects like production values and stirring numbers, but the overall verdict is negative, comparing the show to a tourist attraction rather than a complete theatrical experience. | Gemini: The review acknowledges positive aspects like production values and musical numbers but ultimately concludes that the show feels more like a tourist attraction than a fully realized piece of theater, indicating a mixed assessment. | Kimi: While the critic praises the production values and some musical numbers, the final verdict dismisses the show as superficial tourist entertainment rather than substantive theater, constituting a recommendation against seeing it. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:19:39.135Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }
