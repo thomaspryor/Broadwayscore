@@ -5,8 +5,8 @@
   "criticName": "Tim Teeman",
   "url": "https://www.thedailybeast.com/obsessed/art-review-james-corden-delivers-a-masterclass-of-broadway-comedy/",
   "publishDate": "September 16, 2025",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "What does a painting mean? What does friendship comprise? What does money buy us? How do we measure value? What should something cost?\n\nThe still-striking thing about Yasmina Reza’s much-performed Tony-award winning play, Art, is that it plonks these questions—very seriously and very wittily—into the center of a friendship between three men that spans warm, toxic, and transactional.\n\nThe really great thing in this all-star revival (Music Box Theatre, booking to Dec. 21) is those men are played by Bobby Cannavale, Neil Patrick Harris, and James Corden, the latter serving up an early-season comedy masterclass.\n\nThe play, which was first performed in 1994, seems initially too simple. Three men are trying to understand why one of their number, Serge (Harris), has bought a painting. It’s an all-white canvas, five by four foot, and was bought for $300,000. Mockery and derision ensue.\n\n“You paid three hundred thousand dollars for this s--t?” Marc (Cannavale) says, as Serge unveils his purchase, setting the tone of dismissive disbelief for the rest of the play.\n\nOn one level, Art is the theatrical extrapolation of the question of what art is, and how its value is calculated. It recalls a wonderful scene in the second series of Absolutely Fabulous in which Edina (Jennifer Saunders), observing the sneer of a snooty gallery employee, tells her, “You only work in a shop you know, you can drop the attitude.”\n\nReza initially seems to be asking us: Has not only Serge been conned, but we all by the pompous evangelism of contemporary art devotees?\n\nHowever, Reza is not interested in focusing solely on such an easy target. Serge is not budging an inch in his commitment to his beloved work. He can see other colors in the canvas; for him it’s a symphony of depth and meaning. Marc just thinks he’s lost his marbles. If Cannavale plays Marc with a righteous sneer, Harris gives Serge a Niles Crane-ish, suffer-no-fools, unyielding belief in aesthetics and artistic purity.\n\nThe cushion between them—or, more accurately, a weather-vane who swings wildly between both—is Yvan (Corden), who just wishes everyone could get along, especially as he is soon to be married and already stuck between various warring factions of his and his bride’s families when it comes to wedding plans. If Cannavale and Harris are the rigid door-stops of debate, director Scott Ellis makes Corden into the play’s fuzzy border territory, wisely giving him moments of physical comedy to play every bit as hilariously as he delivers his lines.\n\nIt is Yvan’s revelation of one of his pre-nuptial conflicts that Corden serves with full comedic relish—around four minutes of recalled argument, deflated exhaustion, and exaggerated whimpering. It is glorious, and this Broadway season’s first showstopper.\n\nThe clever thing about Art is that it doesn’t indulge easy philistinism, simply deriding the painting and Serge for buying it. It revels in both Marc’s dismissal of the all-white canvas, then asks us—through Serge’s eloquent defense—to consider that it might be something profound and to be cherished. Marc also seems a possessive bully; Serge criticizes him for how he treats those who disagree with him. Yvan is cowed by them both.\n\nAs they insult, evade, then confront each other, Art shows how (straight) men communicate—their ease, trash-talk, need to control, and finally their belief in a friendship they seem to be on the verge of destroying. As positions are taken and intransigence takes hold, echoes ring from today’s harshly polarized political and cultural era. The play becomes less about what the art is worth, and the worth and value of the men’s friendship. (The silent, very funny munching of olives proves a key moment in the restoring of relations.)\n\nIt says something about Reza’s skills as a playwright and Cannavale, Harris, and Corden’s lovely, off-kilter chemistry that we really do care when a felt-tip pen is produced near the end to deface the painting. We’ve just been laughing about how stupid it is to pay so much money for an all-white painting, yet here we are also horrified at it being defiled.\n\nReza and her 2025 Broadway cast are expert movers of focus and boundaries. Corden’s Yvan seems to be a patsy, not wanting to choose between Serge and Marc, and hoping they can remain friends—not least because this wedding has left him a husk of a human. He still wants, he tells them tearfully, the port-in-a-storm comfort their years-long friendship provides.\n\nWe laugh at his tears seeming quite so pathetic, then go very quiet when Corden convinces us, minutely tweaking the performance, how genuinely devastated Yvan feels by all the rowing and acrimony. And then, we are back to laughing when Yvan signals that he feels just as Marc does—that the painting is a joke, as is Serge’s embrace of it.\n\nBut that isn’t the end of Art. The white canvas is never hung during the play until the very end, when our focus is rooted on it. Both the characters and we the audience suddenly view it in all seriousness, understanding its depth, maybe even seeing in it all that Serge sees in its brushstrokes. The final words, belonging to Marc, are their own jolting revelation. In Art, ultimately, the work of art is everything and nothing.\n\nGot a tip? Send it to The Daily Beast here.",
+  "isFullReview": true,
   "dtliExcerpt": "It is Yvan’s revelation of one of his pre-nuptial conflicts that Corden serves with full comedic relish—around four minutes of recalled argument, deflated exhaustion, and exaggerated whimpering. It is glorious, and this Broadway season’s first showstopper.",
   "originalScore": null,
   "assignedScore": 85,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 85,
@@ -61,5 +61,41 @@
       "confidence": "medium",
       "reasoning": "Curated DTLI excerpt"
     }
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 85,
+  "textWordCount": 881,
+  "archivePath": "data/archives/reviews/art-2025/dailybeast--tim-teeman_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T22:27:18.589Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 881,
+  "tierReason": "Full review text"
 }

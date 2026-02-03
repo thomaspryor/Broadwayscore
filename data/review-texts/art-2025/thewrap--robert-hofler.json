@@ -5,7 +5,7 @@
   "criticName": "Robert Hofler",
   "url": "https://www.thewrap.com/art-broadway-review-bobby-cannavale-james-corden-neil-patrick-harris/",
   "publishDate": "September 16, 2025",
-  "fullText": null,
+  "fullText": "The three stars appear to be having great fun even when their respective characters are at each other’s throat. It doesn’t matter that Yasmina Reza wrote stick figures rather than characters for her play “Art,” which won the Tony Award for best play back in 1998. She instead sets up a series of premises in which Marc (Bobby Cannavale), Serge (Neil Patrick Harris) and Yvan (James Corden) are able to sound off against each and take sides.",
   "isFullReview": false,
   "dtliExcerpt": "In this respect, “Art” is a poor man’s “Glengarry Glenross.” Here are plays that are often revived because stars want to appear in them so they can deliver these showy acting-class scenes.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 25,
@@ -66,5 +66,33 @@
       "confidence": "medium",
       "reasoning": "Curated DTLI excerpt"
     }
-  }
+  },
+  "textWordCount": 77,
+  "archivePath": "data/archives/reviews/art-2025/thewrap--robert-hofler_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T22:22:19.802Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 83 (min: 300)",
+    "Show title not found in text"
+  ],
+  "wordCount": 77,
+  "tierReason": "Short text (77 words)"
 }
