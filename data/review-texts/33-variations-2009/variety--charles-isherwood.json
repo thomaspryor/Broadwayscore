@@ -6,7 +6,7 @@
   "url": "https://variety.com/2009/legit/reviews/33-variations-1200471508/",
   "publishDate": "March 9, 2009",
   "fullText": null,
-  "isFullReview": false,
+  "isFullReview": true,
   "dtliExcerpt": "Jane Fonda makes a welcome return to Broadway after a 46-year absence in Moises Kaufman's '33 Variations,' a meditation on the creative process that proves as intellectually stimulating as it is emotionally satisfying.",
   "originalScore": null,
   "assignedScore": 82,
@@ -72,5 +72,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "textWordCount": 687,
+  "archivePath": "data/archives/reviews/33-variations-2009/variety--charles-isherwood_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T22:05:29.191Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "When Tim Reid and Tom Dreesen began performing stand-up together in the late 1960s, the country was barely ready for an integrated comedy team, let alone a black presidential candidate. They recall the reception they received in \"Tim &Tom: An American Comedy in Black and White.\"\n\nWhen Tim Reid and Tom Dreesen began performing stand-up together in the late 1960s, the country was barely ready for an integrated comedy team, let alone a black presidential candidate. They recall the reception they received in “Tim &Tom: An American Comedy in Black and White.”\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Jennifer Lawrence Playfully Trolls White Men: 'Oh My God! If I Could Just Be Their Champion. They Are So Misunderstood' \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Jennifer Lawrence Says 'I Turned Down' Tarantino's 'Hateful Eight' Offer and Then Lost 'Once Upon a Time in Hollywood' Role After the 'Internet Went Out of Its Way to Call Me Ugly'\n\nReid and Dreesen were also surprised by what seemed to be the different expectations of black and white audiences. “When we worked the black clubs, they didn’t expect anything out of us except to be funny,” Dreesen says. “They didn’t expect us to be political or say profound things about race. But with white audiences, it was as if they were saying, ‘Where is the message?'”\n\n“I think black audiences pulled for us in a different way,” Reid says. “A lot of them, particularly those who moved up from the South, were like me — they had not been around white people in a social situation. But now they’re seeing a black guy and a white guy who are relaxed with each other, so once we worked through the initial resistance, they began to pull for us. I think they understood what we were trying to do even before we saw it.\n\n“You have to remember the context of the times. We were only five years removed from the passage of the Civil Rights Act, five years from my having the right to vote. And it was just one year since the assassinations of Martin Luther King and Bobby Kennedy and the riots at the Democratic convention. There wasn’t a day that what was happening in Chicago, and what was happening in America, didn’t affect how audiences saw us.”\n\n“Because things were so polarized, it affected what people thought about us as much as the jokes we were telling,” Dreesen says. “What I realized was those who wanted us to succeed didn’t see color while those who didn’t want us to succeed saw nothing but color.”\n\nReid and Dreesen felt this ambivalence wherever they performed. Integrated audiences also paid close attention to the relationship between the two men. Was Dreesen the top banana with Reid playing his foil? Was Reid subservient to Dreesen , even in a sharp-witted way, as Rochester had been to Jack Benny? It was almost with a sigh of relief that they saw the two men deal with each other on even terms, taking turns playing straight man and delivering punch lines. “Black audiences had never seen that,” Reid says, “and liberal white audiences didn’t want to see a black man playing the buffoon.”\n\nAfter a while, Dreesen and Reid came to see that it was not just audiences that were approaching them with mixed feelings. More surprising, and more frustrating, was the fact that people in show business did not know what to make of them, either. Many of the agents, promoters, business managers, club owners and television producers they met — even those who dealt extensively with black performers — were uncomfortable with the idea of an integrated comedy act. Here the country was going through a racial upheaval and Reid and Dreesen were laughing at each other about it?\n\n“We could see that they weren’t just judging the act for what it was, they were analyzing the business part of it,” Reid says. “Even when the audiences showed they were willing to accept us, the industry wasn’t. That was very hard to get used to.”\n\nAdapted from “Tim & Tom: An American Comedy in Black and White,” recently published by the U. of Chicago."
 }
