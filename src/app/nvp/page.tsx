@@ -31,10 +31,30 @@ export const metadata: Metadata = {
   robots: 'noindex, nofollow', // Easter egg - don't index
 };
 
+const SCORE_TIERS = {
+  mustSee: { label: 'Must-See', color: '#FFD700' },
+  recommended: { label: 'Recommended', color: '#22c55e' },
+  worthSeeing: { label: 'Worth Seeing', color: '#14b8a6' },
+  skippable: { label: 'Skippable', color: '#f59e0b' },
+  stayAway: { label: 'Stay Away', color: '#ef4444' },
+};
+
+function getScoreTier(score: number | null | undefined) {
+  if (score === null || score === undefined) return null;
+  const rounded = Math.round(score);
+  if (rounded >= 85) return SCORE_TIERS.mustSee;
+  if (rounded >= 75) return SCORE_TIERS.recommended;
+  if (rounded >= 65) return SCORE_TIERS.worthSeeing;
+  if (rounded >= 55) return SCORE_TIERS.skippable;
+  return SCORE_TIERS.stayAway;
+}
+
 function ScoreBadge({ score, reviewCount, status }: { score?: number | null; reviewCount?: number; status?: string }) {
+  const sizeClass = 'w-14 h-14 text-2xl rounded-xl';
+
   if (status === 'previews') {
     return (
-      <div className="w-12 h-12 bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-bold text-sm rounded-xl">
+      <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>
         TBD
       </div>
     );
@@ -42,7 +62,7 @@ function ScoreBadge({ score, reviewCount, status }: { score?: number | null; rev
 
   if (reviewCount !== undefined && reviewCount < 5) {
     return (
-      <div className="w-12 h-12 bg-surface-overlay text-gray-400 border border-white/10 flex items-center justify-center font-bold text-sm rounded-xl">
+      <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>
         TBD
       </div>
     );
@@ -50,8 +70,8 @@ function ScoreBadge({ score, reviewCount, status }: { score?: number | null; rev
 
   if (score === undefined || score === null) {
     return (
-      <div className="w-12 h-12 bg-surface-overlay text-gray-500 border border-white/10 flex items-center justify-center font-bold text-lg rounded-xl">
-        -
+      <div className={`score-badge ${sizeClass} score-none font-bold`}>
+        —
       </div>
     );
   }
@@ -72,7 +92,7 @@ function ScoreBadge({ score, reviewCount, status }: { score?: number | null; rev
   }
 
   return (
-    <div className={`w-12 h-12 ${colorClass} flex items-center justify-center font-bold text-lg rounded-xl`}>
+    <div className={`score-badge ${sizeClass} ${colorClass} font-bold`}>
       {roundedScore}
     </div>
   );
@@ -191,11 +211,24 @@ export default function NVPPage() {
               </div>
 
               {/* Score */}
-              <ScoreBadge
-                score={show.criticScore?.score}
-                reviewCount={show.criticScore?.reviewCount}
-                status={show.status}
-              />
+              <div className="flex-shrink-0 flex flex-col items-center gap-1.5">
+                {(() => {
+                  const tier = getScoreTier(show.criticScore?.score);
+                  return tier && show.status !== 'previews' && (show.criticScore?.reviewCount ?? 0) >= 5 ? (
+                    <span
+                      className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
+                      style={{ color: tier.color }}
+                    >
+                      {tier.label}
+                    </span>
+                  ) : null;
+                })()}
+                <ScoreBadge
+                  score={show.criticScore?.score}
+                  reviewCount={show.criticScore?.reviewCount}
+                  status={show.status}
+                />
+              </div>
             </Link>
           ))}
         </div>
