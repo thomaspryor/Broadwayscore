@@ -23,5 +23,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is a single descriptive sentence that provides plot summary and cast information but contains no critical evaluation or recommendation; openai: The text is a brief mention of Tyne Daly's performance and does not provide an evaluative review of the show.; gemini: This is a plot summary/description, not a review with an evaluative verdict.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/mothers-sons-theater-review-690639",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

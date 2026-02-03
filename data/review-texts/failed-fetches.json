@@ -8068,18 +8068,6 @@
     "timestamp": "2026-02-03T04:45:19.774Z"
   },
   {
-    "reviewId": "wicked-2003/frontmezzjunkies--unknown.json",
-    "showId": "wicked-2003",
-    "outlet": "frontmezzjunkies",
-    "critic": "Unknown",
-    "url": "https://frontmezzjunkies.com/2017/09/20/wicked/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): the great gatsby, hamilton, aladdin, hadestown, & juliet...",
-    "textLength": 11416,
-    "timestamp": "2026-02-03T04:46:29.469Z"
-  },
-  {
     "reviewId": "the-lion-king-1997/vulture--john-simon.json",
     "showId": "the-lion-king-1997",
     "outlet": "Vulture",
@@ -8414,18 +8402,6 @@
     "garbageReason": "Multiple shows mentioned (8): english, peter pan goes wrong, tootsie, private lives, high...",
     "textLength": 1793,
     "timestamp": "2026-02-03T05:22:58.063Z"
-  },
-  {
-    "reviewId": "wicked-2003/washpost--peter-marks.json",
-    "showId": "wicked-2003",
-    "outlet": "The Washington Post",
-    "critic": "Peter Marks",
-    "url": "https://www.washingtonpost.com/archive/lifestyle/2003/10/31/kristen-chenoweth-good-luck-charm/3701584c-82b3-4610-9220-6fb5662cbc8f/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): chicago, the wiz, home, take me out, parade...",
-    "textLength": 6465,
-    "timestamp": "2026-02-03T05:23:45.812Z"
   },
   {
     "reviewId": "a-night-with-janis-joplin-2013/nytimes--charles-isherwood.json",
@@ -9062,5 +9038,41 @@
     "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"aladdin\" not mentioned in text; No theater-related keywords in short text",
     "textLength": 1389,
     "timestamp": "2026-02-03T19:17:03.886Z"
+  },
+  {
+    "reviewId": "wicked-2003/frontmezzjunkies--unknown.json",
+    "showId": "wicked-2003",
+    "outlet": "frontmezzjunkies",
+    "critic": "Unknown",
+    "url": "https://frontmezzjunkies.com/2017/09/20/wicked/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (35): the great gatsby, hamilton, aladdin, hadestown, & juliet...",
+    "textLength": 11416,
+    "timestamp": "2026-02-03T19:20:45.198Z"
+  },
+  {
+    "reviewId": "wicked-2003/village-voice--michael-feingold.json",
+    "showId": "wicked-2003",
+    "outlet": "Village Voice",
+    "critic": "Michael Feingold",
+    "url": "http://www.villagevoice.com/2003-11-04/theater/green-witch-mean-time/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): giant, the wiz, purpose, tina, junk...",
+    "textLength": 6401,
+    "timestamp": "2026-02-03T19:21:06.553Z"
+  },
+  {
+    "reviewId": "wicked-2003/washpost--peter-marks.json",
+    "showId": "wicked-2003",
+    "outlet": "The Washington Post",
+    "critic": "Peter Marks",
+    "url": "https://www.washingtonpost.com/archive/lifestyle/2003/10/31/kristen-chenoweth-good-luck-charm/3701584c-82b3-4610-9220-6fb5662cbc8f/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, the wiz, home, take me out, parade...",
+    "textLength": 6465,
+    "timestamp": "2026-02-03T19:21:31.072Z"
   }
 ]

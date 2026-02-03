@@ -22,5 +22,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote from a review, not a complete review that can be properly scored for recommendation strength.; openai: The text provided is about a performance by Whitaker in a play by O'Neill, which does not match the target show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "playbillVerdictUrl": "http://variety.com/2016/legit/reviews/hughie-review-forest-whitaker-broadway-1201713997/",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }
