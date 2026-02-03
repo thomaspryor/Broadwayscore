@@ -60,9 +60,14 @@
     "modelAgreement": "All 3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hadestown-2019/medium--christian-lewis_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T01:01:58.972Z",
+  "textFetchedAt": "2026-02-03T02:15:05.754Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
     {
       "tier": 1,
       "method": "playwright",

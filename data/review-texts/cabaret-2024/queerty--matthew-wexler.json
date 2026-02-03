@@ -64,5 +64,26 @@
   "bwwThumb": "Up",
   "contentTier": "truncated",
   "wordCount": 1113,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "isFullReview": true,
+  "textWordCount": 1113,
+  "archivePath": "data/archives/reviews/cabaret-2024/queerty--matthew-wexler_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T02:14:54.677Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "truncated",
+  "truncationSignals": [],
+  "textStatus": "truncated"
 }
