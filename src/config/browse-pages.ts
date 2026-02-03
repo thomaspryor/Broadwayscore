@@ -154,7 +154,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     filter: (show) => {
       if (show.status !== 'open') return false;
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
-      return tags.includes('revival') || show.type === 'revival';
+      return tags.includes('revival') || show.isRevival === true;
     },
     sort: 'score',
     relatedPages: ['tony-winners-on-broadway', 'best-broadway-musicals', 'best-broadway-dramas'],
@@ -327,7 +327,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'Broadway musicals represent the pinnacle of theatrical entertainment, combining compelling stories with unforgettable songs, spectacular staging, and incredible performances. These are the highest-rated musicals currently playing on Broadway, as determined by aggregated critic reviews. Whether you\'re looking for a classic, a new hit, or something in between, these productions deliver the very best of what musical theater has to offer.',
     filter: (show) => {
       if (show.status !== 'open') return false;
-      return show.type === 'musical' || show.type === 'revival';
+      return show.type === 'musical';
     },
     sort: 'score',
     relatedPages: ['best-recent-musicals', 'jukebox-musicals-on-broadway', 'best-broadway-revivals'],
@@ -342,7 +342,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'These are the best new musicals that have opened on Broadway in the past 12 months. Fresh off their opening nights, these productions represent the cutting edge of musical theater. From world premieres to acclaimed transfers, these recent arrivals are making their mark on the Great White Way. See what\'s exciting audiences and critics right now.',
     filter: (show) => {
       if (show.status !== 'open') return false;
-      if (show.type !== 'musical' && show.type !== 'revival') return false;
+      if (show.type !== 'musical') return false;
       const twelveMonthsAgo = new Date();
       twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
       const openDate = new Date(show.openingDate);
