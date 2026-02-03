@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Beetlejuice is crude, crass and a total crowd-pleaser. The musical adaptation of the 1988 Tim Burton film is a raunchy, riotous romp that's sure to delight fans of the movie.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Beetlejuice is crude, crass and a total crowd-pleaser. The musical adaptation of the 1988 Tim Burton film is a raunchy, riotous romp that's sure to delight fans of the movie.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Beetlejuice is crude, crass and a total crowd-pleaser.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict calling it a 'total crowd-pleaser' that will 'delight fans' with enthusiastic descriptors like 'raunchy, riotous romp'. | GPT-4o: The review uses enthusiastic language ('total crowd-pleaser', 'raunchy, riotous romp') indicating a strong recommendation, especially for fans of the movie. | Gemini: The review uses positive language like \"crowd-pleaser\", \"raunchy\", and \"riotous romp\", indicating a positive recommendation, especially for fans of the movie. | Kimi: The critic unambiguously praises the show as a 'total crowd-pleaser' and 'riotous romp,' strongly recommending it for fans of the film despite its crude humor.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:39:55.029Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

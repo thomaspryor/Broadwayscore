@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical 'Bandstand' is a solid, old-fashioned show that honors our veterans with more nuance and less schmaltz than you might expect.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new musical 'Bandstand' is a solid, old-fashioned show that honors our veterans with more nuance and less schmaltz than you might expect.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new musical 'Bandstand' is a solid, old-fashioned show that honors our veterans with more nuance and less schmaltz than you might expect.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'solid' and praises its nuanced approach, indicating a positive recommendation, though the language is measured rather than enthusiastic. | GPT-4o: The review describes the show as 'solid' and 'old-fashioned,' indicating a positive but not overly enthusiastic recommendation. The mention of 'more nuance and less schmaltz' suggests a thoughtful execution, leading to a positive score. | Gemini: The review calls the show \"solid\" and says it honors veterans, which is a positive assessment. The phrase \"more nuance and less schmaltz than you might expect\" suggests some reservations, but overall it's a recommendation. | Kimi: The critic clearly recommends the show as 'solid' and praises its nuanced handling of veteran themes, though the restrained tone and brevity suggest moderate enthusiasm rather than a rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:28:34.585Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

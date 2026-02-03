@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show has some appealing qualities, but it feels like a missed opportunity to update a classic fairy tale in a meaningful way.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show has some appealing qualities, but it feels like a missed opportunity to update a classic fairy tale in a meaningful way.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show has some appealing qualities, but it feels like a missed opportunity to update a classic fairy tale in a meaningful way.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic acknowledges 'appealing qualities' but frames the overall experience as a 'missed opportunity,' indicating neither a recommendation nor strong discouragement. The original 40 rating confirms this mixed assessment. | GPT-4o: The critic's original rating of 40 aligns with a Negative bucket. The review suggests the show fails to deliver on its potential, despite some positive aspects. | Gemini: The review acknowledges \"some appealing qualities\" but ultimately concludes it's a \"missed opportunity,\" indicating a negative assessment. The critic's rating of 40 aligns with the Negative bucket. | Kimi: The critic's own rating of 40/100 places this firmly in the Negative range (35-54), and the text confirms this verdict: faint praise ('some appealing qualities') is overwhelmed by the central criticism that the production 'feels like a missed opportunity.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:24:44.109Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

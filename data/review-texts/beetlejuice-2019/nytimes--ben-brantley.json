@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This raucous musical adaptation of Tim Burton's 1988 film manages to find its own grotesque charm, even if it sometimes feels like being trapped in a funhouse designed by a hyperactive teenager.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This raucous musical adaptation of Tim Burton's 1988 film manages to find its own grotesque charm, even if it sometimes feels like being trapped in a funhouse designed by a hyperactive teenager.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This raucous musical adaptation manages to find its own grotesque charm, even if it sometimes feels like being trapped in a funhouse designed by a hyperactive teenager.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review acknowledges the show 'finds its own grotesque charm' but immediately qualifies this with a negative comparison to being 'trapped in a funhouse designed by a hyperactive teenager.' This balanced praise-and-criticism pattern indicates a mixed reception. | GPT-4o: The review acknowledges the musical's unique charm but also describes it as overwhelming and chaotic, suggesting a mixed experience. | Gemini: The review acknowledges the show's charm despite some reservations about feeling trapped in a hyperactive funhouse, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic acknowledges the show achieves a distinct appeal ('grotesque charm') but weighs this against a vivid negative comparison to being trapped in a chaotic funhouse, suggesting the experience is exhausting and overstuffed rather than fully recommended.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:40:44.701Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

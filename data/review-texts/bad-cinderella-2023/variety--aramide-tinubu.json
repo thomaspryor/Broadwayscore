@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite Lloyd Webber's soaring melodies and Emerald Fennell's witty book, 'Bad Cinderella' feels overstuffed and underdeveloped, struggling to find its footing between satire and sincerity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite Lloyd Webber's soaring melodies and Emerald Fennell's witty book, 'Bad Cinderella' feels overstuffed and underdeveloped, struggling to find its footing between satire and sincerity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite Lloyd Webber's soaring melodies and Emerald Fennell's witty book, 'Bad Cinderella' feels overstuffed and underdeveloped, struggling to find its footing between satire and sincerity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Acknowledges positive elements (melodies, witty book) but concludes the show is fundamentally flawed (overstuffed, underdeveloped, struggling). Classic mixed review structure with no clear recommendation either way. | GPT-4o: The review highlights significant flaws in the production, describing it as 'overstuffed and underdeveloped' and struggling with its tone. Despite mentioning positive elements, the overall verdict is negative. | Gemini: The review acknowledges positive elements (melodies, book) but ultimately finds the show struggling and underdeveloped, suggesting a mixed or neutral recommendation. | Kimi: The critic acknowledges the talent behind the material but delivers a clear negative verdict, finding the production 'overstuffed and underdeveloped' and unable to successfully execute its vision. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:26:12.422Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

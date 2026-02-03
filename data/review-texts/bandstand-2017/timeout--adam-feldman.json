@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bandstand is a musical with its heart in the right place, but it doesn't quite have the dramatic or musical sophistication to match its admirable intentions.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bandstand is a musical with its heart in the right place, but it doesn't quite have the dramatic or musical sophistication to match its admirable intentions.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bandstand is a musical with its heart in the right place, but it doesn't quite have the dramatic or musical sophistication to match its admirable intentions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory. Acknowledges good intentions but finds the execution lacking in sophistication - classic mixed review language. | GPT-4o: The review acknowledges the show's good intentions but criticizes its lack of sophistication, aligning with the original rating of 60, which indicates a mixed review. | Gemini: The review is mixed, acknowledging good intentions but lacking in execution. The critic's rating of 60 aligns with the 'Mixed' bucket. | Kimi: The critic acknowledges the show's good intentions but criticizes its lack of dramatic and musical sophistication. The provided rating of 60 confirms this falls in the Mixed range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:29:41.916Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

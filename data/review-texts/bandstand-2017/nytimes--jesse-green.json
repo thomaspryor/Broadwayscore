@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though 'Bandstand' hits some false notes in its story of traumatized World War II veterans, its heart is huge and its big band sound is intoxicating.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though 'Bandstand' hits some false notes in its story of traumatized World War II veterans, its heart is huge and its big band sound is intoxicating.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "its heart is huge and its big band sound is intoxicating",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict acknowledging story flaws but praising the show's emotional core and musical elements. The balance of criticism and praise indicates a solid recommendation. | GPT-4o: The review acknowledges some flaws in the story but praises the show's heart and music, indicating a positive recommendation despite reservations. | Gemini: The review acknowledges flaws (\"false notes\") but ultimately praises the show's \"heart\" and \"big band sound,\" indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic acknowledges narrative weaknesses ('false notes') but offers enthusiastic praise for the emotional core ('heart is huge') and musical elements ('intoxicating'), constituting a recommendation weighted toward the production's strengths.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:28:58.248Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 76,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

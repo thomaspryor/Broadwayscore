@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Baby It's You! is a jukebox musical that tells the story of Florence Greenberg and her record label Scepter Records, which launched the careers of many girl groups in the 1960s. The show features the music of Burt Bacharach and Hal David, among others.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (44 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (44 words)",
+  "rejectedAt": "2026-02-03T14:23:00.547Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a plot summary describing what the show is about, with no critical evaluation or recommendation; openai: The text is a plot summary and description of the show's content without any evaluative commentary or critical assessment.; gemini: This is a plot summary, not a review. There is no evaluation of the show's quality.; kimi: This text provides only a plot summary and basic show information without any evaluative content, critical opinions, or recommendation.",
+  "promptVersion": "5.2.0"
 }

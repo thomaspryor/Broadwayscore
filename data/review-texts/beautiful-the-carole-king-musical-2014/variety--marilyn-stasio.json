@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jessie Mueller gives a deeply felt performance as the singer-songwriter, capturing both her vulnerability and her strength in a musical that celebrates the golden age of pop songwriting.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20240617212844",
   "archiveOrgUrl": "http://web.archive.org/web/20240617212844/https://variety.com/2014/legit/reviews/broadway-review-beautiful-the-carole-king-musical-1201049758/",
   "wordCount": 848,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Snazzy stagecraft and a moving performance by Jessie Mueller help this bio-musical overcome its plodding book.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite criticizing the 'flat-footed book' and 'blunt dramaturgy,' the critic consistently praises Mueller's performance, Bruni's direction, and the production values. The review finds enough merit in the performances and staging to overcome the book's weaknesses, indicating a solid positive recommendation. | GPT-4o: The review acknowledges significant flaws in the book and some characterizations but praises the stagecraft and Jessie Mueller's performance, ultimately recommending the show despite its issues. | Gemini: The review praises Mueller's performance and the stagecraft, but criticizes the book. It's a positive recommendation overall, but with reservations due to the weak book. | Kimi: While the critic finds significant flaws in the book ('flat-footed,' 'corny,' 'cringe-worthy caricatures'), the review consistently praises Jessie Mueller's moving performance, the snazzy staging, and Broadway-worthy production numbers. The overall verdict is that the strong elements successfully overcome the weaknesses, making it a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:38:46.902Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

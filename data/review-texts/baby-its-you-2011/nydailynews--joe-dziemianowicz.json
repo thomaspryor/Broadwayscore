@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is packed with catchy Bacharach-David songs, but the book is a mess that jumps around without much coherence or emotional connection.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is packed with catchy Bacharach-David songs, but the book is a mess that jumps around without much coherence or emotional connection.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the book is a mess that jumps around without much coherence or emotional connection",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising the songs as 'catchy', the critic calls the book 'a mess' with no coherence or emotional connection, indicating an overall negative recommendation. | GPT-4o: The critic's original rating of 40 aligns with the negative assessment of the book, despite acknowledging the catchy songs. The lack of coherence and emotional connection suggests a negative recommendation. | Gemini: The review explicitly states that the book is a mess, despite the catchy songs. Given the critic's rating of 40, this falls into the negative bucket. | Kimi: The critic explicitly rates the show 40/100. While acknowledging the catchy songs, the review describes the book as 'a mess' lacking coherence and emotional connection, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:20:06.865Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

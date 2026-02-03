@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This jukebox musical about the Shirelles feels more like a tribute concert than a cohesive story, though the performances of the classic songs provide genuine pleasures.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This jukebox musical about the Shirelles feels more like a tribute concert than a cohesive story, though the performances of the classic songs provide genuine pleasures.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This jukebox musical about the Shirelles feels more like a tribute concert than a cohesive story, though the performances of the classic songs provide genuine pleasures.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic identifies structural flaws (lacks cohesive story) but acknowledges 'genuine pleasures' in the musical performances, indicating neither clear recommendation nor discouragement. | GPT-4o: The review notes that the musical lacks a cohesive story but acknowledges the enjoyable performances of the songs, indicating a mixed reception. | Gemini: The review acknowledges \"genuine pleasures\" from the performances but criticizes the lack of a \"cohesive story,\" resulting in a mixed assessment. | Kimi: While acknowledging 'genuine pleasures' in the song performances, the critic fundamentally criticizes the show's narrative structure, comparing it unfavorably to a tribute concert rather than a proper theatrical work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:22:52.690Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

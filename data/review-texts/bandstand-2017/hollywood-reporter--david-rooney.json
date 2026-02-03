@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "While the show has its flaws, including some clunky dialogue and predictable plot points, the emotional sincerity of the material and the committed performances make it a moving experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While the show has its flaws, including some clunky dialogue and predictable plot points, the emotional sincerity of the material and the committed performances make it a moving experience.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the committed performances make it a moving experience",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Acknowledges significant flaws (clunky dialogue, predictable plot) but concludes it's a 'moving experience' due to performances and emotional sincerity, indicating a recommendation with reservations. | GPT-4o: Despite acknowledging flaws, the critic highlights emotional sincerity and performances as making it worthwhile, indicating a positive recommendation with some reservations. | Gemini: The review acknowledges flaws but ultimately finds the show a 'moving experience' due to the sincerity and performances, indicating a positive but not rave recommendation. | Kimi: While the critic notes flaws in dialogue and plotting, the final assessment is clearly positive, citing emotional sincerity and committed performances that create a moving experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:27:56.938Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 74,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

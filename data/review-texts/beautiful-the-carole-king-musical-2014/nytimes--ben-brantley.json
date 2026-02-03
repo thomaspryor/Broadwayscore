@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This jukebox musical about the life and songs of Carole King succeeds in large part because it doesn't try to be profound or groundbreaking. Instead, it delivers exactly what its title promises: a beautiful celebration of some of the most memorable songs in American popular music.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This jukebox musical about the life and songs of Carole King succeeds in large part because it doesn't try to be profound or groundbreaking. Instead, it delivers exactly what its title promises: a beautiful celebration of some of the most memorable songs in American popular music.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (46 words)"
+  "contentTierReason": "Short text (46 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This jukebox musical about the life and songs of Carole King succeeds in large part because it doesn't try to be profound or groundbreaking.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment with 'succeeds' and 'beautiful celebration,' though with modest expectations rather than enthusiastic praise. | GPT-4o: The review praises the show for delivering a satisfying experience aligned with its premise, without aiming for profundity. This suggests a solid recommendation with no major reservations. | Gemini: The review states the show \"succeeds\" and delivers a \"beautiful celebration\", but also notes it doesn't try to be profound or groundbreaking, indicating a qualified positive recommendation. | Kimi: The reviewer clearly recommends the show, praising it as a 'beautiful celebration' that succeeds in its goals, though the caveat that it 'doesn't try to be profound' keeps it from the Rave bucket. Confidence is low due to the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:37:26.847Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

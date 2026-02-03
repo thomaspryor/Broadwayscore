@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical follows Jeremy Heere, a geeky high schooler who swallows a supercomputer pill that's supposed to make him cool but instead turns him into a monster.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -59,5 +59,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 616,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, rushed or relaxed, 'Be More Chill' is Broadway's wiliest and socially savviest night out for teens and parents alike.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it Broadway's 'wiliest and socially savviest night out.' Praises the cast, music, and improvements from Off-Broadway, with only minor reservations about pacing changes. | GPT-4o: The review acknowledges improvements from the Off Broadway version and praises the show's appeal to both teens and traditional theatergoers, despite some reservations about changes. The overall tone is positive, recommending it as a savvy night out. | Gemini: The review is generally positive, highlighting the musical's appeal to both teens and traditional audiences, contagious melodies, and clever lyrics. While noting some changes from the Off-Broadway production, the reviewer ultimately recommends it as a \"wiliest and socially savviest night out\". | Kimi: The reviewer praises the energetic cast (particularly Will Roland), Joe Iconis's catchy and clever score, and the smoother pacing of the Broadway transfer, offering an unqualified recommendation for both teen and adult audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:35:41.089Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

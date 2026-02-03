@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Be More Chill is a musical that tries hard to be cool but ends up being more eager than effective, despite some genuinely catchy numbers and committed performances from its young cast.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Be More Chill is a musical that tries hard to be cool but ends up being more eager than effective, despite some genuinely catchy numbers and committed performances from its young cast.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Be More Chill is a musical that tries hard to be cool but ends up being more eager than effective",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Clear mixed assessment - acknowledges positive elements (catchy numbers, committed performances) but the core verdict is that it fails to achieve its goals, being 'more eager than effective'. | GPT-4o: The review acknowledges some positive elements like catchy numbers and committed performances, but overall suggests the musical is more eager than effective, indicating a mixed reception. | Gemini: The review acknowledges catchy numbers and committed performances but ultimately finds the show ineffective, indicating a mixed opinion. | Kimi: While the critic acknowledges 'genuinely catchy numbers' and 'committed performances,' the overall verdict is that the show fails at its central goal, described as 'more eager than effective.' The 'despite' framing indicates these positives don't redeem the ineffective whole.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:33:59.400Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

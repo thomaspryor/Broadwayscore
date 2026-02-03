@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lloyd Webber's new musical feels like a relic from another era, despite its attempts to modernize the fairy tale with contemporary attitudes about beauty and self-acceptance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Lloyd Webber's new musical feels like a relic from another era, despite its attempts to modernize the fairy tale with contemporary attitudes about beauty and self-acceptance.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lloyd Webber's new musical feels like a relic from another era, despite its attempts to modernize the fairy tale with contemporary attitudes about beauty and self-acceptance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Calling the show 'a relic from another era' despite modernization attempts suggests the critic finds it outdated and unsuccessful in its goals, placing it in negative territory. | Gemini: The review states the musical feels like a relic, indicating a negative assessment despite attempts to modernize it. | Kimi: The excerpt describes the show as an outdated 'relic' whose modernization attempts failed, indicating a negative verdict, though the brevity prevents a fuller assessment of the critic's final recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:24:07.075Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

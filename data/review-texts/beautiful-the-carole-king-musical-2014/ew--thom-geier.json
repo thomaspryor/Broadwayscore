@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Beautiful succeeds because it doesn't try to reinvent the jukebox musical so much as perfect it, and because Jessie Mueller gives a warm, winning performance as the singer-songwriter.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Beautiful succeeds because it doesn't try to reinvent the jukebox musical so much as perfect it, and because Jessie Mueller gives a warm, winning performance as the singer-songwriter.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Beautiful succeeds because it doesn't try to reinvent the jukebox musical so much as perfect it",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear positive verdict stating the show 'succeeds' and 'perfects' its genre, with praise for Mueller's 'warm, winning performance.' The critic's own 87 rating confirms strong positive recommendation. | GPT-4o: The critic's original rating of 87 aligns with the Rave bucket, and the review text praises the show for perfecting the jukebox musical format and highlights a strong lead performance. | Gemini: The review is positive, highlighting the show's success in perfecting the jukebox musical format and praising Jessie Mueller's performance. Given the critic's rating of 87, this falls into the positive bucket. | Kimi: The critic's own 87/100 rating falls in the Rave range, supported by the text's use of 'perfect' to describe the production and unqualified praise for Jessie Mueller's performance. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:36:19.816Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 84,
+    "openaiScore": 87,
+    "geminiScore": 80,
+    "kimiScore": 87,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }
