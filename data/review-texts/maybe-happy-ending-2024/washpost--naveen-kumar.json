@@ -5,7 +5,7 @@
   "criticName": "Naveen Kumar",
   "url": "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
   "publishDate": "November 12, 2024",
-  "fullText": "Democracy Dies in DarknessDarren Criss and Helen J. Shen in “Maybe Happy Ending.” (Matthew Murphy and Evan Zimmerman) Review by Naveen KumarNovember 12, 2024 at 2:00 p.m. ESTNEW YORK — Art about artificial intelligence tends to warn us about the dangers of playing God and creating monsters. So there is an immediate element of surprise and delight to “Maybe Happy Ending,” a swoony and only-slightly-dystopian rom-com between robots.\n\nThe musical by Will Aronson and Hue Park, like most science fiction, still reflects on human experience, but with an eye toward exploring our best impulses rather than our worst. It’s a darling gem of a show with a big heart and a captivating sideways sensibility. And in a Broadway assembly line churning with revivals and remakes, it’s a refreshing model of innovation.",
+  "fullText": "Democracy Dies in DarknessDarren Criss and Helen J. Shen in “Maybe Happy Ending.” (Matthew Murphy and Evan Zimmerman) Review by Naveen KumarNovember 12, 2024 at 2:00 p.m. ESTArt about artificial intelligence tends to warn us about the dangers of playing God and creating monsters. So there is an immediate element of surprise and delight to “Maybe Happy Ending,” a swoony and only-slightly-dystopian rom-com between robots.\n\nThe musical by Will Aronson and Hue Park, like most science fiction, still reflects on human experience, but with an eye toward exploring our best impulses rather than our worst. It’s a darling gem of a show with a big heart and a captivating sideways sensibility. And in a Broadway assembly line churning with revivals and remakes, it’s a refreshing model of innovation.",
   "dtliExcerpt": "It’s a darling gem of a show with a big heart and a captivating sideways sensibility. And in a Broadway assembly line churning with revivals and remakes, it’s a refreshing model of innovation.",
   "showScoreExcerpt": "\"The odd and simple premise of “Maybe Happy Ending” accomplishes something profound, in examining the nature of connection.\"",
   "originalScore": null,
@@ -63,20 +63,26 @@
   "textIssue": "too_short",
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/maybe-happy-ending-2024/washpost--naveen-kumar_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T05:21:45.976Z",
+  "textFetchedAt": "2026-02-03T19:17:45.613Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
       "success": true
     }
   ],
   "fetchTier": 4,
-  "archiveOrgTimestamp": "20241113063825",
-  "archiveOrgUrl": "http://web.archive.org/web/20241113063825/https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
+  "archiveOrgTimestamp": "20241112205120",
+  "archiveOrgUrl": "http://web.archive.org/web/20241112205120/https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
   "textIssues": [
-    "Word count too low: 131 (min: 300)"
+    "Word count too low: 128 (min: 300)"
   ],
   "bwwExcerpt": null,
   "bwwThumb": null,
@@ -84,11 +90,11 @@
   "previousLlmScore": 88,
   "rescoreCompletedAt": "2026-02-01T15:34:50.043Z",
   "contentTier": "truncated",
-  "wordCount": 131,
+  "wordCount": 128,
   "isFullReview": false,
-  "textWordCount": 131,
+  "textWordCount": 128,
   "textQuality": "partial",
   "truncationSignals": [],
   "textStatus": "incomplete",
-  "tierReason": "Short text (131 words)"
+  "tierReason": "Short text (128 words)"
 }
