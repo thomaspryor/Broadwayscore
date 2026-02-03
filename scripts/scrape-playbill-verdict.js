@@ -431,11 +431,142 @@ function saveReviewFromPlaybill(showId, reviewInfo) {
 }
 
 // ---------------------------------------------------------------------------
+// Per-show Google search (used by both targeted and batch modes)
+// ---------------------------------------------------------------------------
+
+async function processShowViaGoogle(show, showId, shows) {
+  const existingArchive = path.join(archiveDir, `${showId}.html`);
+  if (fs.existsSync(existingArchive)) {
+    console.log(`  [CACHE] ${showId}: Using archived HTML`);
+    const html = fs.readFileSync(existingArchive, 'utf8');
+    const reviewLinks = extractReviewLinksFromArticle(html, showId);
+    stats.reviewLinksExtracted += reviewLinks.length;
+    for (const link of reviewLinks) {
+      const result = saveReviewFromPlaybill(showId, link);
+      if (result === 'new') {
+        console.log(`    [NEW] ${link.outletDomain}: ${link.critic || 'unknown'}`);
+      }
+    }
+    return;
+  }
+
+  const query = `site:playbill.com/article "what are the reviews" OR "the verdict" OR "critics think" "${show.title}" broadway`;
+
+  try {
+    stats.googleSearches++;
+    const urls = await googleSearch(query);
+
+    const verdictUrls = urls.filter(u => {
+      const slug = u.split('/article/')[1] || '';
+      return slug.includes('review') || slug.includes('verdict') || slug.includes('critics') || slug.includes('what-are');
+    });
+
+    if (verdictUrls.length > 0) {
+      const articleUrl = verdictUrls[0];
+      console.log(`  [GOOGLE] ${showId}: Found ${articleUrl}`);
+
+      const html = await fetchHtml(articleUrl);
+      if (html) {
+        const $ = cheerio.load(html);
+        const pageTitle = $('title').text() + ' ' + $('h1').text();
+        if (isNotBroadway(pageTitle)) {
+          console.log(`    [SKIP] Article is not about Broadway: "${pageTitle.slice(0, 80)}"`);
+          return;
+        }
+
+        const GENERIC_WORDS = new Set(['the', 'a', 'an', 'new', 'musical', 'play', 'broadway', 'show', 'revival', 'comedy', 'drama', 'about', 'and', 'of', 'in', 'on', 'at', 'for']);
+        const showTitleLower = show.title.toLowerCase()
+          .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
+        const pageTitleLower = pageTitle.toLowerCase();
+        const articleSlug = (articleUrl.split('/article/')[1] || '').toLowerCase();
+        const showSlugWords = showTitleLower.split(/[\s,]+/)
+          .filter(w => w.length > 2 && !GENERIC_WORDS.has(w));
+        const firstWord = showSlugWords[0] || showTitleLower.split(/[\s,]+/)[0];
+        const titleHasFirstWord = firstWord && pageTitleLower.includes(firstWord);
+        const urlHasFirstWord = firstWord && articleSlug.includes(firstWord);
+        if (!titleHasFirstWord && !urlHasFirstWord) {
+          console.log(`    [SKIP] Article doesn't match show "${show.title}": "${pageTitle.slice(0, 80)}"`);
+          return;
+        }
+
+        // Look up show opening date for URL year validation
+        const showEntry = shows.find(s => (s.slug || s.id) === showId);
+        const showOpeningYear = showEntry && showEntry.openingDate
+          ? new Date(showEntry.openingDate).getFullYear() : null;
+        const showClosingYear = showEntry && showEntry.closingDate
+          ? new Date(showEntry.closingDate).getFullYear() : new Date().getFullYear();
+        const showUpperBound = showOpeningYear ? Math.max(showOpeningYear + 2, showClosingYear + 1) : null;
+
+        fs.writeFileSync(existingArchive, html);
+
+        const reviewLinks = extractReviewLinksFromArticle(html, showId);
+        stats.reviewLinksExtracted += reviewLinks.length;
+
+        for (const link of reviewLinks) {
+          // URL year validation
+          if (showOpeningYear && showUpperBound && link.url) {
+            const urlYearMatch = link.url.match(/\/((?:19|20)\d{2})\//);
+            if (urlYearMatch) {
+              const urlYear = parseInt(urlYearMatch[1]);
+              if (urlYear < showOpeningYear - 3 || urlYear > showUpperBound) {
+                console.log(`    [SKIP] ${link.outletDomain}: URL year ${urlYear} outside ${showOpeningYear - 3}–${showUpperBound}`);
+                stats.skippedOffBroadway++;
+                continue;
+              }
+            }
+          }
+
+          const result = saveReviewFromPlaybill(showId, link);
+          if (result === 'new') {
+            console.log(`    [NEW] ${link.outletDomain}: ${link.critic || 'unknown'}`);
+          }
+        }
+      }
+    } else {
+      console.log(`  [GOOGLE] ${showId}: No results`);
+    }
+
+    await sleep(2000);
+  } catch (err) {
+    console.error(`  [ERROR] Google search for ${showId}: ${err.message}`);
+    stats.errors.push(`Google: ${showId}: ${err.message}`);
+  }
+}
+
+function printSummary() {
+  console.log('\n=== Playbill Verdict Summary ===');
+  console.log(`Articles found: ${stats.articlesFound}`);
+  console.log(`Matched to shows: ${stats.matchedShows}`);
+  console.log(`Articles fetched: ${stats.articlesFetched}`);
+  console.log(`Review links extracted: ${stats.reviewLinksExtracted}`);
+  console.log(`New reviews created: ${stats.newReviews}`);
+  console.log(`Existing reviews updated: ${stats.updatedReviews}`);
+  console.log(`Skipped (existing): ${stats.skippedExisting}`);
+  console.log(`Skipped (off-Broadway): ${stats.skippedOffBroadway}`);
+  console.log(`Google searches: ${stats.googleSearches}`);
+  if (stats.errors.length > 0) {
+    console.log(`Errors: ${stats.errors.length}`);
+    stats.errors.forEach(e => console.log(`  - ${e}`));
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
 async function scrapePlaybillVerdict() {
   console.log('=== Playbill Verdict Scraper ===\n');
+
+  // Parse CLI flags
+  const args = process.argv.slice(2);
+  const showsArg = args.find(a => a.startsWith('--shows='));
+  const targetShowIds = showsArg ? showsArg.replace('--shows=', '').split(',').map(s => s.trim()).filter(Boolean) : null;
+  const noDateFilter = args.includes('--no-date-filter');
+
+  if (targetShowIds) {
+    console.log(`Targeted mode: ${targetShowIds.length} show(s): ${targetShowIds.join(', ')}`);
+    if (noDateFilter) console.log('Date filter disabled (--no-date-filter)');
+  }
 
   // Ensure archive directory exists
   if (!fs.existsSync(archiveDir)) {
@@ -445,7 +576,24 @@ async function scrapePlaybillVerdict() {
   const shows = loadShows();
   console.log(`Loaded ${shows.length} shows from shows.json\n`);
 
-  // Step 1: Scrape category page
+  // In targeted mode, skip category page scan and go directly to Google fallback
+  if (targetShowIds) {
+    let targetShows = shows.filter(s => targetShowIds.includes(s.slug || s.id));
+    if (!noDateFilter) {
+      targetShows = targetShows.filter(s => new Date(s.openingDate) >= new Date('2023-01-01'));
+    }
+    console.log(`Processing ${targetShows.length} targeted show(s) via Google search...\n`);
+
+    for (const show of targetShows) {
+      const showId = show.slug || show.id;
+      await processShowViaGoogle(show, showId, shows);
+    }
+
+    printSummary();
+    return stats;
+  }
+
+  // Step 1: Scrape category page (batch mode only)
   console.log('Fetching Playbill Verdict category page...');
   const allArticles = [];
 
@@ -577,100 +725,17 @@ async function scrapePlaybillVerdict() {
 
   const showsNeedingSearch = recentShows.filter(s => {
     const showId = s.slug || s.id;
-    const archivePath = path.join(archiveDir, `${showId}.html`);
-    return unmatchedShows.has(showId) && !fs.existsSync(archivePath);
+    return unmatchedShows.has(showId) && !fs.existsSync(path.join(archiveDir, `${showId}.html`));
   });
 
   console.log(`Shows needing Google search: ${showsNeedingSearch.length}`);
 
   for (const show of showsNeedingSearch) {
     const showId = show.slug || show.id;
-    const query = `site:playbill.com/article "what are the reviews" OR "the verdict" OR "critics think" "${show.title}" broadway`;
-
-    try {
-      stats.googleSearches++;
-      const urls = await googleSearch(query);
-
-      // Filter to likely verdict/review articles
-      const verdictUrls = urls.filter(u => {
-        const slug = u.split('/article/')[1] || '';
-        return slug.includes('review') || slug.includes('verdict') || slug.includes('critics') || slug.includes('what-are');
-      });
-
-      if (verdictUrls.length > 0) {
-        const articleUrl = verdictUrls[0];
-        console.log(`  [GOOGLE] ${showId}: Found ${articleUrl}`);
-
-        const html = await fetchHtml(articleUrl);
-        if (html) {
-          // Validate the article is about Broadway (not London, Chicago, film, etc.)
-          const $ = cheerio.load(html);
-          const pageTitle = $('title').text() + ' ' + $('h1').text();
-          if (isNotBroadway(pageTitle)) {
-            console.log(`    [SKIP] Article is not about Broadway: "${pageTitle.slice(0, 80)}"`);
-            await sleep(2000);
-            continue;
-          }
-
-          // Verify article is about the RIGHT show (Google sometimes returns wrong articles)
-          const GENERIC_WORDS = new Set(['the', 'a', 'an', 'new', 'musical', 'play', 'broadway', 'show', 'revival', 'comedy', 'drama', 'about', 'and', 'of', 'in', 'on', 'at', 'for']);
-          const showTitleLower = show.title.toLowerCase()
-            .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
-          const pageTitleLower = pageTitle.toLowerCase();
-          const articleSlug = (articleUrl.split('/article/')[1] || '').toLowerCase();
-          // Use the primary distinctive words from the show title (not generic words)
-          const showSlugWords = showTitleLower.split(/[\s,]+/)
-            .filter(w => w.length > 2 && !GENERIC_WORDS.has(w));
-          // Require the first distinctive word OR multiple generic-filtered words to match
-          const firstWord = showSlugWords[0] || showTitleLower.split(/[\s,]+/)[0];
-          const titleHasFirstWord = firstWord && pageTitleLower.includes(firstWord);
-          const urlHasFirstWord = firstWord && articleSlug.includes(firstWord);
-          if (!titleHasFirstWord && !urlHasFirstWord) {
-            console.log(`    [SKIP] Article doesn't match show "${show.title}": "${pageTitle.slice(0, 80)}"`);
-            await sleep(2000);
-            continue;
-          }
-
-          const archivePath = path.join(archiveDir, `${showId}.html`);
-          fs.writeFileSync(archivePath, html);
-
-          const reviewLinks = extractReviewLinksFromArticle(html, showId);
-          stats.reviewLinksExtracted += reviewLinks.length;
-
-          for (const link of reviewLinks) {
-            const result = saveReviewFromPlaybill(showId, link);
-            if (result === 'new') {
-              console.log(`    [NEW] ${link.outletDomain}: ${link.critic || 'unknown'}`);
-            }
-          }
-        }
-      } else {
-        console.log(`  [GOOGLE] ${showId}: No results`);
-      }
-
-      await sleep(2000);
-    } catch (err) {
-      console.error(`  [ERROR] Google search for ${showId}: ${err.message}`);
-      stats.errors.push(`Google: ${showId}: ${err.message}`);
-    }
+    await processShowViaGoogle(show, showId, shows);
   }
 
-  // Print summary
-  console.log('\n=== Playbill Verdict Summary ===');
-  console.log(`Articles found: ${stats.articlesFound}`);
-  console.log(`Matched to shows: ${stats.matchedShows}`);
-  console.log(`Articles fetched: ${stats.articlesFetched}`);
-  console.log(`Review links extracted: ${stats.reviewLinksExtracted}`);
-  console.log(`New reviews created: ${stats.newReviews}`);
-  console.log(`Existing reviews updated: ${stats.updatedReviews}`);
-  console.log(`Skipped (existing): ${stats.skippedExisting}`);
-  console.log(`Skipped (off-Broadway): ${stats.skippedOffBroadway}`);
-  console.log(`Google searches: ${stats.googleSearches}`);
-  if (stats.errors.length > 0) {
-    console.log(`Errors: ${stats.errors.length}`);
-    stats.errors.forEach(e => console.log(`  - ${e}`));
-  }
-
+  printSummary();
   return stats;
 }
 
