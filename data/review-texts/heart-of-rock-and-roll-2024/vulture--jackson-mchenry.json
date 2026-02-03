@@ -14,7 +14,7 @@
   "dtliThumb": "Meh",
   "llmScore": {
     "score": 76,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 71,
       "high": 81
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly states they had fun and calls it the funniest new musical of the season, praising the humor, performances, and charm despite acknowledging shallow emotional weight and problematic elements. | GPT-4o: The review acknowledges the show's humor and charm, calling it the funniest new musical of the season. While it highlights some flaws, such as lack of emotional weight and questionable thematic elements, the overall tone is positive, recommending it for its entertainment value. | Gemini: The reviewer states they had fun and calls it the funniest new musical of the season, but also points out its flaws and lack of emotional weight. This indicates a positive but not rave review.",
+    "keyPhrases": [
+      {
+        "quote": "I had fun. It helps that The Heart of Rock and Roll is the funniest new musical of the season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Critic clearly states they had fun and calls it the funniest new musical of the season. Despite critiques about lack of emotional weight and questionable politics, the overall tone is positive with praise for humor, performances, and entertainment value. | GPT-4o: The review acknowledges the show's humor and charm but criticizes its lack of emotional weight and depth. The critic finds the show fun but ultimately shallow and questions its substance, leading to a mixed verdict. | Gemini: The review is generally positive, noting that the show is the funniest new musical of the season. Despite some reservations about its depth and reliance on 80s tropes, the critic ultimately recommends it. | Kimi: The critic clearly recommends the show, praising it as 'the funniest new musical of the season' and admitting 'I had fun,' while noting significant reservations about its lack of emotional weight, momentum issues, and questionable politics.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:12:25.155Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:47:46.224Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 76,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 77,
-    "geminiScore": 77,
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "bwwExcerpt": "To its credit, The Heart of Rock and Roll tries to get out before the buzz wears off. The second act lags and then accelerates around the point where Bobby’s choice between rock and cardboard gets obvious. While Abrams delights in adding new complications to the book, he seems to get bored of its circumstances about three quarters of the way through, and the show slams into its denouement at 90 miles per hour. There are a few lines of tossed-off explanation, right before the big finale, about wh",
   "bwwThumb": "Meh",

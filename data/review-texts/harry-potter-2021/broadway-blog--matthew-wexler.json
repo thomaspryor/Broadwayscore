@@ -8,19 +8,19 @@
   "fullText": null,
   "showScoreExcerpt": "\"An unforgettable theatrical experience...The staging is simply magical.\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 82,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-mixed-positive",
   "scoreConfidence": "low",
   "llmScore": {
-    "score": 89,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The language 'unforgettable theatrical experience' and 'simply magical' indicates strong enthusiasm, but with only one curated excerpt available, there's some uncertainty about the full review context. | GPT-4o: The excerpt uses strong, enthusiastic language such as 'unforgettable' and 'magical,' indicating a highly positive recommendation. | Gemini: The excerpt uses very strong positive language, calling the experience 'unforgettable' and the staging 'magical,' indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "An unforgettable theatrical experience...The staging is simply magical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language with 'unforgettable' and 'magical' suggests enthusiastic recommendation, but single excerpt warning requires caution about representativeness. | GPT-4o: The excerpt uses strong positive language ('unforgettable', 'magical') suggesting a rave review. However, confidence is low due to the single excerpt warning. | Gemini: The excerpt contains very strong positive language, suggesting a positive review. Given it's a single excerpt, confidence is low. | Kimi: Single excerpt contains strongly positive language ('unforgettable', 'magical'), placing it in the upper Positive range (80-84) per instructions for cherry-picked excerpts. Low confidence due to limited text availability.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:07:01.136Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:20:54.001Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 90,
+    "previousScore": 89,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
-    "claudeBucket": "Rave",
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

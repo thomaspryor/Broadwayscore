@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The jukebox musical built around Huey Lewis and the News hits is a crowd-pleasing throwback that doesn't quite find its groove until the second act.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "The jukebox musical built around Huey Lewis and the News hits is a crowd-pleasing throwback that doesn't quite find its groove until the second act.",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Marks acknowledges the show's formulaic nature but ultimately finds it entertaining and well-executed, praising its unpretentious charm and suggesting it has a promising future, though noting it's neither inspiring nor offensive. | GPT-4o: The review acknowledges the show's limitations and familiar jukebox musical templates but ultimately finds it entertaining and fun. The critic appreciates the clever creators and the show's appeal, suggesting it is worth seeing despite its lack of depth. | Gemini: The review acknowledges the show's flaws but ultimately finds it enjoyable and entertaining, suggesting it's worth seeing despite its predictability.",
+    "keyPhrases": [
+      {
+        "quote": "There's something to be said for simple packaging that knows what it is and does it well.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic acknowledges the show's formulaic nature but finds it 'rather fun' and entertaining, praising performances and production values while recommending it as pleasant escapism. | GPT-4o: The review acknowledges the show's limitations and lack of depth but ultimately finds it entertaining and fun, recommending it for its humor and performances. The tone is positive with some reservations about the plot and depth. | Gemini: The review is generally positive, describing the show as \"rather fun\" and praising its unpretentious nature. While acknowledging flaws, the critic ultimately finds it entertaining and promising, especially for touring productions. | Kimi: While the critic acknowledges the show's formulaic elements and thin characters, they praise its unpretentious entertainment value, strong performances, and clever staging, ultimately recommending it as pleasant escapism that knows exactly what it is.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,12 +48,12 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:12:21.494Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:46:28.852Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "contentTier": "complete",
@@ -55,17 +61,19 @@
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 76,
-    "geminiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-broadway-1236051843/",
   "urlDiscoveredAt": "2026-02-02T05:27:08.183Z",

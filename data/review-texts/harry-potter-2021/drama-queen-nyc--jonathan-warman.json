@@ -23,7 +23,7 @@
   },
   "llmScore": {
     "score": 79,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 74,
       "high": 84
@@ -36,8 +36,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review provides detailed praise for the direction, performances, and technical elements, concluding with a clear 'Recommended.' verdict despite being relatively brief on elaboration. | GPT-4o: The review praises the direction, performances, and production elements, culminating in a clear recommendation to see the show. The critic's positive tone and the use of 'Recommended' indicate strong approval. | Gemini: The review concludes with a clear recommendation. While it describes the plot and some potential issues, the overall tone is positive, highlighting the direction, movement, music, and performances.",
+    "keyPhrases": [
+      {
+        "quote": "You need somebody adept in theatrical magic to make this dazzle as it should, and director John Tiffany fits the bill perfectly.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with praise for direction, performances, and creative team. The critic explicitly states 'Recommended' and consistently praises the production elements without significant reservations. | GPT-4o: The review praises the direction, performances, and music, indicating a strong recommendation. The use of 'recommended' at the end supports a positive verdict, though the overall tone is not extremely enthusiastic, placing it in the mid-to-high Positive range. | Gemini: The review is positive, highlighting the direction, movement, music, and performances, and ends with a clear \"Recommended\" verdict. | Kimi: The critic explicitly recommends the show and offers consistent praise for the direction, performances, and music without significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,28 +52,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:07:51.516Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:32:57.081Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 77,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/drama-queen-nyc--jonathan-warman_2026-02-02.html",
   "textFetchedAt": "2026-02-02T23:16:07.951Z",

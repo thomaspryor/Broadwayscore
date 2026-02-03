@@ -15,7 +15,7 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 82,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 77,
       "high": 87
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise across multiple elements - production, storytelling, and character development - with explicit positive comparisons and language like 'resplendent' and 'magic aplenty' indicating enthusiastic recommendation. | GPT-4o: The review excerpt is filled with superlatives and positive descriptors, indicating a strong recommendation. The critic praises the production's fluidity, resplendence, and ability to engage the audience, suggesting a highly favorable view. | Gemini: The review uses overwhelmingly positive language, praising the production's fluidity, physical aspects, magic, and character development. The comparison to the films further strengthens the positive assessment.",
+    "keyPhrases": [
+      {
+        "quote": "A far cry from your typical Broadway brand extension, and in many ways...an improvement over the quality of the films.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Multiple superlatives ('resplendent', 'magic aplenty') and direct praise for story, characters, and production. Claims it improves on source material suggests strong recommendation despite single excerpt warning. | GPT-4o: The excerpt provides strong praise for the production, describing it as 'resplendent' and highlighting its ability to engage the audience with its characters and story. The positive tone suggests a solid recommendation. | Gemini: The review excerpt is overwhelmingly positive, praising the production, story, and characters. The comparison to the films suggests a high level of satisfaction. | Kimi: The excerpt offers unqualified praise for the production values ('resplendent,' 'magic aplenty') and story, explicitly calling it superior to the source films. Per the single-excerpt guidance for clearly positive quotes, this falls in the upper Positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:11:17.105Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:29:32.768Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 87,
+    "openaiScore": 82,
     "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

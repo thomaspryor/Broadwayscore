@@ -25,8 +25,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite intellectual objections about the story and themes, the critic clearly enjoyed the show and found it entertaining, praising the performances, direction, and production values while acknowledging it as effective 'junk food' theater. | GPT-4o: The review acknowledges the show's flaws and clichés but ultimately describes it as entertaining and fun, akin to enjoyable junk food. The critic's initial cynicism is overcome by the production's energy and charm, leading to a positive recommendation despite some reservations. | Gemini: The review expresses initial cynicism turned into entertainment and enjoyment, indicating a positive experience despite acknowledging the show's flaws and reliance on clichés. The critic ultimately admits to having a fun time, solidifying the positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "I came out feeling buzzed, entertained…and slightly ashamed at how easily I swallowed this package.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the show's formulaic story and problematic elements but concludes it's entertaining with strong performances and production values, comparing it to 'the best junk food' - a qualified positive recommendation. | GPT-4o: The review expresses initial skepticism but ultimately finds the show entertaining and fun, despite acknowledging its flaws and clichés. The critic's positive reaction and enjoyment suggest a solid recommendation. | Gemini: The review expresses initial cynicism that turns into enjoyment, acknowledging the show's flaws but ultimately finding it entertaining. The critic uses the phrase \"steamroll over intellectual objections\" which suggests a positive, but not rave, experience. | Kimi: While acknowledging the show's 'junk food' quality and thin plot, the critic clearly recommends the production for its entertainment value, strong performances, and fun atmosphere.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -35,9 +41,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:12:03.216Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:42:25.908Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 77,
@@ -45,18 +51,20 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "showScoreExcerpt": "\"...I came out feeling buzzed, entertained…and slightly ashamed\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",

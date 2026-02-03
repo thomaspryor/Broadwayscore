@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": "3/5",
-  "assignedScore": 64,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "originalScoreNormalized": 60,
@@ -23,11 +23,11 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 64,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -37,8 +37,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges the show is 'enjoyable and affecting' with strong performances, but identifies fundamental structural problems and questions the necessity of this particular story, landing on a qualified mixed assessment that aligns with the 3/5 rating. | GPT-4o: The review acknowledges the show's enjoyability and affective moments, but criticizes its underdeveloped plot points and questions the significance of its story. The original rating of 3/5 and the truncated nature of the text suggest a mixed but not entirely negative view. | Gemini: The critic's rating is 3/5, and the review acknowledges enjoyable and affecting elements. However, it questions the significance of the story, suggesting a qualified recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "As enjoyable and affecting as Harmony is—it doesn't make the case that the Comedian Harmonists merit quite this degree of remembrance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: 3/5 rating with mixed assessment. Praises performances and entertainment value but criticizes underdeveloped plot, tonal problems, and questions the story's significance. Neither recommends nor discourages. | GPT-4o: The review provides a balanced view with praise for performances and music but criticizes the underdeveloped plot and questions the significance of the story. The original 3/5 rating aligns with a mixed verdict. | Gemini: The review is mostly positive, highlighting the talented performers and enjoyable moments, but it also points out limitations in the storytelling and the show's overall impact. The 3/5 star rating aligns with a positive but not rave recommendation. | Kimi: The 3/5 rating and review text reflect significant admiration for the performances and musical numbers, but fundamental criticism of the thin storytelling, abandoned plot threads, and the show's inability to justify why this particular story deserves Broadway treatment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,9 +53,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:06:28.194Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:11:49.874Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
@@ -57,18 +63,20 @@
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 66,
+    "openaiScore": 65,
     "geminiScore": 75,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,

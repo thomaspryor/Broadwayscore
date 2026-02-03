@@ -7,17 +7,17 @@
   "publishDate": "April 22, 2018",
   "showScoreExcerpt": "\"Thoroughly rewarding and accomplished, both in conception and execution...The play is a thrilling maze of adventures, yes, but it is also a moving and sophisticated exploration of the turbulent tides of adolescence...Even Potter-phobes could be seduced by both the tale itself and the production's technical brilliance...Tiffany...ushers us through the story's convolutions with an almost awe-inspiring fluidity. The production's five-hour-plus expanse flashes by in what seems like half the time.\"",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 88,
   "source": "show-score",
   "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 92,
+    "score": 88,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 83,
+      "high": 93
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being a single excerpt, the language is unmistakably enthusiastic with superlatives like 'thrilling,' 'almost awe-inspiring fluidity,' and claims it could convert even 'Potter-phobes.' The critic praises both artistic merit and technical execution unreservedly. | GPT-4o: The review is highly positive, praising the production's conception, execution, and technical brilliance. The critic describes the play as thrilling, moving, and sophisticated, with a fluid and awe-inspiring direction. The language used indicates a strong recommendation. | Gemini: The review uses highly positive language like \"thoroughly rewarding,\" \"accomplished,\" \"thrilling,\" and \"moving,\" indicating a strong recommendation. The phrase \"Even Potter-phobes could be seduced\" further suggests a broad appeal and positive experience.",
+    "keyPhrases": [
+      {
+        "quote": "Thoroughly rewarding and accomplished, both in conception and execution",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong superlatives throughout ('thrilling', 'awe-inspiring fluidity', 'technical brilliance') with claims that even skeptics would be won over. Time flying by suggests complete engagement. However, single excerpt limits confidence. | GPT-4o: The excerpt uses strong positive language ('thoroughly rewarding', 'thrilling', 'awe-inspiring') indicating a highly favorable review. Despite the single excerpt warning, the tone suggests a strong recommendation. | Gemini: The excerpt contains overwhelmingly positive language, including \"thoroughly rewarding and accomplished\", \"thrilling maze\", \"moving and sophisticated\", and \"awe-inspiring fluidity\". Given the single excerpt, I'm placing it in the upper end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the production's technical brilliance, direction, and emotional depth, explicitly recommending it even to those skeptical of the source material. As a single curated quote, the score is capped at the upper end of the Positive range per excerpt guidelines. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:08:03.666Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:35:22.995Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 90,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 92,
     "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/financial-times-uk--charles-isherwood_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:33:52.211Z",

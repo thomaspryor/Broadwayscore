@@ -7,17 +7,17 @@
   "publishDate": "April 22, 2018",
   "showScoreExcerpt": "\"Underneath all of the whimsy, cuteness, and nostalgia, this play is dark...Filled with action, humor, and adventure. The magic of the wizarding world is conveyed by a truly amazing combination of choreography, set design, and old-fashioned magic tricks...Not everything is perfect...But there were many times when I gaped in amazement, choked up, laughed, cheered, and felt the warmth of old friends I thought I'd never see again...A spectacle, but it's also a courageous work of art.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 81,
   "source": "show-score",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 80,
-    "confidence": "medium",
+    "score": 81,
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges significant flaws ('far too long and meandering', 'plot holes', 'hokey dancing') but ultimately recommends it as both spectacular entertainment and meaningful art, praising the production's ambition and emotional depth. | GPT-4o: The review is filled with enthusiastic praise for the production's spectacle, emotional depth, and innovative staging. Despite some minor criticisms about length and plot holes, the overall tone is highly positive, emphasizing the play's impact and artistry. | Gemini: The review is overwhelmingly positive, highlighting the play's spectacle, emotional depth, and exploration of complex themes. Despite mentioning some flaws like length and plot holes, the critic ultimately praises the production as a 'courageous work of art,' indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "It's a spectacle, but it's also a courageous work of art.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the production as groundbreaking and emotionally powerful, calling it 'a courageous work of art' and 'amazing, bar-raising.' Despite noting flaws like length and plot holes, the critic clearly recommends it as both spectacular entertainment and meaningful theater. | Gemini: Despite some reservations about length and plot holes, the critic expresses strong positive emotions and calls it a \"courageous work of art,\" indicating a strong recommendation. | Kimi: While the reviewer criticizes the play's excessive length, meandering plot, and plot holes, they ultimately praise it as an 'amazing, bar-raising production' and a 'courageous work of art' that offers a powerful exploration of trauma.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:08:10.949Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:38:22.017Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
+    "claudeScore": 82,
+    "openaiScore": null,
     "geminiScore": 81,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/forward--jay-michaelson_2026-01-30.html",
   "textFetchedAt": "2026-01-30T16:06:10.856Z",

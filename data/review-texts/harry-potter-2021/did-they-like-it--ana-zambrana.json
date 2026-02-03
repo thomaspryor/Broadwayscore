@@ -9,15 +9,15 @@
   "fullText": "The moment you walk into the Lyric Theatre the magic of the Potter world hugs you. Just as they have done in Universal Studios, with the flick of their wand, The Wizarding World of Harry Potter invites you to join them on a new expedition. The welcoming warm glow of faux candlelight, the gold-trimmed accents, and the glimmering Christmas tree, all work together to trick your senses. For a second, you forget that when you leave, your senses will be violated by the harsh lighting and grating score of Times Square, something to shock you back into muggle reality. Until then, the Lyric is your escape. A sensation of shared comfort emanates from the audience, all of us hope that when the lights dim, we will be let into a place that we somehow know already. A place that feels like home. This sense of unity shared among strangers is by far the highlight of Harry Potter and the Cursed Child. With quidditch-fan audience-like engagement, cheering, yelling, and clapping take hold of the room every time a beloved character appears, although the real magic is felt during scene transitions. The opening drops us into what feels like a viewpoints exercise, as Steven Hoggett’s choreography and John Tiffany’s direction marry seamlessly. The pair’s entrancing work is elevated by the sprinkling of fairy dust, generously provided by Jamie Harrison (magic and illusions) and Neil Austin (lighting). Tiffany’s big-picture direction is stellar but there are specific moments that I could’ve done without. The beginning is a bit of a cacophonous mess, it takes twenty minutes for the show the find its pacing and tell its story. The plot revolves around the mending of the strained relationship between Albus Potter (James Romney) and his famous father Harry (Steve Haggard in Michael Shannon mode), who are resistant to the idea that they have more in common than they would think, especially their tendency to get in trouble. It doesn’t take long for Albus and Scorpius (Dalton Richards), my favorite star-crossed lovers), to become involved in an assortment of wild misadventures that originate from the quest to bring back Cedric Diggory (famously played by Robert Pattinson on film). In classic Potter fashion, during a particularly memorable scene, polyjuice potion must be used by our young heroes to break into the Ministry of Magic. The scene is infused with brilliant physical comedy bits that recall the original “golden trio” of Harry, Hermione, and Ron. For a second I felt like I was a little girl again, witnessing magic happen right before my eyes. When it premiered, it took two plays to tell a story that has been compressed into one, and it seems writers Tiffany, J.K. Rowling, and Jack Thorne forgot that we’ve seen this father/son dynamic before. Therefore the play is an exercise in creating forced empathy, which fills the plot with disingenuous moments, made much better by the spectacle adorning them. They also forgot how beloved the characters are, we know them, flaws and all. Just because our heroes are not inches away from us on our screens doesn’t mean they deserve any less detail. On the stage, they all now have a “stock character” quality. This makes it difficult for the actors to find any depth in them, therefore making all the relationships feel empty. Funnily enough, it’s underdog Ron Weasley who makes an impression. The actor David Abeles gives a charming performance by turning Ron into one of the earthiest characters in this supernatural world. In the play, Ron is finally given the opportunity to find catharsis, and Potter fans will be thrilled to know, it’s with him with whom we, as an audience, establish our deepest connection. What Harry Potter and the Cursed Child lacks emotionally, it makes up for aesthetically, and it’s the creative team behind the show who are working real magic here. And yet, despite its dramatic shortcomings, one can’t help but shake the feeling that every Potter fan deserves an opportunity to witness this world. A place filled with characters that shaped their childhoods and took them to magical places, a world some of them can describe in detailed form. A place they already know and much better than the play does. Last Thursday, when I stood up to applaud the boisterous, giving-all-they-got ensemble of Mrs. Doubtfire, I found myself marveling at the joy I got out of what was so clearly a cash grab. Unlike recent attempts at monetizing well-known properties & cultural touchstones (hello, Diana!). Mrs. Doubtfire is full of exciting, justifiably large musical numbers, […] Our cohort got together to talk about their love of Six, the Broadway musical about the wives of Henry VIII, which recently opened on Broadway (read our review here). Framed as a pop concert where each queen gets a chance to tell their story, the musical by Lucy Moss and Toby Marlow references pop music […]",
   "isFullReview": true,
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 70,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 79,
+    "score": 70,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 65,
+      "high": 75
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges significant flaws (forced empathy, stock characters, pacing issues) but praises the spectacle and suggests Potter fans deserve to see it. The aggregator excerpt confirms positive assessment of the magical atmosphere. | GPT-4o: The review highlights the impressive aesthetic and magical elements of the production, despite noting emotional and character depth shortcomings. The critic suggests that Potter fans should experience the show, indicating a positive recommendation with some reservations. | Gemini: Despite criticisms of the plot and character depth, the reviewer ultimately recommends the show for Potter fans, citing the aesthetic experience and the opportunity to witness the world they love. The truncated text is a concern, but the aggregator excerpt and the concluding statement suggest a positive, albeit qualified, recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "What Harry Potter and the Cursed Child lacks emotionally, it makes up for aesthetically.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review acknowledges significant flaws (forced empathy, stock characters, dramatic shortcomings) but praises the spectacle and suggests Potter fans deserve to see it. The truncation warning and positive aggregator context suggest a qualified recommendation despite criticisms. | GPT-4o: The review praises the aesthetic and magical elements of the production but criticizes the emotional depth and character development. The truncated nature of the text and mixed signals about the overall recommendation result in a mixed classification with low confidence. | Gemini: The review is mixed, noting dramatic shortcomings, but ultimately recommends it for Potter fans due to the aesthetic and the connection to the characters. The truncated text lowers confidence. | Kimi: The review offers extensive praise for the production design, direction, and magical effects as 'real magic' and 'stellar,' while criticizing the emotional depth, character writing, and plot as 'disingenuous' and 'empty.' Despite significant reservations about the script, the final verdict recommends the show specifically for fans of the franchise, warranting a qualified Positive score. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:07:47.351Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:32:30.140Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 78,
-    "geminiScore": 79,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 17,
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,

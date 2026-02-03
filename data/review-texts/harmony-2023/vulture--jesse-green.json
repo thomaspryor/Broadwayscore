@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical about the Comedian Harmonists, a German vocal group popular in the 1920s and '30s, is earnest and well-meaning but dramatically inert.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical about the Comedian Harmonists, a German vocal group popular in the 1920s and '30s, is earnest and well-meaning but dramatically inert.",
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges strengths in the musical's humor and performances but criticizes its handling of serious historical material and compares it unfavorably to better works like Cabaret, resulting in a qualified assessment without a clear recommendation. | GPT-4o: The review highlights both strengths and weaknesses, noting the show's success in comedic elements but struggles with its historical and political themes. The overall tone suggests a mixed reception, with some enjoyable aspects but significant reservations. | Gemini: The review acknowledges flaws, especially in the second act, but praises the humor and performances, suggesting it's worth seeing despite its shortcomings. The reviewer highlights the 'goofy' elements as a strength.",
+    "keyPhrases": [
+      {
+        "quote": "The humor may remind you of college a cappella groups, clever and twee and earnest and pleasant enough in small doses.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review praises individual elements like performances and some songs, but finds the show fundamentally flawed in its handling of serious historical material. The critic describes it as 'intriguing but not so successful' and notes it 'can't help reminding you of the sharper, darker work' of others, indicating a qualified mixed response rather than a recommendation. | Gemini: The review acknowledges both strengths (goofy humor, satirical songs) and weaknesses (rote second act, clumsy historical depiction). It doesn't offer a clear recommendation, leaning towards mixed feelings. | Kimi: The critic praises the cast's performances and the first act's comedic shenanigans but finds the second act didactic and clumsy in handling its historical material, concluding that the show doesn't fully reconcile its tonal contradictions despite intriguing themes.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,9 +47,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:06:43.109Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:16:16.706Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
@@ -51,18 +57,19 @@
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 76,
+    "openaiScore": null,
+    "geminiScore": 65,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (23 words)",

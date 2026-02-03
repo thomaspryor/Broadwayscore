@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic calls it a 'theatrical masterpiece' and praises both the technical innovation and emotional storytelling, indicating strong enthusiasm for the production. | GPT-4o: The review excerpt describes the show as a 'theatrical masterpiece' and praises its high-tech special effects and accessible storytelling, indicating a strong, enthusiastic recommendation. | Gemini: The review excerpt praises the show as a \"classic saga\" and highlights its accessibility, indicating a positive recommendation, even if the full review might contain reservations. Given the single excerpt, it is hard to know for sure, but the tone is positive.",
+    "keyPhrases": [
+      {
+        "quote": "It will always be known as the theatrical masterpiece that redefined how high-tech special effects should be done for the stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Calls it a 'theatrical masterpiece' and praises both technical innovation and emotional storytelling. Single excerpt limits confidence but language is clearly enthusiastic. | GPT-4o: The excerpt describes the show as a 'theatrical masterpiece' and praises both its high-tech effects and its emotional storytelling, indicating a strong recommendation. However, with only one excerpt available, confidence is low. | Gemini: The review calls the show a \"theatrical masterpiece\" and praises its accessibility and classic saga elements. Given the single excerpt warning, I'm scoring it positively but with low confidence. | Kimi: The excerpt employs superlatives like 'masterpiece' and 'tour de force' to praise both technical achievements and emotional storytelling. Scored at upper end of Positive range per single-excerpt guidelines, though the language suggests possible rave status.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:09:54.163Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:06:45.772Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 90,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/stagezine--scott-harrah_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:37:25.346Z",

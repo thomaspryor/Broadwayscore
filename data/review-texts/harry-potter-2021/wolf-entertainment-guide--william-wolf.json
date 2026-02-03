@@ -8,17 +8,17 @@
   "fullText": "HARRY POTTER AND THE CURSED CHILD--PARTS ONE AND TWO Send This Review to a Friend The saga is being presented in two separate performances, and one can see them in combinations that include a same day option, with matinee and evening performances and a break for dinner. That is what I opted for, and it was quite a hefty experience. Dramatically, we now find wizard Harry Potter as a father, played by Jamie Parker, and there are father-son issues. Time has marched on, you see. The plot gets complicated, of course, but what’s special about the play is the production. We find the basic set, designed by Christine Jones, the great central hall of Hogwarts School of Witchcraft and Wizardry, dominated by the huge clock. That serves as a major playing area with constant changes. Be prepared for astonishing effects, such as flashes of firepower shooting across stage as part of the illusions and magic design by Jamie Harrison. The plot toys with time, and a battery of clocks on either side of the stage light up as racing clock hands go backward or forward. The impact is very dramatic. At one point ghost-like figures swirl over the spectators. The visuals are enough to enthrall even the youngest in an audience. As for the story of working out the relationships, the issues and the dangers, the plot heavy on talk begins to wear some in Part 2, but sudden bursts of action liven things. The cast members are all excellent. Harry’s wife Ginny is played by Poppy Miller and Noma Dumezweni is fun as Hermione Granger, running the Ministry of Magic, where Harry works. Fans of the book will find depictions of assorted memorable characters. While admiring Rowling’s achievement but not being a Potter groupie, I can’t vouch for the accuracy of all the play’s characterizations. But I can vouch for the dynamic impact of this production, which cost a record $68 million to stage. Director John Tiffany has done a great job in keeping most of the show eye-catching as well as trying to spin out the plot with clarity, a tough task as given all of the elements that go into the new storyline. “Harry Potter and the Cursed Child” looms as a big box office hit that will further the legend of Rowling’s creation that has won over millions of fans the world over. At the Lyric Theatre, 214 West 43rd Street. Harrypottertheplay.com/us. Reviewed April 23, 2018. [Film] [Theater] [Cabaret] [About Town] [Wolf] [Special Reports] [Travel] [HOME]",
   "showScoreExcerpt": "\"The result is spectacular...The plot gets complicated, of course, but what's special about the play is the production...The visuals are enough to enthrall even the youngest in an audience. As for the story of working out the relationships, the issues and the dangers, the plot heavy on talk begins to wear some in Part 2, but sudden bursts of action liven things...Tiffany has done a great job in keeping most of the show eye-catching as well as trying to spin out the plot with clarity.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 78,
   "source": "show-score",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 80,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Opens with 'spectacular' and emphasizes visual splendor that can 'enthrall' audiences, with praise for the director's work. Minor reservation about Part 2 dialogue doesn't diminish overall positive assessment. | GPT-4o: The review excerpt praises the production as 'spectacular' and highlights the visuals as enthralling, indicating a strong positive recommendation despite some plot issues. | Gemini: The review is mostly positive, highlighting the spectacular visuals and Tiffany's direction. However, it notes that the plot gets complicated and the talk begins to wear in Part 2, indicating some reservations.",
+    "keyPhrases": [
+      {
+        "quote": "The result is spectacular...The production...visuals are enough to enthrall even the youngest in an audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opens with 'spectacular' and praises the production and visuals highly, but notes the plot 'begins to wear some in Part 2.' Clear positive recommendation despite some reservations about pacing. | GPT-4o: The excerpt praises the production as 'spectacular' and 'eye-catching', with some reservations about the plot in Part 2. Given the single excerpt warning, the positive tone suggests a strong recommendation. | Gemini: The review is mostly positive, highlighting the spectacular visuals and Tiffany's direction, but notes the plot gets complicated and the talk begins to wear in Part 2. Due to the truncated text, confidence is low. | Kimi: The excerpt offers strong praise for the production and direction ('spectacular', 'great job') but includes significant criticism about Part 2 being talk-heavy and wearing, suggesting a qualified recommendation. As a single curated excerpt, confidence is low.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:11:07.019Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:28:11.930Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 82,
+    "claudeScore": 80,
+    "openaiScore": 81,
     "geminiScore": 78,
+    "kimiScore": 73,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "complete",
   "wordCount": 420,

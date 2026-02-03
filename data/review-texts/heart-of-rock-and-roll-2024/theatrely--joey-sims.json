@@ -14,7 +14,7 @@
   "dtliThumb": "Meh",
   "llmScore": {
     "score": 62,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 57,
       "high": 67
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds specific elements praiseworthy (choreography, fantasy sequence, performances) but repeatedly calls the book 'baffling' and 'confounding,' indicating neither a clear recommendation nor complete dismissal. | GPT-4o: The review highlights both positive elements, such as the choreography and specific musical numbers, and significant criticisms regarding the plot and character motivations. The tone suggests a mix of enjoyment and confusion, leading to a mixed verdict. | Gemini: The review highlights both positive and negative aspects of the show. While criticizing the confusing plot and character motivations, it praises the high-energy production, choreography, and some of the sillier moments, indicating a mixed experience overall.",
+    "keyPhrases": [
+      {
+        "quote": "To distract from this baffling tale, director Gordon Greenberg's high-energy production throws a ton of pure adrenaline at the audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review finds individual elements entertaining (choreography, fantasy sequence, energy) but consistently calls the book 'baffling' and 'confounding,' with characters making no sense. The critic seems engaged but frustrated rather than recommending. | GPT-4o: The review highlights some enjoyable and energetic moments, but overall describes the show as baffling and weighed down by its narrative. The tone suggests neither a strong recommendation nor a clear dissuasion, fitting a mixed verdict. | Gemini: The review highlights both positive and negative aspects, such as the high-energy production and choreography, but also criticizes the baffling book and confusing narrative. The overall tone suggests a mixed experience, not strongly recommending or discouraging seeing the show. | Kimi: While the reviewer praises the choreography as some of the sharpest on Broadway and highlights delightful performances and moments, they find Jonathan A. Abrams' book mostly baffling and the second act plodding and confounding, resulting in an uneven production that neither fully recommends nor rejects.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:12:07.125Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:42:54.051Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
+    "claudeScore": 62,
+    "openaiScore": 60,
     "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "bwwThumb": "Meh",
   "dtliExcerpt": "Huey Lewis’ discography is woven into the story with a looseness that makes Escape to Margaritaville seem downright Pulitzer-worthy.",

@@ -7,17 +7,17 @@
   "publishDate": "April 25, 2018",
   "showScoreExcerpt": "\"The special effects are sensational, especially if you like theatrical 'black magic'...Plays like a musical—most of the show is underscored and all of the putative song cues are self-evident—and might have been slightly more fun had it been one...To those who have never read a Potter novel or seen a Potter film, 'The Cursed Child' will make no sense at all. Everyone else should find the plot trite, though there’s always something cool to see onstage, which helps a bit.\"",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 61,
   "source": "show-score",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 63,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Teachout acknowledges the impressive production values and effects but clearly finds the plot weak and the show primarily appealing only to existing Potter fans, indicating neither a recommendation nor discouragement. | GPT-4o: The review acknowledges the impressive special effects and spectacle but criticizes the plot as trite, suggesting that the show is visually engaging but lacking in substance. This indicates a mixed recommendation. | Gemini: The review acknowledges the impressive special effects but ultimately finds the plot trite, suggesting a mixed experience overall. The phrase 'helps a bit' indicates a mild positive aspect within a generally lukewarm assessment.",
+    "keyPhrases": [
+      {
+        "quote": "Everyone else should find the plot trite, though there's always something cool to see onstage, which helps a bit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the spectacular effects and production values but finds the plot trite and notes it makes no sense to newcomers. The balanced assessment of impressive visuals vs. weak storytelling puts this in mixed territory. | GPT-4o: The review acknowledges the impressive special effects but criticizes the plot as trite and inaccessible to those unfamiliar with the Harry Potter series. The overall tone suggests mixed feelings, with visual elements being a redeeming factor. | Gemini: The review acknowledges the impressive special effects but criticizes the plot as trite and inaccessible to those unfamiliar with the Harry Potter universe. This suggests a mixed experience, with some redeeming qualities but significant drawbacks. | Kimi: The critic praises the sensational special effects and production values but finds the plot trite and inaccessible to non-fans, resulting in a lukewarm assessment that neither recommends nor discourages attendance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:11:14.173Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:28:55.202Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": 60,
     "geminiScore": 62,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/wsj--terry-teachout_2026-02-03.html",
   "textFetchedAt": "2026-02-03T05:00:40.801Z",

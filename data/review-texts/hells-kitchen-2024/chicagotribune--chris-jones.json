@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds much to appreciate - praising performances, direction, choreography, and visual elements - but notes predictable plotting and some vocal concerns, landing on a solid positive recommendation. | GPT-4o: The review highlights several positive aspects such as the performances, direction, and choreography, while noting some predictable elements in the narrative. Overall, it recommends the show despite some reservations about the book and narrative strokes. | Gemini: The review highlights several positive aspects, including the performances, choreography, and visual elements. However, it also notes predictable plot elements and some issues with the lead actress's singing, leading to a 'recommended with reservations' verdict.",
+    "keyPhrases": [
+      {
+        "quote": "There's a great deal to enjoy here, including a phenomenal performance by Lewis.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Jones finds much to praise - phenomenal performances, vibrant energy, strong direction and choreography - while noting predictable plotting and some vocal concerns. The tone is appreciative with reservations, clearly recommending the show. | GPT-4o: The review highlights several positive aspects, such as the performances and the vibrant energy of the show, but also notes predictable elements and some issues with the lead's singing. Overall, it leans towards a positive recommendation with some reservations. | Gemini: The review is generally positive, highlighting strong performances and direction, but notes predictable plot elements and some vocal issues with the lead. It's a recommendation with reservations. | Kimi: Despite criticizing the predictable book and broad narrative strokes, the reviewer enthusiastically praises the performances (particularly Lewis and Bean), choreography, and visual energy, offering a clear recommendation tempered by writing caveats.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:16:51.282Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:49:46.511Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
+    "claudeScore": 75,
+    "openaiScore": 76,
     "geminiScore": 77,
+    "kimiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "sourceMethod": "brightdata",
   "archivePath": "data/archives/reviews/hells-kitchen-2024/chicago-tribune--chris-jones_2026-01-27.html",

@@ -8,7 +8,7 @@
   "bwwExcerpt": "Harry Potter and the Cursed Child is haunted by death and pain; it is often suspenseful and sometimes downright frightening. Yet amid the cinematic tumult and dazzle of the densely action-packed plot, Thorne and Tiffany carve out quiet scenes of intimacy and tenderness. Great care has gone into creating each moment of this state-of-the-art adventure. It leaves its audience awestruck, spellbound and deeply satisfied.",
   "showScoreExcerpt": "\"A triumph of theatrical magic...Combines grand storytelling with stagecraft on a scale heretofore unimagined...It is often suspenseful and sometimes downright frightening. Yet amid the cinematic tumult and dazzle of the densely action-packed plot, Thorne and Tiffany carve out quiet scenes of intimacy and tenderness. Great care has gone into creating each moment of this state-of-the-art adventure. It leaves its audience awestruck, spellbound, and deeply satisfied.\"",
   "originalScore": "5/5",
-  "assignedScore": 91,
+  "assignedScore": 93,
   "source": "dtli",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "urlSource": "show-score",
@@ -20,12 +20,12 @@
   "scoreSource": "explicit-after-garbage-invalidation",
   "scoreConfidence": "medium",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:10:34.809Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:18:11.871Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
+    "previousScore": 91,
     "previousVersion": "5.1.0"
   },
   "sources": [
@@ -97,11 +97,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.810Z"
   },
   "llmScore": {
-    "score": 91,
+    "score": 93,
     "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 88,
+      "high": 98
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -111,8 +111,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars and uses unqualified praise like 'triumph of theatrical magic' and 'shines brighter' while explicitly recommending audiences catch it now. | GPT-4o: The review is overwhelmingly positive, describing the show as a 'triumph of theatrical magic' and highlighting the improvements and spectacular elements of the production. The original 5/5 rating further supports a 'Rave' classification. | Gemini: The critic gave the show 5/5 stars and calls it a \"wizardly spectacle\" and a \"triumph of theatrical magic.\" The critic clearly recommends seeing the show.",
+    "keyPhrases": [
+      {
+        "quote": "Despite its shrinking, Harry Potter and the Cursed Child has kept most of its charm.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with enthusiastic language ('triumph of theatrical magic', 'the show shines brighter') and clear recommendation to see it now. Minor reservations about cuts don't diminish the overall rave assessment. | GPT-4o: The review is overwhelmingly positive, awarding a 5/5 rating and describing the show as a 'triumph of theatrical magic'. The critic praises the production's spectacle and improvements in the storyline, indicating a strong recommendation. | Gemini: The review is positive, giving the show 5/5 stars and stating that it has kept most of its charm despite being condensed. The critic also praises the set pieces and the focus on the new characters. | Kimi: The critic explicitly awards 5/5 stars, calling the production a 'wizardly spectacle' and 'triumph of theatrical magic' that 'shines brighter' in its revised form, with an unequivocal recommendation to see it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -121,19 +127,21 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 89,
+    "claudeScore": 90,
     "openaiScore": 95,
-    "geminiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 6,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "wordCount": 747,
   "fullText": "Photograph: Courtesy Matthew Murphy | Harry Potter and the Cursed ChildReview\n\n5 out of 5 starsThe Boy Who Lived lives on in a wizardly spectacle.Theater, DramaLyric Theatre, Midtown WestOpen runRecommendedTuesday December 7 2021ShareCopy LinkFacebookTwitterPinterestEmailWhatsAppBuy ticketWritten by Adam FeldmanTheater and Dance Editor, Time Out USAAdvertisingTime Out saysBroadway review by Adam Feldman\n\nReducio! After 18 months, Harry Potter and the Cursed Child has returned to Broadway in a dramatically new form. As though it had cast a Shrinking Charm on itself, the formerly two-part epic is now a single show, albeit a long one: Almost three and a half hours of stage wizardry, set 20 years after the end of J.K. Rowling's seven-part book series and tied to a complicated time-travel plot about the sons of Harry Potter and his childhood foe Draco Malfoy. (See below for a full review of the 2018 production.) Audiences who were put off by the previous version's tricky schedule and double price should catch the magic now.\n\nDespite its shrinking, Harry Potter and the Cursed Child has kept most of its charm. The spectacular set pieces of John Tiffany's production remain—the staircase ballet, the underwater swimming scene, the gorgeous flying wraiths—but about a third of the former text has been excised. Some of the changes are surgical trims, and others are more substantial. The older characters take the brunt of the cuts (Harry's flashback nightmares, for example, are completely gone); there is less texture to the conflicts between the fathers and sons, and the plotting sometimes feels more rushed than before.\n\nBut the changes have the salutary effect of focusing the story on its most interesting new creations: the resentful Albus Potter (James Romney) and the unpopular Scorpius Malfoy (Brady Dalton Richards), whose bond has been reconceived in a significant way. The original play hinted that their relationship might be more than just a friendship, but cloaked it in imply-and-deny evasion; in the revised version, it's a more or less explicit romance. Aparecium! Lumos! What once was hidden has come to light, and the show shines brighter for it.\n\nHarry Potter and the Cursed Child. Lyric Theatre (Broadway). By Jack Thorne. Directed by John Tiffany. With ensemble cast. Running time: 3hrs 25mins. One intermission.\n\nBroadway review by Adam Feldman (April 22, 2018)\n\nThe world of Harry Potter has arrived on Broadway, Hogwarts and all, and it is a triumph of theatrical magic. Set two decades after the final chapters of J.K. Rowling's world-shaking kid-lit heptalogy, the two-part epic Harry Potter and the Cursed Child combines grand storytelling with stagecraft on a scale heretofore unimagined. Richly elaborated by director John Tiffany, the show looks like a million bucks (or, in this case, a reported $68 million); the Lyric Theatre has been transfigured from top to bottom to immerse us in the narrative. It works: The experience is transporting.\n\nJack Thorne's play, based on a story he wrote with Rowling and Tiffany, extends the Potter narrative while remaining true to its core concerns. Love and friendship and kindness are its central values, but they don't come easily: They are bound up in guilt, loneliness and fear. Harry (Jamie Parker) is weighted with trauma dating back to his childhood, which hinders his ability to communicate with his troubled middle son, Albus (Sam Clemmett); it doesn't help that Albus's only friend is the bookish outcast Scorpius Malfoy (the exceptional Anthony Boyle), son of Harry's erstwhile enemy, Draco (Alex Price).\n\nDespite the best intentions of Harry's solid wife, Ginny (Poppy Miller), and his friends Hermione (Noma Dumezweni) and Ron (Paul Thornley), things turn dark very fast. Set designer Christine Jones and lighting designer Neil Austin keep much of the stage shrouded in mystery, the better to accommodate a continual stream of thrilling illusions and effects. Flames surge, wands flash, diaphanous Dementors hover ravishingly in the air; when characters travel through time, the entire stage seems to quiver—and the audience with it.\n\nHarry Potter and the Cursed Child is haunted by death and pain; it is often suspenseful and sometimes downright frightening. Yet amid the cinematic tumult and dazzle of the densely action-packed plot, Thorne and Tiffany carve out quiet scenes of intimacy and tenderness. Great care has gone into creating each moment of this state-of-the-art adventure. It leaves its audience awestruck, spellbound and deeply satisfied.\n\nLyric Theatre (Broadway). By Jack Thorne. Directed by John Tiffany. With ensemble cast. Running time: 2hrs 40mins per half. One intermission per half.\n\nRECOMMENDED: A complete guide to the Harry Potter ticket lottery",

@@ -14,7 +14,7 @@
   "dtliThumb": "Meh",
   "llmScore": {
     "score": 64,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 59,
       "high": 69
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds merit in the show's goofier elements and satirical songs, but notes significant flaws in tone, execution, and the handling of serious historical material, ultimately describing it as having compelling aspects that don't fully succeed. | GPT-4o: The review acknowledges the show's strengths in humor and performance but criticizes its handling of serious themes and historical context. The overall tone suggests an appreciation for certain aspects but a lack of cohesion and depth in others. | Gemini: The review acknowledges flaws in the second act and historical context, but praises the onstage antics and humor. The overall tone suggests a qualified recommendation, making it a positive but not rave review.",
+    "keyPhrases": [
+      {
+        "quote": "The results are intriguing but not so successful.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds the show better at comedy than drama, praises individual performances and staging but criticizes the book structure and tonal inconsistencies. No clear recommendation either way. | GPT-4o: The review acknowledges strengths in the comedic elements and performances but criticizes the handling of historical context and depth. The tone is mixed, with both praise and significant reservations. | Gemini: The review acknowledges both strengths (goofy humor, onstage shenanigans) and weaknesses (clumsy historical depiction, rote characters). The overall assessment is mixed, with the show being described as a \"light curio\" with compelling unease. | Kimi: The critic praises the goofy humor, ensemble performances, and satirical songs but finds the second act's handling of serious historical material clumsy and unsuccessful compared to sharper works like those of Kander and Ebb.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,9 +43,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:06:39.284Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:15:24.403Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
@@ -48,17 +54,19 @@
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 65,
+    "kimiScore": 63,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "bwwExcerpt": "What’s the use of frivolity in an unstable time? That’s the question asked, in form and content, by Harmony, a light curio of a musical that comes with a riptide of political anxiety. The songs are by Barry Manilow; the setting is Germany in the years before World War II; the tonal incongruity you might deduce from that juxtaposition is, mostly, the point. Harmony takes for its subject the Comedian Harmonists, a sextet of singers formed in Berlin at the end of the 1920s, who toured the world unt",
   "bwwThumb": "Meh",

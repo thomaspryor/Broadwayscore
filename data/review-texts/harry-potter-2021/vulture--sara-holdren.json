@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"Jam-packed with breakneck plot twists, charming performances, mind-bending spectacle, and, perhaps more surprisingly, moments of theatrical whimsy that feel, amidst the high-tech sorcery, delightfully simple...It effectively weaves serious themes with bouncy adventure narrative, it’s heartfelt and sometimes a touch hokey...You’re pretty much willing to forgive its shortcomings as it sweeps you along in a rush of rip-roaring, good-natured imagination.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/harry-potter-and-the-cursed-child",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/harry-potter-2021/vulture--sara-holdren_2026-01-31.html",
@@ -27,11 +27,11 @@
   "archiveOrgTimestamp": "20251126040107",
   "archiveOrgUrl": "http://web.archive.org/web/20251126040107/https://www.vulture.com/2018/04/theater-review-harry-potter-and-the-broadway-spectacle.html",
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,8 +41,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic delivers strong praise throughout, calling it 'extravagantly entertaining,' 'a continuous delight,' and 'remarkable,' while acknowledging minor flaws but concluding it's worth forgiving shortcomings for the 'rip-roaring, good-natured imagination.' | GPT-4o: The review is overwhelmingly positive, highlighting the show's entertaining nature, impressive performances, and magical production. The critic describes it as a 'remarkable and fitting addition' and emphasizes the excitement and engagement of the audience, indicating a strong recommendation. | Gemini: The review is overall positive, highlighting the show's entertainment value, spectacle, and theatrical whimsy, while also acknowledging its shortcomings. The critic recommends it for fans of the Harry Potter series.",
+    "keyPhrases": [
+      {
+        "quote": "The Cursed Child is a remarkable and fitting addition to the Potter canon.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout calling it 'extravagantly entertaining,' 'remarkable,' 'a continuous delight' with enthusiastic recommendation despite acknowledging some flaws. Clear positive verdict with sustained admiration for performances, effects, and theatrical craft. | GPT-4o: The review is filled with enthusiastic praise, describing the show as 'extravagantly entertaining' and 'a continuous delight.' The critic highlights the show's ability to weave serious themes with adventure, its impressive stage magic, and the engaging performances, making it a must-see for fans. | Gemini: The review is overwhelmingly positive, highlighting the show's breakneck plot twists, charming performances, mind-bending spectacle, and theatrical whimsy. The critic clearly recommends seeing it. | Kimi: The critic offers sustained praise for the spectacle, performances, and writing, calling the show 'brilliant,' 'continuously delightful,' and comparing its cultural impact to Dickens. While noting minor flaws (it 'could have used a more rigorous editor'), these are presented as forgivable amidst the 'rip-roaring, good-natured imagination.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,28 +57,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:10:56.973Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:24:52.669Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 95,
-    "geminiScore": 79,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 16,
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "bwwExcerpt": "But the additional-and perhaps the most powerful-enchantment of this particular trip to the theater is actually on our side of the footlights. Looking around me, I saw Hogwarts house colors, black robes, and wands filling the seats. When Jamie Parker made his first entrance as Harry Potter, and when Noma Dumezweni and Paul Thornley first appeared as Hermione and Ron, the already crackling energy in the dark auditorium erupted. (Later, I heard a woman actually scream in delight when a silhouette resembling that of Severus Snape began to glide forward, back to us, on the set's big central turntable.) This isn't normal entrance applause: The audience is cheering not for celebrities but for characters. Not that the actors aren't doing cheer-worthy work. On the contrary, they're turning in effective, endearing performances, from Parker's stubborn, struggling, still emotionally stunted Harry, to Thornley's dad-jokey Ron, to Dumezweni's restrained (but comically adept) Hermione and Poppy Miller's patient, not-to-be-messed-with Ginny.",
   "sources": [

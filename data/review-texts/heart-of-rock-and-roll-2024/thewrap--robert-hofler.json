@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 44,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Gordon Greenberg directs and Lorin Latarro choreographs, achieving some kind of immortality with all that bubble wrap. Around the edges of this production are a few inspired performances. Raymond J. Lee’s wacky rocker, Tamika Lawrence’s un-PC HR director and Billy Harrigan Tighe’s bleach-blond ukulele-playing male bimbo invariably deliver laughs despite the paper-thin material.",
@@ -19,22 +19,28 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 44,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic dismisses the musical as schmaltz with too many dead parents, criticizes the thin material, and notes audience disengagement, though acknowledges a few inspired edge performances. | GPT-4o: The review highlights some entertaining elements and performances but criticizes the overall production as 'cardboard schmaltz' with insufficient humor and emotional depth. The tone suggests a mixed reception with some redeeming qualities. | Gemini: The review highlights several flaws, including a weak book and excessive sentimentality, but also praises some performances and moments of humor. This suggests a mixed experience with both positive and negative aspects.",
+    "keyPhrases": [
+      {
+        "quote": "It's pure cardboard schmaltz.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: While the critic acknowledges some inspired performances around the edges, the overall assessment is negative with criticism of the book as 'cardboard schmaltz,' too many dead parents, and insufficient humor to compensate for the melodrama. | GPT-4o: The review criticizes the show for its 'cardboard schmaltz' and lack of humor, despite some praise for individual performances. The overall tone is negative, suggesting the show is not worth seeing. | Gemini: The review is overall negative, describing the show as \"pure cardboard schmaltz\" and criticizing the book. While praising some performances, the overall assessment is unfavorable. | Kimi: While the critic praises a few supporting performances and some jokes, the overall verdict is negative, criticizing the book as 'paper-thin material' filled with 'cardboard schmaltz' and excessive sentimentality about dead parents that overwhelms the comedy.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +49,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:12:10.395Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:43:36.640Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 60,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 65,
-    "geminiScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 23,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 54,

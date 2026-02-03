@@ -7,26 +7,32 @@
   "publishDate": "April 23, 2024",
   "fullText": "Jonathan A. Abrams’s offering is a rote but still rollicking musical scored to Huey Lewis and the News’ nostalgia-inducing discography.\n\nGood evening, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to tonight’s Broadway opening of “The Heart of Rock and Roll.”\n\nCome one, come all, and get thee to the James Earl Jones Theatre because history is happening before our very eyes. Behold what surely must be the first Broadway musical crafted completely by artificial intelligence. That’s the only explanation for a show as rote and paint-by-numbers predictable as “The Heart of Rock and Roll.” The show sets a bubbling love story between guitar-shredding box factory laborer Bobby and by-the-book box factory heiress Cassandra to a score of singles from Huey Lewis and the News’ heyday. (Only one song, “Be Somebody,” was written for the production). Lewis’ jukebox experiment is only “original,” in the technical sense, with a contrived book by Jonathan A. Abrams. His script is so desperately referential, it borders on satire.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 42,
   "dtliThumb": "Down",
   "source": "dtli",
   "llmScore": {
-    "score": 62,
+    "score": 42,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review opens by calling it 'rote but still rollicking' which suggests mixed feelings. While heavily criticizing the predictable AI-like quality and contrived book, the critic still describes it as 'rollicking' which implies some entertainment value. | GPT-4o: The review describes the show as 'rote' and 'predictable,' suggesting a lack of originality and creativity, with a contrived script that borders on satire. This indicates a negative assessment of the production. | Gemini: The review describes the show as \"rote\" and \"paint-by-numbers predictable,\" but also \"rollicking.\" This suggests a mixed experience, not strongly negative but not enthusiastically positive either.",
+    "keyPhrases": [
+      {
+        "quote": "Behold what surely must be the first Broadway musical crafted completely by artificial intelligence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite calling it 'rollicking,' the critic consistently criticizes the show as 'rote,' 'paint-by-numbers predictable,' and 'contrived,' suggesting it's so formulaic it could be AI-generated. The sarcastic tone and systematic critique of the book place this in negative territory. | GPT-4o: The review criticizes the show as 'rote and paint-by-numbers predictable' with a 'contrived book'. The tone is clearly negative, suggesting the show is not worth seeing. | Gemini: The review acknowledges the show's predictable nature but also describes it as \"rollicking,\" suggesting a mixed experience that is neither strongly recommended nor discouraged. | Kimi: The review employs heavy sarcasm and criticizes the show as 'rote,' 'paint-by-numbers predictable,' and 'contrived,' comparing it to AI-generated content. While the critic briefly acknowledges a 'rollicking' quality, the overwhelming tone is dismissive of the book's lack of originality. The text appears truncated, cutting off before a final verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -35,28 +41,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:11:21.086Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:30:20.755Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 41,
+    "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 45,
+    "claudeScore": 45,
+    "openaiScore": 40,
     "geminiScore": 62,
-    "claudeBucket": "Mixed",
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 17,
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "dtliExcerpt": "Behold what surely must be the first Broadway musical crafted completely by artificial intelligence. That’s the only explanation for a show as rote and paint-by-numbers predictable as “The Heart of Rock and Roll.”",
   "sources": [

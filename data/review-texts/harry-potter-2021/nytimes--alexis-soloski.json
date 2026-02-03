@@ -9,16 +9,16 @@
   "dtliExcerpt": "The new version, which opened on Tuesday, does feel smaller — its themes starker, its concession to fandom more blatant. But as directed by Tiffany and choreographed by Steven Hoggett, with an essential score from Imogen Heap, it remains diamond-sharp in its staging and dazzling in its visual imagination, as magical as any spell or potion.",
   "showScoreExcerpt": "CRITIC'S PICK\n\"It remains diamond-sharp in its staging and dazzling in its visual imagination, as magical as any spell or potion...Yet there are excisions, most of them so surgical you would never notice, though I did slightly miss the beloved Hogwarts groundskeeper Hagrid...This new version remains ravishingly entertaining, but is also, like the movie adaptations, a more obvious attempt to cash in on Pottermania.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 81,
   "source": "dtli",
   "dtliThumb": "Up",
   "designation": "Critics_Pick",
   "llmScore": {
-    "score": 80,
+    "score": 81,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: This is a Critic's Pick with glowing praise for staging and visual imagination, calling it 'ravishingly entertaining' despite minor reservations about commercialization and cuts. | GPT-4o: The review is highly positive, highlighting the production's sharp staging and dazzling visual imagination. The mention of 'CRITIC'S PICK' and 'ravishingly entertaining' indicates a strong recommendation despite minor reservations about commercial motives. | Gemini: The review is overall positive, calling the show \"ravishingly entertaining\" and \"magical\", but notes some excisions and a feeling of cashing in, indicating a recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "This new version remains ravishingly entertaining, but is also, like the movie adaptations, a more obvious attempt to cash in on Pottermania.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: CRITIC'S PICK designation with strong praise ('diamond-sharp', 'dazzling', 'ravishingly entertaining') despite minor commercial concerns and cuts. Clear recommendation despite reservations. | GPT-4o: The review is highly positive, praising the staging and visual imagination as 'diamond-sharp' and 'dazzling'. Although there are minor reservations about commercial motivations, the overall tone is enthusiastic. | Gemini: The review is mostly positive, calling the show \"diamond-sharp\" and \"dazzling\", but notes it is also a \"more obvious attempt to cash in on Pottermania\", indicating some reservations. | Kimi: The 'CRITIC'S PICK' designation and enthusiastic praise for the production's visual imagination and staging indicate a strong recommendation, though minor reservations about commercialism and excisions keep it from being an unqualified rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,9 +44,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:09:27.467Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:02:04.525Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 80,
@@ -48,18 +54,20 @@
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 88,
+    "openaiScore": 82,
     "geminiScore": 77,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 11,
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.962Z",

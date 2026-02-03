@@ -8,19 +8,19 @@
   "fullText": null,
   "showScoreExcerpt": "\"A theatrical tour de force...The production values are extraordinary.\"",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 86,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 83,
+    "score": 86,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 88
+      "low": 81,
+      "high": 91
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The phrase 'tour de force' indicates strong praise and excellence, while 'extraordinary production values' reinforces high quality, but single excerpt warning requires caution about full verdict. | GPT-4o: The phrase 'theatrical tour de force' and 'extraordinary production values' suggest a highly enthusiastic recommendation. Despite the single excerpt warning, the language indicates a strong positive sentiment. | Gemini: The excerpt uses strong positive language like \"tour de force\" and \"extraordinary,\" indicating a positive recommendation. Given the single excerpt warning, the score is placed at the higher end of the Positive bucket.",
+    "keyPhrases": [
+      {
+        "quote": "A theatrical tour de force...The production values are extraordinary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The phrase 'tour de force' is strong superlative language indicating exceptional quality, combined with 'extraordinary' production values. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt uses strong, enthusiastic language ('tour de force', 'extraordinary'), suggesting a highly positive assessment. However, the single excerpt warning and lack of full context necessitate a lower confidence level. | Gemini: The excerpt uses strong positive language like \"tour de force\" and \"extraordinary,\" suggesting a positive recommendation. Given it is only one excerpt, the confidence is low, but the strength of the language pushes the score to the higher end of the positive bucket. | Kimi: Single excerpt contains superlative praise ('tour de force', 'extraordinary') indicating strong enthusiasm, but per instructions for cherry-picked excerpts, score is capped at the upper end of the Positive bucket. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:08:14.297Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:39:21.754Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 88,
+    "previousScore": 83,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 83,
+    "claudeScore": 88,
     "openaiScore": 88,
     "geminiScore": 82,
-    "claudeBucket": "Positive",
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
   },
   "contentTier": "excerpt",
   "wordCount": 0

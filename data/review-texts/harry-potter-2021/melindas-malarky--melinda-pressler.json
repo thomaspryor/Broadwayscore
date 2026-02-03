@@ -8,17 +8,17 @@
   "fullText": "I'm one of the few who knew little of the ongoing Harry Potter phenomenon. Still, I reveled in the splendid British transplant of \"Harry Potter and the Cursed Child\" which received numerous accolades and Olivier's on the London stage. I was fortunate to attend with a friend, an obsessed Potter fan. She provided a sufficient synopsis to bring me in sync with the Harry Potter sagas. Needless, entering the newly renovated Lyric Theater is an immersive magical experience. Many audience members of all ages were adorned in character costumes that sparked an enchanting ambience. The tall Gothic ceiling and Phoenix motif are elegant & bewitching. The astonishing marquee outside has an immense wing morphing from the billboard. It feels as if it may take flight. The play (shown in 2 parts) is an exhilarating escape into a fantasy tale of time travel filled with friendship, family, courage & magic. The ensemble cast was exceptional. The convincing special effects were haunting & surreal; the staging smart & affective. I was transported to a make believe world that came alive. I felt a kinship to the characters and transfixed immersed into this supernatural universe. \"Harry Potter and the Cursed Child\" is an inspiration & celebration of one's imagination.",
   "showScoreExcerpt": "\"Entering the newly renovated Lyric Theater is an immersive magical experience...The play is an exhilarating escape into a fantasy tale of time travel filled with friendship, family, courage and magic. The ensemble cast was exceptional. The convincing special effects were haunting and surreal; the staging smart and effective. I was transported to a make believe world that came alive. I felt a kinship to the characters and transfixed immersed into this supernatural universe.\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 91,
   "source": "show-score",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 89,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses effusive praise throughout - 'reveled', 'exhilarating', 'exceptional', 'transported' - and concludes it's 'an inspiration & celebration of one's imagination', indicating strong enthusiasm despite being unfamiliar with the source material. | GPT-4o: The review is filled with enthusiastic praise for the production, describing it as an 'exhilarating escape' and highlighting the exceptional cast, special effects, and staging. The critic expresses a strong emotional connection to the show, indicating a highly positive experience. | Gemini: The review is overwhelmingly positive, describing the play as an \"exhilarating escape\" and praising the cast, special effects, and staging. The critic felt \"transported\" and \"immersed,\" indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "The ensemble cast was exceptional.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Consistently enthusiastic praise throughout with words like 'exhilarating', 'exceptional', 'transported', and 'inspiration'. No reservations or criticisms mentioned. | GPT-4o: The review is filled with enthusiastic praise for the production, describing it as an 'exhilarating escape' with 'exceptional' performances and 'haunting & surreal' effects. The critic felt 'transported' and 'transfixed,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using words like \"splendid\", \"immersive magical experience\", \"exhilarating escape\", \"exceptional\", \"haunting & surreal\", and \"smart & affective\" to describe the show. The critic clearly enjoyed the production and recommends it. | Kimi: The critic offers unqualified praise using enthusiastic superlatives ('exhilarating,' 'exceptional,' 'splendid') and describes being fully transported by the production, with no reservations mentioned.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:08:53.812Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:51:48.769Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 82,
+    "previousScore": 89,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
+    "claudeScore": 90,
+    "openaiScore": 92,
     "geminiScore": 82,
+    "kimiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/melindas-malarky--melinda-pressler_2026-02-03.html",
   "textFetchedAt": "2026-02-03T05:21:15.514Z",

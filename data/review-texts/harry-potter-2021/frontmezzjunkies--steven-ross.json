@@ -8,17 +8,17 @@
   "fullText": null,
   "showScoreExcerpt": "\"A dazzling spectacle that brings magic to life on stage.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 83,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 82,
+    "score": 83,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 78,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The language 'dazzling spectacle' and 'brings magic to life' indicates strong enthusiasm and recommendation, but with only one excerpt available, there's some uncertainty about the full review context. | GPT-4o: The excerpt uses strong, enthusiastic language suggesting a highly positive view of the production. Given the text quality warning and single excerpt, the confidence is medium, but the language indicates a rave review. | Gemini: The phrase \"dazzling spectacle\" and \"brings magic to life\" indicates a strong positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "A dazzling spectacle that brings magic to life on stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with strong praise ('dazzling spectacle', 'magic') suggests clear positive recommendation, but low confidence due to limited text availability. | GPT-4o: The excerpt uses strong positive language ('dazzling spectacle', 'magic to life'), suggesting an enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The single excerpt is strongly positive, calling the show a \"dazzling spectacle\" that \"brings magic to life.\" Given the limited information, I'm placing it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt offers unambiguous praise with superlatives like 'dazzling' and 'magic,' indicating strong enthusiasm for the production. However, as only a single curated quote is available, confidence is reduced due to potential cherry-picking.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,9 +44,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:08:18.254Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:40:03.427Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 82,
@@ -48,18 +54,20 @@
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 88,
-    "geminiScore": 82,
+    "openaiScore": 85,
+    "geminiScore": 83,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

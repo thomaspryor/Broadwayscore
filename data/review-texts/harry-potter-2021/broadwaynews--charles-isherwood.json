@@ -8,17 +8,17 @@
   "dtliExcerpt": "In any case, the immensely cheering if not altogether surprising news is that “Harry Potter and the Cursed Child” 2.0 (or do I mean “.5”?) is every bit as rewarding as the original version.",
   "showScoreExcerpt": "\"Every bit as rewarding as the original version. My lack of surprise derives from the theatrical expertise, on every level, evinced by the creators of the two-part version...Potterheads may notice where subplots have been trimmed or eliminated, but the many-tentacled narrative remains virtually the same...And the production retains virtually all of the original’s bedazzlements, from wand battles to levitating Dementors, to quicksilver character transformations.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 85,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 82,
+    "score": 85,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 80,
+      "high": 90
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening concerns about the shortened format, the critic delivers strong praise calling it 'every bit as rewarding as the original version' and 'a theatrical accomplishment of a very rare order' with enthusiastic commendation of performances, effects, and storytelling. | GPT-4o: The review is overwhelmingly positive, praising the production's ability to retain its magic and emotional depth despite being condensed. The critic highlights the show's theatrical expertise and emotional impact, indicating a strong recommendation. | Gemini: Despite some initial discussion of the changes made to the show, the review is overwhelmingly positive, stating that the new version is \"every bit as rewarding as the original version.\" The critic praises the theatrical expertise and the moving father-son relationship, indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Harry Potter and the Cursed Child remains a theatrical accomplishment of a very rare order.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with phrases like 'theatrical accomplishment of a very rare order', 'every bit as rewarding as the original', and 'immensely cheering'. While acknowledging the challenges of condensing the show, the critic finds the adaptation highly successful and praises performances, effects, and emotional core. | GPT-4o: The review praises the production as a 'theatrical accomplishment of a very rare order' and highlights the successful adaptation of the show to a single part without losing its essence. The critic's tone is enthusiastic and full of admiration, indicating a strong recommendation. | Gemini: The critic states the new version is \"every bit as rewarding as the original version\" and describes it as a \"theatrical accomplishment of a very rare order\". This indicates a strong positive recommendation. | Kimi: Isherwood delivers consistent, high-level praise for the scaled-down production, calling it \"immensely cheering,\" \"every bit as rewarding as the original,\" and praising the performances, staging, and emotional impact with superlatives like \"very rare order.\" Minor caveats about plot density do not diminish the enthusiastic recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,9 +42,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:07:04.791Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:21:52.529Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 82,
@@ -48,16 +54,18 @@
     "claudeScore": 82,
     "openaiScore": 92,
     "geminiScore": 81,
+    "kimiScore": 88,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
     "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/broadwaynews--charles-isherwood_2026-01-30.html",
   "textFetchedAt": "2026-01-30T16:01:14.365Z",

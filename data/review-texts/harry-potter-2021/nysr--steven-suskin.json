@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and phrases like 'crackles and snap and vibrate the senses,' 'supreme stagecraft,' and the Tony Award prediction indicate strong enthusiasm despite some reservations about accessibility for newcomers. | GPT-4o: The review is overwhelmingly positive, highlighting the impressive stagecraft, special effects, and performances. The critic's 4/5 star rating and enthusiastic language suggest a strong recommendation. | Gemini: The critic gives the show 4 out of 5 stars and uses enthusiastic language to describe the experience, particularly in the second part. The review clearly recommends seeing the show, highlighting the impressive stagecraft and special effects.",
+    "keyPhrases": [
+      {
+        "quote": "Midway through Part One you'll likely be glad you're there; and as Part Two starts, you'll be thrilled, enthralled, and sitting raptly forward in your comfortably plush seats.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic praise throughout. Critic calls it 'supreme stagecraft,' predicts it will win the Tony Award, and describes audiences as 'thrilled' and 'enthralled.' Strong positive recommendation despite the high ticket cost. | GPT-4o: The review provides consistent praise for the production's stagecraft and special effects, culminating in a strong recommendation. The 4/5 star rating aligns with a high Positive score. | Gemini: The review is overwhelmingly positive, praising the stagecraft, special effects, and performances. The critic explicitly states that the audience will be \"thrilled\" and \"enthralled.\" | Kimi: The critic awards 4/5 stars and delivers consistent praise for the production's 'supreme stagecraft,' 'high-grade theatrical imagination,' and performances, predicting a Tony Award win and describing audiences as 'thrilled' and 'enthralled.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,9 +45,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:09:23.880Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:01:35.830Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 82,
@@ -51,16 +57,18 @@
     "claudeScore": 82,
     "openaiScore": 82,
     "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "sources": [
     "bww-roundup"

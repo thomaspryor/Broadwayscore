@@ -14,7 +14,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 75,
-    "confidence": "low",
+    "confidence": "medium",
     "range": {
       "low": 70,
       "high": 80
@@ -27,40 +27,46 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The review text appears heavily truncated, cutting off after discussing ticket demand without providing any actual critical assessment of the show's quality or performances. | GPT-4o: The review suggests that tickets are in high demand and difficult to obtain, implying a strong recommendation and high popularity of the show. | Gemini: The review focuses on the high demand for tickets, implying the show is worth seeing and popular, thus positive. | Buckets: claude=Mixed, openai=Rave, gemini=Positive",
+    "keyPhrases": [
+      {
+        "quote": "The editing has been done with care and intelligence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Only one sentence available praising the editing process, but no verdict on the overall show quality or recommendation to see it. With such limited text, this appears neutrally positive about one technical aspect. | GPT-4o: The excerpt praises the editing of the show, indicating a positive view of the current production. However, the lack of a full review text and the limited context provided necessitate a low confidence level. | Gemini: The review excerpt indicates that the editing of the show has been done with care and intelligence, suggesting a positive improvement. However, due to the limited text, the confidence is low. | Kimi: The excerpt offers unambiguous praise for the show's trimming and adaptation ('care and intelligence'), indicating a positive view of the production choices. However, as an isolated excerpt without access to the full verdict or broader critique, the confidence is low.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:11:00.406Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:26:25.087Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 68,
+    "previousScore": 75,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 60,
-    "openaiScore": 90,
+    "openaiScore": 75,
     "geminiScore": 75,
+    "kimiScore": 75,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 30,
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "3-way bucket disagreement"
-    ],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "No bucket consensus - using median score"
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "sources": [
     "bww-roundup",

@@ -10,7 +10,7 @@
   "bwwExcerpt": null,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 86,
   "source": "webfetch-scraped",
   "sourceUrl": "https://culturesauce.com/2024/04/20/alicia-keys-hells-kitchen-broadway-review/",
   "needsFullText": true,
@@ -18,11 +18,11 @@
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 91,
+    "score": 86,
     "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 81,
+      "high": 91
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review opens with exceptionally strong praise calling it 'heaven-sent' and 'destined for success,' praises stellar performances, and celebrates how it 'kicks musical theater into bold, new directions' with innovative sound and staging. | GPT-4o: The review is overwhelmingly positive, highlighting the show's unique sound, strong performances, and innovative direction. The critic uses phrases like 'heaven-sent' and praises the show for its bold, new directions, indicating a strong recommendation. | Gemini: Despite a 'thin wisp of a book' and a 'bumpy second act,' the review is overwhelmingly positive, praising the performances, direction, design, and choreography. The aggregator excerpt and phrases like 'heaven-sent' and 'destined for a long and successful run' indicate a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Hell's Kitchen, based on the early life and song catalog of Alicia Keys, is a heaven-sent new musical that seems destined for a long and successful run on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong opening verdict calling it 'heaven-sent' and predicting 'long and successful run'. Consistent praise throughout for performances, direction, design, and innovation. Despite acknowledging 'thin wisp of a book' and 'bumpy second act', the overall tone is enthusiastic recommendation with multiple superlatives. | GPT-4o: The review describes 'Hell's Kitchen' as 'heaven-sent' and highlights its innovative qualities and strong performances. Despite the truncated text, the tone is overwhelmingly positive, suggesting a strong recommendation. | Gemini: Despite the truncated text, the review is overwhelmingly positive, calling it \"heaven-sent\" and praising the performances, design, and music. The aggregator excerpt confirms the positive sentiment. | Kimi: Despite noting a thin book and bumpy second act, the critic maintains an enthusiastic tone throughout, praising star-making performances, innovative direction, and the show's fresh aesthetic that kicks musical theater into bold new directions. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:16:59.149Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:51:49.211Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
+    "previousScore": 91,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 87,
-    "openaiScore": 95,
-    "geminiScore": 81,
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
   },
   "contentTier": "complete",
   "wordCount": 778,

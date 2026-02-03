@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show despite concerns about length and price, praising the spectacular stagecraft, acting, and magical effects while noting it works even for Potter novices. | GPT-4o: The review highlights the awe-inspiring special effects, extraordinary stagecraft, and first-rate acting, indicating a strong recommendation despite some reservations about the play's length and ticket pricing. | Gemini: The review is largely positive, highlighting the impressive special effects and stagecraft. While the reviewer notes some issues with the theater itself and the length of the play, the overall recommendation is to see it, especially for the spectacle.",
+    "keyPhrases": [
+      {
+        "quote": "prepare to be dazzled. The special effects are awe-inspiring",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Review praises the spectacular stagecraft, special effects, and performances enthusiastically, calling audiences to 'prepare to be dazzled.' However, the critic has clear reservations about length, ticket prices, and theater management issues, preventing this from being an unqualified rave. | Gemini: The review is generally positive, highlighting the impressive special effects and stagecraft, while acknowledging potential issues with the length and division into two parts. The final verdict is a \"welcome escape into the world of wizardry\". | Kimi: The review is overwhelmingly enthusiastic about the stagecraft, performances, and special effects ('awe-inspiring', 'extraordinary', 'Magic is happening'), with only minor reservations about the lengthy runtime and high ticket prices.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,22 +44,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:07:38.203Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:30:25.001Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 79,
+    "claudeScore": 79,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

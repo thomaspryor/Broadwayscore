@@ -16,7 +16,7 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 81,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 76,
       "high": 86
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Both critics are clearly enthusiastic, praising the visual magic, performances, and staging extensively. They recommend it for both fans and newcomers, calling it 'so much fun' and describing sublime acting and brilliant staging throughout. | GPT-4o: The review is filled with praise for the production's visual effects, acting, and staging, and it emphasizes the enjoyment and emotional impact of the show. The critic highlights the production as a must-see for both fans and newcomers, indicating a strong recommendation. | Gemini: The review indicates an enjoyable experience, especially highlighting the visual magic and performances, but also notes the plot's reliance on time travel as a minor drawback. Overall, it's a positive recommendation with some reservations.",
+    "keyPhrases": [
+      {
+        "quote": "You can really go to this as not a fan and still have a very enjoyable time at the theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Both critics consistently praise the production with enthusiasm - calling the staging 'true magic,' performances 'sublime,' and describing it as 'so much fun.' They recommend it for both fans and newcomers, highlighting stellar performances, inventive staging, and meaningful themes. | GPT-4o: The review is filled with praise for the performances, staging, and the ability to entertain both fans and non-fans alike. The critic describes the production as 'astonishing' and 'fun,' with 'sublime' acting and 'true magic' staging, indicating a strong recommendation. | Gemini: The review is overall positive, highlighting the visual magic, stunning direction, and strong performances. While there are some reservations about the time-travel plot, the overall experience is described as enjoyable. | Kimi: The review delivers overwhelming praise for the staging, performances, and magical effects, enthusiastically recommending the show to both fans and newcomers despite minor reservations about the time-travel plot structure.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:07:31.491Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:29:11.399Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 82,
+    "openaiScore": 81,
     "geminiScore": 79,
+    "kimiScore": 90,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 79,

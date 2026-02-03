@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review identifies significant flaws (phony formula, strained lead performance, technical issues) but also highlights memorable elements like Tamika Lawrence's standout performance and creative choreography, landing in mixed territory with qualified appreciation. | GPT-4o: The review highlights several flaws, such as a contrived plot and uneven musical execution, but also notes standout performances and moments of innovation, particularly by Tamika Lawrence. The overall tone suggests a mixed experience with some redeeming qualities. | Gemini: The review highlights both positive and negative aspects. While it criticizes the plot and some musical choices, it praises certain performances and choreography, resulting in a mixed recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "The Heart of Rock and Roll formula feels phony and forced, but if you don't find fun in the familiar, you may discover some moving moments through its fringe characters.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review criticizes the main elements (phony formula, contrived plot, lead performance issues) while praising supporting performances and choreography. The balanced critique with conditional recommendation places it in Mixed territory. | GPT-4o: The review describes the show as having a contrived plot and issues with musical execution, but highlights standout performances and moments. The overall tone is mixed, with both positive and negative elements. | Gemini: The review highlights both positive and negative aspects. While criticizing the contrived plot and some musical arrangements, it praises the choreography, costume design, and standout performances, particularly Tamika Lawrence's Roz. The overall impression is neither strongly positive nor negative. | Kimi: The review acknowledges significant flaws in the book and lead performance, calling the formula 'phony and forced' and the plot 'trite,' but praises supporting performances—particularly Tamika Lawrence—and choreography, creating a balanced mixed assessment that neither recommends nor discourages attendance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,30 +51,32 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:11:56.074Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:40:20.724Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 67,
-    "geminiScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "rescoreCompletedAt": "2026-02-02T03:30:19.085Z",

@@ -8,18 +8,18 @@
   "fullText": "Get Show Info\n\n Info\n\nGet Tickets\n\nCast\n\nPhotos\n\nVideos\n\n \n\n Get Access To Every Broadway Story\nUnlock access to every one of the hundreds of articles published daily on BroadwayWorld by logging in with one click.\n\nEmail:\n\nExisting user? Just click login.\n\nIf, like this theatre reviewer, you've managed to survive the last twenty years without reading a word of J.K. Rowling's wildly popular series of Harry Potter novels, or taking in a screening of any of the eight film adaptations, the most important thing to keep in mind about the Broadway transfer of the West End theatre sensation Harry Potter and the Cursed Child is that the pair of plays making up the fantasy drama form a continuation of the saga and are not intended to stand on their own.\n\nEnjoyed as a same-day matinee and evening adventure, or on two consecutive evenings, the play scripted by Jack Thorne, from a story he created with Rowling and director John Tiffany, picks up where the epilogue of book seven \"Harry Potter and The Deathly Hallows,\" leaves off, with little in the way of exposition. (Older Broadway fans may be reminded of the 1983 musical, DOONESBURY, which picked up where Garry Trudeau left off when he took a hiatus from drawing the daily comic strip the musical was based on.)\n\nSo, although there is an official summary available to help viewers catch up, this critic recommends attending as he did, with a Harry Potter expert willing to, like Sister Mary Ignatius, explain it all for you.\n\nThe simple gist of the whole thing, however, it that parents are sending their kids off to attend their alma mater, and the youngsters try establishing their own lives while dealing with family legacies.\n\nThe alma mater in this case, is Hogwarts School of Witchcraft and Wizardry, where the title character and his cohorts honed their magical talents while locked in a struggle against the power-hungry dark wizard, Lord Voldemort.\n\nBeginning at Kings Cross Station, Platform 9 ¾, Harry Potter (Jamie Parker) and his wife, the former Ginny Weasley (Poppy Miller), see their middle child Albus (Sam Clemmett) off to school on the Hogwarts Express. Joining him is Rose (Susan Heyward), the daughter of Minister of Magic Hermione Granger (Noma Dumezweni) who is married to Ginni's brother Ron Weasley (Paul Thornley).\n\nEn route, Albus bonds with Scorpius Malfoy (Anthony Boyle), the son of his dad's childhood nemesis, Draco (Alex Price). The two young men plot to help mend their troubled relationships with their fathers by using a time-traveling device to prevent a past tragedy. Naturally, changing the past also changes the present, and things get complicated when past characters and old rivalries get involved.\n\nJudging from the gasps and startled reactions from well-read audience members, there are quite a few surprises, including a real shocker, as the drama proceeds. And while neophytes may not understand a lot of the references, there's a good amount of entertainment in the special effects, including eye-tricking costume changes, a funky time-travel effect and flying objects passing over the audience.\n\nFrom row P of the orchestra section of the cavernous Lyric Theatre, one might feel a bit disconnected from the characters and plot, especially with designer Christopher Jones' skeletal set adding to the hollowness, but admittedly, that might just be the result of my unfamiliarity with the play's backstory.\n\nSurely, judging from the enthusiastic responses throughout the two-parter, fans of the books and films were having a blast.\n\nGet Info\n\nBuy Tix\n\nCast\n\nPhotos\n\nVideos\n\n \n\nVideos",
   "bwwExcerpt": "From row P of the orchestra section of the cavernous Lyric Theatre, one might feel a bit disconnected from the characters and plot, especially with designer Christopher Jones' skeletal set adding to the hollowness, but admittedly, that might just be the result of my unfamiliarity with the play's backstory. Surely, judging from the enthusiastic responses throughout the two-parter, fans of the books and films were having a blast.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-pan",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic describes feeling disconnected from the production due to seating and set design, but acknowledges this may be due to unfamiliarity with source material and notes that fans seemed to enjoy it enthusiastically. | GPT-4o: The review notes a sense of disconnection and hollowness, but also acknowledges the enthusiastic response from fans, suggesting a mixed experience that may appeal more to existing fans of the source material. | Gemini: The reviewer notes potential disconnect but acknowledges enthusiastic fan response, suggesting a positive experience for the target audience. Given the single excerpt, a slightly lower score within the positive range seems appropriate.",
+    "keyPhrases": [
+      {
+        "quote": "one might feel a bit disconnected from the characters and plot",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows critic felt disconnected from the show but acknowledges fans were enthusiastic. The personal disconnect combined with recognition that target audience enjoyed it suggests mixed reception. | GPT-4o: The excerpt suggests a mixed experience, with some disconnection noted but also acknowledging that fans enjoyed it. The lack of a full review and the single excerpt warning lower confidence in the overall sentiment. | Gemini: The reviewer admits unfamiliarity with the source material and notes a feeling of disconnect. However, they also acknowledge the enthusiastic response from fans, suggesting it's enjoyable for those familiar with the books and films. This indicates a mixed reception, leaning towards a recommendation for fans only. | Kimi: Single excerpt reveals critic felt disconnected and noted production hollowness, but observed that target fans responded enthusiastically, suggesting a divisive show that satisfies existing fans more than newcomers.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,9 +45,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:07:12.731Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:23:44.162Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 64,
@@ -50,17 +56,19 @@
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 74,
+    "geminiScore": 60,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "sources": [
     "bww-roundup"

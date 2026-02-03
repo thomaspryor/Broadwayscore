@@ -8,18 +8,18 @@
   "fullText": null,
   "showScoreExcerpt": "\"An incredible theatrical experience...The magic is real on stage.\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 82,
   "source": "show-score",
   "sourceMethod": "showscore",
   "scoreSource": null,
   "llmScore": {
-    "score": 89,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Strong superlative language ('incredible') and explicit praise for theatrical magic indicates enthusiastic recommendation, though single excerpt limits confidence. | GPT-4o: The excerpt uses strong positive language suggesting a highly enthusiastic recommendation, indicating a rave review. However, due to the single excerpt warning, confidence is medium. | Gemini: The excerpt uses strong positive language like \"incredible\" and \"magic is real,\" indicating a strong recommendation. Given the single excerpt warning, I am scoring it at the higher end of the positive range.",
+    "keyPhrases": [
+      {
+        "quote": "An incredible theatrical experience...The magic is real on stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language with 'incredible' and 'magic is real' suggests enthusiastic recommendation, but single excerpt warning requires caution about representativeness. | GPT-4o: The excerpt uses strong positive language ('incredible', 'magic is real'), indicating a highly enthusiastic recommendation. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt uses strong positive language, calling the show an \"incredible theatrical experience\" and stating that \"the magic is real on stage.\" Given the single excerpt warning, I am scoring it at the higher end of the positive range. | Kimi: Single excerpt uses strong positive superlatives ('incredible', 'magic is real') indicating clear enthusiasm for the production. Following guidance for clearly positive single excerpts, scored at upper end of Positive bucket (80-84) with low confidence due to limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:10:16.277Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:13:23.312Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
-    "claudeBucket": "Rave",
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "wordCount": 0

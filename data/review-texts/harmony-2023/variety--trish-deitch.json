@@ -9,26 +9,32 @@
   "showScoreExcerpt": "“Most of characters come off as fairly hackneyed — the rabbi, the doctor, the whorehouse piano player — but all the voices are beautiful. Manilow can write a good love song, and there are a few.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 45,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 60,
+    "score": 45,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 40,
+      "high": 50
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds positive elements (beautiful voices, good love songs, effective choreography) but ultimately criticizes the show for being superficial, overly long, and lacking emotional depth. The timing concerns add weight to the reservations. | GPT-4o: The review highlights several flaws, including a lack of emotional depth, a superficial plot, and repetitive musical numbers. The overall tone is critical, suggesting the production is not worth seeing. | Gemini: The review highlights both positive and negative aspects. While praising the voices and Manilow's songwriting, it criticizes the lack of emotional depth, hackneyed characters, and excessive length, resulting in a mixed assessment.",
+    "keyPhrases": [
+      {
+        "quote": "The play, equal parts glitzy and superficial, consists largely of jaunty songs",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: While acknowledging some positive elements like beautiful voices and good love songs, the critic finds the show 'glitzy and superficial,' running 'way too long,' and sacrificing 'story, emotional depth and connection' for repetitive musical numbers. The overall assessment is clearly negative. | GPT-4o: The review criticizes the superficiality and lack of emotional depth in the production, noting that it sacrifices story for repetitive musical numbers. The tone is negative, with specific criticisms of the sets and overall execution. | Gemini: The review points out both positive and negative aspects of the show. While the voices are beautiful and Manilow can write a good love song, the play sacrifices story and emotional depth for musical numbers that sound alike. | Kimi: While acknowledging beautiful vocals and effective technical elements, the critic finds the show superficial, lacking in plot and emotional resonance, and tonally inappropriate given its serious historical subject matter.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:06:35.623Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:14:26.528Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 60,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 48,
+    "claudeScore": 45,
+    "openaiScore": 45,
     "geminiScore": 62,
-    "claudeBucket": "Mixed",
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 14,
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 50,

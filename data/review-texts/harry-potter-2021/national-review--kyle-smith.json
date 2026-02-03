@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging flaws in character development and dialogue, the critic repeatedly uses strong positive language ('marvel', 'gargantuan entertainment extravaganza', 'surely captivate') and positions these as secondary to the show's spectacular entertainment value. | GPT-4o: The review describes the play as a 'marvel' and 'gargantuan entertainment extravaganza', indicating strong positive sentiment despite noting some flaws in character development and dialogue. The emphasis on spectacle and entertainment suggests a strong recommendation. | Gemini: The review praises the show as a \"marvel\" and \"gargantuan entertainment extravaganza,\" but also notes weaknesses in character development and dialogue, indicating a positive but not rave recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "The play is a marvel...It's a gargantuan entertainment extravaganza...It'll surely captivate them.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging weak character development and dialogue, the critic calls it 'a marvel' and 'gargantuan entertainment extravaganza' that will 'surely captivate' audiences, indicating strong recommendation for the spectacle. | GPT-4o: The review describes the play as a 'marvel' and 'gargantuan entertainment extravaganza,' indicating strong praise despite noting thin character development and bland dialogue. The overall tone suggests a positive recommendation focused on spectacle and entertainment value. | Gemini: The review calls the play a \"marvel\" and a \"gargantuan entertainment extravaganza\", but notes thin character development and bland dialogue, indicating a positive but not rave review. | Kimi: Despite acknowledging thin character development and bland dialogue, the critic celebrates the production as an unprecedented theatrical spectacle and 'gargantuan entertainment extravaganza' that captivates audiences, dismissing the literary flaws as beside the point.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:08:58.023Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:52:23.746Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 81,
     "openaiScore": 82,
-    "geminiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/national-review--kyle-smith_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:32:11.279Z",

@@ -29,7 +29,7 @@
       "direction": null
     },
     "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review uses consistently positive language praising the production, cast, and theatrical craft with phrases like 'wonderfully well cast' and 'highly enjoyable,' indicating a strong positive recommendation. | GPT-4o: The review excerpt praises the production for its effective storytelling, imaginative theatrical elements, and truthful acting style. The use of 'highly enjoyable' indicates a strong positive recommendation. | Gemini: The review uses overwhelmingly positive language, praising the production's storytelling, casting, acting, and overall enjoyability. The phrase \"highly enjoyable\" indicates a strong positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for performances, direction, and theatrical craft with 'highly enjoyable' conclusion. Single excerpt warning suggests caution, but consistent positive language throughout warrants upper Positive range. | GPT-4o: The excerpt praises the production's storytelling, casting, and acting style, concluding with 'highly enjoyable'. The single excerpt warning suggests using the upper end of the Positive bucket. | Gemini: The excerpt contains overwhelmingly positive language, including \"fulfills the richness\", \"wonderfully well cast\", \"truthfulness and immediacy\", and \"highly enjoyable\". Given the single excerpt limitation, I am scoring at the higher end of the positive range. | Kimi: The excerpt offers consistent praise for the production's storytelling, casting, and theatrical imagination, describing it as 'highly enjoyable' and 'wonderfully well cast' despite the limitation of being a single potentially cherry-picked quote.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +38,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:10:12.320Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:13:10.751Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 82,
     "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/theater-life--isa-goldberg_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:39:52.284Z",

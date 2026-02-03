@@ -16,7 +16,7 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 93,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 88,
       "high": 98
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses explicit superlatives like 'must-see,' 'thoroughly thrilling,' calls it 'a feast of epic theatricality,' and predicts it will run 'for years, if not decades' - clear enthusiastic recommendation language throughout. | GPT-4o: The review is filled with enthusiastic praise, describing the production as a 'must-see' and 'thoroughly thrilling'. The critic highlights the show's epic theatricality and emotional depth, making it clear that this is a highly recommended production. | Gemini: The review uses extremely positive language such as \"feast of epic theatricality\", \"must-see\", \"totally enveloping\", and \"thoroughly thrilling\", indicating a rave review.",
+    "keyPhrases": [
+      {
+        "quote": "a must-see, totally enveloping, thoroughly thrilling chance to experience the global power of shared storytelling at its most robust",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Unqualified superlatives throughout: 'must-see', 'thoroughly thrilling', 'feast of epic theatricality', 'peerless', 'astonishing'. The critic calls it remarkable and predicts it will run for 'years, if not decades' - clear rave territory. | Gemini: The review is overwhelmingly positive, calling the show a \"must-see\" and praising its theatricality and immersive qualities. The critic clearly recommends seeing the production. | Kimi: The critic offers unqualified praise for the production's theatricality, performances, and emotional impact, explicitly calling it a 'must-see' and 'feast of epic theatricality' with no significant criticisms.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:07:16.782Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:25:15.546Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 93,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "geminiScore": 92,
+    "claudeScore": 95,
+    "openaiScore": null,
+    "geminiScore": 83,
+    "kimiScore": 91,
     "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 87,

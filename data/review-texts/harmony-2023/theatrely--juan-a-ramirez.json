@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Harmony is a musical that feels both timely and timeless, offering audiences a deeply moving exploration of art, friendship, and resilience in the face of unimaginable darkness.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Harmony is a musical that feels both timely and timeless, offering audiences a deeply moving exploration of art, friendship, and resilience in the face of unimaginable darkness.",
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review uses strong positive language like 'deeply moving' and describes the show as both 'timely and timeless', indicating a solid recommendation without reaching rave territory. | GPT-4o: The review describes the musical as 'deeply moving' and highlights its timeless and timely qualities, suggesting a strong recommendation. | Gemini: The review uses positive language like \"deeply moving exploration,\" suggesting a recommendation, but lacks the strong enthusiasm of a rave.",
+    "keyPhrases": [
+      {
+        "quote": "Harmony is a musical that feels both timely and timeless, offering audiences a deeply moving exploration of art, friendship, and resilience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clearly positive language ('deeply moving', 'timely and timeless') but low confidence due to limited text that could be cherry-picked from a longer review with more nuanced verdict. | GPT-4o: The excerpt provides a positive evaluation, highlighting the show's emotional impact and thematic depth. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt uses strong positive language such as \"deeply moving exploration\" and \"timely and timeless,\" suggesting a positive recommendation. However, due to the limited text, confidence is low. | Kimi: The excerpt employs strongly positive descriptors ('deeply moving,' 'timely and timeless') indicating clear enthusiasm for the production, though the single-excerpt format limits certainty about the full review's tone.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:06:20.138Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:08:27.322Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "contentTierReason": "fullText was copy of excerpt from web-search import",

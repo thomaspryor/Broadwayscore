@@ -15,7 +15,7 @@
   "dtliThumb": null,
   "llmScore": {
     "score": 64,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 59,
       "high": 69
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review acknowledges the show 'aims higher' than expected and has skillful direction, but criticizes generic music, focus problems, and underdeveloped characters, concluding audiences will leave 'unsatisfied.' | GPT-4o: The review acknowledges some positive aspects, such as the compelling story and the skillful direction, but ultimately criticizes the musical for its lack of character development and generic score. The overall tone is mixed, with both praise and significant reservations. | Gemini: The review acknowledges flaws in the show (lack of character development, generic score, too much narration) but still suggests it's worth seeing, especially given the subject matter's relevance. The director and choreographer are praised, and the reviewer admits to being pleasantly surprised.",
+    "keyPhrases": [
+      {
+        "quote": "You might leave humming the title tune, but also unsatisfied.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show 'aims higher' than expected and praises elements like direction and performances, but consistently criticizes the music as 'derivative' and 'generic,' finds character development lacking, and concludes audiences will leave 'unsatisfied.' This balanced but ultimately disappointing assessment fits squarely in Mixed territory. | GPT-4o: The review acknowledges some positive elements like the performances and direction, but criticizes the music as derivative and the narrative as unfocused. The overall tone suggests a mixed reception, with some appreciation but significant reservations. | Gemini: The review acknowledges compelling aspects of the story and skillful direction, but ultimately finds the score generic and the character development lacking, leading to an unsatisfied feeling. | Kimi: While praising the cast as 'triple threats' and the direction as skillful, the critic finds the music derivative and lacking personality, the characters underdeveloped, and the overall experience unsatisfying despite the compelling historical subject matter.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:06:02.006Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:04:20.462Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 66,
-    "geminiScore": 75,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

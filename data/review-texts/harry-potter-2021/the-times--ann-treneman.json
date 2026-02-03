@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The 5/5 star rating combined with superlative language like 'ingenious plot', 'superb characters', and praise for the 'out of this world' stagecraft indicates an enthusiastic must-see recommendation despite minor pacing concerns. | GPT-4o: The review is overwhelmingly positive, with a 5/5 star rating and phrases like 'The magic is well beyond abracadabra levels' and 'The stagecraft is out of this world.' These indicate a strong recommendation and classify it as a must-see. | Gemini: The critic gives the play 5/5 stars and uses overwhelmingly positive language, such as \"Blessed,\" \"ingenious,\" \"superb,\" and \"out of this world,\" indicating a rave review.",
+    "keyPhrases": [
+      {
+        "quote": "The magic is well beyond abracadabra levels.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with superlative praise throughout: 'ingenious plot', 'superb characters', 'out of this world stagecraft'. The critic clearly recommends this as a must-see theatrical experience. | GPT-4o: The review is overwhelmingly positive, with a 5/5 star rating and phrases like 'Blessed', 'ingenious', 'superb', and 'out of this world'. The critic strongly recommends the show as a must-see. | Gemini: The review gives the show 5/5 stars and uses superlatives like \"Blessed\", \"ingenious\", \"superb\", and \"out of this world\", indicating a rave review. | Kimi: The reviewer awards the production a 5/5 star rating and offers unqualified praise for the ingenious plot, superb characters, and atmospheric staging, describing the show as 'out of this world' with no significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,9 +45,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:10:09.314Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:11:58.061Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 94,
@@ -50,17 +56,19 @@
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
-    "geminiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/the-times--ann-treneman_2026-02-03.html",
   "textFetchedAt": "2026-02-03T05:21:20.339Z",

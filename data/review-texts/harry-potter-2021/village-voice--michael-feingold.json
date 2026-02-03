@@ -7,17 +7,17 @@
   "publishDate": "April 25, 2018",
   "showScoreExcerpt": "\"Slackly structured, verbose, stylistically muddled, overwrought mishmash...Makes elaborate forays into flashbacks that seem included purely to rouse Potter-fan sentiment...The dialogue, often weighed down by the soggily earnest tone of after-school specials, seems to drag on too long in nearly every scene...A great deal of the acting is shrill...If the rest of 'The Cursed Child' were as carefully built and precisely timed as its effects, the show would cast a genuinely bewitching spell.\"",
   "originalScore": null,
-  "assignedScore": 46,
+  "assignedScore": 41,
   "source": "show-score",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 46,
+    "score": 41,
     "confidence": "medium",
     "range": {
-      "low": 41,
-      "high": 51
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic uses consistently harsh language throughout - 'mishmash', 'soggily earnest', 'shrill acting', 'drag on too long' - with only a backhanded compliment about effects at the end. This clearly discourages attendance. | GPT-4o: The review highlights numerous significant flaws in structure, dialogue, and acting, suggesting a negative overall impression. The only positive note is about the effects, which is not enough to outweigh the criticisms. | Gemini: The review is overwhelmingly negative, citing issues with structure, dialogue, acting, and pacing. The conditional statement at the end suggests that the show falls far short of its potential.",
+    "keyPhrases": [
+      {
+        "quote": "Slackly structured, verbose, stylistically muddled, overwrought mishmash.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt is overwhelmingly critical of fundamental elements (structure, dialogue, acting, pacing) with only the effects receiving praise. The final conditional praise emphasizes how the show fails to live up to its technical achievements. | GPT-4o: The review excerpt criticizes the structure, dialogue, and acting, suggesting a negative overall impression. However, the single excerpt warning and lack of full context lower confidence. | Gemini: The review uses negative language such as \"slackly structured, verbose, stylistically muddled, overwrought mishmash\" and \"a great deal of the acting is shrill.\" While it mentions the effects are well-done, the overall tone is negative. | Kimi: The critic pans the production as a 'mishmash' with 'shrill' acting and 'soggily earnest' dialogue that drags, offering only faint praise for the special effects while clearly indicating the show fails to deliver a satisfying theatrical experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:10:53.290Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:23:41.993Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
+    "previousScore": 46,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 50,
-    "geminiScore": 45,
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 44,
+    "kimiScore": 40,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 8,
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/village-voice--michael-feingold_2026-01-31.html",
   "textFetchedAt": "2026-01-31T23:25:51.916Z",

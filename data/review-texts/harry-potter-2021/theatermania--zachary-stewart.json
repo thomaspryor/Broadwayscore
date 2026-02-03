@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic explicitly states the show is 'absolutely worth your time and money' and calls it 'the most magical show on Broadway,' delivering a clear positive recommendation despite acknowledging some cuts from the original. | GPT-4o: The review is highly positive, praising the production's technical achievements, the magic onstage, and the overall experience. The critic confidently recommends the show as worth the time and money, indicating a strong endorsement. | Gemini: The review explicitly states the show is worth the time and money, and calls it 'the most magical show on Broadway', indicating a strong positive recommendation despite acknowledging changes from the original production.",
+    "keyPhrases": [
+      {
+        "quote": "I can confidently tell readers that Harry Potter and the Cursed Child beats them all.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive recommendation with direct statement that it 'beats them all' and is 'absolutely worth your time and money.' Praises technical achievements, performances, and declares it 'the most magical show on Broadway.' | GPT-4o: The review offers strong praise for the production's magic, technical achievements, and overall experience, culminating in an enthusiastic recommendation that it is worth both time and money. | Gemini: The review concludes with a strong recommendation, stating the show is \"absolutely worth your time and money\" and \"the most magical show on Broadway.\" Despite discussing changes from the original, the final assessment is very positive. | Kimi: While acknowledging minor pacing issues in the condensed opening, the critic delivers an unambiguous recommendation, praising the technical wizardry, illusions, and streamlined storytelling as 'actually a better play' that remains 'the most magical show on Broadway.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:10:19.727Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:13:35.439Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 90,
+    "claudeScore": 82,
+    "openaiScore": 92,
     "geminiScore": 82,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 9,
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/theatermania--zachary-stewart_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:41:14.099Z",

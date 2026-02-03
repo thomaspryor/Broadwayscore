@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German sextet that was torn apart by the Nazi regime, is a well-intentioned but dramatically inert production that feels more like a history lesson than compelling theater.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,22 +17,28 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German sextet that was torn apart by the Nazi regime, is a well-intentioned but dramatically inert production that feels more like a history lesson than compelling theater.",
   "llmScore": {
-    "score": 62,
-    "confidence": "medium",
+    "score": 44,
+    "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges positive elements like beautiful voices and good love songs, but criticizes the show as 'glitzy and superficial' with major structural problems including excessive length and lack of emotional depth. | GPT-4o: The review acknowledges the musical's strengths in music and performances but criticizes its lack of emotional depth and narrative coherence. The tone is mixed, highlighting both positive and negative aspects without a clear recommendation. | Gemini: The review notes beautiful voices and good love songs, but criticizes the lack of emotional depth, length, and repetitive musical numbers, placing it in the Mixed category.",
+    "keyPhrases": [
+      {
+        "quote": "The play, equal parts glitzy and superficial, consists largely of jaunty songs",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the show superficial with weak plot, hackneyed characters, and repetitive songs that 'sacrifice story, emotional depth and connection.' Despite praising the voices and some technical elements, the overall assessment is clearly negative. | GPT-4o: The review criticizes the play for being superficial, lacking emotional depth, and having repetitive musical numbers. Despite some praise for the voices and certain performances, the overall tone is negative, suggesting the production is disappointing. | Gemini: The review points out several issues with the show, including its superficiality, lack of emotional depth, and repetitive musical numbers. The critic also notes the unfortunate timing of the show's opening given current events. | Kimi: While acknowledging beautiful voices and a few good songs, the critic finds the show superficial, lacking in plot, cheap-looking in design, and tonally inappropriate given current events, with the Holocaust framing causing potential trauma rather than emotional resonance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:06:32.061Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:12:36.296Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 42,
+    "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 7,
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (38 words)",

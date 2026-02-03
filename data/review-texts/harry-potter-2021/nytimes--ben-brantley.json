@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Brantley delivers unqualified praise, calling it 'enthralling,' 'inspired,' and 'the new gold standard' while describing the production as achieving 'all-consuming enchantment' with flawless execution. | GPT-4o: The review is filled with superlatives and describes the production as a new gold standard for fantasy franchise entertainment on Broadway, highlighting its imaginative and seamless execution. The critic's tone is overwhelmingly positive and enthusiastic, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using words like \"enthralling,\" \"inspired,\" and \"remarkable.\" While acknowledging the plot's complexity, the critic ultimately recommends the show, highlighting its enchanting qualities and impressive stagecraft.",
+    "keyPhrases": [
+      {
+        "quote": "This inspired team bends time to its will with an imagination and discipline that leave room for nary a glitch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Brantley delivers unqualified praise with superlatives like 'enthralling,' 'inspired,' 'remarkable,' and calls it the 'new gold standard' for fantasy entertainment on Broadway. The review is filled with admiration for every aspect of the production. | GPT-4o: The review is filled with superlatives and unqualified praise, describing the production as 'enthralling', 'inspired', and 'the new gold standard for fantasy franchise entertainment on Broadway'. It emphasizes the show's imaginative power and emotional impact, with no significant reservations. | Gemini: The review is overwhelmingly positive, using terms like \"enthralling,\" \"inspired team,\" \"hypnotic powers,\" and \"new gold standard.\" The critic clearly recommends seeing the show. | Kimi: Brantley offers unqualified praise for the production's imagination, technical wizardry, and emotional resonance, using superlatives like 'highest praise,' 'remarkable,' and 'all-consuming enchantment' with virtually no caveats.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:09:31.643Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:02:18.168Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 93,
+    "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
     "openaiScore": 95,
-    "geminiScore": 82,
+    "geminiScore": 83,
+    "kimiScore": 96,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/harry-potter-2021/nytimes--ben-brantley_2026-01-26.html",
   "textFetchedAt": "2026-01-26T15:38:56.517Z",

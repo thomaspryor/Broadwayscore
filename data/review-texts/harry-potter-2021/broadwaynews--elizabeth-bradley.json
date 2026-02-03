@@ -8,17 +8,17 @@
   "fullText": "When it was announced that “Harry Potter and the Cursed Child” would open at the Lyric Theatre in 2018, I confidently expected that the, um, curse that seemed to doom all shows in the cavernous space to financial-flop status would finally be lifted.\n\nWhen it was announced that “Harry Potter and the Cursed Child” would open at the Lyric Theatre in 2018, I confidently expected that the, um, curse that seemed to doom all shows in the cavernous space to financial-flop status would finally be lifted. The show is a commercial juggernaut, after all, and all things Harry Potter remain a global obsession. Lines form daily outside the new merchandise store on Fifth Avenue.\n\nBut the producers’ decision to cut the original two-part show down to just one part seemed to suggest that finances were proving trickier on Broadway — despite the show’s acclaim and its best play Tony win. Although they cited the pandemic in the announcement of the new version, the London, Melbourne and Hamburg productions will continue to perform the original version, indicating that the higher costs of Broadway production, and perhaps Americans’ attention spans, might also factor into the decision.",
   "showScoreExcerpt": "\"What Tiffany and his team have created is an experience like no other...Prepare to be amazed, whether you're a Potter fan or a Muggle. This production is truly magical.\"",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 86,
   "source": "show-score",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 89,
+    "score": 86,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 81,
+      "high": 91
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite opening with commercial context about the production changes, the excerpt reveals strong praise calling it 'an experience like no other' and 'truly magical' with clear recommendation language. | GPT-4o: The review concludes with strong, enthusiastic praise for the production, describing it as 'truly magical' and an 'experience like no other,' indicating a highly positive recommendation. | Gemini: Despite the initial discussion of financial concerns and changes to the show's format, the review concludes with a strong recommendation, calling the production \"truly magical\" and an \"experience like no other.\"",
+    "keyPhrases": [
+      {
+        "quote": "What Tiffany and his team have created is an experience like no other...This production is truly magical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: The opening discusses business concerns and production changes, but the verdict clearly recommends the show as 'an experience like no other' and 'truly magical,' indicating strong praise despite the truncated format. | GPT-4o: The review concludes with strong praise, describing the production as 'an experience like no other' and 'truly magical,' indicating a highly positive recommendation. | Gemini: Despite the initial discussion of financial concerns and changes to the show's format, the review concludes with strong positive language, calling the production \"truly magical\" and an \"experience like no other.\" | Kimi: While the main review text is truncated, the provided excerpt offers unqualified praise calling the production 'truly magical' and 'an experience like no other,' indicating an enthusiastic recommendation without reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:07:09.158Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:22:38.272Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
-    "claudeBucket": "Rave",
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
     "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
   "contentTier": "truncated",
   "wordCount": 194,

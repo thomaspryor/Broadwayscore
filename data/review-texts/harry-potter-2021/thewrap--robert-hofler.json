@@ -10,58 +10,64 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 74,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening concerns about accessibility and criticizing some elements, the critic ultimately calls it 'great children's theater' and praises the low-tech staging approach, performances, and theater renovation, though with notable reservations about length and plot issues. | GPT-4o: The critic suggests that those unfamiliar with Harry Potter can skip the show, implying it's not worth seeing unless you're already a fan. Despite some praise for the production's design choices, the overall tone is negative, focusing on the show's inaccessibility and lack of standout performances. | Gemini: The review ultimately recommends the show as \"great children's theater,\" but with reservations about the price and some plot issues. The critic praises the acting and redesign of the theater.",
+    "keyPhrases": [
+      {
+        "quote": "the two-part play is great children's theater that in no way attempts to replicate the movies",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic clearly calls it 'great children's theater' and praises the smart low-tech approach, strong performances, and theater renovation. While noting it's only for Potter fans and has some pacing issues, the overall assessment is positive with a clear recommendation for its target audience. | GPT-4o: The review expresses mixed feelings, noting the play's appeal to children and some creative staging, but criticizes the plot's reliance on prior knowledge and some design elements. The performances are praised but not seen as standout in the current Broadway context. | Gemini: The review acknowledges the show's appeal as children's theater and praises the low-tech approach, but also points out its inaccessibility to those unfamiliar with the Harry Potter universe and criticizes some aspects of the plot and set design. The overall tone is mixed. | Kimi: The critic praises Tiffany's theatrical imagination and low-tech staging, calling it 'great children's theater' for the target audience, but explicitly warns adults without Potter knowledge to skip it and criticizes the bloated book, excessive length, and confusing plot structure.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:10:30.782Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:17:06.355Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 74,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 50,
-    "geminiScore": 75,
+    "claudeScore": 76,
+    "openaiScore": 58,
+    "geminiScore": 65,
+    "kimiScore": 63,
     "claudeBucket": "Positive",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Positive",
-    "scoreDelta": 25,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "Outlier openai chose Negative, 2+ buckets from majority"
-    ],
+    "needsReview": false,
+    "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "sources": [
     "bww-roundup"

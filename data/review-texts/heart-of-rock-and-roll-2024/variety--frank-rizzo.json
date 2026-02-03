@@ -9,7 +9,7 @@
   "showScoreExcerpt": "\"Humor and brightness is what fuels this engine\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-heart-of-rock-and-roll-broadway",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/heart-of-rock-and-roll-2024/variety--frank-rizzo_2026-02-02.html",
@@ -45,11 +45,11 @@
   "archiveOrgTimestamp": "20250104073859",
   "archiveOrgUrl": "http://web.archive.org/web/20250104073859/https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-huey-lewis-musical-broadway-1235976855/",
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -59,8 +59,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the show's formulaic nature but finds it entertaining and well-executed within its modest ambitions. The review emphasizes that while it's unpretentious and familiar, it succeeds at what it sets out to do. | GPT-4o: The review acknowledges the show's limitations and lack of depth but ultimately finds it entertaining and enjoyable, with a promising future. The tone is positive with some reservations about its simplicity and lack of ambition. | Gemini: The review acknowledges the show's flaws but ultimately finds it enjoyable and entertaining, suggesting it's worth seeing despite its predictability and reliance on familiar jukebox musical tropes. The critic highlights the cleverness of the creators and the show's broad appeal.",
+    "keyPhrases": [
+      {
+        "quote": "There's something to be said for simple packaging that knows what it is and does it well.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review acknowledges the show's formulaic nature but ultimately recommends it as 'rather fun' and entertaining, praising its unpretentious approach and saying it 'does it well' within its modest ambitions. | GPT-4o: The review acknowledges the show's limitations and lack of depth but ultimately praises its entertainment value and clever production. The tone is positive with some reservations about its simplicity and predictability. | Gemini: The review acknowledges the show's flaws but ultimately finds it \"rather fun\" and praises its unpretentious nature. The critic suggests it's entertaining and has potential, especially for touring. | Kimi: While acknowledging the formulaic jukebox structure and thin plot, the critic praises the show's effective execution, strong performances, and entertaining escapism, finding it succeeds on its own modest terms.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -69,28 +75,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:12:17.715Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:45:29.060Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 72,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 77,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "complete",
   "wordCount": 767,

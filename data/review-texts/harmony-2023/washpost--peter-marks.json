@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review acknowledges the show's earnest message and some strong elements (cast, production values) but criticizes fundamental issues with the central act lacking appeal and novelty wearing thin quickly. | GPT-4o: The review highlights both strengths, such as the performances and certain musical numbers, and significant weaknesses, like the lack of sustained interest and the sterile stage personas. The overall tone suggests a mixed reception with some standout moments. | Gemini: The review points out flaws like the group lacking intrinsic appeal and the show fixating on sterile stage personas, but also praises the cast, direction, and a specific number. This indicates a mixed experience.",
+    "keyPhrases": [
+      {
+        "quote": "It's doubtless the best musical based on the Comedian Harmonists you'll ever see.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises individual elements (cast, design, one standout number) but finds the core material formulaic and lacking sustained appeal. The critic acknowledges the show's earnest message but doesn't recommend it enthusiastically. | GPT-4o: The review acknowledges the accomplished musicianship and some vivid performances but criticizes the lack of intrinsic appeal and novelty wearing thin. The overall tone suggests a mixed reception with some highlights. | Gemini: The review acknowledges the impressive pedigree and talented cast but ultimately finds the novelty of the Harmonists' act wearing thin. It raises a potent cautionary note but fixates too much on sterile stage personas. | Kimi: The critic praises the cast, design, and serious historical message but finds the musical repetitive and sterile, with novelty that 'wears thin, quickly,' resulting in a qualified, ambivalent assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,28 +50,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:06:47.307Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:17:16.062Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
     "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 61,

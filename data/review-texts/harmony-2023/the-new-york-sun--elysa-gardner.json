@@ -9,15 +9,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 77,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows appreciation for Manilow's musical contributions and Carlyle's performance, but the text is clearly truncated mid-sentence and represents only a small portion of the full review, making the overall verdict uncertain. | GPT-4o: The excerpt highlights positive aspects of the production, such as the quality of the music and the engaging staging. However, due to the single excerpt warning, there's some uncertainty about the overall tone, leading to a medium confidence level. | Gemini: The review excerpt praises Manilow's contributions and Carlyle's performance, suggesting a positive but not overwhelmingly enthusiastic recommendation. The mention of 'melodrama, at times' indicates a reservation.",
+    "keyPhrases": [
+      {
+        "quote": "Mr. Manilow has provided the company with both haunting romantic ballads and snazzy production numbers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with measured praise for Manilow's music and Carlyle's performance, but text cuts off mid-sentence making full verdict unclear. BroadwayWorld aggregator shows 'Up' supporting positive assessment. | GPT-4o: The excerpt highlights positive elements such as 'haunting romantic ballads' and 'snazzy production numbers,' indicating a positive view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises Manilow's contributions to the music and mentions enjoyable performances, suggesting a positive but not overwhelmingly enthusiastic review. The limited text and excerpt-only warning lower the confidence. | Kimi: The excerpt offers strong praise for both Manilow's score (haunting romantic ballads, snazzy production numbers) and Carlyle's direction (buoyancy and wit), indicating a clearly positive assessment despite the limited available text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:06:08.763Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:05:50.395Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 74,
     "openaiScore": 80,
-    "geminiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "low-conf: prompt=3.0.0, delta=30, upgrading to V5 + 3 models",
   "previousLlmScore": 60,

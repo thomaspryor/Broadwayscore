@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges the show's generic plot and clichés but ultimately recommends it for its good-natured humor, solid performances, and craftsmanship, concluding with an endorsement to have a good time. | GPT-4o: The review acknowledges the show's clichés and sentimentality but praises its humor, performances, and staging. The critic suggests that while it's not groundbreaking, it's enjoyable and well-crafted, making it worth seeing. | Gemini: The review acknowledges the show's flaws (generic plot, sentimentality) but praises the performances, humor, and staging, ultimately suggesting it's an enjoyable experience despite its shortcomings.",
+    "keyPhrases": [
+      {
+        "quote": "its easygoing good spirits are bolstered by solid craftsmanship, and it'd be silly to turn up our noses at that",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation despite acknowledging the show's formulaic elements. Critic praises performances, staging, and craftsmanship while concluding audiences should embrace its good-natured entertainment value. | GPT-4o: The review highlights the show's good-natured humor, strong performances, and solid craftsmanship, recommending it for its entertainment value despite its sentimentality and clichés. | Gemini: The review is generally positive, highlighting the show's good spirits and solid craftsmanship, while acknowledging its lack of depth. The critic ultimately suggests it would be silly to dismiss it. | Kimi: While the review criticizes the generic plot, clichéd sentimentality, and thin characterization, it ultimately praises the strong performances, humorous supporting cast, and resourceful staging, delivering a clear recommendation to see the show as enjoyable, well-crafted entertainment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,9 +43,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:11:47.980Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:37:44.209Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 77,
@@ -47,18 +53,20 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwThumb": "Up",
   "showScoreExcerpt": "\"While the dialogue has occasional pop, it’s the performances that keep the show rolling\"",

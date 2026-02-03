@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-on-Broadway-20240421",
   "bwwThumb": "Meh",
   "originalScore": "3/5",
-  "assignedScore": 76,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"Squeeze your memories into spandex and get ready to turn back the clock.\"",
@@ -18,22 +18,28 @@
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 76,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The 3/5 rating and closing recommendation 'Squeeze your memories into spandex and get ready to turn back the clock' indicate a positive but qualified verdict, acknowledging entertainment value despite structural flaws. | GPT-4o: The review acknowledges the talent of the cast and the appeal of the music, but also highlights issues with the show's book and direction. The original 3/5 rating suggests a mixed impression, and the truncated text warning indicates the final verdict may not be fully captured. | Gemini: The critic gives the show a 3/5 rating and highlights the talented cast and appealing songs. While noting some shortcomings in the book and direction, the review suggests that the show will be enjoyable for its target audience.",
+    "keyPhrases": [
+      {
+        "quote": "For some members of Generation X, what this show offers will be more than enough.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The 3/5 rating and mixed tone throughout support a Mixed classification. The critic finds entertainment value and praises the cast but criticizes the book, stereotypes, and weak romantic plot. The final line suggests conditional recommendation for a specific audience. | GPT-4o: The review acknowledges the talent of the cast and some entertaining moments but criticizes the book and direction for relying on stereotypes and cultural references. The original 3/5 rating suggests a mixed reception. The text is truncated, so the final verdict may be missing, leading to low confidence. | Gemini: The critic gives the show 3/5 stars and highlights the talented cast, but also points out some issues with the writing and direction. The truncated text makes the final verdict slightly unclear, but the overall tone is positive. | Kimi: The critic awards 3/5 stars, praising the talented cast and nostalgic appeal for Gen X audiences while criticizing the stereotypical book, uneven tone, and underutilized performers. The review offers a qualified recommendation limited to fans of the source material.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:12:14.064Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T09:44:41.590Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 76,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
+    "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 79,
-    "claudeBucket": "Positive",
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "dateUnknown": true,
   "dateSource": "could-not-extract",

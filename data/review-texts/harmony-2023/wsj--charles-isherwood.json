@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Timely it may sadly be, but a theatrical triumph it still isn’t. I reviewed the show back in 1997, and while it is changed and improved, it rarely rises above a level of admirable, hard-working professionalism.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 54,
   "source": "web-search",
   "dtliThumb": "Down",
   "dtliUrl": null,
@@ -17,22 +17,28 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show has moments of genuine power, particularly in its second act, when the rise of Nazism begins to tear apart both the group and the society that embraced them.",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 54,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 49,
+      "high": 59
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a truncated excerpt focusing on one positive element, but lacks overall assessment or clear recommendation either way. | GPT-4o: The review notes that the show has moments of genuine power, particularly in the second act, but does not provide an overall recommendation or critique, suggesting a mixed review. | Gemini: The review highlights 'moments of genuine power' but doesn't offer a clear recommendation, suggesting a mixed experience.",
+    "keyPhrases": [
+      {
+        "quote": "a theatrical triumph it still isn't",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic acknowledges improvements and 'admirable, hard-working professionalism' but explicitly states it's not a triumph. The mixed language suggests it's competent but uninspiring. Low confidence due to limited excerpt text. | GPT-4o: The review acknowledges improvements but ultimately concludes that the show 'rarely rises above a level of admirable, hard-working professionalism,' indicating a lack of strong recommendation. The verdict from the aggregator also supports a negative impression. | Gemini: The review states that the show is not a triumph, but also acknowledges improvements. The phrase \"admirable, hard-working professionalism\" suggests a mixed, rather than negative, assessment. | Kimi: While acknowledging improvements from previous productions, the critic finds the show merely competent ('admirable, hard-working professionalism') rather than exceptional, explicitly denying it 'triumph' status. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:06:51.208Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:18:26.634Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
+    "claudeScore": 58,
+    "openaiScore": 45,
     "geminiScore": 62,
+    "kimiScore": 50,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
   },
   "contentTier": "excerpt",
   "contentTierReason": "fullText was copy of excerpt from web-search import",

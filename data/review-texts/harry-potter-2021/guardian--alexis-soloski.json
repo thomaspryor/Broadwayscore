@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing the plot as heavy-handed and noting gender representation issues, the critic praises the theatrical spectacle, direction, performances, and staging as exceptional, clearly recommending the show for its theatrical merits. | GPT-4o: Despite some criticisms about the plot and gender representation, the review is overwhelmingly positive about the production's theatricality, staging, and performances. The truncated nature of the text suggests caution, but the provided excerpts and key quotes indicate a strong recommendation. | Gemini: The review praises the production design and theatricality, but notes flaws in the script and character development. The truncated text makes the final verdict unclear, but the overall tone leans positive despite reservations.",
+    "keyPhrases": [
+      {
+        "quote": "Its return is thrilling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite criticisms of the plot and gender representation, the critic praises the theatrical magic, performances, and production design extensively. The truncated text and mixed signals lower confidence, but the overall tone is positive recommendation. | GPT-4o: The review praises the production design, direction, and theatricality, indicating a strong recommendation despite some reservations about the script and plot. The text is truncated, so the final verdict is missing, leading to a low confidence score. | Gemini: The review is mostly positive, praising the production design, theatricality, and acting. However, it also notes that the plot is heavy and may only appeal to fans of the source material, and that the script could have given the women more to do. The truncated text makes the final verdict less clear, but the overall tone is positive with reservations. | Kimi: Despite minor reservations about the script's metaphors and gender representation, the review is overwhelmingly enthusiastic, praising the 'triumphal' production as 'dazzling,' 'thrilling,' and 'exuberantly theatrical' with stunning stagecraft.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,9 +44,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:08:26.774Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:43:31.187Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 79,
@@ -48,18 +54,20 @@
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 81,
-    "geminiScore": 79,
+    "openaiScore": 80,
+    "geminiScore": 77,
+    "kimiScore": 88,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",
