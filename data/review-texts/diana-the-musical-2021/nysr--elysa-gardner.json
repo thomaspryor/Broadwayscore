@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "2/5 stars"
+  "originalScore": "2/5 stars",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Diana isn't much more insipid than any number of musical hagiographies that have popped up in recent decades",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with consistent criticism of the book and lyrics as 'insipid' and 'cringe-worthy,' though praising individual performances and costumes. The critic finds entertainment value but doesn't recommend it overall. | GPT-4o: The review highlights several flaws, including insipid lyrics and overamplified music, despite acknowledging some positive elements like performances and costumes. The original 2/5 stars rating supports a negative classification. | Gemini: Despite praising some performances and the costumes, the review uses terms like \"cringe-worthy lyrics\" and \"insipid.\" The 2/5 star rating confirms a negative overall assessment, though the truncated text lowers confidence. | Kimi: The critic awards 2/5 stars and describes the show as 'insipid' with 'cringe-worthy lyrics' and 'populist clichés,' though acknowledging strong performances and costumes by Jeanna de Waal and Judy Kaye.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:27:12.786Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Robin Williams brings his manic energy to Rajiv Joseph's ambitious play about war, humanity and redemption, though the production struggles to find its theatrical footing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Robin Williams brings his manic energy to Rajiv Joseph's ambitious play about war, humanity and redemption, though the production struggles to find its theatrical footing.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the production struggles to find its theatrical footing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges the play's ambition and Williams' energy but identifies significant execution problems with the production not finding its footing. | GPT-4o: The review acknowledges the ambition of the play and Robin Williams' energetic performance but notes that the production struggles to find its footing, indicating a mixed assessment. | Gemini: The review acknowledges Williams' energy and the play's ambition, but notes that the production struggles, suggesting a mixed or neutral assessment. | Kimi: The review balances genuine praise for Williams' performance against a clear critique of the production's structural problems. 'Struggles to find its theatrical footing' signals fundamental issues that prevent a full recommendation, while 'ambitious' suggests unrealized potential rather than achieved success. No explicit recommendation language.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:44:58.219Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is theater at its most experimental and unsettling, a production that lingers in your mind long after you leave the Hayes Theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is theater at its most experimental and unsettling, a production that lingers in your mind long after you leave the Hayes Theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is theater at its most experimental and unsettling, a production that lingers in your mind long after you leave the Hayes Theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | GPT-4o: The review uses strong, positive language ('most experimental and unsettling', 'lingers in your mind') indicating an enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language, describing the production as \"experimental and unsettling\" and noting that it \"lingers in your mind.\" This indicates a positive and memorable experience, placing it in the Positive bucket with a high score. | Kimi: Though brief, the review employs superlatives ('most experimental') and emphasizes the show's lasting psychological impact ('lingers in your mind'), indicating an enthusiastic endorsement of this unsettling production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:20:15.610Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 91,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

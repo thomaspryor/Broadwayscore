@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show, with music by Ms. Brickell and Mr. Martin and a book by Mr. Martin, is an earnest, old-fashioned tearjerker that manages to be both mawkish and sterile.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show, with music by Ms. Brickell and Mr. Martin and a book by Mr. Martin, is an earnest, old-fashioned tearjerker that manages to be both mawkish and sterile.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is an earnest, old-fashioned tearjerker that manages to be both mawkish and sterile.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Brantley's assessment is clearly negative, calling the show 'mawkish and sterile' - both damning criticisms that indicate poor execution despite earnest intentions. | GPT-4o: The review describes the show as 'mawkish and sterile,' indicating a negative assessment without any redeeming qualities. This suggests a recommendation against seeing it. | Gemini: The review explicitly states that the show is \"mawkish and sterile\", indicating a negative assessment and lack of recommendation. | Kimi: While Brantley acknowledges the show's earnest intentions, the verdict is clearly negative: 'mawkish and sterile' are damning descriptors with no redeeming qualities mentioned. The tone suggests a firm recommendation against.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:49:37.964Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

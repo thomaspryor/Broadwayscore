@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Come From Away is a masterpiece of ensemble acting, storytelling and music that restores your faith in the basic goodness of human nature.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Come From Away is a masterpiece of ensemble acting, storytelling and music that restores your faith in the basic goodness of human nature.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Come From Away is a masterpiece of ensemble acting, storytelling and music that restores your faith in the basic goodness of human nature.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise calling it a 'masterpiece' with no reservations or caveats. The language is superlative and transformative. | GPT-4o: The review uses superlative language ('masterpiece') and describes the show as having a profound impact ('restores your faith'), indicating an enthusiastic, must-see recommendation. | Gemini: The review uses the word \"masterpiece\" and states that it \"restores your faith in the basic goodness of human nature\", indicating a very strong positive sentiment and recommendation. | Kimi: Unqualified praise using the superlative 'masterpiece' with emphasis on the show's emotional impact and restoration of faith in humanity, containing no reservations or caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:10:30.718Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 97,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

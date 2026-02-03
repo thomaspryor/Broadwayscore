@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Michelle Williams brings her movie-star magnetism to Broadway in a production that's both intimate and spectacular.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Michelle Williams brings her movie-star magnetism to Broadway in a production that's both intimate and spectacular.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (16 words)"
+  "contentTierReason": "Short text (16 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Michelle Williams brings her movie-star magnetism to Broadway in a production that's both intimate and spectacular.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single sentence describes the production positively ('intimate and spectacular') and praises the lead performance, but extremely limited text makes confident assessment difficult. | GPT-4o: The review praises Michelle Williams' performance and describes the production as 'intimate and spectacular,' indicating a strong positive recommendation. | Gemini: The review praises Michelle Williams' performance and describes the production as both intimate and spectacular, indicating a positive overall assessment. | Kimi: While brief and potentially truncated, the available text offers unqualified praise for both the star's performance ('movie-star magnetism') and the production quality ('spectacular'), indicating a strong recommendation without reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:55:02.226Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

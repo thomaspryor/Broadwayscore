@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The evening's most wrenching moments come when Amir finds himself articulating, with horrifying eloquence, sentiments that he has long tried to deny harboring.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (23 words)",
+  "rejectedAt": "2026-02-03T15:31:09.846Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote from a review, not a complete review that can be properly scored for recommendation strength.; openai: The provided text is a single sentence without sufficient context or evaluation of the show as a whole.; gemini: This is a single sentence excerpt, lacking a clear recommendation or overall assessment of the show. It describes a moment in the play but doesn't offer a review.",
+  "promptVersion": "5.2.0"
 }

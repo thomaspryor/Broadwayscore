@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Metcalf's performance is nothing short of extraordinary, finding fresh colors in what could have been a repetitive exercise and making Ernestine's journey feel both epic and intimate.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Metcalf's performance is nothing short of extraordinary, finding fresh colors in what could have been a repetitive exercise and making Ernestine's journey feel both epic and intimate.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Metcalf's performance is nothing short of extraordinary, finding fresh colors in what could have been a repetitive exercise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review uses strong, positive language to describe Metcalf's performance as 'extraordinary' and highlights the emotional impact of the journey. This suggests a highly favorable view of the production. | Gemini: The review uses strong positive language such as \"extraordinary\" to describe the performance, indicating a strong recommendation. | Kimi: This is a brief excerpt praising a lead performance with superlatives ('nothing short of extraordinary'), but it's only one sentence with no broader verdict on the show itself. The high praise for Metcalf suggests a positive recommendation, but the truncated nature and lack of full context limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:47:40.603Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Paramour is a show at war with itself, torn between the spectacular and the pedestrian, between innovation and imitation.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Paramour is a show at war with itself, torn between the spectacular and the pedestrian, between innovation and imitation.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (19 words)"
+  "contentTierReason": "Short text (19 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paramour is a show at war with itself, torn between the spectacular and the pedestrian, between innovation and imitation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic's 40/100 rating and description of internal conflict ('at war with itself') indicates a mixed assessment that neither recommends nor discourages viewing. | GPT-4o: The critic's original rating of 40 aligns with a negative assessment. The review describes the show as conflicted and lacking coherence, suggesting a lack of recommendation. | Gemini: The critic uses language that indicates a struggle between good and bad elements, but ultimately the show is 'at war with itself,' suggesting a negative overall experience. The original rating of 40 confirms this. | Kimi: The critic describes the show as fundamentally conflicted between quality and mediocrity, and the explicit 40-point rating places it firmly in the Negative range. The excerpt is extremely brief, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:05:44.834Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

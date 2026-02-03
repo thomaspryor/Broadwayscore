@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Constellations is a love story told through multiple universes, and it's as beautiful and mysterious as the quantum physics that inspired it.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Constellations is a love story told through multiple universes, and it's as beautiful and mysterious as the quantum physics that inspired it.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's as beautiful and mysterious as the quantum physics that inspired it",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating clearly places this in Positive territory. The language is appreciative ('beautiful and mysterious') but this appears to be a truncated excerpt with very limited evaluative content. | GPT-4o: The review uses positive descriptors like 'beautiful' and 'mysterious,' and the original rating of 80 aligns with a strong recommendation. | Gemini: The review is short but positive, calling the show \"beautiful and mysterious.\" The original rating of 80 aligns with a positive recommendation. | Kimi: The critic offers unqualified praise describing the show as 'beautiful and mysterious,' and the original rating of 80 falls squarely in the Positive range (70-84), indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:14:15.407Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

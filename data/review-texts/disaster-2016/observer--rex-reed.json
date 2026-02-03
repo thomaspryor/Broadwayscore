@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a genuine disaster that lives up to its title in ways the creators never intended, leaving you with the feeling that you've been trapped in a real catastrophe yourself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 14,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The result is a genuine disaster that lives up to its title in ways the creators never intended, leaving you with the feeling that you've been trapped in a real catastrophe yourself.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 14,
+    "confidence": "high",
+    "range": {
+      "low": 9,
+      "high": 19
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a genuine disaster that lives up to its title in ways the creators never intended.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Critic explicitly calls the show 'a genuine disaster' and compares the audience experience to being 'trapped in a real catastrophe.' This is unambiguous pan language with no redeeming qualities mentioned. | GPT-4o: The review uses strong negative language, calling the production a 'genuine disaster' and comparing it to a 'real catastrophe', indicating a deep pan with no redeeming qualities. | Gemini: The review explicitly calls the show a 'genuine disaster,' indicating a strong negative opinion and placing it firmly in the 'Pan' category. | Kimi: The critic employs extreme negative superlatives ('genuine disaster', 'real catastrophe') and describes the experience as feeling 'trapped,' indicating a deep pan with no redeeming qualities mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:28:50.625Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 12,
+    "openaiScore": 15,
+    "geminiScore": 12,
+    "kimiScore": 15,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

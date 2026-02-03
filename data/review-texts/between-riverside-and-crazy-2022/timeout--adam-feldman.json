@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Stephen Adly Guirgis's Pulitzer Prize-winning play gets a superb Broadway production that honors both its gritty realism and its underlying compassion.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Stephen Adly Guirgis's Pulitzer Prize-winning play gets a superb Broadway production that honors both its gritty realism and its underlying compassion.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stephen Adly Guirgis's Pulitzer Prize-winning play gets a superb Broadway production that honors both its gritty realism and its underlying compassion.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic's 80 rating combined with 'superb' production praise places this firmly in Rave territory, indicating strong recommendation despite the brief text. | GPT-4o: The critic's original rating of 80 aligns with a positive review. The use of 'superb' and the acknowledgment of both 'gritty realism' and 'underlying compassion' indicate a strong recommendation. | Gemini: The review uses the word \"superb\" to describe the production, indicating a positive recommendation. The critic's rating of 80 aligns with this assessment. | Kimi: The critic's own 80 rating confirms a Positive bucket placement. The review uses 'superb' and emphasizes how well the production honors the play's qualities, indicating a strong recommendation without reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:46:34.042Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

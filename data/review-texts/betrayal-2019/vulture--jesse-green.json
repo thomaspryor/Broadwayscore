@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Jamie Lloyd, is a masterclass in emotional archaeology, with Tom Hiddleston, Zawe Ashton, and Charlie Cox delivering performances that feel both intimate and epic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by Jamie Lloyd, is a masterclass in emotional archaeology, with Tom Hiddleston, Zawe Ashton, and Charlie Cox delivering performances that feel both intimate and epic.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production, directed by Jamie Lloyd, is a masterclass in emotional archaeology.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling the production a 'masterclass' and highlighting exceptional performances from all three leads, though this appears to be an excerpt with limited context. | GPT-4o: The review uses superlative language ('masterclass') and praises the performances as both 'intimate and epic', indicating a strong recommendation. | Gemini: The review uses strong positive language such as \"masterclass\" and praises the performances as both \"intimate and epic,\" indicating a strong recommendation. | Kimi: Employs the superlative 'masterclass' and unreserved praise for performances as 'intimate and epic,' indicating the highest level of recommendation. Confidence is low due to the excerpt nature of the text. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:46:25.629Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

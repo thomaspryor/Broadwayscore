@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tracie Bennett's uncanny impersonation of Judy Garland in her final, tragic phase is so good it's scary. Bennett doesn't just look and sound like Garland; she becomes her, capturing the desperate vulnerability and manic energy of a woman fighting to hang onto her career and her sanity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,58 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tracie Bennett's uncanny impersonation of Judy Garland in her final, tragic phase is so good it's scary. Bennett doesn't just look and sound like Garland; she becomes her, capturing the desperate vulnerability and manic energy of a woman fighting to hang onto her career and her sanity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (47 words)"
+  "contentTierReason": "Short text (47 words)",
+  "llmScore": {
+    "score": 87,
+    "confidence": "low",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bennett doesn't just look and sound like Garland; she becomes her, capturing the desperate vulnerability and manic energy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: gemini=Positive, kimi=Rave | Gemini: The review focuses heavily on Tracie Bennett's performance, calling it an 'uncanny impersonation' and praising her ability to capture Garland's essence. This strong praise indicates a positive recommendation. | Kimi: The review offers unqualified superlatives for Bennett's performance ('uncanny', 'so good it's scary', 'becomes her') with no reservations mentioned, though the brevity of the text limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:35:55.139Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: gemini=Positive, kimi=Rave"
+  }
 }
