@@ -1,164 +1,149 @@
 {
-  "runDate": "2026-02-03T19:27:41.651Z",
+  "runDate": "2026-02-03T19:30:42.219Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-color-purple-2015",
+    "showFilter": "mean-girls-2018",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 11,
+    "processed": 5,
+    "failed": 26,
     "skipped": 0,
-    "successRate": "35.3%"
+    "successRate": "16.1%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 2,
-    "archive": 2
+    "scrapingbee": 4,
+    "brightdata": 1,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 3,
+    "tier1Attempts": 15,
+    "tier1Success": 5,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 16,
-    "tier2Success": 4,
+    "tier2Attempts": 20,
+    "tier2Success": 9,
     "tier3Attempts": 13,
-    "tier3Success": 4,
-    "tier4Attempts": 27,
-    "tier4Success": 4,
-    "totalFailed": 11,
-    "scrapingBeeCreditsUsed": 60,
+    "tier3Success": 5,
+    "tier4Attempts": 30,
+    "tier4Success": 9,
+    "totalFailed": 26,
+    "scrapingBeeCreditsUsed": 116,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 10,
-    "urlDiscoverySuccess": 7,
+    "urlDiscoveryAttempts": 6,
+    "urlDiscoverySuccess": 6,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-color-purple-2015/hollywood-reporter--david-rooney.json",
-    "the-color-purple-2015/variety--marilyn-stasio.json",
-    "the-color-purple-2015/ew--melissa-rose-bernardo.json",
-    "the-color-purple-2015/guardian--jesse-green.json",
-    "the-color-purple-2015/nypost--elisabeth-vincentelli.json",
-    "the-color-purple-2015/chicagotribune--chris-jones.json"
+    "mean-girls-2018/variety--marilyn-stasio.json",
+    "mean-girls-2018/theatermania--adam-hetrick.json",
+    "mean-girls-2018/thewrap--robert-hofler.json",
+    "mean-girls-2018/dailybeast--tim-teeman.json",
+    "mean-girls-2018/usatoday--elysa-gardner.json"
   ],
   "failed": [
-    "the-color-purple-2015/nytimes--charles-isherwood.json",
-    "the-color-purple-2015/vulture--jesse-green.json",
-    "the-color-purple-2015/nydailynews--joe-dziemianowicz.json",
-    "the-color-purple-2015/observer--rex-reed.json",
-    "the-color-purple-2015/theatermania--jesse-green.json",
-    "the-color-purple-2015/timeout--adam-feldman.json",
-    "the-color-purple-2015/wsj--terry-teachout.json",
-    "the-color-purple-2015/dailybeast--tim-teeman.json",
-    "the-color-purple-2015/talkinbroadway--matthew-murray.json",
-    "the-color-purple-2015/usatoday--elysa-gardner.json",
-    "the-color-purple-2015/washpost--peter-marks.json"
+    "mean-girls-2018/hollywood-reporter--david-rooney.json",
+    "mean-girls-2018/nyt-theater--jonathan-mandell.json",
+    "mean-girls-2018/nytimes--ben-brantley.json",
+    "mean-girls-2018/nytimes--jesse-green.json",
+    "mean-girls-2018/vulture--jesse-green.json",
+    "mean-girls-2018/vulture--sara-holdren.json",
+    "mean-girls-2018/broadwaynews--charles-isherwood.json",
+    "mean-girls-2018/deadline--greg-evans.json",
+    "mean-girls-2018/ew--kristen-baldwin.json",
+    "mean-girls-2018/guardian--alexis-soloski.json",
+    "mean-girls-2018/guardian--jesse-green.json",
+    "mean-girls-2018/newsday--barbara-schuler.json",
+    "mean-girls-2018/nydailynews--joe-dziemianowicz.json",
+    "mean-girls-2018/nypost--johnny-oleksinski.json",
+    "mean-girls-2018/nypost--sara-stewart.json",
+    "mean-girls-2018/observer--rex-reed.json",
+    "mean-girls-2018/timeout--adam-feldman.json",
+    "mean-girls-2018/wsj--terry-teachout.json",
+    "mean-girls-2018/amny--matt-windman.json",
+    "mean-girls-2018/chicagotribune--chris-jones.json",
+    "mean-girls-2018/lilith-magazine-aileen-jacobson--aileen-jacobson.json",
+    "mean-girls-2018/njcom--christopher-kelly.json",
+    "mean-girls-2018/nysr--ny1-roma-torre.json",
+    "mean-girls-2018/towleroad-naveen-kumar--naveen-kumar.json",
+    "mean-girls-2018/unknown--unknown.json",
+    "mean-girls-2018/washpost--peter-marks.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-color-purple-2015/ew--melissa-rose-bernardo.json"
-    ],
+    "playwright": [],
     "browserbase": [],
     "scrapingbee": [
-      "the-color-purple-2015/guardian--jesse-green.json"
+      "mean-girls-2018/theatermania--adam-hetrick.json",
+      "mean-girls-2018/thewrap--robert-hofler.json",
+      "mean-girls-2018/dailybeast--tim-teeman.json",
+      "mean-girls-2018/usatoday--elysa-gardner.json"
     ],
     "brightdata": [
-      "the-color-purple-2015/hollywood-reporter--david-rooney.json",
-      "the-color-purple-2015/chicagotribune--chris-jones.json"
+      "mean-girls-2018/variety--marilyn-stasio.json"
     ],
-    "archive": [
-      "the-color-purple-2015/variety--marilyn-stasio.json",
-      "the-color-purple-2015/nypost--elisabeth-vincentelli.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
+    "Broadway News (Charles Isherwood)": {
+      "count": 1,
+      "domain": "broadway.news",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "New York Post": {
+      "count": 1,
+      "domain": "nypost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
     "The Wall Street Journal": {
       "count": 1,
       "domain": "wsj.com",
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": true
-    },
-    "The Daily Beast": {
-      "count": 1,
-      "domain": "thedailybeast.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Wall Street Journal": {
-      "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "USA Today": {
-      "count": 1,
-      "domain": "usatoday.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Washington Post": {
-      "count": 1,
-      "domain": "washingtonpost.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "the-color-purple-2015/nytimes--charles-isherwood.json",
-      "oldUrl": "https://www.nytimes.com/2015/12/11/theater/review-the-color-purple-revival-takes-root-on-broadway.html",
-      "newUrl": "https://www.nytimes.com/2015/12/11/theater/review-the-color-purple-on-broadway-stripped-to-its-essence.html"
+      "reviewId": "mean-girls-2018/nyt-theater--jonathan-mandell.json",
+      "oldUrl": "https://newyorktheater.me/2018/04/09/mean-girls-broadway-review/",
+      "newUrl": "https://newyorktheater.me/2018/04/13/mean-girls-review-tina-feys-ill-timed-broadway-musical-about-high-school/"
     },
     {
-      "reviewId": "the-color-purple-2015/variety--marilyn-stasio.json",
-      "oldUrl": "https://variety.com/2015/legit/reviews/the-color-purple-review-broadway-revival-1201662943/",
-      "newUrl": "https://variety.com/2015/legit/reviews/the-color-purple-review-broadway-jennifer-hudson-1201657768/"
+      "reviewId": "mean-girls-2018/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2018/04/09/theater/mean-girls-review.html",
+      "newUrl": "https://www.nytimes.com/2018/04/08/theater/mean-girls-review-broadway-musical.html"
     },
     {
-      "reviewId": "the-color-purple-2015/ew--melissa-rose-bernardo.json",
-      "oldUrl": "https://ew.com/article/2015/12/11/color-purple-broadway-review/",
-      "newUrl": "https://ew.com/article/2015/12/10/color-purple-ew-stage-review/?srsltid=AfmBOorllRnBd1M61jxfm6Bgy9g2oGV8t3NgM5DfGAgKC33kI5DiIBMr"
+      "reviewId": "mean-girls-2018/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2018/04/theater-review-mean-girls-on-broadway.html",
+      "newUrl": "https://www.vulture.com/article/mean-girls-review-reduced-reused-but-well-recycled.html"
     },
     {
-      "reviewId": "the-color-purple-2015/guardian--jesse-green.json",
-      "oldUrl": "https://www.theguardian.com/stage/2015/dec/11/the-color-purple-review-broadway-revival-alice-walker",
-      "newUrl": "https://www.theguardian.com/stage/2015/dec/11/the-color-purple-jennifer-hudson-cynthia-erivo-musical"
+      "reviewId": "mean-girls-2018/guardian--jesse-green.json",
+      "oldUrl": "https://www.theguardian.com/stage/2018/apr/09/mean-girls-review-broadway-musical-tina-fey",
+      "newUrl": "https://www.theguardian.com/stage/2018/apr/08/mean-girls-review-tina-feys-comedy-hits-broadway-with-a-soft-landing"
     },
     {
-      "reviewId": "the-color-purple-2015/nydailynews--joe-dziemianowicz.json",
-      "oldUrl": "https://www.nydailynews.com/2015/12/11/the-color-purple-review-oprah-produced-broadway-revival-is-a-gorgeous-life-affirming-triumph/",
-      "newUrl": "https://www.nydailynews.com/2015/12/10/the-color-purple-review-cynthia-erivo-and-jennifer-hudson-shine-bright-in-musical-revival-produced-by-oprah-winfrey/"
+      "reviewId": "mean-girls-2018/nydailynews--joe-dziemianowicz.json",
+      "oldUrl": "https://www.nydailynews.com/2018/04/09/mean-girls-broadway-review-tina-fey-musical-adaptation/",
+      "newUrl": "https://www.nydailynews.com/2018/04/08/mean-girls-review-tina-fey-musical-a-broadway-crowd-pleaser/"
     },
     {
-      "reviewId": "the-color-purple-2015/nypost--elisabeth-vincentelli.json",
-      "oldUrl": "https://nypost.com/2015/12/11/the-color-purple-is-a-gorgeous-broadway-revival/",
-      "newUrl": "https://nypost.com/2023/12/21/entertainment/the-color-purple-review-fantasia-barrino-stuns-in-movie-musical/"
-    },
-    {
-      "reviewId": "the-color-purple-2015/chicagotribune--chris-jones.json",
-      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/ct-color-purple-broadway-review-20151211-column.html",
-      "newUrl": "https://www.chicagotribune.com/2018/07/19/the-color-purple-review-this-thrilling-revival-sings-straight-to-us-in-the-audience-at-the-auditorium/"
+      "reviewId": "mean-girls-2018/washpost--peter-marks.json",
+      "oldUrl": "https://www.washingtonpost.com/entertainment/theater_dance/mean-girls-on-broadway-is-more-sanitized-than-satisfying/2018/04/09/8b0c5c5e-3c0a-11e8-974f-aacd97698cef_story.html",
+      "newUrl": "https://www.washingtonpost.com/entertainment/movies/2024/01/10/mean-girls-movie-review/"
     }
   ]
 }
