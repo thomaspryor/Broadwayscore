@@ -306,17 +306,9 @@ node scripts/query.js "SELECT content_tier, COUNT(*) FROM review_texts GROUP BY 
 
 ### IBDB Date Enrichment
 
-`scripts/lib/ibdb-dates.js` looks up preview, opening, and closing dates from IBDB (Internet Broadway Database). IBDB has separate "1st Preview" and "Opening Date" fields, unlike Broadway.org which only has an ambiguous "Begins:" date.
+`scripts/lib/ibdb-dates.js` looks up preview, opening, and closing dates from IBDB. Also extracts creative team (15 role patterns). Used by `discover-new-shows.js`, `discover-historical-shows.js`, and standalone `enrich-ibdb-dates.js` (`--dry-run`, `--show=SLUG`, `--missing-only`, `--verify`, `--force`, `--status=`). If IBDB succeeds, its opening date overwrites Broadway.org's ambiguous "Begins:" date. If it fails, "Begins:" becomes `previewsStartDate`.
 
-**How it works:** Google SERP search (`site:ibdb.com/broadway-production`) → ScrapingBee premium proxy to fetch production page HTML → JSDOM text extraction → regex date parsing.
-
-**Fallback chain for search:** ScrapingBee Google SERP → Bright Data SERP → direct URL construction from title slug.
-
-**Creative team extraction:** `extractCreativeTeamFromText()` parses 15 role patterns from IBDB page text (e.g., "Directed by X", "Choreographed by Y", "Scenic Design by Z"). Handles multi-word names, "and" separators, excess whitespace from HTML tables, and deduplicates "Music & Lyrics" vs standalone "Music"/"Lyrics" entries. Returns `[{ name, role }]` array matching the `creativeTeam` schema.
-
-**Integration with discovery:** Both `discover-new-shows.js` and `discover-historical-shows.js` enrich dates and creative team from IBDB after discovering shows. If IBDB lookup succeeds, its opening date overwrites Broadway.org's "Begins:" date and creative team is populated (if non-empty). If IBDB fails, Broadway.org's "Begins:" is treated as `previewsStartDate` (not `openingDate`).
-
-**Standalone enrichment:** `node scripts/enrich-ibdb-dates.js` with flags: `--dry-run`, `--show=SLUG`, `--missing-only` (default), `--verify` (compare only), `--force` (overwrite), `--status=open|previews|closed`. Also backfills shows with empty `creativeTeam` arrays.
+> **Details:** `docs/CLAUDE-REFERENCE.md` § "IBDB Date Enrichment" — SERP fallback chain, creative team parsing, integration behavior.
 
 ### Review-Text Directory Convention
 
@@ -330,9 +322,9 @@ Review-text directories use **versioned show IDs** matching `shows.json` (e.g., 
 
 `scripts/lib/review-normalization.js` prevents duplicate review files by normalizing outlet/critic names. Key functions: `normalizeOutlet()`, `normalizeCritic()`, `generateReviewFilename()`, `areCriticsSimilar()`, `validateCriticOutlet()`. Add new aliases to `OUTLET_ALIASES` (40+ variations) or `CRITIC_ALIASES` (30+ variations) in the file.
 
-**Outlet-critic concatenation handling:** `normalizeOutlet()` automatically strips critic names from concatenated outlet IDs (e.g., `variety-frank-rizzo` → `variety`, `new-york-magazinevulture-sara-holdren` → `vulture`). This catches upstream data sources that merge outlet and critic names.
+Includes automatic outlet-critic concatenation stripping, first-name prefix dedup (in both `gather-reviews.js` and `rebuild-all-reviews.js`), and critic-outlet validation against the auto-generated registry.
 
-**First-name prefix dedup:** `gather-reviews.js` checks if an incoming critic's name is a first-name prefix of an existing critic at the same outlet (e.g., incoming "Jesse" at nytimes matches existing "Jesse Green"). Merges into the existing file instead of creating a duplicate. `rebuild-all-reviews.js` also has prefix dedup as a safety net when building reviews.json, skipping entries where one critic key is a prefix of another at the same outlet.
+> **Details:** `docs/CLAUDE-REFERENCE.md` § "Review Normalization Internals".
 
 ### Review Data Quality
 
@@ -340,81 +332,21 @@ In Jan 2026, we discovered 147 misattributed reviews (7%) where critics were inc
 
 ### Critic-Outlet Misattribution Detection
 
-Auto-generated system to catch when reviews are attributed to the wrong outlet. No manual database maintenance — everything is derived from the corpus.
+Auto-generated system using `data/critic-registry.json` (106 critics, 31 freelancers). `validate-data.js` catches misattributions; `gather-reviews.js` warns on suspicious pairings. Registry auto-regenerates during daily rebuild. Freelancers (3+ outlets or no single outlet >70%) are never flagged.
 
-**How it works:**
-1. `scripts/audit-critic-outlets.js` scans all `review-texts/` files, builds per-critic outlet frequency stats, writes `data/critic-registry.json` (106 critics with 3+ reviews, 31 freelancers identified)
-2. `validateCriticOutlet(critic, outlet)` in `review-normalization.js` checks the registry and returns `{ isSuspicious, confidence, reason, knownOutlets }`
-3. `validate-data.js` runs two checks: cross-outlet same-critic detection (same critic at 2+ outlets for same show) and registry-based misattribution flagging
-4. `gather-reviews.js` warns (never blocks) when saving a review with a suspicious critic-outlet pairing
-
-**Confidence levels:** High (10+ reviews, 0 at target outlet, not freelancer), Medium (5+ reviews, <10% share), Low (insufficient data)
-
-**Freelancer detection:** `isFreelancer = true` when 3+ outlets or no single outlet >70% share. Freelancers are never flagged. Known freelancers list in audit script (Chris Jones, Charles Isherwood, etc.)
-
-**Auto-updated:** Registry regenerates during daily `rebuild-reviews.yml` workflow and is committed if changed.
-
-**Files:**
-- `data/critic-registry.json` — Auto-generated, consumed by `validateCriticOutlet()`
-- `data/audit/critic-outlet-affinity.json` — Detailed report with flagged reviews and freelancer list
+> **Details:** `docs/CLAUDE-REFERENCE.md` § "Critic-Outlet Misattribution System" — full detection pipeline, confidence levels, files.
 
 ### Text Quality Classification
 
-Two classification systems exist — the canonical `contentTier` (5-tier, in `content-quality.js`) and the legacy `textQuality` (4-tier, inline in `collect-review-texts.js`). Both are written to review files; `contentTier` is what gets published to `reviews.json`.
+**Canonical system:** `contentTier` (5-tier) in `scripts/lib/content-quality.js`. Called by `collect-review-texts.js`, `gather-reviews.js`, `rebuild-all-reviews.js`.
 
-#### Content Tier (canonical, 5-tier)
+**Tiers:** `complete` (full review), `truncated` (paywall/cutoff), `excerpt` (aggregator excerpt only), `stub` (<150 words), `invalid` (garbage). Three paths to "complete": standard (300+ words), long text (500+), or short-but-complete (150+ with opinion language).
 
-Classified by `classifyContentTier()` in `scripts/lib/content-quality.js`. Called by:
-- `collect-review-texts.js` — after saving new fullText
-- `gather-reviews.js` — when creating new review files
-- `rebuild-all-reviews.js` — safety net during daily rebuild
-- `backfill-review-flags.js` — one-time recalculation
+**Legacy:** `textQuality` (4-tier: full/partial/truncated/excerpt) also written to files but `contentTier` is canonical.
 
-**Tiers:**
-- `complete` — Full review text with sufficient content for scoring
-- `truncated` — Severe truncation signals (paywall, "read more", mid-sentence cutoff)
-- `excerpt` — Only aggregator excerpt available, no fullText
-- `stub` — Very short text (<150 words) that isn't structurally complete
-- `invalid` — Garbage content (navigation, ads, "thanks for subscribing")
+**Junk handling:** Automatic stripping of newsletter promos, login prompts, signup forms. Garbage detection guards prevent false positives on legitimate reviews.
 
-**Three paths to "complete":**
-1. **Path 1** (standard): 300+ words, proper ending punctuation, no truncation signals
-2. **Path 2** (long text): 500+ words regardless of ending (long enough to be usable)
-3. **Path 3** (short but complete): 150+ words, zero truncation signals, proper ending, opinion language detected, text longer than 1.1x longest excerpt
-
-Path 3 uses `hasOpinionLanguage()` which requires 2+ matches from evaluative/critical patterns (brilliant, disappointing, succeeds, struggles, recommended, etc.) to distinguish real capsule reviews from plot summaries.
-
-#### Text Quality (legacy, 4-tier)
-
-Set by `classifyTextQuality()` inline in `collect-review-texts.js`. Stored as `textQuality` field:
-- `full` — >1500 chars, mentions show title, >300 words, no truncation signals
-- `partial` — 500-1500 chars or larger but missing criteria
-- `truncated` — Has paywall/login text, "read more" prompts, or severe signals
-- `excerpt` — <500 chars
-
-#### Junk Handling
-
-**Automatic junk stripping:** Removes newsletter promos (TheaterMania), login prompts (BroadwayNews), "Read more" links (amNY), signup forms (Vulture/NY Mag) from end of scraped text.
-
-**Legitimate endings recognized:** Theater addresses, URLs, production credits, ticket info — these don't trigger false truncation.
-
-**Truncation signals detected:**
-- `has_paywall_text` — "subscribe", "sign in", "members only"
-- `has_read_more_prompt` — "continue reading", "read more"
-- `has_footer_text` — "privacy policy", "terms of use"
-- `shorter_than_excerpt` — fullText shorter than aggregator excerpt
-- `no_ending_punctuation` — Doesn't end with .!?"')
-- `possible_mid_word_cutoff` — Ends with lowercase letter
-
-**Garbage detection guards (Feb 2026):** To prevent false positives on legitimate reviews:
-- Legal page patterns (e.g., "All Rights Reserved") are skipped for texts >500 chars — copyright footers are not garbage
-- Error page patterns (e.g., "has been removed") only check first 300 chars for long texts — prevents theatrical context matches
-- Ad blocker detection requires full message context, not just the word "adblock"
-
-**Automated quality checks:**
-- `scripts/audit-text-quality.js` — Runs in CI, enforces thresholds (35% full, <40% truncated, <5% unknown)
-- Quality classification happens automatically during `collect-review-texts.js` and `gather-reviews.js`
-- `review-refresh.yml` now rebuilds `reviews.json` after collecting new reviews
+> **Details:** `docs/CLAUDE-REFERENCE.md` § "Text Quality Classification" — complete path logic, truncation signals, garbage guards, legacy system.
 
 ## Automated Testing
 
@@ -565,26 +497,13 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 
 **Data quality flags:** `wrongProduction: true` (e.g., off-Broadway run), `wrongShow: true` (different show entirely), `isRoundupArticle: true` (multi-show article). Wrong production/show reviews are excluded from reviews.json.
 
-**Off-Broadway transfer reviews (reusable):** 18 reviews are flagged `wrongProduction: true` with `wrongProductionNote` indicating the off-Broadway venue. When adding off-Broadway show entries, these reviews can be moved/copied to the new show:
-- **Hamilton** (4 reviews) → Public Theater, Feb 2015
-- **Stereophonic** (6 reviews) → Playwrights Horizons, Oct 2023
-- **The Great Gatsby** (3 reviews) → Park Central Hotel immersive, Jun 2023
-- **Illinoise** (3 reviews) → Park Avenue Armory, Mar 2024
-- **Oh, Mary!** (2 reviews) → Lucille Lortel Theatre, Feb-May 2024
-
 **Known date corrections:** Harry Potter opens 2018-04-22 (not 2021 post-COVID reopen).
 
-**Wrong-production prevention guards (Feb 2026):** Three layers prevent wrong-production/wrong-show content from entering the corpus:
+**Wrong-production prevention:** Three layers (`gather-reviews.js` production-verifier, `scrape-playbill-verdict.js` title+URL-year filters, `collect-review-texts.js` post-scrape date check) prevent wrong-production/wrong-show content. Year gap thresholds: >3 years before or >2 years after opening.
 
-1. **`gather-reviews.js`** — `production-verifier.js` checks review text against show metadata at intake time. Only runs for reviews entering via aggregator sources (DTLI, BWW, Show Score, etc.).
+**Off-Broadway transfers:** 18 reviews flagged `wrongProduction: true` are reusable when adding off-Broadway entries (Hamilton, Stereophonic, Great Gatsby, Illinoise, Oh Mary!).
 
-2. **`scrape-playbill-verdict.js`** — Two guards:
-   - Title filter (`isNotBroadway()`) rejects streaming/TV keywords: "apple tv", "netflix", "hulu", "disney+", "streaming", "amazon prime", "tv series", "tv show"
-   - URL year check: extracts year from review URL, compares to show opening year. Skips if gap > 3 years before or 2 years after opening. Catches TV series reviews (e.g., 2021 Schmigadoon! Apple TV+ vs 2026 Broadway) and old off-Broadway productions.
-
-3. **`collect-review-texts.js`** — Post-scrape date check in `updateReviewJson()`: after successfully scraping fullText, extracts year from URL, compares to show opening year. Auto-flags `wrongProduction: true` with explanatory note if gap exceeds ±3/+2 years. Uses `_showsJsonCache` for efficient shows.json lookups.
-
-**Year gap thresholds:** `urlYear < showYear - 3` or `urlYear > showYear + 2`. The asymmetric window accounts for pre-opening press (reviews up to 3 years before) and post-opening coverage (up to 2 years after). URL year extraction uses `/\/((?:19|20)\d{2})\//` pattern restricted to plausible years (avoids matching article IDs like `/6910/`).
+> **Details:** `docs/CLAUDE-REFERENCE.md` § "Wrong-Production Prevention Guards" and "Off-Broadway Transfer Reviews".
 
 ## Subscription Access for Paywalled Sites
 
@@ -597,169 +516,28 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 
 `collect-review-texts.js` automatically logs in using these credentials.
 
-**Credential Status (Feb 2026):**
-| Site | Status | Notes |
-|------|--------|-------|
-| WSJ | **Untestable in CI** | Dow Jones SSO blocks headless Chrome on GitHub Actions IPs — form fields don't render. Previous "invalid credentials" report was misdiagnosis (test script also had wrong selectors, now fixed). Use Browserbase tier for actual collection. |
-| NYT | **Untestable in CI** | Same anti-bot blocking — `myaccount.nytimes.com` won't render login form in headless CI Chrome. Browserbase tier needed. |
-| Vulture/NY Mag | Untested | Needs verification |
-| Washington Post | Untested | Needs verification |
+**Credential note:** WSJ and NYT are untestable in CI (anti-bot blocking). Use Browserbase tier for actual collection.
 
-**Anti-bot note:** `test-paywalled-access.yml` uses plain Playwright headless Chrome which WSJ and NYT block. The actual collection script (`collect-review-texts.js`) uses Browserbase (Tier 1.5) with CAPTCHA solving for these sites. To test credentials, run collection with `browserbase_enabled=true` targeting a specific paywalled review.
+### Full Text Collection
 
-### Full Text Collection Status (Feb 2026)
+`collect-review-texts.js` uses a declarative tier chain: Archive.org → Playwright → Browserbase ($0.10/session) → ScrapingBee → Bright Data → Archive.org CDX → final fallback. Low success rates are normal (many dead URLs). Nightly cron processes ~100 reviews with Browserbase enabled.
 
-**704 reviews need re-scraping** (truncated/stub/needs-rescrape):
+**Commands:** `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_reviews=0` (per-show) or `-f content_tier=truncated` (by tier: `excerpt`, `truncated`, `needs-rescrape`).
 
-| Category | Count | Top Outlets |
-|----------|-------|-------------|
-| Free (no login) | 568 | timeout (52), deadline (40), new-york-sun (34), observer (26), nydailynews (24), thestage (18) |
-| Paywalled | 136 | wsj, nytimes, vulture, newyorker, washpost, latimes, telegraph, financialtimes |
+> **Details:** `docs/CLAUDE-REFERENCE.md` § "Full Text Collection Architecture" — tier chain internals, CDX multi-snapshot, credential status, Browserbase routing, collection status counts.
 
-**Content tier distribution (3,644 source files):** 2,138 complete (58.6%), 774 excerpt (21.2%), 484 truncated (13.3%), 154 stub (4.2%), 66 needs-rescrape (1.8%), 16 invalid, 8 none, 4 full.
+## Scoring & Data Quality Summary
 
-**Multi-tier fallback success rates (Jan 2026 data):**
-| Tier | Method | Success Rate | Notes |
-|------|--------|-------------|-------|
-| 0 | Archive.org (first for paywalled) | 11.1% | Best performer |
-| 0.5 | Archive.org CDX multi-snapshot | New (Feb 2026) | Queries CDX API for up to 10 snapshots, tries oldest-first (pre-paywall). 2s rate limit between fetches. |
-| 1 | Playwright + stealth | 6.7% | Local browser |
-| 1.5 | Browserbase | Enabled by default | $0.10/session, CAPTCHA solving |
-| 2 | ScrapingBee | 3.6% | API-based |
-| 3 | Bright Data Web Unlocker | 3.7% | API-based |
-| 3.5 | Archive.org CDX (fallback) | New (Feb 2026) | Same as 0.5 but runs as final fallback for non-archive-first sites |
-| 4 | Archive.org (final fallback) | — | Last resort |
+All major data quality issues from the Jan-Feb 2026 audit are **FIXED**. Current audit baseline: 17 legitimate flags (long-running show re-reviews, freelancer syndication, roundup articles).
 
-**Browserbase routing fix (Feb 2026):** Paywalled sites returning 404 used to trigger a fast-path that skipped Browserbase entirely. Fixed to allow paywalled 404s to fall through to Browserbase when login credentials exist, since 404 may be due to anti-bot blocking rather than a dead URL. Also: `archiveFirstSites` config routes paywalled domains to Archive.org first (Tier 0), which is correct for historical reviews but means Browserbase only fires for non-archived paywalled content.
+**Scoring hierarchy:** Priority 0 (explicit ratings) → 0.5 (humanReviewScore) → 0b (originalScore) → 1 (LLM ensemble) → 2 (thumb override) → 3 (LLM fallback). Excerpt-only reviews auto-downgraded to low confidence.
 
-**Content tier filtering (Feb 2026):** `CONTENT_TIER_FILTER` env var (and `content_tier` workflow input) allows targeted collection runs by tier: `excerpt`, `truncated`, or `needs-rescrape`. Enables parallel dispatches for different review categories.
+**LLM ensemble scoring:** ~0.66 min/review, max safe batch ~400, ~$0.045/review. Git checkpointing every 100 reviews. Trigger: `llm-ensemble-score.yml`.
 
-**Archive.org CDX multi-snapshot (Feb 2026):** `fetchFromArchiveCDX()` queries the CDX API (`/cdx/search/cdx?url=X&output=json&limit=10`) to find multiple archived snapshots when the single-snapshot availability API fails. Tries oldest-first (pre-paywall content for WSJ, pre-login for BroadwayNews). Rate limited: 2s between snapshot fetches (CDX has ~15 req/min undocumented limit). Integrated as Tier 0.5 (archive-first sites) and Tier 3.5 (final fallback). `archiveFirstSites` includes: nytimes, vulture, nymag, washingtonpost, wsj, newyorker, ew, latimes, rollingstone, chicagotribune, nypost, nydailynews, theatrely, amny, forward, timeout, broadwaynews.
+**Human review queue:** `data/audit/needs-human-review.json` — 2 reviews remaining. Automated adjudication runs daily at 5 AM UTC (`adjudicate-review-queue.yml`).
 
-**Declarative tier chain architecture (Feb 2026):** `fetchReviewText()` uses a declarative tier chain loop instead of sequential try/catch blocks. Key components:
-- `buildTierContext()` — computes URL properties (isKnownBlocked, isArchiveFirst, hasPaywallCreds) and mutable state signals (including `_archiveCdxRan`)
-- `buildTierChain()` — returns 9 tier descriptors (0, 0.5, 1, 4-early, 1.5, 2, 3, 3.5, 4), each with `shouldRun()` predicates and `onFailure()` hooks
-- `checkContentQuality()` — quality gate using `isGarbageContent()` that rejects paywall pages, newsletter overlays, ad-blocker walls. When a tier returns HTTP 200 with garbage content, the loop falls through to the next tier instead of accepting it.
-- `withTimeout()` — wraps tier execution with configurable timeout (Browserbase gets 120s)
-- Best-of-garbage fallback — tracks the longest garbage response in case all tiers fail, uses it as last resort
+**Re-scraping queue:** ~704 reviews need fullText (568 free-site, 136 paywalled). Nightly cron handles collection.
 
-**Low success rates are normal** — many URLs are dead (404), behind aggressive anti-bot, or on defunct sites. The nightly cron (`collect-review-texts.yml`, 2 AM UTC) processes up to 100 reviews per run with Browserbase enabled by default and retry_failed=true.
+**Content quality audit:** Run `node scripts/audit-content-quality.js` after bulk data changes.
 
-**Collect per-show:** `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_reviews=0`
-
-**Collect by content tier:** `gh workflow run "Collect Review Texts" -f content_tier=truncated -f max_reviews=0` (also: `excerpt`, `needs-rescrape`)
-
-## Known Extraction & Data Quality Issues (Feb 2026)
-
-Documented from the Jan-Feb 2026 review corpus audit (1,825→3,644 reviews). **All issues below are FIXED** as of Feb 2026.
-
-### Text Quality Issues
-
-**HTML entity pollution (FIXED Feb 2026):** Entities decoded at three points: `cleanText()` in text-quality.js (LLM scorer path), `mergeReviews()` in review-normalization.js (incoming text), and `rebuild-all-reviews.js` (rebuild path). All use shared `decodeHtmlEntities()` from text-cleaning.js.
-
-**Outlet-specific junk in fullText (FIXED Feb 2026):** `scripts/lib/text-cleaning.js` now has outlet-specific trailing junk patterns for EW (`<img>` tags, srcset, "Related Articles"), BWW ("Get Access To Every Broadway Story"), Variety ("Related Stories", "Popular on Variety"), BroadwayNews (site navigation), and The Times UK (paywall prefix). Applied at write time in all three consumer scripts via `cleanText()`.
-
-**Byline extraction false positives (FIXED Feb 2026):** `extractByline()` in `content-quality.js` now accepts `options.excludeNames` to skip cast/creative team names that appear in review text (e.g., "Written by David Yazbek" is the songwriter, not the reviewer). Pattern 3 ("Written by X") removed since it always means playwright in theater reviews. Non-name word blocklist (Prize, Weekly, Crown, Theatre, etc.) rejects extracted "names" that are actually proper nouns. Callers (`backfill-review-flags.js`, `collect-review-texts.js`) pass show cast+creative names from shows.json.
-
-**Quality classification in `gather-reviews.js` (FIXED Feb 2026):** `gather-reviews.js` now runs `classifyContentTier()` on every review before writing (line 1194). All review files have contentTier assigned.
-
-**Web-search bulk import garbage patterns (FIXED Feb 2026):** An earlier bulk import using `source: "web-search"` introduced three types of garbage fullText:
-- **Excerpt copies (63 fixed):** Aggregator excerpt (avg 27 words) copied verbatim into fullText. Top outlets: talkinbroadway (15), wsj (11), hollywood-reporter (5), observer (5).
-- **404 error pages (9 fixed):** TheaterMania returned "It seems we can't find what you're looking for" which was saved as fullText.
-- **Paywall stubs (5 fixed):** WSJ URLs produced only the article URL + photo caption (6-49 words).
-- **Excerpt copies from other sources (2 fixed):** Non-web-search reviews (dtli, etc.) where fullText was identical to an excerpt.
-All 79 files fixed by nulling fullText, preserving excerpts in proper fields, and setting appropriate contentTier for nightly collector pickup. Detection: `scripts/audit-content-quality.js` "fullText Matches Excerpt" check.
-
-**BroadwayNews cross-contamination (FIXED Feb 2026):** Three reviews at EW and Deadline had BroadwayNews content ("Broadway News' Broadway Review by Brittani Samuel") scraped into their fullText. Root cause: scraping Deadline/EW URLs returned embedded or redirected BroadwayNews content. Fixed by nulling fullText and adding `garbageReason`. Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
-
-**Critic name misattributions (FIXED Feb 2026):** 8 reviews where the file's criticName didn't match the byline in fullText. Four patterns found:
-- Same person, different name (Danny/Daniel Graugnard) — updated criticName
-- Wrong critic's text at same outlet (Matthew Murray file had Howard Miller text) — nulled fullText
-- Wrong outlet content scraped (BroadwayNews at EW/Deadline URLs) — nulled fullText
-- Aggregator misattributed critic (Fierberg→Samuel, Feldman→Gleason, Marks→Kumar) — renamed files via `git mv`, added `criticNameNote`
-Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
-
-### Scoring Issues
-
-**Explicit ratings auto-converted (FIXED Feb 2026):** `rebuild-all-reviews.js` extracts explicit ratings (stars, letter grades, X/5, "X out of Y") from review text and `originalScore` field, overriding LLM scores. Priority 0 in the scoring hierarchy. As of Feb 2026: 217 text-extracted + 110 originalScore-parsed = 327 reviews (16.3%) using explicit ratings. The `scoreSource` field in reviews.json tracks which method produced each score.
-
-**Scoring hierarchy in `rebuild-all-reviews.js`:** Priority 0 (explicit ratings from text/originalScore) → Priority 0.5 (`humanReviewScore` manual override) → Priority 0b (originalScore parsed) → Priority 1 (LLM high/medium confidence) → Priority 2 (aggregator thumb direction override for low-confidence LLM) → Priority 3 (LLM fallback). The `humanReviewScore` field (1-100) is set during manual audit of flagged reviews where LLM and aggregator thumbs disagree. It persists across rebuilds and takes precedence over all automated scoring except explicit ratings. Always paired with `humanReviewNote` explaining the rationale. As of Feb 2026: 120 source files have humanReviewScore (60 active in reviews.json; rest overridden by higher-priority explicit ratings).
-
-**Excerpt-only confidence downgrade (FIXED Feb 2026):** Audit showed ~50% error rate when LLM scored excerpt-only reviews with high/medium confidence. `rebuild-all-reviews.js` now computes `effectiveConfidence` that downgrades to "low" when `fullText` is missing or <100 chars. This routes excerpt-only reviews through Priority 2 (thumb override) instead of trusting the LLM score directly.
-
-**garbageFullText recovery (FIXED Feb 2026):** Some reviews have valid text in `garbageFullText` (flagged as garbage only due to trailing junk like newsletters/copyright). `rebuild-all-reviews.js` now recovers this text by running `cleanText()` on `garbageFullText` when `fullText` is null, promoting it to `fullText` if the cleaned result is >200 chars.
-
-**LLM low-confidence as garbage detector (FIXED Feb 2026):** `detectGarbageFromReasoning()` in `content-quality.js` checks 17 patterns in LLM reasoning text (e.g., "plot summary without evaluation", "headline only", "not a review"). When confidence is "low" and a pattern matches, the review is auto-flagged `contentTier: "needs-rescrape"` with `garbageReasoningDetected` label. Integrated into the scoring pipeline (`llm-scoring/index.ts` post-scoring check) and backfilled on existing reviews (34 flagged).
-
-### Deduplication Issues
-
-**URL uniqueness (FIXED Feb 2026):** `gather-reviews.js` checks URL uniqueness across all files in a show directory (not just same outlet+critic). First-name prefix matching and outlet-critic concatenation normalization prevent the most common duplicate patterns. In Feb 2026 cleanup: 158 duplicate files deleted, validation went from 18 to 0 duplicate outlet+critic combos.
-
-### Workflow Issues
-
-**Parallel push conflicts (FIXED Feb 2026):** All 8 parallel-safe workflows now use robust push retry: `git checkout -- . && git clean -fd` before rebase, `-X theirs` for auto-conflict resolution, `rebase --abort` on failure, random 10-30s backoff, 5 retries. Fixed in: `gather-reviews.yml`, `rebuild-reviews.yml`, `scrape-nysr.yml`, `scrape-new-aggregators.yml`, `fetch-guardian-reviews.yml`, `process-review-submission.yml`, `review-refresh.yml`, `update-commercial.yml`.
-
-### LLM Ensemble Scoring — Operational Constraints
-
-**BEFORE triggering `llm-ensemble-score.yml`, ALWAYS calculate estimated runtime:**
-- 4-model ensemble (Claude + GPT-4o + Gemini + Kimi): ~0.66 min/review (~90 reviews/hour)
-- 3-model ensemble: ~0.5 min/review (~120 reviews/hour)
-- GitHub Actions job timeout: **6 hours (360 minutes)**
-- **Max safe batch: ~400 reviews** (400 × 0.66 = 264 min, well under 360)
-
-**Git checkpointing:** Every 100 reviews (default in CI, configurable via `--checkpoint=N`), the pipeline commits and pushes scored files to git. If the job times out at review 350, reviews 0-299 are safe (3 checkpoints committed). Only reviews since the last checkpoint are lost. Disabled locally (only runs when `GITHUB_ACTIONS` env is set).
-
-**Full rescore procedure (~1,700+ reviews):**
-With checkpointing, a single unlimited run is now safe — progress is preserved even on timeout. But batching is still recommended for cost control and monitoring:
-1. Batch 1: `--rescore --limit=500` (scores first 500 with new prompt version)
-2. Batch 2+: `--outdated` with no limit (catches reviews still on old prompt version — checkpoints protect against timeout)
-3. Final verification: `--outdated` with no limit (should find 0 to process)
-
-**Why `--outdated` works after batch 1:** The first `--rescore` batch updates `promptVersion` on scored files. Subsequent `--outdated` runs find files with older versions — exactly the remaining unscored ones.
-
-**Cost:** ~$0.045/review ($18/batch of 400, ~$80 for full corpus)
-
-### Scoring Pipeline Details (Feb 2026)
-
-**Scoring hierarchy in `rebuild-all-reviews.js`:**
-- **Priority 0:** Explicit ratings extracted from review text (stars, letter grades, X/5, "X out of Y") — 199 reviews
-- **Priority 0.5:** `humanReviewScore` (1-100) — manual override from audit queue, always paired with `humanReviewNote` — 60 reviews (120 source files have humanReviewScore, but 60 are overridden by higher-priority explicit ratings)
-- **Priority 0b:** `originalScore` parsed from field (letter grades, star ratings) — 67 reviews
-- **Priority 1:** LLM ensemble score (high/medium confidence, not needs-review) — 1,142 reviews
-- **Priority 2:** Aggregator thumb override of low-confidence/needs-review LLM — 0 reviews (see P2 direction fix below)
-- **Priority 3:** LLM fallback (low confidence, single/no thumbs) — 272 reviews
-
-**P2 direction comparison fix (Feb 2026):** The P2 thumb override previously compared exact buckets (Rave/Positive/Mixed/Negative/Pan), but aggregator thumbs only have 3 levels (Up/Meh/Down). This caused false overrides: an LLM score of 87 (Rave bucket) with both thumbs "Up" (Positive bucket) was treated as a disagreement, pulling Rave scores down to 80. Fixed by comparing *directions* (positive/negative/neutral) instead of exact buckets. `thumbDirection('Up')` → "positive" matches `bucketDirection('Rave')` → "positive", so no override fires. The `thumb-override-llm` source now correctly shows 0 reviews — all former cases were false positives caught by `humanReviewScore` overrides.
-
-**Excerpt-only confidence downgrade:** When `fullText` is missing or <100 chars, LLM confidence is downgraded to "low" regardless of what the model reported. Audit showed ~50% error rate on excerpt-only high/medium confidence scores. These route through Priority 2 (thumb override) or Priority 3 (fallback) instead.
-
-**garbageFullText recovery:** During rebuild, reviews with `fullText: null` but `garbageFullText` >200 chars are cleaned via `cleanText()`. If the cleaned result is >200 chars, it's promoted to `fullText` for scoring. 114 reviews recovered this way. The source files are NOT modified — recovery is in-memory during rebuild only.
-
-**contentTier flow-through:** `rebuild-all-reviews.js` carries `contentTier` from source files into `reviews.json`. Source file distribution: 2,138 complete, 774 excerpt, 484 truncated, 154 stub, 66 needs-rescrape, 16 invalid.
-
-**Human review queue:** `data/audit/needs-human-review.json` lists reviews where LLM score and aggregator thumbs disagree. Categories: `both-thumbs-override-llm` (auto-handled), `single-thumb-override-low-conf`, `both-thumbs-disagree-with-llm` (needs manual review). Set `humanReviewScore` + `humanReviewNote` on the source file to override. As of Feb 2026: 2 reviews in queue (down from 23 after audit).
-
-**Automated adjudication:** `scripts/adjudicate-review-queue.js` runs daily at 5 AM UTC (via `adjudicate-review-queue.yml`), 1 hour after the rebuild generates the queue. For each flagged review, calls Claude Sonnet to re-evaluate with full text + context. High/medium confidence → writes `humanReviewScore` to source file. Low confidence → increments `adjudicationAttempts`. After 3 uncertain attempts → auto-accepts LLM original score (permanently clears from queue). API errors don't consume attempts. Triggers rebuild after committing changes. Fields written: `humanReviewScore`, `humanReviewNote`, `humanReviewPreviousScore`, `humanReviewAt`, `adjudicationAttempts`, `adjudicationHistory`.
-
-### Remaining Data Quality Work (Feb 2026)
-
-**Re-scraping queue:** ~188 free-site reviews and ~136 paywalled reviews still need fullText. Bulk collection runs dispatched for all 58 affected shows (free sites). The nightly `collect-review-texts.yml` cron (2 AM UTC) processes up to 100 reviews per run with Browserbase enabled. Paywalled sites use subscription credentials from GitHub Secrets (NYT, Vulture, WSJ, WaPo).
-
-**TheaterMania misattribution cleanup (Feb 2026):** 11 reviews attributed to Jesse Green/Adam Feldman at TheaterMania were web-search bulk import artifacts with fabricated URLs (5 shared article ID `_96847`, 2 shared `_95234`). Jesse Green writes for NYT, Adam Feldman for Time Out — proper reviews already existed at correct outlets. All 11 flagged `wrongAttribution: true`, `contentTier: "invalid"`.
-
-**Known audit flags (17 issues, all verified):** These are flagged by the audit but are legitimate:
-- **9 long-running show re-reviews:** URL year mismatches for Book of Mormon (2011), Chicago (1996), Lion King (1997), Wicked (2003) — critics reviewing years after opening. Legitimate.
-- **4 Chris Jones cross-outlet URLs:** 3 nydailynews reviews have chicagotribune.com URLs, 1 washpost has journaltimes.com. Chris Jones is a freelancer; syndication is expected.
-- **1 Deadline roundup:** 8 shows share one roundup URL. Legitimate multi-show article, flagged `isRoundupArticle: true`.
-- **2 fullText matches excerpt:** purlie-victorious-2023 and the-roommate-2024 — partial scrapes marked truncated for rescrape.
-- **1 web-search null URL:** lion-king washpost legacy entry.
-
-**Schmigadoon TV series pattern (FIXED Feb 2026):** 14 reviews in `schmigadoon-2026/` were for the 2021 Apple TV+ series, not the 2026 Broadway musical. All entered via `scrape-playbill-verdict.js` which lacked streaming/TV title filters and URL year checks. Fixed: all 14 flagged `wrongShow: true`, fullText nulled. Prevention: playbill-verdict now has title keyword filter + URL year check (see wrong-production guards above).
-
-**L&SA and TalkingBroadway URLs are NOT generic:** Earlier audit flagged these as cross-show duplicate URLs, but they use query parameters for routing (`?ID=`, `?page=&id=`). The audit's `normalizeUrl()` was stripping query params, causing false positives. Fixed by preserving query params (only strips tracking params like `utm_*`).
-
-**27 cross-outlet duplicate-text reviews:** Files with `duplicateTextOf` field where the same fullText appears at a different outlet (e.g., Chris Jones at both Chicago Tribune and NY Daily News). These are legitimate — the same freelance critic published in multiple outlets.
-
-**Content quality audit:** Run `node scripts/audit-content-quality.js` after any bulk data changes. Current baseline: 17 issues (9 URL year mismatches for long-running shows, 4 domain mismatches from freelancer syndication, 1 cross-show roundup, 2 fullText≈excerpt, 1 null URL). Zero critic name mismatches.
-
-**Test infrastructure (ALL GREEN Feb 2026):** CI fully passing. Both `ensemble.test.mjs` and `trade-press-scraper.test.mjs` use Node test runner with `createRequire` for CJS module loading. Text quality audit uses `contentTier` fallback. Review-text validator treats unknown outlets and garbage critic names as warnings (not errors). Symlink double-counting fixed in all validation scripts.
+> **Details:** `docs/CLAUDE-REFERENCE.md` — see sections: "Scoring Pipeline Internals", "LLM Ensemble Scoring Constraints", "Known Audit Flags", "Remaining Data Quality Work", "Fixed Data Quality Issues".
