@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-02-03T19:19:13.764Z",
+  "runDate": "2026-02-03T19:22:28.177Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "aladdin-2014",
+    "showFilter": "harry-potter-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 7,
-    "failed": 9,
+    "failed": 16,
     "skipped": 0,
-    "successRate": "43.8%"
+    "successRate": "30.4%"
   },
   "tierBreakdown": {
     "playwright": 1,
@@ -24,78 +24,113 @@
     "archive": 6
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 2,
+    "tier1Attempts": 14,
+    "tier1Success": 5,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 1,
-    "tier3Attempts": 2,
-    "tier3Success": 0,
-    "tier4Attempts": 15,
-    "tier4Success": 5,
-    "totalFailed": 9,
-    "scrapingBeeCreditsUsed": 13,
+    "tier2Attempts": 4,
+    "tier2Success": 0,
+    "tier3Attempts": 4,
+    "tier3Success": 1,
+    "tier4Attempts": 30,
+    "tier4Success": 8,
+    "totalFailed": 16,
+    "scrapingBeeCreditsUsed": 28,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 3,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 8,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "aladdin-2014/ew--thom-geier.json",
-    "aladdin-2014/newsday--linda-winer.json",
-    "aladdin-2014/timeout--adam-feldman.json",
-    "aladdin-2014/wsj--terry-teachout.json",
-    "aladdin-2014/nbcny--dave-quinn.json",
-    "aladdin-2014/theater-pizzazz--sandi-durell.json",
-    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/timeout--adam-feldman.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/broadwayworld--michael-dale.json",
+    "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "harry-potter-2021/the-times--ann-treneman.json"
   ],
   "failed": [
-    "aladdin-2014/hollywood-reporter--david-rooney.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "aladdin-2014/nypost--elisabeth-vincentelli.json",
-    "aladdin-2014/theatermania--charles-isherwood.json",
-    "aladdin-2014/uinterview--danny-graugnard.json",
-    "aladdin-2014/ap--mark-kennedy.json",
-    "aladdin-2014/broadway-voice--kristen-balzano.json",
-    "aladdin-2014/catholic-transcript--bernard-carragher.json",
-    "aladdin-2014/thestage--mark-shenton.json"
+    "harry-potter-2021/ew--kristen-baldwin.json",
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "harry-potter-2021/national-review--kyle-smith.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "harry-potter-2021/broadway-blog--matthew-wexler.json",
+    "harry-potter-2021/curtainup--elyse-sommer.json",
+    "harry-potter-2021/exeunt-magazine--kev-berry.json",
+    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
+    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
+    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
+    "harry-potter-2021/usatoday--kelly-lawler.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
   ],
   "tierDetails": {
     "playwright": [
-      "aladdin-2014/nbcny--dave-quinn.json"
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
     "browserbase": [],
     "scrapingbee": [],
     "brightdata": [],
     "archive": [
-      "aladdin-2014/ew--thom-geier.json",
-      "aladdin-2014/newsday--linda-winer.json",
-      "aladdin-2014/timeout--adam-feldman.json",
-      "aladdin-2014/wsj--terry-teachout.json",
-      "aladdin-2014/theater-pizzazz--sandi-durell.json",
-      "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "harry-potter-2021/timeout--adam-feldman.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json",
+      "harry-potter-2021/broadwayworld--michael-dale.json",
+      "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
+      "harry-potter-2021/the-times--ann-treneman.json"
     ]
   },
   "failuresByOutlet": {
-    "New York Post": {
+    "IndieWire": {
       "count": 1,
-      "domain": "nypost.com",
+      "domain": "indiewire.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "Broadway Voice": {
+    "Broadway Blog": {
       "count": 1,
-      "domain": "bwayvoice.com",
+      "domain": "thebroadwayblog.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Stage": {
+    "CurtainUp": {
       "count": 1,
-      "domain": "thestage.co.uk",
+      "domain": "curtainup.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Front Row Center": {
+      "count": 1,
+      "domain": "frontrowcenter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Front Mezz Junkies": {
+      "count": 1,
+      "domain": "frontmezzjunkies.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Theater Pizzazz": {
+      "count": 1,
+      "domain": "theaterpizzazz.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Zeal NYC": {
+      "count": 1,
+      "domain": "zealnyc.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -103,9 +138,14 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "maybe-happy-ending-2024/nypost--johnny-oleksinski.json",
-      "oldUrl": "https://nypost.com/2024/11/13/entertainment/maybe-happy-ending-review-charming-musical-about-robot-romance/",
-      "newUrl": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/"
+      "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
+      "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
+      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOorcigWYqAoRhJrFZ5I1A96j_v2buLCydnd1vgUfKDoQhGZ6gu_t"
+    },
+    {
+      "reviewId": "harry-potter-2021/curtainup--elyse-sommer.json",
+      "oldUrl": "http://www.curtainup.com/harrypottercursedchild.html",
+      "newUrl": "http://www.curtainup.com/harrypotterbway18.html"
     }
   ]
 }
