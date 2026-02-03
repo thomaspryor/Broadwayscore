@@ -1,63 +1,44 @@
 {
-  "updatedAt": "2026-02-03T01:01:53.087Z",
-  "processed": 134,
-  "failed": 292,
-  "successRate": "31.5%",
+  "updatedAt": "2026-02-03T01:10:09.002Z",
+  "processed": 5,
+  "failed": 6,
+  "successRate": "45.5%",
   "tierBreakdown": {
-    "playwright": 53,
-    "browserbase": 8,
-    "scrapingbee": 47,
-    "brightdata": 43,
-    "archive": 39
+    "playwright": 2,
+    "browserbase": 0,
+    "scrapingbee": 2,
+    "brightdata": 0,
+    "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-02-02T19:06:36.985Z",
+      "t": "2026-02-03T01:03:57.584Z",
       "event": "bb-session",
-      "session": "6e086998",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/mary-jane-broadway_96"
+      "session": "d824ca6b",
+      "url": "https://www.theatermania.com/broadway/reviews/patriots_92948.html"
     },
     {
-      "t": "2026-02-02T19:07:30.518Z",
+      "t": "2026-02-03T01:04:48.813Z",
       "event": "bb-session",
-      "session": "07c956ca",
-      "url": "https://www.washingtonpost.com/theater-dance/2024/05/02/mary-jane-broadway-revie"
+      "session": "93815e95",
+      "url": "https://www.wsj.com/articles/patriots-review-on-broadway-putin-peter-morgan-russ"
     },
     {
-      "t": "2026-02-02T19:07:32.522Z",
-      "event": "bb-login-uncertain",
-      "domain": "washingtonpost.com"
+      "t": "2026-02-03T01:05:35.060Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-02-02T19:51:03.092Z",
+      "t": "2026-02-03T01:06:14.435Z",
       "event": "bb-session",
-      "session": "cd5c08f7",
-      "url": "http://www.hollywoodreporter.com/review/aladdin-theater-review-690038"
+      "session": "a3b96551",
+      "url": "https://www.wsj.com/arts-culture/theater/patriots-review-michael-stuhlbarg-putin"
     },
     {
-      "t": "2026-02-02T19:57:08.790Z",
-      "event": "bb-session",
-      "session": "92a99f77",
-      "url": "https://variety.com/2024/legit/reviews/an-enemy-of-the-people-jeremy-strong-broa"
-    },
-    {
-      "t": "2026-02-02T20:03:13.325Z",
-      "event": "bb-session",
-      "session": "2e044a8d",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/back-to-the-future-the-musical-"
-    },
-    {
-      "t": "2026-02-02T20:28:36.812Z",
-      "event": "bb-session",
-      "session": "0c3efa4c",
-      "url": "https://variety.com/2024/legit/reviews/lempicka-review-broadway-musical-12359710"
-    },
-    {
-      "t": "2026-02-02T20:37:44.899Z",
-      "event": "bb-session",
-      "session": "eb0ef14d",
-      "url": "https://www.vulture.com/2024/06/theater-review-merrily-we-roll-along-sondheim-ra"
+      "t": "2026-02-03T01:07:02.197Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     }
   ]
 }
