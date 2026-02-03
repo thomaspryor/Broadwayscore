@@ -68,8 +68,8 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "archivePath": "data/archives/reviews/the-wiz-2024/washpost--gloria-oladipo_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T04:43:55.548Z",
-  "fetchMethod": "playwright",
+  "textFetchedAt": "2026-02-03T05:23:31.355Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -77,17 +77,28 @@
       "success": true
     },
     {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No usable CDX snapshots (all non-200 or non-HTML)"
+    },
+    {
       "tier": 1,
       "method": "playwright",
       "success": true
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
     }
   ],
-  "fetchTier": 1,
-  "sourceMethod": "playwright",
+  "fetchTier": 2,
+  "sourceMethod": "scrapingbee",
   "archiveOrgTimestamp": "20250723213555",
   "archiveOrgUrl": "http://web.archive.org/web/20250723213555/https://www.washingtonpost.com/entertainment/theater/2024/04/17/wiz-broadway-review/",
   "textIssues": [
-    "Word count too low: 96 (min: 300)",
+    "Word count too low: 150 (min: 300)",
     "Show title not found in text"
   ],
   "rescoreCompletedAt": "2026-01-29T14:31:52.132Z",
@@ -95,13 +106,15 @@
   "garbageReason": "Paywall/subscription prompt: \"members only\"",
   "garbageFixedAt": "2026-01-29T22:45:23.388Z",
   "contentTier": "truncated",
-  "wordCount": 96,
+  "wordCount": 150,
   "needsRescore": true,
-  "fullText": "The new Broadway revival is charming, but at the cost of a broader artistic vision The latest revival of “The Wiz” just wants to be fun. And that’s a problem. The original was a rarity. When it launched in 1975, the musical won the Tony Award for best musical and was among a handful of Broadway productions at the time to feature an all-Black ensemble. Soulful, rich, drenched in color and magic, the original offered a vibrancy unseen before. Songs like “Home” and the funky “Ease on Down the Road” are etched into the American songbook.",
+  "fullText": "Democracy Dies in DarknessReview by Gloria OladipoThe latest revival of “The Wiz” just wants to be fun. And that’s a problem.\n\nThe original was a rarity. When it launched in 1975, the musical won the Tony Award for best musical and was among a handful of Broadway productions at the time to feature an all-Black ensemble. Soulful, rich, drenched in color and magic, the original offered a vibrancy unseen before. Songs like “Home” and the funky “Ease on Down the Road” are etched into the American songbook.\n\n24 CommentsMost ReadTravis Andrews, Janay Kingsberry, Kelsey Ables, Naveen Kumar and Geoff Edgers‘Crisis’: The fallout from Trump’s surprise plan to close Kennedy CenterFebruary 2, 2026Eva DouInternational companies cut off business in the U.S. because of ICEFebruary 2, 2026ColumnPhilip KennicottThe grave risk of Trump’s Kennedy Center shutdownFebruary 2, 2026NewsletterFridaysBook ClubOur weekly selection of book reviews and recommendations from Book World editor Ron Charles.Sign up5.52.10",
   "isFullReview": false,
-  "textWordCount": 96,
-  "textQuality": "truncated",
-  "truncationSignals": [],
-  "textStatus": "truncated",
-  "tierReason": "Short text (96 words)"
+  "textWordCount": 150,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "tierReason": "Short text (150 words)"
 }
