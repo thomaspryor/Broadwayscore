@@ -6340,18 +6340,6 @@
     "timestamp": "2026-02-02T15:56:19.930Z"
   },
   {
-    "reviewId": "doubt-2024/thestage--lane-williamson.json",
-    "showId": "doubt-2024",
-    "outlet": "The Stage",
-    "critic": "Lane Williamson",
-    "url": "https://www.thestage.co.uk/reviews/doubt-a-parable-review-at-the-todd-haimes-theatre-new-york-by-john-patrick-shanley-with-liev-schreiber-and-amy-ryan-roundabout-theatre-company",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"create a free account to\"",
-    "textLength": 680,
-    "timestamp": "2026-02-02T15:56:59.161Z"
-  },
-  {
     "reviewId": "gutenberg/timeout--adam-feldman.json",
     "showId": "gutenberg",
     "outlet": "Time Out New York",
@@ -8234,5 +8222,17 @@
     "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"aladdin\" not mentioned in text; No theater-related keywords in short text",
     "textLength": 1389,
     "timestamp": "2026-02-03T02:54:23.098Z"
+  },
+  {
+    "reviewId": "doubt-2024/thestage--lane-williamson.json",
+    "showId": "doubt-2024",
+    "outlet": "The Stage",
+    "critic": "Lane Williamson",
+    "url": "https://www.thestage.co.uk/reviews/doubt-a-parable-review-at-the-todd-haimes-theatre-new-york-by-john-patrick-shanley-with-liev-schreiber-and-amy-ryan-roundabout-theatre-company",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"create a free account to\"",
+    "textLength": 680,
+    "timestamp": "2026-02-03T03:01:18.413Z"
   }
 ]
