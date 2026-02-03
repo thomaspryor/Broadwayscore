@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This gorgeous revival of Cole Porter's 1948 musical proves that some shows are so perfectly constructed that they can survive any number of reimaginings and still emerge triumphant.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This gorgeous revival of Cole Porter's 1948 musical proves that some shows are so perfectly constructed that they can survive any number of reimaginings and still emerge triumphant.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This gorgeous revival proves that some shows are so perfectly constructed that they can survive any number of reimaginings and still emerge triumphant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Strong praise with 'gorgeous' and 'triumphant', emphasizing the show's perfect construction and successful revival. | GPT-4o: The review uses superlatives like 'gorgeous' and 'triumphant' indicating unqualified praise and a strong recommendation to see the show. | Gemini: The review uses strong positive language such as \"gorgeous\" and \"triumphant\", indicating a rave review. | Kimi: The critic employs superlatives including 'gorgeous,' 'perfectly constructed,' and 'triumphant' to offer unqualified praise, indicating the highest level of recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:58:23.082Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

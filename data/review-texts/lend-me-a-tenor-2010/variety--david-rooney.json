@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Ken Ludwig's 1989 Broadway farce proves that even the most expertly crafted comedic machinery can feel creaky when it's not firing on all cylinders.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This revival of Ken Ludwig's 1989 Broadway farce proves that even the most expertly crafted comedic machinery can feel creaky when it's not firing on all cylinders.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "even the most expertly crafted comedic machinery can feel creaky when it's not firing on all cylinders",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Acknowledges the play's quality ('expertly crafted') but finds the current production lacking in execution ('creaky', 'not firing on all cylinders'). Mixed assessment of material vs. production. | GPT-4o: The review suggests that the revival does not live up to its potential, describing it as 'creaky' and not fully effective, indicating a negative assessment. | Gemini: The review states that the production feels \"creaky\" and \"not firing on all cylinders,\" indicating a negative assessment. | Kimi: While acknowledging the source material is 'expertly crafted,' the critic describes the revival as 'creaky' and 'not firing on all cylinders,' indicating a disappointing production that fails to deliver despite the quality of the play itself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:06:06.244Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bruce Willis brings surprising vulnerability to his stage debut as the tormented writer Paul Sheldon, while Laurie Metcalf is chillingly effective as his deranged captor Annie Wilkes.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T18:34:23.069Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "openai: The text is a brief mention of performances without any evaluative content or overall assessment of the show.; gemini: This review refers to a production starring Bruce Willis and Laurie Metcalf, which is not the current Broadway production of Misery.",
+  "promptVersion": "5.2.0"
 }

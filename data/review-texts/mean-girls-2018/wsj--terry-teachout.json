@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The songs are catchy enough, the dancing is slick and the staging is colorful, but the show as a whole feels oddly inert, lacking the manic energy that made the film so memorable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The songs are catchy enough, the dancing is slick and the staging is colorful, but the show as a whole feels oddly inert, lacking the manic energy that made the film so memorable.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show as a whole feels oddly inert, lacking the manic energy that made the film so memorable",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Acknowledges positive elements (catchy songs, slick dancing, colorful staging) but concludes the overall experience is 'oddly inert' and lacks the energy that made the source material work. No clear recommendation either way. | GPT-4o: The review acknowledges some positive elements like catchy songs and colorful staging, but overall describes the show as 'oddly inert' and lacking energy, leading to a negative verdict. | Gemini: The review acknowledges positive aspects like catchy songs and slick dancing, but ultimately finds the show lacking energy and feeling inert, indicating a mixed assessment. | Kimi: While acknowledging competent songs, dancing, and staging, the critic's verdict is that the show is lifeless and fails to capture the energy of the original film. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:31:23.420Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

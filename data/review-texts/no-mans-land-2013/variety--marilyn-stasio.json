@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The two leads are having such a good time playing off each other that their pleasure is contagious, and audiences are bound to have as much fun watching this veteran pair as they're clearly having performing together.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "The two leads are having such a good time playing off each other that their pleasure is contagious, and audiences are bound to have as much fun watching this veteran pair as they're clearly having performing together.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "audiences are bound to have as much fun watching this veteran pair as they're clearly having performing together.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review highlights the contagious enjoyment of the leads, suggesting a strong positive experience for audiences. The tone is enthusiastic and indicates a solid recommendation. | Gemini: The review indicates that the leads' enjoyment is contagious and that audiences are bound to have fun, suggesting a positive experience. | Kimi: The critic emphasizes the contagious enjoyment and strong chemistry between the veteran leads, indicating audiences will have fun watching them, though the excerpt is brief.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:49:29.406Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

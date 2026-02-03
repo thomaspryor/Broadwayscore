@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show works best when it stops trying to be a play and just lets the music do the talking. When these four performers are onstage together, recreating that legendary session, the electricity is undeniable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show works best when it stops trying to be a play and just lets the music do the talking. When these four performers are onstage together, recreating that legendary session, the electricity is undeniable.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show works best when it stops trying to be a play and just lets the music do the talking.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Review acknowledges strong musical moments with 'undeniable electricity' but criticizes the dramatic elements, suggesting the show succeeds only partially. Very brief excerpt limits confidence in scoring. | GPT-4o: The review highlights the strong musical performances as the show's strength, suggesting it is worth seeing for those moments, despite some reservations about its structure as a play. | Gemini: The review indicates that the show is enjoyable when the music takes center stage, suggesting a positive experience overall, but with the caveat that the non-musical parts are less successful. | Kimi: The critic finds the dramatic structure flawed but delivers strong praise for the musical moments and ensemble chemistry, suggesting the production's highlights justify attendance despite uneven book scenes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:33:36.032Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 76,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

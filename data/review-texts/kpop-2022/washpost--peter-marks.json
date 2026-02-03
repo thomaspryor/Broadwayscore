@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical 'KPOP' on Broadway is a spectacle that dazzles with its choreography and energy, even if the book doesn't quite match the ambition of its production values.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical 'KPOP' on Broadway is a spectacle that dazzles with its choreography and energy, even if the book doesn't quite match the ambition of its production values.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a spectacle that dazzles with its choreography and energy, even if the book doesn't quite match the ambition",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear mixed verdict - praises the production spectacle and energy but criticizes the book as insufficient. The 'even if' construction shows qualified appreciation without strong recommendation. | GPT-4o: The review highlights the show's strong choreography and energy, indicating a positive experience despite some reservations about the book. | Gemini: The review praises the choreography and energy but notes the book is lacking, indicating a positive but not rave recommendation. | Kimi: The review praises the dazzling choreography and energy while noting the book doesn't match the production's ambition, indicating a solid recommendation based on visual and performance merits despite narrative shortcomings.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:01:06.226Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

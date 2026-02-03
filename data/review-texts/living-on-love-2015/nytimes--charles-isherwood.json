@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Fleming's acting may be a touch tentative, but her presence is magnetic, and her speaking voice has a lovely, musical lilt that makes even routine dialogue sound like song.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T18:10:50.258Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief excerpt or single sentence fragment, not a complete review with an evaluative verdict about the show; openai: This text is a brief comment on a performer's acting and presence, not a full review of the show.",
+  "promptVersion": "5.2.0"
 }

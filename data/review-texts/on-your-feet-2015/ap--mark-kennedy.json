@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical about Gloria and Emilio Estefan is a crowd-pleaser that offers a sanitized but energetic look at the couple's rise to fame, with infectious Latin rhythms that will have audiences dancing in their seats.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical about Gloria and Emilio Estefan is a crowd-pleaser that offers a sanitized but energetic look at the couple's rise to fame, with infectious Latin rhythms that will have audiences dancing in their seats.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a crowd-pleaser that offers a sanitized but energetic look at the couple's rise to fame",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it a 'crowd-pleaser' with 'infectious Latin rhythms' that will have audiences 'dancing in their seats.' The 'sanitized' qualifier suggests minor reservations but doesn't diminish the overall positive verdict. | GPT-4o: The review describes the show as a 'crowd-pleaser' with 'infectious Latin rhythms,' indicating a positive recommendation despite noting it is 'sanitized.' | Gemini: The review calls the show a 'crowd-pleaser' and 'energetic,' but also notes that it is 'sanitized,' indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic praises the show as a 'crowd-pleaser' with 'infectious' music that will have audiences dancing, indicating a solid recommendation, though the 'sanitized' qualifier suggests minor reservations about the depth of the storytelling.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:01:12.681Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

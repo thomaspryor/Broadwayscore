@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tom Hanks gives a performance of quiet authority as Mike McAlary, the hard-driving New York tabloid columnist whose rise and fall is chronicled in Nora Ephron's posthumously produced play.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T18:19:12.479Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief excerpt or caption describing Tom Hanks' performance, not a full review with critical evaluation or recommendation; openai: The text is a brief mention of Tom Hanks' performance without any evaluative content or overall assessment of the play.; gemini: This is a single sentence that describes the play and the lead actor's performance, but it does not offer any evaluative commentary or recommendation.",
+  "promptVersion": "5.2.0"
 }

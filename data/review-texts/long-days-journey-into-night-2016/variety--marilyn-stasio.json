@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jessica Lange gives a tour-de-force performance as the morphine-addicted Mary Tyrone, finding fresh nuances in O'Neill's most devastating family portrait.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Jessica Lange gives a tour-de-force performance as the morphine-addicted Mary Tyrone, finding fresh nuances in O'Neill's most devastating family portrait.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (20 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jessica Lange gives a tour-de-force performance as the morphine-addicted Mary Tyrone, finding fresh nuances in O'Neill's most devastating family portrait.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for lead performance ('tour-de-force') and finding 'fresh nuances' suggests high quality, but this appears to be a brief excerpt with no broader evaluation of the production. | Gemini: The review praises Jessica Lange's performance as a \"tour-de-force\" and finds \"fresh nuances\" in the play, suggesting a positive experience. | Kimi: The critic employs superlative praise ('tour-de-force') for the central performance and indicates the production illuminates the classic text with fresh interpretive insights, signaling a strong recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:15:20.154Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Patrick Stewart brings his considerable star power and stage presence to a handsomely mounted but ultimately conventional revival of Shakespeare's Scottish play.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Patrick Stewart brings his considerable star power and stage presence to a handsomely mounted but ultimately conventional revival of Shakespeare's Scottish play.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Patrick Stewart brings his considerable star power and stage presence to a handsomely mounted but ultimately conventional revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Acknowledges Stewart's strong performance and good production values, but 'ultimately conventional' suggests disappointment and lack of distinction, placing it in mixed territory. | GPT-4o: The review acknowledges Patrick Stewart's star power but describes the production as 'ultimately conventional,' suggesting a lack of strong recommendation or discouragement. | Gemini: The review acknowledges Stewart's star power and the production's quality but ultimately deems it \"conventional,\" suggesting a mixed assessment. | Kimi: The critic praises Stewart's star power and the handsome production values while criticizing the revival as conventional, indicating a solid but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:20:44.244Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This bracingly honest musical about a family coping with mental illness boasts a brilliant performance from Alice Ripley and a superb score by Tom Kitt and Brian Yorkey.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This bracingly honest musical about a family coping with mental illness boasts a brilliant performance from Alice Ripley and a superb score by Tom Kitt and Brian Yorkey.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This bracingly honest musical boasts a brilliant performance from Alice Ripley and a superb score.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language with 'brilliant performance' and 'superb score', plus 'bracingly honest' suggests high quality recommendation. | GPT-4o: The review uses strong positive language ('bracingly honest', 'brilliant performance', 'superb score'), suggesting a highly enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"bracingly honest,\" \"brilliant performance,\" and \"superb score,\" indicating a strong recommendation. | Kimi: The critic employs unqualified superlatives ('brilliant', 'superb', 'bracingly honest') to praise the lead performance, score, and dramatic honesty, indicating an enthusiastic must-see recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:47:42.764Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

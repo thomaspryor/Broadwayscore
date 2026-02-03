@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival, directed by Scott Ellis, is smart enough to know that the show's success depends not on resolving its gender tensions but on riding them like a bronco.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "This revival, directed by Scott Ellis, is smart enough to know that the show's success depends not on resolving its gender tensions but on riding them like a bronco.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival, directed by Scott Ellis, is smart enough to know that the show's success depends not on resolving its gender tensions but on riding them like a bronco.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review suggests a positive assessment of the revival's approach to its themes, indicating a recommendation to see the show. However, the lack of detailed evaluative content and the brevity of the text result in a medium confidence level. | Gemini: The review suggests the revival is successful due to its handling of gender tensions, indicating a positive, though not overwhelmingly enthusiastic, recommendation. | Kimi: The critic praises the director's intelligent approach to the material, emphasizing that the production successfully navigates the play's tensions with skill and energy, though the brevity of the excerpt limits certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:57:18.063Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

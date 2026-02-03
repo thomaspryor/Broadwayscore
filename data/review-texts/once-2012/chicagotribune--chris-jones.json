@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a show that sneaks up on you with its emotional authenticity and musical intimacy. The staging is so natural, so organic, that you feel like you've stumbled into a Dublin pub where magic just happens to be occurring.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This is a show that sneaks up on you with its emotional authenticity and musical intimacy. The staging is so natural, so organic, that you feel like you've stumbled into a Dublin pub where magic just happens to be occurring.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (40 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a show that sneaks up on you with its emotional authenticity and musical intimacy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Clear positive language ('emotional authenticity', 'magic just happens to be occurring') with enthusiastic tone about the experience, though brief excerpt limits higher scoring. | GPT-4o: The critic's original rating of 60 suggests a mixed review. The text highlights positive aspects like emotional authenticity and musical intimacy, but the score indicates some reservations or lack of strong recommendation. | Gemini: The review highlights the show's emotional authenticity and intimacy, but doesn't offer a clear recommendation. The critic's rating of 60 aligns with a mixed assessment. | Kimi: The critic's explicit rating of 60/100 places this firmly in the Mixed bucket (55-69). While the excerpt praises the show's authenticity and staging, its brevity suggests this is truncated text lacking a clear verdict statement, and the moderate numerical rating indicates significant reservations tempering the positive observations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:02:30.634Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 60,
+    "geminiScore": 65,
+    "kimiScore": 60,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

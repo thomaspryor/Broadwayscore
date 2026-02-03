@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of 'La Cage aux Folles' that opened on Sunday night at the Longacre Theater proves that some shows just get better with age, like a fine wine or a well-seasoned drag queen.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The revival of 'La Cage aux Folles' that opened on Sunday night at the Longacre Theater proves that some shows just get better with age, like a fine wine or a well-seasoned drag queen.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "some shows just get better with age, like a fine wine or a well-seasoned drag queen",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive assessment comparing the revival favorably to aging wine, suggesting improvement over time. The playful, appreciative tone indicates strong recommendation despite brief excerpt. | GPT-4o: The review uses a strong positive analogy comparing the show to a 'fine wine,' indicating it has improved over time, suggesting a must-see recommendation. | Gemini: The review states that the show gets better with age, which is a positive recommendation. | Kimi: The critic employs favorable metaphors (fine wine, well-seasoned drag queen) to praise the revival, indicating a clear recommendation to see the show, though the brevity of the excerpt limits confidence in the final assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:01:30.861Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

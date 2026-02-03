@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kenny Leon's production takes care to frame Wright's monologue as a lecture, complete with projections and podium, but the staging never quite decides whether we're watching a memory play or a realistic drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Kenny Leon's production takes care to frame Wright's monologue as a lecture, complete with projections and podium, but the staging never quite decides whether we're watching a memory play or a realistic drama.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the staging never quite decides whether we're watching a memory play or a realistic drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The review highlights an indecisive staging approach, suggesting a lack of clarity in the production's execution. This indicates a mixed assessment without strong recommendation or discouragement. | Gemini: The review identifies a lack of clarity in the staging, suggesting a mixed or uncertain approach to the production's concept. The critic doesn't explicitly recommend or discourage seeing the play. | Kimi: The critic acknowledges the production's careful framing but criticizes the staging for conceptual indecision. Text appears truncated, preventing determination of overall recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:53:36.444Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

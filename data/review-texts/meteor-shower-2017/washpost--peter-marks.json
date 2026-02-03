@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The comedy crashes and burns on Broadway, despite the A-list cast that includes Amy Schumer, Jeremy Shamos, Alan Tudyk and Keegan-Michael Key.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 21,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The comedy crashes and burns on Broadway, despite the A-list cast that includes Amy Schumer, Jeremy Shamos, Alan Tudyk and Keegan-Michael Key.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 21,
+    "confidence": "medium",
+    "range": {
+      "low": 16,
+      "high": 26
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The comedy crashes and burns on Broadway, despite the A-list cast",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Unambiguous pan using 'crashes and burns' - devastating language that dismisses the show entirely even with acclaimed performers. | GPT-4o: The review uses strong negative language ('crashes and burns') indicating a clear pan, despite the presence of a talented cast. | Gemini: The review explicitly states that the comedy \"crashes and burns\", which is a strong indication of a pan, even with the mention of an A-list cast. | Kimi: The excerpt employs catastrophic language ('crashes and burns') to convey total failure of the production, indicating a deep pan despite acknowledging the presence of an A-list cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:32:49.358Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 20,
+    "openaiScore": 20,
+    "geminiScore": 25,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

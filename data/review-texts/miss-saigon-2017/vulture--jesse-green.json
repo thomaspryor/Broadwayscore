@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Miss Saigon, which opened Sunday at the Broadway Theatre, is both better and worse than the original: better because it has been trimmed and tightened, worse because it remains fundamentally unchanged.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The new Miss Saigon, which opened Sunday at the Broadway Theatre, is both better and worse than the original: better because it has been trimmed and tightened, worse because it remains fundamentally unchanged.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Miss Saigon is both better and worse than the original: better because it has been trimmed and tightened, worse because it remains fundamentally unchanged.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges improvements (trimmed and tightened) but emphasizes that fundamental problems persist. The 'both better and worse' framing with 'fundamentally unchanged' suggests a balanced but ultimately lukewarm assessment. | GPT-4o: The review presents a balanced view, noting improvements but also significant shortcomings, leading to a mixed overall impression. | Gemini: The review states that the new production is both better and worse than the original, indicating a mixed opinion. It has improvements but remains fundamentally the same. | Kimi: The critic acknowledges improvements (trimmed and tightened) but notes fundamental flaws remain unchanged, resulting in a balanced mixed verdict without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:36:43.101Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The four girls who alternate in the title role are all winning, but it's the supporting ensemble that makes this production soar with wit, energy and genuine warmth.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The four girls who alternate in the title role are all winning, but it's the supporting ensemble that makes this production soar with wit, energy and genuine warmth.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's the supporting ensemble that makes this production soar with wit, energy and genuine warmth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the production with positive language ('soar', 'wit', 'energy', 'genuine warmth'), but very brief excerpt limits confidence in overall assessment. | GPT-4o: The review praises the supporting ensemble for elevating the production with positive attributes like wit, energy, and warmth, indicating a strong recommendation. | Gemini: The review praises the performances, especially the supporting ensemble, indicating a positive experience and a recommendation. | Kimi: The critic offers strong praise for the supporting ensemble ('soar with wit, energy and genuine warmth') and calls the lead actresses 'winning,' indicating a clear recommendation. However, the text appears to be a brief excerpt, limiting confidence in the overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:27:06.862Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

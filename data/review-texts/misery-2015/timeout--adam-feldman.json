@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Willis brings unexpected nuance to the role of romance novelist Paul Sheldon, though his stage inexperience occasionally shows. Metcalf is predictably excellent as the terrifying Annie Wilkes.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Willis brings unexpected nuance to the role of romance novelist Paul Sheldon, though his stage inexperience occasionally shows. Metcalf is predictably excellent as the terrifying Annie Wilkes.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Willis brings unexpected nuance to the role though his stage inexperience occasionally shows.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory. Review balances praise for Willis's nuance and Metcalf's excellence against criticism of Willis's inexperience. | GPT-4o: The original rating of 60 suggests a mixed review. The critic acknowledges strengths in performances but notes Willis's inexperience, indicating a balanced view. | Gemini: The review praises Metcalf's performance but notes Willis's inexperience. The critic's own rating is 60, which falls into the mixed bucket. | Kimi: The critic's own rating of 60 indicates a mixed reception, and the extremely brief text offers only qualified praise for individual performances without a clear overall verdict on the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:34:43.641Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

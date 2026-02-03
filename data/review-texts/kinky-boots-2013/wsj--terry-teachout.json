@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes 'Kinky Boots' work is that Mr. Lauper and Mr. Mitchell have managed to wed their up-tempo, heartstring-tugging material to a story that is genuinely moving without being maudlin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "What makes 'Kinky Boots' work is that Mr. Lauper and Mr. Mitchell have managed to wed their up-tempo, heartstring-tugging material to a story that is genuinely moving without being maudlin.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes 'Kinky Boots' work is that Mr. Lauper and Mr. Mitchell have managed to wed their up-tempo, heartstring-tugging material to a story that is genuinely moving without being maudlin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic states the show 'works' and praises it as 'genuinely moving without being maudlin,' indicating a positive assessment. However, this appears to be a brief excerpt with limited evaluative content, requiring low confidence. | GPT-4o: The review highlights the successful combination of music and story, praising it as 'genuinely moving without being maudlin,' indicating a strong positive recommendation. | Gemini: The review highlights the successful combination of music and story, indicating a positive experience, but it's not overwhelmingly enthusiastic, suggesting a recommendation with reservations. | Kimi: The critic explicitly states the show 'works' and praises its genuinely moving storytelling, indicating a solid positive recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:57:00.363Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

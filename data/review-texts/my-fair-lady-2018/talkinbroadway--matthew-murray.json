@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This My Fair Lady is a solid, sturdy revival that hits all the right notes without necessarily singing them with the most distinctive voice.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This My Fair Lady is a solid, sturdy revival that hits all the right notes without necessarily singing them with the most distinctive voice.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This My Fair Lady is a solid, sturdy revival that hits all the right notes without necessarily singing them with the most distinctive voice.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes the revival as 'solid' and 'sturdy' and notes it 'hits all the right notes,' indicating competent execution. However, the qualifier about lacking 'the most distinctive voice' suggests it's recommended but without particular enthusiasm or uniqueness. | GPT-4o: The review describes the revival as 'solid' and 'sturdy', indicating a positive recommendation, though it notes a lack of distinctiveness, suggesting some reservations. | Gemini: The review describes the production as 'solid' and 'sturdy' and states that it 'hits all the right notes,' indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic offers qualified praise, describing the production as competent and technically proficient ('solid,' 'sturdy,' 'hits all the right notes') but lacking a unique or distinctive interpretation, suggesting a worthwhile though unexceptional revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:40:16.277Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

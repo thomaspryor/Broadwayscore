@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Disney's 'Newsies' turns out to be a surprisingly vigorous and well-crafted musical that succeeds in spite of its corporate origins.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Disney's 'Newsies' turns out to be a surprisingly vigorous and well-crafted musical that succeeds in spite of its corporate origins.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (20 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Disney's 'Newsies' turns out to be a surprisingly vigorous and well-crafted musical that succeeds in spite of its corporate origins.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic expresses surprise at the show's quality and calls it 'vigorous and well-crafted,' indicating a positive recommendation despite initial skepticism about its corporate backing. | GPT-4o: The review describes the show as 'vigorous and well-crafted' and notes its success, indicating a positive recommendation despite reservations about its 'corporate origins.' | Gemini: The review is positive, calling the musical \"vigorous and well-crafted.\" However, the phrase \"in spite of its corporate origins\" indicates a reservation, placing it in the lower end of the positive range. | Kimi: The review offers solid praise ('vigorous', 'well-crafted', 'succeeds') with only a mild caveat about corporate origins, indicating a clear recommendation tempered by initial skepticism.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:45:35.459Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

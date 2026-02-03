@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Under Josie Rourke's direction, this revival of Christopher Hampton's adaptation of Choderlos de Laclos' epistolary novel about sexual gamesmanship among the French aristocracy feels strangely airless and mechanical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Under Josie Rourke's direction, this revival of Christopher Hampton's adaptation of Choderlos de Laclos' epistolary novel about sexual gamesmanship among the French aristocracy feels strangely airless and mechanical.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this revival feels strangely airless and mechanical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic directly criticizes the revival as 'airless and mechanical,' indicating a clear negative assessment of the production's quality and execution. | GPT-4o: The review describes the production as 'airless and mechanical,' indicating a lack of vitality or engagement, which suggests a negative assessment. | Gemini: The review uses negative language such as \"airless and mechanical\" to describe the production, indicating a negative assessment. | Kimi: The critic describes the production as lacking vitality and feeling mechanical under its direction, indicating a clear failure to successfully revive the material. With only this excerpt available, the assessment appears unambiguously negative but confidence is reduced due to brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:07:54.459Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

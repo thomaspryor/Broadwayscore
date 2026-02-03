@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Patti LuPone commands the stage with ferocious intensity in Terrence McNally's 'Master Class,' delivering a tour-de-force performance as Maria Callas that makes this revival essential theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Patti LuPone commands the stage with ferocious intensity in Terrence McNally's 'Master Class,' delivering a tour-de-force performance as Maria Callas that makes this revival essential theater.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Patti LuPone commands the stage with ferocious intensity in Terrence McNally's 'Master Class,' delivering a tour-de-force performance as Maria Callas that makes this revival essential theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with superlatives ('ferocious intensity', 'tour-de-force', 'essential theater') and no reservations expressed. The critic explicitly calls it 'essential theater' which is a must-see recommendation. | GPT-4o: The review uses strong, enthusiastic language ('commands', 'tour-de-force', 'essential theater') indicating a highly positive recommendation. | Gemini: The review uses strong positive language like \"commands the stage with ferocious intensity\" and \"tour-de-force performance\" and concludes that the revival is \"essential theater,\" indicating a rave review. | Kimi: The critic employs superlatives including 'tour-de-force' and explicitly labels the show 'essential theater' without any reservations, indicating an unqualified rave recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:25:51.436Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

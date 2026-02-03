@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Parker's performance is a carefully calibrated study in entropy, charting the disintegration of a legend with surgical precision and surprising compassion.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T18:15:52.612Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review that provides enough context to determine the critic's overall recommendation; openai: The text is a single sentence focusing on a performance, lacking broader context or evaluation of the show as a whole.",
+  "promptVersion": "5.2.0"
 }

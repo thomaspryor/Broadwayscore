@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Craig and Negga are magnetic performers, but their individual charisma doesn't translate into believable romantic chemistry or the kind of shared ambition that would drive two people to commit regicide.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Craig and Negga are magnetic performers, but their individual charisma doesn't translate into believable romantic chemistry or the kind of shared ambition that would drive two people to commit regicide.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Craig and Negga are magnetic performers, but their individual charisma doesn't translate into believable romantic chemistry",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Praises the lead performers as 'magnetic' but identifies a crucial flaw in their lack of chemistry and shared dramatic drive. This appears to be a fragment with the verdict unclear. | GPT-4o: The review highlights a significant flaw in the production — the lack of believable chemistry between the leads, which is crucial for the show's premise. Despite praising the performers individually, the overall recommendation is negative. | Gemini: The review highlights the lack of chemistry between the leads as a major flaw, suggesting the production is not successful despite the actors' individual talents. | Kimi: The review offers strong praise for the individual performances but criticizes the central romantic chemistry and shared ambition as unconvincing, creating a balanced but conflicted assessment. The brevity suggests this may be an excerpt, warranting low confidence. | Buckets: claude=Mixed, openai=Negative, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:22:28.052Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

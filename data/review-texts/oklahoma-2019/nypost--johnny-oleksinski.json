@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This brilliant reimagining of the Rodgers and Hammerstein classic is a knockout that feels both faithful to the original and completely fresh.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This brilliant reimagining of the Rodgers and Hammerstein classic is a knockout that feels both faithful to the original and completely fresh.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This brilliant reimagining of the Rodgers and Hammerstein classic is a knockout that feels both faithful to the original and completely fresh.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with strong superlatives ('brilliant', 'knockout') and no reservations expressed. Clear enthusiastic recommendation. | GPT-4o: The review uses strong positive language such as 'brilliant' and 'knockout', indicating an enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language like \"brilliant reimagining\" and \"knockout\", indicating a rave review. | Kimi: The critic uses unqualified superlatives ('brilliant', 'knockout') indicating strong enthusiasm for this production, though confidence is reduced given this appears to be a brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:54:10.113Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

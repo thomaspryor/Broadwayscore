@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Steve Martin's new play 'Meteor Shower' is a cosmic disappointment that crashes and burns on Broadway despite a starry cast including Amy Schumer and Keegan-Michael Key.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 32,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Steve Martin's new play 'Meteor Shower' is a cosmic disappointment that crashes and burns on Broadway despite a starry cast including Amy Schumer and Keegan-Michael Key.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 32,
+    "confidence": "medium",
+    "range": {
+      "low": 27,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Steve Martin's new play 'Meteor Shower' is a cosmic disappointment that crashes and burns on Broadway",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative verdict with harsh language ('cosmic disappointment', 'crashes and burns') despite acknowledging the starry cast. The critic unambiguously does not recommend the show. | GPT-4o: The review uses strong negative language ('cosmic disappointment', 'crashes and burns') indicating a clear pan with no redeeming qualities mentioned. | Gemini: The review explicitly states that the play is a \"cosmic disappointment\" that \"crashes and burns,\" indicating a negative assessment. | Kimi: The critic uses catastrophic imagery ('crashes and burns') and strong negative judgment ('cosmic disappointment') to reject the show entirely, noting that even the starry cast cannot save it. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:32:16.671Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 25,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

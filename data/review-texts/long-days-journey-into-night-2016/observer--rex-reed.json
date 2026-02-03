@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a Long Day's Journey Into Night that will haunt you long after the final curtain falls, with performances so searing and honest that they seem to burn holes in your heart.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This is a Long Day's Journey Into Night that will haunt you long after the final curtain falls, with performances so searing and honest that they seem to burn holes in your heart.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a Long Day's Journey Into Night that will haunt you long after the final curtain falls, with performances so searing and honest that they seem to burn holes in your heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with powerful emotional language ('haunt you', 'searing', 'burn holes in your heart') indicating deep impact and enthusiastic recommendation. | GPT-4o: The review uses strong, enthusiastic language to describe the production as haunting and the performances as searing and honest, indicating a must-see recommendation. | Gemini: The review uses strong positive language such as \"haunt you\" and \"searing and honest\" to describe the performances, indicating a rave review. | Kimi: The critic delivers unqualified praise using superlatives ('searing,' 'honest') and powerful metaphors ('burn holes in your heart,' 'haunt you long after') to describe the production's profound emotional impact and performances, with no reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:14:34.980Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

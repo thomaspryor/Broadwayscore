@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kenny Leon's production is handsome and respectful, but it feels more like a reverent museum piece than a living, breathing work of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Kenny Leon's production is handsome and respectful, but it feels more like a reverent museum piece than a living, breathing work of theater.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it feels more like a reverent museum piece than a living, breathing work of theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges the production's positive qualities (handsome, respectful) but criticizes it as static and lacking theatrical vitality. The 'museum piece' metaphor suggests something to be admired from a distance rather than experienced. | GPT-4o: The review acknowledges the production's handsome and respectful qualities but criticizes it for lacking vitality, suggesting a mixed reception. | Gemini: The review acknowledges positive aspects (\"handsome and respectful\") but ultimately finds the production lacking vitality, suggesting a mixed or neutral recommendation. | Kimi: The critic acknowledges handsome production values but criticizes the show for feeling like a static 'museum piece' rather than vibrant theater, suggesting respectful competence without theatrical life.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:53:12.715Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This expensive musical adaptation of Anne Rice's vampire novels is a bloodless affair that fails to sink its teeth into audiences despite elaborate production values.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This expensive musical adaptation of Anne Rice's vampire novels is a bloodless affair that fails to sink its teeth into audiences despite elaborate production values.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This expensive musical adaptation of Anne Rice's vampire novels is a bloodless affair that fails to sink its teeth into audiences despite elaborate production values.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative assessment calling the show 'bloodless' and stating it 'fails to sink its teeth into audiences.' The acknowledgment of 'elaborate production values' doesn't redeem the overall negative verdict. | GPT-4o: The review uses strong negative language ('bloodless affair') and indicates a failure to engage audiences, suggesting a strongly negative verdict. | Gemini: The review explicitly states that the show 'fails to sink its teeth into audiences' and is a 'bloodless affair,' indicating a negative assessment. | Kimi: The critic delivers a clear negative verdict, describing the show as 'bloodless' and ineffective at engaging audiences, though acknowledges its elaborate production values.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:08:21.965Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

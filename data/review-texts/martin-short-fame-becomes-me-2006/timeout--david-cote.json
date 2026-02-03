@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Short's manic energy and dead-on impressions of everyone from Katharine Hepburn to Jerry Lewis keep the audience in stitches, even when the material feels thin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Short's manic energy and dead-on impressions of everyone from Katharine Hepburn to Jerry Lewis keep the audience in stitches, even when the material feels thin.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Short's manic energy and dead-on impressions keep the audience in stitches, even when the material feels thin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for Short's performance and audience engagement, but acknowledges material weakness. The 'even when' qualifier suggests positive overall despite reservations. | GPT-4o: The review praises Short's performance and its ability to entertain, despite some criticism of the material being thin. This suggests a positive recommendation with some reservations. | Gemini: The review praises Martin Short's performance and ability to keep the audience entertained, but notes that the material itself is somewhat lacking. This suggests a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic praises Short's comedic skills and ability to entertain the audience, but explicitly notes the material is thin, indicating a solid but qualified recommendation based on star power rather than writing quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:24:44.419Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is basically a very expensive summer-camp musical, performed with desperate sincerity by a cast that seems to have been chosen more for gymnastic ability than for theatrical charisma.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show is basically a very expensive summer-camp musical, performed with desperate sincerity by a cast that seems to have been chosen more for gymnastic ability than for theatrical charisma.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is basically a very expensive summer-camp musical, performed with desperate sincerity by a cast that seems to have been chosen more for gymnastic ability than for theatrical charisma.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment comparing the show unfavorably to amateur theater ('summer-camp musical') and criticizing both the casting choices and performance quality with no redeeming elements mentioned. | GPT-4o: The review describes the show as lacking theatrical charisma and being akin to a summer-camp musical, indicating a negative assessment with no recommendation to see it. | Gemini: The review explicitly states the show is like an expensive summer-camp musical and criticizes the casting choices, indicating a negative overall assessment. | Kimi: The critic delivers a dismissive assessment comparing the Broadway production to an amateur 'summer-camp musical' and criticizes the casting for prioritizing physical skills over theatrical talent, indicating a clearly negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:46:06.923Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

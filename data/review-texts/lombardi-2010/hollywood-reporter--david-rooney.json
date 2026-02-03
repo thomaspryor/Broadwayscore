@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Dan Lauria brings gruff authority and unexpected warmth to his portrayal of the legendary Green Bay Packers coach in this workmanlike biographical drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Dan Lauria brings gruff authority and unexpected warmth to his portrayal of the legendary Green Bay Packers coach in this workmanlike biographical drama.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dan Lauria brings gruff authority and unexpected warmth to his portrayal of the legendary Green Bay Packers coach in this workmanlike biographical drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Very brief excerpt that praises the lead performance but describes the overall show as merely 'workmanlike,' suggesting competent but uninspired execution. Insufficient text to determine full critical stance. | GPT-4o: The review praises Dan Lauria's performance but describes the drama as 'workmanlike,' suggesting a competent but unremarkable production. The tone is balanced without strong recommendation or discouragement. | Gemini: The review uses positive language like \"gruff authority\" and \"unexpected warmth\" to describe the performance, but the overall description of the play as \"workmanlike biographical drama\" suggests a qualified recommendation. | Kimi: While the critic praises Dan Lauria's performance with specific commendations ('gruff authority,' 'unexpected warmth'), the descriptor 'workmanlike' for the drama itself signals competent but uninspired execution lacking artistic flair. The extreme brevity suggests this may be an excerpt or truncated review, limiting confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:13:01.564Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 72,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

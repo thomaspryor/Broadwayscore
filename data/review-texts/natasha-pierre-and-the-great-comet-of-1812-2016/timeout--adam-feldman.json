@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This immersive musical adaptation of a slice of Tolstoy's War and Peace is a feast for the senses, with Dave Malloy's gorgeous folk-pop score and a staging that puts audiences right in the middle of the action.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This immersive musical adaptation of a slice of Tolstoy's War and Peace is a feast for the senses, with Dave Malloy's gorgeous folk-pop score and a staging that puts audiences right in the middle of the action.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This immersive musical adaptation of a slice of Tolstoy's War and Peace is a feast for the senses",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating combined with highly positive language ('feast for the senses', 'gorgeous') indicates strong enthusiasm and recommendation. | GPT-4o: The review describes the show as 'a feast for the senses' with a 'gorgeous' score, indicating a strong positive recommendation. The original rating of 80 aligns with a solid positive assessment. | Gemini: The review uses positive language such as \"feast for the senses\" and \"gorgeous folk-pop score\" and the original rating is 80, indicating a positive recommendation. | Kimi: The critic offers enthusiastic praise, calling the show 'a feast for the senses' with a 'gorgeous' score, aligning with the provided 80/100 rating indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:42:32.477Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

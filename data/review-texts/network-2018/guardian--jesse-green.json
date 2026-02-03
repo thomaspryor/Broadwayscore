@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cranston's Howard Beale is a masterclass in controlled fury, building from quiet desperation to apocalyptic rage with surgical precision.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Cranston's Howard Beale is a masterclass in controlled fury, building from quiet desperation to apocalyptic rage with surgical precision.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (19 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cranston's Howard Beale is a masterclass in controlled fury, building from quiet desperation to apocalyptic rage with surgical precision.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for Cranston's performance using superlatives like 'masterclass' and 'surgical precision,' but this appears to be a truncated excerpt focusing only on one performance element. Low confidence due to limited text. | Gemini: The review praises Cranston's performance as a \"masterclass,\" indicating a positive assessment of the show. While brief, the strong praise warrants a positive score. | Kimi: The excerpt offers unqualified superlative praise ('masterclass', 'surgical precision') for the lead performance without the negative qualifiers typical of mixed or negative reviews, though the text appears truncated or excerpted.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:43:26.826Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

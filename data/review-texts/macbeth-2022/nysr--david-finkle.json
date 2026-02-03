@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "1/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "high",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "One reviewer—okay, this reviewer—called the production 'a disgrace' and said, 'Classic works don't need the modern-dress approach that nowadays is a shabby cliché.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Despite truncation warning, the critic explicitly calls the production 'a disgrace' and provides extensive negative commentary throughout. The 1/5 star rating confirms this is a pan. | GPT-4o: The critic's own rating of 1/5 stars and the use of the term 'a disgrace' indicate a strongly negative review. Despite the text being truncated, the available content suggests a clear pan, though confidence is low due to the potential missing conclusion. | Gemini: The critic explicitly calls the production \"a disgrace\" and gives it 1/5 stars. Despite the truncated text, this is a clear pan. | Kimi: The critic awards the show 1/5 stars and explicitly calls it 'a disgrace,' criticizing the rehearsal-quality performances, minimal production design, and clichéd modern-dress approach. Confidence is low due to the truncated text, though the provided rating and uniformly negative tone establish a clear pan.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:21:35.231Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

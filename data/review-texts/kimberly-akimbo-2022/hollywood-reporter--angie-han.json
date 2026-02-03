@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of David Lindsay-Abaire's 2001 play manages to find the sweet spot between melancholy and hope, crafting a coming-of-age story that acknowledges life's cruelties without being crushed by them.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical adaptation of David Lindsay-Abaire's 2001 play manages to find the sweet spot between melancholy and hope, crafting a coming-of-age story that acknowledges life's cruelties without being crushed by them.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation manages to find the sweet spot between melancholy and hope.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the adaptation's tonal achievement and storytelling approach, but very brief excerpt limits confidence in full assessment. | GPT-4o: The review highlights the show's ability to balance melancholy and hope, suggesting a positive reception. However, the lack of extensive detail or superlative language results in a medium confidence level. | Gemini: The review indicates a positive experience, highlighting the balance between melancholy and hope in the story. It suggests the show is worth seeing, but the lack of stronger superlatives keeps it from being a rave. | Kimi: The critic praises the show's successful tonal balance between melancholy and hope, indicating it effectively crafts a meaningful coming-of-age narrative. The excerpt is brief but unambiguously positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:50:34.433Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

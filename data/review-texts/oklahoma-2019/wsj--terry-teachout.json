@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a production that takes the familiar and makes it feel dangerous again, and in doing so reminds us why Rodgers and Hammerstein's seemingly sunny musical has always had a dark undertow.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This is a production that takes the familiar and makes it feel dangerous again, and in doing so reminds us why Rodgers and Hammerstein's seemingly sunny musical has always had a dark undertow.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a production that takes the familiar and makes it feel dangerous again",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the production's artistic achievement in transforming familiar material, highlighting directorial success in revealing the show's 'dark undertow.' Enthusiastic tone suggests clear recommendation. | GPT-4o: The review praises the production for reinvigorating a classic musical with a fresh, dangerous edge, suggesting a strong recommendation without reservations. | Gemini: The review indicates that the production is successful in making the familiar feel dangerous again, suggesting a positive experience, but the reference to a 'dark undertow' implies some reservations. | Kimi: The critic offers strong praise for the production's ability to revitalize familiar material and reveal its dark undertones, indicating an enthusiastic recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:55:06.235Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

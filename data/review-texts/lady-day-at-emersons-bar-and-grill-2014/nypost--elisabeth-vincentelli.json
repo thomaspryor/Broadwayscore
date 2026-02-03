@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McDonald doesn't just sing Holiday's songs — she inhabits them, channeling the singer's pain and passion with devastating authenticity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "McDonald doesn't just sing Holiday's songs — she inhabits them, channeling the singer's pain and passion with devastating authenticity.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (19 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonald doesn't just sing Holiday's songs — she inhabits them, channeling the singer's pain and passion with devastating authenticity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for the lead performance with powerful language like 'devastating authenticity' and 'inhabits them,' but this appears to be a brief excerpt lacking broader production assessment. | Gemini: The review praises the performance of McDonald, stating she inhabits the songs and channels the singer's pain and passion. This indicates a positive recommendation. | Kimi: The excerpt contains unqualified superlative praise for the central performance ('devastating authenticity'), indicating an enthusiastic recommendation, though the limited excerpt reduces confidence about the full review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:02:37.139Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

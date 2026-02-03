@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is not without its charms, but it's also not without its problems. The musical adaptation feels overstuffed and overlong, diluting the sharp wit of the original film.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show is not without its charms, but it's also not without its problems. The musical adaptation feels overstuffed and overlong, diluting the sharp wit of the original film.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is not without its charms, but it's also not without its problems.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Classic mixed review structure acknowledging both positive ('charms') and negative ('problems', 'overstuffed', 'diluting') elements with no clear recommendation either way. | GPT-4o: The review acknowledges both positive and negative aspects, indicating a mixed reception. The critic notes charms but also significant issues with the adaptation. | Gemini: The review acknowledges both positive and negative aspects, indicating a mixed opinion. The critic points out that the musical adaptation feels overstuffed and overlong. | Kimi: While the critic acknowledges the production has some merits ('not without its charms'), the focus is on structural problems and failure to capture the source material's quality, resulting in an ambivalent assessment rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:30:11.728Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

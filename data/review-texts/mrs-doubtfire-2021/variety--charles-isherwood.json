@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is certainly professional and polished, but it feels curiously bloodless, lacking the spark of inspiration that might have elevated it above the level of competent but unremarkable musical theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show is certainly professional and polished, but it feels curiously bloodless, lacking the spark of inspiration that might have elevated it above the level of competent but unremarkable musical theater.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is certainly professional and polished, but it feels curiously bloodless, lacking the spark of inspiration.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Acknowledges professional quality but finds it uninspired and unremarkable. Classic mixed review that neither recommends nor discourages. | GPT-4o: The review describes the show as 'competent but unremarkable' and 'lacking the spark of inspiration,' indicating a negative assessment without outright dismissal. | Gemini: The review acknowledges the show's competence but ultimately finds it lacking in inspiration and unremarkable, placing it in the mixed category. | Kimi: The review acknowledges technical competence ('professional and polished') but criticizes the show for lacking emotional impact or originality ('bloodless,' 'unremarkable'), resulting in a lukewarm assessment without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:39:49.433Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

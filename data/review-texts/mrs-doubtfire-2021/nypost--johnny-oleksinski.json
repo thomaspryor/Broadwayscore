@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rob McClure gives a tour de force performance that would make Robin Williams proud, bringing heart and humor to this faithful adaptation that manages to capture the spirit of the beloved film.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Rob McClure gives a tour de force performance that would make Robin Williams proud, bringing heart and humor to this faithful adaptation that manages to capture the spirit of the beloved film.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rob McClure gives a tour de force performance that would make Robin Williams proud",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with 'tour de force performance' and comparison to beloved Robin Williams, plus positive assessment of the adaptation capturing the film's spirit. However, brief excerpt limits full context. | GPT-4o: The review offers high praise for McClure's performance and the adaptation's success in capturing the film's spirit, indicating a strong recommendation. | Gemini: The review uses strong positive language such as \"tour de force performance\" and \"faithful adaptation\" and explicitly states that the adaptation captures the spirit of the film, indicating a strong recommendation. | Kimi: The excerpt offers unequivocal praise for the lead performance ('tour de force') and deems the Broadway adaptation successful ('faithful', 'capture the spirit'), indicating a strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:39:29.682Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

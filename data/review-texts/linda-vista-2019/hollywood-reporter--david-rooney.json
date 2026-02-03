@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "While Tracy Letts' new play Linda Vista contains flashes of his trademark dark humor and psychological acuity, this meandering character study of a middle-aged man in crisis feels more like a rough draft than a finished work.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "While Tracy Letts' new play Linda Vista contains flashes of his trademark dark humor and psychological acuity, this meandering character study of a middle-aged man in crisis feels more like a rough draft than a finished work.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this meandering character study of a middle-aged man in crisis feels more like a rough draft than a finished work",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Acknowledges Letts' strengths but criticizes the work as unfinished and meandering, indicating neither recommendation nor discouragement. | GPT-4o: The review acknowledges some positive elements but ultimately criticizes the play as unfinished and meandering, leading to a negative verdict. | Gemini: The review acknowledges some positive aspects (dark humor, psychological acuity) but ultimately finds the play to be a 'rough draft' and 'meandering,' indicating a mixed or neutral recommendation. | Kimi: While the critic acknowledges flashes of Letts' trademark dark humor and psychological acuity, the dominant verdict describes the play as a meandering 'rough draft' rather than a finished work, clearly indicating it falls short of professional standards. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:09:13.081Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

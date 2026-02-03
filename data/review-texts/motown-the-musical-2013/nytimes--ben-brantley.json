@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This show is less a musical than a gilded jukebox, a parade of more than 50 Motown hits performed with an energy that would make the Energizer Bunny collapse from exhaustion.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This show is less a musical than a gilded jukebox, a parade of more than 50 Motown hits performed with an energy that would make the Energizer Bunny collapse from exhaustion.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show is less a musical than a gilded jukebox, a parade of more than 50 Motown hits performed with an energy that would make the Energizer Bunny collapse from exhaustion.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges high energy performances but dismisses the show as merely a 'jukebox' rather than a proper musical, suggesting spectacle without substance. | GPT-4o: The review describes the show as energetic but implies a lack of substance by calling it a 'gilded jukebox'. The tone suggests a mixed assessment, highlighting energy but questioning the musical's depth. | Gemini: The review describes the show as a collection of hits, suggesting entertainment value but lacking depth. It neither strongly recommends nor discourages seeing it. | Kimi: While the critic dismisses the show as a 'gilded jukebox' lacking traditional musical depth, the exuberant praise for the cast's relentless energy suggests a qualified recommendation for audiences seeking entertaining performances over substantial storytelling.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:37:40.612Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

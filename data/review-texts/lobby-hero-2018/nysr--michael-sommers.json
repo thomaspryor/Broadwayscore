@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lobby Hero is a realistic drama set in New York City that provokes plenty of laughter and suspense.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise throughout: 'sterling production,' 'all-around excellence,' strong praise for all performances and direction. Despite theater facility complaints, the review enthusiastically recommends the show itself. | GPT-4o: The review praises the production's timeliness, character depth, and performances, aligning with the original 4/5 star rating. However, the text is truncated, and the final verdict may be missing, so confidence is medium. | Gemini: The review is mostly positive, highlighting the play's timeliness, smart construction, and the actors' performances. The 4/5 star rating also indicates a positive recommendation, though the truncated text and discussion of the theater's drawbacks suggest some reservations. | Kimi: The critic awards 4/5 stars and delivers consistent praise for Lonergan's 'smartly constructed' script, the 'engrossing' drama, and the cast's 'gritty naturalness,' calling it a 'worthy play' revived with 'all-around excellence.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:12:07.025Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

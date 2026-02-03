@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new production is handsomely mounted and well-performed, but it can't escape the fundamental problems of Claude-Michel Schönberg and Alain Boublil's operatic musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The new production is handsomely mounted and well-performed, but it can't escape the fundamental problems of Claude-Michel Schönberg and Alain Boublil's operatic musical.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new production is handsomely mounted and well-performed, but it can't escape the fundamental problems",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Acknowledges production values and performances positively but identifies 'fundamental problems' with the underlying material. Very brief excerpt limits confidence in full assessment. | GPT-4o: The review acknowledges the production's strengths in mounting and performance but highlights fundamental problems with the musical itself, leading to a mixed verdict. | Gemini: The review acknowledges good production and performances, but ultimately states that the production cannot overcome the show's fundamental flaws, leading to a negative recommendation. | Kimi: While acknowledging handsome production values and performances, the critic emphasizes that the show cannot overcome fundamental problems with its source material, indicating a recommendation against seeing it. | Buckets: claude=Mixed, openai=Mixed, gemini=Negative, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:35:17.823Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

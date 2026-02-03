@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tyne Daly gives a commanding performance as Maria Callas in the Broadway revival of Terrence McNally's 'Master Class,' bringing both the imperious diva's volcanic temperament and her wounded humanity to vivid life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Tyne Daly gives a commanding performance as Maria Callas in the Broadway revival of Terrence McNally's 'Master Class,' bringing both the imperious diva's volcanic temperament and her wounded humanity to vivid life.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tyne Daly gives a commanding performance as Maria Callas in the Broadway revival of Terrence McNally's 'Master Class,' bringing both the imperious diva's volcanic temperament and her wounded humanity to vivid life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: This appears to be an excerpt focusing solely on praising Daly's lead performance. While very positive about her work, there's no broader assessment of the production, direction, or overall recommendation, suggesting this may be truncated text. | Gemini: The review praises Tyne Daly's performance as Maria Callas, calling it a \"commanding performance\" and highlighting her ability to bring the character to life. This indicates a positive assessment of the production. | Kimi: Strong unqualified praise for the lead performance ('commanding', 'vivid life') indicates a clear recommendation, though the brevity of the text suggests this may be an excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:26:18.864Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

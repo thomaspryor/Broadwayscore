@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Leopoldstadt is a magnificent capstone to one of the most important theatrical careers of the last half-century, a work that synthesizes Stoppard's intellectual rigor with his most personal storytelling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Leopoldstadt is a magnificent capstone to one of the most important theatrical careers of the last half-century, a work that synthesizes Stoppard's intellectual rigor with his most personal storytelling.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Leopoldstadt is a magnificent capstone to one of the most important theatrical careers of the last half-century",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlative language 'magnificent capstone' and calls it synthesis of Stoppard's best qualities. Strong endorsement with no reservations. | GPT-4o: The review uses superlatives like 'magnificent' and highlights the synthesis of intellectual rigor and personal storytelling, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"magnificent\" and calls it a capstone to an important career, indicating a rave review. | Kimi: Unqualified superlatives ('magnificent', 'most important') with no caveats indicate this is considered an essential, masterpiece-level production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:07:07.256Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

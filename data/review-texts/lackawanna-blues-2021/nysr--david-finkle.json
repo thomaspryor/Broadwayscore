@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "5/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nothing could be wrong with something this right.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with unqualified superlatives throughout - 'stunningly,' 'brilliant,' 'indisputable tour de force,' 'unbounded ability,' 'excels.' The only 'criticism' is wanting more content, which reinforces the rave. | GPT-4o: The review is filled with superlatives and unqualified praise, describing the production as a 'stunningly Dickensian' and 'indisputable tour de force.' The critic's 5/5 stars and the enthusiastic tone throughout indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, calling it an \"indisputable tour de force\" and praising Santiago-Hudson's talents. The 5/5 star rating and enthusiastic tone indicate a rave review. | Kimi: The critic awards 5/5 stars and delivers unqualified praise with superlatives like 'indisputable tour de force,' 'brilliant,' and 'unbounded ability,' enthusiastically recommending the solo performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:02:06.385Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

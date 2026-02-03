@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ayad Akhtar's new play about a Pulitzer Prize-winning novelist who uses AI to write his next book is timely but uneven, elevated by Robert Downey Jr.'s committed performance.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,10 +18,59 @@
   "showScoreExcerpt": "Ayad Akhtar's new play about a Pulitzer Prize-winning novelist who uses AI to write his next book is timely but uneven, elevated by Robert Downey Jr.'s committed performance.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "playbillVerdictUrl": "https://www.timeout.com/newyork/theater/mcneal-broadway-review-robert-downey-jr",
-  "sources": [
-    "web-search",
-    "playbill-verdict"
-  ],
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ayad Akhtar's new play about a Pulitzer Prize-winning novelist who uses AI to write his next book is timely but uneven, elevated by Robert Downey Jr.'s committed performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating directly indicates mixed reception. 'Timely but uneven' signals qualified interest with significant reservations, fitting the Mixed bucket perfectly. | GPT-4o: The critic's original rating of 60 places the review in the Mixed bucket. The text describes the play as 'timely but uneven,' indicating a balance of positive and negative elements, with praise for Downey's performance. | Gemini: The review uses the word 'uneven' and the critic gave it a 60, so it is a mixed review. I am scoring it slightly above the midpoint due to the mention of Downey Jr.'s performance. | Kimi: The critic's own rating of 60 falls within the Mixed range (55-69). While noting the play is timely and praising Downey Jr.'s committed performance, the description of the work as 'uneven' indicates significant reservations preventing a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:28:51.785Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

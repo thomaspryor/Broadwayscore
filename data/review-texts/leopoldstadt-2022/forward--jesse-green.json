@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Stoppard has written a deeply personal work about the destruction of European Jewry, one that manages to be both intimate and sweeping.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T18:06:37.984Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with enough evaluative content to score; openai: The text provided is a brief statement about the play's subject matter and scope, not an evaluative review of the Broadway production.",
+  "promptVersion": "5.2.0"
 }

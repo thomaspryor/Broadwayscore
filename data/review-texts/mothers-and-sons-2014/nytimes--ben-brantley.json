@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. McNally has always been a writer who wears his heart on his sleeve, and here that heart seems to be in exactly the right place. But good intentions don't necessarily make for compelling theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Mr. McNally has always been a writer who wears his heart on his sleeve, and here that heart seems to be in exactly the right place. But good intentions don't necessarily make for compelling theater.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But good intentions don't necessarily make for compelling theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the playwright's good intentions and heart being 'in exactly the right place' but concludes it doesn't result in compelling theater, indicating a mixed assessment that leans slightly negative. | GPT-4o: The review acknowledges the playwright's good intentions but suggests the production lacks compelling qualities, indicating a mixed assessment. | Gemini: The review acknowledges good intentions but states that they don't necessarily make for compelling theater, indicating a mixed or neutral stance. | Kimi: The critic acknowledges the writer's sincere intentions but explicitly states they don't result in compelling theater, indicating a middle-ground assessment without clear recommendation to see or skip.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:37:11.722Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

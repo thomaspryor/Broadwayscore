@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Berry Gordy Jr.'s autobiography gets the full Broadway treatment in 'Motown The Musical,' a jukebox show that's heavy on the juke and light on the book.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Berry Gordy Jr.'s autobiography gets the full Broadway treatment in 'Motown The Musical,' a jukebox show that's heavy on the juke and light on the book.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Berry Gordy Jr.'s autobiography gets the full Broadway treatment in 'Motown The Musical,' a jukebox show that's heavy on the juke and light on the book.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: This appears to be just the opening line or excerpt from a longer review. The phrase 'heavy on the juke and light on the book' suggests mixed feelings about the show's strengths and weaknesses, but without the full review, the overall verdict is unclear. | GPT-4o: The review suggests a balance of strengths and weaknesses, with the music being a highlight but the narrative lacking substance. This indicates a mixed reception. | Gemini: The review describes the show as a \"jukebox show that's heavy on the juke and light on the book,\" indicating a mixed assessment with strengths in music but weaknesses in the narrative. | Kimi: The brief excerpt describes a production strong on musical numbers ('heavy on the juke') but criticizes the narrative book as lacking ('light on the book'), suggesting an imbalanced, middling experience without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:38:08.733Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

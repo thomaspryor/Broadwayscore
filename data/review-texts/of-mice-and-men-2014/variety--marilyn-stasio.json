@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "James Franco and Chris O'Dowd make an odd couple as the mismatched buddies in Anna D. Shapiro's workmanlike revival of John Steinbeck's Depression-era drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "James Franco and Chris O'Dowd make an odd couple as the mismatched buddies in Anna D. Shapiro's workmanlike revival of John Steinbeck's Depression-era drama.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "James Franco and Chris O'Dowd make an odd couple as the mismatched buddies in Anna D. Shapiro's workmanlike revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The term 'workmanlike' suggests competent but uninspired execution, placing this in mixed territory. However, this appears to be a very brief excerpt with no clear recommendation, warranting low confidence. | Gemini: The review uses the term \"workmanlike\" to describe the revival, which suggests a competent but uninspired production. This falls into the mixed category. | Kimi: The term 'workmanlike' signals competent but uninspired execution, placing the assessment in middle ground without strong enthusiasm or condemnation. The extreme brevity indicates this is likely an excerpt with the final verdict cut off.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:51:44.327Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

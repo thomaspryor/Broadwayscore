@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Nice Work If You Can Get It is a musical that knows what it wants to be: a frothy, old-fashioned entertainment that showcases great Gershwin songs and provides a vehicle for its stars to charm the audience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Nice Work If You Can Get It is a musical that knows what it wants to be: a frothy, old-fashioned entertainment that showcases great Gershwin songs and provides a vehicle for its stars to charm the audience.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a frothy, old-fashioned entertainment that showcases great Gershwin songs",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Describes the show positively as successful entertainment that achieves its goals, though the language suggests competent rather than exceptional work. | GPT-4o: The review describes the show as a successful entertainment with charming performances, suggesting a positive recommendation. However, the lack of superlatives or strong enthusiasm keeps it in the mid-positive range. | Gemini: The review describes the show as \"frothy\" and \"old-fashioned entertainment\" and says it \"showcases great Gershwin songs\" and \"provides a vehicle for its stars to charm the audience.\" This is a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic commends the show for successfully achieving its goals as light entertainment, praising the Gershwin score and star performances, though the excerpt's brevity limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:48:20.956Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
