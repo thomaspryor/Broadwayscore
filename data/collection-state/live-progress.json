@@ -1,33 +1,63 @@
 {
-  "updatedAt": "2026-02-03T01:02:10.122Z",
-  "processed": 1,
-  "failed": 2,
-  "successRate": "33.3%",
+  "updatedAt": "2026-02-03T01:01:53.087Z",
+  "processed": 134,
+  "failed": 292,
+  "successRate": "31.5%",
   "tierBreakdown": {
-    "playwright": 0,
-    "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 0
+    "playwright": 53,
+    "browserbase": 8,
+    "scrapingbee": 47,
+    "brightdata": 43,
+    "archive": 39
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-02-03T01:00:02.492Z",
+      "t": "2026-02-02T19:06:36.985Z",
       "event": "bb-session",
-      "session": "055aa9df",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/spamalot-broadway-st-"
+      "session": "6e086998",
+      "url": "https://www.theatermania.com/new-york-city-theater/reviews/mary-jane-broadway_96"
     },
     {
-      "t": "2026-02-03T01:00:57.742Z",
+      "t": "2026-02-02T19:07:30.518Z",
       "event": "bb-session",
-      "session": "9fd0e298",
-      "url": "https://www.wsj.com/articles/spamalot-review-king-arthur-monty-python-broadway-e"
+      "session": "07c956ca",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/05/02/mary-jane-broadway-revie"
     },
     {
-      "t": "2026-02-03T01:01:42.101Z",
-      "event": "bb-login-ok",
-      "domain": "wsj.com"
+      "t": "2026-02-02T19:07:32.522Z",
+      "event": "bb-login-uncertain",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-02-02T19:51:03.092Z",
+      "event": "bb-session",
+      "session": "cd5c08f7",
+      "url": "http://www.hollywoodreporter.com/review/aladdin-theater-review-690038"
+    },
+    {
+      "t": "2026-02-02T19:57:08.790Z",
+      "event": "bb-session",
+      "session": "92a99f77",
+      "url": "https://variety.com/2024/legit/reviews/an-enemy-of-the-people-jeremy-strong-broa"
+    },
+    {
+      "t": "2026-02-02T20:03:13.325Z",
+      "event": "bb-session",
+      "session": "2e044a8d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/back-to-the-future-the-musical-"
+    },
+    {
+      "t": "2026-02-02T20:28:36.812Z",
+      "event": "bb-session",
+      "session": "0c3efa4c",
+      "url": "https://variety.com/2024/legit/reviews/lempicka-review-broadway-musical-12359710"
+    },
+    {
+      "t": "2026-02-02T20:37:44.899Z",
+      "event": "bb-session",
+      "session": "eb0ef14d",
+      "url": "https://www.vulture.com/2024/06/theater-review-merrily-we-roll-along-sondheim-ra"
     }
   ]
 }
