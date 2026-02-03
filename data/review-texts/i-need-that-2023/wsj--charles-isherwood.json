@@ -63,13 +63,20 @@
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-I-NEED-THAT-2023",
   "archivePath": "data/archives/reviews/i-need-that-2023/wsj--charles-isherwood_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T02:04:18.996Z",
+  "textFetchedAt": "2026-02-03T05:02:46.391Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": true
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
     },
     {
       "tier": 1,

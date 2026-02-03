@@ -13,13 +13,19 @@
   "source": "show-score",
   "dtliThumb": null,
   "archivePath": "data/archives/reviews/lempicka-2024/wsj--charles-isherwood_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T02:05:15.989Z",
+  "textFetchedAt": "2026-02-03T05:03:18.062Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
       "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
     },
     {
       "tier": 1,
