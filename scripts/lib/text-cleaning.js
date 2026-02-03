@@ -102,6 +102,47 @@ const TRAILING_JUNK_PATTERNS = [
 
   // The Times UK: paywall prefix
   /^We haven't been able to take payment.*?(?=\b[A-Z][a-z])/s,
+
+  // === Time Out New York: newsletter subscription forms ===
+  // Leading junk: repeated newsletter signup blocks (appear 3+ times at top of scraped pages)
+  /^Thanks for subscribing!.*?inbox soon!\s*/is,
+  /^The best of New York straight to your inbox\s*/i,
+  /^By entering your email address you agree to our Terms of Use and Privacy Policy[^\n]*\n?\s*/i,
+  /^Déjà vu! We already have this email\. Try another\?\s*/i,
+  /^Our newsletter hand-delivers the best bits[^\n]*\n?\s*/i,
+  /^Sign up to unlock our digital magazines[^\n]*\n?\s*/i,
+  /^Sign up to our newsletter[^\n]*\n?\s*/i,
+  /^An email you['']ll actually love\s*/i,
+  /^Broadway review by [A-Z][a-z]+ [A-Z][a-z]+\s*/,
+  // Time Out show metadata lines (ratings, categories, venue info)
+  /^\d+ out of \d+ stars\s*/,
+  /^Theater,?\s*Musicals?\s*$/m,
+  /^Musicals?,?\s*Theater\s*$/m,
+  /^Open run\s*/i,
+  /^Recommended\s*/,
+  // Trailing junk: signup form remnants that appear at end of scraped text
+  /\s*(?:By entering your email address you agree to our|Thanks for subscribing).*$/is,
+  // Trailing junk: social media follow links and event details
+  /\s*Follow\s+\w[\w\s]+on\s+Twitter:.*$/is,
+  /\s*TwitterPinterestEmail.*$/is,
+  /\s*DetailsEvent website:.*$/is,
+  // Trailing junk: footer navigation
+  /\s*Been there, done that\? Think again, my friend\..*$/is,
+  /\s*Discover Time Out original video.*$/is,
+  /\s*Back to Top\s*Close\s*Get us in your inbox.*$/is,
+  /\s*tiktokfacebooktwitteryoutube\s*About us.*$/is,
+  /\s*An email you['']ll actually love.*$/is,
+
+  // === Chicago Tribune: social sharing junk ===
+  /^Things To Do Theater (?:Review|Critic's Notebook): /,
+  /^Share this:\s*/,
+  /^Click to share on (?:Facebook|Bluesky|X|print) \(Opens in new window\)\s*(?:Facebook|Bluesky|X|print)\s*/,
+
+  // === IndieWire / Penske Media boilerplate ===
+  /^IndieWire is a part of Penske Media Corporation\.\s*©\s*\d{4}[^.]*\.\s*All Rights Reserved\.\s*/i,
+
+  // === Generic corporate boilerplate at start of text ===
+  /^©\s*\d{4}\s+[A-Z][\w\s,]+(?:LLC|Inc|Corp|Ltd|Media|Entertainment)[^.]*\.\s*All Rights Reserved\.\s*/i,
 ];
 
 /**
@@ -188,6 +229,13 @@ function cleanText(text) {
 
   // Step 3: Strip cross-reference lines (before whitespace collapse so we don't leave gaps)
   cleaned = stripCrossReferences(cleaned);
+
+  // Step 3b: Strip inline photo credit lines (e.g., "Show Name | Photograph: Courtesy Photographer")
+  // Limit prefix to 100 chars and suffix to 150 chars to avoid eating entire single-line texts
+  cleaned = cleaned.replace(/^.{0,100}\|\s*Photograph:.{0,150}$/gm, '');
+
+  // Step 3c: Strip embedded JavaScript blocks (Chicago Tribune Trinity Audio player, etc.)
+  cleaned = cleaned.replace(/function\s+\w+\s*\([^)]*\)\s*\{[^}]*(?:\{[^}]*\}[^}]*)*\}/g, '');
 
   // Step 4: Collapse whitespace runs
   // Multiple spaces/tabs on same line → single space
