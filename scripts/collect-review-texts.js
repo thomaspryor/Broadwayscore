@@ -2697,9 +2697,11 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
         const showEntry = _showsJsonCache.shows.find(s => s.id === (review.showId || data.showId));
         if (showEntry && showEntry.openingDate) {
           const showYear = new Date(showEntry.openingDate).getFullYear();
-          if (urlYear < showYear - 3 || urlYear > showYear + 2) {
+          const closingYear = showEntry.closingDate ? new Date(showEntry.closingDate).getFullYear() : new Date().getFullYear();
+          const upperBound = Math.max(showYear + 2, closingYear + 1);
+          if (urlYear < showYear - 3 || urlYear > upperBound) {
             data.wrongProduction = true;
-            data.wrongProductionNote = `Auto-flagged: URL year ${urlYear} differs from show opening ${showYear} by ${Math.abs(urlYear - showYear)} years`;
+            data.wrongProductionNote = `Auto-flagged: URL year ${urlYear} outside valid range ${showYear - 3}–${upperBound} for show opening ${showYear}`;
             console.log(`    ⚠ Wrong production? URL year ${urlYear} vs show ${showYear} — flagged for review`);
           }
         }
