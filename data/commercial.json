@@ -393,58 +393,60 @@
       "designation": "Fizzle",
       "capitalization": 25000000,
       "capitalizationSource": "SEC filing / NY Times",
-      "weeklyRunningCost": 960000,
-      "costMethodology": "industry-estimate",
-      "isEstimate": {
-        "weeklyRunningCost": true
-      },
+      "weeklyRunningCost": 875000,
+      "weeklyRunningCostSource": "GPT Deep Research: breakeven $960K gross, pure operating costs ~$850-900K. Benzini Bros internal budget showed $960K gross needed including credit card fees.",
+      "costMethodology": "deep-research",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Closed without recouping despite 7 Tony nominations. Spending not apparent in modest sets. Strong reviews couldn't overcome weak ticket sales. SEC EDGAR note: 'Benzini Bros LLC' (CIK 0001946191) filed Mar 2023 with $8M max offering (min $4M) — likely initial development entity. Full production cap per NYT remains $25M (possibly raised through additional entities). Peter Schneider / Big Red Barn Productions. c/o Foresight Theatrical.",
+      "notes": "Closed Dec 8, 2024 without recouping despite 7 Tony nominations. $25M cap confirmed (NYT + SEC). Breakeven ~$960K gross/week but often fell short (e.g. 72% capacity, sub-$800K grosses early on). SEC: 'Benzini Bros LLC' ($8M) funded 2023 Atlanta tryout; additional LLCs raised remaining capital for Broadway. Peter Schneider / Big Red Barn Productions / Broadway Across America. Eligible for $3M NY state tax credit.",
       "deepResearch": {
         "verifiedFields": [
+          "capitalization",
+          "weeklyRunningCost",
           "recouped",
           "designation"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "SEC EDGAR: 'Benzini Bros LLC' (development entity) shows $8M max offering — doesn't match $25M production cap. Multiple entities likely used. NYT figure of $25M retained as total production budget."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 1: $25M confirmed, Benzini Bros $8M was Atlanta tryout entity. Breakeven $960K gross, operating cost ~$850-900K. Eligible for $3M tax credit."
       }
     },
     "suffs": {
       "designation": "Fizzle",
       "capitalization": 19000000,
       "capitalizationSource": "SEC Form D/A filing (Young Are At the Gates LLC, CIK 0001953229, amended May 2024). $19M capitalized. Range: $17.5M min, $19.5M max.",
-      "weeklyRunningCost": 1250000,
+      "weeklyRunningCost": 640000,
+      "weeklyRunningCostSource": "GPT Deep Research: $1.0M gross → $914K net → ~$640K nut → ~$162K profit in sold-out final weeks",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Won Tony for Best Original Score but closed Jan 2025 without recouping. Shaina Taub won two Tonys. Weekly cost ~$1.2-1.3M. Needed ~$1.4M/week to recoup in a year but averaged ~$1.0M. Hillary Clinton co-producer. 30+ cast. SEC entities: 'Young Are At the Gates LLC' ($19M capitalized, main Broadway entity — title references suffragists picketing at the White House gates) + 'Wing Women On Broadway LLC' ($6.75M, Seaview Productions — likely development/pre-Broadway entity).",
-      "costMethodology": "industry-estimate",
+      "notes": "Won Tony for Best Original Score but closed Jan 5, 2025 without recouping. Shaina Taub won two Tonys. Weekly nut ~$640K (breakeven ~$800K gross). Cast of 19. Often grossed only $500-700K in summer/fall (below nut), only hit capacity in final holiday weeks. Hillary Clinton and Malala Yousafzai co-producers. Frequently comped tickets to build word-of-mouth. SEC entities: 'Young Are At the Gates LLC' ($19M, main Broadway) + 'Wing Women On Broadway LLC' ($6.75M, development). Nearly total loss for investors (0-10% returned).",
+      "costMethodology": "deep-research",
       "deepResearch": {
         "verifiedFields": [
           "capitalization",
           "weeklyRunningCost"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "SEC EDGAR: 'Young Are At the Gates LLC' confirms $19M capitalized ($17.5M-$19.5M range). Separate 'Wing Women On Broadway LLC' ($6.75M) was likely earlier development entity. $19M cap now SEC-confirmed."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 1: Weekly nut ~$640K (MAJOR correction from $1.25M). $19M SEC-confirmed. Nearly total loss. Frequent comping strategy. Breakeven ~$800K gross."
       }
     },
     "the-notebook": {
-      "designation": "Flop",
-      "capitalization": 22000000,
-      "capitalizationSource": "GPT Deep Research (multiple sources)",
-      "weeklyRunningCost": 1250000,
+      "designation": "Fizzle",
+      "capitalization": 15000000,
+      "capitalizationSource": "SEC filing / NYT (Kevin McCollum confirmed ~$15M)",
+      "weeklyRunningCost": 700000,
+      "weeklyRunningCostSource": "GPT Deep Research: nut ~$650-750K, breakeven ~$778K gross at 84% capacity",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Big-budget musical adaptation of Nicholas Sparks novel/film. $22-23M capitalization. Weekly cost ~$1.2-1.3M. Struggled to find audience, closed Dec 15, 2024 without recouping. Producers planned post-Broadway tour to recoup some costs.",
-      "costMethodology": "industry-estimate",
+      "notes": "Nicholas Sparks musical adaptation. $15M capitalization (SEC/NYT, producer McCollum confirmed). Previous $22M figure was incorrect. Weekly nut ~$700K. Closed Dec 15, 2024 after ~300 performances without recouping. Estimated 60-80% of cap recovered. Final week grossed $1.0M ($225K profit). National tour planned for 2025. Underlying rights royalties (Sparks + Warner Bros) raised breakeven bar. Eligible for $3M NY state tax credit.",
+      "costMethodology": "deep-research",
       "deepResearch": {
         "verifiedFields": [
           "capitalization",
@@ -452,8 +454,8 @@
           "designation"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: CORRECTION -- cap $14M->$22M. Weekly cost ~$1.2-1.3M. Closed Dec 2024 without recouping. Tour planned."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 1: MAJOR CORRECTION — cap $22M → $15M (SEC/producer confirmed). Weekly nut $650-750K (not $1.25M). Recovered 60-80% of cap. Tour planned."
       }
     },
     "back-to-the-future": {
@@ -483,13 +485,14 @@
       "designation": "Flop",
       "capitalization": 29000000,
       "capitalizationSource": "SEC Form D/A filing (Broadwayboop LLC, CIK 0001968496, amended Jul 9, 2025). Max increased from $26M to $29M, fully capitalized.",
-      "weeklyRunningCost": 817000,
-      "costMethodology": "industry-estimate",
+      "weeklyRunningCost": 750000,
+      "weeklyRunningCostSource": "GPT Deep Research / Reddit Grosses Analysis: ~$750K weekly nut",
+      "costMethodology": "deep-research",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Big-budget extravaganza capitalized at $29M (SEC filing confirms, up from earlier $26M NYT report). Closed July 2025 after missing Tony momentum. Fixed weekly expenses of $817K. Jasmine Amy Rogers praised but couldn't save production. William Haber / Ostar Enterprises. c/o Foresight Theatrical.",
+      "notes": "Capitalized at $29M (SEC D/A, up from $26M). Closed July 13, 2025 after 112 performances. Weekly nut ~$750K but previews grossed only ~$530K (weekly loss ~$300K). Rarely grossed above $700K — consistently below breakeven. Investors lost ~80-100% of capital. David Foster composed. Jerry Mitchell directed/choreographed. William Haber / Ostar Enterprises. c/o Foresight Theatrical. Low ATP (~$70 previews) from heavy discounting for family audiences.",
       "deepResearch": {
         "verifiedFields": [
           "capitalization",
@@ -498,8 +501,8 @@
           "designation"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "SEC EDGAR: Broadwayboop LLC amended offering from $26M to $29M, fully capitalized. Previous $26M NYT figure was the original pre-amendment amount."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 1: Weekly nut ~$750K (corrected from $817K). $29M SEC-confirmed. Previews grossed only $530K vs $750K nut. Near-total loss."
       }
     },
     "the-roommate": {
@@ -874,30 +877,26 @@
       }
     },
     "liberation": {
-      "designation": "Fizzle",
-      "capitalization": 5000000,
-      "capitalizationSource": "GPT Deep Research",
-      "weeklyRunningCost": 550000,
-      "weeklyRunningCostSource": "Industry estimates (mid six-figures for straight play)",
-      "costMethodology": "industry-estimate",
-      "isEstimate": {
-        "weeklyRunningCost": true,
-        "capitalization": true
-      },
-      "recouped": false,
+      "designation": "Nonprofit",
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": 350000,
+      "weeklyRunningCostSource": "GPT Deep Research: ~$300-400K for 6-person play at Roundabout",
+      "costMethodology": "deep-research",
+      "recouped": null,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Bess Wohl play, produced commercially by Daryl Roth. $5M capitalization. Weekly cost ~$500-600K. Grosses ~$540K/week at ~85% capacity, near breakeven. Ended limited run Feb 1, 2026 without recouping. Transferred from nonprofit origins.",
+      "nonprofitOrg": "Roundabout Theatre Company",
+      "notes": "CORRECTION: Roundabout Theatre Company production at American Airlines Theatre, NOT commercial Daryl Roth production. Nonprofit model — no private investors, no recoupment concept. Bess Wohl world premiere. 6-person cast, single set. Weekly nut ~$350K. Roundabout received SVOG as institution but not specific to this show. Budget ~$3-5M funded through subscriber income, donations, and Roundabout's $47M annual budget.",
       "deepResearch": {
         "verifiedFields": [
-          "capitalization",
-          "weeklyRunningCost",
-          "recouped"
+          "designation",
+          "weeklyRunningCost"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: $5M cap, ~$500-600K weekly, did not recoup. Nonprofit origins."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 1: MAJOR CORRECTION — Liberation is a Roundabout Theatre Company production (nonprofit), NOT commercial. Previous data incorrectly listed as Daryl Roth commercial production with $5M cap. Weekly nut ~$350K for 6-person play."
       }
     },
     "bug": {
@@ -1218,14 +1217,15 @@
       "designation": "Fizzle",
       "capitalization": 15000000,
       "capitalizationSource": "NYT (Sep 2025)",
-      "weeklyRunningCost": 1000000,
-      "costMethodology": "industry-estimate",
+      "weeklyRunningCost": 950000,
+      "weeklyRunningCostSource": "GPT Deep Research / Reddit Grosses Analysis: $950K weekly operating cost",
+      "costMethodology": "deep-research",
       "recouped": false,
       "estimatedRecoupmentPct": [
         55,
         65
       ],
-      "notes": "Jamie Lloyd-directed revival starring Nicole Scherzinger. $15M capitalization. Weekly running cost ~$1M (industry estimate). Won Tony for Best Musical Revival 2025. Producer confirmed $6M loss despite selling out regularly and grossing $60M+ total. Jamie Lloyd had a $4M personal stake. Limited run at St. James Theatre. High production costs for the innovative minimalist staging with extensive video/tech. Highest gross of run was $2.5M in final week.",
+      "notes": "Jamie Lloyd-directed revival starring Nicole Scherzinger. $15M capitalization. Weekly nut ~$950K. Won Tony for Best Actress (Scherzinger). Producer J.J. Powell confirmed $6M loss (~40% of cap) despite selling out and grossing $60M+ total. Jamie Lloyd invested $4M personally (~27% of cap) — unusual director-as-investor arrangement. Lloyd likely recouped his loss via director royalties (~1-2% of gross over 10 months). ALW's Really Useful Group took substantial composer/rights royalties. Scherzinger had high salary + possible gross percentage. Highest gross $2.5M in final week. Eligible for $3M tax credit (would reduce net loss to ~$3M).",
       "deepResearch": {
         "verifiedFields": [
           "capitalization",
@@ -1234,8 +1234,8 @@
           "designation"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research confirmed $15M cap (NYT), ~$1M weekly cost, $6M loss, Jamie Lloyd's $4M personal stake. Producer confirmed loss despite $60M+ total gross."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 1: Weekly nut $950K (corrected from $1M). $6M loss confirmed. Detailed insider analysis: Lloyd invested $4M but earned it back via director royalties. ALW took huge creator cut. Scherzinger contracted only through Jul 2025."
       }
     },
     "an-enemy-of-the-people": {
@@ -1306,18 +1306,24 @@
       "designation": "Flop",
       "capitalization": 16000000,
       "capitalizationSource": "SEC filing / NYT (May 2025)",
-      "weeklyRunningCost": null,
+      "weeklyRunningCost": 650000,
+      "weeklyRunningCostSource": "GPT Deep Research: $800-900K gross at ~90% → $736K net → ~$650K nut → $40-50K weekly profit in spring",
+      "costMethodology": "deep-research",
       "recouped": false,
-      "notes": "Idina Menzel star vehicle. New musical about Julia Butterfly Hill. Capitalized at up to $16M per SEC filing. Average gross ~$760K/week at 85% capacity, $105 ATP. Closed May 18, 2025 following Tony nomination snub. NYT Critics' Pick but couldn't sustain sales.",
+      "estimatedRecoupmentPct": [20, 30],
+      "estimatedRecoupmentSource": "GPT Deep Research: only ran ~4 months, returned small fraction",
+      "estimatedRecoupmentDate": "2026-02-03",
+      "notes": "Idina Menzel star vehicle. $16M cap. Weekly nut ~$650K (Menzel's star salary was major expense). Grossed $800-900K at ~90% capacity in spring, yielding small weekly profits, but sales softened after Tony shutout. Closed May 18, 2025 after only 4 months. Menzel was only contracted through May — couldn't extend with replacement. Investors recovered estimated 20-30% of capital. Roundabout co-presented earlier Off-Broadway workshop.",
       "deepResearch": {
         "verifiedFields": [
           "capitalization",
+          "weeklyRunningCost",
           "recouped",
           "designation"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: $16M (NYT/SEC). Closed May 2025 after Tony shutout. Menzel co-produced via Loudmouth Media."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 1: Weekly nut ~$650K. 4-month run, 20-30% recovered. Menzel contracted only through May. Tony shutout sealed fate."
       }
     },
     "once-upon-a-mattress-2024": {
