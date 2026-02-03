@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This sterling revival of Arthur Miller's 1947 drama brings a welcome clarity and emotional force to a play that can sometimes feel overly schematic in lesser productions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This sterling revival of Arthur Miller's 1947 drama brings a welcome clarity and emotional force to a play that can sometimes feel overly schematic in lesser productions.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This sterling revival brings a welcome clarity and emotional force to a play that can sometimes feel overly schematic in lesser productions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic uses positive language ('sterling revival', 'welcome clarity and emotional force') while acknowledging the play can be problematic in other productions. This suggests a solid recommendation based on this particular production's strengths. | GPT-4o: The review uses strong positive language ('sterling revival', 'welcome clarity and emotional force') indicating a highly favorable view of the production. The absence of reservations suggests an enthusiastic recommendation. | Gemini: The review uses the word \"sterling\" and \"welcome clarity and emotional force\" to describe the production, indicating a positive recommendation. | Kimi: The critic calls this a 'sterling revival' with 'welcome clarity and emotional force,' clearly recommending it as an excellent production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:37:34.308Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

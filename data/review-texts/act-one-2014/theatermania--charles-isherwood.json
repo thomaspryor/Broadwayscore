@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lincoln Center Theater's production of 'Act One' is a deeply felt and beautifully mounted tribute to the legendary playwright and director Moss Hart.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Lincoln Center Theater's production of 'Act One' is a deeply felt and beautifully mounted tribute to the legendary playwright and director Moss Hart.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lincoln Center Theater's production of 'Act One' is a deeply felt and beautifully mounted tribute to the legendary playwright and director Moss Hart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review describes the production as 'deeply felt and beautifully mounted' which indicates positive assessment, but this appears to be a very brief excerpt lacking detailed evaluation or clear recommendation strength. | GPT-4o: The review uses strong positive language ('deeply felt', 'beautifully mounted') indicating a highly favorable opinion of the production. | Gemini: The review uses positive language such as \"deeply felt\" and \"beautifully mounted,\" indicating a favorable opinion and recommendation. | Kimi: The critic offers unambiguous praise with strong evaluative language ('deeply felt,' 'beautifully mounted'), indicating a solid recommendation despite the text's extreme brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:03:59.144Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

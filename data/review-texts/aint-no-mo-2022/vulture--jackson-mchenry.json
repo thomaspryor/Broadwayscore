@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play's wild energy and Jordan E. Cooper's committed performances make for an evening that's both hilarious and deeply unsettling, a comedy that doesn't let you forget the pain behind the punchlines.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -43,5 +43,60 @@
     "Show title not found in text"
   ],
   "wordCount": 1036,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a delight to have Jordan E. Cooper kick down the door of Broadway in heels and storm onstage with something as raucous as Ain't No Mo'.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review is clearly positive with enthusiastic praise for Cooper's bold vision and the ensemble performances, calling the show 'a delight' and 'bawdy and bold.' However, the critic notes structural issues like trouble ending sketches and some dated references, preventing it from reaching the highest scores. | GPT-4o: The review is filled with praise for the show's boldness, creativity, and the performances, particularly Cooper's. It highlights the show's unique approach and cultural significance, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the show's boldness and Cooper's performance. While it notes some issues with pacing and sketch endings, the overall tone suggests a worthwhile experience. | Kimi: The critic praises the show's bold satire, energetic ensemble, and production design with words like 'delight,' 'jubilant,' and 'bawdy,' while offering specific reservations about sketch endings and dated references.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:20:11.352Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

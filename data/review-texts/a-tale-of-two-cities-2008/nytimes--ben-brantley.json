@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This bloated, relentlessly busy musical adaptation of the Dickens novel is a textbook example of how not to translate a literary classic to the stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 19,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This bloated, relentlessly busy musical adaptation of the Dickens novel is a textbook example of how not to translate a literary classic to the stage.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 19,
+    "confidence": "medium",
+    "range": {
+      "low": 14,
+      "high": 24
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This bloated, relentlessly busy musical adaptation of the Dickens novel is a textbook example of how not to translate a literary classic to the stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Unambiguously negative language calling it 'bloated' and 'a textbook example of how not to' adapt classics. This is a clear pan with no redeeming qualities mentioned. | GPT-4o: The review is strongly negative, describing the show as 'bloated' and 'relentlessly busy' and a 'textbook example' of poor adaptation, indicating a deep pan. | Gemini: The review uses very negative language such as \"bloated\" and \"how not to\" indicating a strong pan. | Kimi: The critic delivers an unequivocal condemnation, calling the show a 'textbook example of how not to' execute an adaptation and describing it with entirely negative descriptors ('bloated,' 'relentlessly busy') that indicate fundamental creative failure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:46:38.839Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 15,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

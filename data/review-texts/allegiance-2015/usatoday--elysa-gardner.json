@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though the show has its flaws, it succeeds in bringing a shameful chapter of American history to vivid, moving life on the Broadway stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though the show has its flaws, it succeeds in bringing a shameful chapter of American history to vivid, moving life on the Broadway stage.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it succeeds in bringing a shameful chapter of American history to vivid, moving life on the Broadway stage",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict that the show 'succeeds' in its goals and creates 'vivid, moving' theater, despite acknowledged flaws. The critic recommends it for its achievement in dramatizing history. | GPT-4o: The review acknowledges flaws but ultimately praises the show's ability to bring history to life in a vivid and moving way, indicating a positive recommendation despite some reservations. | Gemini: The review acknowledges flaws but ultimately states that the show succeeds, indicating a positive recommendation with reservations. | Kimi: While the critic explicitly acknowledges flaws, the overall verdict is clearly positive, praising the production for successfully dramatizing history with vivid, moving impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:47:49.814Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "A Strange Loop is a brilliant, uncompromising work of art that pushes the boundaries of what musical theater can be and say.",
   "originalScore": 100,
-  "assignedScore": null,
+  "assignedScore": 97,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A Strange Loop is a brilliant, uncompromising work of art that pushes the boundaries of what musical theater can be and say.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 97,
+    "confidence": "high",
+    "range": {
+      "low": 92,
+      "high": 102
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Strange Loop is a brilliant, uncompromising work of art that pushes the boundaries of what musical theater can be and say.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Critic's 100 rating with unqualified praise using superlatives 'brilliant' and 'uncompromising work of art' that 'pushes boundaries' indicates highest recommendation tier. | GPT-4o: The review uses strong superlatives like 'brilliant' and 'uncompromising' and praises the show for pushing boundaries, aligning with the original rating of 100. | Gemini: The review uses strong positive language such as \"brilliant\" and \"uncompromising work of art,\" indicating a rave review. The critic's rating of 100 further supports this classification. | Kimi: The critic awards a perfect 100 rating and employs unqualified superlatives ('brilliant,' 'work of art'), indicating the highest possible recommendation without reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:37:18.450Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 100,
+    "geminiScore": 95,
+    "kimiScore": 98,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

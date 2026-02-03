@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical tells the story of John Newton, the 18th-century English sailor who wrote the hymn, in a production that is both earnest and rousing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,59 @@
   "archiveOrgTimestamp": "20250716101837",
   "archiveOrgUrl": "http://web.archive.org/web/20250716101837/https://www.nytimes.com/2015/07/17/theater/review-amazing-grace-the-story-of-a-slave-traders-moral-awakening.html",
   "wordCount": 307,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Make a beeline for the Nederlander Theater, where the show opened on Thursday.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review gives mixed signals - urges readers to 'make a beeline' to see it, but then describes it as 'overstuffed history lesson trimmed in melodrama' with a merely 'pleasant and serviceable' score. The text appears truncated which adds uncertainty to the final verdict. | Gemini: The review acknowledges the interesting story but criticizes the musical's execution as melodramatic and overstuffed. The score is described as \"pleasant and serviceable\" but not particularly outstanding, leading to a mixed assessment. | Kimi: The review acknowledges the timeliness of the subject and finds the score 'pleasant and serviceable,' but heavily criticizes the book as an 'overstuffed history lesson' with 'standard-issue' elements. The text is truncated, cutting off the final verdict, so the classification remains uncertain.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:59:48.695Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production succeeds because it treats Miller's work not as a museum piece, but as a living, breathing drama that can still speak to contemporary audiences with startling relevance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production succeeds because it treats Miller's work not as a museum piece, but as a living, breathing drama that can still speak to contemporary audiences with startling relevance.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production succeeds because it treats Miller's work not as a museum piece, but as a living, breathing drama that can still speak to contemporary audiences with startling relevance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive assessment calling the production successful with contemporary relevance, but confidence is low due to extremely brief excerpt that may not represent the full review's verdict. | GPT-4o: The review praises the production for its relevance and vitality, suggesting it is a must-see for contemporary audiences. The tone is enthusiastic and unqualified. | Gemini: The review explicitly states that the production 'succeeds' and speaks to contemporary audiences. This indicates a positive recommendation. | Kimi: The critic explicitly states the production 'succeeds' and praises its contemporary vitality and 'startling relevance,' indicating a clear recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:48:57.248Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

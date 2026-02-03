@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical has all the right moves, even if the story sometimes feels formulaic. The performances are stellar, particularly the quintet of actors who embody the Temptations with remarkable vocal prowess and synchronized choreography.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical has all the right moves, even if the story sometimes feels formulaic. The performances are stellar, particularly the quintet of actors who embody the Temptations with remarkable vocal prowess and synchronized choreography.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The performances are stellar, particularly the quintet of actors who embody the Temptations with remarkable vocal prowess.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict praising stellar performances and vocal/choreographic excellence, with only mild criticism of formulaic story structure. | GPT-4o: The review praises the performances as 'stellar' and highlights the actors' vocal and choreographic skills, indicating a positive recommendation despite noting the story as 'formulaic'. | Gemini: The review is generally positive, highlighting stellar performances but noting a formulaic story, which places it in the positive bucket with reservations. | Kimi: While the critic notes the story feels formulaic, the enthusiastic praise for the performances ('stellar', 'remarkable vocal prowess') and choreography constitutes a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:23:43.339Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

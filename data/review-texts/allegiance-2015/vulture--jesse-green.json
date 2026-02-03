@@ -3,58 +3,74 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jesse Green",
-  "url": "https://www.vulture.com/2015/11/theater-reviews-allegiance.html",
+  "url": "https://www.vulture.com/2015/11/theater-review-allegiance.html",
   "publishDate": "November 9, 2015",
-  "fullText": "Things you buy through our links may earn Vox Media a commission.\n\nFrom Hir, at Playwrights Horizons. Photo: Joan Marcus The home that Isaac returns to at the beginning of Taylor Mac’s smart but deliberately disorienting new play Hir is not the one he left when he enlisted as a Marine three years earlier. His abusive father, Arnold, has suffered a debilitating stroke. His tomboy sister, Maxine, has begun a do-it-yourself gender transition with hormones bought on the internet, and has now emerged as his “sissy” brother, Max. Far from resenting or mourning these disruptions, Isaac’s mother, Paige, is electrified by them. Max’s escape from biology has provided a model for her own escape from the rigid control of a violent husband and housewifely expectation; she no longer cooks, cleans, or bothers to maintain any order in their nightmarishly cluttered home. (“We don’t do cupboards anymore,” she says. “We don’t do order.”) Rather, she joyfully indulges her formerly suppressed interests and preferences, from art to air-conditioning. And Arnold’s stroke has provided her with an opportunity for revenge. Drugging him into docility, she dresses him in a lavender nightgown and a bedazzled kitten sweater, with finishing touches that include elaborate drag makeup and a rainbow clown wig. He sleeps in a box on the filthy kitchen floor: “He has not earned the right to be cared for.”\n\nIf you don’t know whether to laugh or cry at this spectacle, I suspect that’s how Mac likes it; in the script he describes Hir’s genre with the oxymoron “absurd realism.” For the realism part, there is, as the title indicates, a great deal of instruction on the new prerogatives of gender: Max prefers the pronouns “ze” instead of “he” or “she,” and “hir” (pronounced “here”) instead of “his” or “her.”\n\nShow \n 0 Comments / 0 New\n \n Comment\n \n\n Theater Reviews: Hir and Allegiance\n\n \n \n \n \n\n \n \n \n \n \n\n \n \n\n \n \n \n\n \n Your product is saved! You’ll receive emails when your saved products go on sale. Manage preferences.\n \n \n\n \n \n\n \n \n\n Things you buy through our links may earn Vox Media a commission.",
-  "isFullReview": true,
+  "fullText": "Allegiance is a musical with its heart in the right place but its craft all over the map. The show, about Japanese-American internment during World War II, has important things to say but doesn't always know how to say them theatrically.",
+  "isFullReview": false,
   "dtliExcerpt": "Allegiance is a musical with its heart in the right place but its craft all over the map. The show, about Japanese-American internment during World War II, has important things to say but doesn't always know how to say them theatrically.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Allegiance is a musical with its heart in the right place but its craft all over the map. The show, about Japanese-American internment during World War II, has important things to say but doesn't always know how to say them theatrically.",
-  "contentTier": "complete",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (41 words)",
-  "previousUrl": "https://www.vulture.com/2015/11/theater-review-allegiance.html",
-  "urlDiscoveredAt": "2026-02-03T11:25:22.555Z",
-  "urlDiscoveryMethod": "google-serp",
-  "textWordCount": 337,
-  "archivePath": "data/archives/reviews/allegiance-2015/vulture--jesse-green_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T11:25:22.565Z",
-  "fetchMethod": "scrapingbee",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
     },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "page.waitForTimeout: Target page, context or browser has been closed"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": true
+    "keyPhrases": [
+      {
+        "quote": "Allegiance is a musical with its heart in the right place but its craft all over the map.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Classic mixed review structure: acknowledges good intentions and important subject matter but criticizes theatrical execution. No clear recommendation either way. | GPT-4o: The review acknowledges the show's good intentions but criticizes its execution, indicating a mixed assessment without a clear recommendation. | Gemini: The review acknowledges good intentions but criticizes the execution, resulting in a mixed assessment. | Kimi: The critic acknowledges the significance of the subject matter and the show's good intentions but criticizes its inconsistent craft and theatrical execution, offering neither a clear recommendation nor rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
-  ],
-  "fetchTier": 2,
-  "textQuality": "full",
-  "truncationSignals": [],
-  "textStatus": "complete",
-  "sourceMethod": "scrapingbee",
-  "wordCount": 337,
-  "tierReason": "Full review text"
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:49:24.060Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

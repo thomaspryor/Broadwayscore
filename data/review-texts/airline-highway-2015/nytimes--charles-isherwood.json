@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. D'Aquila has assembled a stellar ensemble to populate this motel and bring vivid life to Ms. Rapp's gallery of broken-down dreamers and survivors.",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (24 words)",
   "previousUrl": "https://www.nytimes.com/2015/04/21/theater/review-airline-highway-with-a-stellar-ensemble-at-the-samuel-j-friedman-theater.html",
   "urlDiscoveredAt": "2026-02-03T11:03:58.726Z",
@@ -40,5 +40,10 @@
   "archiveOrgTimestamp": "20250426203854",
   "archiveOrgUrl": "http://web.archive.org/web/20250426203854/https://www.nytimes.com/2015/04/24/theater/review-airline-highway-is-a-portrait-of-the-underclass-of-new-orleans.html",
   "wordCount": 512,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-03T12:24:10.077Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence fragment or excerpt lacking any clear evaluative verdict or recommendation about seeing the show; openai: This text is a brief excerpt that lacks evaluative content or a clear verdict on the show.",
+  "promptVersion": "5.2.0"
 }

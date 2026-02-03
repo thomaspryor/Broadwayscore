@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "After Midnight is a celebration of Harlem's Cotton Club era that brings together exceptional dancing, singing, and musicianship in a thrilling night of entertainment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "After Midnight is a celebration of Harlem's Cotton Club era that brings together exceptional dancing, singing, and musicianship in a thrilling night of entertainment.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "After Midnight is a celebration of Harlem's Cotton Club era that brings together exceptional dancing, singing, and musicianship in a thrilling night of entertainment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Uses strong positive language ('exceptional', 'thrilling') with enthusiastic recommendation tone, though brevity limits deeper assessment. | GPT-4o: The review uses superlatives like 'exceptional' and 'thrilling,' indicating a strong, enthusiastic recommendation with no reservations. | Gemini: The review uses strong positive language like \"exceptional\" and \"thrilling\" to describe the show, indicating a positive recommendation. | Kimi: The review offers unqualified praise for the production's entertainment value and performances, describing the night as 'thrilling' and the talent as 'exceptional' with no reservations noted. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:08:05.494Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival, directed by Jack O'Brien, doesn't quite achieve the crushing inevitability that makes for great productions of this play. But it does provide a showcase for two superb performances that deepen as the evening progresses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival, directed by Jack O'Brien, doesn't quite achieve the crushing inevitability that makes for great productions of this play. But it does provide a showcase for two superb performances that deepen as the evening progresses.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (36 words)"
+  "contentTierReason": "Short text (36 words)",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "doesn't quite achieve the crushing inevitability that makes for great productions",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic acknowledges the production falls short of greatness but praises two superb performances that justify attendance. Classic mixed review - significant flaws balanced by strong elements. | GPT-4o: The review acknowledges strong performances but notes the production falls short of greatness, leading to a mixed assessment. | Gemini: The review acknowledges that the production doesn't reach its full potential, but it still recommends seeing it for the performances. | Kimi: While the direction falls short of 'great' status, the critic offers strong praise ('superb') for the lead performances and notes their deepening impact, indicating a qualified recommendation to see the show for the acting. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:33:26.409Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

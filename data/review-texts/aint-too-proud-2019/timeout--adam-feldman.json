@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's commitment to the music is total, and the performers—led by the magnetic Derrick Baskin as Otis Williams—deliver the songs with soul-stirring power.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's commitment to the music is total, and the performers—led by the magnetic Derrick Baskin as Otis Williams—deliver the songs with soul-stirring power.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The performers deliver the songs with soul-stirring power.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: This appears to be a fragment with only positive elements mentioned, but the critic's own 60 rating indicates mixed reception. The truncated nature makes it impossible to see the full verdict. | GPT-4o: The original rating of 60 suggests a mixed review. The key quote praises the music and performances but does not indicate an overall strong recommendation, aligning with a mixed verdict. | Gemini: The review focuses on the commitment to the music and the power of the performances, but doesn't offer a clear recommendation for or against seeing the show. Given the original rating of 60, it falls into the Mixed bucket. | Kimi: The provided rating of 60 falls squarely in the Mixed range (55-69), indicating that while the critic praises the performances and musical commitment as 'soul-stirring' and 'magnetic,' the overall assessment balances positive and negative elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:21:39.120Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

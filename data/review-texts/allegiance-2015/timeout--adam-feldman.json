@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Allegiance is a well-intentioned musical about Japanese-American internment during World War II, but good intentions don't automatically make good theater.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Allegiance is a well-intentioned musical about Japanese-American internment during World War II, but good intentions don't automatically make good theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)"
+  "contentTierReason": "Short text (20 words)",
+  "llmScore": {
+    "score": 41,
+    "confidence": "high",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "good intentions don't automatically make good theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict despite acknowledging good intentions. The critic's 40 rating confirms this is in the Negative range, and the dismissive conclusion places it in the lower portion of that bucket. | GPT-4o: The critic's original rating of 40 aligns with a negative review, and the text suggests that despite good intentions, the show does not succeed as theater. | Gemini: The review explicitly states that good intentions do not make good theater, indicating a negative assessment despite acknowledging the musical's good intentions. The critic's rating of 40 confirms this. | Kimi: The reviewer explicitly states that despite good intentions, the show fails to achieve 'good theater,' delivering a clear negative verdict confirmed by the 40-point rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:47:30.623Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 40,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

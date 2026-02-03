@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Tony Shalhoub delivers a masterful performance that captures both the humor and pathos of Moss Hart's journey from struggling playwright to Broadway success.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
     "Show title not found in text"
   ],
   "wordCount": 1151,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tony Shalhoub delivers a masterful performance that captures both the humor and pathos of Moss Hart's journey from struggling playwright to Broadway success.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance as 'masterful' suggests positive recommendation, but limited text and potential cherry-picking warrant low confidence and upper-positive scoring. | GPT-4o: The excerpt praises Tony Shalhoub's performance as 'masterful,' suggesting a positive view of the production. However, due to the single excerpt and lack of broader context, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt focuses on a 'masterful performance' by the lead actor, which suggests a positive experience, but without more context, it's hard to gauge the overall recommendation strength. I'm scoring it as positive, but with low confidence due to the limited information. | Kimi: The excerpt offers unambiguous praise for the lead actor's performance, using the strong commendation 'masterful' and highlighting emotional range, though the single-excerpt format limits certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:02:25.028Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Almost Famous feels like a show that's been focus-grouped to death, its rough edges sanded away until what remains is a pleasant but bloodless approximation of the film's spirit.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Almost Famous feels like a show that's been focus-grouped to death, its rough edges sanded away until what remains is a pleasant but bloodless approximation of the film's spirit.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Almost Famous feels like a show that's been focus-grouped to death, its rough edges sanded away until what remains is a pleasant but bloodless approximation of the film's spirit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The review describes the show as 'pleasant' but criticizes it as 'bloodless' and over-commercialized, suggesting a lukewarm assessment that neither strongly recommends nor discourages attendance. | GPT-4o: The review describes the show as 'pleasant but bloodless,' indicating a lack of enthusiasm and a negative overall impression. The phrase 'focus-grouped to death' suggests a lack of authenticity or vitality, leading to a negative verdict. | Gemini: The review explicitly states the show is a \"bloodless approximation\" of the film, indicating a negative assessment and lack of recommendation. | Kimi: The critic describes the Broadway adaptation as sanitized ('focus-grouped to death', 'rough edges sanded away') and lacking vitality ('bloodless'), finding it a disappointing approximation of the film's spirit rather than a successful transfer.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:57:13.853Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

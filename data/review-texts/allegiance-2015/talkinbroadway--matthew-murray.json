@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Allegiance is a show that demands to be seen and heard, even if it doesn't always succeed in making its case with the theatrical sophistication its subject deserves.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Allegiance is a show that demands to be seen and heard, even if it doesn't always succeed in making its case with the theatrical sophistication its subject deserves.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Allegiance is a show that demands to be seen and heard, even if it doesn't always succeed in making its case with the theatrical sophistication its subject deserves.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic states the show 'demands to be seen and heard' but immediately qualifies this with significant reservations about its theatrical execution, creating a mixed recommendation that acknowledges importance while critiquing craft. | GPT-4o: The review recommends seeing the show despite acknowledging some shortcomings in its execution. The phrase 'demands to be seen and heard' indicates a positive recommendation, though with noted reservations about its sophistication. | Gemini: The review states that the show \"demands to be seen and heard,\" which indicates a positive recommendation, but it also mentions that the show \"doesn't always succeed,\" indicating reservations. | Kimi: The critic strongly urges attendance ('demands to be seen') but balances this with criticism about the production's lack of theatrical sophistication, creating a qualified positive recommendation typical of the 75-79 range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:46:38.630Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

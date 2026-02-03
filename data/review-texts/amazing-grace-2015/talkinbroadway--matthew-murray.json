@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Amazing Grace is a show that wants desperately to be inspiring, but it's so busy trying to check all the boxes of what a Broadway musical should be that it forgets to actually inspire.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Amazing Grace is a show that wants desperately to be inspiring, but it's so busy trying to check all the boxes of what a Broadway musical should be that it forgets to actually inspire.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Amazing Grace is a show that wants desperately to be inspiring, but it's so busy trying to check all the boxes of what a Broadway musical should be that it forgets to actually inspire.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict stating the show fails at its primary goal of being inspiring, describing it as formulaic box-checking rather than meaningful theater. | GPT-4o: The review criticizes the show for failing to inspire, despite its intentions. The tone is clearly negative, indicating a lack of recommendation. | Gemini: The review states the show 'forgets to actually inspire', indicating a negative overall experience. | Kimi: The critic finds the show overly focused on meeting Broadway conventions rather than achieving genuine inspiration, resulting in a disappointing production that fails at its central goal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:01:00.178Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

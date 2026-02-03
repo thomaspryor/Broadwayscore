@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This brilliant musical about making a musical is both deeply personal and universally resonant, a work of rare honesty and artistic courage that transforms private pain into shared understanding.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This brilliant musical about making a musical is both deeply personal and universally resonant, a work of rare honesty and artistic courage that transforms private pain into shared understanding.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This brilliant musical about making a musical is both deeply personal and universally resonant, a work of rare honesty and artistic courage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with strong superlatives ('brilliant', 'rare honesty', 'artistic courage') and no reservations expressed. The language suggests essential viewing. | GPT-4o: The review uses superlatives like 'brilliant', 'rare honesty', and 'artistic courage', indicating a strong, enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"brilliant\", \"rare honesty\", and \"artistic courage\", indicating a rave review. | Kimi: The critic employs unreserved superlatives including 'brilliant,' 'rare honesty,' and 'artistic courage,' delivering an enthusiastic recommendation without any qualifications or criticisms.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:42:08.508Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

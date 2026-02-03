@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael R. Jackson's musical is a bold, brilliant and deeply personal work that uses meta-theatrical devices to explore identity, creativity and self-acceptance with searing honesty and surprising humor.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Michael R. Jackson's musical is a bold, brilliant and deeply personal work that uses meta-theatrical devices to explore identity, creativity and self-acceptance with searing honesty and surprising humor.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Michael R. Jackson's musical is a bold, brilliant and deeply personal work",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with strong superlatives ('bold, brilliant') and no reservations expressed. The language suggests enthusiastic recommendation despite the brief excerpt. | GPT-4o: The review uses superlatives like 'bold', 'brilliant', and 'deeply personal' to describe the musical, indicating a strong, enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"bold, brilliant, deeply personal\" and \"searing honesty and surprising humor,\" indicating a rave review. | Kimi: The critic offers unqualified praise using superlatives ('bold, brilliant', 'searing honesty') with no reservations, indicating strong enthusiasm for the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:39:30.898Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Cameron Crowe's beloved 2000 film captures much of the original's nostalgic charm, even if it doesn't quite achieve the same emotional heights.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of Cameron Crowe's beloved 2000 film captures much of the original's nostalgic charm, even if it doesn't quite achieve the same emotional heights.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation of Cameron Crowe's beloved 2000 film captures much of the original's nostalgic charm, even if it doesn't quite achieve the same emotional heights.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Acknowledges positive qualities ('captures nostalgic charm') but notes significant shortcomings ('doesn't quite achieve the same emotional heights'). No clear recommendation either way. | GPT-4o: The review acknowledges the show's nostalgic charm, suggesting a positive experience, but notes it doesn't reach the emotional impact of the original film, indicating some reservations. | Gemini: The review states that the musical captures much of the original's charm, indicating a positive experience, but it also notes that it doesn't reach the same emotional heights, suggesting some reservations. | Kimi: The critic offers a qualified recommendation, praising the show's nostalgic appeal while noting it doesn't match the original film's emotional depth. The single-sentence format suggests this is an excerpt, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:52:16.867Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

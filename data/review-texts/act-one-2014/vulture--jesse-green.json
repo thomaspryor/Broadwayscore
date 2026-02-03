@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The problem with Act One is that it's trying to be both a biographical play and a valentine to the theater, and it succeeds better as the latter than the former.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
     "Show title not found in text"
   ],
   "wordCount": 1001,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Act One is still a love letter to the theater: I smiled through most of it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Green finds the production charming but fundamentally flawed - too mild for fans, too credulous for cynics. He praises individual performances but criticizes the structure as undramatic and repetitive. The review balances positive moments with significant reservations. | GPT-4o: The review acknowledges some charm and enjoyable moments but criticizes the lack of dramatic impact and emotional payoff. The overall tone suggests a mixed reception, with both positive and negative elements. | Gemini: The review is mixed, noting charms but also criticizing the lack of dramatic impact and emotional payoff. The critic smiled through most of it, but ultimately finds it lacking depth. | Kimi: Despite acknowledging the show's charm and some strong performances (particularly Shalhoub and Martin), the critic finds the production dramatically inert, formally repetitive, and ultimately unsatisfying, concluding it offers 'busy build-up and no emotional payoff' and satisfies neither fans nor skeptics of the source material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:05:58.484Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

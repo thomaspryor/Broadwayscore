@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Lisa D'Amour's 'Airline Highway' is a sprawling, messy, big-hearted play about the misfits and outcasts who populate a seedy New Orleans motel, and it's performed with such fierce commitment by this ensemble cast that you can't help but be moved by their collective humanity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -61,5 +61,60 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 773,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's performed with such fierce commitment by this ensemble cast that you can't help but be moved by their collective humanity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear positive sentiment - critic is 'moved' by the performances and praises the 'fierce commitment' of the cast. However, confidence is low due to only having one curated quote available. | GPT-4o: The excerpt praises the play's emotional impact and the ensemble's performance, suggesting a strong positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt praises the play as 'big-hearted' and the performances as 'fierce,' indicating a positive recommendation. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: Despite calling the play 'sprawling' and 'messy,' the critic emphasizes its big-hearted nature and praises the cast's fierce commitment, clearly recommending the production for its emotional impact and ensemble performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:26:54.215Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

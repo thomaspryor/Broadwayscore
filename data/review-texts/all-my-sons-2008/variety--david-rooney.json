@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This handsome, skillfully acted revival of Arthur Miller's 1947 drama brings renewed relevance to a work that deals with moral compromise and the corrosive effects of putting profit above principle.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This handsome, skillfully acted revival of Arthur Miller's 1947 drama brings renewed relevance to a work that deals with moral compromise and the corrosive effects of putting profit above principle.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This handsome, skillfully acted revival of Arthur Miller's 1947 drama brings renewed relevance to a work that deals with moral compromise and the corrosive effects of putting profit above principle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive descriptors like 'handsome' and 'skillfully acted' with emphasis on renewed relevance suggest recommendation, but the brief excerpt lacks strong superlatives or explicit recommendation language. | GPT-4o: The review praises the production as 'handsome' and 'skillfully acted,' highlighting its renewed relevance, indicating a strong positive recommendation. | Gemini: The review uses positive language like \"handsome\" and \"skillfully acted\" and states that the revival brings renewed relevance to the work, indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The review offers solid praise for the production values and performances, noting the revival brings renewed relevance to the work. However, the brevity of the excerpt warrants low confidence as the full verdict may contain additional context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:30:46.002Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

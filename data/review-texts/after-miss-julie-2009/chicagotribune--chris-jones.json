@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Patrick Marber's 'After Miss Julie' is a competent update of Strindberg's classic, but it lacks the raw psychological intensity that makes the original so compelling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Patrick Marber's 'After Miss Julie' is a competent update of Strindberg's classic, but it lacks the raw psychological intensity that makes the original so compelling.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Patrick Marber's 'After Miss Julie' is a competent update of Strindberg's classic, but it lacks the raw psychological intensity that makes the original so compelling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review acknowledges competence but identifies a significant flaw in missing the psychological intensity that defines the source material. Neither recommends nor discourages attendance. | GPT-4o: The review acknowledges the competence of the update but criticizes it for lacking the intensity of the original, indicating a mixed assessment. | Gemini: The review acknowledges competence but notes a lack of intensity compared to the original, indicating a mixed assessment. | Kimi: The review acknowledges the production is professionally executed ('competent') but emphasizes a significant deficiency in emotional power compared to the source material, creating a balanced but unenthusiastic assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:12:23.501Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cooper's play is a fierce, funny, and sometimes messy satire that uses the fantasy of Black exodus to examine the reality of Black existence in America.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cooper's play is a fierce, funny, and sometimes messy satire that uses the fantasy of Black exodus to examine the reality of Black existence in America.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cooper's play is a fierce, funny, and sometimes messy satire that uses the fantasy of Black exodus to examine the reality of Black existence in America.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Describes the play as 'fierce' and 'funny' which are positive descriptors, though acknowledges it's 'sometimes messy.' The overall tone suggests appreciation for the work's ambition and execution despite some flaws. | GPT-4o: The review describes the play as 'fierce' and 'funny,' indicating a positive reception, but also notes it is 'sometimes messy,' suggesting some reservations. | Gemini: The review describes the play as \"fierce, funny\" but also \"sometimes messy,\" indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic delivers a clear recommendation with strong praise ('fierce,' 'funny') tempered by a minor reservation ('sometimes messy'), placing it in the solid Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:15:33.688Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

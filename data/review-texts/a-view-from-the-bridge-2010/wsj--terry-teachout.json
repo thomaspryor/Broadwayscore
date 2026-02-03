@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Kenzie's production is straightforward and effective, and his cast, led by Liev Schreiber and Scarlett Johansson, serves Arthur Miller's 1955 drama well.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Kenzie's production is straightforward and effective, and his cast, led by Liev Schreiber and Scarlett Johansson, serves Arthur Miller's 1955 drama well.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Kenzie's production is straightforward and effective, and his cast serves Arthur Miller's 1955 drama well.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brief excerpt with positive language ('effective', 'serves well') but lacks detail for a confident assessment. The straightforward praise suggests solid recommendation despite brevity. | GPT-4o: The review provides a positive assessment of the production and cast, describing it as 'straightforward and effective.' However, the lack of superlatives or detailed praise suggests a solid but not enthusiastic recommendation. | Gemini: The review states that the production is \"straightforward and effective\" and that the cast \"serves Arthur Miller's drama well,\" indicating a positive, though not overwhelmingly enthusiastic, recommendation. | Kimi: The critic offers unqualified praise for the production and cast, calling them 'effective' and saying they serve the drama 'well,' though the language is restrained rather than enthusiastic. The brevity of the excerpt warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:49:51.586Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cranston's LBJ is a triumph of physical and vocal transformation, capturing the president's crude charisma and political cunning with remarkable authenticity.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cranston's LBJ is a triumph of physical and vocal transformation, capturing the president's crude charisma and political cunning with remarkable authenticity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cranston's LBJ is a triumph of physical and vocal transformation, capturing the president's crude charisma and political cunning with remarkable authenticity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for lead performance using 'triumph' and 'remarkable authenticity', aligns with critic's 80 rating. Limited text focuses only on one element, hence medium confidence. | Gemini: The review praises Cranston's performance as a 'triumph' and highlights its 'remarkable authenticity,' indicating a positive assessment. The original rating of 80 aligns with this classification. | Kimi: The critic assigns an 80/100 rating and uses superlatives like 'triumph' and 'remarkable authenticity' to praise the lead performance, indicating a strong recommendation despite the truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:42:51.196Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

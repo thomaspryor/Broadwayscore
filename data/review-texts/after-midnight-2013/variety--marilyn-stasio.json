@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This jazzy musical revue set in a Harlem nightclub circa 1930 is a classy production that showcases some fabulous dancing and a host of terrific jazz standards.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20250121231805",
   "archiveOrgUrl": "http://web.archive.org/web/20250121231805/https://variety.com/2013/legit/reviews/broadway-review-after-midnight-1200791616/",
   "wordCount": 666,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sanitized though it may be, 'After Midnight' is great entertainment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise throughout for performances, design, and talent with clear positive verdict. Only caveat is 'sanitized' nature, but critic explicitly calls it 'great entertainment' multiple times. | GPT-4o: The review praises the design, performances, and overall entertainment value of the show, despite noting a sanitized portrayal. The enthusiastic tone and strong positive language indicate a solid recommendation. | Gemini: The review is overall positive, describing the show as \"great entertainment\" despite being \"somewhat sanitized\". It highlights the talent, design, and music, leading to a recommendation with reservations. | Kimi: The critic offers enthusiastic praise for the gorgeously designed production, roof-raising performances, and sensational dancing, explicitly calling the show 'great entertainment' while noting it presents a somewhat idealized version of Harlem history.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:11:16.752Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

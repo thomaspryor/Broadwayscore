@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jeremy Irons and Lesley Manville bring emotional gravity to Arthur Miller's drama, but the production feels overly cautious in its approach to the material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -61,5 +61,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 768,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It still packs a wallop all its own, especially in this wonderfully cast, honestly staged and beautifully presented production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the production with terms like 'blistering revival,' 'wonderfully cast,' 'stunning performance,' and detailed appreciation of all performances. Clear recommendation despite acknowledging the play's structural weaknesses. | GPT-4o: The review is filled with superlatives and strong praise for the cast, direction, and production. It describes the revival as 'revealing' and 'blistering', with performances that are 'stunning' and 'enthralling'. The critic clearly recommends the show as a must-see. | Gemini: The review is overwhelmingly positive, praising the cast, staging, and overall impact of the production. The critic uses terms like \"stellar cast\", \"harrowing life\", and \"wonderfully cast\". | Kimi: Despite brief acknowledgment of the play's mechanical plotting and heavy symbolism, the critic delivers a glowing verdict for this specific production, praising the stellar cast, stunning performances, and beautiful staging with words like 'blistering' and 'harrowing'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:36:56.140Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

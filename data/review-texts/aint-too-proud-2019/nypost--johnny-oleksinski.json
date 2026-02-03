@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The five-man vocal group's rise and fall is told with exceptional singing, dancing and enough sequins to blind a small city.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The five-man vocal group's rise and fall is told with exceptional singing, dancing and enough sequins to blind a small city.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The five-man vocal group's rise and fall is told with exceptional singing, dancing and enough sequins to blind a small city.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: This appears to be a brief excerpt praising 'exceptional singing, dancing' with colorful language about production values, indicating a positive assessment. However, confidence is low due to the very short length and lack of explicit recommendation language. | GPT-4o: The review highlights 'exceptional singing, dancing' which suggests a positive experience, but the brevity of the text limits the depth of evaluation, leading to a low confidence score. | Gemini: The review highlights \"exceptional singing, dancing\" suggesting a positive experience, but the phrase \"rise and fall\" implies a potentially bittersweet or dramatic narrative, leading to a score in the middle of the positive range. | Kimi: Though brief, the review offers unqualified praise for the production's 'exceptional' singing and dancing, along with lavish visuals, indicating a strong positive recommendation despite lacking detail on other elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:20:43.403Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

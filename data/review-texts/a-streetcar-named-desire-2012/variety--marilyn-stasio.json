@@ -62,5 +62,11 @@
     "Show title not found in text"
   ],
   "wordCount": 597,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-03T11:45:15.005Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a review of a BBC/PBS television adaptation of 'Great Expectations', not a Broadway theater production; openai: The review is about a TV adaptation of 'Great Expectations', not a Broadway production.; gemini: This review is for a BBC/PBS miniseries adaptation of Great Expectations, not a Broadway stage production.; kimi: This is a review of a BBC/PBS television miniseries adaptation of 'Great Expectations,' not a Broadway theater production. The text references broadcast schedules, screentime, cinematic qualities, and TV actors (Gillian Anderson, Ray Winstone), confirming it is about a screen adaptation rather than a stage show.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is whimsical but weightless, charming but charmless — a contradiction that sums up this uneven adaptation of the beloved 2001 French film.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is whimsical but weightless, charming but charmless — a contradiction that sums up this uneven adaptation of the beloved 2001 French film.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is whimsical but weightless, charming but charmless — a contradiction that sums up this uneven adaptation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic uses balanced contradictory language ('whimsical but weightless') and explicitly calls it 'uneven,' indicating neither recommendation nor discouragement. | GPT-4o: The review presents a balanced view with both positive and negative descriptors, indicating an overall mixed impression without a strong recommendation. | Gemini: The review uses contradictory terms to describe the show, indicating a mixed or neutral opinion. The phrase \"uneven adaptation\" further supports this classification. | Kimi: The critic employs contradictory descriptors ('whimsical but weightless,' 'charming but charmless') to emphasize the show's fundamental flaws, explicitly labeling it an 'uneven adaptation' that fails to satisfy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:05:16.685Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

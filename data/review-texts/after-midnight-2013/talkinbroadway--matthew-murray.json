@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "After Midnight is a show that knows exactly what it wants to be and delivers it with style, panache, and most importantly, an irrepressible sense of joy that proves utterly infectious.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "After Midnight is a show that knows exactly what it wants to be and delivers it with style, panache, and most importantly, an irrepressible sense of joy that proves utterly infectious.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "After Midnight is a show that knows exactly what it wants to be and delivers it with style, panache, and most importantly, an irrepressible sense of joy that proves utterly infectious.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language with 'style, panache' and 'irrepressible sense of joy that proves utterly infectious' indicates enthusiastic recommendation without reservations. | GPT-4o: The review uses strong positive language ('style', 'panache', 'irrepressible sense of joy') and describes the show as 'utterly infectious', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"style, panache, and most importantly, an irrepressible sense of joy\" to describe the show, indicating a strong recommendation. | Kimi: The critic offers unqualified praise emphasizing the show's confident execution, style, and infectious emotional impact, though the single-sentence excerpt limits certainty about the full review's context. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:08:46.272Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

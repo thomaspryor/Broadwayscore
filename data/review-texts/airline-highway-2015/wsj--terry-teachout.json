@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What we get instead is a play that feels more like a workshop exercise than a finished work, one whose characters are more like types than people.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What we get instead is a play that feels more like a workshop exercise than a finished work, one whose characters are more like types than people.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What we get instead is a play that feels more like a workshop exercise than a finished work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | GPT-4o: The review is strongly negative, describing the play as unfinished and its characters as mere types, indicating a lack of depth and polish. | Gemini: The review explicitly states the play feels unfinished and the characters are not well-developed, indicating a negative assessment. | Kimi: The critic describes the show as an unfinished 'workshop exercise' with poorly developed characters ('types not people'), indicating a fundamental failure of craft. While harsh, the single-sentence excerpt lacks the intensity of a full pan ('disaster,' 'avoid'), placing it in the Negative range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:27:22.844Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

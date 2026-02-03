@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite handsome design elements and a score with pleasing melodies, this ambitious musical adaptation of Dickens' classic novel suffers from a bloated book that fails to dramatize effectively.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite handsome design elements and a score with pleasing melodies, this ambitious musical adaptation of Dickens' classic novel suffers from a bloated book that fails to dramatize effectively.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 46,
+    "confidence": "high",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this ambitious musical adaptation of Dickens' classic novel suffers from a bloated book that fails to dramatize effectively",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: While acknowledging positive elements (design, melodies), the critic's core verdict is that the show 'suffers from a bloated book that fails to dramatize effectively' - a clear structural criticism that outweighs the praised elements. | GPT-4o: The review acknowledges some positive elements like design and melodies but ultimately criticizes the adaptation for its ineffective dramatization, leading to a negative overall assessment. | Gemini: The review highlights positive aspects like design and melodies but ultimately concludes that the show suffers from a weak and bloated book, leading to a negative recommendation. | Kimi: While acknowledging handsome design and pleasing melodies, the critic finds the book bloated and ineffective at dramatization, leading to a negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:48:01.642Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }
