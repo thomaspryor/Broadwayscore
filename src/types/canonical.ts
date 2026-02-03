@@ -67,7 +67,7 @@ export function generateTextId(reviewId: string, textSource: TextSource): string
 // ===========================================
 
 export type ShowStatus = 'previews' | 'opened' | 'closing' | 'closed';
-export type ShowType = 'musical' | 'play' | 'revival' | 'special';
+export type ShowType = 'musical' | 'play' | 'special';
 export type OutletTier = 1 | 2 | 3;
 export type ConfidenceLevel = 'high' | 'medium' | 'low';
 
