@@ -92,7 +92,11 @@
     "the-outsiders-2024/culturesauce--thom-geier.json",
     "the-wiz-2024/washpost--gloria-oladipo.json",
     "1984-2017/variety--marilyn-stasio.json",
-    "33-variations-2009/variety--david-rooney.json"
+    "33-variations-2009/variety--david-rooney.json",
+    "700-sundays-2013/nytimes--ben-brantley.json",
+    "9-to-5-2009/variety--david-rooney.json",
+    "a-behanding-in-spokane-2010/variety--marilyn-stasio.json",
+    "a-bronx-tale-the-musical-2016/variety--marilyn-stasio.json"
   ],
   "failed": [
     "patriots-2024/deadline--greg-evans.json",
@@ -384,7 +388,13 @@
     "1984-2017/hollywood-reporter--david-rooney.json",
     "1984-2017/nytimes--ben-brantley.json",
     "1984-2017/vulture--jesse-green.json",
-    "33-variations-2009/nytimes--ben-brantley.json"
+    "33-variations-2009/nytimes--ben-brantley.json",
+    "700-sundays-2013/variety--marilyn-stasio.json",
+    "9-to-5-2009/nytimes--ben-brantley.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/variety--aramide-tinubu.json",
+    "a-behanding-in-spokane-2010/nytimes--ben-brantley.json",
+    "a-bronx-tale-the-musical-2016/nyt-theater--david-nounou.json",
+    "a-catered-affair-2008/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -410,7 +420,9 @@
       "data/review-texts/1984-2017/variety--marilyn-stasio.json",
       "1984-2017/variety--marilyn-stasio.json",
       "data/review-texts/33-variations-2009/variety--david-rooney.json",
-      "33-variations-2009/variety--david-rooney.json"
+      "33-variations-2009/variety--david-rooney.json",
+      "data/review-texts/9-to-5-2009/variety--david-rooney.json",
+      "9-to-5-2009/variety--david-rooney.json"
     ],
     "scrapingbee": [
       "patriots-2024/guardian--michael-billington.json",
@@ -432,7 +444,9 @@
       "doubt-2024/wsj--charles-isherwood.json",
       "i-need-that-2023/wsj--charles-isherwood.json",
       "lempicka-2024/wsj--charles-isherwood.json",
-      "suffs-2024/wsj--charles-isherwood.json"
+      "suffs-2024/wsj--charles-isherwood.json",
+      "a-behanding-in-spokane-2010/variety--marilyn-stasio.json",
+      "a-bronx-tale-the-musical-2016/variety--marilyn-stasio.json"
     ],
     "archive": [
       "patriots-2024/broadwaynews--brittani-samuel.json",
@@ -496,11 +510,12 @@
       "harry-potter-2021/medium--christian-lewis.json",
       "harry-potter-2021/the-times--ann-treneman.json",
       "maybe-happy-ending-2024/washpost--naveen-kumar.json",
-      "moulin-rouge-2019/telegraph--diane-snyder.json"
+      "moulin-rouge-2019/telegraph--diane-snyder.json",
+      "700-sundays-2013/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-02-03T00:59:54.740Z",
-  "lastProcessed": "33-variations-2009/variety--david-rooney.json",
+  "lastProcessed": "a-catered-affair-2008/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-02-03T01:03:57.584Z",
@@ -945,6 +960,30 @@
       "event": "bb-session",
       "session": "4aa63095",
       "url": "https://variety.com/2009/legit/reviews/33-variations-1200472233/"
+    },
+    {
+      "t": "2026-02-03T07:19:37.678Z",
+      "event": "bb-session",
+      "session": "e281eaf3",
+      "url": "https://www.nytimes.com/2013/11/14/theater/reviews/billy-crystal-in-700-sundays-"
+    },
+    {
+      "t": "2026-02-03T07:20:23.210Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770103189916\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAV8C_D17M_GwANBsspA==&cid=YpxnaqdJYgs9Bc9ocoYtCgwN8lRNPQ7kASR9jMYv_fuEEQudRVbmHHS3ee0y4pmdomywwbM0l7DK3O7kCC929i4MwMD9gLej8lHrbNFArxjdgb3qvRrfqZJ1A8Y0bI0R&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770103189916\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770103189916\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAV8C_D17M_GwANBsspA==&cid=YpxnaqdJYgs9Bc9ocoYtCgwN8lRNPQ7kASR9jMYv_fuEEQudRVbmHHS3ee0y4pmdomywwbM0l7DK3O7kCC929i4MwMD9gLej8lHrbNFArxjdgb3qvRrfqZJ1A8Y0bI0R&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770103189916\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    25 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770103189916\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAV8C_D17M_GwANBsspA==&cid=YpxnaqdJYgs9Bc9ocoYtCgwN8lRNPQ7kASR9jMYv_fuEEQudRVbmHHS3ee0y4pmdomywwbM0l7DK3O7kCC929i4MwMD9gLej8lHrbNFArxjdgb3qvRrfqZJ1A8Y0bI0R&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770103189916\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-03T07:21:21.919Z",
+      "event": "bb-session",
+      "session": "7e5cf0ab",
+      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+    },
+    {
+      "t": "2026-02-03T07:22:12.717Z",
+      "event": "bb-session",
+      "session": "1f601068",
+      "url": "https://variety.com/2009/legit/reviews/9-to-5-1200474053/"
     }
   ]
 }
