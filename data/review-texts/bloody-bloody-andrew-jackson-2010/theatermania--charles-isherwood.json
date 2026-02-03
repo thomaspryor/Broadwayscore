@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's irreverent energy and rock-musical format make for an entertaining evening, even if the historical liberties taken are considerable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's irreverent energy and rock-musical format make for an entertaining evening, even if the historical liberties taken are considerable.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's irreverent energy and rock-musical format make for an entertaining evening, even if the historical liberties taken are considerable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified recommendation - calls it 'entertaining' but notes 'considerable' historical liberties as a caveat. Low confidence due to limited text. | GPT-4o: The excerpt describes the show as 'entertaining' but notes 'considerable' historical liberties, indicating a positive review with some reservations. Due to the single excerpt warning, confidence is low. | Gemini: The review excerpt indicates an \"entertaining evening\" despite reservations about historical accuracy, placing it in the positive bucket. Due to the single excerpt, confidence is low. | Kimi: The excerpt offers a qualified recommendation, praising the show's energy and format as 'entertaining' while noting significant historical inaccuracies, placing it in the mild-positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:47:18.166Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

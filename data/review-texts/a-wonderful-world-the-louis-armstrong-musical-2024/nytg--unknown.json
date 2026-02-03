@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Book writer Aurin Squire and conceivers Andrew Delaplaine and Christopher Renshaw toggle between conventional bio-musical choices and more challenging ones, keeping A Wonderful World lively and interesting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the creative team for keeping the show 'lively and interesting' through a mix of conventional and challenging choices. However, this is only one curated excerpt, so confidence is low and the score reflects cautious positivity. | GPT-4o: The excerpt suggests a positive view, highlighting the show's liveliness and interest. However, the single excerpt warning and lack of a full review text necessitate a lower confidence and a score at the lower end of the Positive range. | Gemini: The excerpt states the show is \"lively and interesting,\" which is a positive sentiment. Given it's a single excerpt, confidence is low, and the score is in the lower end of the positive range. | Kimi: The excerpt offers unambiguous praise for the creative team's structural choices, describing the show as 'lively and interesting,' which indicates a solid positive recommendation. Confidence is low due to limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:41:13.107Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

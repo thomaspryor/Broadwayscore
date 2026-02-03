@@ -17,5 +17,60 @@
   "playbillVerdictUrl": "https://nystagereview.com/2022/04/27/mr-saturday-night-broadway-musical-borscht-belt-style/",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Crystal displays the vitality of someone half his age, his energy fueled by the waves of audience laughter cascading over the footlights.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with extensive praise for Crystal's performance but harsh criticism of the songs, pacing, and overall structure. The critic acknowledges it will work for Crystal fans despite fundamental flaws. | GPT-4o: The review acknowledges Billy Crystal's strong performance and comedic talent but criticizes the musical for its lack of memorable songs and formulaic dramatic scenes. The overall tone is mixed, with praise for Crystal's comedy but significant reservations about the show's structure and music. | Gemini: The review is mixed, praising Crystal's performance and jokes but criticizing the songs and plot. The critic suggests it's worthwhile for Crystal fans, but not an overall triumph. | Kimi: The 3/5 star review praises Billy Crystal's comic performance and timing but heavily criticizes the forgettable songs, formulaic book, and excessive length, creating a mixed verdict that recommends the show only for diehard fans of its star.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:40:44.343Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

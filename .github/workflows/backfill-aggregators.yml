@@ -170,6 +170,11 @@ jobs:
             git checkout -- . 2>/dev/null || true
             git clean -fd 2>/dev/null || true
             if git pull --rebase -X theirs origin main; then
+              # Verify shows.json wasn't corrupted by rebase
+              node -e "const d=JSON.parse(require('fs').readFileSync('data/shows.json','utf8')); if(!Array.isArray(d.shows)) throw new Error('shows.json corrupted: .shows is not an array')" || {
+                echo "shows.json corrupted during rebase, restoring..."
+                git checkout origin/main -- data/shows.json
+              }
               if git push origin main; then
                 echo "Successfully pushed batch ${{ matrix.batch_id }}"
                 exit 0

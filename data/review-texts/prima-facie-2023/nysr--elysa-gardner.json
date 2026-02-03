@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a compelling argument, and Comer, under Justin Martin's vigorous but sensitive direction, makes it soar and sting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with strong praise for Comer's performance and direction, calling her work 'astonishing' and the argument 'compelling.' However, the critic raises substantive concerns about the play's balance and nuance, suggesting structural flaws that prevent this from being a higher score. | GPT-4o: The review praises Jodie Comer's performance and the direction, describing the play as compelling and engaging. However, the text is truncated, and the critic's final verdict may be missing, which affects confidence. | Gemini: The review praises Jodie Comer's performance and the direction, calling the argument \"compelling\". However, the truncated text and the critic's reservations about the play's balance suggest a score in the positive range, but not a rave. | Kimi: The critic awards 4/5 stars and delivers enthusiastic praise for Jodie Comer's 'astonishing' debut and the production's 'dramatically rich' execution. While the review raises questions about the play's one-sided narrative structure, this is presented as thematic critique rather than production failure, with the overall verdict firmly recommending the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:46:15.015Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

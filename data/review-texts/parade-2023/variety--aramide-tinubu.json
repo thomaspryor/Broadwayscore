@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ben Platt and Micaela Diamond anchor this exquisite revival of Jason Robert Brown and Alfred Uhry's 1998 musical about the Leo Frank case with nuanced performances that feel both period-appropriate and strikingly contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Ben Platt and Micaela Diamond anchor this exquisite revival of Jason Robert Brown and Alfred Uhry's 1998 musical about the Leo Frank case with nuanced performances that feel both period-appropriate and strikingly contemporary.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ben Platt and Micaela Diamond anchor this exquisite revival with nuanced performances that feel both period-appropriate and strikingly contemporary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: The word 'exquisite' is strong praise for the revival, and the critic highlights the leads' 'nuanced performances.' However, this appears to be an excerpt focusing only on the performances, so confidence is medium. | GPT-4o: The review uses strong positive language ('exquisite', 'nuanced') to describe the performances, indicating a highly favorable opinion of the production. | Gemini: The review uses the word \"exquisite\" to describe the revival and praises the performances of the leads. This indicates a positive recommendation, though brief. | Kimi: The critic describes the revival as 'exquisite' and praises the lead performances as 'nuanced' and 'strikingly contemporary,' indicating strong enthusiasm despite the brevity of the provided text. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:44:12.656Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

@@ -17,5 +17,60 @@
   "playbillVerdictUrl": "http://nystagereview.com/2019/03/14/kiss-me-kate-true-to-cole-porter-and-shakespeare-in-their-fashion/",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This latest revival may be ordinary but it is still a very capable rendition of an enduring Broadway classic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for performances, design, and production values. While the critic notes it's 'ordinary' compared to the legendary 1999 production, they clearly recommend it as a 'very capable rendition' that will 'please anyone who craves a vintage musical comedy.' | GPT-4o: The review is generally positive, highlighting the production's appeal, performances, and design. While it notes some reservations about the production being 'ordinary' compared to past versions, the overall tone and 4/5 stars suggest a solid recommendation. | Gemini: The review is generally positive, calling it a \"very capable rendition\" and noting it will \"please anyone who craves a vintage musical comedy.\" However, it also states that it may be \"ordinary\" compared to previous productions, indicating some reservations. | Kimi: The critic awards 4/5 stars and describes the production as 'dandy,' 'capable,' and 'likely to please,' recommending it for fans of vintage musicals, while noting it is 'more spirited than exciting' and 'ordinary' compared to the 1999 revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:39:34.718Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 79,
+    "geminiScore": 78,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

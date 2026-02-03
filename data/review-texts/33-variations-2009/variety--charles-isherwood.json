@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jane Fonda makes a welcome return to Broadway after a 46-year absence in Moises Kaufman's '33 Variations,' a meditation on the creative process that proves as intellectually stimulating as it is emotionally satisfying.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jane Fonda makes a welcome return to Broadway after a 46-year absence in Moises Kaufman's '33 Variations,' a meditation on the creative process that proves as intellectually stimulating as it is emotionally satisfying.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jane Fonda makes a welcome return to Broadway after a 46-year absence in Moises Kaufman's '33 Variations,' a meditation on the creative process that proves as intellectually stimulating as it is emotionally satisfying.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clear praise - 'intellectually stimulating' and 'emotionally satisfying' indicate strong positive verdict. Given single excerpt warning and positive tone, scored in upper Positive range, but confidence is low due to limited text. | GPT-4o: The excerpt provides a positive evaluation, highlighting both intellectual and emotional satisfaction. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses positive language such as \"welcome return\", \"intellectually stimulating\", and \"emotionally satisfying\", suggesting a strong positive recommendation. Given it's a single excerpt, I'm placing it towards the higher end of the positive bucket. | Kimi: The excerpt employs strong positive descriptors ('intellectually stimulating,' 'emotionally satisfying,' 'welcome return') indicating a clear recommendation in the upper Positive range, though confidence is reduced due to availability of only a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:36:00.406Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

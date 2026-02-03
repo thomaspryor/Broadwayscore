@@ -16,7 +16,9 @@
   "sources": [
     "bww-roundup",
     "web-search",
-    "show-score"
+    "show-score",
+    "playbill-verdict",
+    "nyc-theatre"
   ],
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
@@ -158,5 +160,7 @@
     "dtliThumb": "none",
     "bwwThumb": "Up"
   },
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "playbillVerdictUrl": "https://www.timeout.com/newyork/theater/our-town-broadway-review-thornton-wilder-jim-parsons",
+  "nycTheatreExcerpt": "\"Tears were streaming down my face for much of the last half hour of this revival; perhaps you will feel the same way. But while we in the audience might weep, Wilder's view, though always sympathetic, stays clear and dry. He has an eye on the eternal.\""
 }

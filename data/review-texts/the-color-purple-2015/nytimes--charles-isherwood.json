@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new production of 'The Color Purple' has been reimagined with a lighter touch that allows its essential humanity to shine through more clearly. The result is a musical that feels both more intimate and more universal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a musical that feels both more intimate and more universal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic praises the reimagined production approach and its positive impact, describing it as allowing 'essential humanity to shine through more clearly' with improved intimacy and universality. | GPT-4o: The review praises the reimagined production for its clarity and impact, suggesting a strong recommendation with positive language. | Gemini: The review indicates a positive shift in the production, highlighting its increased intimacy and universality, suggesting a worthwhile experience despite not being a rave. | Kimi: The critic praises the production's reimagined approach for highlighting the show's 'essential humanity' and making it feel 'more intimate and more universal,' indicating a clear recommendation without significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:05:15.279Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

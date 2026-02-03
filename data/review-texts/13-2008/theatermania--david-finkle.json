@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is that 13 -- which has book by Dan Elish and Robert Horn, music and lyrics by Jason Robert Brown -- is a show that tries to be all things to all people and ends up being not quite enough for anyone.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The result is that 13 -- which has book by Dan Elish and Robert Horn, music and lyrics by Jason Robert Brown -- is a show that tries to be all things to all people and ends up being not quite enough for anyone.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is that 13 -- which has book by Dan Elish and Robert Horn, music and lyrics by Jason Robert Brown -- is a show that tries to be all things to all people and ends up being not quite enough for anyone.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Single excerpt shows the critic finding the show inadequate and unsatisfying ('not quite enough for anyone'), suggesting neither recommendation nor strong discouragement. However, with only one curated quote available, the full verdict remains unclear. | GPT-4o: The excerpt suggests a negative view, indicating the show fails to satisfy any audience. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt indicates that the show 'ends up being not quite enough for anyone,' suggesting a negative assessment. Given the single excerpt and warning, confidence is low. | Kimi: The single excerpt criticizes the show for lacking focus and failing to deliver sufficient value for any audience segment, indicating a disappointing production that does not earn a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:36:09.037Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 45,
+    "geminiScore": 49,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

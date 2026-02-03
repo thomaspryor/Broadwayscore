@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This West Side Story, directed by Ivo van Hove, is both radically reimagined and surprisingly faithful to the original. The production strips away much of the show's traditional staging while maintaining its emotional core.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This West Side Story, directed by Ivo van Hove, is both radically reimagined and surprisingly faithful to the original. The production strips away much of the show's traditional staging while maintaining its emotional core.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This West Side Story, directed by Ivo van Hove, is both radically reimagined and surprisingly faithful to the original.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review describes the production as both 'radically reimagined' and 'surprisingly faithful', suggesting a positive view of the director's approach. However, the lack of detailed praise or strong recommendation keeps it in the lower range of Positive. | Gemini: The review states that the production is both radically reimagined and surprisingly faithful, indicating a positive but not overwhelmingly enthusiastic assessment. | Kimi: The excerpt offers praise for the production's ability to radically reimagine the show while maintaining its emotional core, indicating a favorable view, though the brief text prevents a definitive assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:34:00.490Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

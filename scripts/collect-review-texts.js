@@ -2688,7 +2688,11 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
     const showCheck = validateShowMentioned(cleanedText, showTitle, showId);
     if (!showCheck.valid && showCheck.confidence === 'high') {
       data.showNotMentioned = true;
-      console.log(`    ⚠ Show not mentioned in text: ${showCheck.reason}`);
+      // Null out wrong fullText so it can't be scored — keep URL for URL discovery on next run
+      data.wrongFullText = data.fullText;
+      data.fullText = null;
+      data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt) ? 'excerpt' : 'needs-rescrape';
+      console.log(`    ⚠ Show not mentioned in text — fullText nulled: ${showCheck.reason}`);
     } else {
       delete data.showNotMentioned;
     }

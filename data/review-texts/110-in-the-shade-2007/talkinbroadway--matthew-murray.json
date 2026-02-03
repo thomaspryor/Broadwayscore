@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite some impressive individual contributions, this revival of 110 in the Shade never quite captures the magic that made the original so special.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite some impressive individual contributions, this revival of 110 in the Shade never quite captures the magic that made the original so special.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite some impressive individual contributions, this revival of 110 in the Shade never quite captures the magic that made the original so special.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Single excerpt shows acknowledgment of good elements ('impressive individual contributions') but overall disappointment that it 'never quite captures the magic.' This suggests neither recommendation nor strong discouragement - a mixed verdict. | GPT-4o: The excerpt indicates a negative verdict, noting the revival fails to capture the original's magic despite some positive elements. The single excerpt warning suggests caution, but the overall tone is not positive. | Gemini: The review acknowledges positive aspects (\"impressive individual contributions\") but ultimately finds the revival lacking compared to the original, indicating a mixed assessment. Given that only one excerpt is available, confidence is low. | Kimi: While the critic acknowledges strong individual performances, the overall verdict is that the production falls short of the original's quality, constituting a disappointing revival rather than a recommendation. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:35:07.415Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

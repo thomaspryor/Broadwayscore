@@ -17,5 +17,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A surprisingly flat-liner musical involving tunes from Elton John scarcely composing in top form and a sorrowful cartoony story",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with dismissive language ('flat-liner', 'scarcely composing in top form', 'sorrowful cartoony story') and prediction it won't be a 'longtime Broadway attraction' clearly indicates negative recommendation. | GPT-4o: The review describes the musical as 'flat-liner' and criticizes the music and story, aligning with a negative verdict. The 2/5 stars rating supports a negative classification. | Gemini: The review excerpt describes the musical as a \"flat-liner\" with Elton John's tunes not in top form and a \"sorrowful cartoony story,\" indicating a negative assessment. The 2/5 star rating further supports this classification. | Kimi: The 2/5 star rating and description of the musical as a 'flat-liner' with Elton John 'scarcely composing in top form' and a 'sorrowful cartoony story' indicates a clear negative verdict, though confidence is reduced due to availability of only a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:59:53.655Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 42,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

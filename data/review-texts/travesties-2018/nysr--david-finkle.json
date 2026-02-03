@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you're looking for an example of theatrical brilliance made tangible, here's what you do.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with superlative language throughout: 'theatrical brilliance,' 'possibly the only perfect production now occupying a Broadway theater,' and concluding 'this rare thing: Art with a capital A.' Despite truncation warning, the review is complete and unambiguously rapturous. | GPT-4o: The review is overwhelmingly positive, describing the production as 'theatrical brilliance' and 'Art with a capital “A.”' Despite the truncation warning, the 5/5 star rating supports a Rave classification. | Gemini: The review is overwhelmingly positive, calling the production \"the only perfect production now occupying a Broadway theater\" and concluding that it is \"Art with a capital 'A'.\" The 5/5 star rating further supports this classification. | Kimi: The critic awards 5/5 stars and delivers unqualified praise throughout, calling the production 'theatrical brilliance,' 'perfect,' and 'genius,' with urgent recommendation language like 'get there fast.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:28:58.305Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

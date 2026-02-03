@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mamet has fashioned a theatrical thriller that keeps you guessing about the motivations and machinations of everyone onstage. The playwright seems to be suggesting that in matters of race, we're all unreliable narrators.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Mamet has fashioned a theatrical thriller that keeps you guessing about the motivations and machinations of everyone onstage. The playwright seems to be suggesting that in matters of race, we're all unreliable narrators.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mamet has fashioned a theatrical thriller that keeps you guessing about the motivations and machinations of everyone onstage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic describes the play as an engaging 'theatrical thriller that keeps you guessing,' indicating positive engagement with the work's suspenseful qualities and thematic depth, though the excerpt lacks explicit recommendation language. | Gemini: The review calls the play a \"theatrical thriller\" and suggests that it keeps the audience guessing, indicating a positive experience, but not overwhelmingly so. | Kimi: The excerpt offers a positive assessment, describing the work as a 'theatrical thriller' that maintains suspense, though the brief length limits certainty about the overall recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:48:59.063Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

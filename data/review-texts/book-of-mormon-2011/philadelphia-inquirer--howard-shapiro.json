@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "The show is a hoot - and a literal guilty pleasure. Parker and Stone have made their names by pushing the line between irreverence and offense until it stretches into a blur. It's impossible not to laugh at their two mismatched Mormon guys (played for maximum ingratiation by the wonderful Josh Gad a...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a hoot - and a literal guilty pleasure.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('hoot', 'guilty pleasure', 'wonderful', 'impossible not to laugh') suggests strong recommendation, but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt describes the show as a 'hoot' and a 'guilty pleasure,' indicating a strong positive reaction. The mention of laughter and praise for performances supports a positive classification, but the single excerpt limits confidence. | Gemini: The excerpt uses positive language like \"hoot\", \"guilty pleasure\", and \"wonderful\". Given the single excerpt and positive tone, I'm placing it in the positive bucket with a higher score. | Kimi: The excerpt employs enthusiastic language ('hoot,' 'impossible not to laugh') and praises the performers as 'wonderful,' indicating a clear recommendation in the upper Positive range. Confidence is low due to the single-excerpt limitation and truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:43:39.608Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

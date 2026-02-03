@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show has genuine heart and humor, thanks largely to a cast of actual teenagers who bring authentic energy to their roles.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show has genuine heart and humor, thanks largely to a cast of actual teenagers who bring authentic energy to their roles.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show has genuine heart and humor, thanks largely to a cast of actual teenagers who bring authentic energy to their roles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for the show's heart, humor, and authentic teenage cast, indicating a positive assessment, but limited text prevents higher confidence or score. | GPT-4o: The excerpt praises the show for its 'genuine heart and humor' and highlights the authentic energy of the teenage cast, suggesting a strong positive impression. Given the single excerpt warning, the score is set towards the upper end of the Positive range. | Gemini: The excerpt is positive, highlighting the heart, humor, and the cast's energy. Given that it's a single excerpt, I've placed it in the middle of the positive range. | Kimi: The excerpt provides clear praise for the show's emotional core and the cast's authentic performances, though the qualification 'thanks largely to' suggests the recommendation is solid rather than unqualified. Single excerpt availability necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:35:41.027Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

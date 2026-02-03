@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Her valentine to herself is just what a fan—this reviewer is a loyal one—might have expected it to be: a glittering, glamorous Las Vegas-like jukebox revue",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for performances, production values, and craftsmanship. The critic describes it as what fans would expect and calls it a 'fan's treat,' indicating positive recommendation despite some reservations about originality. | GPT-4o: The review is largely positive, highlighting the performances, costume design, and overall production quality. The critic, a self-proclaimed fan, describes the show as a 'glittering, glamorous Las Vegas-like jukebox revue.' The original 4/5 star rating supports a positive classification, but the text is truncated, so the final verdict might be missing. | Gemini: The review is generally positive, highlighting the performances, costumes, and overall spectacle. The truncated text and lack of a strong concluding statement lowers the confidence. | Kimi: 4/5 star review with enthusiastic praise for the lead performances ('astounding,' 'jaw-dropping') and production values, though slight reservations about the 'basic' book and repetitive choreography keep it from rave territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:02:22.740Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

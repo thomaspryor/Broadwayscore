@@ -17,5 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new musical, which opened last night at the Zipper Theater, is a well-intentioned but ultimately disappointing attempt to create a biographical evening about the songwriting team of Arthur Schwartz and Howard Dietz.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-03T20:38:34.488Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Zipper Theater, which is not a Broadway theater, indicating it is not the current Broadway run.; kimi: The review explicitly states the show opened at the Zipper Theater, which is an Off-Broadway venue (under 500 seats), not a Broadway theater. Per scoring guidelines, reviews of Off-Broadway productions should be rejected as wrong_production.",
+  "promptVersion": "5.2.0"
 }

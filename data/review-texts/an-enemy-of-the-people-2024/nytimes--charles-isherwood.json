@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "The pedal-to-the-metal approach has its advantages. With voices clamoring from the stage at top volume for much of the evening, your attention is rarely likely to stray from the finely spun web of ideas animating Ibsen’s play, about the ruckus raised in a Norwegian spa town when the local doctor dis...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The pedal-to-the-metal approach has its advantages.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes an energetic production approach as having 'advantages' and keeping 'attention' on Ibsen's ideas, suggesting qualified approval. However, truncated text and single excerpt warrant caution - this could be setup for critique. | GPT-4o: The excerpt suggests a positive engagement with the production, noting that it holds the audience's attention with its ideas. However, the single excerpt warning and lack of a full review text limit the confidence in the verdict. | Gemini: The excerpt suggests a positive experience, highlighting the engaging nature of the production. However, due to the limited text, the confidence is low. | Kimi: Single excerpt offers qualified praise for the production's intensity and its ability to convey Ibsen's ideas, but the mildly positive tone and lack of superlatives place it at the lower end of the Positive bucket. Truncated text and limited context significantly reduce confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:42:19.127Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

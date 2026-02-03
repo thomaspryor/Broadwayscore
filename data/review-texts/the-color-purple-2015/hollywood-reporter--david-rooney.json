@@ -23,5 +23,11 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "wrongShow": true,
+  "rejectedAt": "2026-02-03T20:04:00.312Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a political news article about Donald Trump's travel plans, not a Broadway theater review; openai: The text is about a political news story involving Donald Trump, not a review of a Broadway show.; gemini: This article is about Donald Trump's planned visit to Jordan, not a Broadway show review.; kimi: This is a political news article about Donald Trump's campaign activities and a denied trip to Jordan, not a Broadway theater review.",
+  "promptVersion": "5.2.0"
 }

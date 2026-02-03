@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "John Guare's sprawling new play is an ambitious mess that tries to cram too much history, politics and bedroom farce into one evening.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "John Guare's sprawling new play is an ambitious mess that tries to cram too much history, politics and bedroom farce into one evening.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "John Guare's sprawling new play is an ambitious mess that tries to cram too much history, politics and bedroom farce into one evening.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls it an 'ambitious mess' that tries to 'cram too much' - clearly negative language despite acknowledging ambition. However, with only one excerpt available, the full verdict may be more nuanced. | GPT-4o: The excerpt describes the play as an 'ambitious mess' with too much content, indicating a negative view. However, with only one excerpt, the confidence is low. | Gemini: The review excerpt calls the play an \"ambitious mess,\" indicating a negative assessment. Given the single excerpt and negative language, I placed it in the negative bucket. | Kimi: The excerpt uses the phrase 'ambitious mess' and criticizes the play for trying to 'cram too much' material, indicating a clear negative verdict on the production's execution despite acknowledging its scope.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:36:48.176Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. McDonald and Mr. Hoffman achieve something approaching the impossible: they make you believe that these two damaged souls might actually find peace together, if only for a moment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. McDonald and Mr. Hoffman achieve something approaching the impossible: they make you believe that these two damaged souls might actually find peace together, if only for a moment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performances achieving 'something approaching the impossible' suggests a positive recommendation, but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt praises the performances of McDonald and Hoffman, suggesting a strong emotional impact and a positive experience. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises the performances of McDonald and Hoffman, suggesting a positive experience. Due to the limited text, confidence is low, but the strong praise warrants a score on the higher end of the positive bucket. | Kimi: The excerpt offers superlative praise for the lead performances ('approaching the impossible'), suggesting a high level of craft and emotional authenticity. While limited to a single curated quote focused specifically on the acting, the language indicates clear enthusiasm within the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:37:25.401Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

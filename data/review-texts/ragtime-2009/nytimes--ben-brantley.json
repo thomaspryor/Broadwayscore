@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of the 1998 musical, directed by Marcia Milgrom Dodge, doesn't have the epic grandeur that the show's subject demands, but it does have a warmth and intimacy that make its portrait of turn-of-the-century America feel immediate and personal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "textQuality": "truncated",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "doesn't have the epic grandeur that the show's subject demands, but it does have a warmth and intimacy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear mixed assessment - acknowledges the production falls short of what's needed ('doesn't have the epic grandeur') but finds compensating positive qualities ('warmth and intimacy'). The balanced but/however structure indicates neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges a lack of 'epic grandeur' but appreciates the 'warmth and intimacy' of the production, suggesting a positive but qualified recommendation. | Gemini: The review acknowledges shortcomings but ultimately highlights positive aspects like warmth and intimacy, suggesting it's worth seeing despite not fully meeting expectations. | Kimi: While criticizing the production for failing to achieve the epic grandeur the subject demands, the reviewer ultimately praises its warmth and intimacy, offering a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:50:45.003Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 75,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

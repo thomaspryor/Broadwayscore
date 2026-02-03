@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sting has written a deeply personal musical about the death of the shipbuilding industry in his native England, but for all its sincerity and craft, 'The Last Ship' never quite finds its sea legs on Broadway.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "for all its sincerity and craft, 'The Last Ship' never quite finds its sea legs on Broadway",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Review acknowledges positive qualities (sincerity, craft) but delivers a clear negative verdict with the sea legs metaphor, indicating the show doesn't succeed on Broadway despite good intentions. | GPT-4o: The review acknowledges sincerity and craft but ultimately concludes that the show fails to succeed on Broadway, indicating a negative verdict. | Gemini: The review acknowledges sincerity and craft but ultimately states that the show \"never quite finds its sea legs,\" indicating a mixed or lukewarm reception. | Kimi: While the critic acknowledges the show's 'sincerity and craft' and deeply personal source material, the verdict 'never quite finds its sea legs' indicates it fails to work successfully on Broadway, constituting a recommendation against. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:11:58.861Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

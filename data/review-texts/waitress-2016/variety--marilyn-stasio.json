@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mueller brings such warmth and vulnerability to Jenna that you can't help rooting for her to find the courage to leave her abusive husband and start a new life with her baby.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -67,5 +67,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 506,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mueller can really act as well as sing her heart out.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises Jessie Mueller's 'enchanting' performance and Sara Bareilles' 'charming score' while criticizing the broad caricature and slapstick of Act One. Despite structural issues, the positive elements (performances, second act improvements) outweigh the negatives, making this a qualified recommendation. | GPT-4o: The review praises Jessie Mueller's performance and Sara Bareilles' score, indicating a positive recommendation. However, it notes issues with comic overkill and pacing, suggesting some reservations. | Gemini: The review is mostly positive, praising the score and Jessie Mueller's performance, but it also notes issues with the first act's broad caricatures and slapstick. The second act is considered better, making it a recommended show with reservations. | Kimi: While criticizing Act One's broad caricatures and slapstick direction, the critic praises Jessie Mueller's enchanting performance and Sara Bareilles' charming score, explicitly stating the second act provides reason to endure the first.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:32:45.348Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

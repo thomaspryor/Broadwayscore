@@ -10,10 +10,67 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Richard Thomas does everything but twirl his mustache as the bogeyman in the Broadway revival of “An Enemy of the People.” That’s because he doesn’t have a mustache to twirl. The other accouterments of villainy -- black top hat and bowtie framing a lip-curling sneer, cape and cane wielded with menac...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 55,
+    "confidence": "low",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Richard Thomas does everything but twirl his mustache as the bogeyman in the Broadway revival of 'An Enemy of the People.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The excerpt criticizes Richard Thomas's performance as overly villainous and cartoonish ('everything but twirl his mustache'), suggesting disappointing acting choices. However, this is only one excerpt and may not represent the full review verdict. | GPT-4o: The excerpt focuses on a specific performance with a somewhat playful tone, but lacks clear evaluative language about the overall production. The single excerpt and lack of a full verdict suggest a mixed impression. | Gemini: The excerpt describes the actor's portrayal of a villain in a negative light, suggesting a lack of subtlety or nuance. Given the limited text, it's difficult to definitively classify, but the tone leans towards negative. | Kimi: Single excerpt describes the villain's performance with vivid theatrical detail, suggesting engaging characterization, but truncated text and absence of explicit verdict warrant conservative scoring and low confidence. | Buckets: claude=Negative, openai=Mixed, gemini=Negative, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:43:18.953Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 72,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Positive",
+    "scoreDelta": 27,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

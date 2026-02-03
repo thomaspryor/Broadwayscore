@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical 'Paradise Square' has ambitions as grand as its sprawling cast and period setting, but despite moments of genuine power, it never quite coheres into the unified artistic statement it strives to be.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The new musical 'Paradise Square' has ambitions as grand as its sprawling cast and period setting, but despite moments of genuine power, it never quite coheres into the unified artistic statement it strives to be.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "despite moments of genuine power, it never quite coheres into the unified artistic statement it strives to be",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show's grand ambitions and finds 'moments of genuine power' but ultimately finds it fails to achieve its artistic goals. Classic mixed review language - neither recommendation nor discouragement. | GPT-4o: The review acknowledges some powerful moments but ultimately suggests the musical fails to achieve its artistic goals, indicating a mixed reception. | Gemini: The review acknowledges \"moments of genuine power\" but ultimately states that the show \"never quite coheres,\" indicating a mixed assessment. | Kimi: The review acknowledges the show's ambitious scope and 'moments of genuine power' but ultimately finds it fails to cohere into a unified artistic statement, suggesting a mixed reception.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:43:22.083Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

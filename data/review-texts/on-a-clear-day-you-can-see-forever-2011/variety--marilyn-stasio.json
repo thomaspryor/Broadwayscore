@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Harry Connick Jr. brings his considerable musical gifts and easy charm to the role of Dr. Mark Bruckner, but even his star power can't save this listless revival of the 1965 Burton Lane-Alan Jay Lerner musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Harry Connick Jr. brings his considerable musical gifts and easy charm to the role of Dr. Mark Bruckner, but even his star power can't save this listless revival of the 1965 Burton Lane-Alan Jay Lerner musical.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "even his star power can't save this listless revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict despite praising Connick's performance - 'can't save' and 'listless' indicate the show fails overall despite the star's efforts. | GPT-4o: The review acknowledges Harry Connick Jr.'s talents but ultimately describes the revival as 'listless' and implies it is not worth seeing despite his presence. | Gemini: The review states that even Harry Connick Jr.'s star power can't save the revival, indicating a negative overall assessment. | Kimi: While the critic acknowledges the star's talents, the verdict clearly states that even his performance 'can't save this listless revival,' constituting a recommendation against seeing the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:42:14.859Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

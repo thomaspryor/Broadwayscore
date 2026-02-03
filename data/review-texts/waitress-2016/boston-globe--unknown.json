@@ -32,5 +32,11 @@
   ],
   "contentTier": "truncated",
   "wordCount": 129,
-  "tierReason": "Short text (129 words)"
+  "tierReason": "Short text (129 words)",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-03T20:30:07.165Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is of the American Repertory Theater production in Cambridge, not the Broadway production - it explicitly mentions hoping Mueller will star 'when the show debuts on Broadway next spring'; openai: The review is about a production at the American Repertory Theater, not the Broadway run.; kimi: This review covers the pre-Broadway tryout at the American Repertory Theater in Cambridge, not the Broadway production. The text explicitly states the show is currently at ART and will debut on Broadway 'next spring,' making this a regional production review rather than a Broadway assessment.",
+  "promptVersion": "5.2.0"
 }

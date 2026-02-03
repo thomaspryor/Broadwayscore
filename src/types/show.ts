@@ -15,7 +15,7 @@ export interface ShowMetadata {
   openingDate: string; // ISO date
   closingDate?: string; // ISO date, if announced/known
   status: ShowStatus;
-  type: 'musical' | 'play' | 'revival' | 'special';
+  type: 'musical' | 'play' | 'special';
   runtime?: string; // e.g., "2h 30m"
   intermissions?: number;
 }

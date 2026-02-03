@@ -69,12 +69,42 @@ function fetchUrl(url) {
   });
 }
 
+/**
+ * Validate whether text is a genuine synopsis (not accessibility info,
+ * marketing copy, or truncated text).
+ *
+ * @param {string} text - Synopsis text to validate
+ * @returns {boolean} true if the text is a valid synopsis
+ */
+function isValidSynopsis(text) {
+  if (!text || typeof text !== 'string') return false;
+
+  const trimmed = text.trim();
+
+  // Reject text shorter than 50 characters
+  if (trimmed.length < 50) return false;
+
+  // Reject accessibility keywords (word-boundary to avoid "adaptation" matching "ada")
+  const accessibilityPattern = /\bwheelchair\b|\bhearing assist\b|\belevator access\b|\baccessible seating\b|\bada seating\b|\brestrooms\b|\bclosed captioning\b|\bassistive listening\b/i;
+  if (accessibilityPattern.test(trimmed)) return false;
+
+  // Reject marketing openers
+  if (/^(See |Get tickets|Don't miss|Experience the|Come discover)/i.test(trimmed)) return false;
+
+  // Reject text that ends mid-sentence (ends with comma, or ends with lowercase letter without period)
+  if (/,\s*$/.test(trimmed)) return false;
+  if (/[a-z]$/.test(trimmed) && !/[.!?'")\]]$/.test(trimmed)) return false;
+
+  return true;
+}
+
 // Extract synopsis from TodayTix page HTML
 function extractSynopsisFromHtml(html) {
   // Try to find synopsis in meta description
   const metaMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i);
   if (metaMatch && metaMatch[1].length > 50) {
-    return metaMatch[1].trim();
+    const candidate = metaMatch[1].trim();
+    if (isValidSynopsis(candidate)) return candidate;
   }
 
   // Try to find in JSON-LD
@@ -83,7 +113,8 @@ function extractSynopsisFromHtml(html) {
     try {
       const jsonLd = JSON.parse(jsonLdMatch[1]);
       if (jsonLd.description && jsonLd.description.length > 50) {
-        return jsonLd.description.trim();
+        const candidate = jsonLd.description.trim();
+        if (isValidSynopsis(candidate)) return candidate;
       }
     } catch {}
   }
@@ -91,7 +122,8 @@ function extractSynopsisFromHtml(html) {
   // Try to find in page content (common patterns)
   const aboutMatch = html.match(/about[^>]*>[\s\S]*?<p[^>]*>([^<]{100,500})/i);
   if (aboutMatch) {
-    return aboutMatch[1].trim();
+    const candidate = aboutMatch[1].trim();
+    if (isValidSynopsis(candidate)) return candidate;
   }
 
   return null;
@@ -299,7 +331,7 @@ async function fixSynopsis(show, todayTixIds) {
   if (ANTHROPIC_API_KEY) {
     console.log(`    Generating via Claude...`);
     synopsis = await generateSynopsisWithLLM(show);
-    if (synopsis) {
+    if (synopsis && isValidSynopsis(synopsis)) {
       show.synopsis = synopsis;
       return `Generated synopsis via Claude for ${show.title}`;
     }

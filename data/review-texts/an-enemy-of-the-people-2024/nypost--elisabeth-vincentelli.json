@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Gaines, who often plays good guys and saps, makes the most of his sympathy capital. At first you feel for his character, especially since he has noble intentions. But then he claims, self-servingly, that “the majority is the most insidious enemy to freedom.” So much for democracy.",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Gaines, who often plays good guys and saps, makes the most of his sympathy capital.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt focuses on one performer with balanced praise ('makes the most of his sympathy capital') and criticism ('self-serving'). Without full review context, this suggests mixed feelings about both character and performance. | GPT-4o: The excerpt provides a mixed view of the character's portrayal, noting initial sympathy but ultimately critiquing the character's self-serving nature. The lack of a full review and single excerpt warning suggest a cautious approach. | Gemini: The excerpt presents a mixed view of the character, initially sympathetic but later problematic. Given the single excerpt and the critic's focus on a character's actions, it's difficult to determine an overall recommendation, but the tone suggests a mixed reaction. | Kimi: Single excerpt praises the actor's effective use of audience sympathy and character development, though the character's turn is viewed critically. Limited context warrants conservative scoring at the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:43:57.155Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

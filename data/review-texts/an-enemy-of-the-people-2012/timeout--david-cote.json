@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Boyd Gaines delivers a passionate, beautifully modulated performance as Dr. Stockmann, the idealistic physician who discovers that his town's profitable spa waters are contaminated.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Boyd Gaines delivers a passionate, beautifully modulated performance as Dr. Stockmann, the idealistic physician who discovers that his town's profitable spa waters are contaminated.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Boyd Gaines delivers a passionate, beautifully modulated performance as Dr. Stockmann, the idealistic physician who discovers that his town's profitable spa waters are contaminated.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt praising lead performance but critic's own 60 rating indicates mixed reception. With only performer praise available and no overall verdict, must rely heavily on the 60 score placing this in Mixed bucket. | GPT-4o: The original rating of 60 suggests a mixed review. The excerpt praises a specific performance but does not provide an overall assessment of the production. Given the lack of full context and the single excerpt warning, the score aligns with the original rating. | Gemini: The single excerpt focuses solely on a positive performance, but without a broader context or recommendation, it's difficult to classify beyond a mixed assessment. The critic's original rating of 60 also suggests a mixed opinion. | Kimi: While the excerpt praises Boyd Gaines' performance highly, the original 60/100 rating indicates the overall review was mixed, suggesting strong acting was offset by weaknesses in other production elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:38:54.896Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

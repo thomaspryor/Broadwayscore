@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Pass Over is a powerful, provocative piece that challenges audiences while delivering moments of genuine humor and humanity. The performances by Jon Michael Hill, Namir Smallwood, and Gabriel Ebert are absolutely electric.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Pass Over is a powerful, provocative piece that challenges audiences while delivering moments of genuine humor and humanity. The performances by Jon Michael Hill, Namir Smallwood, and Gabriel Ebert are absolutely electric.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The performances by Jon Michael Hill, Namir Smallwood, and Gabriel Ebert are absolutely electric.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive language with 'powerful, provocative' and 'absolutely electric' performances, though brief review limits higher scoring. | GPT-4o: The review uses strong positive language ('powerful', 'provocative', 'electric') and highlights both the performances and the show's impact, indicating a strong recommendation. | Gemini: The review uses strong positive language such as \"powerful\", \"provocative\", \"genuine humor\", \"humanity\", and \"absolutely electric\" to describe the show and performances, indicating a strong recommendation. | Kimi: The review delivers strong, unqualified praise for both the play ('powerful, provocative') and the performances ('absolutely electric') with no reservations mentioned, though the brevity of the text prevents a higher confidence rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:46:04.532Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

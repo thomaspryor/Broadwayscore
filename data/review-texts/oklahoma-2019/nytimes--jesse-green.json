@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This 'Oklahoma!' doesn't just break the fourth wall; it shatters every convention of the American musical theater and reassembles the pieces into something that feels both completely familiar and utterly new.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This 'Oklahoma!' doesn't just break the fourth wall; it shatters every convention of the American musical theater and reassembles the pieces into something that feels both completely familiar and utterly new.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 'Oklahoma!' doesn't just break the fourth wall; it shatters every convention of the American musical theater and reassembles the pieces into something that feels both completely familiar and utterly new.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Critic uses transformative language praising radical innovation while maintaining connection to source material. 'Shatters every convention' and 'utterly new' indicate exceptional achievement deserving top tier score. | GPT-4o: The review uses strong, enthusiastic language, indicating the production is groundbreaking and transformative, suggesting a must-see experience. | Gemini: The review uses strong language like 'shatters every convention' and 'utterly new', indicating a positive and innovative take on the musical, making it a strong positive recommendation. | Kimi: The excerpt contains unambiguously ecstatic language ('shatters every convention,' 'utterly new') indicating the highest level of enthusiasm, though the brief length necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:41:15.863Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

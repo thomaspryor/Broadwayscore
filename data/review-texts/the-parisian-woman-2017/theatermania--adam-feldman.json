@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Uma Thurman makes her Broadway debut in Beau Willimon's adaptation of Henry Becque's 19th-century French drama, but the production feels more like an elegant museum piece than a living work of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Uma Thurman makes her Broadway debut in Beau Willimon's adaptation of Henry Becque's 19th-century French drama, but the production feels more like an elegant museum piece than a living work of theater.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the production feels more like an elegant museum piece than a living work of theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment comparing the production to a lifeless 'museum piece' rather than vibrant theater, despite acknowledging the star casting. | GPT-4o: The review suggests the production lacks vitality, comparing it to a 'museum piece,' which implies a negative assessment. However, the tone is not extremely harsh, placing it in the Negative range. | Gemini: The review explicitly states the production feels like a 'museum piece' rather than a 'living work of theater,' indicating a negative assessment. | Kimi: While acknowledging the production's elegance, the critic finds it static and failing to achieve the vitality of living theater, offering a measured but clear negative assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:19:36.441Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

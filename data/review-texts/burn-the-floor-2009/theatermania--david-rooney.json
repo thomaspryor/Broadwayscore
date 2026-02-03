@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Broadway transfer of the international dance sensation delivers exactly what it promises: a high-energy showcase of ballroom and Latin dancing that's more Vegas revue than theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Broadway transfer of the international dance sensation delivers exactly what it promises: a high-energy showcase of ballroom and Latin dancing that's more Vegas revue than theatrical experience.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Broadway transfer of the international dance sensation delivers exactly what it promises: a high-energy showcase of ballroom and Latin dancing that's more Vegas revue than theatrical experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges the show delivers on its promise of high-energy dancing but frames it as 'more Vegas revue than theatrical experience,' suggesting it lacks the depth expected for Broadway. With only one excerpt available, confidence is low as this could be setup for either positive or negative verdict. | GPT-4o: The excerpt describes the show as delivering on its promise of high-energy dance, suggesting a positive experience. However, the mention of it being 'more Vegas revue than theatrical experience' implies some reservations, leading to a mildly positive score. | Gemini: The review excerpt suggests a positive experience, but the comparison to a 'Vegas revue' implies it may lack depth or theatrical substance. Given the single excerpt, I'm scoring it as positive with reservations and low confidence. | Kimi: The excerpt indicates the show successfully delivers high-energy entertainment but qualifies it as a 'Vegas revue' rather than substantive theater, suggesting a mildly positive recommendation with reservations about its artistic ambition.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:49:58.587Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

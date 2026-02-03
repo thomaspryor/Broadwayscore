@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway musical 'The Cher Show' is a glitzy, crowd-pleasing spectacle that's as over-the-top as its subject. It's a jukebox musical that knows exactly what it is and delivers the goods with gusto.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The new Broadway musical 'The Cher Show' is a glitzy, crowd-pleasing spectacle that's as over-the-top as its subject. It's a jukebox musical that knows exactly what it is and delivers the goods with gusto.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a jukebox musical that knows exactly what it is and delivers the goods with gusto.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'crowd-pleasing' and 'delivers the goods with gusto' indicating solid recommendation despite acknowledging it's over-the-top. | GPT-4o: The review describes the show as a 'glitzy, crowd-pleasing spectacle' and praises it for delivering 'the goods with gusto,' indicating a strong positive recommendation. | Gemini: The review describes the show as a \"glitzy, crowd-pleasing spectacle\" and states that it \"delivers the goods with gusto,\" indicating a positive recommendation. | Kimi: The critic describes the show as a 'glitzy, crowd-pleasing spectacle' that delivers entertainment with confidence and gusto, offering a clear recommendation without major reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:02:45.972Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

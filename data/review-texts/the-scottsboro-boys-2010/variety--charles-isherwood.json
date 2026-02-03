@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical treatment of this shameful chapter in American legal history is both moving and musically accomplished, with a deceptively light touch that makes its serious points all the more effective.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The musical treatment of this shameful chapter in American legal history is both moving and musically accomplished, with a deceptively light touch that makes its serious points all the more effective.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical treatment of this shameful chapter in American legal history is both moving and musically accomplished.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise calling the show 'moving and musically accomplished' with effective storytelling, though the brief excerpt limits confidence in the full critical assessment. | GPT-4o: The review praises the musical as 'moving and musically accomplished,' indicating a strong positive recommendation. The use of 'effective' suggests the production successfully conveys its themes. | Gemini: The review uses positive language such as \"moving\" and \"musically accomplished\" and states that it makes its serious points \"all the more effective\", indicating a positive recommendation. | Kimi: The critic offers clear praise for the show's emotional impact and musical craft, calling it 'moving and musically accomplished' with an effective storytelling approach, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:19:00.271Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

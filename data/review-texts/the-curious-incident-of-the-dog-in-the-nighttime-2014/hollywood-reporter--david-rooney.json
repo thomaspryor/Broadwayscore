@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a theatrical experience that expands the possibilities of drama in ways both technologically sophisticated and humanly touching. It's a remarkable achievement that deserves to be seen by the widest possible audience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a remarkable achievement that deserves to be seen by the widest possible audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Strong superlatives ('remarkable achievement') with explicit recommendation for 'widest possible audience' indicates enthusiastic endorsement without reservations. | GPT-4o: The review uses strong, enthusiastic language, calling the show a 'remarkable achievement' and recommending it to 'the widest possible audience,' indicating a rave review. | Gemini: The review uses strong positive language such as \"remarkable achievement\" and states that it \"deserves to be seen by the widest possible audience,\" indicating a rave review. | Kimi: Unqualified superlatives and an explicit call for universal viewership indicate an enthusiastic rave with no reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:06:49.666Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

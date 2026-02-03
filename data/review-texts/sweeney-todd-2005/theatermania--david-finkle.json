@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "John Doyle's production of Sweeney Todd is nothing short of brilliant. By having the actors play their own instruments, he's created a chamber piece that's more intimate and perhaps more chilling than the original.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "John Doyle's production of Sweeney Todd is nothing short of brilliant. By having the actors play their own instruments, he's created a chamber piece that's more intimate and perhaps more chilling than the original.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "John Doyle's production of Sweeney Todd is nothing short of brilliant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Unqualified praise calling the production 'brilliant' with no reservations. Enhanced praise comparing it favorably to the original as 'more intimate and perhaps more chilling.' | GPT-4o: The review uses strong, unqualified praise ('nothing short of brilliant') and highlights the innovative approach of the production, indicating a must-see recommendation. | Gemini: The review uses the word \"brilliant,\" which indicates a rave review. The critic also praises the intimacy and chilling effect of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:58:57.384Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": null,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

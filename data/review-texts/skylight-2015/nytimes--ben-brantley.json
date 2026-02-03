@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Mulligan and Mr. Nighy achieve something miraculous here: They make you feel as if you're eavesdropping on a real conversation between two people with a tangled history, not watching actors deliver lines.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (33 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.nytimes.com/2015/04/03/theater/review-skylight-with-carey-mulligan-and-bill-nighy-opens-on-broadway.html?partner=rss&emc=rss&_r=0",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-03T19:54:27.223Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief excerpt or quote fragment, not a complete review with sufficient evaluative content to determine a recommendation; openai: The review text is about a different show featuring Ms. Mulligan and Mr. Nighy, not the target Broadway show.",
+  "promptVersion": "5.2.0"
 }

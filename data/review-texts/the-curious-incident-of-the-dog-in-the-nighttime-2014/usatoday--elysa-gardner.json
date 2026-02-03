@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Broadway transfer of this London hit offers a theatrical experience that is both intellectually stimulating and deeply moving, thanks largely to Alex Sharp's remarkable performance as Christopher.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Broadway transfer of this London hit offers a theatrical experience that is both intellectually stimulating and deeply moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language praising both the intellectual and emotional impact of the production, highlighting the lead performance as remarkable. Clear recommendation despite brief text. | GPT-4o: The review offers unqualified praise for the production, highlighting it as both 'intellectually stimulating' and 'deeply moving,' with a 'remarkable performance.' This language indicates a strong recommendation. | Gemini: The review is positive, calling the show intellectually stimulating and deeply moving, and highlighting Alex Sharp's performance. It is a clear recommendation. | Kimi: The review offers strong unqualified praise, describing the show as 'intellectually stimulating and deeply moving' with a 'remarkable' lead performance, indicating clear enthusiasm for the Broadway transfer.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:05:44.876Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

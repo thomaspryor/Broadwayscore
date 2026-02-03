@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production succeeds in making Ibsen's 1882 drama feel immediate and urgent, though it can't quite overcome the play's inherent didacticism.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production succeeds in making Ibsen's 1882 drama feel immediate and urgent, though it can't quite overcome the play's inherent didacticism.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production succeeds in making Ibsen's 1882 drama feel immediate and urgent, though it can't quite overcome the play's inherent didacticism.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows balanced assessment - praises production for making classic feel 'immediate and urgent' but notes significant limitation in overcoming the play's didacticism. This suggests neither clear recommendation nor discouragement. | GPT-4o: The excerpt indicates a positive view on the production's ability to make the drama feel relevant, but notes a limitation in overcoming the play's didactic nature. The single excerpt suggests a mildly positive review. | Gemini: The review states the production \"succeeds\" but also notes it \"can't quite overcome\" a flaw. Given the single excerpt, I'm placing it in the lower end of the positive range. | Kimi: The excerpt offers mild praise for the production's success in modernizing the drama while explicitly noting its limitations regarding the source material's didacticism, suggesting a lukewarm but genuine recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:42:32.153Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Sutton Foster brings her characteristic blend of vulnerability and strength to the role of Violet, a young woman journeying from North Carolina to Oklahoma in search of a televangelist who might heal her facial scars.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (35 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.usatoday.com/story/life/theater/2014/04/20/broadway-review-violet/7806053/",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-03T20:29:54.406Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a single descriptive sentence about plot and casting with no critical evaluation or recommendation; openai: The text is a description of Sutton Foster's role in the show without any evaluative content or opinion on the production.; gemini: This is a plot summary with no evaluative content or critical opinion.",
+  "promptVersion": "5.2.0"
 }

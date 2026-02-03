@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "“Bug” is as intimate as it is intense. The set, designed by Takeshi Kata, drops the audience right into this specific place and time. The lightning, helmed by Heather Gilbert, and the sound, spearheaded by Josh Schmidt, also keep the play tightly grounded, though the production may have worked even ...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The set, designed by Takeshi Kata, drops the audience right into this specific place and time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with positive language about intimacy, intensity, and design elements, but text cuts off mid-sentence with 'though the production may have worked even...' suggesting possible caveats. Given single excerpt warning and truncation, scoring conservatively in lower Positive range. | GPT-4o: The excerpt praises the set design and technical aspects, indicating a positive view. However, the text is truncated, and the single excerpt warning suggests caution. The recommendation is mild, so a lower positive score is appropriate. | Gemini: The excerpt praises the intimacy and intensity of the production, as well as the set design. However, the sentence is cut off, so the overall verdict is unclear. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:48:23.046Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This She Loves Me is a glowing testament to the power of expert musical theater craftsmanship, both old and new, and proves that the right show with the right cast can make even the most familiar story feel fresh and vital again.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This She Loves Me is a glowing testament to the power of expert musical theater craftsmanship, both old and new, and proves that the right show with the right cast can make even the most familiar story feel fresh and vital again.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (42 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This She Loves Me is a glowing testament to the power of expert musical theater craftsmanship",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Clear praise with strong positive language ('glowing testament', 'expert craftsmanship') and emphasizes the production makes familiar material 'fresh and vital again', indicating strong enthusiasm. | GPT-4o: The review uses highly positive language, describing the production as a 'glowing testament' and emphasizing its ability to make a familiar story feel 'fresh and vital.' This indicates a strong recommendation. | Gemini: The review uses strong positive language like \"glowing testament\" and \"fresh and vital again,\" indicating a strong recommendation. | Kimi: The review offers unqualified enthusiastic praise, describing the show as a 'glowing testament' with 'expert' craftsmanship that makes the familiar story feel 'fresh and vital,' indicating a strong must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:52:22.584Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

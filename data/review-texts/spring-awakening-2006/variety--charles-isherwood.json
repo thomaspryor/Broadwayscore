@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This bold musical adaptation of Frank Wedekind's 1891 play about teenage sexual awakening is a powerhouse of raw emotion and contemporary relevance that should connect strongly with younger audiences.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This bold musical adaptation is a powerhouse of raw emotion and contemporary relevance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language with 'powerhouse' and 'bold', predicting strong audience connection. Clear recommendation despite brief text. | GPT-4o: The review uses strong positive language ('powerhouse', 'raw emotion', 'contemporary relevance') indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"powerhouse of raw emotion\" and states that it \"should connect strongly with younger audiences,\" indicating a positive recommendation. | Kimi: The excerpt offers strong evaluative praise ('powerhouse', 'bold') and a clear recommendation for the target demographic, though its brevity as a single-sentence excerpt warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:55:04.339Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

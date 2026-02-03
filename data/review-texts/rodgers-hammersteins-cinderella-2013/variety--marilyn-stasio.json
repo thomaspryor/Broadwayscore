@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Laura Osnes makes a lovely Cinderella, with a crystalline soprano that gives the familiar songs a fresh sparkle, and Santino Fontana is a charming Prince Christopher who gets to sing as well as he acts.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,59 @@
   "textQuality": "truncated",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Laura Osnes makes a lovely Cinderella, with a crystalline soprano that gives the familiar songs a fresh sparkle",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Praise for both leads' performances and vocals suggests a positive recommendation, but this appears to be an excerpt with limited content for full assessment. | Gemini: The review praises the performances of the leads, calling them lovely and charming. This indicates a positive, though not overwhelmingly enthusiastic, recommendation. | Kimi: The review offers warm praise for both lead performers ('lovely', 'crystalline', 'charming') with no negative criticism present, indicating a positive response, though the brevity and lack of overall verdict or assessment of non-performance elements warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:49:40.617Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

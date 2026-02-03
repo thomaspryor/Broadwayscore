@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What we're seeing on stage is too entertaining.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic acknowledges scope limitations but concludes the show is 'too entertaining' to let you focus on what's missing. The phrase 'too entertaining' is clearly positive praise, suggesting the show succeeds despite structural concerns. | GPT-4o: The excerpt suggests the show is entertaining despite its broad scope and lack of depth. However, the single excerpt and lack of a full review text limit confidence in the overall sentiment. | Gemini: The review acknowledges the show's limitations in exploring Armstrong's legacy but ultimately concludes that it's entertaining, suggesting a positive but not overwhelmingly enthusiastic recommendation. The single excerpt and lack of a clear rating make confidence low. | Kimi: While criticizing the show's expansive scope and failure to deeply explore Armstrong's legacy, the critic ultimately praises the production as highly entertaining with strong performances from Iglehart and the supporting cast, recommending it on those merits.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:38:16.041Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

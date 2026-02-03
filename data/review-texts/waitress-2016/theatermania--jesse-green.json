@@ -62,5 +62,11 @@
     "Show title not found in text"
   ],
   "wordCount": 740,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-03T20:32:27.483Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about an off-Broadway production at the Pearl Theatre Company, not the current Broadway run.; kimi: This review covers the 2013 Off-Broadway production at the Pearl Theatre Company, not a current Broadway production. The text explicitly references the 2013 comedy and the Pearl Theatre Company venue.",
+  "promptVersion": "5.2.0"
 }

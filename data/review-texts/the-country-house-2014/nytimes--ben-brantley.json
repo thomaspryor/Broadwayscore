@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Margulies has created characters who feel authentically flawed and searching, even when they're at their most self-absorbed. And Ms. Nixon brings a magnificent brittleness to Anna, suggesting a woman who has turned her pain into a performance art.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (39 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.nytimes.com/2014/10/03/theater/blythe-danner-stars-in-the-country-house.html?_r=0",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-03T20:06:00.942Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief excerpt or quote from a review, not a complete review text that can be properly scored for recommendation strength; openai: The text provided is too brief and lacks a clear evaluative verdict or comprehensive assessment of the show.",
+  "promptVersion": "5.2.0"
 }

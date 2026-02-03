@@ -3,17 +3,72 @@
   "outletId": "nytg",
   "outlet": "New York Theatre Guide",
   "criticName": "Joe Dziemianowicz",
-  "url": null,
+  "url": "https://www.newyorktheatreguide.com/reviews/and-juliet-broadway-review",
   "publishDate": "2022-11-17T20:37:25-05:00",
   "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": null,
   "bwwExcerpt": "This setup happens with surprising speed and economy. The early zippy energy is a big plus. Vibrant visuals are another. Director Luke Sheppard's staging makes great use of projections, flying set pieces, and a levitating circular platform to showcase dramatic moments and athletic dance moves by cho...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The early zippy energy is a big plus. Vibrant visuals are another.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clear praise for energy, visuals, and staging elements, but truncated mid-sentence. Given the single excerpt warning and positive content, scoring in lower-positive range due to incomplete context. | GPT-4o: The excerpt highlights positive aspects such as 'zippy energy' and 'vibrant visuals,' suggesting an enthusiastic recommendation. However, the single excerpt warning indicates possible cherry-picking, so confidence is low. | Gemini: The review excerpt highlights the show's \"zippy energy\" and \"vibrant visuals,\" suggesting a positive experience, but without the full review, confidence is low. | Kimi: The excerpt highlights multiple strengths including 'zippy energy,' 'vibrant visuals,' and inventive staging by director Luke Sheppard, clearly indicating a positive recommendation. However, the score reflects the upper end of the Positive bucket per instructions for clearly positive single excerpts, while confidence is low due to limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:44:37.155Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

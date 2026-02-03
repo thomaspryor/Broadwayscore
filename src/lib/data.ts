@@ -311,7 +311,7 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
   'musicals': {
     title: 'Best Broadway Musicals',
     description: 'The highest-rated musicals currently playing on Broadway, ranked by critic scores.',
-    filter: (show) => (show.type === 'musical' || show.type === 'revival') && show.status === 'open',
+    filter: (show) => show.type === 'musical' && show.status === 'open',
   },
   'plays': {
     title: 'Best Broadway Plays',

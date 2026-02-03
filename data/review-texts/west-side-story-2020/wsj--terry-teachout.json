@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes this production special is that it treats 'West Side Story' not as a museum piece to be respectfully dusted off but as a living work of theater that can be reimagined without being betrayed.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes this production special is that it treats 'West Side Story' not as a museum piece to be respectfully dusted off but as a living work of theater that can be reimagined without being betrayed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises what makes this production 'special' and views the reimagining as successful rather than a betrayal, indicating strong approval. However, this appears to be an excerpt with limited evaluative content, so confidence is reduced. | GPT-4o: The review praises the production for its innovative approach, suggesting it is a must-see reinterpretation of a classic. The language indicates strong enthusiasm and appreciation for the production's creativity. | Gemini: The review praises the production for its fresh take on a classic, suggesting it's worth seeing for its reimagining while implying some reservations about potential betrayal of the original. | Kimi: The critic offers strong praise for the production's fresh approach, calling it 'special' and appreciating how it revitalizes the classic material as a 'living work' rather than a stale revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:33:59.084Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

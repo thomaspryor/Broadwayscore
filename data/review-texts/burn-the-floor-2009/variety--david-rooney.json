@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This slickly packaged ballroom dance showcase is heavy on flash and light on substance, but it delivers exactly what it promises — a parade of athletic prowess and eye candy that should satisfy audiences hungry for escapist entertainment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This slickly packaged ballroom dance showcase is heavy on flash and light on substance, but it delivers exactly what it promises — a parade of athletic prowess and eye candy that should satisfy audiences hungry for escapist entertainment.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This slickly packaged ballroom dance showcase is heavy on flash and light on substance, but it delivers exactly what it promises.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges the show delivers on its promise and will satisfy audiences, but emphasizes it's 'light on substance.' This balanced assessment with qualified approval places it in Mixed territory. | GPT-4o: The review acknowledges the show's lack of substance but ultimately recommends it for audiences seeking escapist entertainment. The single excerpt suggests a positive tone, but the lack of full context reduces confidence. | Gemini: The review acknowledges a lack of substance but states it delivers on its promise and should satisfy audiences, indicating a positive but not rave recommendation. | Kimi: While the critic notes the production is light on substance, they affirm it successfully delivers promised entertainment value and spectacle, recommending it for audiences seeking escapism.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:49:01.716Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

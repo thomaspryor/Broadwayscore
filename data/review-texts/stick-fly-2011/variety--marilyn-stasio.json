@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite some forced moments and occasional awkwardness in the staging, this domestic drama about class and color within the African-American community has enough emotional truth to make it compelling theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Despite some forced moments and occasional awkwardness in the staging, this domestic drama about class and color within the African-American community has enough emotional truth to make it compelling theater.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has enough emotional truth to make it compelling theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation ('compelling theater') with acknowledged reservations about staging issues. The positive verdict outweighs the noted flaws. | GPT-4o: The review acknowledges some flaws in staging but ultimately finds the play compelling due to its emotional truth, indicating a positive recommendation with some reservations. | Gemini: The review acknowledges flaws but ultimately finds the play compelling due to its emotional truth, indicating a positive but not rave recommendation. | Kimi: While the critic notes 'forced moments' and 'awkwardness in the staging,' the verdict clearly recommends the show as 'compelling theater' due to its emotional truth, placing it in the qualified-positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:56:53.875Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
