@@ -73,5 +73,29 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "textWordCount": 285,
+  "archivePath": "data/archives/reviews/a-christmas-carol-2022/nytimes--jesse-green_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T22:29:27.255Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20241210222435",
+  "archiveOrgUrl": "http://web.archive.org/web/20241210222435/https://www.nytimes.com/2022/12/01/movies/scrooge-a-christmas-carol-review.html",
+  "textIssues": [
+    "Word count too low: 285 (min: 300)"
+  ],
+  "wordCount": 285,
+  "tierReason": "Short text (285 words)"
 }
