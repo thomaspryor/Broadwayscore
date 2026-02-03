@@ -5152,18 +5152,6 @@
     "timestamp": "2026-02-02T00:38:42.501Z"
   },
   {
-    "reviewId": "water-for-elephants-2024/wsj--charles-isherwood.json",
-    "showId": "water-for-elephants-2024",
-    "outlet": "The Wall Street Journal",
-    "critic": "Charles Isherwood",
-    "url": "https://www.wsj.com/articles/water-for-elephants-review-broadway-musical-pigpen-jessica-stone-sara-gruen-5eaefa7c",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2024 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 1242,
-    "timestamp": "2026-02-02T00:38:50.041Z"
-  },
-  {
     "reviewId": "water-for-elephants-2024/wsj--charles.json",
     "showId": "water-for-elephants-2024",
     "outlet": "The Wall Street Journal",
@@ -8402,5 +8390,29 @@
     "garbageReason": "Multiple shows mentioned (6): appropriate, company, noises off, high, race...",
     "textLength": 1942,
     "timestamp": "2026-02-03T05:08:06.826Z"
+  },
+  {
+    "reviewId": "water-for-elephants-2024/wsj--charles-isherwood.json",
+    "showId": "water-for-elephants-2024",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/water-for-elephants-review-broadway-musical-pigpen-jessica-stone-sara-gruen-5eaefa7c",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2026 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 961,
+    "timestamp": "2026-02-03T05:11:57.351Z"
+  },
+  {
+    "reviewId": "grey-house-2023/cititour--brian-scott-lipton.json",
+    "showId": "grey-house-2023",
+    "outlet": "Cititour",
+    "critic": "Brian Scott Lipton",
+    "url": "https://cititour.com/NYC_News/Review-Grey-House-is-Both-Dark-and-Dull/7381",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (3): home, tina, once",
+    "textLength": 932,
+    "timestamp": "2026-02-03T05:12:16.453Z"
   }
 ]
