@@ -3,8 +3,8 @@
     "description": "Auto-generated critic-outlet affinity registry",
     "lastUpdated": "2026-02-03",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalCritics": 174,
-    "totalReviews": 8975
+    "totalCritics": 179,
+    "totalReviews": 8891
   },
   "critics": {
     "ben-brantley": {
@@ -13,9 +13,9 @@
       "knownOutlets": [
         "nytimes"
       ],
-      "totalReviews": 388,
+      "totalReviews": 387,
       "outletCounts": {
-        "nytimes": 388
+        "nytimes": 387
       },
       "isFreelancer": false
     },
@@ -37,13 +37,15 @@
       "knownOutlets": [
         "nysr",
         "theatermania",
+        "huffpost",
         "the-clyde-fitch-report"
       ],
-      "totalReviews": 112,
+      "totalReviews": 122,
       "outletCounts": {
         "theatermania": 35,
         "nysr": 76,
-        "the-clyde-fitch-report": 1
+        "the-clyde-fitch-report": 1,
+        "huffpost": 10
       },
       "isFreelancer": true
     },
@@ -97,11 +99,11 @@
         "new-york-sun",
         "nysr"
       ],
-      "totalReviews": 183,
+      "totalReviews": 199,
       "outletCounts": {
-        "usatoday": 82,
+        "usatoday": 95,
         "new-york-sun": 66,
-        "nysr": 35
+        "nysr": 38
       },
       "isFreelancer": true
     },
@@ -114,10 +116,10 @@
         "theatermania",
         "usatoday"
       ],
-      "totalReviews": 299,
+      "totalReviews": 312,
       "outletCounts": {
         "variety": 66,
-        "hollywood-reporter": 215,
+        "hollywood-reporter": 228,
         "theatermania": 15,
         "usatoday": 3
       },
@@ -128,61 +130,53 @@
       "primaryOutlet": "newsday",
       "knownOutlets": [
         "newsday",
-        "nydailynews",
-        "amny",
         "ew",
+        "nydailynews",
         "ap",
-        "nbcny",
+        "amny",
         "thewrap",
+        "nbcny",
+        "timeout",
+        "chicagotribune",
+        "hollywood-reporter",
+        "usatoday",
         "vulture",
         "huffpost",
-        "timeout",
-        "usatoday",
-        "hollywood-reporter",
         "deadline",
-        "chicagotribune",
         "theatrely",
-        "nypost",
         "nysr",
-        "wsj",
         "nytimes",
+        "nypost",
+        "wsj",
+        "bloomberg-news",
         "latimes",
         "guardian",
-        "bloomberg-news",
         "variety",
-        "financialtimes",
         "washpost",
-        "njcom",
         "ny1",
+        "financialtimes",
         "dctheatrescene",
-        "dailybeast",
         "telegraph",
+        "njcom",
         "backstage",
+        "dailybeast",
         "nytg",
         "theatermania",
-        "boston-globe",
-        "the-star-ledger",
-        "the-independent",
         "broadwaynews",
         "talkinbroadway",
         "front-row-center",
         "dcmetro",
-        "showbiz411",
+        "boston-globe",
         "observer",
         "cititour",
+        "the-independent",
         "nbcnews",
-        "love-broadway-check-out-the-new-arrivals-at-the-playbill-store",
         "northjerseycom",
-        "time",
-        "av-club",
         "village-voice",
-        "the-los-angeles-times-charles-mcnulty",
         "culturesauce",
-        "click-here",
-        "love-theatre-check-out-the-new-arrivals-at-the-playbill-store",
-        "buy-tickets",
-        "npr",
-        "new-york-sun",
+        "showbiz411",
+        "the-star-ledger",
+        "time",
         "boston-herald",
         "abc-news",
         "the-la-times-charles-mcnulty",
@@ -190,38 +184,30 @@
         "perez-hilton",
         "theater-pizzazz",
         "forward",
-        "rollingstone",
         "queerty",
-        "san-jose-mercury-news",
-        "the-inquirer",
+        "new-york-sun",
         "san-diego-union-tribune",
-        "mashable",
-        "tv-guide",
         "ct-now",
         "hartford-courant",
         "thestage",
-        "assocoiated-press",
         "the-huffington-pos",
         "new-york",
         "the-detroit-news",
         "nyt-theater",
-        "laughteronbroadwaycomlottery",
         "the-recs-randall-david-cook",
         "frontmezzjunkies",
         "909wbur",
-        "boston-arts-diary",
         "metro-tmichelle-murphy",
         "bloomberg",
         "the-albany-times-union",
-        "stannswarehouseorg",
         "berkeleyside-emily-s-mendel",
         "the-san-diego-union-tribune",
         "contra-costa-times",
         "sfgate",
         "the-record",
-        "thestarcom",
-        "britishtheatrecom",
         "fox-news",
+        "npr",
+        "rollingstone",
         "tap-into",
         "new-york-1",
         "artsdesk",
@@ -233,28 +219,24 @@
         "aroundthetownchicago",
         "newjerseycom",
         "the-globe-and-mail",
-        "nycitycenterorg",
         "minneapolis-star-tribune",
-        "great-performances-online",
+        "san-jose-mercury-news",
         "sioux-city-journal",
         "culture-whisper-holly-omahony",
-        "oldvictheatrecom",
         "harvard-magazine",
         "wburboston-npr",
         "wghbmorning-edition",
         "new-jersey-newsroom",
+        "the-inquirer",
         "stageandcinema",
         "burlington-free-press",
-        "with-a-comic",
+        "av-club",
         "cnn",
+        "mashable",
+        "tv-guide",
         "tv-line",
-        "laexcitescom",
-        "kennedycenterorg",
-        "on-disney-july-3",
         "dc-theater-arts",
         "metro-source",
-        "new",
-        "sday",
         "nysepost",
         "the-washington-times",
         "3news",
@@ -264,32 +246,23 @@
         "the-age",
         "the-australian",
         "the-herald-sun",
-        "the-musiccom",
         "the-new-zealand-herald",
         "the-sydney-morning-herald",
         "chicago-tribute",
         "the-berkshire-edge-j-peter-bergman",
         "oneminutecritic",
-        "mammamiabwaycom",
-        "fathomentertainmentcom",
         "the-movie-cricket-sean-p-means",
+        "the-los-angeles-times-charles-mcnulty",
         "minnesota-star-tribune-jon-bream-and-rohan-preston",
         "josh-at-the-movies-joshua-m-hayes",
         "rex-reed",
-        "rnal",
-        "wall-street-jou",
         "decider-meghan-okeefe",
-        "schoolofrockthemusicalcomtickets",
         "washington-times",
-        "by-clicking-here",
         "theatre-talk-boston-lara-mccallister",
-        "arenastageorg",
         "the-dc-line-dr-lewis",
         "david-cote",
-        "almeidacouk",
         "new-york-theatre",
         "broadway-blog",
-        "the-jewish-daily-forward",
         "jeremy-gerard",
         "joe-dziemianowicz",
         "ctv-canada-am",
@@ -300,10 +273,6 @@
         "reviews",
         "the-l-magazine",
         "the-national-post",
-        "empire-helen-ohara",
-        "evening-standard",
-        "vox",
-        "manhattantheatreclubcom",
         "edge",
         "herald-tribune",
         "hitfix",
@@ -312,65 +281,54 @@
         "sacramento-bee",
         "sf-gate",
         "third-coast-review-nancy-s-bishop",
-        "love-theatre-check-out-the-playbill-store-for-merchandise",
-        "the-berkshire-eagle-j-peter-bergman",
-        "the-westfield-news-mark-g-auerbach",
         "america-magazine-rob-weinert-kendt",
-        "bamorg",
-        "love-the-theatre-check-out-the-playbill-store-for-merchandise",
         "exeunt-nyc",
-        "flavorwire",
-        "la-times",
-        "keencompanyorg",
         "british-theatre",
         "artsatl",
-        "atlanta-intown"
+        "atlanta-intown",
+        "boston-arts-diary"
       ],
-      "totalReviews": 2048,
+      "totalReviews": 1735,
       "outletCounts": {
-        "amny": 119,
-        "hollywood-reporter": 71,
-        "nydailynews": 121,
+        "amny": 101,
+        "hollywood-reporter": 55,
+        "nydailynews": 106,
         "metro-tmichelle-murphy": 1,
         "ap": 102,
-        "ew": 112,
-        "nbcny": 98,
+        "ew": 110,
+        "nbcny": 74,
         "newsday": 126,
-        "timeout": 74,
-        "usatoday": 72,
-        "vulture": 77,
+        "timeout": 69,
+        "usatoday": 55,
+        "vulture": 55,
         "bloomberg": 1,
-        "nypost": 48,
-        "wsj": 40,
-        "nysr": 48,
-        "njcom": 19,
+        "nypost": 38,
+        "wsj": 36,
+        "nysr": 43,
+        "njcom": 13,
         "nytimes": 39,
-        "variety": 27,
+        "variety": 21,
         "chicagotribune": 60,
-        "deadline": 65,
-        "latimes": 34,
-        "showbiz411": 5,
-        "thewrap": 98,
+        "deadline": 49,
+        "latimes": 22,
+        "showbiz411": 3,
+        "thewrap": 78,
         "nytg": 11,
         "theatrely": 49,
-        "boston-globe": 6,
-        "click-here": 3,
+        "boston-globe": 5,
         "the-albany-times-union": 1,
         "bloomberg-news": 28,
-        "huffpost": 76,
+        "huffpost": 53,
         "ny1": 19,
         "telegraph": 14,
         "washpost": 21,
         "the-la-times-charles-mcnulty": 2,
-        "stannswarehouseorg": 1,
         "berkeleyside-emily-s-mendel": 1,
-        "love-theatre-check-out-the-new-arrivals-at-the-playbill-store": 3,
         "the-mercury-news-karen-dsouza": 2,
         "dctheatrescene": 15,
-        "the-star-ledger": 6,
-        "buy-tickets": 3,
+        "the-star-ledger": 3,
         "nbcnews": 4,
-        "guardian": 31,
+        "guardian": 22,
         "perez-hilton": 2,
         "the-san-diego-union-tribune": 1,
         "theater-pizzazz": 2,
@@ -378,21 +336,19 @@
         "sfgate": 1,
         "forward": 2,
         "the-record": 1,
-        "thestarcom": 1,
-        "britishtheatrecom": 1,
         "fox-news": 1,
-        "npr": 3,
+        "npr": 1,
         "observer": 5,
-        "rollingstone": 2,
+        "rollingstone": 1,
         "cititour": 5,
         "theatermania": 9,
         "tap-into": 1,
-        "financialtimes": 22,
-        "the-independent": 6,
+        "financialtimes": 16,
+        "the-independent": 5,
         "broadwaynews": 6,
         "talkinbroadway": 6,
         "new-york-1": 1,
-        "dailybeast": 15,
+        "dailybeast": 12,
         "queerty": 2,
         "artsdesk": 1,
         "the-express": 1,
@@ -403,41 +359,31 @@
         "aroundthetownchicago": 1,
         "newjerseycom": 1,
         "the-globe-and-mail": 1,
-        "nycitycenterorg": 1,
         "minneapolis-star-tribune": 1,
-        "great-performances-online": 1,
-        "new-york-sun": 3,
-        "san-jose-mercury-news": 2,
+        "new-york-sun": 2,
+        "san-jose-mercury-news": 1,
         "sioux-city-journal": 1,
-        "love-broadway-check-out-the-new-arrivals-at-the-playbill-store": 4,
         "culture-whisper-holly-omahony": 1,
-        "oldvictheatrecom": 1,
         "northjerseycom": 4,
         "harvard-magazine": 1,
         "wburboston-npr": 1,
         "wghbmorning-edition": 1,
         "new-jersey-newsroom": 1,
-        "time": 4,
+        "time": 3,
         "front-row-center": 6,
-        "the-inquirer": 2,
+        "the-inquirer": 1,
         "san-diego-union-tribune": 2,
         "stageandcinema": 1,
         "burlington-free-press": 1,
-        "with-a-comic": 1,
-        "av-club": 4,
+        "av-club": 1,
         "cnn": 1,
-        "mashable": 2,
-        "tv-guide": 2,
+        "mashable": 1,
+        "tv-guide": 1,
         "tv-line": 1,
-        "laexcitescom": 1,
-        "kennedycenterorg": 1,
         "ct-now": 2,
         "hartford-courant": 2,
-        "on-disney-july-3": 1,
         "dc-theater-arts": 1,
         "metro-source": 1,
-        "new": 1,
-        "sday": 1,
         "thestage": 2,
         "backstage": 13,
         "village-voice": 4,
@@ -452,42 +398,30 @@
         "the-age": 1,
         "the-australian": 1,
         "the-herald-sun": 1,
-        "the-musiccom": 1,
         "the-new-zealand-herald": 1,
         "the-sydney-morning-herald": 1,
         "chicago-tribute": 1,
         "the-berkshire-edge-j-peter-bergman": 1,
         "oneminutecritic": 1,
-        "assocoiated-press": 2,
         "the-huffington-pos": 2,
-        "mammamiabwaycom": 1,
-        "fathomentertainmentcom": 1,
         "the-movie-cricket-sean-p-means": 1,
         "new-york": 2,
         "the-detroit-news": 2,
-        "the-los-angeles-times-charles-mcnulty": 4,
+        "the-los-angeles-times-charles-mcnulty": 1,
         "abc-news": 3,
         "nyt-theater": 2,
         "culturesauce": 4,
-        "laughteronbroadwaycomlottery": 2,
         "the-recs-randall-david-cook": 2,
         "minnesota-star-tribune-jon-bream-and-rohan-preston": 1,
         "josh-at-the-movies-joshua-m-hayes": 1,
         "rex-reed": 1,
-        "rnal": 1,
-        "wall-street-jou": 1,
         "decider-meghan-okeefe": 1,
-        "schoolofrockthemusicalcomtickets": 1,
         "washington-times": 1,
-        "by-clicking-here": 1,
         "theatre-talk-boston-lara-mccallister": 1,
-        "arenastageorg": 1,
         "the-dc-line-dr-lewis": 1,
         "david-cote": 1,
-        "almeidacouk": 1,
         "new-york-theatre": 1,
         "broadway-blog": 1,
-        "the-jewish-daily-forward": 1,
         "jeremy-gerard": 1,
         "joe-dziemianowicz": 1,
         "ctv-canada-am": 1,
@@ -498,10 +432,6 @@
         "reviews": 1,
         "the-l-magazine": 1,
         "the-national-post": 1,
-        "empire-helen-ohara": 1,
-        "evening-standard": 1,
-        "vox": 1,
-        "manhattantheatreclubcom": 1,
         "edge": 1,
         "herald-tribune": 1,
         "hitfix": 1,
@@ -510,22 +440,14 @@
         "sacramento-bee": 1,
         "sf-gate": 1,
         "third-coast-review-nancy-s-bishop": 1,
-        "love-theatre-check-out-the-playbill-store-for-merchandise": 1,
-        "the-berkshire-eagle-j-peter-bergman": 1,
-        "the-westfield-news-mark-g-auerbach": 1,
         "america-magazine-rob-weinert-kendt": 1,
-        "bamorg": 1,
-        "love-the-theatre-check-out-the-playbill-store-for-merchandise": 1,
         "exeunt-nyc": 1,
-        "flavorwire": 1,
-        "la-times": 1,
-        "keencompanyorg": 1,
         "british-theatre": 1,
         "artsatl": 1,
         "atlanta-intown": 1,
         "frontmezzjunkies": 2,
         "909wbur": 2,
-        "boston-arts-diary": 2
+        "boston-arts-diary": 1
       },
       "isFreelancer": true
     },
@@ -575,10 +497,10 @@
         "huffpost",
         "variety"
       ],
-      "totalReviews": 60,
+      "totalReviews": 70,
       "outletCounts": {
         "nysr": 57,
-        "huffpost": 2,
+        "huffpost": 12,
         "variety": 1
       },
       "isFreelancer": true
@@ -597,11 +519,11 @@
         "nypost",
         "rollingstone"
       ],
-      "totalReviews": 507,
+      "totalReviews": 522,
       "outletCounts": {
         "nytimes": 176,
-        "vulture": 182,
-        "theatermania": 86,
+        "vulture": 198,
+        "theatermania": 85,
         "guardian": 40,
         "observer": 9,
         "nypost": 3,
@@ -663,9 +585,9 @@
         "variety",
         "vulture"
       ],
-      "totalReviews": 117,
+      "totalReviews": 134,
       "outletCounts": {
-        "amny": 95,
+        "amny": 112,
         "amny-matt-windman": 2,
         "am-ny-matt-windman": 8,
         "theatermania": 1,
@@ -708,9 +630,9 @@
         "theater-news-online",
         "theater-news-online-jeremy-gerard"
       ],
-      "totalReviews": 22,
+      "totalReviews": 38,
       "outletCounts": {
-        "deadline": 15,
+        "deadline": 31,
         "nypost": 1,
         "bloomberg": 1,
         "theatre-news-online-jeremy-gerard": 3,
@@ -733,15 +655,15 @@
     },
     "robert-kahn": {
       "displayName": "Robert Kahn",
-      "primaryOutlet": "nbcnews",
+      "primaryOutlet": "nbcny",
       "knownOutlets": [
-        "nbcnews",
-        "nbcny"
+        "nbcny",
+        "nbcnews"
       ],
-      "totalReviews": 7,
+      "totalReviews": 29,
       "outletCounts": {
         "nbcnews": 6,
-        "nbcny": 1
+        "nbcny": 23
       },
       "isFreelancer": false
     },
@@ -765,9 +687,9 @@
       "knownOutlets": [
         "njcom"
       ],
-      "totalReviews": 13,
+      "totalReviews": 18,
       "outletCounts": {
-        "njcom": 13
+        "njcom": 18
       },
       "isFreelancer": false
     },
@@ -780,9 +702,9 @@
         "nypost",
         "variety"
       ],
-      "totalReviews": 130,
+      "totalReviews": 143,
       "outletCounts": {
-        "nydailynews": 71,
+        "nydailynews": 84,
         "nytg": 53,
         "nypost": 4,
         "variety": 2
@@ -797,10 +719,10 @@
         "theatermania",
         "nyt-theater"
       ],
-      "totalReviews": 328,
+      "totalReviews": 332,
       "outletCounts": {
         "theatermania": 36,
-        "timeout": 291,
+        "timeout": 295,
         "nyt-theater": 1
       },
       "isFreelancer": true
@@ -827,9 +749,9 @@
       "knownOutlets": [
         "variety"
       ],
-      "totalReviews": 292,
+      "totalReviews": 297,
       "outletCounts": {
-        "variety": 292
+        "variety": 297
       },
       "isFreelancer": false
     },
@@ -851,9 +773,9 @@
       "knownOutlets": [
         "wsj"
       ],
-      "totalReviews": 197,
+      "totalReviews": 201,
       "outletCounts": {
-        "wsj": 197
+        "wsj": 201
       },
       "isFreelancer": false
     },
@@ -866,9 +788,9 @@
         "washpost",
         "newsday"
       ],
-      "totalReviews": 142,
+      "totalReviews": 150,
       "outletCounts": {
-        "nypost": 123,
+        "nypost": 131,
         "nytimes": 13,
         "newsday": 2,
         "washpost": 4
@@ -915,9 +837,9 @@
       "knownOutlets": [
         "dailybeast"
       ],
-      "totalReviews": 145,
+      "totalReviews": 146,
       "outletCounts": {
-        "dailybeast": 145
+        "dailybeast": 146
       },
       "isFreelancer": false
     },
@@ -979,10 +901,10 @@
         "the-village-voice-david-cote",
         "4columns-david-cote"
       ],
-      "totalReviews": 122,
+      "totalReviews": 123,
       "outletCounts": {
         "observer": 65,
-        "timeout": 47,
+        "timeout": 48,
         "4-columns-david-cote": 5,
         "4columns": 1,
         "what-should-we-do-david-cote": 2,
@@ -1147,9 +1069,9 @@
       "knownOutlets": [
         "thewrap"
       ],
-      "totalReviews": 157,
+      "totalReviews": 177,
       "outletCounts": {
-        "thewrap": 157
+        "thewrap": 177
       },
       "isFreelancer": false
     },
@@ -1248,10 +1170,10 @@
         "the-times-uk-jesse-oxfeld",
         "theatermania"
       ],
-      "totalReviews": 34,
+      "totalReviews": 35,
       "outletCounts": {
         "nysr": 29,
-        "ew": 2,
+        "ew": 3,
         "theatermania": 1,
         "the-times-uk-jesse-oxfeld": 2
       },
@@ -1281,10 +1203,10 @@
         "nbcny",
         "people"
       ],
-      "totalReviews": 5,
+      "totalReviews": 7,
       "outletCounts": {
         "ew": 3,
-        "nbcny": 1,
+        "nbcny": 3,
         "people": 1
       },
       "isFreelancer": true
@@ -1419,9 +1341,9 @@
       "knownOutlets": [
         "nysr"
       ],
-      "totalReviews": 11,
+      "totalReviews": 13,
       "outletCounts": {
-        "nysr": 11
+        "nysr": 13
       },
       "isFreelancer": false
     },
@@ -1455,9 +1377,9 @@
       "knownOutlets": [
         "vulture"
       ],
-      "totalReviews": 34,
+      "totalReviews": 38,
       "outletCounts": {
-        "vulture": 34
+        "vulture": 38
       },
       "isFreelancer": false
     },
@@ -1551,9 +1473,9 @@
       "knownOutlets": [
         "variety"
       ],
-      "totalReviews": 46,
+      "totalReviews": 47,
       "outletCounts": {
-        "variety": 46
+        "variety": 47
       },
       "isFreelancer": false
     },
@@ -1588,9 +1510,9 @@
         "guardian",
         "nytimes"
       ],
-      "totalReviews": 28,
+      "totalReviews": 34,
       "outletCounts": {
-        "guardian": 21,
+        "guardian": 27,
         "nytimes": 7
       },
       "isFreelancer": false
@@ -1971,13 +1893,29 @@
       "displayName": "Charles McNulty",
       "primaryOutlet": "latimes",
       "knownOutlets": [
-        "latimes"
+        "latimes",
+        "the-los-angeles-times-charles-mcnulty"
       ],
-      "totalReviews": 4,
+      "totalReviews": 17,
       "outletCounts": {
-        "latimes": 4
+        "latimes": 14,
+        "the-los-angeles-times-charles-mcnulty": 3
       },
       "isFreelancer": false
+    },
+    "scott-brown": {
+      "displayName": "Scott Brown",
+      "primaryOutlet": "vulture",
+      "knownOutlets": [
+        "vulture",
+        "newyorkmagazine"
+      ],
+      "totalReviews": 3,
+      "outletCounts": {
+        "newyorkmagazine": 1,
+        "vulture": 2
+      },
+      "isFreelancer": true
     },
     "roma-torre": {
       "displayName": "Roma Torre",
@@ -2634,12 +2572,12 @@
         "rollingstone",
         "the-rolling-stone-peter-travers"
       ],
-      "totalReviews": 3,
+      "totalReviews": 4,
       "outletCounts": {
-        "rollingstone": 2,
+        "rollingstone": 3,
         "the-rolling-stone-peter-travers": 1
       },
-      "isFreelancer": true
+      "isFreelancer": false
     },
     "victor-gluck": {
       "displayName": "Victor Gluck",
@@ -2697,15 +2635,15 @@
     },
     "roger-friedman": {
       "displayName": "Roger Friedman",
-      "primaryOutlet": "showbiz-411-roger-friedman",
+      "primaryOutlet": "showbiz411",
       "knownOutlets": [
-        "showbiz-411-roger-friedman",
         "showbiz411",
+        "showbiz-411-roger-friedman",
         "showbiz411-roger-friedman"
       ],
-      "totalReviews": 6,
+      "totalReviews": 8,
       "outletCounts": {
-        "showbiz411": 2,
+        "showbiz411": 4,
         "showbiz411-roger-friedman": 1,
         "showbiz-411-roger-friedman": 3
       },
@@ -2824,6 +2762,54 @@
       "outletCounts": {
         "stageandcinema": 1,
         "broadway-journal-philip-boroff": 3
+      },
+      "isFreelancer": false
+    },
+    "elysa-gardner-usa-today": {
+      "displayName": "Elysa Gardner, USA TODAY",
+      "primaryOutlet": "usatoday",
+      "knownOutlets": [
+        "usatoday"
+      ],
+      "totalReviews": 3,
+      "outletCounts": {
+        "usatoday": 3
+      },
+      "isFreelancer": false
+    },
+    "financial-times": {
+      "displayName": "Financial Times",
+      "primaryOutlet": "financialtimes",
+      "knownOutlets": [
+        "financialtimes"
+      ],
+      "totalReviews": 6,
+      "outletCounts": {
+        "financialtimes": 6
+      },
+      "isFreelancer": false
+    },
+    "ronni-reich": {
+      "displayName": "Ronni Reich",
+      "primaryOutlet": "the-star-ledger",
+      "knownOutlets": [
+        "the-star-ledger"
+      ],
+      "totalReviews": 3,
+      "outletCounts": {
+        "the-star-ledger": 3
+      },
+      "isFreelancer": false
+    },
+    "jacob-oller": {
+      "displayName": "Jacob Oller",
+      "primaryOutlet": "av-club",
+      "knownOutlets": [
+        "av-club"
+      ],
+      "totalReviews": 3,
+      "outletCounts": {
+        "av-club": 3
       },
       "isFreelancer": false
     },
