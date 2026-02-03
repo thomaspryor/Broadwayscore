@@ -1,0 +1,79 @@
+{
+  "runDate": "2026-02-03T01:03:15.829Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "water-for-elephants-2024",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 3,
+    "failed": 3,
+    "skipped": 0,
+    "successRate": "50.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "browserbase": 2,
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archive": 1
+  },
+  "statistics": {
+    "tier1Attempts": 3,
+    "tier1Success": 1,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 1,
+    "tier2Attempts": 4,
+    "tier2Success": 2,
+    "tier3Attempts": 4,
+    "tier3Success": 3,
+    "tier4Attempts": 5,
+    "tier4Success": 2,
+    "totalFailed": 3,
+    "scrapingBeeCreditsUsed": 20,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.6,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "water-for-elephants-2024/observer--rex-reed.json",
+    "water-for-elephants-2024/theatermania--david-gordon.json",
+    "water-for-elephants-2024/wsj--charles-isherwood.json"
+  ],
+  "failed": [
+    "water-for-elephants-2024/timeout--adam-feldman.json",
+    "water-for-elephants-2024/theatrely--olivia-clement.json",
+    "water-for-elephants-2024/thestage--lane-williamson.json"
+  ],
+  "tierDetails": {
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/water-for-elephants-2024/observer--rex-reed.json",
+      "water-for-elephants-2024/observer--rex-reed.json"
+    ],
+    "scrapingbee": [],
+    "brightdata": [
+      "water-for-elephants-2024/theatermania--david-gordon.json"
+    ],
+    "archive": [
+      "water-for-elephants-2024/wsj--charles-isherwood.json"
+    ]
+  },
+  "failuresByOutlet": {
+    "Theatrely": {
+      "count": 1,
+      "domain": "theatrely.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}
