@@ -60,6 +60,18 @@ on:
         options:
           - 'false'
           - 'true'
+      chain:
+        description: 'Auto-trigger next batch if unscored reviews remain'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      remaining_batches:
+        description: 'Max remaining batches for chaining (decrements each run)'
+        required: false
+        default: '0'
 
 env:
   ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -253,3 +265,49 @@ jobs:
 
           echo "All push attempts failed"
           exit 1
+
+      - name: Count remaining unscored reviews
+        if: ${{ github.event.inputs.chain == 'true' && github.event.inputs.dry_run != 'true' }}
+        id: count-remaining
+        run: |
+          # Count review files without assignedScore
+          REMAINING=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const dirs = fs.readdirSync(base).filter(d => fs.statSync(path.join(base,d)).isDirectory());
+            let n = 0;
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base,d)).filter(f => f.endsWith('.json')).forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base,d,f),'utf8'));
+                  if (r.assignedScore == null) n++;
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          echo "Unscored reviews remaining: $REMAINING"
+
+      - name: Chain next batch
+        if: ${{ github.event.inputs.chain == 'true' && steps.count-remaining.outputs.remaining > 10 }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BATCHES_LEFT=${{ github.event.inputs.remaining_batches }}
+          if [ "$BATCHES_LEFT" -le 0 ] 2>/dev/null; then
+            echo "No remaining batches. Stopping chain."
+            exit 0
+          fi
+          NEXT_BATCHES=$((BATCHES_LEFT - 1))
+          LIMIT="${{ github.event.inputs.limit }}"
+          LIMIT="${LIMIT:-400}"
+          echo "Triggering next batch (${NEXT_BATCHES} remaining after this)..."
+          echo "Reviews still unscored: ${{ steps.count-remaining.outputs.remaining }}"
+          gh workflow run "LLM Ensemble Score Reviews" \
+            -f limit="$LIMIT" \
+            -f chain=true \
+            -f remaining_batches="$NEXT_BATCHES" \
+            -f run_calibration=false \
+            -f run_validation=false
+          echo "Next batch dispatched."
