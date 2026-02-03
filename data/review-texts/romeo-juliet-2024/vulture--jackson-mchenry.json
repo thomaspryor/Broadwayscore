@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Connor and Zegler are both talented performers, but they're playing characters who are supposed to be discovering love for the first time, and their performances feel too polished, too aware of their own romanticism.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (34 words)",
   "nycTheatreExcerpt": "\"One could be forgiven for walking away from this show's two (and a half) hours' traffic thinking that maybe Romeo and Juliet is kind of mid after all. Such is the enervating effect of so aggressively clickbaity and uncurious a production.\"",
   "sources": [
     "web-search",
     "nyc-theatre"
   ],
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T19:50:28.419Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review that can be properly evaluated for a recommendation; openai: The text is a brief comment on performances without a broader evaluation or verdict on the show.",
+  "promptVersion": "5.2.0"
 }

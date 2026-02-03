@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jeremy Piven brings his trademark rapid-fire delivery and manic energy to Bobby Gould in this slick revival of David Mamet's Hollywood satire. While the production moves at a brisk clip, it lacks the deeper bite that makes Mamet's insider commentary truly sting.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Jeremy Piven brings his trademark rapid-fire delivery and manic energy to Bobby Gould in this slick revival of David Mamet's Hollywood satire. While the production moves at a brisk clip, it lacks the deeper bite that makes Mamet's insider commentary truly sting.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (42 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While the production moves at a brisk clip, it lacks the deeper bite that makes Mamet's insider commentary truly sting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises Piven's performance and the production's pace, but finds it missing the essential qualities that make Mamet effective. Neither recommends nor discourages. | GPT-4o: The review acknowledges the energetic performance and brisk pacing but criticizes the lack of depth in the production, leading to a mixed verdict. | Gemini: The review acknowledges Piven's performance but ultimately finds the production lacking depth, suggesting a mixed experience. | Kimi: The review praises Jeremy Piven's manic energy and the production's brisk pacing but ultimately finds it missing the essential satirical edge that makes Mamet's Hollywood satire truly effective, resulting in a qualified assessment that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:55:41.160Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 61,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

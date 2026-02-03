@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Waitress is a sweet show with a terrific score by Sara Bareilles, but it doesn't quite rise to the level of its ingredients.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -43,5 +43,60 @@
   "archiveOrgTimestamp": "20160502005624",
   "archiveOrgUrl": "http://web.archive.org/web/20160502005624/http://www.timeout.com:80/newyork/theater/waitress",
   "wordCount": 447,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fresh and delicious, Waitress has an excellent ratio of sweet to tart",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic's own 60 rating places this firmly in Mixed territory. While there's extensive praise for performances, score, and staging, the overall tone and numerical score indicate qualified appreciation rather than strong recommendation. | GPT-4o: The review uses positive language such as 'fresh and delicious' and praises the performances and staging, indicating a positive recommendation. However, the original rating of 60 suggests some reservations, placing it in the lower range of the Positive bucket. | Gemini: The review is generally positive, but the critic's rating of 60 suggests a mixed assessment. The review uses bakery metaphors to describe the show, highlighting both its strengths and weaknesses. | Kimi: Extracted from malformed response | Buckets: claude=Mixed, openai=Positive, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:31:34.289Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 75,
+    "geminiScore": 65,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

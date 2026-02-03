@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What makes 'Prince of Broadway' work so well is that it doesn't try to turn Mr. Prince's career into a conventional biographical narrative but instead uses his shows as stepping stones to explore the changing nature of the Broadway musical.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (40 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "https://www.wsj.com/articles/prince-of-broadway-and-company-reviews-a-broadway-icon-pays-tribute-to-himself-1503621000",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-03T19:48:22.308Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review that can be properly evaluated for recommendation; openai: The text is a brief comment on the structure of the show rather than a full review or evaluation.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Cher Show is a jukebox musical that celebrates the life and career of the iconic entertainer, but it's more spectacle than substance, relying heavily on costume changes and musical numbers rather than dramatic depth.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The Cher Show is a jukebox musical that celebrates the life and career of the iconic entertainer, but it's more spectacle than substance, relying heavily on costume changes and musical numbers rather than dramatic depth.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's more spectacle than substance, relying heavily on costume changes and musical numbers rather than dramatic depth",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review acknowledges the show as a celebration of Cher but criticizes it for prioritizing spectacle over dramatic depth, indicating neither a clear recommendation nor discouragement. | GPT-4o: The review criticizes the show for lacking dramatic depth and being more focused on spectacle, indicating a negative assessment. | Gemini: The review acknowledges the show's celebratory nature but criticizes its lack of dramatic depth, suggesting a mixed experience. | Kimi: The review acknowledges the celebratory spectacle and costume elements but explicitly criticizes the lack of dramatic depth, creating a balanced assessment that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:02:06.883Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Last Ship is a gorgeous failure — gorgeous because Sting's songs are often beautiful and because the cast performs them with stirring commitment, but a failure because the story never finds its sea legs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Last Ship is a gorgeous failure — gorgeous because Sting's songs are often beautiful and because the cast performs them with stirring commitment, but a failure because the story never finds its sea legs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic explicitly calls it a 'gorgeous failure' - praising musical elements and performances while finding the story fundamentally flawed. Neither recommends nor discourages. | GPT-4o: The review acknowledges the beauty of the songs and the cast's performance but ultimately labels the show a failure due to its weak story. This indicates a mixed review with both positive and negative elements. | Gemini: The review acknowledges the beauty of the music and the commitment of the cast, but ultimately labels the show a 'failure' due to the story's shortcomings, resulting in a mixed assessment. | Kimi: The critic explicitly labels the show a 'failure' due to story problems, but offers genuine praise for Sting's songs and the cast's committed performances, creating a balanced mixed verdict that acknowledges quality elements while withholding a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:11:41.223Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

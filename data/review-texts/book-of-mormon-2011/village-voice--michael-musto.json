@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "The show--done by the South Park guys with the help of an Avenue Q writer--manages the high-wire feat of spoofing religion, poverty, and Jesus, while throwing in AIDS jokes and songs about closeted Mormons \"turning it off\"--and virtually everyone leaves happy!",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "manages the high-wire feat of spoofing religion, poverty, and Jesus, while throwing in AIDS jokes and songs about closeted Mormons \"turning it off\"--and virtually everyone leaves happy!",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the show's ambitious satirical content and notes that \"virtually everyone leaves happy,\" indicating a strong positive response despite controversial material. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt describes the show as successfully handling complex and potentially controversial topics in a way that leaves audiences happy, indicating a strong positive reception. However, due to the single excerpt warning, confidence is low. | Gemini: The critic highlights the show's successful satire and notes that 'virtually everyone leaves happy,' indicating a positive and enjoyable experience. | Kimi: The excerpt praises the production's skilled handling of controversial material ('high-wire feat') and indicates strong audience satisfaction ('everyone leaves happy'), representing a clear recommendation despite the limited excerpt available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:45:17.528Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

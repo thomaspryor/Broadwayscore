@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jane Fonda's return to Broadway after 46 years is the main draw of '33 Variations,' but the play itself is a thoughtful meditation on creativity and mortality that stands on its own merits.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jane Fonda's return to Broadway after 46 years is the main draw of '33 Variations,' but the play itself is a thoughtful meditation on creativity and mortality that stands on its own merits.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play itself is a thoughtful meditation on creativity and mortality that stands on its own merits",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes the play as 'thoughtful' and notes it 'stands on its own merits,' indicating a positive assessment. However, this is only a single excerpt which limits confidence in the full verdict. | GPT-4o: The excerpt praises both Jane Fonda's return and the play itself, describing it as 'thoughtful' and able to stand on its own merits, suggesting a strong positive recommendation. The single excerpt warning suggests using the upper end of the Positive range. | Gemini: The review excerpt highlights Jane Fonda's return as a draw, but also notes the play's own merits as a thoughtful meditation. This suggests a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic offers clear praise for the play's substance beyond its star attraction, describing it as a 'thoughtful meditation' that 'stands on its own merits,' indicating a solid recommendation despite limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:36:05.346Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

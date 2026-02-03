@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of the 1960 musical about rock 'n' roll mania feels tired and tepid, despite energetic performances from John Stamos and Gina Gershon.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of the 1960 musical about rock 'n' roll mania feels tired and tepid, despite energetic performances from John Stamos and Gina Gershon.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of the 1960 musical about rock 'n' roll mania feels tired and tepid, despite energetic performances from John Stamos and Gina Gershon.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic clearly finds the revival 'tired and tepid' - decisively negative language. The praise for individual performances ('energetic') doesn't redeem the overall negative assessment, following the pattern where performer praise doesn't override a pan verdict. | GPT-4o: The review describes the revival as 'tired and tepid', indicating a lack of enthusiasm or recommendation, despite some praise for the performances. The single excerpt suggests a negative overall impression. | Gemini: The review states the show feels \"tired and tepid\" despite the performances, indicating a negative overall assessment. The presence of performer praise does not redeem the negative verdict. | Kimi: The critic describes the revival as 'tired and tepid,' using 'despite' to indicate that energetic performances cannot overcome the show's lack of vitality, indicating a clear negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:49:03.729Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

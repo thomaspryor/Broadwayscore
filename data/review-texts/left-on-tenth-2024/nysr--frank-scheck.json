@@ -19,5 +19,60 @@
   "playbillVerdictUrl": "https://nystagereview.com/2024/10/23/left-on-tenth-delia-ephrons-memoir-gets-lost-in-translation/",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ephron's experience is powerful and affecting, but some stories simply don't translate from the page to the stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with mixed language - acknowledges the power of the source material but suggests fundamental adaptation problems. Single excerpt limits confidence in full verdict. | GPT-4o: The excerpt acknowledges the powerful and affecting nature of Ephron's experience but notes a significant issue with the translation to stage, indicating a mixed review. The original 3/5 stars aligns with a mixed verdict. | Gemini: The excerpt presents a mixed assessment, acknowledging the power of the source material but questioning its effectiveness on stage. Due to the limited text, confidence is low. | Kimi: The 3/5 star rating and qualified praise for the source material (\"Ephron's experience\") versus criticism of the theatrical adaptation (\"don't translate from the page to the stage\") indicate a middle-of-the-road assessment. Single excerpt limitation reduces confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:39:20.681Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

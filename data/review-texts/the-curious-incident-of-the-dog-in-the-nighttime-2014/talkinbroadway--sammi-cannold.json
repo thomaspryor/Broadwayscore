@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Curious Incident of the Dog in the Night-Time is a stunning theatrical achievement that transforms Mark Haddon's beloved novel into a visually spectacular and emotionally resonant stage experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The Curious Incident of the Dog in the Night-Time is a stunning theatrical achievement that transforms Mark Haddon's beloved novel into a visually spectacular and emotionally resonant stage experience.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Curious Incident of the Dog in the Night-Time is a stunning theatrical achievement that transforms Mark Haddon's beloved novel into a visually spectacular and emotionally resonant stage experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses strong superlatives like 'stunning theatrical achievement' and 'visually spectacular' with no caveats. However, this appears to be a very brief excerpt, so confidence is reduced to medium. | GPT-4o: The review uses superlatives like 'stunning' and 'visually spectacular,' indicating a strong, enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"stunning theatrical achievement,\" \"visually spectacular,\" and \"emotionally resonant,\" indicating a rave review. | Kimi: The review offers unqualified praise with superlatives ('stunning', 'spectacular', 'resonant'), indicating an enthusiastic recommendation without reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:06:59.961Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 89,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jason Robert Brown's pop-rock score is energetic and catchy, with clever lyrics that capture the self-absorbed urgency of teenage concerns.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jason Robert Brown's pop-rock score is energetic and catchy, with clever lyrics that capture the self-absorbed urgency of teenage concerns.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jason Robert Brown's pop-rock score is energetic and catchy, with clever lyrics that capture the self-absorbed urgency of teenage concerns.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the score as 'energetic and catchy' with 'clever lyrics' suggests positive assessment, but limited context from one curated quote requires caution and lower confidence. | GPT-4o: The excerpt praises the score as 'energetic and catchy' with 'clever lyrics,' indicating a positive view of the musical elements. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt praises the score and lyrics, indicating a positive but not overwhelmingly enthusiastic assessment. Given it's a single excerpt, confidence is low. | Kimi: The excerpt offers clear, enthusiastic praise for the musical score (energetic, catchy, clever), warranting the upper end of the Positive bucket. However, confidence is low as this single curated quote addresses only one production element and may not reflect the overall show verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:35:48.258Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

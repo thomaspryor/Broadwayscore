@@ -10,10 +10,64 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Mix the single-artist salute Mamma Mia! with the contempo-pop stylings of Moulin Rouge!; add a healthy dose of the Shakespeare-themed Something Rotten, and a sprinkle of the Renaissance-grrl-powered Six... and you've got some idea of what's in store for you at & Juliet, the candy-colored glitter bom...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mix the single-artist salute Mamma Mia! with the contempo-pop stylings of Moulin Rouge!; add a healthy dose of the Shakespeare-themed Something Rotten, and a sprinkle of the Renaissance-grrl-powered Six...",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt suggests a lively and entertaining show by comparing it to popular, successful productions. The tone is enthusiastic, indicating a positive recommendation. However, the single excerpt and lack of a full review text lower the confidence. | Gemini: The review excerpt compares the show to other successful and enjoyable shows, suggesting a positive experience. However, due to the limited text, the confidence is low. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:43:24.799Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

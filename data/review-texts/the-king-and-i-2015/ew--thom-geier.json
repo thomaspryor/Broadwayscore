@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This sumptuous revival of Rodgers and Hammerstein's 1951 musical about the relationship between the King of Siam and British schoolteacher Anna Leonowens is a visual feast that mostly delivers on its promise.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This sumptuous revival is a visual feast that mostly delivers on its promise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic gives an 87 rating and uses positive language like 'sumptuous' and 'visual feast,' but the qualifier 'mostly delivers' suggests some reservations that prevent it from being a stronger positive. | GPT-4o: The review describes the production as a 'visual feast' and notes that it 'mostly delivers on its promise', indicating a strong recommendation. The original rating of 87 supports a high score within the Positive bucket. | Gemini: The critic uses positive language like \"sumptuous\" and \"visual feast\" and states that the show \"mostly delivers on its promise,\" indicating a strong positive recommendation. The original rating of 87 supports this classification. | Kimi: The critic's own 87 rating and descriptors like 'sumptuous revival' and 'visual feast' indicate enthusiastic praise with only minor reservations ('mostly delivers'), placing this firmly in the Rave category.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:10:42.160Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 84,
+    "geminiScore": 81,
+    "kimiScore": 87,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

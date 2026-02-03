@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is the production that Stephen Sondheim's controversial musical has been waiting for — a staging that finds the right balance between the show's comic absurdities and its sobering insights into the American psyche.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is the production that Stephen Sondheim's controversial musical has been waiting for — a staging that finds the right balance between the show's comic absurdities and its sobering insights into the American psyche.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is the production that Stephen Sondheim's controversial musical has been waiting for — a staging that finds the right balance between the show's comic absurdities and its sobering insights into the American psyche.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong endorsement calling this 'the production' the show 'has been waiting for' with praise for achieving the right balance. Single excerpt limits full confidence but language suggests high recommendation. | GPT-4o: The excerpt praises the production as the definitive staging of the musical, achieving a balance that previous productions may have lacked. The tone suggests a strong recommendation, fitting the Rave bucket. | Gemini: The excerpt clearly praises the production as the one Sondheim's musical has been waiting for, indicating a positive assessment. Given that it's a single excerpt, I'm placing it in the upper end of the 'Positive' bucket. | Kimi: The excerpt offers enthusiastic praise calling this the production the show has been waiting for, warranting the upper Positive range, but confidence is low due to availability of only a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:43:54.851Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

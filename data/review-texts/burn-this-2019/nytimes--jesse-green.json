@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Driver makes Pale's self-absorption magnetic instead of merely repulsive, and Ms. Russell finds the tough core beneath Anna's apparent fragility.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -58,5 +58,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 1081,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What we have in this case is a one-man conflagration.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Green gives extraordinary praise to Driver's performance ('volcanic', 'compelling', 'colossus') but finds the production fundamentally unbalanced, with other performances lacking depth and the chemistry between leads missing. The concluding line emphasizes this is a one-man show rather than the ensemble piece it should be. | GPT-4o: The review praises Adam Driver's performance but criticizes the production for not fully capturing the emotional depth of the play. The overall tone suggests a mixed reception, with standout moments primarily due to Driver's portrayal. | Gemini: The review heavily praises Adam Driver's performance, but criticizes Keri Russell and the overall production's impact, leading to a mixed assessment. It's worth seeing for Driver, but not a complete success. | Kimi: While the critic praises Adam Driver's performance as potentially legendary and unforgettable, they criticize Keri Russell's work as shallow and find the production lopsided, noting it 'only rarely stirs the heart' and fails to achieve the ideal 'fire meeting fire' dynamic.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:37:23.182Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

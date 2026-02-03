@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Will Eno's darkly comic play about two couples sharing more than just a surname is a thoughtful meditation on mortality that benefits from stellar performances by Toni Collette, Michael C. Hall, Tracy Letts and Marisa Tomei.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "benefits from stellar performances by Toni Collette, Michael C. Hall, Tracy Letts and Marisa Tomei",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brief excerpt describes the play as a 'thoughtful meditation' and highlights 'stellar performances' by the entire cast, indicating a positive assessment though the truncated nature limits confidence in the full verdict. | GPT-4o: The review highlights 'stellar performances' and describes the play as 'thoughtful,' indicating a positive recommendation. However, the brevity of the text and lack of more detailed evaluation suggest some reservations. | Gemini: The review highlights the play as a \"thoughtful meditation\" and praises the \"stellar performances,\" indicating a positive recommendation, though without strong enthusiasm. | Kimi: The critic praises the play as a 'thoughtful meditation on mortality' and highlights 'stellar performances' from the entire cast, indicating a solid recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:20:16.408Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

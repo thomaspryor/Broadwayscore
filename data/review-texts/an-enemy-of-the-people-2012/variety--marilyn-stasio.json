@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Boyd Gaines gives a strong, steady performance as Dr. Stockmann, the idealistic physician who discovers that the town's profitable spa waters are contaminated and insists on going public with the news.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Boyd Gaines gives a strong, steady performance as Dr. Stockmann, the idealistic physician who discovers that the town's profitable spa waters are contaminated and insists on going public with the news.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Boyd Gaines gives a strong, steady performance as Dr. Stockmann, the idealistic physician who discovers that the town's profitable spa waters are contaminated and insists on going public with the news.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt warning applies - this curated quote praises the lead performance as 'strong, steady' but provides no overall verdict about the production. Given only one excerpt available, this appears mildly positive but insufficient to determine full recommendation. | GPT-4o: The excerpt praises Boyd Gaines' performance but does not provide an overall assessment of the production. With only one excerpt available, the overall sentiment is unclear, suggesting a mixed review. | Gemini: The excerpt focuses on a strong performance, suggesting a positive aspect of the production. Given it's a single excerpt, confidence is low and the score is at the lower end of the positive range. | Kimi: The excerpt offers clear praise for Boyd Gaines's lead performance ('strong, steady'), indicating a positive assessment. However, confidence is low due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:40:16.212Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

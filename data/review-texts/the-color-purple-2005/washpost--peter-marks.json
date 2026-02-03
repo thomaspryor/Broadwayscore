@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical version of 'The Color Purple' is a triumph of spirit over circumstance, transforming Alice Walker's novel into a soaring theatrical experience that honors both the source material and the Broadway stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical version of 'The Color Purple' is a triumph of spirit over circumstance, transforming Alice Walker's novel into a soaring theatrical experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses triumphant language ('triumph', 'soaring') with no caveats or reservations. Praises both artistic achievement and theatrical adaptation quality. | GPT-4o: The review uses strong, positive language such as 'triumph' and 'soaring theatrical experience', indicating an enthusiastic recommendation. | Gemini: The review uses the word \"triumph\" and describes the show as a \"soaring theatrical experience,\" indicating a rave review. | Kimi: The critic employs superlatives including 'triumph' and 'soaring theatrical experience' to deliver an unqualified endorsement of the production as a masterful adaptation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:03:27.626Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

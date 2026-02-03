@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This epic saga of American capitalism, spanning 164 years and three generations of the Lehman family, is both intimate character study and sweeping historical panorama, brought to vivid life by three superb actors.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This epic saga of American capitalism, spanning 164 years and three generations of the Lehman family, is both intimate character study and sweeping historical panorama, brought to vivid life by three superb actors.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "brought to vivid life by three superb actors",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the performances and production quality with positive descriptors like 'vivid life' and 'superb actors', though the excerpt is brief and may not capture the full critical assessment. | GPT-4o: The review praises the production as both an intimate character study and a sweeping historical panorama, highlighting the vivid portrayal by superb actors, indicating a strong recommendation. | Gemini: The review uses strong positive language such as \"vivid life\" and \"superb actors,\" indicating a positive recommendation. | Kimi: The critic offers unqualified praise for the acting ('superb') and staging ('vivid life'), describing the production as both an intimate character study and sweeping epic without any reservations or caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:12:24.302Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

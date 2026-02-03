@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Rivera, now 82, brings a lifetime of stage wisdom to her portrayal of Claire Zachanassian, the world's richest woman, who returns to her economically devastated hometown with a deal its residents can't refuse.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (34 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.nytimes.com/2015/04/24/theater/review-chita-rivera-stars-in-kander-and-ebbs-the-visit.html?_r=0",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-03T20:22:14.746Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief excerpt or caption describing the performer and character, not an actual review with critical evaluation of the production.; openai: The text is a brief mention of a performer's role without any evaluative content or verdict on the production.; gemini: This is a plot summary/description, not a review with critical evaluation.",
+  "promptVersion": "5.2.0"
 }

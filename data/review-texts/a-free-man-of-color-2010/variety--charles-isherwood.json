@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "John Guare's sprawling new play is an ambitious theatrical feast that succeeds more as spectacle than as drama, despite a commanding central performance by Jeffrey Wright.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "John Guare's sprawling new play is an ambitious theatrical feast that succeeds more as spectacle than as drama, despite a commanding central performance by Jeffrey Wright.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "John Guare's sprawling new play is an ambitious theatrical feast that succeeds more as spectacle than as drama, despite a commanding central performance by Jeffrey Wright.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review presents a balanced assessment - praising Wright's performance and calling it an 'ambitious theatrical feast' while noting it fails as drama. This suggests mixed feelings rather than a clear recommendation. | GPT-4o: The review acknowledges the play's ambition and spectacle but suggests it falls short dramatically. The praise for Jeffrey Wright's performance is noted but does not outweigh the mixed assessment of the overall production. | Gemini: The review acknowledges ambition and a strong performance but ultimately finds the play more successful as spectacle than drama, indicating a mixed assessment. The single excerpt and lack of a clear recommendation lower the confidence. | Kimi: The excerpt offers qualified praise for the production's visual ambition and lead actor while explicitly noting its failure as drama, creating a balanced mixed assessment without clear recommendation to attend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:37:04.827Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

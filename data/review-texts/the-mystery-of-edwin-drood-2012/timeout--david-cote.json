@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Rupert Holmes's Tony-winning 1985 musical mystery is a giddy crowd-pleaser that manages to be both campy and sincere. The show's interactive elements and multiple endings make each performance feel like a party.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This revival of Rupert Holmes's Tony-winning 1985 musical mystery is a giddy crowd-pleaser that manages to be both campy and sincere. The show's interactive elements and multiple endings make each performance feel like a party.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival is a giddy crowd-pleaser that manages to be both campy and sincere.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating aligns perfectly with positive bucket. Enthusiastic language like 'giddy crowd-pleaser' and comparison to 'a party' indicates strong recommendation. | GPT-4o: The review describes the show as a 'giddy crowd-pleaser' and highlights its interactive elements, suggesting a positive experience. The original rating of 80 aligns with a solid recommendation. | Gemini: The review is positive, calling the show a \"giddy crowd-pleaser\" and highlighting its interactive elements. | Kimi: Despite brevity, the review offers unqualified praise calling the show a 'giddy crowd-pleaser' that feels 'like a party,' matching the critic's own 80-point rating for a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:14:45.888Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
