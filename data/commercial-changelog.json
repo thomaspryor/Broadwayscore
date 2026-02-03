@@ -1,5 +1,92 @@
 [
   {
+    "date": "2026-02-03",
+    "timestamp": "2026-02-03T05:02:01.737Z",
+    "changesApplied": 4,
+    "changesFlagged": 1,
+    "changesSkipped": 0,
+    "deepResearchConflicts": 2,
+    "newEntries": 0,
+    "shadowDisagreements": 8,
+    "applied": [
+      {
+        "slug": "the-outsiders",
+        "field": "recoupedWeeks",
+        "oldValue": null,
+        "newValue": 89,
+        "confidence": "high",
+        "source": "Section C: Reddit Grosses Analysis - 'recouped after 744 performances' and Section F: Deadline article confirms recoupment week ending December 28, 2025. 744 performances ÷ 8.375 performances/week = ~89 weeks"
+      },
+      {
+        "slug": "the-outsiders",
+        "field": "notes",
+        "oldValue": "Won Best Musical Tony 2024. Recouped $22M investment week ending December 28, 2025 after 744 performances (~89 weeks) and $121M total grosses. First n",
+        "newValue": "Won Best Musical Tony 2024. Recouped $22M investment week ending December 28, 2025 after 744 performances (89 weeks) and $121M+ total grosses. First new musical to recoup since Stranger Things (2022). Actors from developmental workshops entitled to profit-sharing per NYT.",
+        "confidence": "high",
+        "source": "Section F: Deadline article confirms recoupment details, Section D: Reddit comment mentions NYT article about profit-sharing for workshop participants"
+      },
+      {
+        "slug": "hells-kitchen",
+        "field": "weeklyRunningCost",
+        "oldValue": 750000,
+        "newValue": 775000,
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis shows weekly cost as $775K, Section D: Reddit comment from u/dancljd suggests operating costs are '100-200k higher than your estimate'"
+      },
+      {
+        "slug": "hells-kitchen",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "confidence": "medium",
+        "source": "Section C: Reddit Grosses Analysis post estimates"
+      }
+    ],
+    "flagged": [
+      {
+        "slug": "just-in-time",
+        "field": "estimatedRecoupmentPct",
+        "newValue": [
+          95,
+          100
+        ],
+        "flagReason": "Sources disagree"
+      }
+    ],
+    "blocked": [
+      {
+        "slug": "death-becomes-her",
+        "field": "estimatedRecoupmentPct",
+        "verifiedValue": [
+          70,
+          80
+        ],
+        "proposedValue": [
+          10,
+          30
+        ],
+        "severity": "critical",
+        "discrepancy": "verified 70-80%, proposed 10-30% (55pt difference)"
+      },
+      {
+        "slug": "the-great-gatsby",
+        "field": "estimatedRecoupmentPct",
+        "verifiedValue": [
+          50,
+          70
+        ],
+        "proposedValue": [
+          10,
+          30
+        ],
+        "severity": "critical",
+        "discrepancy": "verified 50-70%, proposed 10-30% (40pt difference)"
+      }
+    ]
+  },
+  {
     "date": "2026-01-28",
     "timestamp": "2026-01-28T23:16:23.390Z",
     "changesApplied": 6,
