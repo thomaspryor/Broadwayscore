@@ -163,6 +163,11 @@ function main() {
 
           const relativePath = path.relative(DATA, filePath);
 
+          // Handle contentTier being either a string or nested object
+          const ct = r.contentTier;
+          const contentTier = (ct && typeof ct === 'object') ? ct.contentTier : (ct || null);
+          const tierReason = r.tierReason || (ct && typeof ct === 'object' ? ct.tierReason : null) || null;
+
           insert.run(
             r.showId || dir.name,
             r.outletId || null,
@@ -173,8 +178,8 @@ function main() {
             includeText ? (r.fullText || null) : null,
             r.isFullReview ? 1 : 0,
             r.wordCount ?? null,
-            r.contentTier || null,
-            r.tierReason || null,
+            contentTier,
+            tierReason,
             r.textQuality || null,
             r.source || null,
             r.sources ? JSON.stringify(r.sources) : null,
