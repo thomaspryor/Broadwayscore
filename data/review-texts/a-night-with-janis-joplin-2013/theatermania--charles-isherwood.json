@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mary Bridget Davies delivers a powerhouse performance that captures both Joplin's raw vocal power and her vulnerable spirit, making this musical biography a moving tribute to the rock legend.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mary Bridget Davies delivers a powerhouse performance that captures both Joplin's raw vocal power and her vulnerable spirit, making this musical biography a moving tribute to the rock legend.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mary Bridget Davies delivers a powerhouse performance that captures both Joplin's raw vocal power and her vulnerable spirit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the lead performance as 'powerhouse' and calls the show a 'moving tribute', but this appears to be a brief excerpt that may not capture the full review's verdict. | GPT-4o: The review praises the lead performance as a 'powerhouse' and describes the show as a 'moving tribute,' indicating a strong positive recommendation. | Gemini: The review praises the lead performance and calls the show a \"moving tribute,\" indicating a positive recommendation. | Kimi: While brief, the review offers unqualified praise for the lead performance and describes the show as a 'moving tribute' with no caveats or criticisms mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:25:55.645Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

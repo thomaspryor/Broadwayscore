@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "A Christmas Story The Musical is a sweet, nostalgic trip down memory lane that captures the essence of the beloved film while adding its own theatrical magic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A Christmas Story The Musical is a sweet, nostalgic trip down memory lane that captures the essence of the beloved film while adding its own theatrical magic.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Christmas Story The Musical is a sweet, nostalgic trip down memory lane that captures the essence of the beloved film while adding its own theatrical magic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language ('sweet', 'theatrical magic', 'captures the essence') indicates recommendation, but brief length and lack of superlatives keeps it in mid-Positive range. | GPT-4o: The review describes the show as 'sweet' and 'nostalgic' with 'theatrical magic', indicating a positive recommendation with no reservations. | Gemini: The review uses positive language such as \"sweet\" and \"captures the essence\" indicating a positive recommendation. | Kimi: The review offers unambiguous praise with phrases like 'sweet, nostalgic' and 'theatrical magic,' clearly recommending the show despite the brief text length.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:54:18.065Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

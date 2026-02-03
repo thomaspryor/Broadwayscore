@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "A Bronx Tale: The Musical is a heartfelt coming-of-age story that successfully translates the beloved film to the Broadway stage with strong performances and memorable musical numbers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A Bronx Tale: The Musical is a heartfelt coming-of-age story that successfully translates the beloved film to the Broadway stage with strong performances and memorable musical numbers.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Bronx Tale: The Musical is a heartfelt coming-of-age story that successfully translates the beloved film to the Broadway stage",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'successfully translates' and praise for 'strong performances and memorable musical numbers', but brief review lacks depth of evaluation. | GPT-4o: The review describes the show as 'heartfelt' and 'successful', with 'strong performances and memorable musical numbers', indicating a clear recommendation. | Gemini: The review explicitly states that the show \"successfully translates the beloved film to the Broadway stage\" and praises the performances and musical numbers, indicating a positive recommendation. | Kimi: The review offers clear, unqualified praise for the adaptation, performances, and music, indicating a solid recommendation without reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:34:44.834Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This adaptation has charm and technical polish, but it lacks the emotional depth that would make it truly memorable. The production feels more like a well-executed holiday pageant than a profound theatrical experience.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This adaptation has charm and technical polish, but it lacks the emotional depth that would make it truly memorable. The production feels more like a well-executed holiday pageant than a profound theatrical experience.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This adaptation has charm and technical polish, but it lacks the emotional depth that would make it truly memorable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges positive qualities (charm, technical polish) but finds significant shortcomings (lacks emotional depth, feels like a pageant rather than profound theater). The original 60 rating confirms this as squarely Mixed. | GPT-4o: The review acknowledges charm and polish but criticizes the lack of emotional depth, aligning with the critic's original rating of 60, which suggests a mixed review. | Gemini: The review acknowledges positive aspects like charm and polish, but ultimately finds the production lacking in emotional depth, resulting in a mixed assessment. The critic's rating of 60 aligns with the 'Mixed' bucket. | Kimi: The critic praises the show's charm and technical execution but criticizes its lack of emotional depth and memorability, resulting in a middle-of-the-road assessment that aligns with the provided 60/100 rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:49:13.703Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

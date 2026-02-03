@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new production of A Chorus Line is a faithful recreation of the original, but faithfulness doesn't automatically translate into excitement or even effectiveness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new production of A Chorus Line is a faithful recreation of the original, but faithfulness doesn't automatically translate into excitement or even effectiveness.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "faithfulness doesn't automatically translate into excitement or even effectiveness",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the production's faithfulness but explicitly states it lacks excitement and effectiveness, indicating a lukewarm assessment without clear recommendation. | GPT-4o: The review notes that the production is faithful but lacks excitement or effectiveness, suggesting a mixed impression without clear recommendation. | Gemini: The review acknowledges the production's faithfulness but questions its excitement and effectiveness, indicating a mixed reaction. | Kimi: While the critic acknowledges the production's technical fidelity to the original, the explicit statement that this faithfulness fails to generate 'excitement or even effectiveness' constitutes a clear recommendation against the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:38:41.181Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "A Bronx Tale has heart, but it doesn't have much more than that. The show feels like a pleasant but unexceptional musical adaptation of a beloved story.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A Bronx Tale has heart, but it doesn't have much more than that. The show feels like a pleasant but unexceptional musical adaptation of a beloved story.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show feels like a pleasant but unexceptional musical adaptation of a beloved story.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory (55-69). 'Pleasant but unexceptional' indicates neither recommendation nor discouragement - exactly what Mixed represents. | GPT-4o: The critic's original rating of 60 aligns with a Mixed review. The text describes the show as 'pleasant but unexceptional,' indicating a lukewarm recommendation. | Gemini: The review states that the show has heart but is otherwise unexceptional, indicating a mixed reaction. The critic's rating of 60 aligns with the 'Mixed' bucket. | Kimi: The critic acknowledges the show has 'heart' but ultimately deems it 'unexceptional' and lacking substance, matching the provided 60/100 rating which falls squarely in the Mixed range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:35:39.979Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

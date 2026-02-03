@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mary Bridget Davies delivers a performance of searing intensity and vocal power that makes you believe, at least while she's onstage, that the ghost of Janis has indeed materialized in the Lyceum Theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mary Bridget Davies delivers a performance of searing intensity and vocal power that makes you believe, at least while she's onstage, that the ghost of Janis has indeed materialized in the Lyceum Theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mary Bridget Davies delivers a performance of searing intensity and vocal power that makes you believe, at least while she's onstage, that the ghost of Janis has indeed materialized in the Lyceum Theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: This appears to be an excerpt focusing on strong praise for the lead performance with vivid, enthusiastic language. However, the truncated nature means the overall show verdict may be missing, warranting low confidence. | Gemini: The review praises the lead performance as exceptional, suggesting a strong reason to see the show, but it focuses primarily on the performance rather than the overall production. | Kimi: The critic offers enthusiastic praise for the lead performer's intensity and vocal ability, using superlatives like 'searing' and suggesting a transcendent, believable portrayal. However, the text appears to be a brief excerpt focusing solely on one performance element rather than the full production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:23:57.507Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival doesn't just coast on the musical's reputation; it earns its tears and cheers through careful attention to psychological detail and a cast that understands that individual stories matter more than collective razzle-dazzle.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival doesn't just coast on the musical's reputation; it earns its tears and cheers through careful attention to psychological detail and a cast that understands that individual stories matter more than collective razzle-dazzle.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival doesn't just coast on the musical's reputation; it earns its tears and cheers through careful attention to psychological detail",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive verdict with substantive praise for the production's merit and cast, though brief excerpt limits full assessment of critic's enthusiasm level. | GPT-4o: The review praises the revival for its emotional impact and detailed attention, suggesting a strong recommendation beyond just relying on the musical's reputation. | Gemini: The review praises the production's attention to detail and the cast's understanding of the material, suggesting a worthwhile experience despite not being a rave. | Kimi: The excerpt praises the revival for earning its emotional impact through careful psychological detail and strong performances, clearly recommending the production despite its brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:38:16.510Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

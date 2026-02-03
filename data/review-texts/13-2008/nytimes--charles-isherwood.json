@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show has a sunny, optimistic spirit that is hard to resist, even when the material feels thin. The young performers attack their roles with an enthusiasm that proves infectious.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show has a sunny, optimistic spirit that is hard to resist, even when the material feels thin. The young performers attack their roles with an enthusiasm that proves infectious.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show has a sunny, optimistic spirit that is hard to resist.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic finds the show's spirit 'hard to resist' and praises the infectious enthusiasm of performers, but notes the material feels thin. This is a positive recommendation with acknowledged reservations. | GPT-4o: The review praises the show's spirit and the performers' enthusiasm, suggesting a positive experience despite some reservations about the material's depth. | Gemini: The review expresses a positive sentiment, noting the show's optimistic spirit and the infectious enthusiasm of the performers, while also acknowledging that the material feels thin, indicating a recommendation with reservations. | Kimi: The critic praises the show's infectious enthusiasm and sunny spirit as 'hard to resist,' clearly recommending it, though with a significant reservation about the thin material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:07:18.835Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

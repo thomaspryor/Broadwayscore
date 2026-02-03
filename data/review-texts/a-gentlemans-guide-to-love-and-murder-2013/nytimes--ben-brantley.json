@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This show succeeds brilliantly in doing what so many Broadway musicals fail to do these days: it tells a story clearly, entertainingly and with a gratifying sense of inevitability.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "archiveOrgTimestamp": "20241110155749",
   "archiveOrgUrl": "http://web.archive.org/web/20241110155749/https://www.nytimes.com/2013/11/18/theater/reviews/a-gentlemans-guide-to-love-and-murder-on-broadway.html",
   "wordCount": 1265,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This delightful show will lift the hearts of all those who've been pining for what sometimes seems a lost art form: musicals that match streams of memorable melody with fizzily witty turns of phrase.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Brantley delivers unqualified praise with superlatives throughout: 'delightful,' 'frolicsome,' 'dazzling,' calling the score 'one of the most accomplished...to be heard on Broadway in the past dozen years.' He describes performances as 'tour de force' and 'brilliant,' with no meaningful reservations. | GPT-4o: The review is filled with superlatives and enthusiastic praise, comparing the show favorably to classics like 'Sweeney Todd' and highlighting the performances, particularly Jefferson Mays's, as a tour de force. The tone is consistently positive with no reservations. | Gemini: The review is overwhelmingly positive, using words like \"delightful\" and praising the music, lyrics, performances, and direction. The critic clearly recommends the show. | Kimi: The review offers unqualified praise for Jefferson Mays' tour de force performance, the accomplished and literate score, and the production design, comparing the show favorably to Sweeney Todd with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:09:22.540Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

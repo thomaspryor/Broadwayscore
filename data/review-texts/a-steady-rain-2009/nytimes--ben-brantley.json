@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Jackman and Mr. Craig are both agreeable company, and they work hard to give their characters the gritty texture of authenticity. But they're fighting a losing battle against material that never allows them to dig beneath the surface.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Jackman and Mr. Craig are both agreeable company, and they work hard to give their characters the gritty texture of authenticity. But they're fighting a losing battle against material that never allows them to dig beneath the surface.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (39 words)"
+  "contentTierReason": "Short text (39 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But they're fighting a losing battle against material that never allows them to dig beneath the surface.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: While the critic praises the lead performers as 'agreeable company' who 'work hard,' the overall verdict is negative - they're 'fighting a losing battle' against inadequate material. This is a clear case where performer praise does not redeem the overall negative assessment. | GPT-4o: The review acknowledges the actors' efforts but ultimately criticizes the material as shallow, leading to a negative recommendation. | Gemini: The review praises the actors' efforts but ultimately states they are fighting a losing battle against the material, indicating a negative overall assessment. | Kimi: While the critic acknowledges the lead actors are 'agreeable company' working hard, the decisive verdict is that they are 'fighting a losing battle' against shallow material that prevents any depth. Performer praise does not redeem the overall negative assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:31:48.425Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

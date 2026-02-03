@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This charming musical murder mystery is a lighthearted romp through Edwardian England that manages to be both wickedly funny and surprisingly touching.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This charming musical murder mystery is a lighthearted romp through Edwardian England that manages to be both wickedly funny and surprisingly touching.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This charming musical murder mystery is a lighthearted romp through Edwardian England that manages to be both wickedly funny and surprisingly touching.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('charming', 'wickedly funny', 'surprisingly touching') indicates recommendation, but brief text limits confidence in exact placement within positive range. | GPT-4o: The review uses positive descriptors like 'charming', 'wickedly funny', and 'surprisingly touching', indicating a strong recommendation with no reservations. | Gemini: The review uses positive language such as \"charming\", \"lighthearted romp\", \"wickedly funny\", and \"surprisingly touching\", indicating a positive recommendation. | Kimi: The critic delivers an enthusiastic endorsement, describing the show as 'wickedly funny' and 'surprisingly touching' without noting any significant flaws, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:12:03.343Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

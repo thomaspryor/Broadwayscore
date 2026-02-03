@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "A Strange Loop is a brilliant, provocative, and deeply personal musical that challenges audiences while delivering exceptional artistry. Michael R. Jackson has created something truly extraordinary that deserves all the accolades it has received.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -37,5 +37,60 @@
   "archiveOrgTimestamp": "20231204123859",
   "archiveOrgUrl": "http://web.archive.org/web/20231204123859/https://newyorktheater.me/2022/04/26/a-strange-loop-broadway-review/",
   "wordCount": 900,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show offers a satisfying Broadway musical even as it skewers Broadway musicals – and everybody in them.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout for performances, direction, and production values. Calls the show 'dazzling and dizzying,' praises actors as 'extraordinary,' and concludes it's a 'satisfying Broadway musical.' The warning about conventional expectations is context, not criticism. | GPT-4o: The review is filled with praise for the production, performances, and design, highlighting it as fresh and welcome for Broadway audiences. The critic describes the musical as dazzling, impressive, and satisfying, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the show's freshness, tuneful songs, and impressive performances. The critic clearly recommends seeing it, even with a warning about its unconventional nature. | Kimi: The critic delivers unqualified praise for the Broadway production, using superlatives like 'dazzling' and 'extraordinary' to describe the performances, direction, and design, while declaring the show 'satisfying' and its arrival 'welcome' without any significant reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:34:04.470Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

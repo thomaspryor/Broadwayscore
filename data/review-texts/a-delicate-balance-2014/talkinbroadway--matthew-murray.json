@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Edward Albee's 1966 Pulitzer Prize-winning play is a masterclass in theatrical precision, with Glenn Close delivering a performance of stunning emotional complexity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Edward Albee's 1966 Pulitzer Prize-winning play is a masterclass in theatrical precision, with Glenn Close delivering a performance of stunning emotional complexity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of Edward Albee's 1966 Pulitzer Prize-winning play is a masterclass in theatrical precision",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Calls the revival a 'masterclass' and praises Close's 'stunning emotional complexity' - strong positive language indicating enthusiastic recommendation, though excerpt is brief. | GPT-4o: The review uses superlative language like 'masterclass' and 'stunning emotional complexity', indicating a strong, enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"masterclass\" and \"stunning emotional complexity,\" indicating a highly favorable opinion and a rave recommendation. | Kimi: The excerpt uses unequivocal superlatives ('masterclass', 'stunning') to praise both the production and lead performance, indicating strong enthusiasm despite the text appearing truncated.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:58:31.073Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

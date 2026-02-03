@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show proves to be a reasonably faithful and affectionate adaptation of the beloved movie, capturing much of its wry humor and nostalgic warmth. But it also demonstrates the perils of translating a small, intimate story to the grand scale of Broadway.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (42 words)",
   "previousUrl": "https://www.nytimes.com/2012/11/20/theater/reviews/a-christmas-story-the-musical-opens-on-broadway.html",
   "urlDiscoveredAt": "2026-02-03T07:38:08.942Z",
@@ -40,5 +40,10 @@
   "archiveOrgTimestamp": "20250120113824",
   "archiveOrgUrl": "http://web.archive.org/web/20250120113824/https://www.nytimes.com/2012/11/20/theater/reviews/a-christmas-story-the-musical-at-the-lunt-fontanne-theater.html",
   "wordCount": 427,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-03T10:55:03.351Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about retrieving article content and enabling JavaScript; openai: The review is about a previous production of 'A Christmas Story' from 2012, not the current Broadway run.; gemini: The review is incomplete and contains an error message about retrieving article content.",
+  "promptVersion": "5.2.0"
 }

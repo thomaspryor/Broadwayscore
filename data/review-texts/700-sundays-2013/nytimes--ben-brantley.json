@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Crystal has found the ideal balance between sentiment and comedy, between the specific and the universal, in what amounts to a master class in the art of theatrical storytelling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "archiveOrgTimestamp": "20251018193148",
   "archiveOrgUrl": "http://web.archive.org/web/20251018193148/https://www.nytimes.com/2013/11/14/theater/reviews/billy-crystal-brings-700-sundays-back-to-broadway.html",
   "wordCount": 690,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The core pleasures of this warmly affectionate portrait of a New York childhood involve nostalgia and sentiment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brantley acknowledges the show's flaws (rambles, overly long, familiar material) but ultimately appreciates Crystal's charm and the emotional resonance of the piece. The tone is warm and the review treats it as a worthwhile experience despite reservations. | GPT-4o: The review highlights the nostalgic and sentimental appeal of the show, praising Crystal's charm and comedic timing, while noting the show's length as a drawback. Overall, it recommends the show for its nostalgic value and Crystal's performance. | Gemini: The review is generally positive, highlighting Crystal's charm and the show's nostalgic appeal, but notes that the show rambles and some jokes are dated. It's a recommendation with reservations. | Kimi: While noting the show's excessive length and dated material, the critic praises Crystal's polished delivery and nostalgic charm, recommending it as a warmly affectionate portrait that delivers potent pleasures despite its flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:23:54.108Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

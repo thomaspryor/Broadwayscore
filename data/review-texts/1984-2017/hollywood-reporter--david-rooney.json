@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This stage adaptation of George Orwell's dystopian novel is a mercilessly intense experience that burrows under your skin and stays there.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This stage adaptation of George Orwell's dystopian novel is a mercilessly intense experience that burrows under your skin and stays there.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This stage adaptation of George Orwell's dystopian novel is a mercilessly intense experience that burrows under your skin and stays there.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise describing the adaptation as 'mercilessly intense' with lasting impact. The vivid imagery of 'burrows under your skin and stays there' suggests a powerful, memorable theatrical experience deserving strong recommendation. | GPT-4o: The review uses strong, positive language to describe the production as an intense and memorable experience, suggesting a high level of recommendation. | Gemini: The review uses strong positive language like \"mercilessly intense\" and states that the experience \"burrows under your skin and stays there,\" indicating a strong recommendation. | Kimi: The critic employs visceral, emphatic language ('mercilessly intense,' 'burrows under your skin') to describe a powerfully affecting production with lasting impact, indicating enthusiastic admiration despite the excerpt's brevity. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:16:15.435Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

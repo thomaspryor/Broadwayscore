@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production achieves something that has eluded most revivals of this bewitching, problematic musical: it makes Sondheim's crystalline songs feel like natural expressions of a world in which sophistication is both a goal and a burden.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production achieves something that has eluded most revivals of this bewitching, problematic musical: it makes Sondheim's crystalline songs feel like natural expressions of a world in which sophistication is both a goal and a burden.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (36 words)"
+  "contentTierReason": "Short text (36 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production achieves something that has eluded most revivals of this bewitching, problematic musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Critic praises this production for succeeding where others have failed, calling the musical 'bewitching' and highlighting the natural integration of Sondheim's songs. However, this appears to be an excerpt, so confidence is reduced. | GPT-4o: The review praises the production for achieving what others have not, making Sondheim's songs feel natural, suggesting a standout revival. The tone is enthusiastic and highlights a significant accomplishment. | Gemini: The review is positive, highlighting the production's success in making Sondheim's songs feel natural. However, the mention of the musical being \"problematic\" suggests some reservations. | Kimi: The critic praises this production for achieving what most revivals could not—making Sondheim's songs feel naturally integrated into the show's world—indicating a strong recommendation despite acknowledging the musical's inherent challenges.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:15:22.113Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a visceral, uncompromising adaptation that doesn't shy away from the novel's most disturbing elements, creating a theatrical experience that is both brilliant and genuinely harrowing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a visceral, uncompromising adaptation that doesn't shy away from the novel's most disturbing elements, creating a theatrical experience that is both brilliant and genuinely harrowing.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a visceral, uncompromising adaptation that doesn't shy away from the novel's most disturbing elements, creating a theatrical experience that is both brilliant and genuinely harrowing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Clear praise calling it 'brilliant' with strong descriptors like 'visceral' and 'uncompromising', but this appears to be an excerpt with limited context for full assessment. | GPT-4o: The review uses strong positive language ('brilliant', 'genuinely harrowing') to describe the adaptation, indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"brilliant\" and \"uncompromising\" to describe the adaptation, indicating a rave review. | Kimi: The critic employs superlatives ('brilliant', 'visceral') and praises the production's uncompromising artistic vision and emotional impact without reservation, indicating an enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:15:39.719Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

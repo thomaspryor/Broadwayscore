@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jessica Chastain brings fierce intelligence and emotional complexity to her portrayal of Nora in this riveting revival that feels urgently contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jessica Chastain brings fierce intelligence and emotional complexity to her portrayal of Nora in this riveting revival that feels urgently contemporary.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jessica Chastain brings fierce intelligence and emotional complexity to her portrayal of Nora in this riveting revival that feels urgently contemporary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear praise for lead performance and production ('riveting revival', 'urgently contemporary') but excerpt is too brief to determine full recommendation strength. | GPT-4o: The review uses strong positive language such as 'fierce intelligence', 'emotional complexity', and 'riveting', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"fierce intelligence\", \"emotional complexity\", \"riveting\", and \"urgently contemporary\", indicating a strong recommendation. | Kimi: The critic offers unqualified praise for both the lead performance ('fierce intelligence') and the production ('riveting', 'urgently contemporary'), indicating strong enthusiasm without reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:01:25.535Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 89,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

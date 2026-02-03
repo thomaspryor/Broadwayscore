@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This unflinching adaptation of George Orwell's classic dystopian novel is both timely and timeless, delivering a visceral theatrical experience that leaves audiences shaken. The production transforms Orwell's nightmare vision into a relentlessly intense evening of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This unflinching adaptation of George Orwell's classic dystopian novel is both timely and timeless, delivering a visceral theatrical experience that leaves audiences shaken. The production transforms Orwell's nightmare vision into a relentlessly intense evening of theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (36 words)"
+  "contentTierReason": "Short text (36 words)",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivering a visceral theatrical experience that leaves audiences shaken",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language with 'visceral theatrical experience' and 'relentlessly intense' indicating high recommendation, though lacks explicit must-see language for Rave territory. | GPT-4o: The review uses strong positive language such as 'unflinching adaptation', 'visceral theatrical experience', and 'relentlessly intense', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"unflinching,\" \"timely,\" \"timeless,\" and \"visceral theatrical experience.\" It clearly recommends seeing the show. | Kimi: The review offers unqualified enthusiastic praise, describing the production as 'visceral,' 'relentlessly intense,' and 'timeless' with no reservations mentioned, indicating a powerful must-see theatrical experience. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:17:43.132Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

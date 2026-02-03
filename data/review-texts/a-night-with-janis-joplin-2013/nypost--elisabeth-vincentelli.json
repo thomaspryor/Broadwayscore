@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mary Bridget Davies captures Joplin's raspy voice and wild-child persona with uncanny precision, making this biographical musical work despite its conventional structure.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mary Bridget Davies captures Joplin's raspy voice and wild-child persona with uncanny precision, making this biographical musical work despite its conventional structure.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "making this biographical musical work despite its conventional structure",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic praises the lead performance as 'uncanny precision' and states the musical 'works' despite structural issues, indicating a solid recommendation with acknowledged limitations. | GPT-4o: The review praises the lead performance as a key factor in making the musical work, despite noting the conventional structure as a reservation. | Gemini: The review praises the lead performance and states that it makes the musical work, despite acknowledging the conventional structure, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic offers strong praise for the lead performance ('uncanny precision') and explicitly states the show 'works,' constituting a recommendation, though the reservation about 'conventional structure' prevents it from being an unqualified rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:23:12.944Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

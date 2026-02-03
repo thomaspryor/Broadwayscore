@@ -58,5 +58,11 @@
     "Show title not found in text"
   ],
   "wordCount": 537,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-03T10:22:13.136Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a review of the BBC film 'Filth' about Mary Whitehouse, not a Broadway show review. The aggregator context mentions Jane Fonda in '33 Variations' but the actual review text is about a completely different production.; openai: The text provided is a review of a film or show titled 'Filth' involving Mary Whitehouse, not the Broadway production '33 Variations' featuring Jane Fonda.; kimi: This text reviews the 2008 British television film 'Filth' (also known as 'Filth: The Mary Whitehouse Story') starring Julie Walters, not a Broadway theatrical production. The text explicitly refers to it as a 'movie' and mentions it is a production for 'Masterpiece' (a PBS television series).",
+  "promptVersion": "5.2.0"
 }

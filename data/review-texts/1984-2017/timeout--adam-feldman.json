@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This 1984 is a blunt instrument, but it hits its target with considerable force. The production doesn't finesse Orwell's ideas so much as it clobbers you with them.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This 1984 is a blunt instrument, but it hits its target with considerable force. The production doesn't finesse Orwell's ideas so much as it clobbers you with them.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 1984 is a blunt instrument, but it hits its target with considerable force.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating clearly places this in Positive territory. The 'blunt instrument' phrase acknowledges lack of subtlety, but 'hits its target with considerable force' indicates the production succeeds powerfully in its goals. | GPT-4o: The critic's original rating of 80 aligns with a positive bucket. The review suggests the production is effective in delivering its message, despite a lack of subtlety. | Gemini: The review acknowledges the production's direct approach but ultimately finds it effective. Given the critic's rating of 80, a score of 75 reflects a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic praises the production's powerful impact and effectiveness, acknowledging its lack of subtlety with approval rather than criticism. The original rating of 80 confirms a solid positive recommendation in the upper range of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:18:35.111Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

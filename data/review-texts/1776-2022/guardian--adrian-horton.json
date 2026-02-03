@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This thoughtful revival reimagines the founding fathers as a diverse cast of women, trans and non-binary performers, breathing new life into the 1969 musical about the signing of the Declaration of Independence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This thoughtful revival reimagines the founding fathers as a diverse cast of women, trans and non-binary performers, breathing new life into the 1969 musical about the signing of the Declaration of Independence.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This thoughtful revival reimagines the founding fathers as a diverse cast of women, trans and non-binary performers, breathing new life into the 1969 musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls it 'thoughtful' and says it 'breathes new life' into the material, indicating a positive assessment. However, this appears to be a brief excerpt without deeper evaluation or strong recommendation language. | Gemini: The review uses the word \"thoughtful\" and says the revival is \"breathing new life\" into the musical, which indicates a positive recommendation. | Kimi: The critic employs positive evaluative language ('thoughtful', 'breathing new life') to praise the revival's concept and execution, indicating a recommendation despite the truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:09:56.205Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

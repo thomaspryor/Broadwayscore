@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jack Thorne's adaptation of the Dickens classic is a handsome production that hits all the right notes, but Campbell Scott's Scrooge never quite finds the emotional center of this familiar redemption story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20250426203950",
   "archiveOrgUrl": "http://web.archive.org/web/20250426203950/https://variety.com/2019/legit/reviews/christmas-carol-review-broadway-campbell-scott-1203410701/",
   "wordCount": 676,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This dour production, whose additions only subtract from the potency of the transformative tale.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Variety critic delivers a clear negative verdict, calling it 'wrong-headed' with 'odd add-ons' that diminish Dickens' story. While acknowledging some performers' talents, the overall assessment is that the production fails fundamentally in its adaptation and emotional impact. | GPT-4o: The review is overwhelmingly negative, criticizing the production's reinterpretation of the classic story, the lack of magic and emotional impact, and the missteps in character portrayal and plot changes. The critic finds the production misguided and lacking in the essential elements that make the story impactful. | Gemini: The review is largely negative, criticizing the production's deviations from the original story and its lack of magic. The critic finds the additions to be detrimental and the overall experience disappointing. | Kimi: The critic consistently criticizes the adaptation choices as 'wrong-headed' and 'misinterpretations,' finds the production 'dour' and 'bereft of magic,' and concludes it misses the point of the source material. While acknowledging talented cast members, the overall verdict is that the show wastes their abilities and fails to deliver the story's emotional core.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:45:47.953Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 44,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 24,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

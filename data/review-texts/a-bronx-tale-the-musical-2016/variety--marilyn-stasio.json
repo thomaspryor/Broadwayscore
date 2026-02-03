@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of Chazz Palminteri's autobiographical one-man show is a sincere coming-of-age story that benefits from strong performances and solid direction.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (22 words)",
   "textWordCount": 928,
   "archivePath": "data/archives/reviews/a-bronx-tale-the-musical-2016/variety--marilyn-stasio_2026-02-03.html",
@@ -61,5 +61,10 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 928,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-03T10:36:09.822Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a website navigation page or feed with multiple article headlines and snippets, not a theater review. Contains Grammy coverage, movie reviews, and repeated blocks of text about an Aretha Franklin documentary.; openai: This text is a collection of unrelated snippets and headlines, not a coherent review of the target show.; gemini: This is a list of headlines and blurbs for various articles, not a review of a specific show.; kimi: The provided text is a collection of unrelated headlines, navigation menus, and fragments from Variety's website covering various topics (Grammys, Netflix, film reviews, other theater shows), not a coherent review of the target show. The content appears to be a corrupted scrape or sidebar compilation rather than an actual review article.",
+  "promptVersion": "5.2.0"
 }

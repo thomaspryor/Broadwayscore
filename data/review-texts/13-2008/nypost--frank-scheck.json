@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The problem with '13' isn't that it's a musical about teenagers performed by teenagers. It's that it's a bad musical about teenagers performed by teenagers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The problem with '13' isn't that it's a musical about teenagers performed by teenagers. It's that it's a bad musical about teenagers performed by teenagers.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The problem with '13' isn't that it's a musical about teenagers performed by teenagers. It's that it's a bad musical about teenagers performed by teenagers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic explicitly calls it 'a bad musical' which is a clear negative verdict. The phrasing suggests disappointment rather than a complete pan. | GPT-4o: The review is strongly negative, stating that the musical is bad without any redeeming qualities. The critic's tone is dismissive and critical. | Gemini: The review explicitly states that it is a 'bad musical' and therefore it is a negative review. | Kimi: The critic explicitly labels the show as 'bad' with no positive qualifiers or mitigating praise, indicating a clear negative recommendation. The confidence is low due to the extreme brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:06:58.230Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

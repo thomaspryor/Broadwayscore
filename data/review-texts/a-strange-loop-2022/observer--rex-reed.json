@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "A Strange Loop is a bold, brash, brilliant musical that dares to be different and succeeds spectacularly. Michael R. Jackson has created something truly special—a work that is both deeply personal and universally resonant.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A Strange Loop is a bold, brash, brilliant musical that dares to be different and succeeds spectacularly. Michael R. Jackson has created something truly special—a work that is both deeply personal and universally resonant.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Strange Loop is a bold, brash, brilliant musical that dares to be different and succeeds spectacularly.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with superlatives ('brilliant', 'succeeds spectacularly', 'truly special') and no reservations expressed. | GPT-4o: The review uses superlatives like 'bold, brash, brilliant' and 'succeeds spectacularly', indicating a strong, enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"bold, brash, brilliant\" and \"succeeds spectacularly,\" indicating a rave review. | Kimi: Unqualified enthusiasm with superlatives ('brilliant', 'spectacularly', 'truly special') and no caveats; the critic finds the work both deeply personal and universally resonant.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:35:42.530Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

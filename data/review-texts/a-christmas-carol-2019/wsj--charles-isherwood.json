@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This handsome new staging of 'A Christmas Carol' at the Lyceum Theatre offers a respectable if not revelatory take on the Dickens classic, with Campbell Scott bringing a welcome subtlety to Scrooge.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This handsome new staging of 'A Christmas Carol' at the Lyceum Theatre offers a respectable if not revelatory take on the Dickens classic, with Campbell Scott bringing a welcome subtlety to Scrooge.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This handsome new staging offers a respectable if not revelatory take on the Dickens classic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review is clearly positive with praise for the staging ('handsome') and lead performance ('welcome subtlety'), but the qualifier 'respectable if not revelatory' indicates measured enthusiasm rather than strong recommendation. | GPT-4o: The review describes the production as 'respectable if not revelatory,' indicating a mixed assessment. While there is praise for Campbell Scott's performance, the overall recommendation is lukewarm. | Gemini: The review describes the staging as \"handsome\" and \"respectable,\" indicating a positive but not overwhelmingly enthusiastic assessment. The phrase \"if not revelatory\" suggests some reservations. | Kimi: The critic praises the 'handsome' staging and Scott's 'welcome subtlety' but qualifies the recommendation as 'respectable if not revelatory,' indicating a solid production that is worth seeing but not groundbreaking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:46:41.062Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Fierstein has written what amounts to a theatrical memoir, a rambling reminiscence about his career and his life as a gay man in New York.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (26 words)",
+  "rejectedAt": "2026-02-03T11:12:23.181Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or fragment describing the show's content rather than a full review with critical evaluation or recommendation.; openai: The text is a brief description of the content of Mr. Fierstein's work, not an evaluative review of a Broadway show.; gemini: This is a brief description, not a review with an evaluation or recommendation.; kimi: The text describes the show's content as a 'theatrical memoir' and 'rambling reminiscence' but offers no critical evaluation, quality assessment, or recommendation regarding whether the production is worth seeing.",
+  "promptVersion": "5.2.0"
 }

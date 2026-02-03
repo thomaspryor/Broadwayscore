@@ -55,5 +55,11 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 671,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-03T11:14:18.021Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "openai: The text is a review of the opera 'Don Carlo' at the Met, not a Broadway show.; kimi: This review covers an opera production of 'Don Carlo' at the Metropolitan Opera (the Met), not a Broadway theater production. While the director and designer have Broadway backgrounds, this is explicitly an opera staging at Lincoln Center's opera house, not a Broadway show.",
+  "promptVersion": "5.2.0"
 }

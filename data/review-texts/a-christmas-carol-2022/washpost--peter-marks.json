@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This 'Christmas Carol' is a lavish, old-fashioned spectacle that delivers the holiday goods with impressive technical wizardry and heartfelt performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This 'Christmas Carol' is a lavish, old-fashioned spectacle that delivers the holiday goods with impressive technical wizardry and heartfelt performances.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)"
+  "contentTierReason": "Short text (20 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 'Christmas Carol' is a lavish, old-fashioned spectacle that delivers the holiday goods with impressive technical wizardry and heartfelt performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language praising both technical and performance elements. 'Delivers the goods' indicates solid recommendation, though lacks superlatives for higher score. | GPT-4o: The review uses positive language such as 'lavish', 'impressive', and 'heartfelt', indicating a strong recommendation to see the show. | Gemini: The review uses positive language such as \"lavish,\" \"impressive,\" and \"heartfelt,\" indicating a strong recommendation. The phrase \"delivers the holiday goods\" further reinforces this positive assessment. | Kimi: The review offers consistent praise for the production's spectacle, technical elements, and performances, clearly recommending it as holiday entertainment without significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:52:01.431Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

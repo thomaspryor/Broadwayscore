@@ -59,5 +59,11 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 566,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-03T11:17:08.213Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a film review of the Spanish movie 'Woman Without Piano' by Javier Rebollo, not a Broadway theater review; openai: The text is a review of the film 'Woman Without Piano,' not a Broadway show.; gemini: This is a review of the film \"Woman Without Piano\", not a Broadway show.; kimi: This is a review of the 2009 Spanish film 'Woman Without Piano' (La mujer sin piano), not a Broadway theatrical production. The text contains extensive film-specific terminology including 'helmer' (director), 'pic' (picture/film), references to camera shots/angles, and the San Sebastian Film Festival.",
+  "promptVersion": "5.2.0"
 }

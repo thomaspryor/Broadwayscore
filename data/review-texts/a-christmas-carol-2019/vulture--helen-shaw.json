@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Christmas Carol is a marvel of stagecraft, with flying spirits and a stage that transforms into a wonderland of Victorian London — but it's also surprisingly moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Christmas Carol is a marvel of stagecraft, with flying spirits and a stage that transforms into a wonderland of Victorian London — but it's also surprisingly moving.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Christmas Carol is a marvel of stagecraft, with flying spirits and a stage that transforms into a wonderland of Victorian London — but it's also surprisingly moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for both technical excellence ('marvel of stagecraft') and emotional impact ('surprisingly moving'), indicating strong positive recommendation. | GPT-4o: The review uses superlatives like 'marvel' and highlights both the impressive stagecraft and emotional impact, indicating a strong recommendation. | Gemini: The review praises the stagecraft as a marvel and notes the show is surprisingly moving, indicating a strong positive recommendation. | Kimi: The reviewer praises the production as a 'marvel' of visual spectacle while highlighting its emotional impact, delivering strong unqualified praise despite the brevity of the text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:46:22.158Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

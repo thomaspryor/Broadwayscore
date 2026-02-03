@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a powerful, uncompromising production that doesn't shy away from the novel's most disturbing elements, creating an experience that's both theatrically impressive and deeply unsettling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a powerful, uncompromising production that doesn't shy away from the novel's most disturbing elements, creating an experience that's both theatrically impressive and deeply unsettling.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 79,
+      "high": 89
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a powerful, uncompromising production that doesn't shy away from the novel's most disturbing elements.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for the production quality ('powerful', 'theatrically impressive') but notes it's 'deeply unsettling', suggesting a qualified recommendation for those prepared for challenging content. | GPT-4o: The review uses strong positive language ('powerful', 'uncompromising', 'theatrically impressive') indicating a highly favorable view of the production. | Gemini: The review describes the production as \"powerful\" and \"theatrically impressive,\" indicating a positive experience, though also \"deeply unsettling,\" suggesting some reservations. | Kimi: The critic offers unqualified praise for the production's power and theatrical impressiveness with no reservations mentioned, though the brevity suggests this may be an excerpt. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:17:08.660Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

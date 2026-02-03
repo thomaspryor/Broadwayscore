@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production's immersive approach works better as a stunt than as theater, though it certainly succeeds in making you feel trapped and surveilled.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production's immersive approach works better as a stunt than as theater, though it certainly succeeds in making you feel trapped and surveilled.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production's immersive approach works better as a stunt than as theater, though it certainly succeeds in making you feel trapped and surveilled.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Acknowledges the production succeeds at its immersive goals but criticizes it as theater. 'Works better as a stunt than as theater' suggests theatrical disappointment despite technical achievement. | GPT-4o: The review criticizes the production's approach as more of a 'stunt' than effective theater, implying it lacks theatrical value. The tone suggests disappointment, leading to a negative classification. | Gemini: The review acknowledges the immersive approach's success in creating a specific feeling but ultimately finds it more of a stunt than effective theater, indicating a mixed assessment. | Kimi: The critic dismisses the show as a 'stunt' rather than legitimate theater, and while acknowledging technical effectiveness, frames the audience experience ('trapped and surveilled') as unpleasant rather than artistically valuable. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:19:29.190Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

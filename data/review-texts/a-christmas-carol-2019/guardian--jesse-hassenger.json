@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new adaptation of A Christmas Carol feels less like a musical than a play with songs, and benefits from that approach.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new adaptation of A Christmas Carol feels less like a musical than a play with songs, and benefits from that approach.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new adaptation of A Christmas Carol feels less like a musical than a play with songs, and benefits from that approach.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The phrase 'benefits from that approach' indicates a positive assessment, but this appears to be a truncated excerpt with very limited content to evaluate the full critical verdict. | GPT-4o: The review suggests a positive assessment of the adaptation's approach, indicating a recommendation. However, the brevity and lack of detailed evaluation result in a medium confidence level. | Gemini: The critic states that the adaptation \"benefits from that approach,\" indicating a positive, though perhaps qualified, recommendation. | Kimi: The critic offers a mild endorsement, praising the show's approach as beneficial, though the extreme brevity of the excerpt suggests this is a capsule review or truncated text with limited evaluative detail.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:40:14.730Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

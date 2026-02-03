@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Catherine Zeta-Jones makes a commanding Broadway debut in this handsome revival of Stephen Sondheim's masterpiece, though her vocals are more stylish than stirring.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,5 +64,60 @@
   "extractedByline": "Barry Garron",
   "expectedCritic": "David Rooney",
   "wordCount": 595,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Catherine Zeta-Jones makes a commanding Broadway debut in this handsome revival of Stephen Sondheim's masterpiece, though her vocals are more stylish than stirring.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Calls it a 'handsome revival' of a 'masterpiece' with praise for Zeta-Jones's 'commanding' debut, but qualifies her vocals as lacking emotional impact. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises Zeta-Jones' performance and the production's appearance, indicating a positive view. However, the caveat about her vocals being 'more stylish than stirring' suggests some reservations. Given the single excerpt warning, the score is set at the lower end of the positive range. | Gemini: The review excerpt praises Zeta-Jones and calls the revival 'handsome' and the show a 'masterpiece', but notes that her vocals are 'more stylish than stirring', indicating a reservation. Given the single excerpt, confidence is low. | Kimi: The excerpt offers qualified praise—complimenting Zeta-Jones's stage presence and the production design while explicitly criticizing her vocals. As a single curated quote, it suggests mild approval warranting the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:14:46.048Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is at its best when Diamond's hits are unleashed in their full glory, and the audience gets to sing along to 'Sweet Caroline' and 'Cracklin' Rosie.'",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is at its best when Diamond's hits are unleashed in their full glory, and the audience gets to sing along to 'Sweet Caroline' and 'Cracklin' Rosie.'",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is at its best when Diamond's hits are unleashed in their full glory.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review highlights the enjoyment of the musical numbers but lacks depth and context to provide a strong recommendation. The focus on audience participation suggests a positive experience, but the limited text prevents a higher confidence score. | Gemini: The review focuses on the enjoyment of the audience singing along to the hits, suggesting a positive but somewhat limited appeal. Due to the short length, confidence is low. | Kimi: The qualified phrasing 'at its best' implies the show has inconsistent quality, excelling during musical numbers but potentially weaker elsewhere. The single-sentence excerpt appears truncated, limiting certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T10:28:44.471Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 62,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }
