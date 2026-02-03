@@ -8476,66 +8476,6 @@
     "timestamp": "2026-02-03T07:53:21.890Z"
   },
   {
-    "reviewId": "annie-2012/hollywood-reporter--david-rooney.json",
-    "showId": "annie-2012",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/annie-theater-review-390315/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, tina, noises off, rocky, orphans...",
-    "textLength": 8233,
-    "timestamp": "2026-02-03T09:16:28.771Z"
-  },
-  {
-    "reviewId": "anything-goes-2011/variety--charles-isherwood.json",
-    "showId": "anything-goes-2011",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2011/legit/reviews/anything-goes-1117945052/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): appropriate, smash, sweat, evita, rain...",
-    "textLength": 5458,
-    "timestamp": "2026-02-03T09:21:23.443Z"
-  },
-  {
-    "reviewId": "august-osage-county-2007/nytimes--ben-brantley.json",
-    "showId": "august-osage-county-2007",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2007/12/05/theater/reviews/05august.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): chicago, home, company, summer, violet...",
-    "textLength": 9817,
-    "timestamp": "2026-02-03T09:25:28.598Z"
-  },
-  {
-    "reviewId": "august-osage-county-2007/variety--david-rooney.json",
-    "showId": "august-osage-county-2007",
-    "outlet": "Variety",
-    "critic": "David Rooney",
-    "url": "https://variety.com/2007/legit/reviews/august-osage-county-1200558319/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): chicago, home, company, summer, act one...",
-    "textLength": 8111,
-    "timestamp": "2026-02-03T09:25:57.097Z"
-  },
-  {
-    "reviewId": "bad-cinderella-2023/variety--aramide-tinubu.json",
-    "showId": "bad-cinderella-2023",
-    "outlet": "Variety",
-    "critic": "Aramide Tinubu",
-    "url": "https://variety.com/2023/legit/reviews/bad-cinderella-review-broadway-andrew-lloyd-webber-1235565315/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"bad cinderella\" not mentioned in text; No theater-related keywords in short text",
-    "textLength": 729,
-    "timestamp": "2026-02-03T09:30:19.328Z"
-  },
-  {
     "reviewId": "bandstand-2017/variety--marilyn-stasio.json",
     "showId": "bandstand-2017",
     "outlet": "Variety",
@@ -8822,5 +8762,65 @@
     "garbageReason": "Multiple shows mentioned (8): wicked, proof, rocky, elling, high...",
     "textLength": 6902,
     "timestamp": "2026-02-03T12:03:33.837Z"
+  },
+  {
+    "reviewId": "annie-2012/hollywood-reporter--david-rooney.json",
+    "showId": "annie-2012",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/annie-theater-review-390315/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, tina, noises off, rocky, orphans...",
+    "textLength": 8233,
+    "timestamp": "2026-02-03T12:07:12.787Z"
+  },
+  {
+    "reviewId": "anything-goes-2011/variety--charles-isherwood.json",
+    "showId": "anything-goes-2011",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2011/legit/reviews/anything-goes-1117945052/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): appropriate, smash, sweat, evita, rain...",
+    "textLength": 5478,
+    "timestamp": "2026-02-03T12:10:19.910Z"
+  },
+  {
+    "reviewId": "august-osage-county-2007/nytimes--ben-brantley.json",
+    "showId": "august-osage-county-2007",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2007/12/05/theater/reviews/05august.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, home, company, summer, violet...",
+    "textLength": 9817,
+    "timestamp": "2026-02-03T12:11:48.004Z"
+  },
+  {
+    "reviewId": "august-osage-county-2007/variety--david-rooney.json",
+    "showId": "august-osage-county-2007",
+    "outlet": "Variety",
+    "critic": "David Rooney",
+    "url": "https://variety.com/2007/legit/reviews/august-osage-county-1200558319/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chicago, home, company, summer, act one...",
+    "textLength": 8107,
+    "timestamp": "2026-02-03T12:12:26.143Z"
+  },
+  {
+    "reviewId": "bad-cinderella-2023/variety--aramide-tinubu.json",
+    "showId": "bad-cinderella-2023",
+    "outlet": "Variety",
+    "critic": "Aramide Tinubu",
+    "url": "https://variety.com/2023/legit/reviews/bad-cinderella-review-broadway-andrew-lloyd-webber-1235565315/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"bad cinderella\" not mentioned in text; No theater-related keywords in short text",
+    "textLength": 729,
+    "timestamp": "2026-02-03T12:15:35.017Z"
   }
 ]
