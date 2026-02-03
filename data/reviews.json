@@ -4,22 +4,22 @@
     "lastUpdated": "2026-02-03",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 3523,
-      "skippedNoScore": 5708,
-      "skippedDuplicate": 12,
-      "skippedDuplicateUrl": 86,
+      "totalReviews": 3515,
+      "skippedNoScore": 6022,
+      "skippedDuplicate": 15,
+      "skippedDuplicateUrl": 100,
       "skippedWrongProduction": 97,
-      "recoveredFromGarbage": 79,
+      "recoveredFromGarbage": 95,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 2,
         "explicit-slash": 4,
         "explicit-letterGrade": 1,
         "human-review": 60,
-        "originalScore-priority0": 828,
-        "llmScore": 2308,
+        "originalScore-priority0": 827,
+        "llmScore": 2268,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 311,
+        "llmScore-lowconf": 344,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
@@ -51,7 +51,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 75,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -61,7 +61,7 @@
       "pullQuote": "The show has a sunny, optimistic spirit that is hard to resist, even when the material feels thin.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "1776-2022",
@@ -2873,7 +2873,7 @@
       "outletId": "ap",
       "outlet": "Associated Press",
       "assignedScore": 81,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Mark Kennedy",
@@ -3077,7 +3077,7 @@
       "outletId": "nbcny",
       "outlet": "NBC New York",
       "assignedScore": 60,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Dave Quinn",
@@ -3087,14 +3087,14 @@
       "pullQuote": "Don't be fooled by the title of Disney's latest film-to-stage transfer. \"Aladdin\" may be named after its lead street urchin character, but the musical comedy that just opened at the Theatre is all about one character: the Genie. That's due to the casting of the energetic James Monroe I...",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "aladdin-2014",
       "outletId": "new-jersey-newsroom",
       "outlet": "New Jersey Newsroom",
       "assignedScore": 74,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Michael Sommers",
@@ -3104,7 +3104,7 @@
       "pullQuote": "The cartoonish musical is modelled after snappy 1960s Broadway musical comedies, complete with passing scenes staged \"in-one\" in front of a curtain to cover changes in décor. Sure, that's retro, but it suits the light-hearted material as well as a Disney crowd who probably prefers familiar formats.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "aladdin-2014",
@@ -3462,7 +3462,7 @@
       "pullQuote": "Disney's Aladdin is a lavish, colorful spectacle that delivers exactly what you'd expect from a Broadway adaptation of the beloved animated film.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated",
+      "contentTier": "complete",
       "designation": "Critics_Choice"
     },
     {
@@ -5456,23 +5456,6 @@
     },
     {
       "showId": "an-enemy-of-the-people-2024",
-      "outletId": "ew",
-      "outlet": "Entertainment Weekly",
-      "assignedScore": 82,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Dalton Ross",
-      "url": "https://ew.com/an-enemy-of-the-people-review-jeremy-strong-michael-imperioli-8610065",
-      "publishDate": "March 18, 2024",
-      "originalRating": null,
-      "pullQuote": "The actors are tremendous and completely lose themselves in the parts.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
       "outletId": "nydailynews",
       "outlet": "New York Daily News",
       "assignedScore": 82,
@@ -6216,23 +6199,6 @@
       "originalRating": null,
       "pullQuote": "The story seems largely guided by the songs rather than the other way around.",
       "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "and-juliet-2022",
-      "outletId": "nytg",
-      "outlet": "New York Theatre Guide",
-      "assignedScore": 75,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Unknown",
-      "url": "https://www.newyorktheatreguide.com/reviews/and-juliet-broadway-review",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Theatregoers out for a silly good time likely won't care as they hum along with & Juliet.",
-      "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -7845,7 +7811,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Unknown",
-      "url": null,
+      "url": "https://www.theatermania.com/news/review-back-to-the-future-the-musical-is-stuck-in-the-past_1710869/?fbclid=IwAR1zwYSvNeM4C8kbZnyw2rK_4WQhOCUo2WXK7sgH343crU3ZAr6XEANK_CQ",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "It's a perfectly disorienting sensory overload, and Chris Fisher takes full advantage with his eye-popping illusions.",
@@ -9558,7 +9524,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 75,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Marilyn Stasio",
@@ -9568,7 +9534,7 @@
       "pullQuote": "This raucous rock musical about our seventh president is a crude but effective piece of political theater that turns American history into a mosh pit.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "bob-fosses-dancin-2023",
@@ -9796,7 +9762,7 @@
       "outletId": "ap",
       "outlet": "Associated Press",
       "assignedScore": 78,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Mark Kennedy",
@@ -9806,14 +9772,14 @@
       "pullQuote": "\"The Book of Mormon,\" which opened Thursday at the Eugene O'Neill Theatre, is inventive and slick and subversive. It is funnier and smarter than \"Monty Python's Spamalot,\" managing to offend, provoke laughter, trigger eye-rolling, satirize conventions and warm hearts, all at the same time.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "book-of-mormon-2011",
       "outletId": "backstage",
       "outlet": "Backstage",
       "assignedScore": 79,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Sheward",
@@ -9823,7 +9789,7 @@
       "pullQuote": "There are also pointed but loving tributes to musical comedy conventions, shockingly vulgar humor, and that rarity on Broadway these days: topical and effective satire.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "invalid"
+      "contentTier": "excerpt"
     },
     {
       "showId": "book-of-mormon-2011",
@@ -9949,7 +9915,7 @@
       "outletId": "ny1",
       "outlet": "NY1",
       "assignedScore": 89,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Roma Torre",
@@ -10198,7 +10164,7 @@
       "pullQuote": "In “Boop! The Musical,” the canonical cartoon recounts stints as a lion tamer, judge and hula dancer — professions lifted straight from her shorts. But evidently, Betty Boop missed a credit: magician. Because by the end of this new musical, she left us all boop-boop-a-bewitched.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "boop-2025",
@@ -10545,7 +10511,7 @@
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 75,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
@@ -10555,7 +10521,7 @@
       "pullQuote": "Nina Arianda brings fierce intelligence and surprising depth to the archetypal dumb blonde role",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "born-yesterday-2011",
@@ -11585,7 +11551,7 @@
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 78,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -13846,7 +13812,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 63,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Elisabeth Vincentelli",
@@ -13856,7 +13822,7 @@
       "pullQuote": "Parts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst. At least Mayer’s production, starring Nicholas Christopher, Lea Michele and Aaron Tveit, is not a bland bore.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "chess-2025",
@@ -14118,7 +14084,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 79,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Andy Propst",
@@ -14128,7 +14094,7 @@
       "pullQuote": "The Broadway revival of John Kander and Fred Ebb's Chicago, may be on the verge of celebrating its 15th anniversary, but one could hardly tell the production has recently entered the upper echelon of long-running shows on Broadway. There's a crispness to the entire piece of Chicago, that belies its age.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "chicago-1996",
@@ -22943,7 +22909,7 @@
       "outletId": "broadwaynews",
       "outlet": "Broadway News",
       "assignedScore": 58,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Brittani Samuel",
@@ -22953,24 +22919,7 @@
       "pullQuote": "That teasing quality, though sometimes charming — and often, if you are a scaredy-cat, a relief from the hard-core jolts — is the giveaway that 'Grey House' should not be taken too seriously, regardless of its allusions to real-world horror of the past and present.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "grey-house-2023",
-      "outletId": "chicagotribune",
-      "outlet": "Chicago Tribune",
-      "assignedScore": 69,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Chris",
-      "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-review-grey-house-red-orchid-20230602-y2d4cp7nkbhxjcfi7p75r3nqay-story.html",
-      "publishDate": "June 1, 2023",
-      "originalRating": null,
-      "pullQuote": "“ ‘Grey House’ is trying to honor that unstinting parentage, despite the baked-in demands on a mostly young cast of kids, who give it all they’ve got. The show also has to whip up interest on a hot summer night. That’s not an easy combo, and you can see the strains it puts on the second half of the show, but much of worth gets unpacked here.",
-      "dtliThumb": "UP",
-      "bwwThumb": "Meh",
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "grey-house-2023",
@@ -24849,7 +24798,7 @@
       "outletId": "ap",
       "outlet": "Associated Press",
       "assignedScore": 81,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Mark Kennedy",
@@ -24859,7 +24808,7 @@
       "pullQuote": "They loved it in the 1700s, and they're loving it now.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "hamilton-2015",
@@ -27401,7 +27350,7 @@
       "outletId": "woman-around-town",
       "outlet": "Woman Around Town",
       "assignedScore": 82,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Alix Cohen",
@@ -27411,7 +27360,7 @@
       "pullQuote": "\"The good news is that this somewhat overstuffed production is, in fact, a rip-roaring good yarn that actually seems like a continuation...Complex relationships, especially between parent and child and between friends are paramount to the two plays. Writing is sensitive and insightful. True to Rowling, rose-colored glasses are nowhere in sight...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "harry-potter-2021",
@@ -28125,7 +28074,7 @@
       "pullQuote": "Lively choreography and powerhouse vocal performances...overcome a so-so story.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "invalid"
     },
     {
       "showId": "hells-kitchen-2024",
@@ -28592,7 +28541,7 @@
       "outletId": "ap",
       "outlet": "Associated Press",
       "assignedScore": 81,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Mark Kennedy",
@@ -28602,7 +28551,7 @@
       "pullQuote": "The immersive musical about Imelda Marcos transforms the Broadway Theatre into a disco-political fever dream that demands audience participation while never losing sight of its dark historical truths.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "here-lies-love-2023",
@@ -28888,7 +28837,7 @@
       "url": "https://www.thewrap.com/here-lies-love-broadway-review-david-byrne-musical/",
       "publishDate": "July 20, 2023",
       "originalRating": null,
-      "pullQuote": "No, “Here Lies Love” isn’t about Ferdinand or Imelda or even a bygone Philippines. It’s all about Alex Timbers.",
+      "pullQuote": "Alex Timbers' extraordinarily inventive direction of \"Here Lies Loves\" makes this musical worth seeing...",
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -30571,7 +30520,7 @@
       "url": "https://nypost.com/2024/04/26/entertainment/illinoise-review-moving-broadway-show-is-about-love-loss-and-dance/",
       "publishDate": "April 26, 2024",
       "originalRating": null,
-      "pullQuote": "And while my gut tells me the show — from New York City Ballet resident choreographer Justin Peck that’s set to the songs of Sufjan Stevens — is not really a musical per se, it is a transporting and soul-stirring experience all the same.",
+      "pullQuote": "And while my gut tells me the show from New York City Ballet resident choreographer Justin Peck that's set to the songs of Sufjan Stevens is not really a musical per se, it is a transporting and soul-stirring experience all the same.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -30803,7 +30752,7 @@
       "outletId": "usatoday",
       "outlet": "USA Today",
       "assignedScore": 82,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
@@ -30813,7 +30762,7 @@
       "pullQuote": "This gorgeous dance musical based on Sufjan Stevens' indie-folk song cycle captures the yearning spirit of the original album while expanding it into a deeply moving theatrical experience.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "illinoise-2024",
@@ -32443,7 +32392,7 @@
       "url": "https://www.theatermania.com/news/review-steel-magnolias-in-harlem-jajas-african-hair-braiding-comes-to-broadway_1716476/",
       "publishDate": "October 3, 2023",
       "originalRating": null,
-      "pullQuote": "After years of analyzing plays for their achievements and blunders, it’s rare for me to walk out of a theater with a single thought in my mind: I loved it. And yet those three words floated in my brain after Jocelyn Bioh’s new Broadway comedy Jaja’s African Hair Braiding at Manhattan Theatre Club’s Friedman Theatre.",
+      "pullQuote": "After years of analyzing plays for their achievements and blunders, it's rare for me to walk out of a theater with a single thought in my mind: I loved it. And yet those three words floated in my brain after Jocelyn Bioh's new Broadway comedy Jaja's African Hair Braiding at Manhattan Theatre Club's Friedman Theatre.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -33330,7 +33279,7 @@
       "pullQuote": "But the manner in which “Just in Time” unfolds is mercilessly predictable, so the beats rarely surprise; we feel every snap coming. For what it’s worth, Groff, Lawrence and Henningsen don’t seem to mind — they’re having a howling good time slipping into these characters’ shoes.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "just-in-time-2025",
@@ -37595,7 +37544,7 @@
       "url": "https://www.newyorktheatreguide.com/reviews/mamma-mia-broadway-review",
       "publishDate": "August 14, 2025",
       "originalRating": null,
-      "pullQuote": "But the fact that it's become such a beloved property anyway, spawning two (possibly three) movies and endless themed karaoke parties, feels like hope that art that's imperfect yet earnest — and original — can thrive even when times are tough.",
+      "pullQuote": "\"But the fact that it's become such a beloved property anyway, spawning two (possibly three) movies and endless themed karaoke parties, feels like hope that art that's imperfect yet earnest and original can thrive even when times are tough.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -37619,23 +37568,6 @@
     },
     {
       "showId": "mamma-mia-2025",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 77,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Elizabeth Vincentelli",
-      "url": "https://www.nytimes.com/2025/08/15/theater/abba-mamma-mia-broadway.html#:~:text=Despite%20being%20slightly%20downscaled%20for,of%20the%20first%20Broadway%20run.",
-      "publishDate": "August 15, 2025",
-      "originalRating": null,
-      "pullQuote": "\"The choreography is mostly stuff you could try, accident-free, in your own backyard. And the score consists entirely of songs made famous in the disco era by Abba, music that people seldom admit to having danced to, much less sung in their showers.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "mamma-mia-2025",
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 79,
@@ -37646,7 +37578,7 @@
       "url": "https://www.theatermania.com/news/review-mamma-mia-returns-to-broadway_1797300/",
       "publishDate": "August 14, 2025",
       "originalRating": null,
-      "pullQuote": "This is not a dark Brechtian take on a well-known musical, nor a queer reclamation of mainstream pop culture—but I’m not sure anyone needs that from Mamma Mia!, a show that knows what it is and consistently delivers. When confronted with such a chronically enjoyable juggernaut, one can only say, “Thank you for the music.”",
+      "pullQuote": "This is not a dark Brechtian take on a well-known musical, nor a queer reclamation of mainstream pop culturebut I'm not sure anyone needs that from Mamma Mia!, a show that knows what it is and consistently delivers. When confronted with such a chronically enjoyable juggernaut, one can only say, \"Thank you for the music.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -38123,7 +38055,7 @@
       "url": "https://www.broadwaynews.com/the-broadway-review-mary-jane-a-heart-shattering-drama-that-puts-care-at-its-core/",
       "publishDate": "April 24, 2024",
       "originalRating": null,
-      "pullQuote": "There are two sick people in Mary Jane’s home, we realize, and Herzog has coaxed us into falling in love with both of them. The realization, just like the play, is gutting.",
+      "pullQuote": "There are two sick people in Mary Jane's home, we realize, and Herzog has coaxed us into falling in love with both of them. The realization, just like the play, is gutting.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -38174,7 +38106,7 @@
       "url": "https://www.nydailynews.com/2024/04/23/broadway-review-mary-jane-rachel-mcadams-excels/",
       "publishDate": "April 23, 2024",
       "originalRating": null,
-      "pullQuote": "Amy Herzog’s beautiful play “Mary Jane” is, at its core, a study of the extraordinary lengths to which a mother will go to��care for her child. But the takeaway from time spent at the Samuel J. Friedman Theatre goes beyond even that realization. You leave after 90 minutes with a near-crushing awareness of the unfairness of life.",
+      "pullQuote": "Amy Herzog's beautiful play \"Mary Jane\" is, at its core, a study of the extraordinary lengths to which a mother will go to care for her child.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -38362,7 +38294,7 @@
       "url": "https://www.theatrely.com/post/rachel-mcadams-triumphs-in-mary-jane-review",
       "publishDate": "April 23, 2024",
       "originalRating": null,
-      "pullQuote": "Herzog weaves each of these strings into her narrative delicately, carefully piling them on without causing suffocation. And it’s Mary Jane’s dedication to an unseen peaceful future, filtered through McAdams’ touching performance, that stops it from becoming unbearable.",
+      "pullQuote": "Like the character, Mary Jane reaches the depths of dread, but with the most human of touches.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -38379,7 +38311,7 @@
       "url": "https://www.thewrap.com/mary-jane-broadway-review-rachel-mcadams/",
       "publishDate": "April 23, 2024",
       "originalRating": null,
-      "pullQuote": "Ultimately, McAdams gets her big theatrical moment, but much of the play’s power comes from Herzog’s scheme to withhold that moment. We expect Mary Jane to break down, explode, get pissed off long before she does. What sets her off is unexpected. It’s worth the wait.",
+      "pullQuote": "Ultimately, McAdams gets her big theatrical moment, but much of the play's power comes from Herzog's scheme to withhold that moment. We expect Mary Jane to break down, explode, get pissed off long before she does. What sets her off is unexpected. It's worth the wait.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -38975,7 +38907,7 @@
       "url": "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review",
       "publishDate": "November 12, 2024",
       "originalRating": null,
-      "pullQuote": "One becomes aware, throughout its lush 100 minutes, of what a humbly groundbreaking experience is unfolding onstage. This is a very special show; a tender, visionary ode to the space we’re able to create and hold for feeling, and the hope that it may continue.",
+      "pullQuote": "One becomes aware, throughout its lush 100 minutes, of what a humbly groundbreaking experience is unfolding onstage. This is a very special show; a tender, visionary ode to the space we're able to create and hold for feeling, and the hope that it may continue.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -39410,7 +39342,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 78,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Adam Hetrick",
@@ -39420,7 +39352,7 @@
       "pullQuote": "Mean Girls is a fun, frothy musical that successfully translates the beloved film to the stage while adding new depth to its characters and themes.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "mean-girls-2018",
@@ -39461,7 +39393,7 @@
       "outletId": "usatoday",
       "outlet": "USA Today",
       "assignedScore": 80,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Elysa Gardner",
@@ -39471,14 +39403,14 @@
       "pullQuote": "The musical adaptation of the 2004 film is smart, sassy and surprisingly touching",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "mean-girls-2018",
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 75,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Marilyn Stasio",
@@ -39488,7 +39420,7 @@
       "pullQuote": "The musical adaptation of the 2004 movie is a crowd-pleaser that delivers exactly what fans expect, with Tina Fey's book staying faithful to the source material while adding some contemporary updates.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "mean-girls-2018",
@@ -40941,7 +40873,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 77,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Peter Marks",
@@ -40951,7 +40883,7 @@
       "pullQuote": "The show is most successful when it focuses on Jackson's creative process and his perfectionism in the studio, with Myles Frost delivering a magnetic performance that captures the King of Pop's essence.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "mj-2022",
@@ -43320,23 +43252,6 @@
     },
     {
       "showId": "oedipus-2025",
-      "outletId": "cititour",
-      "outlet": "Cititour",
-      "assignedScore": 77,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Brian Scott Lipton",
-      "url": "https://cititour.com/NYC_Broadway/Oedipus/1340",
-      "publishDate": "November 13, 2025",
-      "originalRating": null,
-      "pullQuote": "Sure, ignorance may indeed be bliss, the truth doesn't always set you free, and, yes, love may be blind. But ending \"Oedipus\" on an upbeat flashback is the greatest tragedy of this otherwise impressive update.",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "complete"
-    },
-    {
-      "showId": "oedipus-2025",
       "outletId": "culturesauce",
       "outlet": "Culture Sauce",
       "assignedScore": 100,
@@ -43556,23 +43471,6 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "truncated"
-    },
-    {
-      "showId": "oedipus-2025",
-      "outletId": "washpost",
-      "outlet": "The Washington Post",
-      "assignedScore": 59,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Naveen Kumar",
-      "url": "https://www.washingtonpost.com/entertainment/theater/2025/11/14/oedipus-broadway-review-lesley-manville-mark-strong/",
-      "publishDate": "November 14, 2025",
-      "originalRating": null,
-      "pullQuote": "The ingenuity and precision he delivers with “Oedipus” promise more wild journeys ahead.",
-      "dtliThumb": "Up",
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "oedipus-2025",
@@ -43800,7 +43698,7 @@
       "outletId": "broadwaynews",
       "outlet": "Broadway News",
       "assignedScore": 77,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Brittani Samuel",
@@ -43810,7 +43708,7 @@
       "pullQuote": "By the play's end, we're no wiser to the qualms of the mid-19th century (though that was hardly the point), but we are relaxed by the exercise of laughing for 75 minutes in our own beleaguered world.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "invalid"
     },
     {
       "showId": "oh-mary-2024",
@@ -44038,7 +43936,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 82,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Green",
@@ -44048,7 +43946,7 @@
       "pullQuote": "CRITIC’S PICK: \"You have to admire the glee and cheek with which Escola mauls American history, drawing humor from the collision of high importance and low piffle, puncturing one while elevating the other.\"",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated",
+      "contentTier": "excerpt",
       "designation": "Critics_Pick"
     },
     {
@@ -44794,7 +44692,7 @@
       "url": "https://www.broadwaynews.com/review-once-upon-a-one-more-time-thrillingly-weds-fairy-tale-princesses-and-pop/",
       "publishDate": "June 22, 2023",
       "originalRating": null,
-      "pullQuote": "I’m not exactly sure how this creative team conjured up so much charm (perhaps, a fairy godmother really was involved) but the result is a thoroughly enjoyable, relentlessly watchable and genuinely funny good time.",
+      "pullQuote": "Spears, is a delight\" and Entertainment Weekly: \"a youthful, exuberant take on beloved tales that's more dazzling and polished than Cinderella's glass slipper. Expect to keep on dancin' long after the musical ends.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -45273,7 +45171,7 @@
       "pullQuote": "Juvenile silliness is the blood pumping through this show. It’s packed with visual gags, mocking quirks and vocal modulations. Though not the quickest way to my funny bone, it totally works for general delight-seeking Broadway audiences",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "operation-mincemeat-2025",
@@ -45508,7 +45406,7 @@
       "url": "https://www.theatermania.com/news/review-operation-mincemeat-a-hilarious-musical-that-isnt-too-british-for-broadway_1768137/",
       "publishDate": "March 20, 2025",
       "originalRating": null,
-      "pullQuote": "Naysayers thought it would be “too British” for us uncultured Yanks, but rest assured, it’s anything but. It’s a zany, high-energy crowd-pleaser with five actors juggling 87 characters and an unexpected poignancy that sneaks in between the laughs to leave you in tears.",
+      "pullQuote": "Naysayers thought it would be \"too British\" for us uncultured Yanks, but rest assured, it's anything but. It's a zany, high-energy crowd-pleaser with five actors juggling 87 characters and an unexpected poignancy that sneaks in between the laughs to leave you in tears.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -46131,7 +46029,7 @@
       "outletId": "deadline",
       "outlet": "Deadline",
       "assignedScore": 60,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Greg Evans",
@@ -46148,7 +46046,7 @@
       "outletId": "deadline",
       "outlet": "Deadline",
       "assignedScore": 82,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Pete Hammond",
@@ -46158,7 +46056,7 @@
       "pullQuote": "Michael Stuhlbarg delivers a powerhouse performance as Boris Berezovsky in this gripping political drama that feels unnervingly relevant to today's world. The production crackles with tension and intelligence.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "patriots-2024",
@@ -46427,7 +46325,7 @@
       "url": "https://www.theatrely.com/post/patriots-has-no-flag-to-raise-review",
       "publishDate": "April 22, 2024",
       "originalRating": null,
-      "pullQuote": "The problem is, dramatically, he has nowhere to go, and neither do we.",
+      "pullQuote": "Peter Morgan, like a moth to the flame of spirited stateliness, can be relied upon to provide dramatized look behind diplomatic doors in one of two modes: dignified (The Queen, The Audience, the first few seasons of The Crown) and haute-trashy (The Other Boleyn Girl, the last few seasons of The Crown).",
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -47353,23 +47251,6 @@
     },
     {
       "showId": "purlie-victorious-2023",
-      "outletId": "nysr",
-      "outlet": "New York Stage Review",
-      "assignedScore": 100,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Steven Suskin",
-      "url": "https://nystagereview.com/2023/09/27/purlie-victorious-wickedly-funny-politically-provocative-antebellum-satire/",
-      "publishDate": "September 27, 2023",
-      "originalRating": "5/5 stars",
-      "pullQuote": "As playgoers might expect, Odom has all that silver-tongued preaching down cold. One of the chief delights of the production comes from the performance of Young as Lutiebelle.",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "complete"
-    },
-    {
-      "showId": "purlie-victorious-2023",
       "outletId": "nyt-theater",
       "outlet": "New York Theater",
       "assignedScore": 82,
@@ -47397,7 +47278,7 @@
       "url": "https://www.newyorktheatreguide.com/reviews/purlie-victorious-broadway-review-leslie-odom-jr",
       "publishDate": "September 27, 2023",
       "originalRating": null,
-      "pullQuote": "Flat-out hilarious and stacked with topflight performances led by Leslie Odom, Jr. and Kara Young, Purlie Victorious is also a triumph when it comes to timing. Suffice it to say the play speaks directly to today’s racial tumult. Average Rating: 88.4% { \"@context\":\"https://schema.",
+      "pullQuote": "Flat-out hilarious and stacked with topflight performances led by Leslie Odom, Jr. and Kara Young, Purlie Victorious is also a triumph when it comes to timing. Suffice it to say the play speaks directly to today's racial tumult.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -48489,7 +48370,7 @@
       "url": "https://www.theatermania.com/news/review-ragtime-revival-is-broadway-at-its-best_1807685/",
       "publishDate": "October 16, 2025",
       "originalRating": null,
-      "pullQuote": "From the moment the chorus rises from the stage of the Theater during the opening number of Ragtime, you know you’re in for something special—a big Broadway musical with what seems like a cast of thousands singing their hearts out over swelling strings and gutsy brass.",
+      "pullQuote": "\"Rather than a slave of duty, Pirates! is the servant of too many masters: Gilbert & Sullivan, Dixieland jazz, milquetoast liberalism, and the tourism lobby New Orleans & Company, which \"kindly sponsored\" this production. The recipe is for a jambalaya of disparate flavors that come together in delicious harmony.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -48506,7 +48387,7 @@
       "url": "https://www.theatrely.com/post/a-glorious-ragtime-is-finally-back-on-broadway-review",
       "publishDate": "October 17, 2025",
       "originalRating": null,
-      "pullQuote": "One year ago, seated at City Center, I cried at both numbers and left the theater deeply shaken. If that same power hasn’t quite held, it is perhaps no fault of a broadly first-rate production. Hope is of less interest right now—it can feel like an almost irrelevant emotion.",
+      "pullQuote": "\"More than thatit is Pirates staged with wonderfully energetic aplomb by director Scott Ellis, wittily choreographed by Warren Carlyle and expertly performed by a dream ensemble.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -48594,7 +48475,7 @@
       "pullQuote": "We gossip, stitch and sweat alongside them, fully immersed in director Sergio Trujillo’s heart-expanding, joy-swollen production — yet another landmark expansion of the “Real Women” canon.",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "real-women-have-curves-2025",
@@ -48812,7 +48693,7 @@
       "url": "https://www.thedailybeast.com/review-real-women-have-curves-fires-up-a-huge-musical-showstopper/",
       "publishDate": "April 27, 2025",
       "originalRating": null,
-      "pullQuote": "The show’s vibe of joy and strength is crystallized in a final parade of Estela’s winningly glamorous creations (designed by Wilberth Gonzalez and Paloma Young), underlining again the affirming sentiment of the show’s title. Unsurprisingly, the audience rises again to applaud with delight.",
+      "pullQuote": "The show's vibe of joy and strength is crystallized in a final parade of Estela's winningly glamorous creations (designed by Wilberth Gonzalez and Paloma Young), underlining again the affirming sentiment of the show's title. Unsurprisingly, the audience rises again to applaud with delight.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -50345,7 +50226,7 @@
       "url": "https://www.broadwaynews.com/the-broadway-review-monty-pythons-spamalot-broad-hilarity-at-breakneck-speed/",
       "publishDate": "November 17, 2023",
       "originalRating": null,
-      "pullQuote": "In this new staging, director-choreographer Josh Rhodes squeezes every drop of talent out of his all-star cast of comedy heavy hitters.",
+      "pullQuote": "\"In this new staging, director-choreographer Josh Rhodes squeezes every drop of talent out of his all-star cast of comedy heavy hitters.\" -",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -50713,7 +50594,7 @@
       "outletId": "ap",
       "outlet": "Associated Press",
       "assignedScore": 90,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Mark Kennedy",
@@ -50723,7 +50604,7 @@
       "pullQuote": "The play, which opened Friday at the Golden Theatre, is a hypernaturalistic meditation on the thrill, and also the danger, of collaborating on art — the compromises, the egos and the joys. It’s an ode not just to the music business but perhaps to the theater world, too.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "stereophonic-2024",
@@ -51054,7 +50935,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 78,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Green",
@@ -51064,7 +50945,7 @@
       "pullQuote": "Adjaye-Brenyah's play is a thoughtful exploration of identity and belonging that resonates with authenticity and emotional depth.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "stereophonic-2024",
@@ -51139,7 +51020,7 @@
       "outletId": "usatoday",
       "outlet": "USA Today",
       "assignedScore": 89,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -51149,7 +51030,7 @@
       "pullQuote": "This ambitious musical about a rock band recording an album in the 1970s is a triumph of theatrical storytelling that captures the creative process in all its messy, exhilarating glory.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "stereophonic-2024",
@@ -51885,23 +51766,6 @@
     },
     {
       "showId": "suffs-2024",
-      "outletId": "thewrap",
-      "outlet": "TheWrap",
-      "assignedScore": 79,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Unknown",
-      "url": "https://www.thewrap.com/suffs-broadway-review-shaina-taub/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "It's a history lesson that can read pretty dry, but even with its new and friendlier opening, \"Suffs\" is anything but and much of the delight comes from seeing how Taub, who wrote the book and the songs, manipulates the material to make it fun.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "suffs-2024",
       "outletId": "timeout",
       "outlet": "Time Out New York",
       "assignedScore": 60,
@@ -52561,7 +52425,7 @@
       "pullQuote": "Audience members seemed eager to yield to Rustin’s shticks and howl along, but in reality there’s more delight in looking at “The Cottage” than laughing along to it.",
       "dtliThumb": "Down",
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "the-cottage-2023",
@@ -54829,7 +54693,7 @@
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 75,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
@@ -54839,7 +54703,7 @@
       "pullQuote": "The musical adaptation of Nicholas Sparks' romance novel is a handsomely mounted production that hits all the expected emotional beats, even if it doesn't always transcend its source material's more saccharine qualities.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-notebook-2024",
@@ -55703,7 +55567,7 @@
       "url": "https://www.chicagotribune.com/2024/09/12/review-the-roommate-on-broadway-has-stars-much-bigger-than-this-story/",
       "publishDate": "September 12, 2024",
       "originalRating": null,
-      "pullQuote": "I seriously doubt many audience members will regret their attendance at “The Roommate.” You just don’t see performances like the one delivered by Farrow, now 79, very often.",
+      "pullQuote": ": \"I seriously doubt many audience members will regret their attendance at 'The Roommate' You just don't see performances like the one delivered by Farrow, now 79, very often.\"",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -56750,7 +56614,7 @@
       "outletId": "broadwaynews",
       "outlet": "Broadway News",
       "assignedScore": 78,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Brittani Samuel",
@@ -56760,7 +56624,7 @@
       "pullQuote": "If the first 10 minutes of a show are supposed to rope you in, “The Who’s Tommy” dares you to need more than 10 seconds. Director Des McAnuff’s revival staging of the electric rock opera he co-wrote explodes onto the Nederlander Theatre stage in a paroxysm of booming sound, blinding light and crackling projections",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-whos-tommy-2024",
@@ -57029,7 +56893,7 @@
       "url": "https://www.theatermania.com/news/review-the-whos-tommy-is-back-to-introduce-a-new-generation-to-the-best-rock-opera-ever_1735790/",
       "publishDate": "March 28, 2024",
       "originalRating": null,
-      "pullQuote": "This new version adds another layer, exploring how our overreliance on technology can turn us into mindless sheep. It had me from start to finish, and it’s an amazing journey I’d love to take again.",
+      "pullQuote": ": \"This new version adds another layer, exploring how our overreliance on technology can turn us into mindless sheep. It had me from start to finish, and it's an amazing journey I'd love to take again.\"",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -57998,7 +57862,7 @@
       "url": "https://culturesauce.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
       "publishDate": "November 20, 2025",
       "originalRating": null,
-      "pullQuote": "Expect this to become a standard for theater kids everywhere — along with much of the rest of Jim Barne and Kit Buchan's score.",
+      "pullQuote": "Every now and then, an enchanting new musical classic comes along out of nowhere. Two Strangers Carry a Cake Across New York, which opened Thursday at Broadway's Longacre Theatre, is a modern musical romance that has the feel of an old-fashioned movie but also the look and sound of a story that could only take place in 2025.",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -58195,7 +58059,7 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 89,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Laura Collins-Hughes",
@@ -58205,7 +58069,7 @@
       "pullQuote": "Critic’s Pick: \"The effervescent new musical comedy...is the most charmingly simple show on Broadway right now — a stellar debut for its authors... and the actor Sam Tutty.\"",
       "dtliThumb": "Up",
       "bwwThumb": null,
-      "contentTier": "complete",
+      "contentTier": "excerpt",
       "designation": "Critics_Pick"
     },
     {
@@ -58298,7 +58162,7 @@
       "outletId": "ap",
       "outlet": "Associated Press",
       "assignedScore": 75,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Mark Kennedy",
@@ -58308,7 +58172,7 @@
       "pullQuote": "Steve Carell brings a weary, melancholic presence to Chekhov's drama, finding both comedy and pathos in his portrayal of the titular character.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "uncle-vanya-2024",
@@ -58628,7 +58492,7 @@
       "url": "https://www.theatrely.com/post/steve-carell-is-a-sad-clown-uncle-vanya-in-a-new-broadway-revival-review",
       "publishDate": "April 24, 2024",
       "originalRating": null,
-      "pullQuote": "What was the guiding light for Schreck and Neugebauer in tackling Vanya? Based on what’s now on stage at the Beaumont, it’s difficult to say. This revival is competent, rarely boring and often funny, but there is no sense of a larger vision. This staging just kind of sits there, without any clear reason to exist.",
+      "pullQuote": "This revival is competent, rarely boring, and often funny",
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -59642,7 +59506,7 @@
       "outletId": "the-journal-news-lohud",
       "outlet": "The Journal News (LoHud)",
       "assignedScore": 89,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Jacques Le Sourd",
@@ -59652,7 +59516,7 @@
       "pullQuote": "\"To begin with, it looks like a million dollars - or, to be more precise, like every dime of the $14 million that has been spent on it. Dare we say it? Here's a Broadway show where the ticket price doesn't seem inflated. You will actually feel that you got $100 worth of entertainment - and then some...",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "excerpt"
     },
     {
       "showId": "wicked-2003",
