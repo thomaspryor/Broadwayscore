@@ -137,7 +137,7 @@
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: $11.5M cap, recouped Nov 2019 (~30 weeks). Received $10M SVOG grant. Standard profit-sharing, no unusual structures."
+        "notes": "GPT Deep Research: $11.5M cap, recouped Nov 2019 (~30 weeks). Received $10M SVOG grant. SEC EDGAR also found 'Young Are At the Gates LLC' ($19.5M, $19M capitalized) and 'Hadestown West End LLC' ($4.8M, $3.65M capitalized) — likely combined touring/international entities separate from original Broadway cap."
       }
     },
     "mj": {
@@ -402,7 +402,7 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Closed without recouping despite 7 Tony nominations. Spending not apparent in modest sets. Strong reviews couldn't overcome weak ticket sales.",
+      "notes": "Closed without recouping despite 7 Tony nominations. Spending not apparent in modest sets. Strong reviews couldn't overcome weak ticket sales. SEC EDGAR note: 'Benzini Bros LLC' (CIK 0001946191) filed Mar 2023 with $8M max offering (min $4M) — likely initial development entity. Full production cap per NYT remains $25M (possibly raised through additional entities). Peter Schneider / Big Red Barn Productions. c/o Foresight Theatrical.",
       "deepResearch": {
         "verifiedFields": [
           "recouped",
@@ -410,7 +410,7 @@
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: $25M cap. Needed $1.4M/week to recoup but hovered ~$1M. $3M NY tax credit. Producers acknowledged won't recoup."
+        "notes": "SEC EDGAR: 'Benzini Bros LLC' (development entity) shows $8M max offering — doesn't match $25M production cap. Multiple entities likely used. NYT figure of $25M retained as total production budget."
       }
     },
     "suffs": {
@@ -422,7 +422,7 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Won Tony for Best Original Score but closed Jan 2025 without recouping. Shaina Taub won two Tonys. Weekly cost ~$1.2-1.3M. Needed ~$1.4M/week to recoup in a year but averaged ~$1.0M. Hillary Clinton co-producer. 30+ cast.",
+      "notes": "Won Tony for Best Original Score but closed Jan 2025 without recouping. Shaina Taub won two Tonys. Weekly cost ~$1.2-1.3M. Needed ~$1.4M/week to recoup in a year but averaged ~$1.0M. Hillary Clinton co-producer. 30+ cast. SEC note: 'Wing Women On Broadway LLC' (Seaview Productions, CIK 0001822566) filed May 2022 with $6.75M max offering ($6,075,000 capitalized) — likely one of multiple funding entities. $19M total cap from NYT/SEC may include additional entities.",
       "costMethodology": "industry-estimate",
       "deepResearch": {
         "verifiedFields": [
@@ -430,7 +430,7 @@
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: ~$1.2-1.3M weekly. $19M cap. Closed Jan 2025 without recouping despite 2 Tonys. 30+ cast. Hillary Clinton co-producer."
+        "notes": "SEC EDGAR: 'Wing Women On Broadway LLC' (Seaview) shows $6.75M offering ($6,075,000 capitalized). Discrepancy vs $19M total cap — likely multiple funding entities. NYT/SEC combined figure retained."
       }
     },
     "the-notebook": {
@@ -480,24 +480,25 @@
     },
     "boop": {
       "designation": "Flop",
-      "capitalization": 26000000,
-      "capitalizationSource": "NY Times",
+      "capitalization": 29000000,
+      "capitalizationSource": "SEC Form D/A filing (Broadwayboop LLC, CIK 0001968496, amended Jul 9, 2025). Max increased from $26M to $29M, fully capitalized.",
       "weeklyRunningCost": 817000,
       "costMethodology": "industry-estimate",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Big-budget extravaganza capitalized at $26M. Closed July 2025 after missing Tony momentum. Fixed weekly expenses of $817K. Jasmine Amy Rogers praised but couldn't save production.",
+      "notes": "Big-budget extravaganza capitalized at $29M (SEC filing confirms, up from earlier $26M NYT report). Closed July 2025 after missing Tony momentum. Fixed weekly expenses of $817K. Jasmine Amy Rogers praised but couldn't save production. William Haber / Ostar Enterprises. c/o Foresight Theatrical.",
       "deepResearch": {
         "verifiedFields": [
+          "capitalization",
           "weeklyRunningCost",
           "recouped",
           "designation"
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: ~$800K+ weekly cost vs only ~$500K gross. Closed July 2025 after 112 performances. Cap discrepancy: research says $18-20M vs current $26M (NYT)."
+        "notes": "SEC EDGAR: Broadwayboop LLC amended offering from $26M to $29M, fully capitalized. Previous $26M NYT figure was the original pre-amendment amount."
       }
     },
     "the-roommate": {
@@ -520,13 +521,13 @@
     },
     "our-town": {
       "designation": "Easy Winner",
-      "capitalization": 5500000,
-      "capitalizationSource": "Industry estimate (GPT Deep Research)",
+      "capitalization": 5975000,
+      "capitalizationSource": "SEC Form D/A filing (Grover's Corners Broadway LLC, CIK 0002020520, amended Jan 15, 2025). $5,976,500 capitalized. Range: $5M min, $6.5M max.",
       "weeklyRunningCost": 500000,
       "recouped": true,
       "recoupedDate": "2025-01",
       "recoupedSource": "Playbill grosses; Deadline (hints)",
-      "notes": "Jim Parsons-led revival at Barrymore Theatre. $5.5M capitalization. Played to ~95% capacity, grossed $1.084M in final week. Recouped during limited run ending Jan 19, 2025. Previous $20M figure was likely a data error.",
+      "notes": "Jim Parsons-led revival at Barrymore Theatre. $5,976,500 capitalization (SEC Form D, 'Grover's Corners Broadway LLC'). Played to ~95% capacity, grossed $1.084M in final week. Recouped during limited run ending Jan 19, 2025. Previous $20M figure was likely a data error.",
       "costMethodology": "industry-estimate",
       "deepResearch": {
         "verifiedFields": [
@@ -538,7 +539,7 @@
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: MAJOR CORRECTION -- cap $20M->$5.5M, recouped false->true. Jim Parsons revival, ~95% capacity, recouped by closing Jan 2025."
+        "notes": "SEC EDGAR: 'Grover's Corners Broadway LLC' D/A filing shows $5,976,500 capitalized (range $5M-$6.5M). Previous GPT Deep Research estimated $5.5M."
       }
     },
     "death-becomes-her": {
@@ -629,29 +630,33 @@
       }
     },
     "stranger-things": {
-      "designation": "Windfall",
-      "capitalization": 20000000,
-      "capitalizationSource": "Deep Research: $20M+ (revised from earlier $25M estimates)",
+      "designation": "TBD",
+      "capitalization": 29000000,
+      "capitalizationSource": "SEC Form D filing (Now A Warning LLC, CIK 0002040672, filed Oct 11, 2024). Range: $29M min, $31.5M max. c/o 321 Theatrical. Previous $20M estimate from Deep Research was too low.",
       "weeklyRunningCost": 1000000,
       "costMethodology": "industry-estimate",
-      "recouped": true,
-      "recoupedDate": "2025-12",
-      "recoupedWeeks": 57,
-      "recoupedSource": "Deep Research / Industry analysis (Dec 2025 recoupment)",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedWeeks": null,
+      "recoupedSource": null,
       "isEstimate": {
         "weeklyRunningCost": true
       },
+      "estimatedRecoupmentPct": [
+        70,
+        85
+      ],
+      "estimatedRecoupmentSource": "Estimated: ~$24M cumulative profit (57 weeks × ~$425K/week avg) toward $29M SEC cap",
+      "estimatedRecoupmentDate": "2026-02-03",
       "deepResearch": {
         "verifiedFields": [
-          "capitalization",
-          "recouped",
-          "recoupedDate"
+          "capitalization"
         ],
-        "verifiedDate": "2026-01-28",
+        "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "Deep Research revised capitalization from $25M to $20M and confirmed Dec 2025 recoupment."
+        "notes": "SEC EDGAR: 'Now A Warning LLC' (CIK 0002040672) filed Oct 2024. Range: $29M min, $31.5M max. c/o 321 Theatrical. Listed as Comcast/NBCUniversal/DreamWorks subsidiary. Previous Deep Research estimated $20M — too low. Earlier recoupment claim (Dec 2025) was based on incorrect $20M cap and is now unverified."
       },
-      "notes": "Netflix/Sonia Friedman production. Won 4 Tony Awards 2025. RECOUPED December 2025 - grossed $57M+ in 40 weeks with $1M/week costs = $17M+ profit toward $20M cap. Set Marquis Theatre record of $2.51M during Christmas week 2025. Season 5 finale boosted ticket sales significantly."
+      "notes": "Netflix/Sonia Friedman production. Won 4 Tony Awards 2025. SEC Form D shows $29M-$31.5M capitalization ('Now A Warning LLC' — largest Broadway capitalization found in EDGAR). Previous $20M estimate and Dec 2025 recoupment claim were based on incorrect cap figure. At $29M, show has likely NOT recouped (~$24M cumulative profit). Set Marquis Theatre record of $2.51M during Christmas week 2025. Season 5 finale boosted ticket sales significantly."
     },
     "buena-vista-social-club": {
       "designation": "TBD",
@@ -784,7 +789,7 @@
     "chess": {
       "designation": "TBD",
       "capitalization": 15000000,
-      "capitalizationSource": "BroadwayWorld forum (insider, Sep 2025)",
+      "capitalizationSource": "SEC Form D/A filing (Chess Champion LLC, CIK 0002074648, amended Jan 5, 2026). Fully capitalized at $15M. Shubert Organization connection. c/o TT Partners.",
       "weeklyRunningCost": 900000,
       "weeklyRunningCostSource": "Reddit Grosses Analysis / BroadwayWorld forum ('weekly nut just shy of $1 million')",
       "costMethodology": "reddit-standard",
@@ -810,7 +815,7 @@
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "manual",
-        "notes": "GPT Deep Research: BWW forum insider quotes $15M cap (superseding earlier $12.5M blog figure). Weekly nut \"just shy of $1 million\". Eligible for $3M NY tax credit."
+        "notes": "SEC EDGAR: 'Chess Champion LLC' D/A filing confirms $15M fully capitalized (superseding BWW forum source). Weekly nut \"just shy of $1 million\". Eligible for $3M NY tax credit."
       }
     },
     "ragtime": {
