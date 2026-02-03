@@ -15,6 +15,7 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 | `collect-review-texts.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline after commit |
 | `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
+| `adjudicate-review-queue.yml` | ✅ | ❌ | Daily 5 AM UTC, triggers rebuild after commit |
 | `scrape-nysr.yml` | ✅ | ❌ | Weekly NYSR via WordPress API, relies on daily rebuild |
 | `scrape-new-aggregators.yml` | ✅ | ❌ | Weekly Playbill Verdict + NYC Theatre, relies on daily rebuild |
 
@@ -139,6 +140,23 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Options:** `show`, `shows` (comma-separated), `limit` (default 50)
 - **Technical:** Uses ScrapingBee with premium proxy, generic titles use Broadway-qualified searches, 2-hour timeout with `if: always()` commit
 - **Script:** `scripts/scrape-reddit-sentiment.js`
+
+## `adjudicate-review-queue.yml`
+- **Runs:** Daily at 5 AM UTC (1 hour after rebuild generates queue), or manually
+- **Does:** Auto-resolves flagged reviews where LLM scores disagree with aggregator thumbs using Claude Sonnet
+- **Script:** `scripts/adjudicate-review-queue.js`
+- **Requires:** ANTHROPIC_API_KEY
+- **Manual trigger:** `gh workflow run "Adjudicate Review Queue"` (supports `dry_run` option)
+- **Logic:**
+  - Reads `data/audit/needs-human-review.json` (produced by `rebuild-all-reviews.js`)
+  - Early exit if queue is empty (no Node setup, no API calls)
+  - For each flagged review: loads source file, calls Claude Sonnet with full text + context
+  - High/medium confidence → writes `humanReviewScore` to source file
+  - Low confidence → increments `adjudicationAttempts`, skips
+  - After 3 uncertain attempts → auto-accepts LLM original score (permanent queue removal)
+  - API errors don't consume adjudication attempts (transient failures)
+  - Commits changed files, triggers `Rebuild Reviews Data` workflow
+- **Parallel-safe:** Only commits `review-texts/`, uses push retry loop
 
 ## `update-critic-consensus.yml`
 - **Runs:** Every Sunday at 2 AM UTC
