@@ -1,70 +1,82 @@
 {
-  "runDate": "2026-02-03T01:02:12.249Z",
+  "runDate": "2026-02-03T01:04:10.512Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "spamalot-2023",
+    "showFilter": "prayer-for-the-french-republic-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
+    "processed": 6,
     "failed": 2,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "75.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "browserbase": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archive": 0
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
-    "tier1_5Attempts": 2,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
     "tier2Attempts": 3,
-    "tier2Success": 2,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
+    "tier3Success": 2,
+    "tier4Attempts": 8,
+    "tier4Success": 5,
     "totalFailed": 2,
     "scrapingBeeCreditsUsed": 20,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 2.4,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.4,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "spamalot-2023/theatermania--jesse-green.json"
+    "prayer-for-the-french-republic-2024/vulture--helen-shaw.json",
+    "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
+    "prayer-for-the-french-republic-2024/deadline--greg-evans.json",
+    "prayer-for-the-french-republic-2024/theatermania--jesse-green.json",
+    "prayer-for-the-french-republic-2024/wsj--charles-isherwood.json",
+    "prayer-for-the-french-republic-2024/washpost--naveen-kumar.json"
   ],
   "failed": [
-    "spamalot-2023/timeout--adam-feldman.json",
-    "spamalot-2023/wsj--charles-isherwood.json"
+    "prayer-for-the-french-republic-2024/timeout--adam-feldman.json",
+    "prayer-for-the-french-republic-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
-    "playwright": [],
-    "browserbase": [],
-    "scrapingbee": [
-      "spamalot-2023/theatermania--jesse-green.json"
+    "playwright": [
+      "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json"
     ],
-    "brightdata": [],
-    "archive": []
+    "browserbase": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "prayer-for-the-french-republic-2024/theatermania--jesse-green.json"
+    ],
+    "archive": [
+      "prayer-for-the-french-republic-2024/vulture--helen-shaw.json",
+      "prayer-for-the-french-republic-2024/deadline--greg-evans.json",
+      "prayer-for-the-french-republic-2024/wsj--charles-isherwood.json",
+      "prayer-for-the-french-republic-2024/washpost--naveen-kumar.json"
+    ]
   },
   "failuresByOutlet": {
-    "The Wall Street Journal": {
+    "Talkin' Broadway": {
       "count": 1,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
