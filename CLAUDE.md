@@ -630,6 +630,13 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 
 **Browserbase routing fix (Feb 2026):** Paywalled sites returning 404 used to trigger a fast-path that skipped Browserbase entirely. Fixed to allow paywalled 404s to fall through to Browserbase when login credentials exist, since 404 may be due to anti-bot blocking rather than a dead URL. Also: `archiveFirstSites` config routes paywalled domains to Archive.org first (Tier 0), which is correct for historical reviews but means Browserbase only fires for non-archived paywalled content.
 
+**Declarative tier chain architecture (Feb 2026):** `fetchReviewText()` uses a declarative tier chain loop instead of sequential try/catch blocks. Key components:
+- `buildTierContext()` — computes URL properties (isKnownBlocked, isArchiveFirst, hasPaywallCreds) and mutable state signals
+- `buildTierChain()` — returns 7 tier descriptors, each with `shouldRun()` predicates and `onFailure()` hooks
+- `checkContentQuality()` — quality gate using `isGarbageContent()` that rejects paywall pages, newsletter overlays, ad-blocker walls. When a tier returns HTTP 200 with garbage content, the loop falls through to the next tier instead of accepting it.
+- `withTimeout()` — wraps tier execution with configurable timeout (Browserbase gets 120s)
+- Best-of-garbage fallback — tracks the longest garbage response in case all tiers fail, uses it as last resort
+
 **Low success rates are normal** — many URLs are dead (404), behind aggressive anti-bot, or on defunct sites. The nightly cron (`collect-review-texts.yml`, 2 AM UTC) processes up to 100 reviews per run with Browserbase enabled by default and retry_failed=true.
 
 **Collect per-show:** `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_reviews=0`
@@ -710,19 +717,19 @@ Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
 
 **Re-scraping queue:** ~188 free-site reviews and ~136 paywalled reviews still need fullText. Bulk collection runs dispatched for all 58 affected shows (free sites). The nightly `collect-review-texts.yml` cron (2 AM UTC) processes up to 100 reviews per run with Browserbase enabled. Paywalled sites use subscription credentials from GitHub Secrets (NYT, Vulture, WSJ, WaPo).
 
-**Generic/placeholder URLs (24 issues from audit):**
-- **Lighting & Sound America:** 18 reviews all point to `lightingandsoundamerica.com/news/story.asp` (generic, not show-specific). Need proper review URLs or URL discovery.
-- **TalkingBroadway:** 2 reviews point to `talkinbroadway.com/page.php` (generic). Need show-specific URLs.
-- **Deadline roundup:** 8 shows share one roundup URL (`deadline.com/feature/broadway-show-reviews-spring-2024-1235866317`). These are legitimate (multi-show roundup article by Greg Evans) and already flagged `isRoundupArticle: true`.
+**Known audit flags (17 issues, all verified):** These are flagged by the audit but are legitimate:
+- **9 long-running show re-reviews:** URL year mismatches for Book of Mormon (2011), Chicago (1996), Lion King (1997), Wicked (2003) — critics reviewing years after opening. Legitimate.
+- **4 Chris Jones cross-outlet URLs:** 3 nydailynews reviews have chicagotribune.com URLs, 1 washpost has journaltimes.com. Chris Jones is a freelancer; syndication is expected.
+- **1 Deadline roundup:** 8 shows share one roundup URL. Legitimate multi-show article, flagged `isRoundupArticle: true`.
+- **2 fullText matches excerpt:** purlie-victorious-2023 and the-roommate-2024 — partial scrapes marked truncated for rescrape.
+- **1 web-search null URL:** lion-king washpost legacy entry.
 
-**Chris Jones cross-outlet URLs (5 domain mismatches):** 3 reviews attributed to nydailynews have chicagotribune.com URLs. This is correct behavior — Chris Jones is a freelancer who publishes in both. The nydailynews attribution comes from aggregator data. Not a bug, but the audit flags it.
+**Schmigadoon TV series pattern (FIXED Feb 2026):** 14 reviews in `schmigadoon-2026/` were for the 2021 Apple TV+ series, not the 2026 Broadway musical. All entered via `scrape-playbill-verdict.js` which lacked streaming/TV title filters and URL year checks. Fixed: all 14 flagged `wrongShow: true`, fullText nulled. Prevention: playbill-verdict now has title keyword filter + URL year check (see wrong-production guards above).
 
-**Wrong-production URL candidates (13):** Reviews where URL year differs >3 years from show opening. Many are legitimate (later reviews of long-running shows like Wicked, Lion King). Requires manual verification case-by-case.
-
-**2 reviews in human review queue:** `data/audit/needs-human-review.json` — down from 23 after full audit in Feb 2026.
+**L&SA and TalkingBroadway URLs are NOT generic:** Earlier audit flagged these as cross-show duplicate URLs, but they use query parameters for routing (`?ID=`, `?page=&id=`). The audit's `normalizeUrl()` was stripping query params, causing false positives. Fixed by preserving query params (only strips tracking params like `utm_*`).
 
 **27 cross-outlet duplicate-text reviews:** Files with `duplicateTextOf` field where the same fullText appears at a different outlet (e.g., Chris Jones at both Chicago Tribune and NY Daily News). These are legitimate — the same freelance critic published in multiple outlets.
 
-**Content quality audit:** Run `node scripts/audit-content-quality.js` after any bulk data changes. Current baseline: 24 issues (13 URL year mismatches, 5 domain mismatches, 3 cross-show duplicate URLs, 2 fullText≈excerpt, 1 null URL). Zero critic name mismatches.
+**Content quality audit:** Run `node scripts/audit-content-quality.js` after any bulk data changes. Current baseline: 17 issues (9 URL year mismatches for long-running shows, 4 domain mismatches from freelancer syndication, 1 cross-show roundup, 2 fullText≈excerpt, 1 null URL). Zero critic name mismatches.
 
 **Test infrastructure (ALL GREEN Feb 2026):** CI fully passing. Both `ensemble.test.mjs` and `trade-press-scraper.test.mjs` use Node test runner with `createRequire` for CJS module loading. Text quality audit uses `contentTier` fallback. Review-text validator treats unknown outlets and garbage critic names as warnings (not errors). Symlink double-counting fixed in all validation scripts.
