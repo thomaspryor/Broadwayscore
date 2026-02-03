@@ -17,7 +17,7 @@
     "successRate": "35.3%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "browserbase": 0,
     "scrapingbee": 1,
     "brightdata": 2,
@@ -93,6 +93,13 @@
       "domain": "thedailybeast.com",
       "hasCredentials": false,
       "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
       "isKnownBlocked": true
     },
     "Talkin' Broadway": {
