@@ -651,9 +651,11 @@ async function scrapePlaybillVerdict() {
   for (const article of matchedArticles) {
     const archivePath = path.join(archiveDir, `${article.showId}.html`);
 
-    // Check if already archived
+    // Use cached archive if fresh (<14 days), otherwise re-fetch
     let html;
-    if (fs.existsSync(archivePath)) {
+    const archiveFresh = fs.existsSync(archivePath) &&
+      (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
+    if (archiveFresh) {
       html = fs.readFileSync(archivePath, 'utf8');
       console.log(`  [CACHE] ${article.showId}: Using archived HTML`);
     } else {
@@ -725,7 +727,10 @@ async function scrapePlaybillVerdict() {
 
   const showsNeedingSearch = recentShows.filter(s => {
     const showId = s.slug || s.id;
-    return unmatchedShows.has(showId) && !fs.existsSync(path.join(archiveDir, `${showId}.html`));
+    const ap = path.join(archiveDir, `${showId}.html`);
+    if (!unmatchedShows.has(showId)) return false;
+    if (!fs.existsSync(ap)) return true;
+    return (Date.now() - fs.statSync(ap).mtimeMs) / (1000 * 60 * 60 * 24) >= 14;
   });
 
   console.log(`Shows needing Google search: ${showsNeedingSearch.length}`);

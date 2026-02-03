@@ -152,6 +152,15 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Technical:** Uses ScrapingBee with premium proxy, generic titles use Broadway-qualified searches, 2-hour timeout with `if: always()` commit
 - **Script:** `scripts/scrape-reddit-sentiment.js`
 
+## `update-mezzanine.yml`
+- **Runs:** Weekly (Sundays 1pm UTC, after Show Score), on previews → open transition, or manually
+- **Does:** Calls Mezzanine (theaterdiary.com) Parse API to fetch all Broadway production ratings, matches to shows.json, updates `data/audience-buzz.json`
+- **Options:** `show`, `shows` (comma-separated or "missing"), `limit`, `dry_run`
+- **Technical:** Direct Parse Server REST API calls, no web scraping needed. Fetches all productions with ratings, filters to NYC/Broadway, matches via normalized title + year. 15-minute timeout.
+- **Script:** `scripts/scrape-mezzanine-audience.js`
+- **Requires:** `MEZZANINE_APP_ID`, `MEZZANINE_SESSION_TOKEN`
+- **Note:** Session token may expire. To refresh, intercept Mezzanine iOS app traffic via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.
+
 ## `adjudicate-review-queue.yml`
 - **Runs:** Daily at 5 AM UTC (1 hour after rebuild generates queue), or manually
 - **Does:** Auto-resolves flagged reviews where LLM scores disagree with aggregator thumbs using Claude Sonnet

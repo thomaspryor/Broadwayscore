@@ -410,8 +410,10 @@ async function scrapeNYCTheatreRoundups() {
     const showId = show.slug || show.id;
     const archivePath = path.join(archiveDir, `${showId}.html`);
 
-    // Skip if already archived
-    if (fs.existsSync(archivePath)) {
+    // Use cached archive if fresh (<14 days), otherwise re-fetch
+    const archiveFresh = fs.existsSync(archivePath) &&
+      (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
+    if (archiveFresh) {
       const html = fs.readFileSync(archivePath, 'utf8');
       console.log(`[CACHE] ${showId}: Using archived HTML`);
 
