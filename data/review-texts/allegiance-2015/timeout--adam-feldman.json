@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Allegiance is a well-intentioned musical about Japanese-American internment during World War II, but good intentions don't automatically make good theater.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Allegiance is a well-intentioned musical about Japanese-American internment during World War II, but good intentions don't automatically make good theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)"
+  "contentTierReason": "Short text (20 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "good intentions don't automatically make good theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic acknowledges the show's good intentions but implies it falls short theatrically. The phrasing suggests neither strong recommendation nor complete dismissal - a classic mixed verdict. | GPT-4o: The critic's original rating of 40 aligns with the negative bucket, and the review text indicates that despite the show's good intentions, it fails to deliver as effective theater. | Gemini: The review explicitly states that good intentions do not make good theater, implying that the musical falls short despite its noble subject matter. The critic's rating of 40 further supports a negative classification. | Kimi: The critic's explicit rating of 40 and the dismissive framing—acknowledging the show's intentions while declaring they don't translate to quality—indicate a negative verdict, though the excerpt is very brief.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:41:28.311Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

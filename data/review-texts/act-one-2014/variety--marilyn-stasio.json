@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Tony Shalhoub gives a masterly performance as Moss Hart in James Lapine's adaptation of the playwright's beloved memoir about his collaboration with George S. Kaufman.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -62,5 +62,60 @@
     "Show title not found in text"
   ],
   "wordCount": 849,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Delicious star turns from Tony Shalhoub and Santino Fontana can't save this verbose, unwieldy adaptation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising the lead performances extensively, the critic finds the adaptation fundamentally flawed - 'verbose, unwieldy, overacted' with pacing issues and structural problems. The opening line establishes that even strong performances 'can't save' the production. | GPT-4o: The review criticizes the production as verbose and unwieldy, with too many narrators and a sluggish pace. While it praises individual performances, the overall tone is negative, focusing on structural and pacing issues. | Gemini: The review praises the performances of Shalhoub and Fontana but criticizes the adaptation as verbose and unwieldy. This indicates a mixed opinion, with positive aspects overshadowed by significant flaws. | Kimi: While the critic praises the lead performances as 'delicious' and acknowledges one 'wonderful moment' in Act Two, the overall verdict is that the verbose, unwieldy adaptation and lumbering production cannot be saved by its cast, with consistent criticism of the direction, set design, and pacing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:01:53.245Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

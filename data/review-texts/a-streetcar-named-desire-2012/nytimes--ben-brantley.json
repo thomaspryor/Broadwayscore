@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival, starring Blair Underwood as Stanley and Nicole Ari Parker as Blanche, never finds the savage poetry that makes Tennessee Williams's 1947 masterpiece so devastating.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival, starring Blair Underwood as Stanley and Nicole Ari Parker as Blanche, never finds the savage poetry that makes Tennessee Williams's 1947 masterpiece so devastating.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "never finds the savage poetry that makes Tennessee Williams's 1947 masterpiece so devastating",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment stating the production fails to achieve what makes the play great. No redeeming qualities mentioned. | GPT-4o: The review indicates a failure to capture the essential qualities of the play, suggesting a negative assessment without recommending it. | Gemini: The review explicitly states that the revival 'never finds the savage poetry' of the original, indicating a failure to capture the essence of the play. This suggests a negative assessment. | Kimi: The critic states that the production fails to achieve the 'savage poetry' central to Williams's work, indicating a fundamental artistic failure, though the text is brief and may be truncated.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:43:40.839Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

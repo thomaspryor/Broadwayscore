@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite handsome design elements and a score with pleasing melodies, this ambitious musical adaptation of Dickens' classic novel suffers from a bloated book that fails to dramatize effectively.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite handsome design elements and a score with pleasing melodies, this ambitious musical adaptation of Dickens' classic novel suffers from a bloated book that fails to dramatize effectively.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this ambitious musical adaptation of Dickens' classic novel suffers from a bloated book that fails to dramatize effectively",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: While acknowledging positive design and score elements, the critic identifies fundamental flaws in the book that undermine the production's effectiveness, indicating a negative recommendation. | GPT-4o: The review acknowledges some positive aspects like design and melodies but ultimately criticizes the show for its ineffective dramatization and bloated book, leading to a negative recommendation. | Gemini: The review acknowledges positive aspects like design and melodies, but ultimately concludes that the book is a major flaw, leading to a negative recommendation. | Kimi: The review acknowledges pleasing melodies and handsome design elements but emphasizes that the show suffers from fundamental flaws in its bloated book and ineffective dramatization, creating a balanced but unenthusiastic assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:47:47.957Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

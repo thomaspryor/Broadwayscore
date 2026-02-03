@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cooper has created a surreal masterpiece that's unlike anything else on Broadway — a show that's simultaneously hilarious and heartbreaking, absurd and profound.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cooper has created a surreal masterpiece that's unlike anything else on Broadway — a show that's simultaneously hilarious and heartbreaking, absurd and profound.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cooper has created a surreal masterpiece that's unlike anything else on Broadway",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlative 'masterpiece' and declares it 'unlike anything else on Broadway' with enthusiastic praise for being both 'hilarious and heartbreaking, absurd and profound.' | GPT-4o: The review uses superlative language ('masterpiece', 'unlike anything else') and describes the show as both 'hilarious and heartbreaking', indicating a strong, enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"masterpiece\", \"hilarious and heartbreaking, absurd and profound\", indicating a rave review. | Kimi: The critic explicitly labels the show a 'masterpiece' and uses superlatives emphasizing its uniqueness and emotional power, indicating an unreserved, enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:11:10.743Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

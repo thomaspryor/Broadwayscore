@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lisa D'Amour's new play is a messy, sprawling work that captures the beautiful chaos of life on the margins with authentic detail and genuine compassion.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Lisa D'Amour's new play is a messy, sprawling work that captures the beautiful chaos of life on the margins with authentic detail and genuine compassion.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a messy, sprawling work that captures the beautiful chaos of life on the margins with authentic detail and genuine compassion",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60/100 rating directly indicates Mixed territory. 'Messy, sprawling' suggests structural flaws, but 'beautiful chaos,' 'authentic detail' and 'genuine compassion' show appreciation for the work's qualities. | GPT-4o: The review describes the play as 'messy' and 'sprawling', suggesting a lack of coherence, but also praises its 'authentic detail' and 'genuine compassion'. The original rating of 60 aligns with a mixed verdict. | Gemini: The review uses the word 'messy' but also praises the play's authenticity and compassion, suggesting a mixed reaction. The original rating of 60 aligns with the 'Mixed' bucket. | Kimi: The critic's own rating of 60 falls squarely in the Mixed range (55-69). While the review praises the play's compassion and authentic detail, describing it as 'messy' and 'sprawling' suggests structural issues that prevent a full recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:20:29.885Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

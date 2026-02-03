@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's commitment to the music is total, and the performers—led by the magnetic Derrick Baskin as Otis Williams—deliver the songs with soul-stirring power.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's commitment to the music is total, and the performers—led by the magnetic Derrick Baskin as Otis Williams—deliver the songs with soul-stirring power.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The performers deliver the songs with soul-stirring power.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this firmly in Mixed territory. The excerpt praises performances but appears truncated - the full review likely contains reservations that balance the praise. | GPT-4o: The critic's original rating of 60 suggests a mixed review. The quote praises the music and performances but does not provide a strong recommendation for the show overall. | Gemini: The review focuses on the strength of the music and performances, but doesn't offer a clear recommendation. Given the 60 rating, it's classified as mixed. | Kimi: The critic's explicit rating of 60 places this firmly in the Mixed bucket (55-69). While the excerpt praises the musical performances highly, the moderate numerical score indicates significant reservations about other elements of the production not visible in this brief snippet.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:17:39.892Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

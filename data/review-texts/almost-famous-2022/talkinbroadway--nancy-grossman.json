@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Almost Famous is a coming-of-age story about a 15-year-old boy who gets the chance to write for Rolling Stone magazine and goes on tour with a rock band in the 1970s. The musical captures the spirit of the original film while adding its own theatrical magic.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (46 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (46 words)",
+  "rejectedAt": "2026-02-03T12:47:13.999Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a plot summary with no critical evaluation, opinions, or recommendation about the musical's quality or whether audiences should see it.; openai: The text is a plot summary with no evaluative content or critical assessment of the show.; gemini: This is a plot summary with no evaluative content or critical opinion.",
+  "promptVersion": "5.2.0"
 }

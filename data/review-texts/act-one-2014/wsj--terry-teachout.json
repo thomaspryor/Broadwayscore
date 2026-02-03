@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lincoln Center Theater's production of 'Act One' is a touching tribute to Hart's memory that succeeds in bringing his memoir vividly to life on stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Lincoln Center Theater's production of 'Act One' is a touching tribute to Hart's memory that succeeds in bringing his memoir vividly to life on stage.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lincoln Center Theater's production of 'Act One' is a touching tribute to Hart's memory that succeeds in bringing his memoir vividly to life on stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment with 'succeeds' and 'touching tribute', but limited detail and no strong superlatives suggest solid but not enthusiastic recommendation. | GPT-4o: The review describes the production as a 'touching tribute' and 'vividly' brings the memoir to life, indicating a positive recommendation. | Gemini: The review uses positive language such as \"touching tribute\" and \"vividly to life\" indicating a positive recommendation. | Kimi: The critic clearly recommends the production, praising it as a 'touching tribute' that successfully adapts the memoir, though the brevity of the excerpt limits certainty about the full strength of the endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:03:19.066Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

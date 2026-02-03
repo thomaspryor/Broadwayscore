@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Allegiance is a show that demands to be seen and heard, even if it doesn't always succeed in making its case with the theatrical sophistication its subject deserves.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Allegiance is a show that demands to be seen and heard, even if it doesn't always succeed in making its case with the theatrical sophistication its subject deserves.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Allegiance is a show that demands to be seen and heard, even if it doesn't always succeed in making its case with the theatrical sophistication its subject deserves.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic gives a qualified recommendation ('demands to be seen and heard') but acknowledges significant theatrical shortcomings, placing this in mixed territory with a lean toward the positive side. | GPT-4o: The review recommends seeing the show despite noting some shortcomings in execution. The phrase 'demands to be seen and heard' indicates a positive recommendation, but the acknowledgment of lacking sophistication suggests reservations. | Gemini: The review states that the show \"demands to be seen and heard\", which indicates a positive recommendation. However, it also mentions that the show doesn't always succeed, suggesting reservations. | Kimi: The critic explicitly recommends the show ('demands to be seen') but qualifies this with significant reservations about its lack of theatrical sophistication, fitting the 'solid recommendation with reservations' profile.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:40:36.531Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

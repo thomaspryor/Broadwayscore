@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical about the Temptations is slick and entertaining, but it doesn't dig deep enough into the group's story or the social context that shaped their music.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new musical about the Temptations is slick and entertaining, but it doesn't dig deep enough into the group's story or the social context that shaped their music.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new musical about the Temptations is slick and entertaining, but it doesn't dig deep enough into the group's story or the social context that shaped their music.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Clear mixed verdict - acknowledges entertainment value ('slick and entertaining') but criticizes lack of depth in both storytelling and social context, suggesting qualified interest rather than recommendation. | GPT-4o: The review acknowledges the show as 'slick and entertaining' but criticizes it for not exploring the group's story or social context deeply, indicating a mixed assessment. | Gemini: The review states that the musical is \"slick and entertaining\", which indicates a positive experience, but the critic also notes that it lacks depth. This suggests a recommendation with reservations. | Kimi: The review acknowledges the show is 'slick and entertaining' (positive) but criticizes it for not digging deep enough into the story and social context (significant reservation). The brief length and balanced pros/cons place it in the Mixed bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:18:19.305Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

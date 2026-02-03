@@ -64,5 +64,11 @@
   "extractedByline": "Ray Bennett",
   "expectedCritic": "David Rooney",
   "wordCount": 505,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-03T11:42:27.259Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production of 'A Streetcar Named Desire' at London's Donmar Warehouse, not the current Broadway run.; kimi: This review covers the 2009 London production at the Donmar Warehouse starring Rachel Weisz and Elliot Cowan, not the current Broadway production. The text explicitly states the venue is 'London's Donmar Warehouse' and the cast differs entirely from the aggregator context referencing Blair Underwood and Nicole Ari Parker.",
+  "promptVersion": "5.2.0"
 }

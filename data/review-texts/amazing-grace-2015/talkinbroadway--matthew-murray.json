@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Amazing Grace is a show that wants desperately to be inspiring, but it's so busy trying to check all the boxes of what a Broadway musical should be that it forgets to actually inspire.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Amazing Grace is a show that wants desperately to be inspiring, but it's so busy trying to check all the boxes of what a Broadway musical should be that it forgets to actually inspire.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Amazing Grace is a show that wants desperately to be inspiring, but it's so busy trying to check all the boxes of what a Broadway musical should be that it forgets to actually inspire.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict stating the show fails at its core purpose of being inspiring, with criticism of formulaic approach over substance. | GPT-4o: The review criticizes the show for failing to inspire, suggesting it does not succeed in its intentions. The tone is clearly negative, indicating a lack of recommendation. | Gemini: The review states that the show 'forgets to actually inspire,' indicating a negative assessment and a lack of recommendation. | Kimi: The critic delivers a concise negative verdict stating the show mechanically adheres to Broadway conventions but fundamentally fails at its core goal of being inspiring. The brevity of the text suggests this is an excerpt, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:53:19.313Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 43,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

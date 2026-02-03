@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Almost Famous feels like a show that's been focus-grouped to death, its rough edges sanded away until what remains is a pleasant but bloodless approximation of the film's spirit.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Almost Famous feels like a show that's been focus-grouped to death, its rough edges sanded away until what remains is a pleasant but bloodless approximation of the film's spirit.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Almost Famous feels like a show that's been focus-grouped to death, its rough edges sanded away until what remains is a pleasant but bloodless approximation of the film's spirit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Review criticizes the show as over-workshopped and lacking the original's spirit, calling it 'pleasant but bloodless' - neither enthusiastic nor completely dismissive. | GPT-4o: The review describes the show as 'pleasant but bloodless,' indicating a lack of enthusiasm and a negative overall impression. | Gemini: The review explicitly states the show is a \"bloodless approximation\" of the film, indicating a negative assessment and lack of recommendation. | Kimi: The critic describes the production as 'focus-grouped to death' and 'bloodless,' indicating a sanitized, spiritless adaptation that fails to capture the original film's energy, despite being 'pleasant.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:50:30.861Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

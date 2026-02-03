@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Cameron Crowe's beloved film captures the spirit of rock journalism and coming-of-age, but struggles to find its own theatrical identity beyond nostalgia.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of Cameron Crowe's beloved film captures the spirit of rock journalism and coming-of-age, but struggles to find its own theatrical identity beyond nostalgia.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "captures the spirit of rock journalism and coming-of-age, but struggles to find its own theatrical identity beyond nostalgia",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges positive elements (captures the spirit) but identifies a significant flaw (struggles with theatrical identity, relies on nostalgia). This balanced critique with no clear recommendation places it solidly in Mixed territory. | GPT-4o: The review acknowledges the show's ability to capture the spirit of the original film but notes a struggle in finding a unique theatrical identity, indicating a mixed reception. | Gemini: The review acknowledges the show's strengths in capturing the film's spirit but also points out its struggle to establish its own identity, indicating a mixed assessment. | Kimi: This brief excerpt offers balanced criticism, praising the show for capturing the source material's spirit while criticizing its reliance on nostalgia and failure to establish a distinct theatrical vision. With under 150 words, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:46:40.704Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

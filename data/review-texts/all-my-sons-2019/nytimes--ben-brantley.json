@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival, directed by Jack O'Brien, doesn't quite achieve the crushing inevitability that makes for great productions of this play. But it does provide a showcase for two superb performances that deepen as the evening progresses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival, directed by Jack O'Brien, doesn't quite achieve the crushing inevitability that makes for great productions of this play. But it does provide a showcase for two superb performances that deepen as the evening progresses.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (36 words)"
+  "contentTierReason": "Short text (36 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival doesn't quite achieve the crushing inevitability that makes for great productions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the production falls short of greatness but praises two superb performances. Mixed verdict with both positive and negative elements. | GPT-4o: The review acknowledges strong performances but notes the production lacks the impact of great versions. This suggests a mixed assessment, with positive elements but not a strong recommendation. | Gemini: The review acknowledges that the production doesn't reach greatness, but highlights the superb performances, indicating a positive but not rave recommendation. | Kimi: The review states the production fails to achieve the greatness of past iterations while praising the lead performances as superb, resulting in a balanced assessment that neither endorses nor rejects the show overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:27:49.680Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

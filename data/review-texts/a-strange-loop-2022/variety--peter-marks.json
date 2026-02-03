@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Michael R. Jackson's Pulitzer Prize-winning musical is a daring, deeply personal work that pushes the boundaries of what Broadway can be, even if it sometimes feels more like an extended therapy session than a fully realized theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -59,5 +59,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 904,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The most furiously entertaining show on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise calling it 'phenomenal,' 'the most furiously entertaining show on Broadway,' with 'not a single false note.' Despite minor reservations about lyrics getting lost, the overall assessment is rapturous. | GPT-4o: The review is filled with superlatives and praises the show as both 'furiously entertaining' and a 'phenomenal feat.' The critic highlights its humor, emotional depth, and cultural significance, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using superlatives like \"phenomenal feat\" and praising the show as \"the most furiously entertaining show on Broadway.\" The critic highlights the show's honesty, humor, and emotional depth, making it a must-see. | Kimi: The review offers unqualified praise with superlatives like 'phenomenal feat,' 'most furiously entertaining,' and 'does not strike a single false note,' while only noting minor technical issues that don't diminish the overall enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:40:36.462Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

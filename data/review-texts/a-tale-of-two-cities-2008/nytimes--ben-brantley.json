@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This bloated, relentlessly busy musical adaptation of the Dickens novel is a textbook example of how not to translate a literary classic to the stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 21,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This bloated, relentlessly busy musical adaptation of the Dickens novel is a textbook example of how not to translate a literary classic to the stage.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 21,
+    "confidence": "medium",
+    "range": {
+      "low": 16,
+      "high": 26
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This bloated, relentlessly busy musical adaptation of the Dickens novel is a textbook example of how not to translate a literary classic to the stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating opening line calls the show a 'textbook example of how not to' adapt literature, using harsh descriptors like 'bloated' and 'relentlessly busy' with no redeeming qualities mentioned. | GPT-4o: The review is strongly negative, describing the musical as 'bloated' and 'relentlessly busy,' and suggests it fails as an adaptation. The language indicates a clear pan. | Gemini: The review uses strong negative language, calling the musical adaptation \"bloated\" and \"relentlessly busy\" and a \"textbook example of how not to translate a literary classic to the stage,\" indicating a pan. | Kimi: The critic uses harsh language ('bloated,' 'relentlessly busy') and condemns the show as a 'textbook example of how not to' adapt the material, indicating a deeply negative assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:45:47.704Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 22,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 25,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

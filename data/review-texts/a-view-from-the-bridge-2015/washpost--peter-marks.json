@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Van Hove's approach to Miller's Brooklyn tragedy is muscular and unflinching, stripping away theatrical artifice to expose the raw emotional core of Eddie Carbone's self-destructive obsession.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Van Hove's approach to Miller's Brooklyn tragedy is muscular and unflinching, stripping away theatrical artifice to expose the raw emotional core of Eddie Carbone's self-destructive obsession.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Van Hove's approach to Miller's Brooklyn tragedy is muscular and unflinching, stripping away theatrical artifice to expose the raw emotional core of Eddie Carbone's self-destructive obsession.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single sentence praising the director's approach as 'muscular and unflinching' with positive descriptors, but extremely limited text makes full assessment difficult. | GPT-4o: The review praises the production's approach as 'muscular and unflinching,' highlighting the exposure of the 'raw emotional core,' indicating a strong, enthusiastic recommendation. | Gemini: The review uses positive language such as \"muscular and unflinching\" and highlights the exposure of the \"raw emotional core,\" suggesting a worthwhile experience, but not a rave. | Kimi: The critic employs distinctly positive descriptors ('muscular,' 'unflinching') to praise Van Hove's directorial vision, valuing the stripped-down aesthetic. However, the text is a brief excerpt lacking a final verdict or explicit recommendation, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:54:55.193Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

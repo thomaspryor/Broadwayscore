@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical has all the right moves, even if the story sometimes feels formulaic. The performances are stellar, particularly the quintet of actors who embody the Temptations with remarkable vocal prowess and synchronized choreography.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical has all the right moves, even if the story sometimes feels formulaic. The performances are stellar, particularly the quintet of actors who embody the Temptations with remarkable vocal prowess and synchronized choreography.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The performances are stellar, particularly the quintet of actors who embody the Temptations with remarkable vocal prowess and synchronized choreography.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic acknowledges formulaic story as a flaw but praises stellar performances and production values. The positive elements outweigh the reservation. | GPT-4o: The review praises the performances as 'stellar' and highlights the vocal and choreographic skills, indicating a positive recommendation. The mention of a formulaic story suggests some reservations, but the overall tone is positive. | Gemini: The review is generally positive, highlighting stellar performances, but notes the story feels formulaic, indicating a reservation. This places it in the positive bucket with a score reflecting the reservation. | Kimi: The critic offers strong praise for the performances ('stellar', 'remarkable') and choreography ('all the right moves'), but tempers enthusiasm with a reservation about the formulaic story, indicating a solid but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:18:36.997Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

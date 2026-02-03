@@ -62,5 +62,11 @@
     "Show title not found in text"
   ],
   "wordCount": 597,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-03T11:44:25.839Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a review of a BBC/PBS television adaptation of Great Expectations, not a Broadway show.; openai: The review is about a TV adaptation of 'Great Expectations', not a Broadway production.; kimi: This is a review of a 2011 BBC/PBS television miniseries adaptation of 'Great Expectations' (starring Gillian Anderson and Douglas Booth), not a Broadway theatrical production. The text explicitly references TV broadcast schedules, Masterpiece Theatre, and comparisons to film adaptations.",
+  "promptVersion": "5.2.0"
 }

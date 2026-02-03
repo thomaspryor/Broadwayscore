@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ivo van Hove's stripped-down production of Arthur Miller's 1955 tragedy transforms the Lyceum Theatre into a boxing ring where the audience becomes complicit in watching Eddie Carbone's moral destruction.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -59,5 +59,59 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 710,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show, anchored by a towering performance from Mark Strong, is both visually gorgeous and an emotional wipeout.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'magnificent production,' 'towering performance,' 'electrifying,' and 'superb.' No meaningful reservations expressed. | Gemini: The review uses strong positive language such as \"magnificent production\", \"towering performance\", \"visually gorgeous\", and \"emotional wipeout\". It is an enthusiastic recommendation. | Kimi: The review is filled with superlatives like 'magnificent,' 'towering,' and 'electrifying,' offering unqualified praise for the production, direction, and performances with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:54:25.355Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

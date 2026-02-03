@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Simon Stephens' adaptation of Strindberg's naturalistic masterpiece transplants the action from 1888 Sweden to 1945 England, but the shift in period and place does little to refresh this overfamiliar material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -59,5 +59,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 874,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sienna Miller is out of her depth, making her dance of power and death an unaffecting tragedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The review is consistently negative throughout, criticizing the lead performance as 'out of her depth,' calling the production 'enervated,' and describing performances as having 'hollow' words. While acknowledging some technical elements like lighting, the overall verdict clearly discourages attendance. | GPT-4o: The review criticizes the central performance as unaffecting and the production as enervated, with the themes overstated and lacking coherence. While there are mentions of some effective elements, the overall tone is negative, focusing on the production's shortcomings. | Gemini: The review is largely negative, focusing on Sienna Miller's performance and the production's overall lack of impact. While Jonny Lee Miller receives some praise, the overall assessment is that the production falls short. | Kimi: The critic pans Sienna Miller's central performance as 'out of her depth' and 'artificial,' deems the production 'enervated,' and finds the overall tragedy 'unaffecting' and 'hollow,' despite acknowledging handsome design elements and Jonny Lee Miller's commanding turn.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:10:54.383Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 44,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The five-man vocal group's rise and fall is told with exceptional singing, dancing and enough sequins to blind a small city.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The five-man vocal group's rise and fall is told with exceptional singing, dancing and enough sequins to blind a small city.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The five-man vocal group's rise and fall is told with exceptional singing, dancing and enough sequins to blind a small city.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single sentence excerpt with clear praise for performances ('exceptional singing, dancing') and colorful positive imagery, but extremely limited text makes full assessment difficult. | GPT-4o: The review highlights 'exceptional singing, dancing' and a visually impressive production. The tone is positive, suggesting a recommendation to see the show. | Gemini: The review uses the word \"exceptional\" to describe the singing and dancing, which indicates a positive recommendation. | Kimi: The critic uses the strong evaluative term 'exceptional' for both singing and dancing, indicating solid enthusiasm for the production values, though the extreme brevity prevents a higher confidence assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:16:10.202Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jordan E. Cooper's 'Ain't No Mo'' is a wild, uneven but undeniably vital piece of theater that tackles racism and Black identity with biting humor and righteous anger.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jordan E. Cooper's 'Ain't No Mo'' is a wild, uneven but undeniably vital piece of theater that tackles racism and Black identity with biting humor and righteous anger.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "undeniably vital piece of theater that tackles racism and Black identity with biting humor and righteous anger",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic calls it 'undeniably vital' with 'biting humor and righteous anger,' which are positive qualities. Despite acknowledging it's 'uneven,' the overall assessment is clearly favorable. | GPT-4o: The review describes the show as 'wild' and 'uneven' but also 'undeniably vital,' indicating a mix of strengths and weaknesses. The tone suggests a mixed review with some positive elements. | Gemini: The review uses the terms \"uneven\" and \"vital,\" indicating a mixed assessment. The critic acknowledges both flaws and strengths, leading to a score in the mixed range. | Kimi: The reviewer acknowledges the show is 'uneven' but describes it as 'undeniably vital' with 'biting humor and righteous anger,' indicating a solid recommendation with reservations. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:14:17.151Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cranston's towering performance as the 36th president is a master class in political cunning, emotional volatility and physical transformation that makes this biographical drama essential theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cranston's towering performance as the 36th president is a master class in political cunning, emotional volatility and physical transformation that makes this biographical drama essential theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cranston's towering performance as the 36th president is a master class in political cunning, emotional volatility and physical transformation that makes this biographical drama essential theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: The critic uses superlative language calling the performance a 'master class' and explicitly declares the show 'essential theater' - a clear must-see recommendation. | GPT-4o: The review uses superlative language ('towering performance', 'master class', 'essential theater') indicating a strong recommendation to see the show. | Gemini: The review uses strong positive language such as \"towering performance\", \"master class\", and \"essential theater\", indicating a rave review. | Kimi: The critic deploys superlative language ('essential theater', 'master class', 'towering') to deliver an unqualified endorsement of the production based on Cranston's performance, with no caveats or reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:32:46.590Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jeremy Irons and Lesley Manville bring emotional gravity to Arthur Miller's drama, but the production feels overly cautious in its approach to the material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -61,5 +61,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 768,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It still packs a wallop all its own, especially in this wonderfully cast, honestly staged and beautifully presented production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout for performances ('stellar cast', 'stunning performance'), direction, and production values. While acknowledging the play can feel mechanical, the critic finds this revival compelling and relevant, with consistent positive language like 'blistering', 'wonderfully cast', and 'enthralling'. | GPT-4o: The review is filled with superlatives and praises the production's cast, staging, and relevance. It describes the performances as 'stunning' and 'enthralling,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the cast, staging, and overall presentation of the play. The critic uses strong language like \"stellar cast\" and \"stunning performance\" to convey their approval. | Kimi: The critic delivers high praise for the performances (calling Bening 'stunning' and the cast 'stellar'), direction, and staging, using words like 'blistering' and 'enthralling.' While acknowledging the play's mechanical plotting, the verdict is strongly positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:30:08.004Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

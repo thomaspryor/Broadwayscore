@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Tony Shalhoub delivers a masterful performance that captures both the humor and pathos of Moss Hart's journey from struggling playwright to Broadway success.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
     "Show title not found in text"
   ],
   "wordCount": 1151,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tony Shalhoub delivers a masterful performance that captures both the humor and pathos of Moss Hart's journey from struggling playwright to Broadway success.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance as 'masterful' suggests positive recommendation, but limited text warrants low confidence and upper-positive range scoring. | GPT-4o: The excerpt praises Tony Shalhoub's performance as 'masterful,' indicating a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises Tony Shalhoub's performance as masterful. Given the single excerpt and positive tone, I'm scoring it as positive, but with low confidence due to the limited information. | Kimi: Single excerpt offers strong praise for Shalhoub's performance as 'masterful' but provides no overall verdict on the production; scored at upper end of Positive per guidance for clearly positive excerpts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:59:30.665Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

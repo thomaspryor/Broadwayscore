@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Amazing Grace is a well-intentioned musical that tells an important story, but it suffers from a bland score and uninspired staging that fails to match the power of its subject matter.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Amazing Grace is a well-intentioned musical that tells an important story, but it suffers from a bland score and uninspired staging that fails to match the power of its subject matter.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "suffers from a bland score and uninspired staging that fails to match the power of its subject matter",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite acknowledging good intentions and important subject matter, the critic finds fundamental flaws in the score and staging that undermine the production. Clear negative verdict. | GPT-4o: The review acknowledges the musical's good intentions but criticizes the score and staging as bland and uninspired, leading to a negative overall assessment. | Gemini: The review acknowledges the good intentions and important story but criticizes the score and staging, resulting in a mixed assessment. | Kimi: While acknowledging the show is well-intentioned with an important story, the critic ultimately delivers a negative verdict, citing a bland score and uninspired staging that fails to deliver on the material's potential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:54:07.838Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play's wild energy and Jordan E. Cooper's committed performances make for an evening that's both hilarious and deeply unsettling, a comedy that doesn't let you forget the pain behind the punchlines.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -43,5 +43,60 @@
     "Show title not found in text"
   ],
   "wordCount": 1036,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a delight to have Jordan E. Cooper kick down the door of Broadway in heels and storm onstage with something as raucous as Ain't No Mo'.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic clearly celebrates Cooper's bold theatrical vision and praises the 'incredibly agile' ensemble, calling the show a 'delight' and emphasizing its importance for Broadway. Despite noting some structural issues with sketch endings, the overall tone is enthusiastic recommendation. | GPT-4o: The review is filled with enthusiastic praise for the show's boldness, creativity, and impact, highlighting its successful transition to Broadway and its cultural significance. The critic's tone is highly positive, with no significant reservations. | Gemini: The review is generally positive, highlighting the show's boldness and satire, although it mentions some issues with pacing and sketch endings. The overall tone suggests a recommendation with reservations. | Kimi: The review is overwhelmingly enthusiastic about Cooper's bold, bawdy satire and the 'incredibly agile' ensemble, praising the direction, design, and central performance as 'high camp and deeply felt.' While noting minor structural issues with sketch endings, the critic frames these as growing pains of a vital new voice, ending on a poetic note about the show's 'gleaming' achievement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:15:40.541Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

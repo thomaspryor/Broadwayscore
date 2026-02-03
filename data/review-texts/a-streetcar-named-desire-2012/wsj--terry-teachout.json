@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Blair Underwood brings a welcome dignity to Stanley Kowalski, though he lacks the animal magnetism that makes the character so dangerously seductive.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Blair Underwood brings a welcome dignity to Stanley Kowalski, though he lacks the animal magnetism that makes the character so dangerously seductive.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Blair Underwood brings a welcome dignity to Stanley Kowalski, though he lacks the animal magnetism that makes the character so dangerously seductive.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a brief excerpt focusing only on one performance aspect. The critic gives qualified praise ('welcome dignity') but notes a significant flaw ('lacks the animal magnetism'). However, this seems to be truncated text from a larger review, so the overall verdict may not be represented. | Gemini: The review acknowledges a positive aspect (dignity) but also points out a significant shortcoming (lack of animal magnetism), resulting in a mixed assessment. | Kimi: The critic offers qualified praise for the lead performance, acknowledging dignity while noting a critical deficiency in the character's essential magnetism. As an excerpt, the overall recommendation remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:45:13.342Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

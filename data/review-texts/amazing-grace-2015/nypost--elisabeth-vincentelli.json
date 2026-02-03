@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Amazing Grace is an amazing bore. The new Broadway musical about John Newton, the 18th-century slave trader turned abolitionist who penned the beloved hymn, is as stiff and lifeless as a corpse.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 18,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Amazing Grace is an amazing bore. The new Broadway musical about John Newton, the 18th-century slave trader turned abolitionist who penned the beloved hymn, is as stiff and lifeless as a corpse.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 18,
+    "confidence": "high",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Amazing Grace is an amazing bore.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Opens with a devastating pan ('amazing bore') and compares the show to a corpse. No redeeming qualities mentioned, clear rejection. | GPT-4o: The review uses strong negative language ('amazing bore', 'stiff and lifeless as a corpse') indicating a strongly negative assessment with no redeeming qualities. | Gemini: The review is extremely negative, calling the musical \"stiff and lifeless as a corpse.\" This indicates a strong pan. | Kimi: The critic delivers an unambiguous pan using harsh metaphors ('stiff and lifeless as a corpse') with no redeeming qualities mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:52:09.460Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 20,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

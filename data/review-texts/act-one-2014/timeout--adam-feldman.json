@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Act One is an affectionate, if uneven, tribute to Hart's talent and his friendship with George S. Kaufman. The play captures Hart's wit and ambition, but sometimes feels more like a dramatized biography than a fully realized theatrical experience.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Act One is an affectionate, if uneven, tribute to Hart's talent and his friendship with George S. Kaufman. The play captures Hart's wit and ambition, but sometimes feels more like a dramatized biography than a fully realized theatrical experience.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (39 words)"
+  "contentTierReason": "Short text (39 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play captures Hart's wit and ambition, but sometimes feels more like a dramatized biography than a fully realized theatrical experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating aligns with Mixed bucket (55-69). Review acknowledges positive elements (affectionate tribute, captures Hart's wit) but criticizes the execution as uneven and not fully theatrical. | GPT-4o: The review describes the play as 'affectionate' but 'uneven', and notes it feels more like a biography than a theatrical experience. The original rating of 60 aligns with a mixed review. | Gemini: The review is mixed, praising the tribute to Hart's talent but noting its unevenness and feeling like a dramatized biography rather than a fully realized theatrical experience. The original rating of 60 aligns with the Mixed bucket. | Kimi: The review offers qualified praise, calling the show an 'affectionate, if uneven' tribute that captures wit but feels more like biography than fully realized theater. The critic's own 60 rating confirms a middle-of-the-road mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:01:03.106Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

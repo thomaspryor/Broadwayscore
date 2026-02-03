@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, inspired by Takei's own childhood experience in the camps, is an earnest if overstuffed effort that succeeds more as a history lesson than as compelling theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, inspired by Takei's own childhood experience in the camps, is an earnest if overstuffed effort that succeeds more as a history lesson than as compelling theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "succeeds more as a history lesson than as compelling theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show's earnest intentions and educational value but explicitly states it fails as 'compelling theater.' This is a balanced but ultimately lukewarm assessment. | GPT-4o: The review describes the musical as 'earnest if overstuffed' and more successful as a history lesson than theater, indicating a mixed assessment without a clear recommendation. | Gemini: The review states that the show is \"earnest\" but \"overstuffed\" and succeeds more as a history lesson than as compelling theater, indicating a mixed assessment. | Kimi: The review offers qualified praise for the show's educational merit and earnest intent, but fundamentally criticizes its theatrical execution as 'overstuffed' and failing to be 'compelling theater,' resulting in a lukewarm, non-committal assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:44:24.867Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

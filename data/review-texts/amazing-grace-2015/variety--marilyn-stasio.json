@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This well-meaning musical about the composer of the beloved hymn 'Amazing Grace' has its heart in the right place, but it lacks the dramatic punch to make its antislavery message resonate with contemporary audiences.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20250427031659",
   "archiveOrgUrl": "http://web.archive.org/web/20250427031659/https://variety.com/2015/legit/reviews/amazing-grace-review-broadway-musical-1201538916/",
   "wordCount": 778,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's an audience out there for 'Amazing Grace,' flawed as it is, but they may not get to see this religious-uplift musical if the $16 million show's marketing machine doesn't reach its target audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Stasio acknowledges the show is 'flawed' but recognizes it has merit for specific audiences. She praises individual performances (Cooper, Michelle) and design elements while criticizing the book's focus and musical gaps. No clear recommendation either way. | GPT-4o: The review highlights significant flaws in the musical, such as a lackluster score and uninteresting main character, while praising some performances. The overall tone suggests the show is not recommended for general audiences. | Gemini: The review acknowledges flaws but suggests a potential audience, leaning towards a mixed recommendation. It highlights strong performances but criticizes the book and score. | Kimi: While praising the design elements and supporting performances as 'splendid' and 'marvelous,' the critic finds the score 'overblown' and problematic, the hero 'whiny' and uninteresting, and the show 'flawed' overall. The review explicitly warns general audiences will find it 'tough sledding,' limiting its appeal to specific faith-based demographics.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:56:50.756Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

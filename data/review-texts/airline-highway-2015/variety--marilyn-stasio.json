@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Lisa D'Amour's 'Airline Highway' is a sprawling, messy, big-hearted play about the misfits and outcasts who populate a seedy New Orleans motel, and it's performed with such fierce commitment by this ensemble cast that you can't help but be moved by their collective humanity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -61,5 +61,60 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 773,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's performed with such fierce commitment by this ensemble cast that you can't help but be moved by their collective humanity",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Acknowledges the play is 'sprawling, messy' but praises the 'fierce commitment' of performances and emotional impact. The phrase 'can't help but be moved' indicates strong recommendation despite structural flaws. | GPT-4o: The excerpt praises the play's emotional impact and the ensemble's performance, suggesting a strong positive reaction. Given the single excerpt warning, the score is placed in the upper range of Positive. | Gemini: The review excerpt is highly positive, using terms like \"big-hearted\" and praising the \"fierce commitment\" of the cast. Given the single excerpt and positive tone, I'm placing it in the upper range of the Positive bucket. | Kimi: Despite acknowledging the play is 'sprawling' and 'messy,' the critic emphasizes the 'fierce commitment' of the cast and the emotional impact ('can't help but be moved'), indicating a clear recommendation based on the performances and humanity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:21:31.855Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

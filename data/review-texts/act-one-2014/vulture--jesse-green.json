@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The problem with Act One is that it's trying to be both a biographical play and a valentine to the theater, and it succeeds better as the latter than the former.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
     "Show title not found in text"
   ],
   "wordCount": 1001,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I smiled through most of it. But it's a love letter written in disappearing ink.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Green finds the production charming but ultimately disappointing - too mild for fans, too credulous for skeptics. He praises individual elements (Shalhoub's performance, Martin's moment) but criticizes the overall structure as undramatic and repetitive, with no emotional payoff. | GPT-4o: The review expresses disappointment with the production, noting it is 'too mild' and 'too credulous,' with charm being its main attribute. While there are moments of praise, the overall tone suggests a lack of strong recommendation. | Gemini: The review acknowledges some positive aspects, like charm and live music, but ultimately finds the production too mild and lacking in emotional payoff. It's a mixed assessment with reservations. | Kimi: While the critic acknowledges the show's charm and some strong performances (particularly Shalhoub and Martin), he finds the production formally repetitive, dramatically shallow, and lacking the emotional payoff or complexity the material demands, calling it a 'love letter written in disappearing ink.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:02:43.988Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

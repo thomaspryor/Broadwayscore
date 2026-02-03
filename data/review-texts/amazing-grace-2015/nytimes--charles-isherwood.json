@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical tells the story of John Newton, the 18th-century English sailor who wrote the hymn, in a production that is both earnest and rousing.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (25 words)",
   "previousUrl": "https://www.nytimes.com/2015/07/17/theater/review-amazing-grace-on-broadway-hits-the-right-notes.html",
   "urlDiscoveredAt": "2026-02-03T08:36:49.333Z",
@@ -40,5 +40,10 @@
   "archiveOrgTimestamp": "20250716101837",
   "archiveOrgUrl": "http://web.archive.org/web/20250716101837/https://www.nytimes.com/2015/07/17/theater/review-amazing-grace-the-story-of-a-slave-traders-moral-awakening.html",
   "wordCount": 307,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-03T12:52:41.267Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text is truncated and ends with a technical error message about retrieving article content and enabling JavaScript, making it impossible to determine the critic's final verdict.; openai: The text includes navigation instructions and a request to enable JavaScript, indicating it is not a complete review.",
+  "promptVersion": "5.2.0"
 }

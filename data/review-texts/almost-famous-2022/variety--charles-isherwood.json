@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical adaptation of Cameron Crowe's beloved 2000 film about a teenage rock journalist gets lost in translation on its way to Broadway, despite a committed cast and some effective musical moments.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -59,5 +59,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 954,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's all entertaining enough — and no doubt a particular draw for the nostalgic baby-boomer-plus crowd — but there's nothing extraordinary in the transformation to the stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds the show 'entertaining enough' with 'pleasures to be found' but repeatedly emphasizes it's pedestrian, workmanlike, and misses theatrical opportunities. Mixed recommendation without strong endorsement. | GPT-4o: The review acknowledges the show's entertainment value and appeal to fans of the film but criticizes it for lacking originality and missing theatrical opportunities, leading to a mixed verdict. | Gemini: The review is generally positive, noting the show is \"entertaining enough\" and that \"there are pleasures to be found.\" However, it also points out missed theatrical opportunities and that it's a \"by-the-number live version\", indicating reservations. | Kimi: Isherwood describes the adaptation as 'pedestrian' and 'workmanlike' with 'missed theatrical opportunities,' but acknowledges it is 'entertaining enough' with specific 'pleasures to be found' for fans of the original film.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:49:25.328Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 66,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

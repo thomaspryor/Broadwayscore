@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This brilliant musical about making a musical is both deeply personal and universally resonant, a work of rare honesty and artistic courage that transforms private pain into shared understanding.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This brilliant musical about making a musical is both deeply personal and universally resonant, a work of rare honesty and artistic courage that transforms private pain into shared understanding.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This brilliant musical about making a musical is both deeply personal and universally resonant, a work of rare honesty and artistic courage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with superlatives ('brilliant', 'rare', 'artistic courage') and emotional impact language that signals a must-see recommendation. | GPT-4o: The review uses strong positive language ('brilliant', 'rare honesty', 'artistic courage') and suggests a transformative experience, indicating a rave recommendation. | Gemini: The review uses strong positive language such as \"brilliant,\" \"rare honesty,\" and \"artistic courage,\" indicating a rave review. | Kimi: The critic employs superlatives including 'brilliant' and 'rare honesty,' offering unqualified praise for the show's artistic courage and emotional resonance with no reservations mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T11:42:08.919Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

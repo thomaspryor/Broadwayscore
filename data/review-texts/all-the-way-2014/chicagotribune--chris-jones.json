@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bryan Cranston delivers a towering performance as Lyndon B. Johnson in this sprawling but ultimately compelling political drama that captures both the brutality and idealism of the civil rights era.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bryan Cranston delivers a towering performance as Lyndon B. Johnson in this sprawling but ultimately compelling political drama that captures both the brutality and idealism of the civil rights era.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bryan Cranston delivers a towering performance as Lyndon B. Johnson in this sprawling but ultimately compelling political drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating falls directly in Mixed range (55-69). Review acknowledges the show is 'sprawling' (a flaw) but finds it 'ultimately compelling' with Cranston's 'towering performance' as strengths. | GPT-4o: The critic's original rating of 60 places the review in the Mixed bucket. The review praises Cranston's performance and describes the drama as 'compelling,' but the term 'sprawling' suggests some reservations. | Gemini: The review highlights a 'towering performance' but also notes the production is 'sprawling,' suggesting a mixed experience. The critic's rating of 60 aligns with the 'Mixed' bucket. | Kimi: The critic's own rating of 60 falls within the Mixed range (55-69). While Cranston's performance is praised as 'towering' and the work 'ultimately compelling,' the descriptor 'sprawling' suggests structural reservations that prevent a full recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:31:21.531Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 65,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show succeeds because it has been adapted with unusual intelligence and sensitivity by Cameron Crowe, who wrote and directed the original film, and because it boasts a batch of irresistibly tuneful songs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show succeeds because it has been adapted with unusual intelligence and sensitivity by Cameron Crowe, who wrote and directed the original film, and because it boasts a batch of irresistibly tuneful songs.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show succeeds because it has been adapted with unusual intelligence and sensitivity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises the adaptation and the songs as 'irresistibly tuneful,' indicating a strong positive recommendation with no reservations. | Gemini: The review states the show succeeds due to the adaptation and songs, indicating a positive recommendation. | Kimi: The critic explicitly states the show succeeds, praising the adaptation's unusual intelligence and sensitivity and describing the songs as irresistibly tuneful. This indicates a strong recommendation, though the brief excerpt warrants low confidence without knowing if broader reservations follow.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:51:17.259Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

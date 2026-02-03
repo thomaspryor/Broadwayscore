@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cooper has created something that feels authentically his own: a raucous, uncompromising and unexpectedly moving piece of theater that announces the arrival of a major new voice.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cooper has created something that feels authentically his own: a raucous, uncompromising and unexpectedly moving piece of theater that announces the arrival of a major new voice.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cooper has created something that feels authentically his own: a raucous, uncompromising and unexpectedly moving piece of theater that announces the arrival of a major new voice.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with strong superlatives ('major new voice', 'authentically his own') and emotional impact ('unexpectedly moving'). Clear rave recommendation. | GPT-4o: The review uses strong, positive language ('raucous', 'uncompromising', 'unexpectedly moving') and highlights the arrival of a 'major new voice', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"authentically his own\", \"raucous, uncompromising and unexpectedly moving\", and \"major new voice\", indicating a rave review. | Kimi: The critic uses superlatives like 'major new voice' and praises the work as 'authentically his own,' 'moving,' and 'uncompromising,' indicating an enthusiastic endorsement of this significant artistic achievement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:15:15.469Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's heart is in the right place, but its execution is disappointingly earnest and conventional, with a book that falls back on familiar melodramatic devices and a score that seldom soars.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's heart is in the right place, but its execution is disappointingly earnest and conventional, with a book that falls back on familiar melodramatic devices and a score that seldom soars.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's heart is in the right place, but its execution is disappointingly earnest and conventional",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict with 'disappointingly' and criticism of both book and score, though acknowledges good intentions. Falls in negative range. | GPT-4o: The review criticizes the execution as 'disappointingly earnest and conventional' and notes the book and score fall short, indicating a negative recommendation. | Gemini: The review uses negative language such as \"disappointingly earnest and conventional\", \"falls back on familiar melodramatic devices\", and \"seldom soars\", indicating a negative assessment. | Kimi: The critic acknowledges the show's good intentions but delivers a clear negative verdict on the execution, finding the book melodramatic and the score underwhelming. The extremely brief text limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:39:34.035Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 48,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

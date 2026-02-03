@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, which opened Thursday at the Nederlander Theatre, tells the story of John Newton, the 18th-century English sailor and slave trader who wrote the beloved hymn after a spiritual awakening.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (31 words)",
+  "rejectedAt": "2026-02-03T12:55:54.004Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a plot summary describing what the musical is about, with no critical evaluation or opinion about the production's quality.; openai: The text provided is a plot summary with no evaluation or opinion on the show.; gemini: This is a plot summary, not a review. There is no evaluation of the show's quality.; kimi: The text provides only plot summary and contextual information about the show's subject matter (John Newton) without any critical evaluation, opinion on production quality, or recommendation to see or skip the show.",
+  "promptVersion": "5.2.0"
 }

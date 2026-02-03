@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Lisa D'Amour's Airline Highway is a slice of life so authentic you can smell the stale beer and hear the roaches scurrying across the linoleum floor.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (26 words)",
+  "rejectedAt": "2026-02-03T12:20:09.672Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be only a single descriptive sentence, likely an excerpt or pull quote, without any evaluative content or recommendation about the show.; openai: The review text is about 'Airline Highway', not the target show.",
+  "promptVersion": "5.2.0"
 }

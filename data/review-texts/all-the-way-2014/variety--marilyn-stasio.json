@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Bryan Cranston gives a towering performance as Lyndon B. Johnson in Robert Schenkkan's presidential drama, capturing both the crude political animal and the visionary leader.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -65,5 +65,60 @@
     "Show title not found in text"
   ],
   "wordCount": 896,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bryan Cranston owns the role of LBJ in this beautifully built dramatic piece.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'jaw-dropping,' 'beautifully built,' and 'textbook lesson.' The critic is clearly in awe of both Cranston's performance and the production's craft, with no significant reservations expressed. | GPT-4o: The review is filled with superlatives and strong praise for both Cranston's performance and the production as a whole, describing it as 'jaw-dropping' and 'beautifully built.' The critic's tone is enthusiastic and highly recommends the show. | Gemini: The review is overwhelmingly positive, praising Cranston's performance and the play's dramatic construction. The critic clearly recommends seeing the show. | Kimi: The review delivers consistent, enthusiastic praise for Cranston's 'penetrating' performance, the 'jaw-dropping' writing, and the 'perfectly paced' direction with no reservations, strongly urging audiences to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T12:37:02.183Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }
