@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 65,
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Excellent performances by a well-meshed ensemble and apt design aspects enhance the entertainment value of the play, which in spite of its often sharp dialogue seems underwritten in places.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The review acknowledges strong performances and design but criticizes the play as underwritten and familiar. The 3/5 star rating suggests a mixed reception, but the text is truncated, so the final verdict may be missing. | Gemini: The review acknowledges good performances and design but also notes that the play is underwritten and familiar. The truncated text and 3/5 stars suggest a mixed to positive leaning, but without a clear conclusion, confidence is low. | Kimi: The 3/5 star rating and balanced assessment place this in Mixed territory. While the critic praises the ensemble performances, direction, and design as excellent, they criticize the play as 'underwritten in places' and overly familiar ('we've seen this sort of homecoming play many times before'). The truncated text warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:45:39.306Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 65,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  },
+  "textQuality": "partial"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Buckley doesn't just sing Ms. Garland's songs; she seems to bleed them. And while she avoids the more obvious impersonation tactics, she captures something essential about Garland's tortured relationship with performance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Buckley doesn't just sing Ms. Garland's songs; she seems to bleed them. And while she avoids the more obvious impersonation tactics, she captures something essential about Garland's tortured relationship with performance.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Buckley doesn't just sing Ms. Garland's songs; she seems to bleed them.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Gemini: The review praises Buckley's performance and captures Garland's essence, suggesting a positive experience overall. | Kimi: The critic employs vivid, superlative language to praise Buckley's performance ('seems to bleed them', 'captures something essential'), indicating a strong recommendation, though the text appears truncated and lacks a clear final verdict on the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:49:19.810Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

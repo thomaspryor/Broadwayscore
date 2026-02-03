@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonagh's cynicism feels closer to our own, or rather we to it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt suggests the production has gained relevance and impact since its original run, with the critic finding it more compelling ('plays less like a clever exercise and more like news'). However, with only one curated excerpt available, confidence is low. | GPT-4o: The excerpt suggests that the play resonates with contemporary issues, implying relevance and engagement. However, the single excerpt and lack of full context necessitate a cautious approach, placing it at the lower end of the Positive range. | Gemini: The review suggests the play resonates more now than before, implying a positive, albeit reserved, recommendation. Given the limited excerpt, confidence is low. | Kimi: The critic praises the play's heightened resonance and impact, noting it has transcended being merely clever to become urgently relevant, though this single excerpt limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:33:32.067Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

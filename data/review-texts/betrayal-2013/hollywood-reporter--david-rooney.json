@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of Harold Pinter's 1978 drama about adultery and deception benefits from superb performances by Daniel Craig, Rachel Weisz and Rafe Spall.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -55,5 +55,60 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 1278,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That makes for thrilling theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite truncation, the review consistently uses superlative language throughout - 'magnificent,' 'thrilling theater,' 'superb performances,' 'riveting,' 'sensational work.' The critic praises every aspect from direction to design to all three lead performances with unqualified enthusiasm. | GPT-4o: The review praises the performances, direction, and production design with strong positive language, indicating a highly favorable view of the show. Despite the truncation warning, the available text suggests a rave review. | Gemini: The review praises the acting, direction, and design elements. The critic highlights the incisiveness of Pinter's writing and the sensitivity of the performers, suggesting a strong positive experience despite the truncated ending. | Kimi: Despite the truncation warning, the review consistently delivers superlatives for the performances ('magnificent,' 'sensational,' 'incandescent'), direction, and design, describing the production as 'thrilling theater' with no significant caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:47:08.110Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

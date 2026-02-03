@@ -11,5 +11,61 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Thus, for those of us who attend shows hoping to be ushered through challenging, uncharted situations, these reenactments can be a bit of a bore.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with balanced critique. Praises technical elements, lead male performance, and supporting cast, but finds the adaptation predictable and criticizes key casting choice of female lead. No clear recommendation either way. | GPT-4o: The review provides a balanced assessment with both praise and criticism. While it acknowledges strong performances and production elements, it also highlights significant shortcomings, particularly in casting and narrative execution. The original 3/5 star rating aligns with a mixed verdict. | Gemini: The review praises some aspects (Casey Likes' performance, set design, lighting) but criticizes others (Solea Pfeiffer's performance, handling of certain themes). The overall tone is neither strongly positive nor negative, suggesting a mixed experience. | Kimi: The 3/5 star rating reflects a divided verdict: high praise for the lead actor, supporting cast, and technical design is undercut by criticism of the female lead's casting and the handling of key thematic material, resulting in neither a clear recommendation nor dismissal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:44:10.369Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "partial"
 }

@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grand Horizons may not be as weighty as some of Wohl's other works, but it's damn funny, and very on-point.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise throughout. Critic calls it 'laugh-packed,' praises performances as 'gorgeous,' and describes it as 'damn funny, and very on-point.' Strong positive recommendation despite being truncated. | GPT-4o: The review provides consistent praise for the humor and performances, despite noting that it is not as weighty as Wohl's other works. The 4/5 star rating supports a positive classification, but the text is truncated, so confidence is low. | Gemini: The review is generally positive, highlighting the humor and performances. The 4/5 star rating also indicates a positive assessment, though the truncated text makes the final verdict uncertain. | Kimi: The critic awards 4/5 stars and delivers consistent praise for the performances and humor, calling the show 'damn funny' and 'brilliant,' while noting it is less weighty than the playwright's other works. Confidence is low due to the truncated text warning.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:22:28.854Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

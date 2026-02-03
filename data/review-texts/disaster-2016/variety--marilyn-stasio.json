@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This campy musical disaster movie spoof has enough cheesy one-liners and over-the-top performances to keep audiences entertained, even if the book feels as rickety as the floating casino where the action takes place.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This campy musical disaster movie spoof has enough cheesy one-liners and over-the-top performances to keep audiences entertained, even if the book feels as rickety as the floating casino where the action takes place.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This campy musical disaster movie spoof has enough cheesy one-liners and over-the-top performances to keep audiences entertained.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review acknowledges flaws in the book but emphasizes that the show is entertaining due to its humor and performances, indicating a positive recommendation with some reservations. | Gemini: The review states the show is entertaining despite the book feeling rickety, indicating a positive but qualified recommendation. | Kimi: The critic finds the campy performances and humor entertaining enough to recommend, though the book is criticized as structurally weak.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:40:32.615Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 73,
+    "geminiScore": 72,
+    "kimiScore": 74,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

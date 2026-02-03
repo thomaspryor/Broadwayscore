@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical comedy 'Head Over Heels,' which opened Thursday at the Hudson Theatre, is a jukebox musical built around the hits of the Go-Go's that tells a story loosely based on Sir Philip Sidney's 16th-century prose romance 'The Countess of Pembroke's Arcadia.'",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (42 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (42 words)",
+  "rejectedAt": "2026-02-03T16:37:08.785Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is only a plot summary describing what the show is about, with no critical evaluation or opinion from the reviewer.; openai: The text provided is a plot summary and does not contain any evaluative content or critique of the show.; gemini: This is just a brief introductory sentence providing context, not a review with any evaluative statements.; kimi: The text provided is purely descriptive, identifying the show, its venue, and its source material without offering any critical evaluation, opinion, or recommendation regarding the production's quality.",
+  "promptVersion": "5.2.0"
 }

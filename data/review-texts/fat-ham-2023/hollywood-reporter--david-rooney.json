@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "James Ijames' Pulitzer Prize-winning play is a Black, queer, Southern riff on Hamlet that finds its own distinctive voice in this vibrant Broadway production.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,58 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "James Ijames' Pulitzer Prize-winning play is a Black, queer, Southern riff on Hamlet that finds its own distinctive voice in this vibrant Broadway production.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "James Ijames' Pulitzer Prize-winning play is a Black, queer, Southern riff on Hamlet that finds its own distinctive voice in this vibrant Broadway production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Gemini: The review uses positive language such as \"vibrant\" and \"distinctive voice\" to describe the production, indicating a positive recommendation. | Kimi: Though extremely brief, the text offers unambiguous praise with 'vibrant' and 'distinctive voice,' indicating a strong recommendation. Limited length necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:47:29.654Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  }
 }

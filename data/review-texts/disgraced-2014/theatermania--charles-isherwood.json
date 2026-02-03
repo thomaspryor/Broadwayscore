@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ayad Akhtar's Pulitzer Prize-winning play about identity, assimilation, and prejudice in post-9/11 America is a searing and provocative drama that doesn't shy away from uncomfortable truths.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ayad Akhtar's Pulitzer Prize-winning play about identity, assimilation, and prejudice in post-9/11 America is a searing and provocative drama that doesn't shy away from uncomfortable truths.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ayad Akhtar's Pulitzer Prize-winning play about identity, assimilation, and prejudice in post-9/11 America is a searing and provocative drama that doesn't shy away from uncomfortable truths.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Gemini: The review uses strong positive language such as \"searing and provocative drama\" and highlights the play's ability to confront \"uncomfortable truths,\" indicating a recommendation. | Kimi: The excerpt uses strongly positive evaluative language ('searing,' 'provocative') to praise the play's dramatic impact and thematic courage, indicating a clear recommendation despite the text's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:41:34.422Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "kimiScore": 78,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

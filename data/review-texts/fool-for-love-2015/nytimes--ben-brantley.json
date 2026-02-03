@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production succeeds in creating the claustrophobic intensity that makes 'Fool for Love' such a visceral experience, with Ms. Pill and Mr. Magnussen delivering performances that feel genuinely lived-in.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production succeeds in creating the claustrophobic intensity that makes 'Fool for Love' such a visceral experience, with Ms. Pill and Mr. Magnussen delivering performances that feel genuinely lived-in.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production succeeds in creating the claustrophobic intensity that makes 'Fool for Love' such a visceral experience",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the production's success in achieving the play's intended effect and for the lead performances feeling 'genuinely lived-in', indicating a solid recommendation despite the brief excerpt. | GPT-4o: The review praises the production for successfully creating intensity and highlights the strong performances, indicating a strong recommendation. | Gemini: The review praises the production for creating a visceral experience and highlights the strong performances of the leads, indicating a positive recommendation. | Kimi: The critic praises the production for successfully creating atmospheric intensity and commends the lead performances as 'genuinely lived-in,' indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:01:16.157Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

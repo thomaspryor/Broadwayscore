@@ -7,6 +7,62 @@
   "playbillVerdictUrl": "https://nystagereview.com/2023/03/23/bad-cinderella-a-musical-that-turns-into-a-pumpkin/",
   "source": "playbill-verdict",
   "sources": [
-    "playbill-verdict"
-  ]
+    "nysr-api"
+  ],
+  "originalScore": "2/5 stars",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So relentlessly vulgar and campy that it would make Ron DeSantis' head explode, Bad Cinderella is the sort of terrible show whose defenders would describe it as 'fun.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: 2/5 stars with devastating language throughout: 'terrible show,' 'sheer cynicism,' 'atrocious lyrics,' 'blandly generic score.' Even acknowledging a few performer highlights, the overall verdict is complete rejection with no recommendation to see it. | GPT-4o: The review is largely negative, highlighting issues with the book, score, and overall execution. While there are some praised performances, the overall tone suggests disappointment. The original 2/5 star rating supports a negative classification, but the text is truncated, so the final verdict may be missing. | Gemini: The review is largely negative, citing a weak score, atrocious lyrics, and a cynical enterprise. While there are some positive mentions of individual performances, the overall assessment is unfavorable, aligning with the 2/5 star rating. The truncated text warning lowers the confidence. | Kimi: The 2/5 star rating and consistently harsh criticism of the book ('sophomoric'), score ('blandly generic'), and lyrics ('atrocious') place this firmly in the Negative bucket, despite praise for Carolee Carmello's performance as a 'saving grace.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:45:23.564Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 27,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

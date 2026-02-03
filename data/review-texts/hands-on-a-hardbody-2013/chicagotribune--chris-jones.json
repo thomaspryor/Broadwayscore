@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This musical about a Texas endurance contest has its moments of authentic emotion, but it struggles to find the right tone between satire and sincerity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This musical about a Texas endurance contest has its moments of authentic emotion, but it struggles to find the right tone between satire and sincerity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical about a Texas endurance contest has its moments of authentic emotion, but it struggles to find the right tone between satire and sincerity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear mixed assessment acknowledging positive elements ('moments of authentic emotion') but significant structural problems with tone. Neither recommends nor discourages. | GPT-4o: The review acknowledges some positive aspects ('moments of authentic emotion') but highlights a significant issue with the show's tone, indicating a mixed reception. | Gemini: The review acknowledges moments of emotion but also points out struggles with tone, indicating a mixed assessment. | Kimi: The review acknowledges 'moments of authentic emotion' but emphasizes a fundamental struggle with tonal consistency between satire and sincerity, placing it in mixed territory without a clear recommendation to see or skip.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:33:00.160Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

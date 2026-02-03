@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Philip Seymour Hoffman brings a weary authenticity to Willy Loman that feels both fresh and true to Miller's vision. His performance anchors this solid revival with remarkable emotional depth.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Philip Seymour Hoffman brings a weary authenticity to Willy Loman that feels both fresh and true to Miller's vision. His performance anchors this solid revival with remarkable emotional depth.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "His performance anchors this solid revival with remarkable emotional depth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the lead performance as authentic with 'remarkable emotional depth' and calls it a 'solid revival', indicating a clear positive recommendation though not effusive. | GPT-4o: The review praises Hoffman's performance as the anchor of a 'solid revival' with 'remarkable emotional depth,' indicating a positive recommendation despite the brevity of the text. | Gemini: The review praises Philip Seymour Hoffman's performance and calls the revival \"solid\" with \"remarkable emotional depth,\" indicating a positive recommendation. | Kimi: While brief, the review offers unqualified praise for Hoffman's 'remarkable emotional depth' and calls the production a 'solid revival,' clearly recommending it despite lacking the ecstatic superlatives of a rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:33:45.389Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 80,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

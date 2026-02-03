@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The ambitious production strives to blend Broadway-style storytelling with Cirque du Soleil's signature aerial artistry, but the result feels more like a compromise than a successful marriage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The ambitious production strives to blend Broadway-style storytelling with Cirque du Soleil's signature aerial artistry, but the result feels more like a compromise than a successful marriage.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result feels more like a compromise than a successful marriage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Clear mixed verdict - acknowledges ambition but finds the execution lacking, describing it as a 'compromise' rather than success. | GPT-4o: The review suggests the production does not achieve its goals, indicating disappointment and a lack of recommendation. | Gemini: The review acknowledges ambition but ultimately finds the blend unsuccessful, suggesting a mixed or neutral experience rather than a clear recommendation. | Kimi: The critic acknowledges the production's ambition but ultimately finds the execution fails to successfully integrate its elements, describing the result as a 'compromise' rather than a successful artistic blend. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:16:31.395Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  },
+  "textQuality": "truncated"
 }

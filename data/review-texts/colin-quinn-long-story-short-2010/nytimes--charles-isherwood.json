@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Quinn has found a way to make his brand of brainy comedy work in a theatrical format, delivering a breezy but substantive meditation on the rise and fall of civilizations that manages to be both educational and entertaining.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Quinn has found a way to make his brand of brainy comedy work in a theatrical format, delivering a breezy but substantive meditation on the rise and fall of civilizations that manages to be both educational and entertaining.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (39 words)"
+  "contentTierReason": "Short text (39 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivering a breezy but substantive meditation on the rise and fall of civilizations that manages to be both educational and entertaining",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('manages to be both educational and entertaining') with praise for making brainy comedy work theatrically, though brief excerpt limits confidence in full critical assessment. | GPT-4o: The review praises the show as both educational and entertaining, indicating a solid recommendation without reservations. | Gemini: The review uses positive language such as \"breezy but substantive meditation\" and \"educational and entertaining,\" indicating a positive recommendation. | Kimi: The critic praises the production as successful, describing it as 'breezy but substantive' and 'educational and entertaining' with no reservations expressed in the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:18:56.449Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

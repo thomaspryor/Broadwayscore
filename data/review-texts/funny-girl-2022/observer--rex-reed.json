@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Beanie Feldstein is not Barbra Streisand, and she never will be, but she brings her own charm and energy to the role of Fanny Brice in this revival of Funny Girl.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Beanie Feldstein is not Barbra Streisand, and she never will be, but she brings her own charm and energy to the role of Fanny Brice in this revival of Funny Girl.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "she brings her own charm and energy to the role of Fanny Brice",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Opens with a comparison that sets modest expectations but concludes positively about Feldstein's performance, suggesting the show is worth seeing despite not reaching legendary heights. | Gemini: The review acknowledges Feldstein's charm and energy but also emphasizes that she is not Streisand, suggesting a mixed assessment of her performance and the revival overall. | Kimi: The critic offers a qualified endorsement of Feldstein's performance, acknowledging she cannot match Streisand's iconic original but praising her individual charm and energy, indicating a solid if reserved recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:08:09.211Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production succeeds in large part because of the committed performances of Jeff Daniels and Michelle Williams, who navigate the treacherous emotional terrain with remarkable skill and authenticity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production succeeds in large part because of the committed performances of Jeff Daniels and Michelle Williams, who navigate the treacherous emotional terrain with remarkable skill and authenticity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production succeeds in large part because of the committed performances of Jeff Daniels and Michelle Williams.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review highlights the strong performances of the lead actors as a key reason for the production's success, indicating a positive recommendation. However, the lack of broader context or additional evaluative content limits confidence. | Gemini: The review highlights the strong performances as the reason for the production's success, indicating a positive recommendation. | Kimi: Clear positive verdict with praise for lead performances as the primary reason for success. 'Succeeds' and 'remarkable skill' indicate solid recommendation, though limited context prevents higher confidence or score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:51:40.370Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

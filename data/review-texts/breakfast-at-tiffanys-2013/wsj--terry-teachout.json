@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What we get instead is a show that feels both overproduced and undercooked, a mixture of scenic spectacle and narrative muddle that never decides what it wants to be when it grows up.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What we get instead is a show that feels both overproduced and undercooked, a mixture of scenic spectacle and narrative muddle that never decides what it wants to be when it grows up.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a show that feels both overproduced and undercooked",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | GPT-4o: The review criticizes the show for being a 'mixture of scenic spectacle and narrative muddle' and not having a clear identity. This indicates a negative assessment without any redeeming qualities mentioned. | Gemini: The review uses negative language such as \"overproduced and undercooked\" and \"narrative muddle\", indicating a negative assessment of the show. | Kimi: The critic describes the production as confused and poorly executed, using terms like 'overproduced,' 'undercooked,' and 'narrative muddle' to indicate the show fails to cohere.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:54:06.386Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  },
+  "textQuality": "truncated"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This slick new musical about the slick young con man Frank Abagnale Jr. is a thing of fitful, surface pleasures that never quite adds up to the sum of its polished parts.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This slick new musical about the slick young con man Frank Abagnale Jr. is a thing of fitful, surface pleasures that never quite adds up to the sum of its polished parts.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This slick new musical about the slick young con man Frank Abagnale Jr. is a thing of fitful, surface pleasures that never quite adds up to the sum of its polished parts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges 'pleasures' and 'polished parts' but emphasizes they're only 'fitful' and 'surface' and critically 'never quite adds up.' Mixed assessment with no clear recommendation. | GPT-4o: The review describes the musical as having 'fitful, surface pleasures' and not adding up to its polished parts, indicating a mixed assessment without a clear recommendation. | Gemini: The review acknowledges \"fitful, surface pleasures\" but ultimately states that the show \"never quite adds up,\" indicating a mixed or lukewarm assessment. | Kimi: The critic acknowledges 'surface pleasures' and 'polished parts' but finds the show 'fitful' and concludes it 'never quite adds up,' indicating a mixed reception where elements work individually but the production lacks cohesion.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:22:40.797Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

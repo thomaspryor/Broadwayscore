@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The cheerleading musical 'Bring It On' brings enough peppy energy and athletic pizzazz to its slight story to make it a reasonably entertaining diversion, if hardly a memorable one.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The cheerleading musical 'Bring It On' brings enough peppy energy and athletic pizzazz to its slight story to make it a reasonably entertaining diversion, if hardly a memorable one.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "reasonably entertaining diversion, if hardly a memorable one",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review acknowledges positive elements (energy, pizzazz) but the overall assessment is lukewarm - 'reasonably entertaining' with the significant caveat 'if hardly memorable.' This suggests neither strong recommendation nor discouragement. | GPT-4o: The review describes the show as 'reasonably entertaining' but not 'memorable', indicating a mixed reception with some positive elements but lacking strong recommendation. | Gemini: The review states the show is \"reasonably entertaining,\" which is a positive but not enthusiastic recommendation. The phrase \"if hardly a memorable one\" indicates a reservation, placing it in the lower end of the positive bucket. | Kimi: The critic acknowledges the show's athletic energy and entertainment value while noting the slight story and lack of memorability, delivering a qualified but clear recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:06:35.440Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  },
+  "textQuality": "truncated"
 }

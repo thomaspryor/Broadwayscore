@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Vogel has created a work of uncommon beauty and power, one that finds in a single play's journey through history a metaphor for the persistence of art in the face of persecution.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Vogel has created a work of uncommon beauty and power, one that finds in a single play's journey through history a metaphor for the persistence of art in the face of persecution.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Vogel has created a work of uncommon beauty and power",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Strong praise with 'uncommon beauty and power' indicates high recommendation, though brief excerpt limits full context assessment. | GPT-4o: The review uses strong positive language ('uncommon beauty and power') indicating a highly favorable view of the production. | Gemini: The review uses strong, positive language such as \"uncommon beauty and power\" and suggests the play is a metaphor for the persistence of art, indicating a very high level of praise and a must-see recommendation. | Kimi: Though brief, the excerpt offers unambiguous high praise using superlatives like 'uncommon beauty' and 'power,' clearly placing it in rave territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:54:51.968Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

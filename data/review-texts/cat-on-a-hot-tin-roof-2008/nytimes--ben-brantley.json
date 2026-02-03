@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Broadway revival proves that Tennessee Williams's drama about sexual frustration and family mendacity remains as potent as ever, thanks largely to a blazing performance by Scarlett Johansson as Maggie the Cat.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Broadway revival proves that Tennessee Williams's drama about sexual frustration and family mendacity remains as potent as ever, thanks largely to a blazing performance by Scarlett Johansson as Maggie the Cat.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Broadway revival proves that Tennessee Williams's drama remains as potent as ever",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment that the revival 'proves' the play's continued power, with particular praise for Johansson's 'blazing performance.' However, the brief excerpt limits confidence in the full critical verdict. | GPT-4o: The review highlights the potency of the revival and praises Scarlett Johansson's performance, indicating a strong recommendation. | Gemini: The review states the drama remains potent and highlights a strong performance, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:06:24.695Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

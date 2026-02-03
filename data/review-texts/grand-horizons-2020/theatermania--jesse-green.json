@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bess Wohl's new play Grand Horizons is a family comedy that manages to be both deeply familiar and surprisingly fresh, finding genuine emotion in the rubble of a long marriage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bess Wohl's new play Grand Horizons is a family comedy that manages to be both deeply familiar and surprisingly fresh, finding genuine emotion in the rubble of a long marriage.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "manages to be both deeply familiar and surprisingly fresh, finding genuine emotion",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('surprisingly fresh', 'genuine emotion') but brief excerpt limits confidence in full critical assessment. | GPT-4o: The review describes the play as 'surprisingly fresh' and finds 'genuine emotion,' indicating a positive recommendation. However, the mention of 'deeply familiar' suggests some reservations, leading to a mid-range Positive score. | Gemini: The review states the play is both familiar and fresh, finding genuine emotion. This indicates a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic praises the play for balancing familiar territory with freshness and delivering genuine emotional resonance, indicating a solid recommendation despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:23:38.438Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lucy Prebble's ambitious drama about corporate corruption is intellectually stimulating but emotionally cold, despite strong performances from the cast.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Lucy Prebble's ambitious drama about corporate corruption is intellectually stimulating but emotionally cold, despite strong performances from the cast.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (19 words)"
+  "contentTierReason": "Short text (19 words)",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lucy Prebble's ambitious drama about corporate corruption is intellectually stimulating but emotionally cold, despite strong performances from the cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review presents balanced criticism - praising the intellectual ambition and performances while criticizing the emotional disconnect. No clear recommendation either way. | GPT-4o: The review acknowledges the play's intellectual stimulation and strong performances but criticizes it for being emotionally cold, leading to a mixed recommendation. | Gemini: The review acknowledges intellectual stimulation and strong performances, but ultimately finds the play emotionally cold, suggesting a mixed experience. | Kimi: The review offers a balanced assessment, praising the intellectual stimulation and strong performances while criticizing the emotional coldness, resulting in neither a clear recommendation nor dismissal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:09:13.620Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

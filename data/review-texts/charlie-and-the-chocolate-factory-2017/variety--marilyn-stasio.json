@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This big, splashy musical has all the elements for a crowd-pleasing hit, but it never quite gels into the magical experience it should be.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This big, splashy musical has all the elements for a crowd-pleasing hit, but it never quite gels into the magical experience it should be.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This big, splashy musical has all the elements for a crowd-pleasing hit, but it never quite gels into the magical experience it should be.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear mixed verdict - acknowledges positive elements ('crowd-pleasing hit' potential) but states it fails to achieve what it should be. Classic mixed review language. | GPT-4o: The review acknowledges potential and crowd-pleasing elements but ultimately expresses disappointment that it doesn't achieve its full potential, indicating a mixed verdict. | Gemini: The review acknowledges the potential for a hit but ultimately finds the show lacking, indicating a mixed assessment. | Kimi: The critic acknowledges the show's commercial spectacle and potential but emphasizes its failure to cohere into the satisfying, magical experience promised.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:10:38.407Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

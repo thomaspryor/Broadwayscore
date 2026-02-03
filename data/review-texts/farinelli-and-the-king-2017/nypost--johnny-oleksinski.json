@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mark Rylance is brilliant as always, but even his immense talents can't save this dreary, overlong drama about an 18th-century Spanish king and his favorite castrato singer.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mark Rylance is brilliant as always, but even his immense talents can't save this dreary, overlong drama about an 18th-century Spanish king and his favorite castrato singer.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mark Rylance is brilliant as always, but even his immense talents can't save this dreary, overlong drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | GPT-4o: The review acknowledges Rylance's performance but criticizes the show as 'dreary' and 'overlong,' indicating a negative overall assessment. | Gemini: The review explicitly states that even a brilliant performance cannot save the show, indicating a negative overall assessment. | Kimi: While praising Mark Rylance's performance as 'brilliant,' the critic explicitly states that his talents cannot salvage the 'dreary, overlong' production, indicating a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:46:09.928Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

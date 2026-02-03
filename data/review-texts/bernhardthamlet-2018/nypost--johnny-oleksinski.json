@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Janet McTeer gives a stunning performance as the legendary French actress Sarah Bernhardt in this fascinating biographical drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Janet McTeer gives a stunning performance as the legendary French actress Sarah Bernhardt in this fascinating biographical drama.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (18 words)"
+  "contentTierReason": "Short text (18 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Janet McTeer gives a stunning performance as the legendary French actress Sarah Bernhardt.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises Janet McTeer's performance as 'stunning' and describes the drama as 'fascinating,' indicating a positive recommendation. However, the brevity of the text limits the depth of evaluation, resulting in low confidence. | Gemini: The review praises Janet McTeer's performance as stunning and describes the drama as fascinating, indicating a positive recommendation. | Kimi: Though brief, the excerpt contains unequivocal praise using superlatives ('stunning', 'fascinating') for both the lead performance and the production itself, indicating strong approval.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:46:27.693Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

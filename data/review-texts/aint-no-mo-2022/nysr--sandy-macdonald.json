@@ -11,5 +11,61 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cooper is a genius at concision, and his critique of the dominant culture cuts deep.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with consistent superlative praise throughout: 'formidable accomplishment', 'ingenious concept', 'genius at concision', 'top-notch cast', 'every single performer is a standout'. Despite truncation warning, the review maintains enthusiastic tone throughout with no reservations expressed. | GPT-4o: The review is overwhelmingly positive, highlighting the play's provocative nature, ingenious concept, and exceptional performances. The original 5/5 star rating supports a high score within the Rave bucket. Despite the truncation warning, the available text strongly suggests a rave review. | Gemini: The review is overwhelmingly positive, using terms like \"ingenious concept,\" \"top-notch cast,\" and \"genius.\" The 5/5 star rating further supports a Rave classification, despite the truncated text. | Kimi: 5/5 star review with unqualified enthusiasm, calling the playwright a 'genius' and praising the 'heartbreaking' performances and 'ingenious' concept; despite truncated text, the rating and consistent superlatives confirm a rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:43:31.612Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  },
+  "textQuality": "partial"
 }

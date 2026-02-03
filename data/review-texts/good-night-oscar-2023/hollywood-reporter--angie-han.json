@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sean Hayes delivers a powerhouse performance as Oscar Levant in this intimate biographical play that captures the wit and melancholy of the brilliant but troubled pianist and comedian.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Sean Hayes delivers a powerhouse performance as Oscar Levant in this intimate biographical play that captures the wit and melancholy of the brilliant but troubled pianist and comedian.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sean Hayes delivers a powerhouse performance as Oscar Levant in this intimate biographical play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: This appears to be a brief excerpt praising Hayes' performance and describing the play positively ('intimate', 'captures the wit'), but lacks sufficient detail for a full assessment. The 'powerhouse performance' suggests a positive recommendation. | Gemini: The review praises Sean Hayes' performance and describes the play as capturing the wit and melancholy of the subject, indicating a positive recommendation. | Kimi: The review offers unqualified praise for the lead performance and the production's successful portrayal of its subject, with no reservations mentioned, though its extreme brevity suggests this may be an excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:19:23.053Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

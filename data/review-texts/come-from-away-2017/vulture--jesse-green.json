@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Come From Away is a musical about kindness, and it practices what it preaches. It's kind to its characters, kind to its audience, and kind to the real people whose stories it tells.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Come From Away is a musical about kindness, and it practices what it preaches. It's kind to its characters, kind to its audience, and kind to the real people whose stories it tells.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Come From Away is a musical about kindness, and it practices what it preaches.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review highlights the show's kindness and positive treatment of its characters and audience, suggesting a positive experience. However, the lack of detailed evaluative content or explicit recommendation results in a medium confidence level. | Gemini: The review praises the show's kindness to its characters, audience, and the real people whose stories it tells, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: Despite brevity suggesting this may be an excerpt, the text offers clear praise for the show's successful execution and gentle treatment of its subject matter, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:37:11.372Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

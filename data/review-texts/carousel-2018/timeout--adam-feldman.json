@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Rodgers and Hammerstein's 1945 musical is handsome and well-performed, but it doesn't solve the show's fundamental problems with its problematic male protagonist.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Rodgers and Hammerstein's 1945 musical is handsome and well-performed, but it doesn't solve the show's fundamental problems with its problematic male protagonist.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival is handsome and well-performed, but it doesn't solve the show's fundamental problems.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating and balanced assessment ('handsome and well-performed' vs 'doesn't solve fundamental problems') clearly places this in Mixed territory. The score aligns perfectly with the critic's numerical rating. | GPT-4o: The review acknowledges the production's visual and performance quality but highlights unresolved issues with the protagonist, aligning with the critic's original rating of 60. | Gemini: The review acknowledges positive aspects (handsome, well-performed) but ultimately finds the show's core issues unresolved, aligning with a mixed assessment. The critic's rating of 60 supports this classification. | Kimi: The critic's own 60 rating confirms a middle-of-the-road assessment. While praising the production as 'handsome and well-performed,' the review emphasizes that the revival fails to address 'fundamental problems' with the source material, resulting in neither a recommendation nor a dismissal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:03:40.974Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

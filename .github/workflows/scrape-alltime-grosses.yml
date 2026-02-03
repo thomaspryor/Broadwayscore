@@ -1,0 +1,113 @@
+name: Scrape All-Time Grosses
+
+on:
+  # Monthly on the 1st at 6 AM UTC
+  schedule:
+    - cron: '0 6 1 * *'
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      year:
+        description: 'Specific year to scrape (leave empty for main page)'
+        required: false
+        type: string
+      all_years:
+        description: 'Loop through all years 2005-2026'
+        required: false
+        default: 'false'
+        type: boolean
+      dry_run:
+        description: 'Preview matches without writing'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  scrape-alltime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Scrape all-time cumulative grosses
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.year }}" ]; then
+            ARGS="--year ${{ inputs.year }}"
+          elif [ "${{ inputs.all_years }}" = "true" ]; then
+            ARGS="--all-years"
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          npx tsx scripts/scrape-alltime.ts $ARGS
+        env:
+          NODE_ENV: production
+
+      - name: Check for changes
+        if: inputs.dry_run != 'true'
+        id: changes
+        run: |
+          if git diff --quiet data/grosses.json 2>/dev/null; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected:"
+            git diff --stat data/grosses.json
+          fi
+
+      - name: Commit and push changes
+        if: inputs.dry_run != 'true' && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          SHOW_COUNT=$(node -e "const d=require('./data/grosses.json'); console.log(Object.keys(d.shows).length)")
+
+          git add data/grosses.json
+          git commit -m "data: Update all-time grosses ($SHOW_COUNT shows)
+
+          Automated cumulative grosses scrape from BroadwayWorld."
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "## Dry Run" >> $GITHUB_STEP_SUMMARY
+            echo "Preview mode - no changes written." >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.changes.outputs.has_changes }}" = "true" ]; then
+            echo "## Updated" >> $GITHUB_STEP_SUMMARY
+            SHOW_COUNT=$(node -e "const d=require('./data/grosses.json'); console.log(Object.keys(d.shows).length)")
+            echo "Updated all-time grosses for **$SHOW_COUNT shows**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## No Changes" >> $GITHUB_STEP_SUMMARY
+            echo "Scrape completed but no new data found." >> $GITHUB_STEP_SUMMARY
+          fi

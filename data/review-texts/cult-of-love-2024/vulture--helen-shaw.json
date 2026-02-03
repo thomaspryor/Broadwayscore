@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Leslye Headland's new play is a family drama that feels both intimate and epic, wrestling with questions of faith, sexuality, and acceptance in ways that are messy and real.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Leslye Headland's new play is a family drama that feels both intimate and epic, wrestling with questions of faith, sexuality, and acceptance in ways that are messy and real.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Leslye Headland's new play is a family drama that feels both intimate and epic, wrestling with questions of faith, sexuality, and acceptance in ways that are messy and real.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Gemini: The review describes the play as \"intimate and epic\" and praises its handling of complex themes as \"messy and real,\" indicating a positive recommendation. | Kimi: Brief excerpt offers solid praise ('intimate and epic', 'messy and real') indicating a worthwhile drama, though limited context prevents higher confidence or score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:47:16.379Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

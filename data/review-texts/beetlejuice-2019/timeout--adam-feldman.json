@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Beetlejuice is a big, brash, rock-and-roll musical that embraces its own grotesquerie with gleeful abandon. It's not subtle, but it doesn't want to be.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Beetlejuice is a big, brash, rock-and-roll musical that embraces its own grotesquerie with gleeful abandon. It's not subtle, but it doesn't want to be.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Beetlejuice is a big, brash, rock-and-roll musical that embraces its own grotesquerie with gleeful abandon.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating falls squarely in the Mixed range (55-69). The tone appreciates the show's intentional style but implies it's not for everyone with the qualifier about subtlety. | GPT-4o: The original rating of 60 places it in the Mixed bucket. The review describes the show as embracing its style with abandon, suggesting it has appeal but may not be for everyone. | Gemini: The review acknowledges the show's lack of subtlety but frames it as intentional and gleeful. Given the critic's rating of 60, this falls into the mixed category. | Kimi: The critic's own 60 rating places this squarely in Mixed territory. The review acknowledges the show's strengths (big, brash, gleeful abandon) but the brevity and lack of explicit recommendation, combined with the 'not subtle' caveat, suggest qualified rather than enthusiastic endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:45:27.975Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

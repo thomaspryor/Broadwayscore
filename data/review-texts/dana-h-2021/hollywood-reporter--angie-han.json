@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a piece of theater unlike anything else on Broadway, one that blurs the line between performance and documentary in ways that are both fascinating and unsettling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The result is a piece of theater unlike anything else on Broadway, one that blurs the line between performance and documentary in ways that are both fascinating and unsettling.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a piece of theater unlike anything else on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review describes the show as unique and innovative, using strong positive language like 'fascinating and unsettling' which indicates a strong recommendation. | Gemini: The review describes the show as \"fascinating and unsettling\", indicating a positive but potentially challenging experience, thus a positive score with reservations. | Kimi: The critic praises the production as unique and fascinating, recommending it as distinctive theater, though the brief excerpt limits confidence in the full assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:29:46.109Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 88,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

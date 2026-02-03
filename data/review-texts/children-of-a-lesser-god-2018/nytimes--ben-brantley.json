@@ -16,6 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Ridloff, who is deaf, gives a performance of such fervor and clarity that she seems to be speaking in a language more eloquent than words.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (26 words)",
+  "rejectedAt": "2026-02-03T15:12:04.142Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with enough evaluative content to score; openai: The text is a single sentence praising an actor's performance without evaluating the overall production.",
+  "promptVersion": "5.2.0",
+  "textQuality": "partial"
 }

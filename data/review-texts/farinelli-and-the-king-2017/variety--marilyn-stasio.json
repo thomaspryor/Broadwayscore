@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mark Rylance gives a fascinatingly eccentric performance as the melancholy Spanish king Philip V, who finds solace in the sublime voice of the famous 18th-century castrato singer Carlo Broschi, known as Farinelli.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,58 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mark Rylance gives a fascinatingly eccentric performance as the melancholy Spanish king Philip V, who finds solace in the sublime voice of the famous 18th-century castrato singer Carlo Broschi, known as Farinelli.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mark Rylance gives a fascinatingly eccentric performance as the melancholy Spanish king Philip V.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Gemini: The review highlights a 'fascinatingly eccentric performance' by Mark Rylance, suggesting a positive experience, even though it's brief. | Kimi: The critic offers clear praise for Rylance's 'fascinatingly eccentric' performance and describes the voice as 'sublime', indicating a positive assessment. However, the text appears to be a truncated excerpt or capsule review lacking a definitive verdict or full critical context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:47:00.161Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  }
 }

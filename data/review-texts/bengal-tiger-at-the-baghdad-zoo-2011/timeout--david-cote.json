@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Williams gives a committed performance as the title character, a philosophical feline who comments on the action from beyond the grave. But Rajiv Joseph's play, while well-intentioned, feels more like a thesis than a fully realized drama.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Williams gives a committed performance as the title character, a philosophical feline who comments on the action from beyond the grave. But Rajiv Joseph's play, while well-intentioned, feels more like a thesis than a fully realized drama.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (37 words)"
+  "contentTierReason": "Short text (37 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Williams gives a committed performance as the title character, a philosophical feline who comments on the action from beyond the grave.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating directly places this in Mixed territory. Praises the lead performance but finds the play itself lacking dramatic realization, calling it 'more like a thesis than a fully realized drama.' | GPT-4o: The critic's original rating of 60 aligns with a mixed review. The performance is praised, but the play itself is critiqued as lacking full realization, indicating a balanced view. | Gemini: The review praises the performance but criticizes the play itself, suggesting a mixed experience. The critic's rating of 60 aligns with the Mixed bucket. | Kimi: The critic's own rating of 60/100 places this firmly in the Mixed bucket. The review acknowledges Williams' committed performance but ultimately criticizes the play as feeling academic rather than dramatically realized, indicating a middle-of-the-road verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:46:37.976Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

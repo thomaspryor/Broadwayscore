@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Horton Foote's final play receives a handsome production that honors the playwright's gift for finding universal truths in the most particular circumstances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Horton Foote's final play receives a handsome production that honors the playwright's gift for finding universal truths in the most particular circumstances.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Horton Foote's final play receives a handsome production that honors the playwright's gift for finding universal truths.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises the production as 'handsome' and highlights its success in honoring the playwright's talent, indicating a solid recommendation without reservations. | Gemini: The review uses positive language such as \"handsome production\" and \"honors the playwright's gift,\" indicating a recommendation, though not an enthusiastic one. | Kimi: The critic offers clear approval with 'handsome production' and praise for honoring Foote's literary gifts, indicating a solid recommendation. Confidence is low due to the brevity of the excerpt provided.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:44:47.331Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }
