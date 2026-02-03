@@ -1,73 +1,96 @@
 {
-  "runDate": "2026-02-03T01:04:31.427Z",
+  "runDate": "2026-02-03T01:10:10.053Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "purlie-victorious-2023",
+    "showFilter": "patriots-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 5,
+    "processed": 5,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "28.6%"
+    "successRate": "45.5%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archive": 1
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 2,
-    "tier1_5Attempts": 1,
+    "tier1Attempts": 6,
+    "tier1Success": 3,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
+    "tier2Attempts": 7,
     "tier2Success": 3,
-    "tier3Attempts": 3,
-    "tier3Success": 3,
-    "tier4Attempts": 6,
+    "tier3Attempts": 5,
+    "tier3Success": 2,
+    "tier4Attempts": 11,
     "tier4Success": 4,
     "totalFailed": 5,
-    "scrapingBeeCreditsUsed": 31,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 2.2,
-    "urlDiscoveryAttempts": 1,
+    "scrapingBeeCreditsUsed": 40,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 4.6,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "purlie-victorious-2023/deadline--greg-evans.json",
-    "purlie-victorious-2023/cititour--brian-scott-lipton.json"
+    "patriots-2024/broadwaynews--brittani-samuel.json",
+    "patriots-2024/deadline--pete-hammond.json",
+    "patriots-2024/guardian--michael-billington.json",
+    "patriots-2024/new-york-sun--elysa-gardner.json",
+    "patriots-2024/theatermania--jesse-green.json"
   ],
   "failed": [
-    "purlie-victorious-2023/timeout--adam-feldman.json",
-    "purlie-victorious-2023/wsj--unknown.json",
-    "purlie-victorious-2023/theater-pizzazz--ron-fassler.json",
-    "purlie-victorious-2023/thestage--lane-williamson.json",
-    "purlie-victorious-2023/washpost--peter-marks.json"
+    "patriots-2024/deadline--greg-evans.json",
+    "patriots-2024/timeout--raven-snook.json",
+    "patriots-2024/wsj--charles-isherwood.json",
+    "patriots-2024/wsj--terry-teachout.json",
+    "patriots-2024/nysr--frank-scheck.json",
+    "patriots-2024/talkinbroadway--matthew-murray.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "patriots-2024/deadline--greg-evans.json",
+      "patriots-2024/deadline--pete-hammond.json"
+    ],
     "browserbase": [],
     "scrapingbee": [
-      "purlie-victorious-2023/cititour--brian-scott-lipton.json"
+      "patriots-2024/guardian--michael-billington.json",
+      "patriots-2024/theatermania--jesse-green.json"
     ],
     "brightdata": [],
     "archive": [
-      "purlie-victorious-2023/deadline--greg-evans.json"
+      "patriots-2024/broadwaynews--brittani-samuel.json",
+      "patriots-2024/new-york-sun--elysa-gardner.json"
     ]
   },
   "failuresByOutlet": {
-    "Theater Pizzazz": {
+    "The Wall Street Journal": {
       "count": 1,
-      "domain": "theaterpizzazz.com",
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "New York Stage Review": {
+      "count": 1,
+      "domain": "didtheylikeit.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
