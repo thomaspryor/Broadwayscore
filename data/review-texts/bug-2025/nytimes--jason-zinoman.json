@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "CRITIC'S PICK. This new Manhattan Theater Club production, which opened Thursday at the Samuel J. Friedman Theater, is more tender and balanced, with Namir Smallwood rendering Peter as a gentler, less alien figure. The focus has shifted to his romantic partner, Agnes (Coon), a desperate sad sack hau...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new Manhattan Theater Club production is more tender and balanced.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The New York Times 'CRITIC'S PICK' designation indicates strong recommendation. The excerpt praises the production as 'more tender and balanced' with positive assessment of performances. However, confidence is medium due to truncated text. | GPT-4o: The excerpt labels the production as a 'CRITIC'S PICK' and describes it as 'more tender and balanced,' indicating a strong positive recommendation. However, the single excerpt warning suggests caution, so the score is set at the upper end of the Positive range. | Gemini: The review excerpt indicates a positive shift in the production, describing it as \"more tender and balanced.\" However, due to the limited text, confidence is low. | Kimi: The New York Times 'CRITIC'S PICK' designation indicates a strong recommendation, supported by praise for the production's tenderness and balance and Smallwood's gentler interpretation. However, with only a single truncated excerpt available, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:47:56.965Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

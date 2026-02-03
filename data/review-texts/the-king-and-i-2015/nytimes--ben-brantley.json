@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Rodgers and Hammerstein's 1951 musical about the culture clash between a British governess and the King of Siam is a handsome, well-sung production that honors the show's considerable virtues while mostly sidestepping its obvious problems.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival is a handsome, well-sung production that honors the show's considerable virtues while mostly sidestepping its obvious problems.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment calling it 'handsome' and 'well-sung' while acknowledging it 'honors the show's considerable virtues.' The phrase 'mostly sidestepping its obvious problems' suggests some reservations but overall approval. | GPT-4o: The review praises the production as 'handsome' and 'well-sung,' indicating a positive experience, though it acknowledges some issues are sidestepped. Overall, it recommends the show with some reservations. | Gemini: The review acknowledges both positive and negative aspects, but ultimately leans towards a recommendation, describing the production as \"handsome\" and \"well-sung\" while admitting it avoids the show's problems. | Kimi: The critic clearly praises the production as handsome and well-sung, appreciating that it honors the musical's strengths while successfully navigating its problematic elements, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:10:47.524Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

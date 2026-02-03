@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of A.R. Gurney's 1995 comedy about a middle-aged couple whose marriage is tested by the husband's obsession with a stray dog proves that some plays are every bit as timeless as man's best friend.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This revival of A.R. Gurney's 1995 comedy about a middle-aged couple whose marriage is tested by the husband's obsession with a stray dog proves that some plays are every bit as timeless as man's best friend.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival proves that some plays are every bit as timeless as man's best friend.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls the play 'timeless' which is clear praise, but this appears to be just an excerpt or opening line rather than a full review, limiting confidence in the overall assessment. | Gemini: The review states the play is \"timeless\" which indicates a positive recommendation. The lack of further detail suggests a slightly reserved positive. | Kimi: The critic offers unqualified praise by declaring the play 'timeless,' suggesting the revival successfully demonstrates the work's enduring quality and relevance, though the extreme brevity of the excerpt limits assessment of enthusiasm level.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:59:15.859Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

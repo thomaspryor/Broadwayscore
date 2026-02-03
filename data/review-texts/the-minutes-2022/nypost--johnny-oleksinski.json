@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tracy Letts' searing drama 'The Minutes' is a masterful exploration of how communities construct and maintain their mythologies, building to a shocking finale that recontextualizes everything that came before.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Tracy Letts' searing drama 'The Minutes' is a masterful exploration of how communities construct and maintain their mythologies, building to a shocking finale that recontextualizes everything that came before.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tracy Letts' searing drama 'The Minutes' is a masterful exploration of how communities construct and maintain their mythologies.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise with 'masterful' and 'searing,' plus promise of shocking finale suggests enthusiastic recommendation, though brief text limits confidence. | GPT-4o: The review uses strong, unequivocal praise ('masterful exploration') and highlights a 'shocking finale' that enhances the entire experience, indicating a highly positive reception. | Gemini: The review uses strong positive language such as \"masterful\" and \"searing drama\" and highlights the shocking finale, indicating a highly positive experience. | Kimi: The critic employs unqualified superlatives ('masterful', 'searing') and praises the play's dramatic construction and impact, indicating enthusiastic recommendation despite the excerpt's brevity. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:14:25.647Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

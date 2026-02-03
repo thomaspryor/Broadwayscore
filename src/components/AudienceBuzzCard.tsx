@@ -154,8 +154,8 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }:
       <div className={`rounded-xl p-4 border mb-4 ${colors.bgClass} ${colors.borderClass}`}>
         <div className="flex items-center gap-3">
           <div
-            className="w-12 h-12 rounded-lg flex items-center justify-center font-bold text-xl shadow-sm"
-            style={{
+            className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold text-xl shadow-sm${grade.grade === 'A+' ? ' audience-top-grade' : ''}`}
+            style={grade.grade === 'A+' ? {} : {
               backgroundColor: grade.color,
               color: grade.textColor,
               boxShadow: `0 2px 8px ${grade.color}4d`,

@@ -62,10 +62,10 @@
   "sourceMethod": "brightdata",
   "wordCount": 928,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-03T14:42:32.620Z",
+  "rejectedAt": "2026-02-03T19:36:53.646Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This text contains website navigation, ads, and repeated promotional content about various unrelated topics (Grammys, movies, etc.) but no actual theater review content.; openai: The text provided is a mix of unrelated content, including navigation menus, ad copy, and various entertainment news snippets, not a review of the target show.; gemini: This appears to be a collection of article titles and snippets from Variety, not a review of a specific show.; kimi: The text provided is a concatenation of unrelated entertainment news headlines, snippets, and fragments from multiple Variety articles (including references to Grammys, films, and other Broadway shows), not a coherent review of the target show. It lacks a continuous evaluative narrative about any single production.",
+  "rejectionReasoning": "claude: This appears to be a website homepage or navigation page with various headlines and article snippets, not a theater review of any specific show; openai: The text provided is a mix of unrelated content, including navigation menus, ad copy, and other non-article content, with no coherent review of the target show.; gemini: This is not a review. It's a collection of article titles and snippets from Variety.; kimi: The text provided is a corrupted concatenation of multiple unrelated articles, navigation menus, and entertainment news snippets rather than a coherent review of a single Broadway show. It contains fragments about the Grammys, film reviews, and potentially multiple different theater productions, but does not constitute a scoreable review of the target production.",
   "promptVersion": "5.2.0",
   "playbillVerdictUrl": "http://variety.com/2016/legit/reviews/a-bronx-tale-review-musical-1201706762/",
   "sources": [

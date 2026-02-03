@@ -17,5 +17,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a Mattress offers laughs galore and is likely to leave a wide grin on the face of happy playgoers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic language ('laughs galore', 'wide grin on the face of happy playgoers') indicates strong positive recommendation, but single excerpt limits full context. | GPT-4o: The excerpt is clearly positive, highlighting humor and musical enjoyment. The original 4/5 stars rating supports a strong positive classification. Given the single excerpt, the confidence is low, but the tone suggests a strong recommendation. | Gemini: The review excerpt is overwhelmingly positive, highlighting the show's humor and musicality, and predicting a happy audience. Given the 4/5 star rating and positive tone, a score in the higher end of the 'Positive' bucket is appropriate. | Kimi: 4/5 stars with enthusiastic praise for the comedy ('laughs galore'), music, and overall enjoyment ('wide grin'). Single excerpt limits confidence in capturing full review sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:43:20.229Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

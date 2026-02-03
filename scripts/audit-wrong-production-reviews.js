@@ -118,7 +118,7 @@ function identifyRevivals(shows) {
   for (const show of shows) {
     if (yearSuffixPattern.test(show.id)) {
       // Check if it's marked as a revival or is a well-known revival title
-      const isMarkedRevival = show.type === 'revival' ||
+      const isMarkedRevival = show.isRevival === true ||
                               (show.tags && show.tags.includes('revival'));
 
       // Even if not explicitly marked, year-suffixed shows with known prior productions

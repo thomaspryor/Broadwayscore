@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of The Crucible is a reminder that Miller's play, for all its obvious virtues as a parable about McCarthyism, works best when it's allowed to be what it actually is: a drama about the deadly intersection of sexual jealousy and religious fanaticism.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This production of The Crucible is a reminder that Miller's play, for all its obvious virtues as a parable about McCarthyism, works best when it's allowed to be what it actually is: a drama about the deadly intersection of sexual jealousy and religious fanaticism.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (44 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production of The Crucible is a reminder that Miller's play works best when it's allowed to be what it actually is.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic appreciates this production for allowing the play's true nature to emerge, suggesting it succeeds where others may have failed. However, the brief excerpt limits confidence in the full assessment. | Gemini: The review suggests the play is good when done right, implying this production is worth seeing, though not with overwhelming enthusiasm. | Kimi: The critic praises this production for illuminating the play's dramatic core about sexual jealousy and fanaticism, calling it a successful approach that highlights Miller's 'obvious virtues.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:06:31.601Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

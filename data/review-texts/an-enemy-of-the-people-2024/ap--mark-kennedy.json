@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Boyd Gaines and Richard Thomas are marvelous as the battling brothers at the heart of the play, but there are terrific turns also by Gerry Bamman, Michael Siberry and Kathleen McNenny. Director Doug Hughes paces it like a thriller, with the heat rising steadily.",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Boyd Gaines and Richard Thomas are marvelous as the battling brothers at the heart of the play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performances ('marvelous') and supporting cast ('terrific turns'), plus positive direction assessment. However, single excerpt warning applies - this could be cherry-picked praise from a more mixed review. | GPT-4o: The excerpt praises the performances and direction, indicating a positive reception. However, with only one excerpt available, the confidence is low. | Gemini: The review excerpt praises the performances of the actors and the direction of the play, suggesting a positive experience. Given the single excerpt, I am scoring it on the higher end of positive with low confidence. | Kimi: The excerpt offers unqualified enthusiasm for the performances ('marvelous,' 'terrific') and direction, using thriller-like pacing as a mark of quality. Score reflects upper Positive range per instructions for clearly positive single excerpts, with low confidence due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:40:38.611Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

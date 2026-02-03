@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "If Jacobs-Jenkins has the answers (and one suspects he does), he’s not sharing them. He’s savvy—and gutsy—enough to let his audience decide. In a way, Appropriate is his most traditional play, a deliberate homage to such playwrights as Tennessee Williams, Eugene O’Neill, and Tracy Letts, who create ...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He's savvy—and gutsy—enough to let his audience decide.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt praises the playwright as 'savvy' and 'gutsy' and places the work in the tradition of major American dramatists like Williams and O'Neill. However, with only one curated excerpt available, confidence is low as the full verdict may differ. | GPT-4o: The excerpt praises the playwright's savvy and gutsiness, suggesting a positive view of the play's approach. However, the lack of a full review and only a single excerpt limits confidence in the overall sentiment. | Gemini: The excerpt suggests the play is thought-provoking and allows the audience to interpret it, but it doesn't offer a clear recommendation. The reference to playwrights like Williams and O'Neill suggests a certain level of quality, but the lack of explicit praise keeps it in the mixed category. Given that it's a single excerpt, confidence is low. | Kimi: The excerpt offers clear admiration for the playwright's approach, calling him 'savvy' and 'gutsy' while favorably comparing the work to Tennessee Williams and Eugene O'Neill. However, as a single truncated excerpt, confidence must remain low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:43:35.337Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 62,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 21,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

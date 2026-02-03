@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While the larger vision and the major performance lack distinction, the pleasures of this revival are derived from seeing the ensemble bring O'Neill's characters to life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The 3/5 rating and conclusion clearly indicate a mixed assessment - praising the ensemble performances while criticizing Washington's lead performance and Wolfe's direction as lacking distinction. | GPT-4o: The review provides a mix of positive and negative feedback, praising the ensemble cast but criticizing the lead performance and overall production. The original 3/5 star rating suggests a mixed verdict. The text is truncated, so the final verdict may be missing, leading to low confidence. | Gemini: The review praises the ensemble performances but criticizes Washington's performance and the overall direction. The 3/5 star rating also indicates a mixed assessment. | Kimi: The 3/5 star rating and balanced critique place this in Mixed territory. While the critic praises the supporting ensemble highly, they criticize Denzel Washington's lead performance as 'indistinct' and note the production fails to achieve the play's full emotional weight. The truncation warning suggests the final assessment may be incomplete.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:09:41.375Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

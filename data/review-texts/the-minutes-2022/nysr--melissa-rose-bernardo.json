@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Minutes spins entirely out of control.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The 2/5 star rating indicates a negative review. The critic praises individual performances but finds the play structurally flawed, particularly criticizing the ending as 'mystifying' and expressing confusion about the overall experience. The truncation warning requires medium confidence, but the negative trajectory is clear. | GPT-4o: The review highlights confusion and dissatisfaction with the play's execution, describing it as spinning out of control and ending in a mystifying manner. The original rating of 2/5 stars supports a negative classification, but the truncated text warning suggests caution in scoring too low. | Gemini: The review is mostly negative, describing the play as comprising quirky characters and spinning out of control. The critic gives it 2/5 stars, and the text is truncated, so I'm scoring it as negative with low confidence. | Kimi: Despite praising individual performances as 'first-rate' and acknowledging moments of 'great gusto,' the critic awards 2/5 stars and delivers a negative verdict criticizing the play's chaotic structure, 'mystifying' ritualistic ending, and heavy-handed delivery of its themes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:16:34.297Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

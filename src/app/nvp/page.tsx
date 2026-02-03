@@ -111,7 +111,7 @@ function NVPPageInner() {
     // Type filter
     if (type !== 'all') {
       result = result.filter(show => {
-        const isMusical = show.type === 'musical' || show.type === 'revival';
+        const isMusical = show.type === 'musical';
         return type === 'musical' ? isMusical : !isMusical;
       });
     }
@@ -270,7 +270,7 @@ function NVPPageInner() {
       {nvpShows.length > 0 ? (
         <div className="space-y-3" role="list" aria-label="NVP portfolio shows">
           {nvpShows.map((show, index) => {
-            const isRevival = show.type === 'revival';
+            const isRevival = show.isRevival === true;
 
             // Get the appropriate score based on mode
             let tier: ScoreTier | null = null;
@@ -356,8 +356,8 @@ function NVPPageInner() {
                           {audienceGrade.label}
                         </span>
                         <div
-                          className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold"
-                          style={{
+                          className={`score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold${audienceGrade.grade === 'A+' ? ' audience-top-grade' : ''}`}
+                          style={audienceGrade.grade === 'A+' ? {} : {
                             backgroundColor: audienceGrade.color,
                             color: audienceGrade.textColor,
                             boxShadow: `0 2px 8px ${audienceGrade.color}4d`,

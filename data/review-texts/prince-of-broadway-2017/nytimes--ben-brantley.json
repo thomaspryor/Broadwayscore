@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This lovingly assembled tribute to the Broadway producer and director Hal Prince feels more like a wake than a celebration, despite its energetic performances and the undeniable glories of its source material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This lovingly assembled tribute feels more like a wake than a celebration, despite its energetic performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Despite praising the performances as 'energetic' and acknowledging 'undeniable glories' in the source material, the critic's core verdict is that the show 'feels more like a wake than a celebration' - a fundamentally mixed assessment that neither recommends nor strongly discourages. | GPT-4o: The review acknowledges energetic performances and the glories of the source material but ultimately describes the show as more of a wake than a celebration, indicating a mixed reception. | Gemini: The review acknowledges positive aspects (energetic performances, glorious source material) but ultimately finds the tribute to feel more like a wake, suggesting a mixed or ambivalent experience. | Kimi: While the critic acknowledges the show is 'lovingly assembled' with 'energetic performances' and strong source material, the dominant metaphor of a 'wake' (suggesting something mournful and dead) rather than a 'celebration' indicates a fundamental tonal failure for a tribute show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:49:28.626Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

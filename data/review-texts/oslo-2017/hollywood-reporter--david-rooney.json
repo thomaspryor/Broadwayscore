@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The political thriller Oslo makes for absorbing theater, transforming what could have been a dry historical procedural into a gripping human drama about the secret 1993 negotiations that led to the first signed agreement between Israel and Palestine.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Oslo makes for absorbing theater, transforming what could have been a dry historical procedural into a gripping human drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment describing the show as 'absorbing theater' and 'gripping human drama,' indicating a solid recommendation despite being a brief excerpt. | GPT-4o: The review praises the play for being 'absorbing' and 'gripping', indicating a strong recommendation to see it. The transformation from a potentially dry subject into compelling drama suggests a positive evaluation. | Gemini: The review uses positive language such as \"absorbing\" and \"gripping\" to describe the show, indicating a positive recommendation. | Kimi: The critic offers unqualified praise, describing the show as 'absorbing' and 'gripping' for its transformation of historical material into compelling drama, with no reservations noted.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:44:16.448Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

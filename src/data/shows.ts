@@ -12,7 +12,7 @@ export const shows: Show[] = [
       venue: 'August Wilson Theatre',
       openingDate: '2024-04-21',
       status: 'opened',
-      type: 'revival',
+      type: 'musical',
       runtime: '2h 30m',
       intermissions: 0,
     },

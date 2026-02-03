@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Andrew Lloyd Webber's 'School of Rock' rocks Broadway with a high-energy, feel-good musical that hits all the right notes. The show delivers exactly what it promises: loud, proud rock 'n' roll with heart.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Andrew Lloyd Webber's 'School of Rock' rocks Broadway with a high-energy, feel-good musical that hits all the right notes. The show delivers exactly what it promises: loud, proud rock 'n' roll with heart.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Andrew Lloyd Webber's 'School of Rock' rocks Broadway with a high-energy, feel-good musical that hits all the right notes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict with enthusiastic language ('rocks Broadway', 'hits all the right notes') and the critic's own 80 rating confirms strong positive recommendation. | GPT-4o: The review is clearly positive, highlighting the show's energy and successful delivery of its musical promise. The original rating of 80 aligns with a solid recommendation. | Gemini: The review is positive, describing the show as \"high-energy, feel-good\" and stating that it \"hits all the right notes.\" The critic's rating of 80 aligns with a positive assessment. | Kimi: The review delivers unqualified praise with energetic language ('rocks', 'hits all the right notes') and the critic's own 80 rating confirms a strong positive recommendation for this feel-good musical.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:51:56.913Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

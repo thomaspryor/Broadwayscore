@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wolfe and Washington and a marvelous cast demonstrate that the play is indeed a monumental piece of theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with consistent superlatives throughout: 'extraordinary performance,' 'marvelous cast,' 'perfect design team,' and concluding that it's 'a monumental piece of theater.' Despite opening context about the play's traditional challenges, the critic delivers unqualified praise for this specific production. | GPT-4o: The review is filled with superlatives and praise for the production, performances, and direction, indicating a strong recommendation. The 5/5 stars and the key quote support a Rave classification, despite the text being truncated. | Gemini: Despite the length and potential for it to be tedious, the critic praises the direction, performances, and design elements, concluding that it's a monumental piece of theater. The 5/5 star rating also supports a positive classification. | Kimi: 5/5 stars with unqualified praise for the direction, performances, and design, calling the production 'monumental' and 'more engrossing' than previous versions despite the play's usual length issues.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:12:41.776Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

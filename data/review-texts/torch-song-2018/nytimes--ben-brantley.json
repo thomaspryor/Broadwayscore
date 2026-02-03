@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Fierstein has reworked his material into something richer and more honestly felt than the original trilogy, creating a portrait of resilience that doesn't shy away from the hard-won wisdom that comes with surviving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Mr. Fierstein has reworked his material into something richer and more honestly felt than the original trilogy, creating a portrait of resilience that doesn't shy away from the hard-won wisdom that comes with surviving.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Fierstein has reworked his material into something richer and more honestly felt than the original trilogy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brantley praises the material as 'richer and more honestly felt' than the original, highlighting 'resilience' and 'hard-won wisdom' - clear positive assessment though excerpt is brief. | GPT-4o: The review praises the reworked material as 'richer and more honestly felt,' indicating a positive recommendation. The use of 'resilience' and 'hard-won wisdom' suggests depth and quality in the production. | Gemini: The review indicates a positive change and improvement from the original material, suggesting a worthwhile experience. | Kimi: The excerpt offers strong praise for the revised material as 'richer' and 'more honestly felt' with 'hard-won wisdom,' indicating a clear recommendation despite the brevity of the available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:29:01.315Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

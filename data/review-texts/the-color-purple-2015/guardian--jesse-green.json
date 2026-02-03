@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of the 2005 musical, based on Alice Walker's novel, is a gorgeous, emotionally devastating experience that improves on the original in every way.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -57,5 +57,60 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 668,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is Erivo's show. She's here and if New York producers have any sense, she'll stay.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises Erivo's remarkable performance and Doyle's streamlined direction while noting script and score weaknesses. The aggregator excerpt calling it 'gorgeous, emotionally devastating' and improving 'in every way' supports a positive recommendation despite the truncated text. | GPT-4o: The review praises the performances, particularly Cynthia Erivo's, and notes improvements over the original production. Despite some reservations about Jennifer Hudson's performance, the overall tone is positive, aligning with the original rating of 80. | Gemini: The review praises Erivo's performance and Doyle's direction, but notes some issues with the script and Hudson's performance. The critic's original rating was 80. | Kimi: Despite reservations about the schematic script and unremarkable score, the review praises Erivo's remarkable, infectious performance and the streamlined production. The original 80/100 rating confirms a solid recommendation, though the truncated text warrants caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:04:44.170Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

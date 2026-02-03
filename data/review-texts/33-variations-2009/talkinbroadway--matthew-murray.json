@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jane Fonda's return to Broadway after 46 years is reason enough to see 33 Variations, but fortunately Moisés Kaufman's play about obsession, legacy, and the creative process provides plenty of other compelling reasons as well.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jane Fonda's return to Broadway after 46 years is reason enough to see 33 Variations, but fortunately Moisés Kaufman's play about obsession, legacy, and the creative process provides plenty of other compelling reasons as well.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jane Fonda's return to Broadway after 46 years is reason enough to see 33 Variations, but fortunately Moisés Kaufman's play about obsession, legacy, and the creative process provides plenty of other compelling reasons as well.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation ('reason enough to see') enhanced by praise for the play itself ('plenty of other compelling reasons'). Single excerpt warning suggests this represents positive sentiment, scoring in upper Positive range. | GPT-4o: The excerpt provides a strong recommendation, highlighting Jane Fonda's return and the play's compelling nature. The lack of full review text and single excerpt warning necessitate a cautious approach, but the positive tone suggests a strong endorsement. | Gemini: The review excerpt indicates a positive recommendation, highlighting Jane Fonda's return and the play's compelling qualities. Given it's a single excerpt, I'm placing it on the higher end of the positive range. | Kimi: The excerpt explicitly recommends seeing the show, citing both Fonda's return and the play's compelling qualities. As a single clearly positive excerpt, scored at the higher end of the Positive bucket (80-84) per instructions, with low confidence due to limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:36:25.945Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

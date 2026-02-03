@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It pulses with a theatrical dynamism that marks its young playwright as an important new voice.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with praise for the ensemble, direction, and playwright's voice, but notes the play 'suffers from a generic quality' and 'feels overly emphatic at times.' Clear recommendation despite reservations. | GPT-4o: The review praises the play's urgency, ensemble, and direction, while noting some generic qualities and emphatic moments. The 4/5 stars and positive tone place it in the Positive bucket, but the truncated text suggests caution. | Gemini: The review is mostly positive, highlighting the play's urgency, diverse themes, and the playwright's voice, but also notes some generic qualities and speechmaking. The 4/5 star rating also suggests a positive recommendation, though the truncated text makes the final verdict less certain. | Kimi: The critic awards 4/5 stars and praises the superb ensemble, expert direction, and theatrical dynamism, while noting occasional generic qualities and speechifying. The final assessment marks the playwright as an important new voice demanding to be heard, indicating a solid recommendation despite reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:25:58.676Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What Schreiber and Wilson accomplish is a master class in acting, particularly in the way they handle Mamet's distinctive dialogue with its repetitions, interruptions, and abrupt shifts.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What Schreiber and Wilson accomplish is a master class in acting, particularly in the way they handle Mamet's distinctive dialogue with its repetitions, interruptions, and abrupt shifts.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What Schreiber and Wilson accomplish is a master class in acting, particularly in the way they handle Mamet's distinctive dialogue with its repetitions, interruptions, and abrupt shifts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performances as a 'master class in acting' suggests a positive recommendation, but with only one curated excerpt available, the overall verdict remains uncertain. | GPT-4o: The excerpt praises the performances as a 'master class in acting', indicating a strong positive impression of the actors' handling of the dialogue. Given the single excerpt warning, the score is placed in the upper end of the Positive range. | Gemini: The excerpt praises the acting as a \"master class,\" which suggests a positive recommendation. Given that it's a single excerpt, I'm placing it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt provides strong specific praise for the lead performances ('master class'), indicating clear enthusiasm for the acting. Per the single-excerpt guidance for clearly positive quotes, this falls in the upper Positive range (80-84), though confidence is low given the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:38:14.450Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

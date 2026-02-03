@@ -21,7 +21,7 @@ export function StatusBadge({ status }: { status: string }) {
 
 // Format pill - outline style
 export function FormatPill({ type }: { type: string }) {
-  const isMusical = type === 'musical' || type === 'revival';
+  const isMusical = type === 'musical';
   const label = isMusical ? 'MUSICAL' : 'PLAY';
   const colorClass = isMusical
     ? 'border-purple-500/50 text-purple-400'

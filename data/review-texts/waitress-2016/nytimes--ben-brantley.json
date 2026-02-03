@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Mueller finds something approaching greatness in transforming an adorable kook into a flesh-and-blood woman discovering her own strength.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,59 @@
   "archiveOrgTimestamp": "20251007094146",
   "archiveOrgUrl": "http://web.archive.org/web/20251007094146/https://www.nytimes.com/2016/04/25/theater/review-jessie-mueller-serves-a-slice-of-life-with-pie-in-sara-bareilless-waitress.html",
   "wordCount": 1000,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Mueller's vibrant performance of this gentle but wrenching song is the high point of the show — and for that matter a high point of the Broadway season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley consistently praises the performances, especially Mueller's 'vital ingredient' and climactic song as 'a high point of the Broadway season.' Despite criticizing the book as flattening characters and lacking depth, he finds the show 'agreeable' with 'appealing' music and calls Mueller's final performance 'transporting.' | Gemini: The review is generally positive, highlighting Jessie Mueller's performance and some of Sara Bareilles's music, but also noting the book's flaws and lack of depth. The final paragraph indicates a strong, positive emotional impact despite reservations. | Kimi: While the critic finds the book uneven and the material 'unexceptional,' the review ultimately recommends the show based on Jessie Mueller's star performance and the emotionally transporting finale, describing it as a 'high point of the Broadway season.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:30:54.220Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

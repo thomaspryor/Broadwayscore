@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "War Paint is a cosmetic makeover of a mediocre musical. The show about cosmetics titans Helena Rubinstein and Elizabeth Arden has been prettied up since its world premiere in Chicago last year, but it's still more foundation than substance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "War Paint is a cosmetic makeover of a mediocre musical. The show about cosmetics titans Helena Rubinstein and Elizabeth Arden has been prettied up since its world premiere in Chicago last year, but it's still more foundation than substance.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (39 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "War Paint is a cosmetic makeover of a mediocre musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic acknowledges improvements from the Chicago production but maintains it's fundamentally 'mediocre' with 'more foundation than substance.' This suggests neither recommendation nor strong discouragement. | GPT-4o: The review describes the show as 'mediocre' and lacking substance, indicating a negative verdict without strong redeeming qualities. | Gemini: The review states that the show is still more foundation than substance, indicating a lack of depth despite improvements. This suggests a negative overall assessment. | Kimi: The critic dismisses the Broadway production as superficial ('more foundation than substance') and maintains that despite improvements since Chicago, it remains mediocre with no recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:32:16.641Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

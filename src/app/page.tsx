@@ -60,7 +60,7 @@ function ChevronRightIcon() {
 }
 
 const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: { show: ComputedShow; index: number; hideStatus: boolean; scoreMode: ScoreModeParam }) {
-  const isRevival = show.type === 'revival';
+  const isRevival = show.isRevival === true;
 
   // Get the appropriate score based on mode
   let score: number | null | undefined;
@@ -151,8 +151,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
                 {audienceGrade.label}
               </span>
               <div
-                className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold"
-                style={{
+                className={`score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold${audienceGrade.grade === 'A+' ? ' audience-top-grade' : ''}`}
+                style={audienceGrade.grade === 'A+' ? {} : {
                   backgroundColor: audienceGrade.color,
                   color: audienceGrade.textColor,
                   boxShadow: `0 2px 8px ${audienceGrade.color}4d`,
@@ -341,7 +341,7 @@ function HomePageInner() {
   const bestNewMusicals = useMemo(() => {
     return shows
       .filter(show => {
-        const isMusical = show.type === 'musical' || show.type === 'revival';
+        const isMusical = show.type === 'musical';
         const openDate = new Date(show.openingDate);
         return isMusical && show.status === 'open' && openDate >= twelveMonthsAgo && show.criticScore?.score;
       })
@@ -475,7 +475,7 @@ function HomePageInner() {
     // Type filter
     if (type !== 'all') {
       result = result.filter(show => {
-        const isMusical = show.type === 'musical' || show.type === 'revival';
+        const isMusical = show.type === 'musical';
         return type === 'musical' ? isMusical : !isMusical;
       });
     }

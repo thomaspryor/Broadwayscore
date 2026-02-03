@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Field brings a ferocious intensity to Amanda that makes her both more sympathetic and more frightening than usual. Her performance has the concentrated force of a method actor who has fully inhabited her character's delusions.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (36 words)",
   "textQuality": "truncated",
   "sources": [
     "web-search",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://theater.nytimes.com/2013/09/27/theater/reviews/the-glass-menagerie-stars-cherry-jones-and-zachary-quinto.html"
+  "playbillVerdictUrl": "http://theater.nytimes.com/2013/09/27/theater/reviews/the-glass-menagerie-stars-cherry-jones-and-zachary-quinto.html",
+  "rejectedAt": "2026-02-03T20:10:10.637Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief excerpt or quote about a performance, not a complete review with an overall verdict or recommendation.; openai: The text is a brief excerpt focusing solely on a performance without evaluating the overall production.",
+  "promptVersion": "5.2.0"
 }

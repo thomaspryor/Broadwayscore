@@ -16,10 +16,15 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Danes brings a feisty authenticity to Eliza that makes you believe in her metamorphosis from cockney flower seller to refined lady. Her natural intelligence shines through even when she's mangling her vowels.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (33 words)",
   "textQuality": "truncated",
   "sources": [
     "web-search"
-  ]
+  ],
+  "rejectedAt": "2026-02-03T19:50:28.765Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief excerpt or quote about a performance, not a complete review with an overall verdict or recommendation; openai: The review text is about a performance by Ms. Danes as Eliza, which suggests it is about 'My Fair Lady', not the target show.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Lynn Ahrens and Stephen Flaherty's 1990 musical transforms Circle in the Square into a Caribbean paradise, with Michael Arden's staging creating an immersive experience that feels like a celebration.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The revival of Lynn Ahrens and Stephen Flaherty's 1990 musical transforms Circle in the Square into a Caribbean paradise, with Michael Arden's staging creating an immersive experience that feels like a celebration.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "transforms Circle in the Square into a Caribbean paradise",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Positive language about the transformation and staging creating a celebratory experience, though brief and lacks depth of evaluation. | GPT-4o: The review uses strong positive language, describing the production as an 'immersive experience' and a 'celebration,' indicating a highly enthusiastic recommendation. | Gemini: The review describes the staging as creating an immersive experience that feels like a celebration, indicating a positive assessment. | Kimi: The critic offers unqualified praise for the production's staging and atmosphere, using evocative language like 'Caribbean paradise' and 'celebration' that signals a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:42:57.042Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "This production isn't exactly cracking the material open in any new way, but soars in one particular aspect: the friendship between its leads. Reeves and Winter are old friends playing old friends and their dynamic oozes fondness and longfelt frustration. The love and safety that Didi and Gogo find in one another is so endearing.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production isn't exactly cracking the material open in any new way, but soars in one particular aspect: the friendship between its leads.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Qualified positive review that acknowledges limitations ('isn't exactly cracking the material open') but praises the lead performances and their chemistry. Single excerpt limits confidence in full verdict. | GPT-4o: The excerpt highlights the endearing dynamic between the leads, suggesting a positive aspect of the production. However, it notes that the production doesn't offer new insights into the material, indicating a mild recommendation. | Gemini: The review excerpt focuses on the positive dynamic between the leads, but also notes that the production doesn't offer a fresh perspective. Given the limited text, a score in the lower-middle of the 'Positive' range seems appropriate. | Kimi: While acknowledging the production doesn't break new ground, the critic enthusiastically praises the lead performances using words like 'soars' and 'endearing,' clearly recommending the show based on the chemistry between Reeves and Winter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:37:27.668Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

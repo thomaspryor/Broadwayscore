@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The stars are Amanda Peet and Patrick Wilson, both accomplished performers who work hard to breathe life into Neil Simon's 1963 romantic comedy about newlyweds adjusting to married life in a fifth-floor Greenwich Village walk-up.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The stars are Amanda Peet and Patrick Wilson, both accomplished performers who work hard to breathe life into Neil Simon's 1963 romantic comedy about newlyweds adjusting to married life in a fifth-floor Greenwich Village walk-up.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "accomplished performers who work hard to breathe life into Neil Simon's 1963 romantic comedy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows performers 'working hard to breathe life' into the material, suggesting the play itself may be lifeless or challenging. This phrasing implies struggle rather than effortless success, pointing to mixed reception. | GPT-4o: The excerpt highlights the effort of the performers but lacks any clear recommendation or strong praise for the production itself. The context suggests a neutral stance, leading to a mixed classification. | Gemini: The excerpt focuses on the actors and the play's premise, but doesn't offer a clear recommendation or discouragement. The phrase \"work hard to breathe life into\" suggests the play itself might be lacking, leading to a mixed classification. | Kimi: While praising the stars as 'accomplished performers,' the critic suggests they struggle to enliven the dated material, indicating a qualified recommendation based on acting rather than the production as a whole.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:46:48.082Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

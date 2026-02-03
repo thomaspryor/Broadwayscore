@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheerfully ridiculous musical, adapted from the 1980 movie flop that starred Olivia Newton-John, has been reimagined as a knowing send-up of itself, a camp valentine to the cheesier aspects of late-70s pop culture.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,59 @@
   "textQuality": "truncated",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This cheerfully ridiculous musical has been reimagined as a knowing send-up of itself, a camp valentine to the cheesier aspects of late-70s pop culture.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses positive language ('cheerfully ridiculous', 'knowing send-up', 'valentine') suggesting the show succeeds as intentional camp, though the brief excerpt limits confidence in the full verdict. | Gemini: The review describes the musical as \"cheerfully ridiculous\" and a \"camp valentine,\" suggesting an enjoyable, albeit perhaps not highbrow, experience. This leans towards a positive recommendation with reservations. | Kimi: Brantley employs affectionate language ('cheerfully,' 'valentine,' 'knowing') to praise the show's campy self-awareness, framing its ridiculousness as intentional and enjoyable rather than a flaw, indicating a clear recommendation for this specific tone of entertainment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:34:57.958Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }
