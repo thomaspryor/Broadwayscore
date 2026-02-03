@@ -4816,18 +4816,6 @@
     "timestamp": "2026-02-02T00:00:36.099Z"
   },
   {
-    "reviewId": "harry-potter-2021/wsj--terry-teachout.json",
-    "showId": "harry-potter-2021",
-    "outlet": "The Wall Street Journal",
-    "critic": "Terry Teachout",
-    "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-bringing-the-magic-to-life-1524677142",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 1027,
-    "timestamp": "2026-02-02T00:00:39.532Z"
-  },
-  {
     "reviewId": "heart-of-rock-and-roll-2024/timeout--regina-robbins.json",
     "showId": "heart-of-rock-and-roll-2024",
     "outlet": "Time Out New York",
@@ -5306,18 +5294,6 @@
     "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
     "textLength": 628,
     "timestamp": "2026-02-02T03:28:15.414Z"
-  },
-  {
-    "reviewId": "harry-potter-2021/national-review--kyle-smith.json",
-    "showId": "harry-potter-2021",
-    "outlet": "National Review",
-    "critic": "Kyle Smith",
-    "url": "https://www.nationalreview.com/2018/04/harry-potter-broadway-play-turning-point-for-american-theater/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"paywall\"",
-    "textLength": 6457,
-    "timestamp": "2026-02-02T03:29:08.170Z"
   },
   {
     "reviewId": "illinoise-2024/timeout--adam-feldman.json",
@@ -9050,5 +9026,41 @@
     "garbageReason": "Error/404 page: \"Page Not Found\"",
     "textLength": 911,
     "timestamp": "2026-02-03T16:55:48.058Z"
+  },
+  {
+    "reviewId": "harry-potter-2021/national-review--kyle-smith.json",
+    "showId": "harry-potter-2021",
+    "outlet": "National Review",
+    "critic": "Kyle Smith",
+    "url": "https://www.nationalreview.com/2018/04/harry-potter-broadway-play-turning-point-for-american-theater/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, the price, the audience, once, rain...",
+    "textLength": 6110,
+    "timestamp": "2026-02-03T19:13:12.727Z"
+  },
+  {
+    "reviewId": "harry-potter-2021/wsj--terry-teachout.json",
+    "showId": "harry-potter-2021",
+    "outlet": "The Wall Street Journal",
+    "critic": "Terry Teachout",
+    "url": "https://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-bringing-the-magic-to-life-1524677142",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): the queen of versailles, company, the audience, company, the producers",
+    "textLength": 1027,
+    "timestamp": "2026-02-03T19:13:43.909Z"
+  },
+  {
+    "reviewId": "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
+    "showId": "harry-potter-2021",
+    "outlet": "Broadway & Me",
+    "critic": "Janice C. Simpson",
+    "url": "http://broadwayandme.blogspot.com/2018/05/the-unabashed-confessions-of-harry.html",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): the wiz, parade, summer, rain, race...",
+    "textLength": 7165,
+    "timestamp": "2026-02-03T19:14:36.621Z"
   }
 ]
