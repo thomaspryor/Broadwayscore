@@ -20,14 +20,14 @@
   "contentTierReason": "Short text (23 words)",
   "textWordCount": 1151,
   "archivePath": "data/archives/reviews/act-one-2014/nytg--david-roberts_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T22:36:37.773Z",
+  "textFetchedAt": "2026-02-03T23:01:45.935Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
       "success": false,
-      "error": "No archive snapshot available"
+      "error": "connect ECONNREFUSED 207.241.237.3:80"
     },
     {
       "tier": 0.5,
