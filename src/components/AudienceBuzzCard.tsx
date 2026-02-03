@@ -9,6 +9,7 @@ import {
 interface AudienceBuzzCardProps {
   buzz: AudienceBuzzData;
   showScoreUrl?: string;
+  limitedSources?: boolean;
 }
 
 // Heart icon for "Loving It"
@@ -140,7 +141,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoo
   return <div className={className}>{inner}</div>;
 }
 
-export default function AudienceBuzzCard({ buzz, showScoreUrl }: AudienceBuzzCardProps) {
+export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources }: AudienceBuzzCardProps) {
   const grade = getAudienceGrade(buzz.combinedScore);
   const colors = getAudienceGradeClasses(buzz.combinedScore);
   const { showScore, mezzanine, reddit } = buzz.sources;
@@ -197,6 +198,13 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl }: AudienceBuzzCar
           comingSoon={!reddit}
         />
       </div>
+
+      {/* Limited sources note for historical shows */}
+      {limitedSources && (
+        <p className="text-xs text-gray-500 mt-3">
+          This show predates most audience rating platforms. Score based on limited sources.
+        </p>
+      )}
     </div>
   );
 }
