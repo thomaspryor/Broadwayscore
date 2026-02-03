@@ -325,16 +325,27 @@ function multiModelEnsemble(results: ModelScore[]): EnsembleResult {
   const finalScore = Math.round(medScore);
   const derivedBucket = scoreToBucket(finalScore);
 
+  // Check if all buckets in the split are adjacent (max 1 bucket apart)
+  const uniqueBuckets = Array.from(new Set(results.map(r => r.bucket)));
+  const maxBucketGap = uniqueBuckets.length === 2
+    ? bucketDistance(uniqueBuckets[0], uniqueBuckets[1])
+    : Math.max(...uniqueBuckets.flatMap((b1, i) =>
+        uniqueBuckets.slice(i + 1).map(b2 => bucketDistance(b1, b2))
+      ));
+  const isAdjacentSplit = maxBucketGap <= 1;
+
   return {
     score: finalScore,
     bucket: derivedBucket,
-    confidence: 'low',
+    confidence: isAdjacentSplit ? 'medium' : 'low',
     source: 'ensemble-no-consensus',
-    agreement: 'No bucket consensus - using median score',
+    agreement: isAdjacentSplit
+      ? `Adjacent bucket split (${uniqueBuckets.join('/')}) - using median score`
+      : 'No bucket consensus - using median score',
     note: `Buckets: ${results.map(r => `${r.model}=${r.bucket}`).join(', ')}`,
     modelResults: buildModelResultsMap(results),
-    needsReview: true,
-    reviewReason: `${n}-way bucket disagreement`
+    needsReview: !isAdjacentSplit,
+    reviewReason: !isAdjacentSplit ? `${n}-way bucket disagreement (${maxBucketGap} bucket gap)` : undefined
   };
 }
 

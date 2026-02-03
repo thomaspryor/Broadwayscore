@@ -257,7 +257,7 @@ describe('ensembleScore - 3 models', () => {
       assert.strictEqual(result.source, 'ensemble-no-consensus');
       assert.strictEqual(result.confidence, 'low');
       assert.strictEqual(result.needsReview, true);
-      assert.strictEqual(result.reviewReason, '3-way bucket disagreement');
+      assert.strictEqual(result.reviewReason, '3-way bucket disagreement (4 bucket gap)');
       assert.ok(result.note.includes('claude=Rave'), `note should contain 'claude=Rave'`);
       assert.ok(result.note.includes('openai=Mixed'), `note should contain 'openai=Mixed'`);
       assert.ok(result.note.includes('gemini=Pan'), `note should contain 'gemini=Pan'`);
@@ -274,6 +274,54 @@ describe('ensembleScore - 3 models', () => {
       assert.strictEqual(result.score, 60);
       assert.strictEqual(result.bucket, 'Mixed');
     });
+  });
+});
+
+// ========================================
+// 4-MODEL ADJACENT SPLIT TESTS
+// ========================================
+
+describe('ensembleScore - 4 models adjacent split', () => {
+  test('2-2 split between adjacent buckets gets medium confidence', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Positive', 82),
+      makeModelScore('openai', 'Rave', 90),
+      makeModelScore('gemini', 'Positive', 81),
+      makeModelScore('kimi', 'Rave', 90)
+    );
+
+    assert.strictEqual(result.source, 'ensemble-no-consensus');
+    assert.strictEqual(result.confidence, 'medium');
+    assert.strictEqual(result.needsReview, false);
+    assert.ok(result.agreement.includes('Adjacent bucket split'));
+  });
+
+  test('2-2 split between distant buckets gets low confidence', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Rave', 92),
+      makeModelScore('openai', 'Negative', 42),
+      makeModelScore('gemini', 'Rave', 90),
+      makeModelScore('kimi', 'Negative', 40)
+    );
+
+    assert.strictEqual(result.source, 'ensemble-no-consensus');
+    assert.strictEqual(result.confidence, 'low');
+    assert.strictEqual(result.needsReview, true);
+    assert.ok(result.reviewReason.includes('bucket gap'));
+  });
+
+  test('adjacent split score uses median', () => {
+    const result = ensembleScore(
+      makeModelScore('claude', 'Mixed', 62),
+      makeModelScore('openai', 'Mixed', 60),
+      makeModelScore('gemini', 'Positive', 72),
+      makeModelScore('kimi', 'Positive', 72)
+    );
+
+    assert.strictEqual(result.score, 67); // median of [60,62,72,72] = (62+72)/2
+    assert.strictEqual(result.bucket, 'Mixed');
+    assert.strictEqual(result.confidence, 'medium');
+    assert.strictEqual(result.needsReview, false);
   });
 });
 
