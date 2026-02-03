@@ -101,15 +101,25 @@ jobs:
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
-          # Retry push with rebase in case remote has new commits
+          # Robust push retry — handles conflicts from parallel workflows
           for i in 1 2 3 4 5; do
             if git push origin main; then
               echo "Push succeeded on attempt $i"
               break
             fi
             echo "Push failed (attempt $i), pulling and rebasing..."
-            git pull --rebase origin main
-            sleep $((RANDOM % 5 + 2))
+            git checkout -- . && git clean -fd
+            git pull --rebase -X theirs origin main || {
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+              git pull --rebase origin main || git rebase --abort 2>/dev/null
+            }
+            # Re-stage our image changes
+            git add data/ public/images/shows/
+            git diff --cached --quiet || git commit -m "chore: Auto-fetch and archive show images
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            sleep $((RANDOM % 20 + 10))
           done
 
       - name: Summary
