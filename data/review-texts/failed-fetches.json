@@ -4936,18 +4936,6 @@
     "timestamp": "2026-02-02T00:23:29.306Z"
   },
   {
-    "reviewId": "the-cottage-2023/wsj--charles-isherwood.json",
-    "showId": "the-cottage-2023",
-    "outlet": "The Wall Street Journal",
-    "critic": "Charles Isherwood",
-    "url": "https://www.wsj.com/articles/the-cottage-review-a-bedroom-farce-braves-broadway-9b285462",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2025 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 1942,
-    "timestamp": "2026-02-02T00:23:39.883Z"
-  },
-  {
     "reviewId": "the-lion-king-1997/ew--jess-cagle.json",
     "showId": "the-lion-king-1997",
     "outlet": "Entertainment Weekly",
@@ -7264,30 +7252,6 @@
     "timestamp": "2026-02-03T02:05:43.310Z"
   },
   {
-    "reviewId": "patriots-2024/deadline--greg-evans.json",
-    "showId": "patriots-2024",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
-    "textLength": 48624,
-    "timestamp": "2026-02-03T02:08:11.858Z"
-  },
-  {
-    "reviewId": "queen-versailles-2025/theatre-reviews-limited--david-roberts.json",
-    "showId": "queen-versailles-2025",
-    "outlet": "Theatre Reviews Limited",
-    "critic": "David Roberts",
-    "url": "https://www.theatrereviews.com/broadway-review-the-queen-of-versailles-at-the-st-james-theatre-through-sunday-january-4-2026/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (8)",
-    "textLength": 7518,
-    "timestamp": "2026-02-03T02:08:41.009Z"
-  },
-  {
     "reviewId": "mother-play-2024/timeout--adam-feldman.json",
     "showId": "mother-play-2024",
     "outlet": "Time Out New York",
@@ -8402,5 +8366,41 @@
     "garbageReason": "Multiple shows mentioned (5): company, rocky, evita, company, well",
     "textLength": 1636,
     "timestamp": "2026-02-03T05:05:36.861Z"
+  },
+  {
+    "reviewId": "patriots-2024/deadline--greg-evans.json",
+    "showId": "patriots-2024",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (41): the outsiders, the great gatsby, wicked, hamilton, chicago...",
+    "textLength": 48624,
+    "timestamp": "2026-02-03T05:06:01.541Z"
+  },
+  {
+    "reviewId": "queen-versailles-2025/theatre-reviews-limited--david-roberts.json",
+    "showId": "queen-versailles-2025",
+    "outlet": "Theatre Reviews Limited",
+    "critic": "David Roberts",
+    "url": "https://www.theatrereviews.com/broadway-review-the-queen-of-versailles-at-the-st-james-theatre-through-sunday-january-4-2026/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): maybe happy ending, giant, home, purpose, into the woods...",
+    "textLength": 7518,
+    "timestamp": "2026-02-03T05:06:10.892Z"
+  },
+  {
+    "reviewId": "the-cottage-2023/wsj--charles-isherwood.json",
+    "showId": "the-cottage-2023",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/the-cottage-review-a-bedroom-farce-braves-broadway-9b285462",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (6): appropriate, company, noises off, high, race...",
+    "textLength": 1942,
+    "timestamp": "2026-02-03T05:08:06.826Z"
   }
 ]
