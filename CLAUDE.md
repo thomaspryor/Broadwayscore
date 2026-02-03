@@ -77,19 +77,19 @@ A website aggregating Broadway show reviews into composite scores (independent B
 
 **Tech Stack:** Next.js 14, TypeScript, Tailwind CSS, static export
 
-## Current State (January 2026)
+## Current State (February 2026)
 
 ### What's Working
-- **40 Broadway shows** with full metadata (synopsis, creative team, venues)
-- **1,150+ critic reviews** across all shows in `data/review-texts/`
+- **738 Broadway shows** with full metadata (seasons 2005-2024 via IBDB, plus 8 pre-2005 classics)
+- **8,900+ review source files**, **3,439 scored reviews** in `reviews.json`
 - **Critics-only scoring** (V1 approach)
 - **TodayTix-inspired UI** with card layout, hero images, show detail pages
 - **Locally archived images** in `public/images/shows/`, CDN URL backups in `data/image-sources.json`. Open shows use native square thumbnails (1080x1080) from TodayTix API; closed shows use cropped-from-portrait squares via Contentful transforms
 - **URL-based filtering** with shareable filter state
 
 ### Shows Database
-- 27 currently open, 13 closed shows tracked
-- Upcoming shows (status: "previews") with opening dates and preview start dates
+- ~29 currently open, ~16 in previews, 690+ closed/historical shows tracked
+- Historical coverage: IBDB seasons 2005-2024 fully imported, plus 8 curated pre-2005 classics (Phantom, Rent, Cats, Les Mis, Hairspray, Avenue Q, The Producers, Spelling Bee)
 - Full metadata: synopsis, creative team, tags, age recommendations, theater addresses
 - Ticket links for all open shows
 
@@ -190,7 +190,7 @@ data/
 
 **Weighting:** Reddit fixed 20% when available. Show Score & Mezzanine split remaining 80% (or 100%) proportionally by sample size.
 
-**Sources:** Show Score (weekly automated, 0-100), Mezzanine (manual, star ratings), Reddit r/Broadway (monthly automated, sentiment analysis).
+**Sources:** Show Score (weekly automated, 0-100), Mezzanine (weekly automated via Parse API, star ratings), Reddit r/Broadway (monthly automated, sentiment analysis).
 
 ### Commercial Data Schema (commercial.json)
 ```typescript
@@ -259,7 +259,8 @@ data/
 - `scripts/scrape-nyc-theatre-roundups.js` - NYC Theatre excerpt extraction (2023+ shows)
 - `scripts/lib/show-matching.js` - Shared title→show matching utility
 - `scripts/audit-content-quality.js` - Deep content audit: fabricated URLs, wrong-production content, critic mismatches, domain mismatches, cross-show duplicate URLs, excerpt-as-fullText, generic URLs. Run manually after bulk data changes.
-- `scripts/build-sqlite.js` - Builds SQLite query database from JSON files (`npm run db:build`)
+- `scripts/scrape-mezzanine-audience.js` - Mezzanine audience data via Parse Server API (automated weekly)
+- `scripts/build-sqlite.js` - Builds SQLite query database from JSON files (`npm run db:build`). Handles `contentTier` as either string or nested object.
 - `scripts/query.js` - Ad-hoc SQL queries against SQLite database (`npm run db:query`)
 - `scripts/schema.sql` - SQLite schema definition (tables, indexes, views)
 
@@ -448,6 +449,7 @@ All automation runs via GitHub Actions - no local commands needed. See `.github/
 | `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `scrape-new-aggregators.yml` | ✅ | ✅ | Weekly Playbill Verdict + NYC Theatre, rebuilds inline. Also runs per-show from `gather-reviews.yml` |
 | `adjudicate-review-queue.yml` | ✅ | ❌ | Daily 5 AM UTC, triggers rebuild after commit |
+| `update-mezzanine.yml` | ❌ | ❌ | Weekly Sun 1 PM UTC, updates `audience-buzz.json` Mezzanine data via Parse API. Discord alert on failure (token may expire). |
 
 **For bulk imports (100s of shows):** Run parallel gather-reviews workflows, then trigger manual rebuild:
 ```bash
@@ -507,6 +509,8 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 | `SCRAPINGBEE_API_KEY` | Web scraping (fallback) |
 | `BROWSERBASE_API_KEY` | Managed browser cloud with CAPTCHA solving ($0.10/session) |
 | `BROWSERBASE_PROJECT_ID` | Browserbase project identifier |
+| `MEZZANINE_APP_ID` | Mezzanine Parse Server app ID |
+| `MEZZANINE_SESSION_TOKEN` | Mezzanine Parse session token (may expire; re-intercept via mitmproxy) |
 | `FORMSPREE_TOKEN` | Feedback form |
 
 **When creating/editing workflows:** Always check if the script needs API keys and add the appropriate `env:` block.
@@ -635,14 +639,9 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 
 ### Full Text Collection Status (Feb 2026)
 
-**704 reviews need re-scraping** (truncated/stub/needs-rescrape):
+**~2,700+ reviews need re-scraping** (truncated/stub/needs-rescrape) — bulk increased after importing 700+ historical shows from IBDB seasons. Nightly collector processes up to 100 per run.
 
-| Category | Count | Top Outlets |
-|----------|-------|-------------|
-| Free (no login) | 568 | timeout (52), deadline (40), new-york-sun (34), observer (26), nydailynews (24), thestage (18) |
-| Paywalled | 136 | wsj, nytimes, vulture, newyorker, washpost, latimes, telegraph, financialtimes |
-
-**Content tier distribution (3,644 source files):** 2,138 complete (58.6%), 774 excerpt (21.2%), 484 truncated (13.3%), 154 stub (4.2%), 66 needs-rescrape (1.8%), 16 invalid, 8 none, 4 full.
+**Content tier distribution (~8,900 source files):** ~1,450 complete, ~1,150 excerpt, ~2,650 truncated, ~310 stub, ~25 needs-rescrape, ~2,875 unclassified (empty placeholders from historical import), ~16 invalid. Numbers are approximate — collection runs continuously update these.
 
 **Multi-tier fallback success rates (Jan 2026 data):**
 | Tier | Method | Success Rate | Notes |
@@ -753,7 +752,7 @@ Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
 
 **garbageFullText recovery:** During rebuild, reviews with `fullText: null` but `garbageFullText` >200 chars are cleaned via `cleanText()`. If the cleaned result is >200 chars, it's promoted to `fullText` for scoring. 114 reviews recovered this way. The source files are NOT modified — recovery is in-memory during rebuild only.
 
-**contentTier flow-through:** `rebuild-all-reviews.js` carries `contentTier` from source files into `reviews.json`. Source file distribution: 2,138 complete, 774 excerpt, 484 truncated, 154 stub, 66 needs-rescrape, 16 invalid.
+**contentTier flow-through:** `rebuild-all-reviews.js` carries `contentTier` from source files into `reviews.json`. See "Full Text Collection Status" section for current distribution.
 
 **Human review queue:** `data/audit/needs-human-review.json` lists reviews where LLM score and aggregator thumbs disagree. Categories: `both-thumbs-override-llm` (auto-handled), `single-thumb-override-low-conf`, `both-thumbs-disagree-with-llm` (needs manual review). Set `humanReviewScore` + `humanReviewNote` on the source file to override. As of Feb 2026: 2 reviews in queue (down from 23 after audit).
 
@@ -761,7 +760,7 @@ Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
 
 ### Remaining Data Quality Work (Feb 2026)
 
-**Re-scraping queue:** ~188 free-site reviews and ~136 paywalled reviews still need fullText. Bulk collection runs dispatched for all 58 affected shows (free sites). The nightly `collect-review-texts.yml` cron (2 AM UTC) processes up to 100 reviews per run with Browserbase enabled. Paywalled sites use subscription credentials from GitHub Secrets (NYT, Vulture, WSJ, WaPo).
+**Re-scraping queue:** ~2,700+ reviews need fullText (mostly from historical show import). The nightly `collect-review-texts.yml` cron (2 AM UTC) processes up to 100 reviews per run with Browserbase enabled. Paywalled sites use subscription credentials from GitHub Secrets (NYT, Vulture, WSJ, WaPo).
 
 **Known audit flags (17 issues, all verified):** These are flagged by the audit but are legitimate:
 - **9 long-running show re-reviews:** URL year mismatches for Book of Mormon (2011), Chicago (1996), Lion King (1997), Wicked (2003) — critics reviewing years after opening. Legitimate.
