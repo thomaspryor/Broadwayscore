@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of William Finn and James Lapine's 1992 musical about a gay Jewish man's extended family in the early 1980s has been lovingly staged by Lapine himself with a superb cast that includes Christian Borle, Andrew Rannells and Stephanie J. Block.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of William Finn and James Lapine's 1992 musical about a gay Jewish man's extended family in the early 1980s has been lovingly staged by Lapine himself with a superb cast that includes Christian Borle, Andrew Rannells and Stephanie J. Block.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (42 words)"
+  "contentTierReason": "Short text (42 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival has been lovingly staged by Lapine himself with a superb cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear positive language ('lovingly staged', 'superb cast') but very brief excerpt with no deeper critique or qualifications visible. | Gemini: The review uses positive language such as \"lovingly staged\" and \"superb cast,\" indicating a positive recommendation. | Kimi: The excerpt uses strong positive language ('lovingly staged', 'superb cast') indicating a recommendation, though the brevity and lack of clear verdict statement suggest this is a truncated review or excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:57:48.507Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This brilliant musical about a man stuck reliving the same day over and over again is inventive, funny and surprisingly moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This brilliant musical about a man stuck reliving the same day over and over again is inventive, funny and surprisingly moving.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This brilliant musical about a man stuck reliving the same day over and over again is inventive, funny and surprisingly moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: The critic uses 'brilliant' as the opening descriptor and lists multiple strong positive attributes (inventive, funny, surprisingly moving) with no caveats or reservations expressed. | GPT-4o: The review uses strong positive language ('brilliant', 'inventive', 'funny', 'moving') indicating an enthusiastic recommendation without reservations. | Gemini: The review uses the word \"brilliant\" and describes the musical as inventive, funny, and surprisingly moving, indicating a very positive and enthusiastic recommendation. | Kimi: Unqualified praise using superlatives ('brilliant', 'inventive') and enthusiastic descriptors ('surprisingly moving') with no reservations indicates a rave recommendation, though the brief excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:27:48.830Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 88,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

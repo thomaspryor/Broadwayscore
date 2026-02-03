@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway revival of 'Follies' is a mixed blessing that succeeds in spite of itself. The production is uneven, but the score remains magnificent.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new Broadway revival of 'Follies' is a mixed blessing that succeeds in spite of itself. The production is uneven, but the score remains magnificent.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway revival of 'Follies' is a mixed blessing that succeeds in spite of itself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic explicitly calls it a 'mixed blessing' and describes the production as 'uneven,' though acknowledges the score's quality. The phrase 'succeeds in spite of itself' suggests qualified approval but not a clear recommendation. | GPT-4o: The review describes the production as 'uneven' but acknowledges the score as 'magnificent', indicating a mixed assessment overall. | Gemini: The review explicitly calls the production a \"mixed blessing\" and notes its unevenness, placing it squarely in the Mixed bucket. The score reflects the balance of positive (magnificent score) and negative (uneven production) elements. | Kimi: The critic explicitly labels the show a 'mixed blessing' and calls the production 'uneven,' though acknowledges it ultimately succeeds and praises the score as 'magnificent.' The brief text indicates significant reservations alongside qualified success.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:11:54.947Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

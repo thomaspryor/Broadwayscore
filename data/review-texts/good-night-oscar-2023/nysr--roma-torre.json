@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Good Night, Oscar is a captivating work, as hysterically funny as it is heartbreaking.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with consistent superlative praise throughout: 'tour-de-force performance,' 'captivating work,' 'outstanding play,' 'remarkable production,' 'marvelous cast.' Despite truncation warning, the review is overwhelmingly positive with no reservations expressed. | GPT-4o: The review is filled with superlatives and high praise for Sean Hayes' performance and the production overall. The original 5/5 stars rating supports a Rave classification. Despite the text being truncated, the available content strongly suggests an enthusiastic recommendation. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, using phrases like \"tour-de-force performance\", \"dazzles us with bravura skills\", and \"captivating work\". The critic also praises the direction, writing, and performances of the entire cast, indicating a rave review. | Kimi: The critic awards 5/5 stars and lavishes praise with terms like 'tour-de-force', 'phenomenal', and 'astonishing mastery', indicating an unqualified rave for the production and Sean Hayes' performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:27:50.859Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

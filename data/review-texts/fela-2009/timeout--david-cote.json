@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This biographical musical about Nigerian musician and political activist Fela Kuti is a feast for the senses, pulsing with Afrobeat rhythms and dazzling choreography that transforms the Eugene O'Neill Theatre into a Lagos nightclub.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,58 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This biographical musical about Nigerian musician and political activist Fela Kuti is a feast for the senses, pulsing with Afrobeat rhythms and dazzling choreography that transforms the Eugene O'Neill Theatre into a Lagos nightclub.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A feast for the senses, pulsing with Afrobeat rhythms and dazzling choreography.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | GPT-4o: The review describes the show as a sensory feast with positive attributes like 'pulsing with Afrobeat rhythms' and 'dazzling choreography', aligning with the critic's original rating of 80. | Gemini: The review uses positive language such as \"feast for the senses\" and \"dazzling choreography\" and the critic's rating is 80, indicating a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:49:57.666Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": null,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  }
 }

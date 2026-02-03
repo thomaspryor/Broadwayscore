@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is comfort food of the highest order — familiar, satisfying and executed with skill and obvious affection.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is comfort food of the highest order — familiar, satisfying and executed with skill and obvious affection.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (18 words)"
+  "contentTierReason": "Short text (18 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is comfort food of the highest order — familiar, satisfying and executed with skill and obvious affection.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with praise for execution and skill, though brief excerpt limits confidence in full context. | GPT-4o: The review uses positive language like 'satisfying' and 'executed with skill,' indicating a solid recommendation. However, the lack of detailed context or comparison limits confidence. | Gemini: The review uses positive language such as \"comfort food of the highest order\", \"satisfying\", and \"executed with skill and obvious affection\", indicating a strong positive recommendation. | Kimi: The critic offers strong endorsement using the 'highest order' superlative while praising the show's skillful execution and satisfying nature, indicating a solid recommendation without reaching 'masterpiece' level rave intensity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:53:41.390Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

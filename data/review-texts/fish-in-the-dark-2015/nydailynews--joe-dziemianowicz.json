@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "David's play feels more like an extended 'Seinfeld' episode than a fully formed theatrical work, with familiar neuroses and complaints that don't quite translate to the stage.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "David's play feels more like an extended 'Seinfeld' episode than a fully formed theatrical work, with familiar neuroses and complaints that don't quite translate to the stage.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "David's play feels more like an extended 'Seinfeld' episode than a fully formed theatrical work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment comparing the play unfavorably to TV and stating it's not 'fully formed theatrical work.' The 40 rating confirms this is a negative review. | GPT-4o: The review criticizes the play for lacking depth and not translating well to the stage, aligning with the original negative rating of 40. | Gemini: The review compares the play unfavorably to a 'Seinfeld' episode, suggesting it's not a fully realized theatrical work. Given the critic's rating of 40, this falls into the negative bucket. | Kimi: The critic unfavorably compares the play to a TV episode and states it doesn't work as theater, consistent with the provided 40-point rating which falls in the Negative range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:56:19.495Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

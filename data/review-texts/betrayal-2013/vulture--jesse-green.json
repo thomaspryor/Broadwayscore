@@ -3,10 +3,10 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jesse Green",
-  "url": "https://www.vulture.com/2013/11/theater-review-betrayal-on-broadway.html",
+  "url": "https://www.vulture.com/2013/10/theater-review-betrayal.html",
   "publishDate": "November 4, 2013",
-  "fullText": "The production, directed by Mike Nichols, is almost perfectly cast and beautifully designed, but it feels oddly muffled, as if the emotional temperature had been turned down a few degrees.",
-  "isFullReview": false,
+  "fullText": "Things you buy through our links may earn Vox Media a commission.\n\nDaniel Craig and Rachel Weisz in Harold Pinter’s Betrayal. Photo: Brigitte Lacombe October 27, 2013: A new production of Harold Pinter’s Betrayal opens on Broadway, in a production directed by Mike Nichols and starring Daniel Craig, Rachel Weisz, and Rafe Spall. The 1978 reverse-chronology drama about interlocking marital infidelities, universally acknowledged a classic, is the Big Event of the fall season.\n\nOctober 23, 2013: At a press performance a few days before the opening, all sorts of pairings and power games are observed. Glenn Close and Bette Midler sit together; Midler gets the aisle. Just as the lights dim, Gayle King rushes to join Oprah a few rows ahead. Neither gets the aisle! Javier Bardem does not seem to notice. He is on the aisle.\n\nA few minutes later: A very tasteful, tranquil, and often beautiful performance of Betrayal begins. Its style is best exemplified by Ian MacNeil’s scenery — a series of translucent boxes that fit within one another like Matryoshka dolls and float into place as scene succeeds scene. Or do scenes precede scenes? Both, really. Though the standard description of Pinter’s “reverse chronology” is inaccurate (people don’t speak backward, and several scenes in a row actually move forward) the overall trajectory is indeed toward the past. It begins in 1977, two years after the affair between Emma (Weisz) and Jerry (Spall) has ended, and ends in 1968, just as it’s beginning. In between, Emma’s husband, Robert (Craig), is at first nonchalant, then resigned, then furious, then oblivious. In this way, Pinter betrays a fundamental condition of drama, that actions cause consequences.\n\nShow \n 0 Comments / 0 New\n \n Comment\n \n\n Theater Review: Betrayal\n\n \n \n \n \n\n \n \n \n \n \n\n \n \n\n \n \n \n\n \n Your product is saved! You’ll receive emails when your saved products go on sale. Manage preferences.\n \n \n\n \n \n\n \n \n\n Things you buy through our links may earn Vox Media a commission.",
+  "isFullReview": true,
   "dtliExcerpt": "The production, directed by Mike Nichols, is almost perfectly cast and beautifully designed, but it feels oddly muffled, as if the emotional temperature had been turned down a few degrees.",
   "originalScore": null,
   "assignedScore": 64,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by Mike Nichols, is almost perfectly cast and beautifully designed, but it feels oddly muffled, as if the emotional temperature had been turned down a few degrees.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (30 words)",
   "llmScore": {
     "score": 64,
@@ -72,5 +72,47 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "previousUrl": "https://www.vulture.com/2013/11/theater-review-betrayal-on-broadway.html",
+  "urlDiscoveredAt": "2026-02-03T16:26:06.498Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 64,
+  "textWordCount": 314,
+  "archivePath": "data/archives/reviews/betrayal-2013/vulture--jesse-green_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T16:26:06.508Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 314,
+  "tierReason": "Full review text"
 }

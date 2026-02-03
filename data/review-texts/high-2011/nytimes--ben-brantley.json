@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This musical about a nun who becomes a substance-abuse counselor feels more like a support-group meeting than a Broadway show.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This musical about a nun who becomes a substance-abuse counselor feels more like a support-group meeting than a Broadway show.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)"
+  "contentTierReason": "Short text (20 words)",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical feels more like a support-group meeting than a Broadway show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment comparing the show unfavorably to a support group meeting rather than proper theater, indicating it fails as a Broadway production. | GPT-4o: The review suggests that the show lacks the entertainment value expected of a Broadway production, comparing it unfavorably to a support-group meeting. This indicates a negative assessment. | Gemini: The critic directly compares the show unfavorably to a support group meeting, indicating a negative assessment. | Kimi: The critic dismisses the theatrical experience by unfavorably comparing it to a clinical support-group setting rather than entertainment, indicating a clear lack of recommendation despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:51:27.095Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

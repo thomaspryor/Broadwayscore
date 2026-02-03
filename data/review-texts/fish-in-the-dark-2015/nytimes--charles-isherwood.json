@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. David has written a funny play, and he performs in it with an appealing, self-deprecating charm that makes his character's neuroses seem endearing rather than merely irritating.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. David has written a funny play, and he performs in it with an appealing, self-deprecating charm that makes his character's neuroses seem endearing rather than merely irritating.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. David has written a funny play, and he performs in it with an appealing, self-deprecating charm",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for both the writing ('funny play') and performance ('appealing, self-deprecating charm'), but this appears to be a brief excerpt with limited context for a fuller assessment. | GPT-4o: The review praises the play's humor and the lead performance, suggesting a positive experience. However, the lack of superlatives or broader context for the production tempers the enthusiasm. | Gemini: The review states the play is funny and the performance is appealing, indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic offers unqualified praise for both the writing ('funny') and the performance ('appealing,' 'endearing'), clearly recommending the show, though the brief excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:08:45.782Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

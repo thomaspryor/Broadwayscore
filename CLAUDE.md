@@ -446,6 +446,7 @@ All automation runs via GitHub Actions - no local commands needed. See `.github/
 | `collect-review-texts.yml` | ✅ | ✅ | Nightly 2 AM UTC + manual. Single-job rebuilds inline; parallel triggers `rebuild-reviews.yml` after all jobs complete |
 | `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
+| `scrape-new-aggregators.yml` | ✅ | ✅ | Weekly Playbill Verdict + NYC Theatre, rebuilds inline. Also runs per-show from `gather-reviews.yml` |
 | `adjudicate-review-queue.yml` | ✅ | ❌ | Daily 5 AM UTC, triggers rebuild after commit |
 
 **For bulk imports (100s of shows):** Run parallel gather-reviews workflows, then trigger manual rebuild:
@@ -528,8 +529,10 @@ Use ALL FIVE for comprehensive review coverage - each has different historical c
 1. **Show Score** (show-score.com) - Best for recent shows (2015+). URL: `{slug}-broadway` (always try `-broadway` suffix first to avoid off-broadway redirects)
 2. **DTLI** (didtheylikeit.com) - Excellent historical coverage back to ~2000s. URL: `didtheylikeit.com/shows/{show-name}/`
 3. **BWW Review Roundups** - Reviews from smaller outlets not on other aggregators. URL: search BroadwayWorld.
-4. **Playbill Verdict** (playbill.com/category/the-verdict) - Discovers review URLs from many outlets. Script: `scripts/scrape-playbill-verdict.js`. Google fallback for shows not on category page.
-5. **NYC Theatre Roundups** (newyorkcitytheatre.com) - Excerpts for paywalled reviews from 2023+ shows. Script: `scripts/scrape-nyc-theatre-roundups.js`. Google discovery for roundup page URLs.
+4. **Playbill Verdict** (playbill.com/category/the-verdict) - Discovers review URLs from many outlets. Script: `scripts/scrape-playbill-verdict.js`. Google fallback for shows not on category page. Supports `--shows=X,Y,Z` for targeted runs and `--no-date-filter` for historical imports.
+5. **NYC Theatre Roundups** (newyorkcitytheatre.com) - Excerpts for paywalled reviews from 2023+ shows. Script: `scripts/scrape-nyc-theatre-roundups.js`. Google discovery for roundup page URLs. Supports `--shows=X,Y,Z` for targeted runs.
+
+**Integration:** Sources 1-3 run inline during `gather-reviews.js` (immediate). Sources 4-5 run as a non-blocking `scrape-aggregators` job in `gather-reviews.yml` after gathering completes, and also weekly via `scrape-new-aggregators.yml` (Sundays 11 AM UTC) for catch-up.
 
 Archives stored in `data/aggregator-archive/`. Extraction scripts: `scripts/extract-show-score-reviews.js`, `scripts/extract-bww-reviews.js`.
 

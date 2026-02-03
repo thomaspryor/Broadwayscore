@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sherie Rene Scott's autobiographical musical memoir 'Everyday Rapture' is an intimate, affecting work that finds genuine poetry in the ordinary moments of a Kansas childhood and a performer's journey to Broadway.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Sherie Rene Scott's autobiographical musical memoir 'Everyday Rapture' is an intimate, affecting work that finds genuine poetry in the ordinary moments of a Kansas childhood and a performer's journey to Broadway.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "an intimate, affecting work that finds genuine poetry in the ordinary moments",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive descriptors like 'intimate, affecting' and 'genuine poetry' indicate clear approval and recommendation, though the brief excerpt limits confidence in the full verdict. | GPT-4o: The review uses positive language such as 'intimate', 'affecting', and 'genuine poetry', indicating a solid recommendation without reservations. | Gemini: The review uses positive language like \"intimate\" and \"affecting\" and finds \"genuine poetry\" in the show, indicating a positive recommendation. | Kimi: The review offers warm, unqualified praise describing the show as 'intimate, affecting' and finding 'genuine poetry,' indicating a strong recommendation. Confidence is low due to the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:55:06.418Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

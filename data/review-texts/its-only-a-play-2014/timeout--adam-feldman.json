@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "It's Only a Play is an evening of solid, old-fashioned entertainment, buoyed by a cast that clearly relishes the material and by Terrence McNally's savvy understanding of Broadway's ecosystem.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "It's Only a Play is an evening of solid, old-fashioned entertainment, buoyed by a cast that clearly relishes the material and by Terrence McNally's savvy understanding of Broadway's ecosystem.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's Only a Play is an evening of solid, old-fashioned entertainment, buoyed by a cast that clearly relishes the material",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory. 'Solid, old-fashioned entertainment' suggests competent but unremarkable, matching the numerical score perfectly. | GPT-4o: The original rating of 60 places it in the Mixed bucket. The review describes the show as 'solid, old-fashioned entertainment' which suggests a moderate recommendation without strong enthusiasm. | Gemini: The review uses the term 'solid' which indicates a mixed to positive review, but not overwhelmingly positive. The critic's rating of 60 aligns with the 'Mixed' bucket. | Kimi: The critic's own 60/100 rating places this firmly in the Mixed bucket (55-69), and the review offers measured praise ('solid,' 'old-fashioned') rather than an enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:01:01.547Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

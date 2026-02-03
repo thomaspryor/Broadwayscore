@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Daniel Radcliffe may not be the smoothest song-and-dance man on Broadway, but he's certainly one of the most charming. The 'Harry Potter' star makes a winning J. Pierrepont Finch in the revival of 'How to Succeed in Business Without Really Trying.'",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Daniel Radcliffe may not be the smoothest song-and-dance man on Broadway, but he's certainly one of the most charming. The 'Harry Potter' star makes a winning J. Pierrepont Finch in the revival of 'How to Succeed in Business Without Really Trying.'",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (41 words)"
+  "contentTierReason": "Short text (41 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The 'Harry Potter' star makes a winning J. Pierrepont Finch in the revival of 'How to Succeed in Business Without Really Trying.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic finds Radcliffe charming and winning in the role despite acknowledging his technical limitations. This is clearly positive but the excerpt is too brief to assess the full recommendation strength. | GPT-4o: The review praises Radcliffe's charm and describes his performance as 'winning,' indicating a positive recommendation despite some reservations about his song-and-dance skills. | Gemini: The review is positive, highlighting Radcliffe's charm despite some reservations about his song-and-dance skills. It's a recommendation, but not an enthusiastic one. | Kimi: Despite noting Radcliffe isn't the smoothest dancer, the critic calls him 'one of the most charming' and his performance 'winning,' clearly endorsing the revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:50:52.991Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

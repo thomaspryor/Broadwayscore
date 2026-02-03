@@ -35,5 +35,60 @@
   "textStatus": "complete",
   "archiveOrgTimestamp": "20210614202558",
   "archiveOrgUrl": "http://web.archive.org/web/20210614202558/https://dcmetrotheaterarts.com/2018/04/28/review-harry-potter-and-the-cursed-child-at-the-lyric-theatre/",
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harry Potter and the Cursed Child has it all!",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'spectacular,' 'blockbuster,' 'well worth every penny,' 'truly superlative work,' and 'unsurpassed production values.' No reservations or criticisms offered. | GPT-4o: The review is filled with superlatives and enthusiastic praise for every aspect of the production, from the performances to the design and direction. The critic describes it as a 'must-see' and 'superlative work,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using superlatives like \"amazing,\" \"dazzle,\" \"enthralling,\" \"compelling,\" \"fully immersive,\" and \"wondrous.\" The critic explicitly states it's \"well worth every penny\" and calls it a \"truly superlative work.\" | Kimi: Unqualified rave featuring extensive superlatives ('superlative work,' 'masterful direction,' 'stellar' cast) and enthusiastic recommendation ('well worth every penny') with no reservations or criticisms expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:44:51.106Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

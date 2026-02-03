@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This touching and forceful musical adaptation of Alison Bechdel's graphic memoir brings an authentic new voice to Broadway, one that manages to be both deeply personal and widely accessible.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This touching and forceful musical adaptation of Alison Bechdel's graphic memoir brings an authentic new voice to Broadway, one that manages to be both deeply personal and widely accessible.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This touching and forceful musical adaptation brings an authentic new voice to Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive language ('touching and forceful', 'authentic new voice') with praise for accessibility, but brief excerpt limits confidence in full verdict. | GPT-4o: The review uses strong positive language ('touching', 'forceful', 'authentic') and highlights the show's broad appeal, indicating a highly enthusiastic recommendation. | Gemini: The review uses positive language such as \"touching\", \"forceful\", and \"authentic\" to describe the musical, indicating a strong recommendation. | Kimi: The critic delivers strong praise with phrases like 'touching and forceful' and 'authentic new voice,' highlighting the show's emotional impact and accessibility without reservations, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:06:24.616Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

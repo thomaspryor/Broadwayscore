@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "How powerful is Good Night, and Good Luck? This powerful: Whatever law firm out there listing George Clooney as a client now (or at one time) is well advised to brace for legal pursuit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with superlative praise throughout. Despite the truncation warning, the complete review is present with a clear ending that emphasizes the show's power through a clever legal metaphor. The critic calls it 'devastating,' 'terrific,' and 'prescient-as-all-get-out,' with consistent enthusiasm for the political urgency and theatrical execution. | GPT-4o: The review is overwhelmingly positive, highlighting the production's powerful impact and Clooney's effective performance. The original 5/5 stars rating supports a high score in the Rave bucket, despite the truncated text warning. | Gemini: The review is overwhelmingly positive, highlighting the play's relevance and Clooney's performance, and the critic gives it 5/5 stars. However, the truncated text and lack of a clear concluding statement reduces confidence. | Kimi: 5/5 stars with consistent superlatives ('devastating', 'terrific', 'meticulous', 'prescient-as-all-get-out') and clear enthusiasm for the production's political relevance and performances. Despite truncated text, the rating and unambiguous positive tone confirm a rave verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:27:08.535Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

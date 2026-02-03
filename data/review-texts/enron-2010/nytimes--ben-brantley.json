@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This show is a kaleidoscopic whirl of movement, sound and light that keeps you dazzled even when it doesn't make complete sense. It's theater as a contact sport, and it leaves you breathless.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This show is a kaleidoscopic whirl of movement, sound and light that keeps you dazzled even when it doesn't make complete sense. It's theater as a contact sport, and it leaves you breathless.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show is a kaleidoscopic whirl of movement, sound and light that keeps you dazzled even when it doesn't make complete sense.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review uses strong positive language like 'kaleidoscopic whirl' and 'dazzled', indicating an enthusiastic recommendation despite minor reservations about coherence. | Gemini: The review is generally positive, describing the show as dazzling and breathless. However, the phrase \"even when it doesn't make complete sense\" indicates a reservation, placing it in the positive range but not a rave. | Kimi: The critic employs vivid, enthusiastic imagery ('kaleidoscopic whirl', 'contact sport', 'breathless') to praise the show's sensory impact and excitement, offering an unqualified recommendation despite noting the plot can be confusing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:46:38.103Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 90,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

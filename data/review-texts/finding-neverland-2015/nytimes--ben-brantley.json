@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new musical about J.M. Barrie and the inspiration for 'Peter Pan' is so busy trying to enchant that it never stops to consider what enchantment really means.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new musical about J.M. Barrie and the inspiration for 'Peter Pan' is so busy trying to enchant that it never stops to consider what enchantment really means.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new musical about J.M. Barrie and the inspiration for 'Peter Pan' is so busy trying to enchant that it never stops to consider what enchantment really means.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | GPT-4o: The review suggests the musical is overly focused on superficial enchantment without depth, indicating a lack of recommendation. The tone is critical, though not harsh enough for a pan. | Gemini: The review states that the musical is too busy trying to enchant and doesn't consider what enchantment really means, which is a negative assessment. | Kimi: The excerpt delivers a clear negative judgment, criticizing the show for being busy but intellectually empty regarding its central theme of enchantment. While the text appears to be an excerpt or truncated opening, the available content offers an unambiguous critique of the show's artistic failure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:52:44.434Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

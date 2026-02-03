@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Daniel Radcliffe makes a charming Broadway debut in this buoyant revival of the 1961 musical, bringing youthful energy and comic timing to the role of J. Pierrepont Finch.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Daniel Radcliffe makes a charming Broadway debut in this buoyant revival of the 1961 musical, bringing youthful energy and comic timing to the role of J. Pierrepont Finch.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Daniel Radcliffe makes a charming Broadway debut in this buoyant revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('charming', 'buoyant') praising both the star and revival, but extremely brief excerpt limits confidence in overall assessment. | GPT-4o: The review praises Radcliffe's performance and the overall tone of the revival as 'buoyant', indicating a positive reception. However, the review is brief, so the confidence is medium. | Gemini: The review is positive, highlighting Daniel Radcliffe's performance and describing the revival as \"buoyant.\" However, it's a brief statement, so I've scored it in the middle of the positive range. | Kimi: The critic offers unambiguous praise for both the revival ('buoyant') and the lead performance ('charming,' 'youthful energy'), indicating a solid recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:47:53.332Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

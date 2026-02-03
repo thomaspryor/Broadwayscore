@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hand to God is a hoot and a holler, a raunchy puppet comedy that somehow manages to be both deeply silly and surprisingly moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hand to God is a hoot and a holler, a raunchy puppet comedy that somehow manages to be both deeply silly and surprisingly moving.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hand to God is a hoot and a holler, a raunchy puppet comedy that somehow manages to be both deeply silly and surprisingly moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('hoot and a holler') with praise for the show's ability to balance comedy and emotional depth. Clear enthusiastic recommendation. | GPT-4o: The review describes the show as both entertaining ('a hoot and a holler') and emotionally impactful ('surprisingly moving'), indicating a strong recommendation. | Gemini: The review uses positive language such as \"hoot and a holler\" and \"surprisingly moving\", indicating a positive recommendation. | Kimi: The critic employs enthusiastic colloquial praise ('hoot and a holler') and commends the production's successful tonal balance between comedy and genuine emotion, indicating a strong positive recommendation despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:41:09.914Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

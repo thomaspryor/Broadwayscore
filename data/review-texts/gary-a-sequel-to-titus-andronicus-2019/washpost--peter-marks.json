@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Taylor Mac's 'Gary: A Sequel to Titus Andronicus' is a brilliant, blood-soaked comedy that finds profound meaning in the aftermath of Shakespeare's goriest tragedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Taylor Mac's 'Gary: A Sequel to Titus Andronicus' is a brilliant, blood-soaked comedy that finds profound meaning in the aftermath of Shakespeare's goriest tragedy.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Taylor Mac's 'Gary: A Sequel to Titus Andronicus' is a brilliant, blood-soaked comedy that finds profound meaning in the aftermath of Shakespeare's goriest tragedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlative 'brilliant' and 'profound meaning' with no caveats or reservations. Unqualified praise from major critic. | GPT-4o: The review uses strong, positive language ('brilliant', 'profound meaning') indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"brilliant\" and \"profound meaning,\" indicating a rave review. | Kimi: The critic employs superlatives ('brilliant,' 'profound meaning') without reservation, indicating strong enthusiasm for this blood-soaked comedy despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:10:48.141Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lucy Prebble's play about corporate greed and financial chicanery arrives on Broadway shorn of much of its original satirical bite, though it retains its spectacular staging.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Lucy Prebble's play about corporate greed and financial chicanery arrives on Broadway shorn of much of its original satirical bite, though it retains its spectacular staging.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "arrives on Broadway shorn of much of its original satirical bite, though it retains its spectacular staging.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The review notes a loss of satirical impact but acknowledges the staging as a positive element, resulting in a mixed assessment. | Gemini: The review acknowledges the spectacular staging but notes the loss of satirical bite, suggesting a mixed experience. It doesn't explicitly recommend or discourage seeing the play. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:51:21.261Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "kimiScore": 60,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

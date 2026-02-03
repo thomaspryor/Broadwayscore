@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Idina Menzel gives a knockout performance in this ambitious new musical that explores the different paths one life can take.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Idina Menzel gives a knockout performance in this ambitious new musical that explores the different paths one life can take.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)"
+  "contentTierReason": "Short text (20 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Idina Menzel gives a knockout performance in this ambitious new musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brief excerpt praising lead performance and calling the musical 'ambitious', but lacks sufficient detail for higher confidence scoring. | GPT-4o: The review highlights a strong lead performance and describes the musical as ambitious, indicating a positive recommendation. However, the brevity of the text limits the depth of evaluation, so confidence is medium. | Gemini: The review uses the phrase \"knockout performance\" which indicates a strong positive recommendation. | Kimi: The critic uses strong praise ('knockout') for Menzel's performance and describes the show positively as 'ambitious,' indicating a solid recommendation despite the brief text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:50:56.806Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

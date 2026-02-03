@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Gary is just as difficult, in the best sense, to sum up neatly: a raucous comedy whose subject is tragedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with sustained superlative praise throughout. Critic calls Mac a 'truly sui generis talent' and describes the work with terms like 'blazing intuition,' 'masterful,' and 'exquisite.' Despite the length, the review maintains enthusiastic tone and ends hoping Mac will bless Broadway 'for years to come.' | GPT-4o: The review is filled with superlatives and praises the play's humor, performances, and writing. The 5/5 star rating strongly suggests a rave review, despite the text being truncated. | Gemini: The critic praises the play's humor, performances, and overall impact, calling it a \"welcome sign of new life.\" Despite the truncated text, the overall tone is clearly positive, and the 5/5 star rating supports this classification. | Kimi: 5/5 stars with unqualified praise throughout; the critic celebrates the 'brilliant' writing, 'top form' performances by the entire cast, and 'masterful' direction, calling the work 'gloriously raunchy' and 'achingly tender' with no reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:09:42.503Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

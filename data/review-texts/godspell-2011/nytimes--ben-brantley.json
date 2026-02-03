@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new 'Godspell' is blessed with a young cast that sings stirringly and moves with athletic grace. But the show's flower-power philosophy feels more antiquated than timeless.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new 'Godspell' is blessed with a young cast that sings stirringly and moves with athletic grace. But the show's flower-power philosophy feels more antiquated than timeless.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the show's flower-power philosophy feels more antiquated than timeless.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises the cast's singing and movement but finds the core philosophy outdated. The 'but' construction signals mixed feelings rather than a recommendation. | GPT-4o: The review praises the cast's performance but criticizes the show's philosophy as outdated, leading to a mixed recommendation. | Gemini: The review praises the cast's performance but notes that the show's philosophy feels antiquated, resulting in a mixed assessment. | Kimi: The review praises the cast's stirring vocals and athletic grace but uses a contrasting 'but' to emphasize that the show's core philosophy feels antiquated rather than timeless, resulting in a balanced assessment that neither fully recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:17:44.477Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

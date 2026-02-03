@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you wouldn't feel the full mortal ache and ghostly chill that this production summons.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Whitaker's 'transfixing' performance and the production's emotional impact. The 'vaporous as smoke' comment suggests some reservation about the material, but the final verdict emphasizes what makes this production special and worth experiencing. | GPT-4o: The review praises Forest Whitaker's performance but describes the production as 'vaporous,' suggesting it lacks substance. The excerpt's tone is mixed, highlighting both strengths and weaknesses. | Gemini: The review praises Forest Whitaker's performance and the production's ability to evoke emotion, but also notes that the play's substance could be gleaned from a short reading. This suggests a positive but somewhat qualified recommendation. | Kimi: The excerpt offers strong praise for Forest Whitaker's performance ('breaks your heart,' 'transfixing') and the production's atmospheric impact ('mortal ache and ghostly chill'), but notes the source material is slight ('vaporous,' '20-minute reading'). With only one curated excerpt available, this appears to be a qualified recommendation that values the execution over the substance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:01:45.902Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 65,
+    "geminiScore": 79,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "James Graham's play about Rupert Murdoch's transformation of the Sun tabloid is a fleet, funny, and ultimately sobering look at how populist journalism changed Britain forever.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "James Graham's play about Rupert Murdoch's transformation of the Sun tabloid is a fleet, funny, and ultimately sobering look at how populist journalism changed Britain forever.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "James Graham's play about Rupert Murdoch's transformation of the Sun tabloid is a fleet, funny, and ultimately sobering look at how populist journalism changed Britain forever.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('fleet, funny') with substantive praise for the play's examination of its subject matter, indicating a solid recommendation without extreme superlatives. | GPT-4o: The review describes the play as 'fleet, funny, and ultimately sobering,' indicating a positive assessment with some depth. The tone suggests a solid recommendation, though not overly enthusiastic. | Gemini: The review uses positive language such as \"fleet, funny, and ultimately sobering\" indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: While brief, the review offers unambiguous praise with positive descriptors ('fleet,' 'funny,' 'sobering') indicating a solid recommendation, though the extreme brevity suggests this may be an excerpt or truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:09:54.974Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

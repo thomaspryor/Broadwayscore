@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Beanie Feldstein's performance lacks the charisma and vocal power that made Barbra Streisand's Fanny Brice legendary. The revival feels more like karaoke than Broadway magic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Beanie Feldstein's performance lacks the charisma and vocal power that made Barbra Streisand's Fanny Brice legendary. The revival feels more like karaoke than Broadway magic.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival feels more like karaoke than Broadway magic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Direct negative comparison to karaoke and lack of 'Broadway magic' indicates clear disappointment and non-recommendation, despite acknowledging the legendary original. | GPT-4o: The review criticizes the lead performance and overall production, comparing it unfavorably to the original. The tone is strongly negative, suggesting a lack of recommendation. | Gemini: The review explicitly states that the performance lacks charisma and vocal power, and the revival feels like karaoke, indicating a negative assessment. | Kimi: The critic unfavorably compares Beanie Feldstein's performance to Barbra Streisand's iconic original and dismisses the production as 'karaoke' rather than 'Broadway magic,' indicating a clear negative assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:15:07.603Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

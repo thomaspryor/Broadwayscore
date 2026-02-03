@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Menzel's powerhouse vocals and magnetic stage presence help compensate for some of the show's shortcomings, though the musical's ambitious concept doesn't always translate into compelling theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Menzel's powerhouse vocals and magnetic stage presence help compensate for some of the show's shortcomings, though the musical's ambitious concept doesn't always translate into compelling theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Menzel's powerhouse vocals and magnetic stage presence help compensate for some of the show's shortcomings",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review acknowledges strong lead performance but notes that the show has shortcomings and the concept doesn't always work theatrically, indicating a balanced mixed assessment. | GPT-4o: The review acknowledges strengths in Menzel's performance but notes that the show's concept doesn't fully succeed, indicating a mixed reception. | Gemini: The review acknowledges Menzel's strengths but notes the show's shortcomings and that the concept doesn't always translate, resulting in a mixed assessment. | Kimi: The critic offers strong praise for the lead performance but explicitly notes the show has 'shortcomings' and fails to consistently deliver 'compelling theater,' resulting in a balanced assessment that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:54:58.746Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2010/legit/reviews/bloody-bloody-andrew-jackson-1117943877/",
   "publishDate": "October 13, 2010",
-  "fullText": "This raucous rock musical about our seventh president is a crude but effective piece of political theater that turns American history into a mosh pit.",
-  "isFullReview": false,
+  "fullText": "Mixes romance, crime story, black comedy, modern fairy tale and food to near-perfection.\n\nMixing romance, crime story, black comedy, missing-persons drama, modern fairy tale and food to near-perfection, “The Recipe” is a marvelous movie degustation. Centered on a TV producer searching for a sensational recipe and its elusive creator, helmer Anna Lee’s triumphant return to filmmaking (after a 12-year hiatus following her debut, “Rub Love”) is a beautifully packaged treat with broad aud appeal. Fests should make a reservation for this crowd-pleaser, and offshore niches are possible. Domestic biz ought to be tasty when pic bows Oct. 21.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Box Office: ‘28 Years Later: The Bone Temple' Scares 'Avatar: Fire and Ash' Off Top Spot Friday With $5.6 Million \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'Hamnet' Reclaims No. 1 Spot at U.K., Ireland Box Office, 'Iron Lung' Debuts in Fourth\n\nFirst course is investigative journalism. Television documaker Choi Yu-jin (Ryu Seung-ryong) discovers that the impassioned dying wish of executed mass murderer Kim Jong-gu (Ryu Seung-mok) was for a bowl of doenjang jjigae (spicy bean-curd stew). Flashbacks reveal Kim was so entranced by the stew at a tiny restaurant in the middle of a forest, he surrendered without a fight when cops arrived.\n\nSplitting into parallel strands, the script by Lee and Jang Jin sends Choi on a labyrinthine search for the recipe and another equally complicated quest to track down its creator, Jang Hye-jin (Lee Yo-weon), a mysterious young woman who worked briefly at the restaurant but has since disappeared.\n\nTurning detective, Choi learns something of Hye-jin’s past as a country girl who spent years perfecting her doenjang jjigae and fell in love with Kim Hyeon-su (Lee Dong-wook), a Korean-Japanese winemaker whose overseas relatives demanded that he return home for an arranged marriage. Then there’s the shadowy figure of Chairman Park (Cho Seong-ha); a millionaire whose lost sense of smell was restored by Hye-jin’s stew, Park was the last person seen alive with the girl.\n\nChoi’s magnificent obsession over the precise ingredients and preparation method of Hye-jin’s dish is the movie’s heart and soul. Through his encounters with soybean growers and salt merchants, and recipe-related consultations with chemical scientist Ryoo (Cho Mun-oi), the screenplay shows how basic fare such as bean-curd stew can be embraced by people from all walks of life as a symbol of national pride and identity.\n\nNarrative appears to lose a little of its magic when a major mystery surrounding Hye-jin and Hyeon-su is revealed. But in keeping with the movie’s proven ability to surprise and delight, the story zooms into a whole new set of enriching detours and backstories-within-backstories, which evoke the spirit of foreign – lingo foodie favorites such as “Tampopo” and “Like Water for Chocolate.”\n\nRyu Seung-ryong is just right as the newsman who starts his mission as a professional eyeing a scoop and ends up deeply affected by the amazing tale he uncovers. Wispy Lee Yo-weon and hunky Lee Dong-wook are nicely matched as the lovers.\n\nHan Jae-gweon’s fabulous percussion- and double bass-driven score, and Na Heui-jeok’s glorious widescreen images of farming fields and rolling hills outside Seoul are standout attractions of a pristine tech package.",
+  "isFullReview": true,
   "dtliExcerpt": "This raucous rock musical about our seventh president is a crude but effective piece of political theater that turns American history into a mosh pit.",
   "originalScore": null,
   "assignedScore": 75,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This raucous rock musical about our seventh president is a crude but effective piece of political theater that turns American history into a mosh pit.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
     "score": 75,
@@ -72,5 +72,57 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 75,
+  "textWordCount": 519,
+  "archivePath": "data/archives/reviews/bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T16:51:05.467Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wordCount": 519,
+  "tierReason": "Full review text",
+  "sources": [
+    "web-search"
+  ]
 }

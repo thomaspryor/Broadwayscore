@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new version of 'Gigi' feels like a musical in the witness protection program, disguised beyond ready recognition and not entirely comfortable with its new identity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new version of 'Gigi' feels like a musical in the witness protection program, disguised beyond ready recognition and not entirely comfortable with its new identity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new version of 'Gigi' feels like a musical in the witness protection program, disguised beyond ready recognition.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic uses vivid negative metaphors comparing the show to something in hiding and uncomfortable with itself, indicating clear disappointment with this adaptation. | GPT-4o: The review suggests the production is unrecognizable and uncomfortable, indicating a negative assessment without redeeming qualities. | Gemini: The review uses negative language to describe the new version of Gigi, suggesting it is unrecognizable and uncomfortable, indicating a negative assessment. | Kimi: Single-sentence excerpt uses a clever but critical metaphor suggesting the revival's changes have rendered the show awkward and unrecognizable, though without the full review's conclusion, the overall recommendation remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:13:48.755Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 48,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Fish in the Dark is a minor miracle—a laugh-out-loud funny Broadway comedy that actually works, despite the fact that it was written by a man who has never written a stage play before.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Fish in the Dark is a minor miracle—a laugh-out-loud funny Broadway comedy that actually works, despite the fact that it was written by a man who has never written a stage play before.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fish in the Dark is a minor miracle—a laugh-out-loud funny Broadway comedy that actually works",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive recommendation calling it a 'minor miracle' and 'laugh-out-loud funny' that 'actually works', though the qualifier about the author's inexperience with stage plays suggests some reservations. | GPT-4o: The review uses strong positive language ('minor miracle', 'laugh-out-loud funny') indicating a highly enthusiastic recommendation with no reservations. | Gemini: The review calls the play \"a minor miracle\" and \"laugh-out-loud funny,\" indicating a positive experience, but the caveat about the playwright's inexperience suggests some reservations. | Kimi: Rex Reed praises the show as a 'minor miracle' and 'laugh-out-loud funny,' enthusiastically recommending this comedy despite noting the playwright's lack of stage experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:04:03.699Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

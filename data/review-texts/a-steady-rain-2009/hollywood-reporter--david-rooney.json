@@ -5,7 +5,7 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/review/a-steady-rain-theater-review-91475/",
   "publishDate": "September 30, 2009",
-  "fullText": "By Stuart Kemp, The Associated Press \n\n \n\n November 18, 2009 5:20am\n\nLONDON — Menhaj Huda’s London-set urban horror flick “Comedown” has been picked up for U.K. distribution by Studio Canal-owned Brit indie Optimum Releasing.\n\nThe deal was sealed by London-based sales house AV Pictures, which repped the title during this year’s recent American Film Market.\n\nHuda will direct from a screenplay by Steven Kendall, which is set against a London backdrop of abandonment and decay.\n\nIt details the story of six youths setting up a relay aerial for a local pirate radio station at the top of a condemned tower block who are targeted by a resident psychopath intent on exterminating the vermin he perceives are besieging his home.\n\nCast includes Martin Compston, Red Madrell and Adam Deacon. The kids’ nemesis will be played by Geoff Bell.\n\nDue to shoot here in March 2010, the project is produced by Dominic Norris (“Guilty Hearts”) for Serotonin Films and Gareth Wiley (“Vicky Cristina Barcelona”) for Phoenix Wiley.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The play itself is a shallow piece of work that mistakes portentous mood for dramatic substance, but the draw here is watching two major movie stars work together on stage.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play itself is a shallow piece of work that mistakes portentous mood for dramatic substance, but the draw here is watching two major movie stars work together on stage.",
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (30 words)",
   "textWordCount": 164,
   "archivePath": "data/archives/reviews/a-steady-rain-2009/hollywood-reporter--david-rooney_2026-02-03.html",
@@ -54,7 +54,7 @@
     }
   ],
   "fetchTier": 3,
-  "textQuality": "partial",
+  "textQuality": null,
   "truncationSignals": [],
   "textStatus": "incomplete",
   "sourceMethod": "brightdata",
@@ -67,5 +67,7 @@
   "extractedByline": "Stuart Kemp",
   "expectedCritic": "David Rooney",
   "wordCount": 164,
-  "tierReason": "Short text (164 words)"
+  "tierReason": "Wrong article scraped (critic name mismatch)",
+  "needsRescore": true,
+  "rescoreReason": "Wrong article was scraped - clearing fullText for re-scrape"
 }

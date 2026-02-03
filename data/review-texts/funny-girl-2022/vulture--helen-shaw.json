@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Feldstein's Fanny is eager and likable, but she doesn't have the vocal power to fill the August Wilson Theatre, and her acting choices feel more like suggestions than declarations.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Feldstein's Fanny is eager and likable, but she doesn't have the vocal power to fill the August Wilson Theatre, and her acting choices feel more like suggestions than declarations.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Feldstein's Fanny is eager and likable, but she doesn't have the vocal power to fill the August Wilson Theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Review acknowledges positive qualities (eager, likable) but identifies significant flaws in the lead performance (inadequate vocal power, weak acting choices). This suggests neither recommendation nor strong discouragement. | GPT-4o: The review criticizes the lead's vocal and acting abilities, suggesting a lack of impact and presence necessary for the role, leading to a negative assessment. | Gemini: The review explicitly states that Feldstein lacks the vocal power and her acting choices are weak, leading to a negative assessment of her performance. | Kimi: While acknowledging the lead is 'eager and likable,' the critic fundamentally critiques her vocal inadequacy for the Broadway house and weak acting choices, suggesting a miscast or underwhelming central performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:20:00.576Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

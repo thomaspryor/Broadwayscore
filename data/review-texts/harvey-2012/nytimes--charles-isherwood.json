@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Parsons brings a gentle, disarming sweetness to Elwood, and his performance grows in assurance and depth as the evening progresses. He makes Elwood's philosophical musings about life and friendship sound both heartfelt and freshly minted.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Parsons brings a gentle, disarming sweetness to Elwood, and his performance grows in assurance and depth as the evening progresses. He makes Elwood's philosophical musings about life and friendship sound both heartfelt and freshly minted.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (36 words)"
+  "contentTierReason": "Short text (36 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Parsons brings a gentle, disarming sweetness to Elwood, and his performance grows in assurance and depth as the evening progresses.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear praise for the lead performance with positive descriptors like 'gentle, disarming sweetness' and 'heartfelt and freshly minted,' but this appears to be a truncated excerpt focusing only on one performer, limiting confidence in the overall assessment. | Gemini: The review focuses on the positive aspects of the lead actor's performance, describing it as sweet, disarming, and growing in assurance and depth. This suggests a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: This excerpt offers warm, unreserved praise for the lead performance, describing it as 'heartfelt and freshly minted' with growing depth, indicating a solid recommendation despite the brevity of the text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:36:09.212Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

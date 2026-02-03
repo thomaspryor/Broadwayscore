@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Grand Horizons is a play that wants to be about the complexities of long-term relationships and family dynamics, but it never quite manages to dig beneath the surface of its own conceits.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 48,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Grand Horizons is a play that wants to be about the complexities of long-term relationships and family dynamics, but it never quite manages to dig beneath the surface of its own conceits.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 48,
+    "confidence": "medium",
+    "range": {
+      "low": 43,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grand Horizons is a play that wants to be about the complexities of long-term relationships and family dynamics, but it never quite manages to dig beneath the surface of its own conceits.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The review acknowledges the play's intentions but clearly states it fails to achieve its goals, suggesting neither strong recommendation nor complete dismissal. | GPT-4o: The review criticizes the play for failing to explore its themes deeply, suggesting a lack of substance. This indicates a negative assessment. | Gemini: The review states that the play \"never quite manages\" to achieve its goals, indicating a negative assessment. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:30:52.683Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 48,
+    "kimiScore": 52,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

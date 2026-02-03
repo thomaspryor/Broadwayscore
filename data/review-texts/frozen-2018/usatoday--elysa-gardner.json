@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's second act is more cohesive and compelling than its first, building to a climax that should leave audiences both stirred and satisfied.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's second act is more cohesive and compelling than its first, building to a climax that should leave audiences both stirred and satisfied.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's second act is more cohesive and compelling than its first, building to a climax that should leave audiences both stirred and satisfied.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: This appears to be an excerpt focusing on the positive conclusion. The critic finds the second act 'compelling' and predicts audiences will be 'stirred and satisfied,' but notes structural issues with the first act. Confidence is low due to the brief, potentially truncated nature of the text. | GPT-4o: The review highlights a strong second act that leaves audiences 'stirred and satisfied,' indicating a positive recommendation despite potential issues with the first act. | Gemini: The review indicates a positive experience overall, particularly with the second act, suggesting a recommendation with some reservations due to the weaker first act. | Kimi: The critic recommends the show based on the strength of its second act and satisfying climax, though the comparison to the first act implies some unevenness. Given the brevity of the excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:05:15.006Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

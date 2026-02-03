@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Paula Vogel's Pulitzer Prize-winning play about sexual abuse is as devastating and complex as ever, with Mary-Louise Parker giving a performance of extraordinary nuance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of Paula Vogel's Pulitzer Prize-winning play about sexual abuse is as devastating and complex as ever, with Mary-Louise Parker giving a performance of extraordinary nuance.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival of Paula Vogel's Pulitzer Prize-winning play about sexual abuse is as devastating and complex as ever, with Mary-Louise Parker giving a performance of extraordinary nuance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for both the revival ('as devastating and complex as ever') and lead performance ('extraordinary nuance'), but brief excerpt limits full assessment of critic's recommendation strength. | GPT-4o: The review uses strong positive language ('devastating and complex as ever') and highlights an 'extraordinary' performance, indicating a highly enthusiastic recommendation. | Gemini: The review states the play is \"as devastating and complex as ever\" and praises Mary-Louise Parker's performance, indicating a positive assessment. | Kimi: The critic offers unqualified praise for both the revival's emotional impact and the lead performance, employing superlatives ('extraordinary', 'devastating') without any reservations or caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:49:35.299Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "kimiScore": 91,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }
