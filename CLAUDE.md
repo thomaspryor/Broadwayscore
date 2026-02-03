@@ -249,7 +249,7 @@ data/
 - `scripts/validate-data.js` - **Run before pushing** - validates shows.json + reviews.json. Uses dynamic thresholds from `data/audit/validation-baseline.json` (auto-written on success)
 - `scripts/audit-critic-outlets.js` - Generates critic-outlet affinity registry from corpus (`npm run audit:critics`)
 - `scripts/gather-reviews.js` - Main review gathering from all aggregator sources
-- `scripts/collect-review-texts.js` - Full review text scraper with multi-tier fallback
+- `scripts/collect-review-texts.js` - Full review text scraper with declarative tier chain (see architecture below)
 - `scripts/rebuild-all-reviews.js` - Rebuilds reviews.json from review-texts data (source of truth for scoring pipeline)
 - `scripts/update-commercial-data.js` - Weekly commercial data automation
 - `scripts/generate-critic-consensus.js` - LLM editorial summaries
@@ -447,6 +447,7 @@ All automation runs via GitHub Actions - no local commands needed. See `.github/
 | `collect-review-texts.yml` | ✅ | ✅ | Nightly 2 AM UTC + manual. Single-job rebuilds inline; parallel triggers `rebuild-reviews.yml` after all jobs complete |
 | `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
+| `adjudicate-review-queue.yml` | ✅ | ❌ | Daily 5 AM UTC, triggers rebuild after commit |
 
 **For bulk imports (100s of shows):** Run parallel gather-reviews workflows, then trigger manual rebuild:
 ```bash
@@ -702,6 +703,8 @@ Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
 **contentTier flow-through:** `rebuild-all-reviews.js` carries `contentTier` from source files into `reviews.json`. Source file distribution: 2,138 complete, 774 excerpt, 484 truncated, 154 stub, 66 needs-rescrape, 16 invalid.
 
 **Human review queue:** `data/audit/needs-human-review.json` lists reviews where LLM score and aggregator thumbs disagree. Categories: `both-thumbs-override-llm` (auto-handled), `single-thumb-override-low-conf`, `both-thumbs-disagree-with-llm` (needs manual review). Set `humanReviewScore` + `humanReviewNote` on the source file to override. As of Feb 2026: 2 reviews in queue (down from 23 after audit).
+
+**Automated adjudication:** `scripts/adjudicate-review-queue.js` runs daily at 5 AM UTC (via `adjudicate-review-queue.yml`), 1 hour after the rebuild generates the queue. For each flagged review, calls Claude Sonnet to re-evaluate with full text + context. High/medium confidence → writes `humanReviewScore` to source file. Low confidence → increments `adjudicationAttempts`. After 3 uncertain attempts → auto-accepts LLM original score (permanently clears from queue). API errors don't consume attempts. Triggers rebuild after committing changes. Fields written: `humanReviewScore`, `humanReviewNote`, `humanReviewPreviousScore`, `humanReviewAt`, `adjudicationAttempts`, `adjudicationHistory`.
 
 ### Remaining Data Quality Work (Feb 2026)
 
