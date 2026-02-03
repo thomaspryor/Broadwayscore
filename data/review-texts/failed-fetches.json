@@ -8488,30 +8488,6 @@
     "timestamp": "2026-02-03T10:22:13.324Z"
   },
   {
-    "reviewId": "a-chorus-line-2006/nytimes--ben-brantley.json",
-    "showId": "a-chorus-line-2006",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2006/10/06/theater/reviews/06chor.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 6228,
-    "timestamp": "2026-02-03T10:23:16.864Z"
-  },
-  {
-    "reviewId": "a-free-man-of-color-2010/nytimes--ben-brantley.json",
-    "showId": "a-free-man-of-color-2010",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2010/11/19/theater/reviews/19free.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): smash, tina, the present, annie, high...",
-    "textLength": 7741,
-    "timestamp": "2026-02-03T10:30:31.237Z"
-  },
-  {
     "reviewId": "a-life-in-the-theatre-2010/nytimes--ben-brantley.json",
     "showId": "a-life-in-the-theatre-2010",
     "outlet": "The New York Times",
@@ -8870,5 +8846,29 @@
     "garbageReason": "Multiple shows mentioned (15): wicked, chicago, giant, company, network...",
     "textLength": 9381,
     "timestamp": "2026-02-03T14:17:48.119Z"
+  },
+  {
+    "reviewId": "a-chorus-line-2006/nytimes--ben-brantley.json",
+    "showId": "a-chorus-line-2006",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2006/10/06/theater/reviews/06chor.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): & juliet, purpose, ohio state murders, some like it hot, sweeney todd...",
+    "textLength": 11499,
+    "timestamp": "2026-02-03T14:20:13.851Z"
+  },
+  {
+    "reviewId": "a-free-man-of-color-2010/nytimes--ben-brantley.json",
+    "showId": "a-free-man-of-color-2010",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2010/11/19/theater/reviews/19free.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): smash, tina, the present, annie, high...",
+    "textLength": 7741,
+    "timestamp": "2026-02-03T14:24:22.740Z"
   }
 ]
