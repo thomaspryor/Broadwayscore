@@ -191,6 +191,26 @@ function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
 }
 
 /**
+ * Check if two shows are different productions of the same title.
+ * Returns true if both have year info and opening years differ by >2 years.
+ */
+function isMultiProduction(newShow, existing) {
+  // Try year from ID suffix first, then from openingDate
+  const getYear = (show) => {
+    const idMatch = (show.id || show.slug || '').match(/-(\d{4})$/);
+    if (idMatch) return parseInt(idMatch[1]);
+    if (show.openingDate) return new Date(show.openingDate).getFullYear();
+    return null;
+  };
+  const newYear = getYear(newShow);
+  const existingYear = getYear(existing);
+  if (newYear && existingYear) {
+    return Math.abs(newYear - existingYear) > 2;
+  }
+  return false;
+}
+
+/**
  * Check if a show might be a duplicate of an existing show
  * Returns { isDuplicate: boolean, reason: string, existingShow: object|null }
  *
@@ -209,6 +229,7 @@ function checkForDuplicate(newShow, existingShows) {
 
     // Check 1: Exact title match (case-insensitive)
     if (newTitleLower === existingTitleLower) {
+      if (isMultiProduction(newShow, existing)) continue;
       return {
         isDuplicate: true,
         reason: `Exact title match: "${existing.title}"`,
@@ -218,6 +239,7 @@ function checkForDuplicate(newShow, existingShows) {
 
     // Check 2: Exact slug match
     if (newSlug === existing.slug) {
+      if (isMultiProduction(newShow, existing)) continue;
       return {
         isDuplicate: true,
         reason: `Exact slug match: ${existing.slug}`,
@@ -226,9 +248,10 @@ function checkForDuplicate(newShow, existingShows) {
     }
 
     // Check 3: ID-based match (slug portion without year)
-    const newIdBase = newSlug;
-    const existingIdBase = existing.id?.replace(/-\d{4}$/, '') || existing.slug;
+    const newIdBase = newSlug.replace(/-\d{4}$/, '');
+    const existingIdBase = (existing.id || existing.slug).replace(/-\d{4}$/, '');
     if (newIdBase === existingIdBase) {
+      if (isMultiProduction(newShow, existing)) continue;
       return {
         isDuplicate: true,
         reason: `ID base match: "${newIdBase}" matches existing "${existing.id}"`,
@@ -239,6 +262,7 @@ function checkForDuplicate(newShow, existingShows) {
     // Check 4: Known duplicate patterns (handles short titles like "SIX")
     const knownCheck = checkKnownDuplicates(newTitleNormalized, existingTitleNormalized);
     if (knownCheck.isDuplicate) {
+      if (isMultiProduction(newShow, existing)) continue;
       return {
         isDuplicate: true,
         reason: `Known duplicate group "${knownCheck.group}": "${newShow.title}" matches "${existing.title}"`,
@@ -249,6 +273,7 @@ function checkForDuplicate(newShow, existingShows) {
     // Check 5: Normalized title match (catches "Show: Subtitle" vs "Show")
     // FIXED: Changed from > 3 to >= 3 to catch short titles like "SIX"
     if (newTitleNormalized === existingTitleNormalized && newTitleNormalized.length >= 3) {
+      if (isMultiProduction(newShow, existing)) continue;
       return {
         isDuplicate: true,
         reason: `Normalized title match: "${newTitleNormalized}" matches "${existing.title}"`,
@@ -259,6 +284,7 @@ function checkForDuplicate(newShow, existingShows) {
     // Check 6: Slug prefix/containment match
     if (newSlug.length > 4 && existing.slug.length > 4) {
       if (existing.slug.startsWith(newSlug) || newSlug.startsWith(existing.slug)) {
+        if (isMultiProduction(newShow, existing)) continue;
         return {
           isDuplicate: true,
           reason: `Slug prefix match: "${newSlug}" vs "${existing.slug}"`,

@@ -144,8 +144,8 @@ const KNOWN_ALIASES = {
   'hells kitchen': 'hells-kitchen',
   "hell's kitchen musical": 'hells-kitchen',
 
-  // Cabaret variations
-  'cabaret': 'cabaret-2024',
+  // Cabaret variations (base slug — date-aware matching resolves production)
+  'cabaret': 'cabaret',
   'cabaret at the kit kat club': 'cabaret-2024',
 
   // Queen of Versailles variations
@@ -184,8 +184,8 @@ const KNOWN_ALIASES = {
   'yellowface': 'yellowface',
   'eureka day': 'eureka-day',
 
-  // Gypsy variations
-  'gypsy': 'gypsy-2024',
+  // Gypsy variations (base slug — date-aware matching resolves production)
+  'gypsy': 'gypsy',
   'gypsy revival': 'gypsy-2024',
 
   // Once Upon a Mattress
@@ -330,15 +330,43 @@ function titleToSlug(title) {
 }
 
 /**
+ * Pick the best production when multiple shows match the same title.
+ * If a target year is provided, picks the production with closest opening year.
+ * Otherwise, picks the most recent production.
+ */
+function pickBestProduction(matches, targetYear) {
+  if (matches.length === 1) return matches[0];
+  if (!targetYear) {
+    // No date hint — prefer most recent production
+    return matches.reduce((best, show) => {
+      const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
+      const bestYear = best.openingDate ? new Date(best.openingDate).getFullYear() : 0;
+      return showYear > bestYear ? show : best;
+    });
+  }
+  // Pick closest to target year
+  return matches.reduce((best, show) => {
+    const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 9999;
+    const bestYear = best.openingDate ? new Date(best.openingDate).getFullYear() : 9999;
+    return Math.abs(showYear - targetYear) < Math.abs(bestYear - targetYear) ? show : best;
+  });
+}
+
+/**
  * Match an external show title to a show in shows.json.
+ * When multiple productions match (e.g., cabaret-1998, cabaret-2024),
+ * disambiguates by closest opening year to options.year.
  *
  * @param {string} externalTitle - The title from the external source
  * @param {Object[]} shows - Array of show objects from shows.json
+ * @param {Object} [options] - Optional settings
+ * @param {number} [options.year] - Publication year for multi-production disambiguation
  * @returns {{ show: Object, confidence: 'high'|'medium' } | null}
  */
-function matchTitleToShow(externalTitle, shows) {
+function matchTitleToShow(externalTitle, shows, options) {
   if (!externalTitle || !shows || shows.length === 0) return null;
 
+  const targetYear = options?.year || null;
   const cleaned = cleanExternalTitle(externalTitle);
   const lowerCleaned = cleaned.toLowerCase().trim();
   if (!lowerCleaned) return null;
@@ -362,27 +390,34 @@ function matchTitleToShow(externalTitle, shows) {
 
   // Try each title variant (full title, then stripped subtitle)
   for (const variant of titleVariants) {
-    // 1. Exact title match against shows.json titles
+    // 1. Exact title match against shows.json titles (collect all for multi-production)
+    const exactMatches = [];
     for (const show of shows) {
       const showTitle = (show.title || '').toLowerCase().trim();
       if (showTitle === variant) {
-        return { show, confidence: 'high' };
+        exactMatches.push(show);
       }
     }
+    if (exactMatches.length > 0) {
+      return { show: pickBestProduction(exactMatches, targetYear), confidence: 'high' };
+    }
 
-    // 2. Known aliases → slug → show
+    // 2. Known aliases → slug → show (collect all for multi-production disambiguation)
     if (KNOWN_ALIASES[variant]) {
       const slug = KNOWN_ALIASES[variant];
-      // Alias might point to base slug, need to find with year suffix too
+      const aliasMatches = [];
       if (slugToShow[slug]) {
-        return { show: slugToShow[slug], confidence: 'high' };
+        aliasMatches.push(slugToShow[slug]);
       }
-      // Try finding by slug prefix (e.g., 'queen-of-versailles' matches 'queen-of-versailles-2025')
+      // Slug prefix match (e.g., 'cabaret' matches 'cabaret-2024', 'cabaret-1998')
       for (const show of shows) {
         const showSlug = show.slug || show.id;
-        if (showSlug.startsWith(slug + '-') || showSlug === slug) {
-          return { show, confidence: 'high' };
+        if ((showSlug.startsWith(slug + '-') || showSlug === slug) && !aliasMatches.includes(show)) {
+          aliasMatches.push(show);
         }
+      }
+      if (aliasMatches.length > 0) {
+        return { show: pickBestProduction(aliasMatches, targetYear), confidence: 'high' };
       }
     }
 
@@ -392,8 +427,9 @@ function matchTitleToShow(externalTitle, shows) {
       return { show: slugToShow[directSlug], confidence: 'high' };
     }
 
-    // 4. Normalized match: strip articles, "The Musical", year suffixes
+    // 4. Normalized match: strip articles, "The Musical", year suffixes (collect all)
     const normalizedInput = normalizeTitle(variant);
+    const normalizedMatches = [];
     for (const show of shows) {
       const showSlug = show.slug || show.id;
       const normalizedSlug = showSlug
@@ -402,27 +438,35 @@ function matchTitleToShow(externalTitle, shows) {
       const normalizedSlugSpaces = normalizedSlug.replace(/-/g, ' ');
 
       if (normalizedInput === normalizedSlugSpaces) {
-        return { show, confidence: 'high' };
+        normalizedMatches.push(show);
+        continue;
       }
 
       // Also normalize the show title itself
       const normalizedShowTitle = normalizeTitle(show.title || '');
-      if (normalizedInput === normalizedShowTitle) {
-        return { show, confidence: 'high' };
+      if (normalizedInput === normalizedShowTitle && !normalizedMatches.includes(show)) {
+        normalizedMatches.push(show);
       }
+    }
+    if (normalizedMatches.length > 0) {
+      return { show: pickBestProduction(normalizedMatches, targetYear), confidence: 'high' };
     }
   }
 
-  // 5. Partial containment (lower confidence) — try all variants
+  // 5. Partial containment (lower confidence) — try all variants (collect all)
   for (const variant of titleVariants) {
     if (variant.length > 4) {
+      const containmentMatches = [];
       for (const show of shows) {
         const showTitle = (show.title || '').toLowerCase().trim();
         if (showTitle.length > 4) {
           if (showTitle.includes(variant) || variant.includes(showTitle)) {
-            return { show, confidence: 'medium' };
+            containmentMatches.push(show);
           }
         }
+      }
+      if (containmentMatches.length > 0) {
+        return { show: pickBestProduction(containmentMatches, targetYear), confidence: 'medium' };
       }
     }
   }
