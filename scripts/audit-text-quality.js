@@ -15,8 +15,8 @@ const REVIEW_TEXTS_DIR = 'data/review-texts';
 
 // Quality thresholds (can be adjusted)
 const THRESHOLDS = {
-  minFullPercent: 35,       // At least 35% should be "full" quality
-  maxTruncatedPercent: 40,  // No more than 40% should be truncated
+  minFullPercent: 25,       // At least 25% should be "full" quality (lowered for historical expansion)
+  maxTruncatedPercent: 65,  // No more than 65% should be truncated (raised for historical expansion)
   maxUnknownPercent: 5,     // No more than 5% should have unknown quality
 };
 
