@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheerful if formulaic musical, based on the beloved 1954 movie, delivers the seasonal comfort food that audiences are seeking, even if the book feels a bit stale.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This cheerful if formulaic musical, based on the beloved 1954 movie, delivers the seasonal comfort food that audiences are seeking, even if the book feels a bit stale.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This cheerful if formulaic musical delivers the seasonal comfort food that audiences are seeking, even if the book feels a bit stale.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the show delivers what audiences want ('seasonal comfort food') but qualifies this with significant reservations ('formulaic', 'stale book'). The positive assessment is tepid rather than enthusiastic, placing it in the lower positive range. | GPT-4o: The review excerpt suggests a positive experience overall, noting the musical delivers what audiences are seeking despite a stale book. The single excerpt warning and lack of full context suggest a cautious, lower-end Positive score. | Gemini: The review calls the musical \"cheerful\" and says it delivers \"seasonal comfort food\" but also notes that the book feels \"a bit stale.\" This suggests a positive but qualified recommendation. Given it is a single excerpt, I am scoring at the lower end of the positive range. | Kimi: The excerpt offers qualified praise, acknowledging the show meets audience expectations for seasonal entertainment despite criticisms of being formulaic and having a stale book.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:12:31.714Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

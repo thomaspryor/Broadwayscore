@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Tackling misogyny, internalized homophobia, domestic abuse, gender roles, and the need for intersectionality, Liberation leaves no stone unturned in its quest for answers about the past and the present. But with any of these topics, no play can have the answers to something that we haven’t figured o...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Liberation leaves no stone unturned in its quest for answers about the past and the present.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt describes an ambitious play tackling major social issues but suggests it may be overreaching ('no play can have the answers'). With only one truncated excerpt available, confidence is low. | GPT-4o: The excerpt suggests an ambitious attempt to tackle complex themes, but the mention that 'no play can have the answers' implies a limitation or shortcoming in the execution. The single excerpt and lack of a clear positive or negative verdict lead to a mixed classification with low confidence. | Gemini: The excerpt describes the play's themes but doesn't offer a clear recommendation. The phrase \"leaves no stone unturned\" could be positive (thorough) or negative (scattered). Given the lack of a clear verdict and the single excerpt warning, I've classified it as Mixed with low confidence. | Kimi: The single available excerpt praises the show's comprehensive ambition in tackling heavy social issues, but the转折 'But' suggests significant reservations about whether it successfully delivers on that ambition. With only one truncated excerpt available, the overall verdict remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:24:11.305Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

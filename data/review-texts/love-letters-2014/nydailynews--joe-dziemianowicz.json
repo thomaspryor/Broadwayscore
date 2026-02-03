@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bergen and Dennehy make beautiful music together in this simple but affecting two-hander about a lifetime correspondence between friends who become lovers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bergen and Dennehy make beautiful music together in this simple but affecting two-hander about a lifetime correspondence between friends who become lovers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('beautiful music together', 'affecting') with praise for the leads and overall concept. Single excerpt limits confidence, but the tone is warmly recommending. | GPT-4o: The excerpt praises the performances and emotional impact, suggesting a positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The quote is strongly positive, praising the performances and describing the play as 'beautiful' and 'affecting.' Given that this is the only excerpt available, and the warning to lean towards the upper end of the bucket for clearly positive excerpts, I'm scoring it 82. | Kimi: The excerpt contains unambiguous praise for the lead performances ('make beautiful music together') and describes the production as 'affecting,' indicating a clear recommendation. As a single curated excerpt with clearly positive language, it scores in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:24:50.639Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

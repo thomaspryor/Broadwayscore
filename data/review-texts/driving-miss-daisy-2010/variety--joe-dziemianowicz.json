@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though the material feels dated and the staging is static, stars Vanessa Redgrave and James Earl Jones bring enough gravitas and skill to make this Broadway revival a worthwhile trip.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though the material feels dated and the staging is static, stars Vanessa Redgrave and James Earl Jones bring enough gravitas and skill to make this Broadway revival a worthwhile trip.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "stars Vanessa Redgrave and James Earl Jones bring enough gravitas and skill to make this Broadway revival a worthwhile trip",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation ('worthwhile trip') despite acknowledging significant flaws ('dated material', 'static staging'). Single excerpt with qualified praise suggests lower end of Positive range. | GPT-4o: The review acknowledges dated material and static staging but ultimately recommends the show due to the strong performances of the lead actors. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review acknowledges dated material and static staging, but ultimately concludes that the performances of Redgrave and Jones make the revival \"a worthwhile trip,\" indicating a positive recommendation with reservations. | Kimi: The excerpt clearly recommends the show ('worthwhile trip') but emphasizes that this is due entirely to the star performances, while explicitly noting major weaknesses in the material and staging. With only one curated excerpt available, this qualified endorsement fits the lower end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:58:39.048Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

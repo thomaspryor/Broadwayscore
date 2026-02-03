@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Antoinette Chinonye Nwandu's Pass Over is a powerful theatrical experience that wrestles with contemporary issues of race and violence with unflinching honesty.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Antoinette Chinonye Nwandu's Pass Over is a powerful theatrical experience that wrestles with contemporary issues of race and violence with unflinching honesty.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pass Over is a powerful theatrical experience that wrestles with contemporary issues of race and violence with unflinching honesty.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single sentence describes the show as 'powerful' which indicates positive assessment, but extremely brief text limits confidence in full critical verdict. | GPT-4o: The review uses strong praise ('powerful theatrical experience', 'unflinching honesty') suggesting a must-see recommendation, fitting the Rave bucket. | Gemini: The review uses the phrase \"powerful theatrical experience\" indicating a positive recommendation, but the lack of further detail suggests some reservations. | Kimi: The critic offers clear praise calling the show a 'powerful theatrical experience' with 'unflinching honesty,' indicating a solid recommendation. However, the extreme brevity suggests this is likely an excerpt from a longer review, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:59:01.547Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

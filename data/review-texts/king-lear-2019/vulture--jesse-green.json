@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jackson's Lear is not just a king losing his kingdom but a person losing their grip on reality, and the performance is both heartbreaking and terrifying.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jackson's Lear is not just a king losing his kingdom but a person losing their grip on reality, and the performance is both heartbreaking and terrifying.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Jackson's performance with emotionally impactful language ('heartbreaking and terrifying'), but single excerpt warning requires caution about overall verdict. Scored in upper Positive range due to clear enthusiasm. | GPT-4o: The excerpt praises the performance as 'heartbreaking and terrifying,' suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt focuses on a powerful and moving performance, suggesting a positive experience. Given the single excerpt, I'm placing it at the higher end of the positive range, but with low confidence due to the limited context. | Kimi: The excerpt provides strong praise for the lead performance using evocative superlatives ('heartbreaking and terrifying'), indicating a clear recommendation despite the limited single-excerpt context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:20:03.729Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

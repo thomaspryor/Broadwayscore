@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "The Broadway transfer of Sanaz Toossi's \"English,\" which opened on Thursday at the Todd Haimes Theater, is the consummate consomm. Even more so than when it debuted Off Broadway in 2022, and won the Pulitzer Prize in Drama in 2023, it strikes me as a work of uncommon discipline despite its big and occasionally easy laughs. Without ever releasing a tight grip on its theme  or perhaps because of that tight grip  it suggests a world of small tragedies and smaller compensations.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it strikes me as a work of uncommon discipline despite its big and occasionally easy laughs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Jesse Green praises the show as 'consummate' with 'uncommon discipline' and notes it's 'even more so' effective than its Pulitzer-winning Off-Broadway run. The positive language suggests solid recommendation, though single excerpt limits full context. | GPT-4o: The excerpt praises the show as 'the consummate consommé' and highlights its 'uncommon discipline,' suggesting a strong positive impression. However, the single excerpt warning and lack of full context necessitate a cautious approach, placing it in the upper range of Positive. | Gemini: The review uses positive language like \"uncommon discipline\" and suggests the play is worth seeing despite some reservations about its humor. Given it's a single excerpt, I'm placing it in the middle of the Positive bucket. | Kimi: The excerpt offers strong praise describing the production as a 'consummate' work of 'uncommon discipline' that effectively balances comedy with emotional depth, indicating clear approval despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:00:07.200Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

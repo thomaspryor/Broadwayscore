@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "Sink shines in using her physicality here. With more room for her and the other actors to play and relax, there's potential for this production to be even better. But despite its shortcomings, it's a stunner.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But despite its shortcomings, it's a stunner.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges flaws but concludes with 'it's a stunner' - a strong positive verdict that overrides the reservations. Single excerpt warning applied with upper-range scoring. | GPT-4o: The excerpt acknowledges some shortcomings but ultimately describes the production as a 'stunner', indicating a strong positive recommendation despite reservations. | Gemini: The review states that despite shortcomings, the production is a stunner. This indicates a positive recommendation with reservations. | Kimi: While the critic acknowledges the production has 'shortcomings' and room for improvement, the use of 'stunner' as a final verdict and praise for the lead performance indicates a clear recommendation in the upper-positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:14:59.668Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

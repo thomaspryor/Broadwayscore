@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Objectively speaking, John O’Farrell’s Live Aid retrospective doesn’t stand out among the sea of jukebox musicals that wash up on our shores these days. His dialogue is often trite. The characters come across as one-dimensional, cardboard cut-outs. And the songs (including hits such as “Dancing in t...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Objectively speaking, John O'Farrell's Live Aid retrospective doesn't stand out among the sea of jukebox musicals that wash up on our shores these days.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt shows clear criticism ('doesn't stand out', 'trite dialogue', 'one-dimensional characters') but is truncated mid-sentence. Confidence is low due to incomplete text that may contain a more positive conclusion. | GPT-4o: The excerpt criticizes the dialogue as trite and characters as one-dimensional, suggesting a negative view. However, with only one excerpt, confidence is low. | Gemini: The excerpt is negative, citing trite dialogue and one-dimensional characters. Given the single excerpt and lack of a clear recommendation, confidence is low, but the tone suggests a negative review. | Kimi: The excerpt criticizes the musical's book as failing to distinguish itself from other jukebox musicals, with specific complaints about trite dialogue and flat characterizations, indicating the critic does not recommend the production. Confidence is low due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:19:09.808Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

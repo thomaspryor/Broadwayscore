@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Gore Vidal's astute political drama 'The Best Man' feels as relevant today as it did when it opened on Broadway in 1960, and this handsome revival directed by Michael Wilson makes the most of its timeless themes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Gore Vidal's astute political drama 'The Best Man' feels as relevant today as it did when it opened on Broadway in 1960, and this handsome revival directed by Michael Wilson makes the most of its timeless themes.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Gore Vidal's astute political drama 'The Best Man' feels as relevant today as it did when it opened on Broadway in 1960, and this handsome revival directed by Michael Wilson makes the most of its timeless themes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the play as 'astute' and 'relevant', calls the revival 'handsome', and notes it 'makes the most of its timeless themes' - all positive language indicating a recommendation. However, with only one excerpt available, confidence is low as this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the revival as 'handsome' and highlights its relevance and effective direction. The positive tone suggests a strong recommendation, but confidence is low due to the single excerpt warning. | Gemini: The review excerpt uses positive language such as \"astute,\" \"relevant,\" and \"handsome revival,\" suggesting a strong recommendation. Given it's a single excerpt, I'm placing it at the higher end of the positive range but with low confidence. | Kimi: The excerpt offers unqualified praise for the production's direction and timeless relevance, placing it clearly in the positive range despite the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:08:29.164Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

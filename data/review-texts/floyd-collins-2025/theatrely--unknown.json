@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"[Trensch] and Jordan (and that opening sequence) are worth the price of admission, as are Ted Sperling's music direction and Bruce Coughlin's orchestrations. Floyd Collins is an odd piece which, staged, asks a little too hard that we mine through dense earth to reach its goal. But this Broadway premiere makes a solid case for its beauty, found through a gorgeous score that draws opera from Americana.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this Broadway premiere makes a solid case for its beauty",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Explicit 'worth the price of admission' recommendation with praise for performances and score, but acknowledges the show is 'odd' and 'asks a little too hard.' Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises performances and music direction, suggesting they justify the ticket price. However, it notes the show is 'odd' and 'asks a little too hard,' indicating some reservations. With only one excerpt, confidence is low. | Gemini: The review highlights strong performances and music direction, but also notes the show requires effort to appreciate. The overall tone suggests a positive, but qualified, recommendation. | Kimi: The critic explicitly recommends the show as 'worth the price of admission' and praises its 'gorgeous score,' though notes it is an 'odd piece' that demands effort from the audience. The final verdict emphasizes the production's solid case for its beauty.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:03:51.352Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

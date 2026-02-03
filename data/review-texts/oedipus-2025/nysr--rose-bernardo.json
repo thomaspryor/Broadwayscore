@@ -13,7 +13,12 @@
   "assignedScore": null,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "contentTier": "excerpt",
+  "contentTier": "invalid",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-03T21:32:50.533Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is only a plot summary fragment describing the adaptation's approach, with no evaluative content or critical assessment of the production's quality.; openai: The provided text is an incomplete excerpt that primarily describes the adaptation process and does not offer any evaluative content or a verdict on the production.; gemini: The provided excerpt is descriptive setup, not evaluative. It describes the adaptation but offers no opinion on its quality.; kimi: The provided excerpt contains only descriptive context about the director's adaptation approach ('completely rebuilt the centuries-old tragedy from the ground up') with no evaluative language or critical opinion about the production's quality, performances, or overall merit. It functions as plot/background summary rather than criticism.",
+  "promptVersion": "5.2.0"
 }

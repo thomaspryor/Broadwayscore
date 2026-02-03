@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "David Hyde Pierce is having a ball as the preening, verbose Valere, a third-rate playwright who mistakes flowery language for genius. His performance is a masterclass in comic pomposity.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "David Hyde Pierce is having a ball as the preening, verbose Valere, a third-rate playwright who mistakes flowery language for genius. His performance is a masterclass in comic pomposity.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "His performance is a masterclass in comic pomposity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt praising Pierce's performance but no broader show assessment. Given critic's 60 rating and limited text, this suggests qualified positive recommendation. | GPT-4o: The excerpt praises David Hyde Pierce's performance but does not provide a clear overall recommendation for the show. The original rating of 60 suggests a mixed review, and the single excerpt does not provide enough context to determine a stronger recommendation. | Gemini: The review excerpt focuses solely on David Hyde Pierce's performance, praising it as a \"masterclass in comic pomposity.\" Without further context about other aspects of the show, it's difficult to determine an overall recommendation, leading to a mixed classification with low confidence. | Kimi: The critic's own rating of 60/100 places the review in mixed territory. While the excerpt offers high praise for David Hyde Pierce's comic performance, it comments only on one element and does not indicate a recommendation for the production as a whole.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:20:54.179Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

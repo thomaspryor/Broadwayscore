@@ -23,5 +23,60 @@
     "web-search",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://nypost.com/2015/01/15/old-school-honeymoon-in-vegas-charms-despite-some-hiccups-tony-danza/"
+  "playbillVerdictUrl": "http://nypost.com/2015/01/15/old-school-honeymoon-in-vegas-charms-despite-some-hiccups-tony-danza/",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show is pure, unabashed entertainment — the kind of musical that makes you leave the theater with a big smile on your face.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Enthusiastic praise with no reservations. 'Pure, unabashed entertainment' and promising audiences will 'leave with a big smile' indicates strong positive recommendation. | GPT-4o: The review uses strong positive language ('pure, unabashed entertainment') and describes a highly enjoyable experience, indicating a strong recommendation. | Gemini: The review is short but clearly positive, emphasizing the entertainment value and the feeling it leaves the audience with. | Kimi: The critic offers enthusiastic, unqualified praise emphasizing the show's entertainment value and positive emotional impact, indicating a strong recommendation without reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:11:51.352Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 82
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Corden's Francis is a walking appetite, a man whose rumbling stomach dictates his every move, and he makes this primal motivation both hilarious and touching.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T21:45:00.571Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review that can be properly scored for recommendation strength.; openai: The text focuses on Mr. Corden's performance as Francis, which is likely from a different show and does not provide a review of the current Broadway production.",
+  "promptVersion": "5.2.0"
 }

@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"Pirates! The Penzance Musical comes with a stacked cast and a nearly 150-year history of Broadway adaptations. With such an iconic piece of theatre, any change is bound to stir the pot. But perhaps what makes this version such a smash is that at its core, it's exactly what Gilbert and Sullivan created the original to be: a fun, silly, nonsensical laugh with the lightest plot and a great big happy ending to wrap it all up.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "perhaps what makes this version such a smash is that at its core, it's exactly what Gilbert and Sullivan created the original to be",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'such a smash' and praises how it captures the spirit of the original. However, with only one curated excerpt available, confidence is reduced as this may not represent the full review verdict. | GPT-4o: The excerpt describes the show as a 'smash' and highlights its fun and entertaining nature, indicating a strong positive sentiment. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt uses strong positive language like \"smash,\" \"fun,\" \"silly,\" and \"happy ending,\" indicating a positive recommendation. Given that it is a single excerpt, I am placing the score in the upper end of the positive range. | Kimi: The critic calls the production a 'smash' and praises it for successfully delivering the lighthearted, silly entertainment intended by the original creators, though as a single excerpt, the full context remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T22:03:54.073Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

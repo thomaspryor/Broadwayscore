@@ -15,5 +15,60 @@
   "originalScore": "4/5 stars",
   "nycTheatreExcerpt": "\"For subversively funny delight, suitable for knowing adult and innocent child alike, Elf on Broadway makes a perfect stocking-stuffer.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For subversively funny delight, suitable for knowing adult and innocent child alike, Elf on Broadway makes a perfect stocking-stuffer.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic language ('perfect stocking-stuffer', 'subversively funny delight') indicates strong positive recommendation. Single excerpt warning noted, but tone is clearly celebratory. | GPT-4o: The excerpt describes the show as a 'subversively funny delight' and 'perfect stocking-stuffer,' indicating a strong recommendation. The original 4/5 stars rating supports a positive classification, and the language suggests enthusiasm. | Gemini: The review excerpt uses very positive language like \"subversively funny delight\" and \"perfect stocking-stuffer,\" indicating a strong recommendation. Given the single excerpt, I'm scoring towards the higher end of the positive range. | Kimi: The 4/5 star rating combined with enthusiastic praise ('subversively funny delight', 'perfect stocking-stuffer') indicates a clear recommendation in the Positive bucket. Following the single-excerpt guidance for clearly positive quotes, this scores in the 80-84 range, though limited context warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:59:02.638Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

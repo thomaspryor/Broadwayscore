@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "I could be jaded about John Proctor is the Villain and nitpick how some major developments get revealed abruptly for plot's sake, how the male characters are broadly drawn archetypes known all too well in both fiction and reality: the charming predator, the obvious creep, the well-meaning dolt. But John Proctor seems to know that. It also knows it's a reclamation of age-old stories by intelligent, thoughtful young women whose views of themselves and others are nonetheless a work in progress.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It also knows it's a reclamation of age-old stories by intelligent, thoughtful young women whose views of themselves and others are nonetheless a work in progress.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges flaws but ultimately positions them as intentional choices by a knowing production. The final verdict emphasizes the show's intelligence and thoughtful reclamation of stories. Single excerpt limits confidence. | GPT-4o: The excerpt acknowledges some flaws but ultimately presents the show as a thoughtful and intelligent reclamation, suggesting a positive view despite reservations. The single excerpt warning and lack of a clear rating suggest a lower confidence score. | Gemini: The review acknowledges flaws but ultimately suggests the play is a worthwhile reclamation of familiar stories. Given the single excerpt and lack of a clear recommendation, a score in the lower-middle of the positive range seems appropriate. | Kimi: The reviewer acknowledges potential flaws in plotting and characterization but ultimately defends the show's intelligence and self-awareness, framing it as a thoughtful reclamation that transcends its limitations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:16:59.120Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

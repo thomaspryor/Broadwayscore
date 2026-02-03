@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This exuberant revival of Lynn Ahrens and Stephen Flaherty's calypso-flavored musical brings fresh energy and stunning visual imagination to the Circle in the Square Theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This exuberant revival of Lynn Ahrens and Stephen Flaherty's calypso-flavored musical brings fresh energy and stunning visual imagination to the Circle in the Square Theater.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This exuberant revival brings fresh energy and stunning visual imagination to the Circle in the Square Theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('exuberant', 'fresh energy', 'stunning visual imagination') indicates clear recommendation, though the excerpt is brief which limits confidence. | GPT-4o: The review uses highly positive language ('exuberant', 'fresh energy', 'stunning visual imagination') indicating a strong recommendation without reservations. | Gemini: The review uses strong positive language like \"exuberant,\" \"fresh energy,\" and \"stunning visual imagination,\" indicating a positive recommendation. | Kimi: The critic employs strongly positive evaluative language ('exuberant,' 'stunning') to praise the production's energy and visual design, indicating clear enthusiasm for this revival, though the brief length limits certainty about whether the full review qualifies as an unqualified rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:42:23.982Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

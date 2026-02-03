@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new revival of On the Town at the Lyric Theatre is a perfect production that honors the original while bringing fresh energy to this classic musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The new revival of On the Town at the Lyric Theatre is a perfect production that honors the original while bringing fresh energy to this classic musical.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new revival of On the Town at the Lyric Theatre is a perfect production that honors the original while bringing fresh energy to this classic musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Calls it a 'perfect production' with 'fresh energy' - strong positive language but the review text is very brief, limiting confidence in the full assessment. | GPT-4o: The review uses strong positive language ('perfect production') and praises the revival for both honoring the original and adding fresh energy, indicating a highly enthusiastic recommendation. | Gemini: The review uses the word \"perfect\" to describe the production, indicating a very strong positive sentiment and placing it in the Rave bucket. | Kimi: The critic offers unreserved praise with the highest possible commendation ('perfect production'), noting the show honors its source while bringing fresh energy, with no caveats or reservations mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:37:00.539Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

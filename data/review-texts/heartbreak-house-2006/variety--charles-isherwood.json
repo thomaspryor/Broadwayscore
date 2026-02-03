@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Shaw's sprawling fantasia about England on the brink of World War I gets a handsome but dramatically sluggish production in the Roundabout Theater Company's revival.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Shaw's sprawling fantasia about England on the brink of World War I gets a handsome but dramatically sluggish production in the Roundabout Theater Company's revival.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shaw's sprawling fantasia about England on the brink of World War I gets a handsome but dramatically sluggish production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic acknowledges good production values ('handsome') but delivers a clear negative verdict with 'dramatically sluggish.' Single excerpt warning applied - this appears to be the critic's core assessment. | GPT-4o: The excerpt describes the production as 'handsome' but 'dramatically sluggish', indicating a mix of positive and negative elements. The lack of full context and the single excerpt warning suggest a cautious approach, leading to a mixed classification. | Gemini: The review excerpt uses the phrase \"dramatically sluggish production,\" indicating a negative assessment. Given that it's a single excerpt, the confidence is low. | Kimi: Single excerpt presents a balanced mixed assessment, acknowledging aesthetic merits ('handsome') while delivering significant criticism of the dramatic execution ('sluggish'). With only one curated quote available, the confidence is low. | Buckets: claude=Negative, openai=Mixed, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:10:45.862Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

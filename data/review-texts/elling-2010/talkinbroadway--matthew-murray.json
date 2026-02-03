@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Elling is a gentle, touching comedy about friendship, mental illness, and finding one's place in the world that manages to be both funny and poignant without ever becoming maudlin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Elling is a gentle, touching comedy about friendship, mental illness, and finding one's place in the world that manages to be both funny and poignant without ever becoming maudlin.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Elling is a gentle, touching comedy about friendship, mental illness, and finding one's place in the world that manages to be both funny and poignant without ever becoming maudlin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise calling the show 'gentle, touching' and 'both funny and poignant' with no negatives mentioned. However, confidence is low due to limited text from a single curated quote that may not represent the full review verdict. | GPT-4o: The excerpt praises the show as 'funny and poignant' and avoids being 'maudlin', indicating a strong positive sentiment. Given the single excerpt warning, the score is placed at the higher end of the Positive range. | Gemini: The excerpt describes the show as \"gentle, touching, funny, and poignant,\" indicating a positive assessment. Given the single excerpt, I'm scoring it at the higher end of the positive range. | Kimi: The excerpt offers unqualified praise for the show's emotional balance, describing it as successfully funny and poignant without being overly sentimental. As a single clearly positive excerpt, it warrants the upper end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:59:29.455Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

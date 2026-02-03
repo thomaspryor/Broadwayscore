@@ -11,6 +11,11 @@
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "went neutral, summing up the views of most the rest of the press:",
-  "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "contentTier": "invalid",
+  "tierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-03T20:52:38.071Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a fragment describing what a critic did rather than actual review content with evaluative language about the show; openai: The text provided is not a review but a summary of other press opinions, lacking any direct evaluation of the show.; gemini: The provided text is not a review, but rather a note indicating the critic is summarizing other reviews.",
+  "promptVersion": "5.2.0"
 }

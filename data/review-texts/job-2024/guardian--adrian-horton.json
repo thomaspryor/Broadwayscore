@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "In the end, John Proctor Is the Villain doesn't feel like a show designed to goose youth-audience ticket sales; it feels like one that will engage and electrify a teenage audience, and plenty of adults too.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it feels like one that will engage and electrify a teenage audience, and plenty of adults too.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows strong positive language ('engage and electrify') with broad audience appeal noted. However, confidence is low due to limited text - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt suggests a strong recommendation, highlighting the show's ability to engage and electrify both teenagers and adults. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt indicates that the show will \"engage and electrify\" audiences, which is a positive sentiment. Given that it is a single excerpt, I am placing it in the upper range of the positive bucket. | Kimi: The excerpt offers an unambiguous recommendation using strong positive language ('electrify'), suggesting the show successfully connects with audiences rather than being cynical commercial fare. However, confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:14:38.059Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

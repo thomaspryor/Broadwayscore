@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "If only all of Keys’ songs fit so easily into Kristoffer Diaz’s libretto. The biggest head-scratcher: “Pawn It All,” sung by an angry Jersey to Ali’s dad, Davis (the velvet-voiced Brandon Victor Dixon). Perhaps the creators simply wanted to give Bean a show-stopping song—as well as something for her...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If only all of Keys' songs fit so easily into Kristoffer Diaz's libretto.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows frustration with song integration and describes one number as 'the biggest head-scratcher,' suggesting structural problems. However, praises Dixon as 'velvet-voiced' and acknowledges creators' intentions. With only one excerpt available, this appears mixed but leaning critical. | GPT-4o: The excerpt suggests a mismatch between songs and libretto, indicating mixed feelings. The lack of a full review and single excerpt warning necessitate a cautious approach. | Gemini: The review excerpt expresses mixed feelings, highlighting a specific song as a \"head-scratcher\" while also suggesting it might be intended to showcase a performer. Due to the limited text, confidence is low. | Kimi: Single excerpt criticizes specific song placement as a 'head-scratcher' while praising individual performances, suggesting mixed success in adaptation. Truncated text and limited context prevent definitive verdict assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:11:23.887Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

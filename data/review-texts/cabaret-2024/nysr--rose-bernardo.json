@@ -10,10 +10,64 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "But Frecknall smartly blurs the lines. All we’re really sure of is that we’re in Weimar-era Berlin. When the Emcee sings the echoey, haunting Aryan anthem “Tomorrow Belongs to Me,” he’s wandering through some kind of dreamland populated by wooden doll-size white men. In “Maybe This Time,” while Sall...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Frecknall smartly blurs the lines.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt highlights a positive aspect of the production, specifically the director's smart choices. However, the single excerpt warning and lack of a full review text reduce confidence in the overall sentiment. | Gemini: The excerpt suggests a positive direction with \"smartly blurs the lines\", but without the full review, it's hard to gauge the overall sentiment. I'm placing it in the positive bucket with low confidence. | Kimi: The excerpt offers strong praise for the director's staging choices ('smartly blurs,' 'haunting,' 'dreamland'), indicating a clearly positive assessment of the production's artistic vision. However, as a single truncated excerpt, the overall verdict cannot be fully confirmed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:50:58.322Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

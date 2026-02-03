@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Christopher Hampton's adaptation of the Choderlos de Laclos novel about sexual gamesmanship in 18th-century France is handsomely mounted and well-acted, but lacks the dangerous electricity that made the original production so memorable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of Christopher Hampton's adaptation of the Choderlos de Laclos novel about sexual gamesmanship in 18th-century France is handsomely mounted and well-acted, but lacks the dangerous electricity that made the original production so memorable.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival is handsomely mounted and well-acted, but lacks the dangerous electricity that made the original production so memorable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises production values and acting but identifies a significant flaw - missing the essential dangerous quality. Single excerpt limits confidence in full verdict. | GPT-4o: The review praises the production's mounting and acting but notes a lack of the 'dangerous electricity' that made the original memorable, indicating a mixed reception. | Gemini: The review acknowledges positive aspects (handsomely mounted, well-acted) but ultimately finds the production lacking compared to the original, suggesting a mixed or lukewarm reception. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: While the critic praises the production values and performances, the decisive 'but' clause emphasizes a crucial missing element—the dangerous electricity of the original—suggesting a competent but ultimately disappointing revival that falls short of its potential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:23:27.746Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

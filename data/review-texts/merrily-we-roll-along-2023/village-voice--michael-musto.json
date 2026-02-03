@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "But Act Two has some unmitigated joy too, particularly “It’s a Hit,” an ecstatic ditty the three leads sing with Joe when they realize the new show Shepard and Kringas have written, Musical Husbands, is scoring and their lives have been irrevocably changed (“No more writing clever little shows for t...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Act Two has some unmitigated joy too, particularly 'It's a Hit,' an ecstatic ditty",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt describes 'unmitigated joy' and 'ecstatic' moments in Act Two, suggesting positive sentiment. However, with only one brief excerpt available, confidence is low and this could be cherry-picked praise from a more mixed review. | GPT-4o: The excerpt highlights a positive moment in the show, describing a song as 'unmitigated joy' and 'ecstatic'. However, due to the single excerpt warning, the overall sentiment is uncertain, warranting a low confidence score at the lower end of the Positive range. | Gemini: The excerpt describes a joyful and ecstatic moment in Act Two, suggesting a positive experience. However, due to the limited context and truncated nature of the text, confidence is low. | Kimi: The excerpt uses enthusiastic language ('unmitigated joy', 'ecstatic') to praise a specific musical number, indicating a clearly positive response to this portion of the production, though the single-excerpt format limits certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:29:49.399Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

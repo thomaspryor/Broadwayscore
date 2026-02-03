@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Cy Coleman, Betty Comden and Adolph Green's 1978 musical is a glorious train wreck—and I mean that in the best possible way.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The revival of Cy Coleman, Betty Comden and Adolph Green's 1978 musical is a glorious train wreck—and I mean that in the best possible way.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival of Cy Coleman, Betty Comden and Adolph Green's 1978 musical is a glorious train wreck—and I mean that in the best possible way.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating places this firmly in Positive territory. The phrase 'glorious train wreck' followed by 'I mean that in the best possible way' indicates enthusiastic recommendation despite acknowledging the show's chaotic nature. | GPT-4o: The critic's original rating of 80 aligns with a positive recommendation. The phrase 'glorious train wreck' suggests a chaotic but enjoyable experience, indicating a positive verdict with some reservations. | Gemini: The critic calls the show a \"glorious train wreck\" and clarifies that they mean it in a positive way. The original rating of 80 supports a positive classification. | Kimi: The critic explicitly assigns an 80/100 rating and describes the revival as a 'glorious train wreck' in the 'best possible way,' indicating a strong positive recommendation with enthusiastic tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:38:33.866Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

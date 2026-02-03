@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jude Law brings a brooding intensity to the Danish prince, though his interpretation sometimes feels more calculated than spontaneous. The production, directed by Michael Grandage, offers handsome staging but doesn't always illuminate Shakespeare's text in fresh ways.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jude Law brings a brooding intensity to the Danish prince, though his interpretation sometimes feels more calculated than spontaneous. The production, directed by Michael Grandage, offers handsome staging but doesn't always illuminate Shakespeare's text in fresh ways.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jude Law brings a brooding intensity to the Danish prince, though his interpretation sometimes feels more calculated than spontaneous.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review offers balanced praise and criticism - acknowledges Law's intensity and handsome staging but notes his performance feels calculated and the production lacks fresh illumination. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt provides a balanced view, praising Jude Law's intensity but critiquing the lack of spontaneity and fresh insights in the production. The single excerpt warning suggests a cautious approach, leading to a mixed verdict. | Gemini: The review offers mixed opinions, praising Jude Law's intensity but noting a lack of spontaneity and fresh illumination of the text. Due to the limited excerpt, confidence is low. | Kimi: The excerpt praises Law's committed performance and the handsome staging but criticizes the calculated nature of the interpretation and lack of fresh insight, indicating a qualified, mild recommendation typical of the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:10:25.488Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

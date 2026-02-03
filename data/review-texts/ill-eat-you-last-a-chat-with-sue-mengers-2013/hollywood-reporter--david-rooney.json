@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Midler is in glorious form, delivering a performance that's both larger than life and surprisingly intimate, capturing Mengers' legendary bluntness and vulnerability with equal skill.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Midler is in glorious form, delivering a performance that's both larger than life and surprisingly intimate.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Midler's performance ('glorious form', 'larger than life and surprisingly intimate') suggests positive recommendation, but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt praises Midler's performance highly, describing it as 'glorious' and highlighting her skill. The positive tone suggests a strong recommendation, though the single excerpt limits confidence. | Gemini: The excerpt focuses on a highly positive assessment of Midler's performance, suggesting a strong recommendation. Given the single excerpt and positive tone, I've placed it in the upper range of the 'Positive' bucket. | Kimi: Single available excerpt provides enthusiastic praise for Midler's performance using superlatives like 'glorious form,' but limited context prevents assessing the full production or determining if this represents the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:12:14.075Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

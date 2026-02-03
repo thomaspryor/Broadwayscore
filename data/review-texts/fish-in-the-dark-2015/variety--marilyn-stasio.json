@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Larry David's Broadway debut as a playwright-star is a crowd-pleasing family comedy that runs on the reliable fuel of Jewish guilt and the actor's own cringe-inducing neuroses.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic explicitly calls it 'crowd-pleasing' and describes it as running on 'reliable fuel,' indicating it works effectively as entertainment, though without superlatives suggesting a higher score. | GPT-4o: The review describes the show as 'crowd-pleasing' and highlights its comedic elements, suggesting a positive reception. However, the brevity of the review limits the depth of evaluation, leading to a medium confidence level. | Gemini: The review describes the play as a \"crowd-pleasing family comedy,\" which indicates a positive recommendation. The phrase \"reliable fuel\" suggests that the humor is somewhat predictable, indicating a reservation. | Kimi: The critic describes the show as 'crowd-pleasing' and running on 'reliable fuel,' indicating a solid, enjoyable production that delivers expected entertainment value, though the excerpt's brevity limits assessment of overall enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:03:23.551Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 76
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -11,6 +11,11 @@
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "went neutral, summing up the views of most the rest of the press:",
-  "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "contentTier": "needs-rescrape",
+  "tierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-03T21:02:40.684Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a fragment describing aggregator methodology rather than actual review content from the critic.; openai: The provided text is not an evaluative review but a summary of other press opinions.; gemini: The provided text is not a review, but rather a note that the outlet went neutral and summarized other reviews.; kimi: The provided text is a fragment describing the review's general stance ('went neutral') rather than containing actual evaluative content about the show itself. It lacks a complete sentence with critical assessment of the production, performances, or direction.",
+  "promptVersion": "5.2.0"
 }

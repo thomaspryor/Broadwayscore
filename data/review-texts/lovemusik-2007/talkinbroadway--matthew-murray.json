@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "LoveMusik is a show that wants desperately to be taken seriously as both a musical and a drama, but it doesn't earn that consideration in either area.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "LoveMusik is a show that wants desperately to be taken seriously as both a musical and a drama, but it doesn't earn that consideration in either area.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "LoveMusik is a show that wants desperately to be taken seriously as both a musical and a drama, but it doesn't earn that consideration in either area.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly states the show fails as both musical and drama, indicating clear disappointment. However, confidence is low due to single excerpt warning - this could be setup before a more positive verdict. | GPT-4o: The excerpt indicates the show fails to succeed as both a musical and a drama, suggesting a negative assessment. However, the single excerpt may not fully represent the review's overall sentiment, leading to low confidence. | Gemini: The excerpt clearly states the show fails as both a musical and a drama, indicating a negative assessment. Confidence is low due to the limited text. | Kimi: The critic delivers a definitive negative verdict, stating the show fails to succeed as either a musical or drama, though the single-excerpt format limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:25:45.869Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }
