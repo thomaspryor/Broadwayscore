@@ -188,7 +188,7 @@ function extractBroadwayOrgImages(html, showTitle) {
       const alt = pattern === imgTagPattern ? match[1] : match[2];
       const src = pattern === imgTagPattern ? match[2] : match[1];
       const normalAlt = alt.toLowerCase().replace(/[^a-z0-9]/g, '');
-      if (normalAlt.includes(normalTitle) && /\/assets\/shows\//.test(src) && !/\/shows-media\//.test(src)) {
+      if (isSafeSubstringMatch(normalAlt, normalTitle) && /\/assets\/shows\//.test(src) && !/\/shows-media\//.test(src)) {
         bestPoster = src.split('?')[0];
         break;
       }
@@ -343,6 +343,15 @@ function hasBadImages(showId) {
   return false;
 }
 
+// Guard against substring false positives (e.g., "Rocky" matching "The Rocky Horror Show")
+// Requires the shorter string to be at least 60% of the longer string's length
+function isSafeSubstringMatch(a, b) {
+  const shorter = a.length <= b.length ? a : b;
+  const longer = a.length > b.length ? a : b;
+  if (!longer.includes(shorter)) return false;
+  return shorter.length / longer.length >= 0.6;
+}
+
 // Normalize a show title for fuzzy matching against TodayTix API
 function normalizeTitle(title) {
   return title
@@ -446,9 +455,9 @@ function matchTodayTixShow(showTitle, apiLookup) {
     return apiLookup[normalized];
   }
 
-  // 2. Substring containment (either direction)
+  // 2. Substring containment (with length-ratio guard to prevent false positives)
   for (const [apiNorm, data] of Object.entries(apiLookup)) {
-    if (apiNorm.includes(normalized) || normalized.includes(apiNorm)) {
+    if (isSafeSubstringMatch(apiNorm, normalized)) {
       return data;
     }
   }
@@ -460,7 +469,7 @@ function matchTodayTixShow(showTitle, apiLookup) {
       return apiLookup[withoutYear];
     }
     for (const [apiNorm, data] of Object.entries(apiLookup)) {
-      if (apiNorm.includes(withoutYear) || withoutYear.includes(apiNorm)) {
+      if (isSafeSubstringMatch(apiNorm, withoutYear)) {
         return data;
       }
     }
