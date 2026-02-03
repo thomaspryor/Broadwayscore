@@ -111,7 +111,7 @@ function NVPPageInner() {
     // Type filter
     if (type !== 'all') {
       result = result.filter(show => {
-        const isMusical = show.type === 'musical' || show.type === 'revival';
+        const isMusical = show.type === 'musical';
         return type === 'musical' ? isMusical : !isMusical;
       });
     }
@@ -270,7 +270,7 @@ function NVPPageInner() {
       {nvpShows.length > 0 ? (
         <div className="space-y-3" role="list" aria-label="NVP portfolio shows">
           {nvpShows.map((show, index) => {
-            const isRevival = show.type === 'revival';
+            const isRevival = show.isRevival === true;
 
             // Get the appropriate score based on mode
             let tier: ScoreTier | null = null;
