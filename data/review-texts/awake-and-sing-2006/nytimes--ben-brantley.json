@@ -5,8 +5,8 @@
   "criticName": "Ben Brantley",
   "url": "https://www.nytimes.com/2006/04/18/theater/reviews/18awak.html",
   "publishDate": "April 18, 2006",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Get unlimited access to NYTimes.com & NYTimes apps.\n\nLife begins tomorrow for the anxious souls inhabiting an overstuffed Bronx apartment in Clifford Odets's \"Awake and Sing!\" Or was it over long before yesterday?\n\nFollow @NYTimestheater for theater news and reviews from Broadway and beyond.\n\nDreams and disappointments, hopes and fears, encouraging words and bitter put-downs clash by day and night in Odets's turbulent comedy-drama about a Jewish family struggling to stay afloat in the 1930's. Conflict suffuses the stale air with a tension that almost seems to have mottled the walls. Dinner becomes a simmering battle between factions, in which grievances and recriminations are passed around the table along with the salt and pepper.\n\nIn the stirring revival that opened last night at the Belasco Theater, where \"Awake and Sing!\" was first produced in 1935 during the brief but influential heyday of the Group Theater, the tension derives above all from the question marks on the faces of the younger characters onstage.\n\nRalph Berger (Pablo Schreiber), toiling away at 22 as a clerk for a measly salary, comes closest to putting it in so many words, articulating a query that Odets posed in much of his work, occasionally with a defiantly American bluntness: What's life for, anyway?\n\nThe answers proposed and debated in this vigorous, still pungently funny play sometimes emit the hissing sound of old radio transmissions. \"If this life leads to a revolution, it's a good life,\" avows Ralph's grandfather Jacob, a Marx-worshiping barber. \"Otherwise it's for nothing.\" But even for Jacob life is also for listening to Caruso sing of a paradise that no social upheaval could really bring about.\n\nOdets was writing at the height of the Depression, when economic disorder had led to a sudden, urgent questioning of some fundamental tenets of American society. \"Awake and Sing!\" and his other early plays are fired by a belief that art could play a role in transforming the culture, creating a world in which life wouldn't be \"printed on dollar bills.\"\n\nBut his impassioned desire to proselytize for a better future didn't obscure his sensitivity to the everyday despair that tinted American lives long before the stock market crashed, or the humble forms of solace available even to a guy without a dollar to his name, like the rush of joy in his heart at the gleam in his girl's eye.\n\n\"She's so beautiful, you look at her and cry!\" marvels the love-smitten Ralph, the young man over whose future a three-act battle is waged in this play. \"She's like French words!\"\n\nThe messy give and take between ideologies and realities, and between hard fact and exuberant feeling, still thrums in \"Awake and Sing!\" It drives the play forward even when the energy dissipates in Bartlett Sher's sympathetic but occasionally faltering staging for Lincoln Center Theater.\n\nAll of Mr. Sher's skilled performers manage to locate the dreaming centers of their characters, buried beneath layers of political sloganeering, everyday gripes or street slang. And even when the focus blurs, Odets's zesty dialogue, in which jazzy period colloquialisms are slung around like punches at a prizefight, is a joy to hear.\n\nNobody slings it with more panache than Mark Ruffalo, the soulful movie and stage actor making his Broadway debut here. He plays the outsider in the Berger family ménage, a wiseacre cynic named Moe Axelrod with a missing leg and a doleful crush on Ralph's sister, Hennie. Or as Moe memorably puts it, \"I got a yen for her, and I don't mean a Chinee coin.\"\n\nHennie, played with a wounded transparency by Lauren Ambrose (of \"Six Feet Under\"), takes a tough line in her talk too, sneering at Moe, \"For two cents I'd spit in your eye.\"\n\nSo it goes chez Berger, where verbal fusillades put up forbidding invisible walls to establish some privacy in the clammy atmosphere of an apartment bulging at the seams. Mr. Ruffalo and Ms. Ambrose imbue the testy interplay between these desperate youngsters with an inward intensity that rises to a charged climax in the play's final moments.\n\nThe other primary source of conflict in the Berger homestead is the bitter divide between Ralph and Hennie's mother, Bessie (Zoë Wanamaker), and her father, Jacob (Ben Gazzara), over the romantic life and financial contributions to the family pocketbook of the anguished Ralph. Bessie swats away her father's socialist proclamations like so much talk of \"Santy Claus\" (that's Moe again, bless him), but she doggedly puts the welfare of a certain collective — the family — above the individual hopes of her son.\n\nBillions of dollars have poured into the continent to fight killer diseases. But the most basic killer, injury, is neglected.\n\nIn Room for Debate: Even for students who can afford a semester overseas, there may be better uses for that time and money.",
+  "isFullReview": true,
   "dtliExcerpt": "This revival of Clifford Odets's 1935 drama about a working-class Jewish family in the Bronx during the Depression has been assembled with obvious care and affection.",
   "originalScore": null,
   "assignedScore": 72,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Clifford Odets's 1935 drama about a working-class Jewish family in the Bronx during the Depression has been assembled with obvious care and affection.",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 72,
@@ -72,5 +72,34 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 72,
+  "textWordCount": 802,
+  "archivePath": "data/archives/reviews/awake-and-sing-2006/nytimes--ben-brantley_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T22:45:19.132Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20150305010323",
+  "archiveOrgUrl": "http://web.archive.org/web/20150305010323/http://www.nytimes.com/2006/04/18/theater/reviews/18awak.html",
+  "wordCount": 802,
+  "tierReason": "Full review text"
 }
