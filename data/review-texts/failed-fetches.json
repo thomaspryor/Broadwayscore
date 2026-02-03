@@ -7348,18 +7348,6 @@
     "timestamp": "2026-02-03T02:31:48.361Z"
   },
   {
-    "reviewId": "purlie-victorious-2023/washpost--peter-marks.json",
-    "showId": "purlie-victorious-2023",
-    "outlet": "The Washington Post",
-    "critic": "Peter Marks",
-    "url": "https://www.washingtonpost.com/entertainment/theater/2023/09/27/purlie-victorious-leslie-odom-broadway/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 5595,
-    "timestamp": "2026-02-03T02:42:13.873Z"
-  },
-  {
     "reviewId": "the-roommate-2024/timeout--adam-feldman.json",
     "showId": "the-roommate-2024",
     "outlet": "Time Out New York",
@@ -8426,5 +8414,41 @@
     "garbageReason": "Multiple shows mentioned (11): hamilton, here lies love, the wiz, home, company...",
     "textLength": 6868,
     "timestamp": "2026-02-03T05:16:44.102Z"
+  },
+  {
+    "reviewId": "liberation-2025/washpost--naveen-kumar.json",
+    "showId": "liberation-2025",
+    "outlet": "The Washington Post",
+    "critic": "Naveen Kumar",
+    "url": "https://www.washingtonpost.com/entertainment/theater/2025/10/28/liberation-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): good night, and good luck, company, the audience, hair, once...",
+    "textLength": 5430,
+    "timestamp": "2026-02-03T05:21:42.496Z"
+  },
+  {
+    "reviewId": "purlie-victorious-2023/washpost--peter-marks.json",
+    "showId": "purlie-victorious-2023",
+    "outlet": "The Washington Post",
+    "critic": "Peter Marks",
+    "url": "https://www.washingtonpost.com/entertainment/theater/2023/09/27/purlie-victorious-leslie-odom-broadway/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 5595,
+    "timestamp": "2026-02-03T05:22:22.406Z"
+  },
+  {
+    "reviewId": "the-cottage-2023/amny--unknown.json",
+    "showId": "the-cottage-2023",
+    "outlet": "amny",
+    "critic": "Unknown",
+    "url": "https://www.amny.com/entertainment/ambroadway-the-cottage-wins-yawns-instead-of-laughs/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): english, peter pan goes wrong, tootsie, private lives, high...",
+    "textLength": 1793,
+    "timestamp": "2026-02-03T05:22:58.063Z"
   }
 ]

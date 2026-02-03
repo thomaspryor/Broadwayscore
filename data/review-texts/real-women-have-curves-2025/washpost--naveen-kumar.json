@@ -67,12 +67,17 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "archivePath": "data/archives/reviews/real-women-have-curves-2025/washpost--naveen-kumar_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T04:24:05.244Z",
+  "textFetchedAt": "2026-02-03T05:22:44.562Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
       "success": true
     },
     {
@@ -95,16 +100,18 @@
   "garbageReason": "/ad ?block(er)?/i",
   "garbageFixedAt": "2026-01-29T22:45:23.162Z",
   "contentTier": "truncated",
-  "wordCount": 244,
-  "fullText": "Democracy Dies in DarknessReview by Naveen KumarNEW YORK — Theater usually lags behind the headlines because it takes time to develop something new. But “Real Women Have Curves” arrives on Broadway at a moment when seeing the humanity of immigrants — however they’re seen by the law — has assumed head-spinning relevance. Don’t expect a taste of medicine beneath the heaping spoonfuls of sugar: It’s a laugh-out-loud musical comedy with a massive dose of heart.\n\n8 CommentsMost ReadTravis Andrews, Janay Kingsberry, Kelsey Ables, Naveen Kumar and Geoff Edgers‘Crisis’: The fallout from Trump’s surprise plan to close Kennedy CenterEarlier todayColumnPhilip KennicottThe grave risk of Trump’s Kennedy Center shutdownEarlier todayMichelle BoorsteinFor traditional Catholics, Charlotte Communion dispute is a battle lineEarlier todayNewsletterFridaysBook ClubOur weekly selection of book reviews and recommendations from Book World editor Ron Charles.Sign up5.52.10\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice.",
-  "isFullReview": true,
+  "wordCount": 138,
+  "fullText": "Democracy Dies in DarknessReview by Naveen KumarNEW YORK — Theater usually lags behind the headlines because it takes time to develop something new. But “Real Women Have Curves” arrives on Broadway at a moment when seeing the humanity of immigrants — however they’re seen by the law — has assumed head-spinning relevance. Don’t expect a taste of medicine beneath the heaping spoonfuls of sugar: It’s a laugh-out-loud musical comedy with a massive dose of heart.\n\n8 CommentsMost ReadTravis Andrews, Janay Kingsberry, Kelsey Ables, Naveen Kumar and Geoff Edgers‘Crisis’: The fallout from Trump’s surprise plan to close Kennedy CenterFebruary 2, 2026Eva DouInternational companies cut off business in the U.S. because of ICEFebruary 2, 2026ColumnPhilip KennicottThe grave risk of Trump’s Kennedy Center shutdownFebruary 2, 2026NewsletterFridaysBook ClubOur weekly selection of book reviews and recommendations from Book World editor Ron Charles.Sign up",
+  "isFullReview": false,
   "needsRescore": true,
-  "textWordCount": 244,
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "incomplete",
-  "textIssues": [
-    "Word count too low: 244 (min: 300)"
+  "textWordCount": 138,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
   ],
-  "tierReason": "Short text (244 words)"
+  "textStatus": "truncated",
+  "textIssues": [
+    "Word count too low: 138 (min: 300)"
+  ],
+  "tierReason": "Short text (138 words)"
 }
