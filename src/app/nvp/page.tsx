@@ -356,8 +356,8 @@ function NVPPageInner() {
                           {audienceGrade.label}
                         </span>
                         <div
-                          className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold"
-                          style={{
+                          className={`score-badge w-16 h-16 sm:w-20 sm:h-20 text-2xl sm:text-3xl rounded-xl font-bold${audienceGrade.grade === 'A+' ? ' audience-top-grade' : ''}`}
+                          style={audienceGrade.grade === 'A+' ? {} : {
                             backgroundColor: audienceGrade.color,
                             color: audienceGrade.textColor,
                             boxShadow: `0 2px 8px ${audienceGrade.color}4d`,
