@@ -8464,30 +8464,6 @@
     "timestamp": "2026-02-03T05:23:45.812Z"
   },
   {
-    "reviewId": "1984-2017/hollywood-reporter--david-rooney.json",
-    "showId": "1984-2017",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/",
-    "method": "browserbase",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): appropriate, purpose, company, allegiance, the audience...",
-    "textLength": 4831,
-    "timestamp": "2026-02-03T07:09:32.992Z"
-  },
-  {
-    "reviewId": "9-to-5-2009/nytimes--ben-brantley.json",
-    "showId": "9-to-5-2009",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): wicked, chicago, giant, company, network...",
-    "textLength": 9381,
-    "timestamp": "2026-02-03T07:21:54.829Z"
-  },
-  {
     "reviewId": "a-catered-affair-2008/nytimes--ben-brantley.json",
     "showId": "a-catered-affair-2008",
     "outlet": "The New York Times",
@@ -8810,5 +8786,29 @@
     "garbageReason": "Multiple shows mentioned (13): hamilton, giant, gutenberg! the musical!, home, company...",
     "textLength": 12286,
     "timestamp": "2026-02-03T09:39:47.461Z"
+  },
+  {
+    "reviewId": "1984-2017/hollywood-reporter--david-rooney.json",
+    "showId": "1984-2017",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): appropriate, purpose, company, allegiance, the audience...",
+    "textLength": 5148,
+    "timestamp": "2026-02-03T10:12:15.227Z"
+  },
+  {
+    "reviewId": "9-to-5-2009/nytimes--ben-brantley.json",
+    "showId": "9-to-5-2009",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): wicked, chicago, giant, company, network...",
+    "textLength": 9381,
+    "timestamp": "2026-02-03T10:17:58.482Z"
   }
 ]
