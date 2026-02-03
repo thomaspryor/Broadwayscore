@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Steve Martin's first new play in more than a decade proves to be a slight but likable comedy that gets by on the charm of its four-person cast and the playwright's gift for absurdist dialogue.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Steve Martin's first new play in more than a decade proves to be a slight but likable comedy that gets by on the charm of its four-person cast and the playwright's gift for absurdist dialogue.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a slight but likable comedy that gets by on the charm of its four-person cast",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review uses positive language ('likable', 'charm', 'gift') but qualifies it as 'slight' and says it 'gets by' rather than excels, indicating a gentle recommendation with reservations. | GPT-4o: The review describes the play as 'slight but likable' and highlights the charm of the cast and the playwright's dialogue, indicating a positive but not enthusiastic recommendation. | Gemini: The review calls the play \"likable\" and notes the charm of the cast, indicating a positive but not overwhelmingly enthusiastic recommendation. The word \"slight\" suggests reservations. | Kimi: While the critic notes the play is 'slight' (insubstantial), the descriptors 'likable' and praise for the cast's charm and Martin's absurdist dialogue indicate a qualified but clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:55:26.627Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

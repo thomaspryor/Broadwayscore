@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though it may not be the most sophisticated musical comedy ever to grace Broadway, 'Mean Girls' succeeds in translating the movie's sharp social commentary into an energetic, if occasionally overstuffed, stage musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Though it may not be the most sophisticated musical comedy ever to grace Broadway, 'Mean Girls' succeeds in translating the movie's sharp social commentary into an energetic, if occasionally overstuffed, stage musical.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mean Girls succeeds in translating the movie's sharp social commentary into an energetic stage musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict using 'succeeds' with acknowledgment of flaws ('not the most sophisticated', 'occasionally overstuffed'). Solid recommendation with reservations. | GPT-4o: The review acknowledges some flaws ('occasionally overstuffed') but ultimately praises the show's successful translation from film to stage, indicating a positive recommendation. | Gemini: The review acknowledges some flaws ('not the most sophisticated', 'occasionally overstuffed') but ultimately states that the musical 'succeeds', indicating a positive recommendation with reservations. | Kimi: While the critic notes the show lacks sophistication and is occasionally overstuffed, the explicit verdict is that it 'succeeds' in its adaptation, making it a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:53:11.173Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

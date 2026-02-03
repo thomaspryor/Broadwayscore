@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Cranston's Howard Beale is a man whose sanity cracks open to reveal not madness but a deeper, more frightening lucidity about the world around him.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T18:06:14.809Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with an evaluative verdict about the show; openai: The text is about Mr. Cranston's performance as Howard Beale, which is likely from the show 'Network', not the target show.; gemini: This is a single sentence excerpt, not a full review. It lacks a clear recommendation or overall assessment of the production.",
+  "promptVersion": "5.2.0"
 }

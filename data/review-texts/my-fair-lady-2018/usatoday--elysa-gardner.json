@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival boasts a handsome production and strong performances, particularly from Lauren Ambrose as Eliza Doolittle. But it doesn't feel especially fresh or urgent.",
   "originalScore": 75,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This revival boasts a handsome production and strong performances, particularly from Lauren Ambrose as Eliza Doolittle. But it doesn't feel especially fresh or urgent.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival boasts a handsome production and strong performances, particularly from Lauren Ambrose as Eliza Doolittle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 75 rating places this in positive territory. Praises production values and lead performance, but the 'but' clause about lacking freshness creates reservations that keep it from higher positive range. | GPT-4o: The review praises the production and performances but notes a lack of freshness or urgency. The original rating of 75 aligns with a positive bucket with some reservations. | Gemini: The review acknowledges a \"handsome production and strong performances\" but notes it \"doesn't feel especially fresh or urgent,\" indicating a positive but not enthusiastic recommendation. | Kimi: While the critic notes the revival lacks freshness and urgency, the praise for handsome production values and strong performances (particularly Ambrose) supports a qualified positive recommendation consistent with the 75/100 rating provided.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:03:38.950Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

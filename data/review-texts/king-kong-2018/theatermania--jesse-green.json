@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "King Kong is a marvel of engineering and stagecraft, but the story and score never quite match the technical wizardry.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "King Kong is a marvel of engineering and stagecraft, but the story and score never quite match the technical wizardry.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (20 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "King Kong is a marvel of engineering and stagecraft, but the story and score never quite match the technical wizardry.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear mixed verdict - praises the spectacular technical elements while noting the fundamental storytelling and musical components don't measure up. Classic 'impressive but flawed' assessment. | GPT-4o: The review praises the technical aspects but criticizes the story and score, resulting in a mixed verdict with no clear recommendation. | Gemini: The review praises the technical aspects but criticizes the story and score, indicating a mixed opinion. | Kimi: The critic praises the spectacle as a 'marvel' but explicitly states the fundamental elements of story and score fail to live up to the production values, resulting in an ambivalent assessment that neither recommends nor rejects the show outright.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:14:51.403Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This lavishly mounted stage adaptation of the beloved 1964 Disney film proves that sometimes more really can be more, delivering a family-friendly spectacle that should enchant children and adults alike.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This lavishly mounted stage adaptation of the beloved 1964 Disney film proves that sometimes more really can be more, delivering a family-friendly spectacle that should enchant children and adults alike.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This lavishly mounted stage adaptation of the beloved 1964 Disney film proves that sometimes more really can be more, delivering a family-friendly spectacle that should enchant children and adults alike.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with praise for the production values and broad appeal, though language is measured rather than enthusiastic. | GPT-4o: The review describes the show as a 'lavishly mounted stage adaptation' and a 'family-friendly spectacle' that will 'enchant children and adults alike,' indicating a strong positive recommendation. | Gemini: The review is clearly positive, using words like \"beloved\", \"enchant\", and \"family-friendly spectacle\" to describe the show. The critic believes the show will appeal to both children and adults. | Kimi: The critic offers unqualified praise for the production values ('lavishly mounted,' 'spectacle') and predicts it will 'enchant' audiences of all ages, indicating a strong recommendation without significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:47:05.321Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

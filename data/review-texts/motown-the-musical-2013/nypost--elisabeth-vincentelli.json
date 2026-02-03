@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a shameless crowd-pleaser that works despite itself, powered by an incredible songbook that includes 'My Girl,' 'Dancing in the Street' and 'I Heard It Through the Grapevine.'",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show is a shameless crowd-pleaser that works despite itself, powered by an incredible songbook that includes 'My Girl,' 'Dancing in the Street' and 'I Heard It Through the Grapevine.'",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a shameless crowd-pleaser that works despite itself",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict that the show 'works' and is effective as entertainment, despite acknowledging it's formulaic. The qualifier 'despite itself' prevents this from being a stronger positive score. | GPT-4o: The review acknowledges the show's appeal and success with audiences, highlighting the strong songbook. However, the phrase 'despite itself' suggests some reservations, leading to a lower score within the Positive range. | Gemini: The review states the show \"works despite itself\" and is a \"crowd-pleaser,\" indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic acknowledges the show succeeds as a 'crowd-pleaser' and praises the 'incredible songbook,' but the phrase 'despite itself' indicates reservations, suggesting a qualified recommendation rather than unqualified enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:01:01.483Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

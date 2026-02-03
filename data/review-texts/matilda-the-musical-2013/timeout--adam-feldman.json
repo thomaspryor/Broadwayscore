@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This adaptation of Roald Dahl's beloved children's book is a marvel of theatrical imagination, with Dennis Kelly's book and Tim Minchin's songs creating a darkly comic world that never talks down to its audience.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This adaptation of Roald Dahl's beloved children's book is a marvel of theatrical imagination, with Dennis Kelly's book and Tim Minchin's songs creating a darkly comic world that never talks down to its audience.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This adaptation of Roald Dahl's beloved children's book is a marvel of theatrical imagination.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling it a 'marvel of theatrical imagination' with appreciation for the creative team. The critic's 80 rating confirms solid positive territory. | GPT-4o: The review praises the adaptation as a 'marvel of theatrical imagination' and highlights the effective collaboration of book and songs, aligning with the original rating of 80. | Gemini: The review uses strong positive language such as \"marvel of theatrical imagination\" and praises the book and songs, indicating a positive recommendation. The original rating of 80 aligns with this assessment. | Kimi: The critic offers strong praise calling the show a 'marvel of theatrical imagination' with effective creative elements, and the explicit 80/100 rating confirms a solid positive recommendation in the upper range of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:49:54.044Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

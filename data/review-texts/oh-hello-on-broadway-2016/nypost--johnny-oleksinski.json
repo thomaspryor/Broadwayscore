@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Nick Kroll and John Mulaney are perfectly awful in 'Oh, Hello on Broadway' — and that's exactly the point. The pair's characters, Gil Faizon and George St. Geegland, are so repulsive and clueless that they become endearing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Nick Kroll and John Mulaney are perfectly awful in 'Oh, Hello on Broadway' — and that's exactly the point. The pair's characters, Gil Faizon and George St. Geegland, are so repulsive and clueless that they become endearing.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The pair's characters, Gil Faizon and George St. Geegland, are so repulsive and clueless that they become endearing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses intentional contradiction ('perfectly awful... and that's exactly the point') to praise the performers' comedic skill. Calling the characters 'endearing' despite being 'repulsive' indicates appreciation for the comedy's effectiveness. | GPT-4o: The review highlights the intentional awfulness of the characters as a positive aspect, suggesting that the show is endearing and worth seeing despite the characters' repulsiveness. | Gemini: The review states that the characters are \"perfectly awful\" but then clarifies that this is the point and that they become endearing, indicating a positive, but not rave, review. | Kimi: While describing the characters as 'awful,' the critic makes clear this is intentional and successful ('that's exactly the point'), praising the performances as 'endearing' in their repulsiveness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:15:54.426Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

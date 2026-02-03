@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What saves 'Motown' from being a total washout is its score, which consists of more than 50 songs from the Motown catalog, most of them performed with considerable energy and no small amount of skill.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "What saves 'Motown' from being a total washout is its score, which consists of more than 50 songs from the Motown catalog, most of them performed with considerable energy and no small amount of skill.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What saves 'Motown' from being a total washout is its score, which consists of more than 50 songs from the Motown catalog, most of them performed with considerable energy and no small amount of skill.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Critic explicitly states the show would be a 'total washout' except for the musical performances, indicating significant problems with everything else while acknowledging the quality of the song performances. | GPT-4o: The review suggests that the show is largely unsuccessful, only partially redeemed by its energetic and skillful musical performances. This indicates a negative overall impression with some redeeming qualities. | Gemini: The review states that the score is what saves the show from being a \"total washout,\" implying that the show is not good overall, despite the music. This indicates a negative recommendation. | Kimi: The critic explicitly states that only the score prevents the show from being a 'total washout,' framing the production itself as a failure despite the quality of the musical performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:02:00.686Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

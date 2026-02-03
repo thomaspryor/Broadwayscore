@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "3/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But let's not overanalyze this.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with balanced critique - praises cast performances (especially Evans' 'seriously impressive' debut) but questions plot logic and finds the action 'almost immaterial.' Acknowledges some satisfying moments but with significant reservations about the material itself. | GPT-4o: The review provides a balanced view, noting some positive aspects like Chris Evans' impressive debut but also pointing out issues like overacting and plot-light nature. The original 3/5 stars rating suggests a mixed reception. | Gemini: The review is mixed, noting the play is \"plot-light\" and the action is \"almost immaterial,\" but also that it has moments of heroism. The 3/5 star rating supports a mixed classification. | Kimi: The 3/5 star rating and qualified praise reflect a mixed reception. While Evans delivers a 'seriously impressive Broadway debut' and Henry is appealing, Powley's 'overacting' and the 'plot-light' material that is 'almost immaterial' keep this from a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:31:56.930Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

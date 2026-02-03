@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a production that honors O'Neill's masterpiece and delivers it with all the power and heartbreak the playwright intended.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This is a production that honors O'Neill's masterpiece and delivers it with all the power and heartbreak the playwright intended.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (20 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a production that honors O'Neill's masterpiece and delivers it with all the power and heartbreak the playwright intended.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling it a masterpiece that delivers with 'all the power' intended, but brief excerpt limits full assessment of recommendation strength. | GPT-4o: The review uses strong positive language ('honors', 'power', 'heartbreak') indicating a high level of praise and recommendation. | Gemini: The review explicitly states that the production honors the masterpiece and delivers it with power and heartbreak, indicating a strong positive assessment. | Kimi: Unqualified praise describing the show as a masterpiece delivered with complete emotional power and fidelity to the playwright's intent. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:34:37.422Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 93,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

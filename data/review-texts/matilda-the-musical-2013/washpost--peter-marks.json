@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a marvel of theatrical ingenuity, with Tim Minchin's lyrics crackling with wordplay and wit, and the young performers displaying remarkable skill and charisma.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show is a marvel of theatrical ingenuity, with Tim Minchin's lyrics crackling with wordplay and wit, and the young performers displaying remarkable skill and charisma.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a marvel of theatrical ingenuity, with Tim Minchin's lyrics crackling with wordplay and wit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling the show 'a marvel' with specific positive elements highlighted (lyrics, performances), but excerpt appears incomplete which limits confidence in final verdict. | GPT-4o: The review uses strong positive language ('marvel of theatrical ingenuity', 'crackling with wordplay and wit') indicating an enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"marvel\" and \"crackling with wordplay and wit\", indicating a strong recommendation. | Kimi: The critic employs superlatives ('marvel', 'remarkable', 'crackling with wit') to praise the production's ingenuity, lyrics, and performances without visible reservations, indicating strong enthusiasm despite the excerpt's brevity. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:50:26.795Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

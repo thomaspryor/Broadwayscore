@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway revival of 'La Cage aux Folles' is a sumptuous, sweet-natured production that does full justice to Jerry Herman's tuneful score and Harvey Fierstein's funny book.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The new Broadway revival of 'La Cage aux Folles' is a sumptuous, sweet-natured production that does full justice to Jerry Herman's tuneful score and Harvey Fierstein's funny book.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a sumptuous, sweet-natured production that does full justice to Jerry Herman's tuneful score and Harvey Fierstein's funny book",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'sumptuous' and 'does full justice' indicating strong approval of the production, score, and book without reservations. | GPT-4o: The review uses positive language ('sumptuous', 'sweet-natured', 'does full justice') to describe the production, indicating a strong recommendation without reservations. | Gemini: The review uses positive language such as \"sumptuous\" and \"sweet-natured\" and states that the production \"does full justice\" to the score and book, indicating a strong recommendation. | Kimi: Though brief, the review offers unreserved praise for the production values and treatment of the material, clearly endorsing the revival as a quality realization of the musical.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:22:05.473Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a slick jukebox musical that tells the story of Frankie Valli and the Four Seasons with enough Broadway pizzazz to make you overlook its conventional structure.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show is a slick jukebox musical that tells the story of Frankie Valli and the Four Seasons with enough Broadway pizzazz to make you overlook its conventional structure.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a slick jukebox musical that tells the story of Frankie Valli and the Four Seasons with enough Broadway pizzazz to make you overlook its conventional structure.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the show's conventional structure as a flaw but finds the Broadway pizzazz compelling enough to overcome this weakness, indicating a qualified positive recommendation. | GPT-4o: The review acknowledges the conventional structure but highlights the Broadway pizzazz as a redeeming quality, suggesting a positive recommendation despite some reservations. | Gemini: The review is generally positive, describing the show as \"slick\" and having \"enough Broadway pizzazz.\" However, it also mentions a \"conventional structure,\" indicating a reservation. | Kimi: The critic acknowledges the show's conventional structure but praises its slick production and Broadway pizzazz as sufficient to recommend attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:03:59.713Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 75,
+    "geminiScore": 72,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

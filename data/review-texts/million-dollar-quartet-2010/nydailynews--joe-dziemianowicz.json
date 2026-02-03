@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This musical rocks the Nederlander Theater with authentic spirit and rollicking tunes that'll have you tapping your toes and clapping your hands.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This musical rocks the Nederlander Theater with authentic spirit and rollicking tunes that'll have you tapping your toes and clapping your hands.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical rocks the Nederlander Theater with authentic spirit and rollicking tunes that'll have you tapping your toes and clapping your hands.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear enthusiastic language ('rocks', 'authentic spirit', 'rollicking tunes') with physical engagement promised ('tapping your toes and clapping your hands'). The critic's own 80 rating confirms this is solidly positive territory. | GPT-4o: The review provides a positive assessment, highlighting the show's engaging and lively nature. The critic's original rating of 80 aligns with a solid recommendation without extreme enthusiasm. | Gemini: The review uses positive language like \"authentic spirit\" and \"rollicking tunes\" and states that it will have you tapping your toes and clapping your hands, indicating a positive experience. The original rating of 80 aligns with a positive classification. | Kimi: The critic's explicit 80/100 rating confirms a strong Positive recommendation, while the enthusiastic language ('rocks', 'rollicking') supports scoring at the higher end of that range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:56:36.466Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
