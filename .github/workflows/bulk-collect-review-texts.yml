@@ -1,0 +1,344 @@
+# One-time bulk collection of review full texts across all shows
+# Partitions shows across parallel runners for fast processing
+# Re-runnable: reviews with fullText are skipped automatically
+name: Bulk Collect Review Texts
+
+on:
+  workflow_dispatch:
+    inputs:
+      parallel_jobs:
+        description: 'Number of parallel jobs (1-10)'
+        required: false
+        default: '5'
+        type: string
+      max_per_job:
+        description: 'Max reviews per job (0 = all in partition)'
+        required: false
+        default: '0'
+        type: string
+      batch_size:
+        description: 'Git commit checkpoint interval'
+        required: false
+        default: '10'
+        type: string
+      browserbase_enabled:
+        description: 'Enable Browserbase for CAPTCHA sites'
+        required: false
+        default: true
+        type: boolean
+      browserbase_per_job:
+        description: 'Browserbase sessions per job (5 × 5 jobs = 25, under 30 daily cap)'
+        required: false
+        default: '5'
+        type: string
+      retry_failed:
+        description: 'Retry previously failed reviews'
+        required: false
+        default: true
+        type: boolean
+      archive_first:
+        description: 'Try Archive.org first (best success rate)'
+        required: false
+        default: true
+        type: boolean
+      content_tier:
+        description: 'Filter by content tier: excerpt, truncated, needs-rescrape (empty = all)'
+        required: false
+        default: ''
+        type: string
+      test_mode:
+        description: 'Test mode: limit each job to 5 reviews'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.split.outputs.matrix }}
+      total_reviews: ${{ steps.split.outputs.total_reviews }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Split shows into load-balanced batches
+        id: split
+        run: |
+          JOBS=${{ inputs.parallel_jobs }}
+
+          # Validate parallel_jobs is 1-10
+          if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then
+            JOBS=5
+          fi
+
+          # Count reviews needing fullText per show, sort by count for load balancing
+          node -e '
+            const fs = require("fs");
+            const path = require("path");
+            const reviewsDir = "data/review-texts";
+            const dirs = fs.readdirSync(reviewsDir).filter(d => {
+              try { return fs.statSync(path.join(reviewsDir, d)).isDirectory(); } catch { return false; }
+            });
+
+            const showCounts = [];
+            let totalReviews = 0;
+
+            for (const showId of dirs) {
+              const showDir = path.join(reviewsDir, showId);
+              const files = fs.readdirSync(showDir).filter(f => f.endsWith(".json") && f !== "failed-fetches.json");
+              let needsText = 0;
+              for (const f of files) {
+                try {
+                  const data = JSON.parse(fs.readFileSync(path.join(showDir, f), "utf8"));
+                  if (data.url && (!data.fullText || data.fullText.length < 50)) {
+                    needsText++;
+                  }
+                } catch {}
+              }
+              if (needsText > 0) {
+                showCounts.push({ showId, count: needsText });
+                totalReviews += needsText;
+              }
+            }
+
+            // Sort descending by review count for load-balanced round-robin
+            showCounts.sort((a, b) => b.count - a.count);
+
+            const jobs = parseInt(process.env.JOBS);
+            const actualJobs = Math.min(jobs, showCounts.length);
+            const batches = Array.from({ length: actualJobs }, () => ({ shows: [], count: 0 }));
+
+            // Round-robin distribution (sorted descending = largest shows spread evenly)
+            for (let i = 0; i < showCounts.length; i++) {
+              const batchIdx = i % actualJobs;
+              batches[batchIdx].shows.push(showCounts[i].showId);
+              batches[batchIdx].count += showCounts[i].count;
+            }
+
+            // Build matrix
+            const matrix = {
+              include: batches.map((b, i) => ({
+                batch_id: i,
+                shows: b.shows.join(","),
+                delay: i * 45,
+                review_count: b.count,
+                show_count: b.shows.length
+              }))
+            };
+
+            console.log("=== BULK COLLECTION PLAN ===");
+            console.log("Total reviews needing fullText:", totalReviews);
+            console.log("Shows with pending reviews:", showCounts.length);
+            console.log("Parallel jobs:", actualJobs);
+            console.log("");
+            for (const b of matrix.include) {
+              console.log("  Batch " + b.batch_id + ": " + b.show_count + " shows, " + b.review_count + " reviews (delay: " + b.delay + "s)");
+            }
+
+            // Write outputs
+            fs.writeFileSync("/tmp/matrix.json", JSON.stringify(matrix));
+            fs.writeFileSync("/tmp/total.txt", String(totalReviews));
+          ' JOBS=$JOBS
+
+          echo "matrix=$(cat /tmp/matrix.json)" >> $GITHUB_OUTPUT
+          echo "total_reviews=$(cat /tmp/total.txt)" >> $GITHUB_OUTPUT
+
+  collect:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Create directories
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Clear progress state for independent execution
+        run: rm -f data/collection-state/progress.json
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Stagger start
+        if: matrix.delay > 0
+        run: |
+          echo "Batch ${{ matrix.batch_id }} (${{ matrix.show_count }} shows, ${{ matrix.review_count }} reviews): waiting ${{ matrix.delay }}s..."
+          sleep ${{ matrix.delay }}
+
+      - name: Collect review texts for batch ${{ matrix.batch_id }}
+        env:
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
+          WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
+          WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
+          WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: mcp_unlocker
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled }}
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_per_job }}
+          BATCH_SIZE: ${{ inputs.batch_size }}
+          MAX_REVIEWS: ${{ inputs.test_mode == true && '5' || inputs.max_per_job }}
+          SHOW_FILTER: ${{ matrix.shows }}
+          RETRY_FAILED: ${{ inputs.retry_failed }}
+          ARCHIVE_FIRST: ${{ inputs.archive_first }}
+          CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
+        run: node scripts/collect-review-texts.js
+
+      - name: Check for large files
+        uses: ./.github/actions/check-file-sizes
+
+      - name: Final commit and push
+        run: |
+          git add data/review-texts/ data/archives/reviews/ data/collection-state/ || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit for batch ${{ matrix.batch_id }}"
+            exit 0
+          fi
+
+          git commit -m "feat: Bulk collect review texts (batch ${{ matrix.batch_id }}/${{ strategy.job-total }})
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              # Verify shows.json wasn't corrupted by rebase
+              node -e "
+                const d = JSON.parse(require('fs').readFileSync('data/shows.json', 'utf8'));
+                if (!Array.isArray(d.shows)) throw new Error('shows.json corrupted');
+              " || {
+                echo "shows.json corrupted during rebase, restoring..."
+                git checkout origin/main -- data/shows.json
+              }
+              if git push origin main; then
+                echo "Successfully pushed batch ${{ matrix.batch_id }}"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
+
+      - name: Upload collection report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collection-report-batch-${{ matrix.batch_id }}
+          path: |
+            data/audit/validation/collection-report-*.json
+            data/collection-state/progress.json
+            data/collection-state/live-progress.json
+          retention-days: 30
+
+  rebuild:
+    needs: [collect]
+    if: always() && needs.collect.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild reviews.json
+        run: node scripts/rebuild-all-reviews.js
+
+      - name: Commit and push rebuilt reviews.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/reviews.json data/critic-registry.json data/audit/
+          git diff --staged --quiet && { echo "No changes to reviews.json"; exit 0; }
+
+          git commit -m "data: Auto-rebuild reviews.json after bulk collection"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed rebuild"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
