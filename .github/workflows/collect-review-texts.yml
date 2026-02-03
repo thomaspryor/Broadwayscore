@@ -76,7 +76,7 @@ jobs:
   collect-reviews-single:
     if: ${{ inputs.parallel != 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 300
     permissions:
       contents: write
 
