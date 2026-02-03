@@ -83,7 +83,8 @@ const KNOWN_DUPLICATES = {
 function slugify(title) {
   return title
     .toLowerCase()
-    .replace(/[!?'":\-–—,\.]/g, '')
+    .normalize('NFKD').replace(/[\u0300-\u036f]/g, '') // Strip diacritics (é→e)
+    .replace(/[!?'":\-–—,\.+\/\[\]()]/g, '')           // Strip punctuation + brackets
     .replace(/[&]/g, 'and')
     .replace(/\s+/g, '-')
     .replace(/^-+|-+$/g, '')
@@ -110,7 +111,7 @@ function normalizeTitle(title) {
     // Remove possessive prefixes like "Disney's"
     .replace(/^(disney'?s?|roald dahl'?s?)\s+/i, '')
     // Clean up punctuation and extra spaces
-    .replace(/[!?'":\-–—,\.]/g, '')
+    .replace(/[!?'":\-–—,\.+\/]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -171,18 +172,16 @@ function areTitlesSimilar(title1, title2) {
 function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
   // Check if both titles belong to the same known duplicate group
   for (const [key, variants] of Object.entries(KNOWN_DUPLICATES)) {
-    const newMatches = variants.some(v =>
-      v === newTitleNormalized ||
-      newTitleNormalized.includes(v) ||
-      v.includes(newTitleNormalized)
-    );
-    const existingMatches = variants.some(v =>
-      v === existingTitleNormalized ||
-      existingTitleNormalized.includes(v) ||
-      v.includes(existingTitleNormalized)
-    );
+    const matchesVariant = (title) => variants.some(v => {
+      if (v === title) return true;
+      if (title.includes(v)) return true;
+      // Only match v.includes(title) if title is at least 80% of variant length
+      // Prevents "ann" matching "annie", "doubt" matching "doubtfire" etc.
+      if (v.includes(title) && title.length >= v.length * 0.8) return true;
+      return false;
+    });
 
-    if (newMatches && existingMatches) {
+    if (matchesVariant(newTitleNormalized) && matchesVariant(existingTitleNormalized)) {
       return { isDuplicate: true, group: key };
     }
   }
@@ -274,6 +273,10 @@ function checkForDuplicate(newShow, existingShows) {
     // FIXED: Changed from > 3 to >= 3 to catch short titles like "SIX"
     if (newTitleNormalized === existingTitleNormalized && newTitleNormalized.length >= 3) {
       if (isMultiProduction(newShow, existing)) continue;
+      // Skip if both titles have subtitles but different full titles — multi-part shows
+      // e.g., "Angels in America: Millennium Approaches" vs "Angels in America: Perestroika"
+      const hasSubtitle = (t) => /[:\-–—\[]/.test(t);
+      if (hasSubtitle(newShow.title) && hasSubtitle(existing.title) && newTitleLower !== existingTitleLower) continue;
       return {
         isDuplicate: true,
         reason: `Normalized title match: "${newTitleNormalized}" matches "${existing.title}"`,
@@ -297,6 +300,9 @@ function checkForDuplicate(newShow, existingShows) {
     if (newVenue && existingVenue && newVenue === existingVenue) {
       if (newTitleNormalized.length > 4 && existingTitleNormalized.length > 4 &&
           newTitleNormalized.substring(0, 8) === existingTitleNormalized.substring(0, 8)) {
+        // Skip multi-part shows at same venue (e.g., Coast of Utopia parts)
+        const hasSubtitle = (t) => /[:\-–—\[]/.test(t);
+        if (hasSubtitle(newShow.title) && hasSubtitle(existing.title) && newTitleLower !== existingTitleLower) continue;
         return {
           isDuplicate: true,
           reason: `Same venue "${newVenue}" + similar title start`,
@@ -306,14 +312,21 @@ function checkForDuplicate(newShow, existingShows) {
     }
 
     // Check 8: One title contains the other (for titles > 4 chars)
+    // Require shorter title to be at least 50% of longer title length
+    // to prevent false positives like "doubt" matching "mrs doubtfire"
     if (existingTitleNormalized.length > 4 && newTitleNormalized.length > 4) {
-      if (newTitleNormalized.includes(existingTitleNormalized) ||
-          existingTitleNormalized.includes(newTitleNormalized)) {
-        return {
-          isDuplicate: true,
-          reason: `Title containment: "${newTitleNormalized}" vs "${existingTitleNormalized}"`,
-          existingShow: existing
-        };
+      const shorter = Math.min(existingTitleNormalized.length, newTitleNormalized.length);
+      const longer = Math.max(existingTitleNormalized.length, newTitleNormalized.length);
+      if (shorter / longer >= 0.5) {
+        if (newTitleNormalized.includes(existingTitleNormalized) ||
+            existingTitleNormalized.includes(newTitleNormalized)) {
+          if (isMultiProduction(newShow, existing)) continue;
+          return {
+            isDuplicate: true,
+            reason: `Title containment: "${newTitleNormalized}" vs "${existingTitleNormalized}"`,
+            existingShow: existing
+          };
+        }
       }
     }
 
