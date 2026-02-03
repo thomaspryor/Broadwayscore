@@ -50,6 +50,10 @@ on:
         description: 'Max Browserbase sessions per run (10 for nightly, 5 for parallel runs, 30 daily cap)'
         required: false
         default: '10'
+      content_tier:
+        description: 'Filter by content tier: excerpt, truncated, needs-rescrape (empty = all)'
+        required: false
+        default: ''
 
 ## PARALLEL RUNS: Max 5 simultaneous runs recommended.
 ## Browserbase daily limit is 30 sessions; default 5/run × 5 runs = 25 (safe).
@@ -124,6 +128,7 @@ jobs:
           SHOW_FILTER: ${{ inputs.show_filter }}
           RETRY_FAILED: ${{ inputs.retry_failed }}
           ARCHIVE_FIRST: ${{ inputs.archive_first }}
+          CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then
@@ -263,6 +268,7 @@ jobs:
           SHOW_FILTER: ${{ inputs.show_filter }}
           RETRY_FAILED: ${{ inputs.retry_failed }}
           ARCHIVE_FIRST: ${{ inputs.archive_first }}
+          CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then
