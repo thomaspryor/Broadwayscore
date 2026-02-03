@@ -5,8 +5,8 @@
   "criticName": "Adam Hetrick",
   "url": "https://www.theatermania.com/broadway/reviews/mean-girls_83646.html",
   "publishDate": "April 8, 2018",
-  "fullText": "Mean Girls is a fun, frothy musical that successfully translates the beloved film to the stage while adding new depth to its characters and themes.",
-  "isFullReview": false,
+  "fullText": "Lithgow’s solo show is directed by Daniel Sullivan.\n\nAfter acclaimed runs at Lincoln Center Theater, London's National Theatre, and across the United States, John Lithgow's solo show Stories By Heart marks its Broadway debut tonight, January 11, at the American Airlines Theatre. The Roundabout Theatre Company production, directed by Daniel Sullivan, will run through March 4.\n\nIn this theatrical memoir, Lithgow \"evokes memories of family, explores and expands the limits of the actor’s craft, and masterfully conjures a cast of indelible characters from classic short stories by Ring Lardner and P.G. Wodehouse.\" Lithgow's first iteration of Stories By Heart premiered in 2008, with Jack O'Brien directing.\n\nThe design team includes John Lee Beatty (sets) and Kenneth Posner (lights).\n\nLithgow won Tony Awards for his work in Sweet Smell of Success and The Changing Room, and received nominations for Dirty Rotten Scoundrels, M. Butterfly, and Requiem for a Heavyweight. He is the recipient of three Emmys, two SAG Awards, and a Golden Globe for his role in the sitcom Third Rock From the Sun, as well as Emmys for his work on Dexter, Amazing Stories and Netflix's The Crown.\n\nFor tickets and more information, click here.\n\nReview: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Every Step Has Meaning in Anne Gridley’s Watch Me Walk \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "Mean Girls is a fun, frothy musical that successfully translates the beloved film to the stage while adding new depth to its characters and themes.",
   "originalScore": null,
   "assignedScore": 78,
@@ -72,5 +72,48 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 293,
+  "archivePath": "data/archives/reviews/mean-girls-2018/theatermania--adam-hetrick_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T19:26:22.668Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 293 (min: 300)"
+  ],
+  "showNotMentioned": true,
+  "wordCount": 293,
+  "tierReason": "Short text (293 words)"
 }
