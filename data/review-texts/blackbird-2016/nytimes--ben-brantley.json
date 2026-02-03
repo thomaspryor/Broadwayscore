@@ -28,14 +28,14 @@
   "urlDiscoveryMethod": "google-serp",
   "textWordCount": 1163,
   "archivePath": "data/archives/reviews/blackbird-2016/nytimes--ben-brantley_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T16:47:04.237Z",
+  "textFetchedAt": "2026-02-03T23:26:38.905Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
       "success": false,
-      "error": "timeout of 60000ms exceeded"
+      "error": "No archive snapshot available"
     },
     {
       "tier": 0.5,
@@ -53,7 +53,7 @@
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "ScrapingBee error (404): Request failed with status code 404"
+      "error": "Parse Error: Header overflow"
     },
     {
       "tier": 3,

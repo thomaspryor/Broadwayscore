@@ -6,7 +6,7 @@
   "url": "https://variety.com/2008/legit/reviews/13-1200472109/",
   "publishDate": "October 5, 2008",
   "fullText": null,
-  "isFullReview": false,
+  "isFullReview": true,
   "dtliExcerpt": "Jason Robert Brown's pop-rock score is energetic and catchy, with clever lyrics that capture the self-absorbed urgency of teenage concerns.",
   "originalScore": null,
   "assignedScore": 78,
@@ -72,5 +72,47 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 495,
+  "archivePath": "data/archives/reviews/13-2008/variety--david-rooney_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T22:58:20.165Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Nov 19, 2008 1:45pm PT \n\n \n\n \n \n \n\n \n\n \n Ludovico Einaudi\n \n \n\n \n\n A solo pianist whose music is as tender and soulful as his family tree is distinct and impressive, Italian composer Ludovico Einaudi concentrates on song forms first, mood-setters second in his uplifting instrumental excursions.\n\nA solo pianist whose music is as tender and soulful as his family tree is distinct and impressive, Italian composer Ludovico Einaudi concentrates on song forms first, mood-setters second in his uplifting instrumental excursions. The music pushes right up against the soothing improvisations one hears at spas, but shifts in melody and a verse-chorus-bridge structure reminds that he is not making up these pieces on the spot and that each has a strong story-telling component.\n\nProgram was wisely selected in his 90-minute set at Largo, capped by a slightly extended reading of “Andare,” which plays out at seven minutes and two seconds on his latest release “Divenire.” As with so many of his pieces, he settles in on the slower side of mid-tempo, allowing passages to melt atop one another rather than abruptly shift, often given the aural illusion of a scene change. Lyrical and linear, the repetition associated with minimalism peers in from time to time in the higher registers, played as if approaching from a barely visible distance.\n\n1/1\n\nSkip Ad\n \nContinue watchingafter the adVisit Advertiser websiteGO TO PAGE\n\nOverall, though, his points of reference are not all that different than those of Radiohead or Sigur Ros. This is ultimately pop music he is performing and at times his chord changes and timbral decisions echo the work of Christopher O’Riley, the classical pianist who has tackled the work of Radiohead, Elliott Smith and Nick Drake from a solo piano perspective.\n\nHis life story certainly helps pull in crowds such as the full house that greeted him at Largo. Einaudi’s grandfather was the first president of Italy, dad was a respected economist and his brother is becoming a significant producer of Barolo, the majestic Italian wine from Piemonte. Robert Parker noted the 2004 Einaudi Barolo “Costa Grimaldi” “is endowed with an attractive plumpness” and “offers superb balance, poise and harmony.” The same could be said about Ludovico’s music.\n\nProminent in Europe, Einaudi is on his first tour of the U.S. and will perform at the New York Society for Ethical Culture on Tuesday.\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice."
 }

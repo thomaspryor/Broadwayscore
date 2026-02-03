@@ -3,7 +3,7 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Christopher Bonanos",
-  "url": "http://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html",
+  "url": "https://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html",
   "playbillVerdictUrl": "http://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html",
   "source": "playbill-verdict",
   "sources": [
@@ -13,7 +13,7 @@
   "isFullReview": false,
   "textWordCount": 118,
   "archivePath": "data/archives/reviews/1984-2017/vulture--christopher-bonanos_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T22:26:48.396Z",
+  "textFetchedAt": "2026-02-03T23:03:53.805Z",
   "fetchMethod": "playwright",
   "fetchAttempts": [
     {
@@ -25,8 +25,7 @@
     {
       "tier": 0.5,
       "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
+      "success": true
     },
     {
       "tier": 1,
@@ -48,5 +47,9 @@
   ],
   "showNotMentioned": true,
   "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below.",
-  "contentTier": "needs-rescrape"
+  "contentTier": "needs-rescrape",
+  "_showNotMentionedDiscoveryAttempted": true,
+  "previousUrl": "http://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html",
+  "urlDiscoveredAt": "2026-02-03T23:03:53.811Z",
+  "urlDiscoveryMethod": "show-not-mentioned-recovery"
 }
