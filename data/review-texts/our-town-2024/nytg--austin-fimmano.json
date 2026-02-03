@@ -66,7 +66,9 @@
     "modelAgreement": "All 3 models agree: Positive"
   },
   "sources": [
-    "show-score"
+    "show-score",
+    "playbill-verdict",
+    "nyc-theatre"
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 74,
@@ -76,5 +78,7 @@
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "textQuality": "full"
+  "textQuality": "full",
+  "playbillVerdictUrl": "https://www.newyorktheatreguide.com/reviews/our-town-broadway-review-jim-parsons-zoey-deutch-katie-holmes",
+  "nycTheatreExcerpt": "\"With a star-studded cast featuring actors of all races, ages, and abilities, the fictional town of Grover's Corners, New Hampshire, comes to life in an evocative way. Tony Award-winning director Kenny Leon's vision for the play is to emphasize how human trials and tribulations are universal, no matter the time period or walk of life.\""
 }
