@@ -433,6 +433,9 @@ async function scrapeNYSRReviews() {
       publishDate: postDate,
       fullText: plainText,
       isFullReview: true,
+      wordCount: plainText ? plainText.split(/\s+/).length : 0,
+      contentTier: 'complete',
+      textQuality: 'full',
       source: 'nysr-api',
       sources: ['nysr-api'],
     };
