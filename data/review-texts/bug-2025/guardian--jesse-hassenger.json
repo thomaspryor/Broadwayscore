@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Audiences seeing Bug for the first time, then, may well be transfixed, albeit temporarily. Anyone familiar with an earlier production or the William Friedkin film (which introduces some ambiguities to the story’s ending) might start to wonder if maybe Agnes and Peter are ultimately a little thin as ...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Audiences seeing Bug for the first time, then, may well be transfixed, albeit temporarily.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt suggests qualified praise for newcomers but raises concerns about character depth and lasting impact. The 'temporarily transfixed' phrasing and comparison concerns suggest mixed feelings rather than clear recommendation. | GPT-4o: The excerpt suggests that new audiences might be temporarily captivated, but it implies that those familiar with previous versions might find the characters lacking depth. This indicates a mixed reception, with some positive elements but also reservations. | Gemini: The review excerpt suggests a potentially engaging experience for first-time viewers, but implies that the impact may be fleeting or diminished for those familiar with previous versions. This indicates a mixed or qualified recommendation. | Kimi: The critic acknowledges the show may transfix first-time viewers but emphasizes this effect is temporary, while suggesting the central characters lack depth compared to earlier productions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:48:50.575Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What Robert Schenkkan has accomplished in 'The Great Society' is the creation of a theatrical work that feels both intimate and epic, a drama that captures the contradictions and complexity of one of America's most consequential presidencies.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "What Robert Schenkkan has accomplished in 'The Great Society' is the creation of a theatrical work that feels both intimate and epic, a drama that captures the contradictions and complexity of one of America's most consequential presidencies.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A theatrical work that feels both intimate and epic, capturing contradictions and complexity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review uses strong positive language ('intimate and epic', 'captures contradictions and complexity') suggesting a highly favorable view of the production. | Gemini: The review uses positive language such as \"intimate and epic\" and \"captures the contradictions and complexity\", indicating a strong recommendation. | Kimi: The critic offers strong praise for the play's ambitious scope and dramatic depth, describing it as both 'intimate and epic' with an effective capture of historical complexity. However, the provided text appears to be a brief excerpt or truncated opening, warranting lower confidence in the final assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:07:34.186Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Addams Family is not a good musical. It's not even close to being a good musical. But it's also not quite the disaster you might expect from a show that seems to exist primarily as a vehicle for Nathan Lane and Bebe Neuwirth.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The Addams Family is not a good musical. It's not even close to being a good musical. But it's also not quite the disaster you might expect from a show that seems to exist primarily as a vehicle for Nathan Lane and Bebe Neuwirth.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (44 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Addams Family is not a good musical. It's not even close to being a good musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict stating it's 'not a good musical' and 'not even close,' but acknowledges it's 'not quite the disaster you might expect,' placing it in the negative but not pan range. | GPT-4o: The review clearly states that the musical is not good and implies a lack of recommendation, though it stops short of calling it a complete disaster. | Gemini: The review explicitly states the show is not good, placing it in the negative bucket. The score reflects the acknowledgement that it's not a complete disaster, but still not recommended. | Kimi: The critic explicitly states the show is not good and 'not even close to being a good musical,' clearly advising against it while acknowledging it avoids being a total disaster.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:01:14.841Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

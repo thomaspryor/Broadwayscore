@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This rollicking musical adaptation of the beloved Nickelodeon cartoon series is a fizzy, exuberant show that captures all the innocent joy and silly humor of the source material while adding sophisticated theatrical craftsmanship.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This rollicking musical adaptation of the beloved Nickelodeon cartoon series is a fizzy, exuberant show that captures all the innocent joy and silly humor of the source material while adding sophisticated theatrical craftsmanship.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language throughout with 'rollicking,' 'fizzy, exuberant,' and praise for both faithfulness to source and theatrical quality. No reservations expressed. | GPT-4o: The review uses highly positive language like 'fizzy,' 'exuberant,' and 'sophisticated theatrical craftsmanship,' indicating a strong recommendation without reservations. | Gemini: The review uses very positive language such as \"rollicking,\" \"fizzy,\" and \"exuberant,\" indicating a strong recommendation. | Kimi: The critic employs enthusiastic descriptors ('rollicking,' 'fizzy,' 'exuberant') and praises the production's sophisticated craftsmanship, delivering an unqualified positive recommendation without reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:56:24.321Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

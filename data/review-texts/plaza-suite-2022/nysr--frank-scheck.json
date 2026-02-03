@@ -17,5 +17,60 @@
   "playbillVerdictUrl": "https://nystagereview.com/2022/03/28/plaza-suite-feels-like-very-old-times/",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "These likable actors only intermittently infuse comic dynamism into the dated work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with balanced criticism - praises individual moments and production values but finds the material dated and performances inconsistent. Neither recommends nor discourages viewing. | GPT-4o: The review provides a balanced assessment with some positive notes on performances, especially Parker's, but overall finds the production lacking in vitality and relevance. The original 3/5 star rating aligns with a mixed verdict. | Gemini: The review is mixed, praising Parker's performance but criticizing Broderick and the dated material. The critic acknowledges some laughs but ultimately finds the production lacking, resulting in a 'Mixed' classification. | Kimi: The 3/5 star rating and mixed assessment place this in the Mixed bucket. While the critic praises Sarah Jessica Parker's committed performance and acknowledges some laughs in the third act, the overall verdict emphasizes that the dated material 'falls flat' and the production is 'more a victory of marketing than theatricality.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:47:18.812Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

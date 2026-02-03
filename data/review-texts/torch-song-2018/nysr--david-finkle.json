@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Torch Song absolutely earns this one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with clear praise for the performances and Fierstein's writing on 'universal themes.' Despite noting flaws like over-the-top emoting and pacing issues, the critic finds it 'endlessly grateful' material that 'absolutely earns' its standing ovation. | GPT-4o: The review is generally positive, highlighting strong performances and the play's emotional impact, despite noting some flaws. The original 4/5 star rating supports a positive classification. However, the text is truncated, so the final verdict may be missing, leading to low confidence. | Gemini: The review is mostly positive, praising the play's handling of universal themes and the performances, but notes some issues with over-the-top emoting. The 4/5 star rating also indicates a positive recommendation. | Kimi: The 4/5 star rating and enthusiastic conclusion that the show 'absolutely earns' its standing ovation place this in the Positive bucket, despite specific reservations about the middle play's pacing and occasional overacting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:26:20.874Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

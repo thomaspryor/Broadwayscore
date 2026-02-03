@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "As for the acting, there's little doubt that Winter is the most natural (and more experienced) stage actor of the two, more versatile and, when necessary, capable to drawing real pathos from this grim, gorgeous work of art. You believe his every changing mood. Reeves, as they say, is Reeves, an exceedingly charming actor who projects more than he acts but always seems to have full control of an audiences' attention (and affection). Yes, even when he seems to be trying too hard to be stentorian or angry or carrying out a bit of slapstick tantrum, he has us rooting for him.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Winter is the most natural stage actor of the two, more versatile and capable to drawing real pathos from this grim, gorgeous work of art.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses entirely on acting performances with clear praise for Winter and qualified but positive assessment of Reeves. However, as only one curated excerpt, this may not represent the full review verdict. | GPT-4o: The excerpt praises Winter's acting as versatile and capable of drawing pathos, while acknowledging Reeves' charm and audience control. The tone is positive, though with some reservations about Reeves' performance. | Gemini: The review praises Winter's acting and acknowledges Reeves's charm, but also notes some shortcomings in Reeves's performance. Given the limited excerpt, a positive score with reservations seems appropriate. | Kimi: The excerpt explicitly calls the show a 'grim, gorgeous work of art' and praises both lead actors, with Winter described as capable of drawing 'real pathos' and Reeves as 'exceedingly charming.' While there are minor reservations about Reeves's technique, the overall tone is clearly positive. As this is a single curated excerpt, confidence is low but the enthusiastic tone warrants an upper-range Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:37:35.543Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

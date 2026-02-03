@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What saves 'The Last Ship' from total disaster is that Mr. Sting, whatever his limitations as a stage actor, remains a charismatic performer whose songs, while not especially theatrical, are unquestionably heartfelt.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "What saves 'The Last Ship' from total disaster is that Mr. Sting, whatever his limitations as a stage actor, remains a charismatic performer whose songs, while not especially theatrical, are unquestionably heartfelt.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What saves 'The Last Ship' from total disaster is that Mr. Sting, whatever his limitations as a stage actor, remains a charismatic performer",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The phrase 'saves from total disaster' clearly indicates this is a negative review. While acknowledging Sting's charisma and heartfelt songs, the critic implies the show would otherwise be a disaster, placing this in negative territory but not a complete pan due to the saving grace mentioned. | GPT-4o: The review suggests the show is close to a 'total disaster' but acknowledges Sting's performance as a redeeming factor, indicating a negative overall assessment. | Gemini: The review states that Sting saves the show from \"total disaster,\" but acknowledges his limitations and the songs' lack of theatricality. This is a negative review with a slight positive aspect, placing it in the negative bucket. | Kimi: The critic describes the production as being on the brink of 'total disaster,' rescued only by Sting's charisma and heartfelt songs, which are themselves qualified with criticisms ('limitations as a stage actor,' 'not especially theatrical'). This faint praise indicates a negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:12:32.059Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

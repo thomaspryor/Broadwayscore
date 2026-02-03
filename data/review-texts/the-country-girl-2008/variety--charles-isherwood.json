@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Morgan Freeman and Frances McDormand bring their considerable star power to bear on Clifford Odets' 1950 drama about an alcoholic actor trying to make a comeback, but despite their efforts, this revival feels oddly tepid.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "textQuality": "truncated",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "despite their efforts, this revival feels oddly tepid",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Clear mixed verdict - acknowledges the stars' considerable efforts but finds the overall revival lacking energy and impact. | GPT-4o: The review acknowledges the star power of the lead actors but ultimately describes the revival as 'tepid,' indicating a lack of enthusiasm and a negative overall impression. | Gemini: The review acknowledges the star power of the leads but ultimately finds the revival to be tepid, suggesting a mixed or neutral overall experience. | Kimi: The critic acknowledges the 'considerable star power' of the leads but ultimately characterizes the revival as 'oddly tepid,' indicating a lack of vitality or emotional heat. The brevity suggests this is an excerpt from a longer review. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:04:06.164Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

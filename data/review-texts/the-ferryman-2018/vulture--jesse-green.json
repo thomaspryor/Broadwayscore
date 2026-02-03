@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Ferryman is a magnificent beast of a play, three hours and 15 minutes of glorious, painful, funny, heartbreaking theater that engulfs you like a flood and leaves you both drained and somehow purified.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The Ferryman is a magnificent beast of a play, three hours and 15 minutes of glorious, painful, funny, heartbreaking theater that engulfs you like a flood and leaves you both drained and somehow purified.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Ferryman is a magnificent beast of a play, three hours and 15 minutes of glorious, painful, funny, heartbreaking theater that engulfs you like a flood and leaves you both drained and somehow purified.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise using superlatives like 'magnificent' and 'glorious' with powerful emotional impact described ('engulfs you like a flood'). No reservations expressed. | GPT-4o: The review uses superlative language ('magnificent beast', 'glorious', 'heartbreaking') and describes a powerful emotional impact, indicating a strong recommendation. | Gemini: The review uses strong positive language such as \"magnificent\", \"glorious\", and \"engulfs you like a flood\", indicating a rave review. | Kimi: Unqualified praise using superlatives ('magnificent', 'glorious') and powerful metaphors describing profound emotional impact, with zero reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:06:33.996Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

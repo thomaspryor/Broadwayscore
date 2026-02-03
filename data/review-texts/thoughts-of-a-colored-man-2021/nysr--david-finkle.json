@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "not a single word spoken fails to carry the ring of absolute truth",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Critic gives 5/5 stars with unqualified praise throughout - calls it immensely powerful, unceasingly cogent, and profoundly thanks the playwright. Despite truncation warning, the overwhelmingly positive language supports a Rave classification. | GPT-4o: The review is overwhelmingly positive, highlighting the play's power, truth, and relevance. The 5/5 star rating indicates a strong recommendation, and despite the text being truncated, the available content suggests a rave review. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the truthfulness of the writing and the insights into the characters. The critic ends by expressing profound gratitude to the playwright, suggesting a very high level of appreciation. | Kimi: The review awards 5/5 stars and consistently praises the play's 'immense power,' 'absolute truth,' and 'unceasingly cogent insights,' offering unqualified admiration for the playwright's achievement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:23:13.336Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

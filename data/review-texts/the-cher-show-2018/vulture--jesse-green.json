@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Cher Show is a jukebox musical that works harder than most to justify its existence, and mostly succeeds in doing so by focusing on what made Cher an icon: her ability to constantly reinvent herself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The Cher Show is a jukebox musical that works harder than most to justify its existence, and mostly succeeds in doing so by focusing on what made Cher an icon: her ability to constantly reinvent herself.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "mostly succeeds in doing so by focusing on what made Cher an icon",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict with 'mostly succeeds' and praise for the show's focus, though 'works harder than most' suggests some effort was required rather than effortless excellence. | GPT-4o: The review acknowledges the show's effort to justify its existence and states it 'mostly succeeds,' indicating a positive recommendation despite some implied reservations. | Gemini: The review states that the show \"mostly succeeds\" in justifying its existence, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: Brief excerpt offers qualified praise ('mostly succeeds') suggesting the show exceeds typical jukebox musical standards, though the limited text prevents full assessment of the critic's enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:02:21.144Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This affectionate tribute to the legendary producer-director Hal Prince is a slick, professionally assembled entertainment that will please devotees while providing newcomers with a solid primer on one of Broadway's most important figures.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This affectionate tribute to the legendary producer-director Hal Prince is a slick, professionally assembled entertainment that will please devotees while providing newcomers with a solid primer on one of Broadway's most important figures.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('affectionate tribute', 'slick, professionally assembled') with solid recommendation for both fans and newcomers, though lacks the enthusiasm for higher scoring. | GPT-4o: The review describes the show as 'slick, professionally assembled entertainment' that will please both devotees and newcomers, indicating a positive recommendation with some reservations. | Gemini: The review describes the show as an \"affectionate tribute\" and \"slick, professionally assembled entertainment,\" indicating a positive but not overwhelmingly enthusiastic recommendation. The phrase \"will please devotees while providing newcomers with a solid primer\" suggests a qualified endorsement. | Kimi: The critic delivers a clear recommendation describing the show as 'slick' and 'professionally assembled' with the verdict that it 'will please devotees,' but the praise is measured and functional ('solid primer') rather than exuberant, placing it in the mid-range of positive reviews.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:48:04.029Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

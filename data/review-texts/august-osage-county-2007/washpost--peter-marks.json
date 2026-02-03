@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tracy Letts has written a ferocious and entertaining piece about three generations of a spectacularly dysfunctional Oklahoma family, and Anna D. Shapiro has staged it with remarkable finesse.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tracy Letts has written a ferocious and entertaining piece about three generations of a spectacularly dysfunctional Oklahoma family, and Anna D. Shapiro has staged it with remarkable finesse.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tracy Letts has written a ferocious and entertaining piece about three generations of a spectacularly dysfunctional Oklahoma family, and Anna D. Shapiro has staged it with remarkable finesse.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('ferocious and entertaining', 'remarkable finesse') from a major critic, but single excerpt warning requires caution about full verdict. | GPT-4o: The excerpt praises both the writing and staging, using strong adjectives like 'ferocious', 'entertaining', and 'remarkable finesse'. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"ferocious,\" \"entertaining,\" and \"remarkable finesse,\" suggesting a positive recommendation. Due to the limited text, confidence is low. | Kimi: The excerpt offers strong praise for both the writing ('ferocious and entertaining') and direction ('remarkable finesse'), indicating a clear recommendation despite the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:45:36.217Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
