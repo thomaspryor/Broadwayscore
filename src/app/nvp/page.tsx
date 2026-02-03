@@ -7,23 +7,22 @@ import { getOptimizedImageUrl } from '@/lib/images';
 const NVP_SHOW_IDS = [
   'two-strangers-bway-2025',
   'chess-2025',
-  'and-juliet-2022',
   'cats-the-jellicle-ball-2026',
   'proof-2026',
+  'sunset-boulevard-2024',
+  'an-enemy-of-the-people-2024',
+  'smash-2025',
+  'good-night-and-good-luck-2025',
+  'parade-2023',
+  'redwood-2025',
+  'once-upon-a-mattress-2024',
+  'romeo-juliet-2024',
   'cabaret-2024',
   'water-for-elephants-2024',
   'suffs-2024',
-  // Future additions as they get added to database:
-  // 'sunset-blvd-2024',
-  // 'enemy-of-the-people-2024',
-  // 'smash-2025',
-  // 'good-night-good-luck-2025',
+  // Not yet in database:
   // 'waiting-for-godot-2024',
-  // 'parade-2023',
-  // 'redwood-2025',
   // 'hold-on-to-me-darling-2024',
-  // 'once-upon-a-mattress-2024',
-  // 'romeo-juliet-2024',
 ];
 
 export const metadata: Metadata = {
