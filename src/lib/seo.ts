@@ -148,14 +148,6 @@ export function generateShowSchema(show: ComputedShow) {
     }));
   }
 
-  // Add performers (cast)
-  if (show.cast && show.cast.length > 0) {
-    schema.performer = show.cast.map(member => ({
-      '@type': 'Person',
-      name: member.name,
-    }));
-  }
-
   // Add director
   const director = show.creativeTeam?.find(m =>
     m.role.toLowerCase().includes('director') && !m.role.toLowerCase().includes('music')
@@ -227,7 +219,6 @@ export function generateItemListSchema(items: {
   endDate?: string | null;
   description?: string;
   status?: string;
-  cast?: { name: string }[];
   ticketLinks?: { platform: string; url: string; priceFrom?: number }[];
 }[], listName: string) {
   return {
@@ -267,14 +258,6 @@ export function generateItemListSchema(items: {
           ? 'https://schema.org/EventScheduled'
           : 'https://schema.org/EventCancelled';
         event.eventAttendanceMode = 'https://schema.org/OfflineEventAttendanceMode';
-      }
-
-      // Performers
-      if (item.cast && item.cast.length > 0) {
-        event.performer = item.cast.slice(0, 5).map(c => ({
-          '@type': 'Person',
-          name: c.name,
-        }));
       }
 
       // Organizer
@@ -373,15 +356,6 @@ export function generateShowFAQSchema(show: ComputedShow) {
         answer: `${show.title} has a runtime of ${runtimeStr}${show.intermissions ? `, including ${show.intermissions} intermission${show.intermissions > 1 ? 's' : ''}` : ' with no intermission'}.`,
       });
     }
-  }
-
-  // Q: Who's in the cast?
-  if (show.cast && show.cast.length > 0) {
-    const topCast = show.cast.slice(0, 5);
-    faqs.push({
-      question: `Who is in the cast of ${show.title}?`,
-      answer: `The cast of ${show.title} includes ${topCast.map(c => `${c.name}${c.role ? ` (${c.role})` : ''}`).join(', ')}${show.cast.length > 5 ? `, and ${show.cast.length - 5} more` : ''}.`,
-    });
   }
 
   // Q: Is it good for kids?
