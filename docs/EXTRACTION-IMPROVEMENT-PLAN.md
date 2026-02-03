@@ -99,6 +99,20 @@
 6. **P3-2** (BroadwayNews rendering) — Outlet-specific fix.
 7. **P4-1** (remaining workflow fixes) — Incremental robustness.
 
+## Priority 5: Consolidate Aggregator Scripts (Post-Expansion)
+
+### P5-1: Merge 4 aggregator scripts into one unified system
+**Files:** `scripts/gather-reviews.js`, `scripts/scrape-playbill-verdict.js`, `scripts/scrape-nyc-theatre-roundups.js`, `scripts/extract-bww-reviews.js`
+**What:** All 4 scripts do the same thing (fetch aggregator page → archive HTML → extract reviews → write review-text files) but with duplicated archiving logic, separate GitHub Actions, and inconsistent patterns.
+**When:** After the current 730-show expansion batch settles. Do NOT attempt during active bulk runs.
+**Approach:**
+1. One script with a source registry — each aggregator as a module with `getUrl(show)`, `extractReviews(html, showId)`, `parseArchive(html)`
+2. One shared archive layer (the 14-day refresh logic is already identical across all 4)
+3. One GitHub Action with a `--sources=dtli,show-score,playbill,nyc-theatre,bww` flag instead of 4 separate workflows
+4. Makes adding new aggregator sources trivial — just drop in a new module
+
+**Current state (Feb 2026):** All 4 scripts work correctly with extraction bugs fixed and 14-day archive refresh in place. No urgency, but consolidation before the next expansion round will reduce maintenance burden.
+
 ## Dependencies / Overlap
 
 - **P1-1 and P1-2** should be a single PR creating `scripts/lib/text-cleaning.js`
