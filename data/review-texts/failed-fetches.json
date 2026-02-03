@@ -8464,30 +8464,6 @@
     "timestamp": "2026-02-03T05:23:45.812Z"
   },
   {
-    "reviewId": "a-free-man-of-color-2010/nytimes--ben-brantley.json",
-    "showId": "a-free-man-of-color-2010",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2010/11/19/theater/reviews/19free.html",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): smash, tina, the present, annie, high...",
-    "textLength": 7797,
-    "timestamp": "2026-02-03T07:43:01.888Z"
-  },
-  {
-    "reviewId": "a-life-in-the-theatre-2010/nytimes--ben-brantley.json",
-    "showId": "a-life-in-the-theatre-2010",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2010/10/13/theater/reviews/13life.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): chicago, appropriate, american buffalo, macbeth, noises off...",
-    "textLength": 6675,
-    "timestamp": "2026-02-03T07:49:11.081Z"
-  },
-  {
     "reviewId": "a-night-with-janis-joplin-2013/nytimes--charles-isherwood.json",
     "showId": "a-night-with-janis-joplin-2013",
     "outlet": "The New York Times",
@@ -8810,5 +8786,29 @@
     "garbageReason": "Multiple article boundaries detected (3)",
     "textLength": 6228,
     "timestamp": "2026-02-03T10:23:16.864Z"
+  },
+  {
+    "reviewId": "a-free-man-of-color-2010/nytimes--ben-brantley.json",
+    "showId": "a-free-man-of-color-2010",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2010/11/19/theater/reviews/19free.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): smash, tina, the present, annie, high...",
+    "textLength": 7741,
+    "timestamp": "2026-02-03T10:30:31.237Z"
+  },
+  {
+    "reviewId": "a-life-in-the-theatre-2010/nytimes--ben-brantley.json",
+    "showId": "a-life-in-the-theatre-2010",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2010/10/13/theater/reviews/13life.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): chicago, appropriate, american buffalo, macbeth, noises off...",
+    "textLength": 6782,
+    "timestamp": "2026-02-03T10:35:27.315Z"
   }
 ]
