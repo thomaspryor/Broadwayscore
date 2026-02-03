@@ -214,9 +214,81 @@ jobs:
           echo "Failed to push after $MAX_RETRIES attempts"
           exit 1
 
-  # Step 3: Rebuild reviews.json after all batches complete
-  rebuild:
+  # Step 3: Scrape supplementary aggregators (Playbill Verdict + NYC Theatre)
+  scrape-aggregators:
     needs: [prepare, gather-reviews]
+    if: needs.gather-reviews.result == 'success'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout (latest, after gather pushes)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape Playbill Verdict for target shows
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: node scripts/scrape-playbill-verdict.js --shows=${{ inputs.shows }}
+
+      - name: Scrape NYC Theatre roundups for target shows
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/scrape-nyc-theatre-roundups.js --shows=${{ inputs.shows }}
+
+      - name: Commit and push aggregator data
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/review-texts/ data/aggregator-archive/
+          if git diff --staged --quiet; then
+            echo "No aggregator changes to commit"
+            exit 0
+          fi
+
+          git commit -m "data: Add Playbill Verdict + NYC Theatre data for ${{ inputs.shows }}"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed changes"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
+
+  # Step 4: Rebuild reviews.json after all batches and aggregators complete
+  rebuild:
+    needs: [prepare, gather-reviews, scrape-aggregators]
     if: always() && needs.gather-reviews.result != 'cancelled'
     runs-on: ubuntu-latest
     steps:

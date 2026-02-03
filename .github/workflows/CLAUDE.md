@@ -17,7 +17,7 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 | `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
 | `adjudicate-review-queue.yml` | ✅ | ❌ | Daily 5 AM UTC, triggers rebuild after commit |
 | `scrape-nysr.yml` | ✅ | ❌ | Weekly NYSR via WordPress API, relies on daily rebuild |
-| `scrape-new-aggregators.yml` | ✅ | ❌ | Weekly Playbill Verdict + NYC Theatre, relies on daily rebuild |
+| `scrape-new-aggregators.yml` | ✅ | ✅ | Weekly Playbill Verdict + NYC Theatre, rebuilds inline after scrape |
 
 **For bulk imports (100s of shows):** Run parallel gather-reviews, then trigger manual rebuild via:
 ```bash
@@ -46,10 +46,12 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `gather-reviews.yml`
 - **Runs:** When new shows discovered (or manually triggered)
-- **Does:** Gathers review data by searching aggregators and outlets
+- **Does:** Gathers review data by searching aggregators and outlets, then scrapes supplementary aggregators (Playbill Verdict + NYC Theatre), then rebuilds `reviews.json`
 - **Secrets required:** `ANTHROPIC_API_KEY`, `BRIGHTDATA_TOKEN`, `SCRAPINGBEE_API_KEY`
 - **Script:** `scripts/gather-reviews.js`
 - **Manual trigger:** `gh workflow run gather-reviews.yml -f shows=show-id-here`
+- **Job pipeline:** `prepare → gather-reviews → scrape-aggregators (non-blocking) → rebuild`
+  - `scrape-aggregators`: Runs Playbill Verdict + NYC Theatre for the target shows (`--shows=`). Uses `continue-on-error: true` so rebuild always runs even if scrapers fail. 30-minute timeout.
 - **Technical notes:**
   - Installs Playwright Chromium for Show Score carousel scraping
   - Show Score extraction uses Playwright to scroll through ALL critic reviews (not just first 8)
@@ -57,7 +59,6 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
   - Tries `-broadway` URL suffix patterns first
   - **Parallel-safe:** Only commits `review-texts/` and `archives/` (NOT `reviews.json`)
   - Uses retry loop (5 attempts) with random backoff for git push conflicts
-  - After batch runs complete, rebuild `reviews.json` with: `node scripts/rebuild-all-reviews.js`
 
 ## `review-refresh.yml`
 - **Runs:** Weekly on Mondays at 9 AM UTC
@@ -101,6 +102,16 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Reliability:** Uses `domcontentloaded` (not `networkidle`), 3 retries per week
 - **Script:** `scripts/backfill-grosses-history.ts`
 - **Note:** Only for initial setup or extending history range
+
+## `backfill-aggregators.yml`
+- **Runs:** Manual trigger only
+- **Does:** One-time parallel backfill of Playbill Verdict + NYC Theatre data for all shows (730+)
+- **Options:** `parallel_jobs` (default 5, 1-10), `aggregator` (all/playbill-verdict/nyc-theatre), `date_filter` (default false = all eras)
+- **Job pipeline:** `prepare → backfill (N parallel matrix jobs) → rebuild`
+- **Parallel-safe:** 30s stagger between jobs, 5-retry push with random backoff
+- **Caching:** Both scripts skip shows with existing archives in `data/aggregator-archive/`. Re-runs cost ~0 API calls.
+- **Cost:** ~$8-11 ScrapingBee credits for full 730-show backfill (first run)
+- **Manual trigger:** `gh workflow run "Backfill Aggregator Data" -f parallel_jobs=5 -f aggregator=all`
 
 ## `discover-historical-shows.yml`
 - **Runs:** Manual trigger only
@@ -221,14 +232,14 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Parallel-safe:** Only commits `review-texts/` and `aggregator-archive/nysr/`
 
 ## `scrape-new-aggregators.yml`
-- **Runs:** Weekly on Sundays at 11 AM UTC (after NYSR), or manually
-- **Does:** Scrapes Playbill Verdict (review URL discovery) and NYC Theatre roundups (excerpt extraction)
-- **Options:** `aggregator` (all/playbill-verdict/nyc-theatre)
+- **Runs:** Weekly on Sundays at 11 AM UTC (after NYSR), or manually. Also triggered per-show via `gather-reviews.yml` scrape-aggregators job.
+- **Does:** Scrapes Playbill Verdict (review URL discovery) and NYC Theatre roundups (excerpt extraction), then rebuilds `reviews.json`
+- **Options:** `aggregator` (all/playbill-verdict/nyc-theatre), `shows` (comma-separated show IDs for targeted runs)
 - **Requires:** SCRAPINGBEE_API_KEY (for Google search + page fetching)
 - **Optional:** BRIGHTDATA_TOKEN (fallback for Playbill Verdict)
-- **Scripts:** `scripts/scrape-playbill-verdict.js`, `scripts/scrape-nyc-theatre-roundups.js`
+- **Scripts:** `scripts/scrape-playbill-verdict.js` (`--shows=X,Y,Z`, `--no-date-filter`), `scripts/scrape-nyc-theatre-roundups.js` (`--shows=X,Y,Z`)
 - **NYC Theatre:** Only processes shows from 2023+, skip-if-exists caching via `data/aggregator-archive/nyc-theatre/`
-- **Parallel-safe:** Only commits `review-texts/` and `aggregator-archive/`
+- **Parallel-safe:** Only commits `review-texts/` and `aggregator-archive/`, rebuild commits `reviews.json`
 
 ## `test.yml`
 - **Runs:** On push to `main`, daily at 6 AM UTC, manually
