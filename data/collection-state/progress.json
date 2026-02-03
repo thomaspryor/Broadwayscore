@@ -17,7 +17,14 @@
     "illinoise-2024/hollywood-reporter--david-rooney.json",
     "just-for-us-2023/nytimes--jesse-green.json",
     "mary-jane-2024/hollywood-reporter--david-rooney.json",
-    "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "oh-mary-2024/nytimes--jesse-green.json",
+    "oh-mary-2024/variety--aramide-tinubu.json",
+    "ragtime-2025/nyt-theater--jonathan-mandell.json",
+    "stereophonic-2024/nytg--allison-considine.json",
+    "the-lion-king-1997/vulture--john-simon.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "aladdin-2014/ew--thom-geier.json"
   ],
   "failed": [
     "patriots-2024/deadline--greg-evans.json",
@@ -32,13 +39,17 @@
     "hamilton-2015/variety--charles-isherwood.json",
     "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
     "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "mj-2022/hollywood-reporter--david-rooney.json"
+    "mj-2022/hollywood-reporter--david-rooney.json",
+    "mj-2022/hollywood-reporter--david-rooney.json",
+    "the-notebook-2024/hollywood-reporter--david-rooney.json",
+    "two-strangers-bway-2025/nytimes--laura-collins-hughes.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "patriots-2024/deadline--greg-evans.json",
-      "patriots-2024/deadline--pete-hammond.json"
+      "patriots-2024/deadline--pete-hammond.json",
+      "ragtime-2025/nyt-theater--jonathan-mandell.json"
     ],
     "browserbase": [
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
@@ -64,11 +75,17 @@
       "here-lies-love-2023/hollywood-reporter--angie-han.json",
       "illinoise-2024/hollywood-reporter--david-rooney.json",
       "just-for-us-2023/nytimes--jesse-green.json",
-      "mary-jane-2024/hollywood-reporter--david-rooney.json"
+      "mary-jane-2024/hollywood-reporter--david-rooney.json",
+      "oh-mary-2024/nytimes--jesse-green.json",
+      "oh-mary-2024/variety--aramide-tinubu.json",
+      "stereophonic-2024/nytg--allison-considine.json",
+      "the-lion-king-1997/vulture--john-simon.json",
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "aladdin-2014/ew--thom-geier.json"
     ]
   },
   "startTime": "2026-02-03T00:59:54.740Z",
-  "lastProcessed": "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+  "lastProcessed": "aladdin-2014/ew--thom-geier.json",
   "log": [
     {
       "t": "2026-02-03T01:03:57.584Z",
@@ -144,6 +161,30 @@
       "event": "bb-session",
       "session": "52e6522e",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-02-03T01:49:36.486Z",
+      "event": "bb-session",
+      "session": "369a7465",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235"
+    },
+    {
+      "t": "2026-02-03T01:50:27.494Z",
+      "event": "bb-session",
+      "session": "34ec5a4c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/notebook-broadway-review-123586"
+    },
+    {
+      "t": "2026-02-03T01:52:35.660Z",
+      "event": "bb-session",
+      "session": "308f3416",
+      "url": "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html"
+    },
+    {
+      "t": "2026-02-03T01:53:25.834Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083572278\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAO_xBJ05eN5oANBsspA==&cid=x9NM3~19vqHI7belE0jQmiuBE1TmZlahRPFg6rTEeLIwyFN2LUGtcRTx3OC2a0W_nWTHmu~L6Phx~WveRFRyMNTKVLRYb5t6FXMnbYDU~nCzSFld9kqCUcu_XfN6HW6N&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770083572278\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083572278\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAO_xBJ05eN5oANBsspA==&cid=x9NM3~19vqHI7belE0jQmiuBE1TmZlahRPFg6rTEeLIwyFN2LUGtcRTx3OC2a0W_nWTHmu~L6Phx~WveRFRyMNTKVLRYb5t6FXMnbYDU~nCzSFld9kqCUcu_XfN6HW6N&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770083572278\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083572278\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAO_xBJ05eN5oANBsspA==&cid=x9NM3~19vqHI7belE0jQmiuBE1TmZlahRPFg6rTEeLIwyFN2LUGtcRTx3OC2a0W_nWTHmu~L6Phx~WveRFRyMNTKVLRYb5t6FXMnbYDU~nCzSFld9kqCUcu_XfN6HW6N&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770083572278\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
     }
   ]
 }
