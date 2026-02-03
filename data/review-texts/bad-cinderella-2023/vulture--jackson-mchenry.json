@@ -18,59 +18,9 @@
   "showScoreExcerpt": "Bad Cinderella is a musical that seems to have been designed by committee to appeal to no one in particular, a show that takes the story of Cinderella and strips it of both its fairy-tale magic and any coherent dramatic logic.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (41 words)",
-  "llmScore": {
-    "score": 21,
-    "confidence": "high",
-    "range": {
-      "low": 16,
-      "high": 26
-    },
-    "bucket": "Pan",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Bad Cinderella is a musical that seems to have been designed by committee to appeal to no one in particular.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating critique that questions the show's very existence and purpose. The phrase 'designed to appeal to no one' is particularly damning, suggesting fundamental failure. | GPT-4o: The review describes the show as lacking magic and coherent logic, suggesting it fails to appeal to any audience, indicating a strong negative verdict. | Gemini: The review uses strong negative language, stating the musical is designed to appeal to no one and lacks magic and dramatic logic, indicating a pan. | Kimi: The excerpt delivers a devastating critique, describing the show as lacking coherent dramatic logic, fairy-tale magic, and any clear audience appeal. While the single complete sentence provides an unambiguous negative verdict, the confidence is low given the brevity of the text.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T14:27:11.911Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 22,
-    "openaiScore": 20,
-    "geminiScore": 20,
-    "kimiScore": 20,
-    "claudeBucket": "Pan",
-    "openaiBucket": "Pan",
-    "geminiBucket": "Pan",
-    "kimiBucket": "Pan",
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Pan"
-  }
+  "playbillVerdictUrl": "https://www.vulture.com/2023/03/theater-review-bad-cinderella-lloyd-webber-broadway.html",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }
