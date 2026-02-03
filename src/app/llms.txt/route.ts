@@ -85,7 +85,7 @@ ${browseSlugs.slice(0, 12).map(slug => {
 - **Critic Score**: Weighted composite score (0-100)
 - **Review Count**: Number of aggregated reviews
 - **Individual Reviews**: Outlet, critic name, score, excerpt, link
-- **Show Details**: Synopsis, cast, creative team, runtime
+- **Show Details**: Synopsis, creative team, runtime
 - **Venue Info**: Theater name, address
 - **Ticket Links**: Where to buy tickets (TodayTix, Telecharge, etc.)
 - **Box Office**: Weekly grosses, capacity, all-time stats
