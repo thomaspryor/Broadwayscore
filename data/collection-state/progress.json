@@ -18,26 +18,38 @@
     "just-for-us-2023/nytimes--jesse-green.json",
     "mary-jane-2024/hollywood-reporter--david-rooney.json",
     "mj-2022/hollywood-reporter--lovia-gyarkye.json",
-    "doubt-2024/theatermania--andy-propst.json",
-    "doubt-2024/wsj--charles-isherwood.json",
-    "gutenberg-2023/theatermania--jesse-green.json",
-    "hadestown-2019/theatermania--jesse-green.json",
-    "hamilton-2015/theatermania--adam-feldman.json",
-    "here-lies-love-2023/theatermania--adam-feldman.json",
-    "how-to-dance-in-ohio-2023/theatermania--david-finkle.json",
-    "mary-jane-2024/theatermania--jesse-green.json",
-    "moulin-rouge-2019/theatermania--jesse-green.json",
-    "our-town-2024/theatermania--jesse-green.json",
-    "six-2021/theatermania--jesse-green.json",
-    "suffs-2024/ew--kristen-baldwin.json",
-    "the-roommate-2024/theatermania--jesse-green.json",
-    "the-shark-is-broken-2023/theatermania--jesse-green.json",
-    "uncle-vanya-2024/theatermania--jesse-green.json",
-    "aladdin-2014/ap--mark-kennedy.json",
-    "aladdin-2014/nbcny--dave-quinn.json",
-    "harry-potter-2021/dcmetro--deb-miller.json",
-    "hells-kitchen-2024/ap--mark-kennedy.json",
-    "mj-2022/ap--mark-kennedy.json"
+    "oh-mary-2024/nytimes--jesse-green.json",
+    "oh-mary-2024/variety--aramide-tinubu.json",
+    "ragtime-2025/nyt-theater--jonathan-mandell.json",
+    "stereophonic-2024/nytg--allison-considine.json",
+    "the-lion-king-1997/vulture--john-simon.json",
+    "wicked-2003/nytimes--charles-isherwood.json",
+    "aladdin-2014/ew--thom-geier.json",
+    "aladdin-2014/newsday--linda-winer.json",
+    "aladdin-2014/uinterview--danny-graugnard.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "appropriate-2023/wsj--charles-isherwood.json",
+    "book-of-mormon-2011/newsday--linda-winer.json",
+    "cabaret-2024/broadwaynews--brittani-samuel.json",
+    "hadestown-2019/wsj--terry-teachout.json",
+    "hamilton-2015/newsday--linda-winer.json",
+    "hamilton-2015/nypost--elisabeth-vincentelli.json",
+    "hamilton-2015/wsj--terry-teachout.json",
+    "harmony-2023/broadwaynews--brittani-samuel.json",
+    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+    "harry-potter-2021/wsj--terry-teachout.json",
+    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
+    "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/broadwaynews--brittani-samuel.json",
+    "i-need-that-2023/wsj--charles-isherwood.json",
+    "illinoise-2024/broadwaynews--brittani-samuel.json",
+    "lempicka-2024/broadwaynews--brittani-samuel.json",
+    "lempicka-2024/wsj--charles-isherwood.json",
+    "liberation-2025/thewrap--robert-hofler.json",
+    "marjorie-prime-2025/nydailynews--chris-jones.json",
+    "mary-jane-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json"
   ],
   "failed": [
     "patriots-2024/deadline--greg-evans.json",
@@ -53,51 +65,44 @@
     "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
     "illinoise-2024/nyt-theater--jonathan-mandell.json",
     "mj-2022/hollywood-reporter--david-rooney.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
-    "an-enemy-of-the-people-2024/wsj--unknown.json",
-    "gutenberg-2023/wsj--charles-isherwood.json",
-    "marjorie-prime-2025/wsj--charles-isherwood.json",
-    "mary-jane-2024/ew--kristen-baldwin.json",
-    "merrily-we-roll-along-2023/wsj--charles-isherwood.json"
+    "mj-2022/hollywood-reporter--david-rooney.json",
+    "the-notebook-2024/hollywood-reporter--david-rooney.json",
+    "two-strangers-bway-2025/nytimes--laura-collins-hughes.json",
+    "back-to-the-future-2023/wsj--charles-isherwood.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "cabaret-2024/wsj--charles-isherwood.json",
+    "death-becomes-her-2024/wsj--charles-isherwood.json",
+    "liberation-2025/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "patriots-2024/deadline--greg-evans.json",
       "patriots-2024/deadline--pete-hammond.json",
-      "suffs-2024/ew--kristen-baldwin.json",
-      "aladdin-2014/ap--mark-kennedy.json",
-      "aladdin-2014/nbcny--dave-quinn.json",
-      "hells-kitchen-2024/ap--mark-kennedy.json",
-      "mj-2022/ap--mark-kennedy.json"
+      "ragtime-2025/nyt-theater--jonathan-mandell.json",
+      "lempicka-2024/broadwaynews--brittani-samuel.json",
+      "mary-jane-2024/broadwaynews--brittani-samuel.json"
     ],
     "browserbase": [
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
       "hamilton-2015/hollywood-reporter--david-rooney.json",
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
-      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/book-of-mormon-2011/newsday--linda-winer.json",
+      "book-of-mormon-2011/newsday--linda-winer.json"
     ],
     "scrapingbee": [
       "patriots-2024/guardian--michael-billington.json",
       "patriots-2024/theatermania--jesse-green.json",
       "grey-house-2023/newyorker--dan-stahl.json",
-      "doubt-2024/theatermania--andy-propst.json",
-      "hadestown-2019/theatermania--jesse-green.json",
-      "hamilton-2015/theatermania--adam-feldman.json",
-      "here-lies-love-2023/theatermania--adam-feldman.json",
-      "how-to-dance-in-ohio-2023/theatermania--david-finkle.json",
-      "moulin-rouge-2019/theatermania--jesse-green.json"
+      "liberation-2025/thewrap--robert-hofler.json",
+      "marjorie-prime-2025/nydailynews--chris-jones.json"
     ],
     "brightdata": [
-      "doubt-2024/wsj--charles-isherwood.json",
-      "gutenberg-2023/theatermania--jesse-green.json",
-      "mary-jane-2024/theatermania--jesse-green.json",
-      "our-town-2024/theatermania--jesse-green.json",
-      "six-2021/theatermania--jesse-green.json",
-      "the-roommate-2024/theatermania--jesse-green.json",
-      "the-shark-is-broken-2023/theatermania--jesse-green.json",
-      "uncle-vanya-2024/theatermania--jesse-green.json"
+      "aladdin-2014/wsj--terry-teachout.json",
+      "hadestown-2019/wsj--terry-teachout.json",
+      "i-need-that-2023/wsj--charles-isherwood.json",
+      "lempicka-2024/wsj--charles-isherwood.json"
     ],
     "archive": [
       "patriots-2024/broadwaynews--brittani-samuel.json",
@@ -112,11 +117,32 @@
       "illinoise-2024/hollywood-reporter--david-rooney.json",
       "just-for-us-2023/nytimes--jesse-green.json",
       "mary-jane-2024/hollywood-reporter--david-rooney.json",
-      "harry-potter-2021/dcmetro--deb-miller.json"
+      "oh-mary-2024/nytimes--jesse-green.json",
+      "oh-mary-2024/variety--aramide-tinubu.json",
+      "stereophonic-2024/nytg--allison-considine.json",
+      "the-lion-king-1997/vulture--john-simon.json",
+      "wicked-2003/nytimes--charles-isherwood.json",
+      "aladdin-2014/ew--thom-geier.json",
+      "aladdin-2014/newsday--linda-winer.json",
+      "aladdin-2014/uinterview--danny-graugnard.json",
+      "appropriate-2023/wsj--charles-isherwood.json",
+      "cabaret-2024/broadwaynews--brittani-samuel.json",
+      "hamilton-2015/newsday--linda-winer.json",
+      "hamilton-2015/nypost--elisabeth-vincentelli.json",
+      "hamilton-2015/wsj--terry-teachout.json",
+      "harmony-2023/broadwaynews--brittani-samuel.json",
+      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
+      "harry-potter-2021/wsj--terry-teachout.json",
+      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
+      "hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+      "here-lies-love-2023/broadwaynews--brittani-samuel.json",
+      "illinoise-2024/broadwaynews--brittani-samuel.json",
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json"
     ]
   },
   "startTime": "2026-02-03T00:59:54.740Z",
-  "lastProcessed": "mj-2022/ap--mark-kennedy.json",
+  "lastProcessed": "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
   "log": [
     {
       "t": "2026-02-03T01:03:57.584Z",
@@ -194,83 +220,99 @@
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
     },
     {
-      "t": "2026-02-03T01:51:35.575Z",
+      "t": "2026-02-03T01:49:36.486Z",
       "event": "bb-session",
-      "session": "ceae7111",
-      "url": "https://www.wsj.com/articles/an-enemy-of-the-people-review-jeremy-strong-broadwa"
+      "session": "369a7465",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235"
     },
     {
-      "t": "2026-02-03T01:52:23.424Z",
+      "t": "2026-02-03T01:50:27.494Z",
+      "event": "bb-session",
+      "session": "34ec5a4c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/notebook-broadway-review-123586"
+    },
+    {
+      "t": "2026-02-03T01:52:35.660Z",
+      "event": "bb-session",
+      "session": "308f3416",
+      "url": "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html"
+    },
+    {
+      "t": "2026-02-03T01:53:25.834Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083572278\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAO_xBJ05eN5oANBsspA==&cid=x9NM3~19vqHI7belE0jQmiuBE1TmZlahRPFg6rTEeLIwyFN2LUGtcRTx3OC2a0W_nWTHmu~L6Phx~WveRFRyMNTKVLRYb5t6FXMnbYDU~nCzSFld9kqCUcu_XfN6HW6N&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770083572278\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083572278\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAO_xBJ05eN5oANBsspA==&cid=x9NM3~19vqHI7belE0jQmiuBE1TmZlahRPFg6rTEeLIwyFN2LUGtcRTx3OC2a0W_nWTHmu~L6Phx~WveRFRyMNTKVLRYb5t6FXMnbYDU~nCzSFld9kqCUcu_XfN6HW6N&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770083572278\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083572278\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAO_xBJ05eN5oANBsspA==&cid=x9NM3~19vqHI7belE0jQmiuBE1TmZlahRPFg6rTEeLIwyFN2LUGtcRTx3OC2a0W_nWTHmu~L6Phx~WveRFRyMNTKVLRYb5t6FXMnbYDU~nCzSFld9kqCUcu_XfN6HW6N&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770083572278\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-02-03T01:54:13.056Z",
+      "event": "bb-session",
+      "session": "93dc3a04",
+      "url": "http://www.wsj.com/articles/SB10001424052702303802104579449142401496978"
+    },
+    {
+      "t": "2026-02-03T01:55:05.788Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-02-03T01:52:50.900Z",
+      "t": "2026-02-03T01:56:14.738Z",
       "event": "bb-session",
-      "session": "bf246c0c",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/doubt-a-parable_93847"
+      "session": "c1d42324",
+      "url": "https://www.wsj.com/articles/back-to-the-future-the-musical-review-docs-delorean"
     },
     {
-      "t": "2026-02-03T01:53:19.979Z",
-      "event": "bb-session",
-      "session": "b4a371b3",
-      "url": "https://www.wsj.com/articles/doubt-review-broadway-revivial-roundabout-amy-ryan-"
+      "t": "2026-02-03T01:57:05.874Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-02-03T01:54:02.714Z",
+      "t": "2026-02-03T01:57:36.010Z",
+      "event": "bb-session",
+      "session": "1e281ee3",
+      "url": "https://www.newsday.com/news/new-york/theater-review-the-book-of-mormon-4-stars-"
+    },
+    {
+      "t": "2026-02-03T01:57:56.506Z",
+      "event": "bb-session",
+      "session": "95cb2153",
+      "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8"
+    },
+    {
+      "t": "2026-02-03T01:58:46.750Z",
+      "event": "bb-login-ok",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-02-03T01:59:15.804Z",
+      "event": "bb-session",
+      "session": "e97533f5",
+      "url": "https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neu"
+    },
+    {
+      "t": "2026-02-03T02:00:00.950Z",
       "event": "bb-login-fail",
       "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083611874\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAFuG8Vl7V-8oANA1qtA==&cid=bHwqiLo1IiFWu8V~w_Luy82i3u0tBKmBSMzi0hIjkZHOetILzAsbXXzeR7mvGJ33GdZdGxH4rIMJrs~TvTpvgewitsmSEhshX5jZTyTSuru0pDVI0hoZPQK103~OSmUd&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770083611874\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083611874\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAFuG8Vl7V-8oANA1qtA==&cid=bHwqiLo1IiFWu8V~w_Luy82i3u0tBKmBSMzi0hIjkZHOetILzAsbXXzeR7mvGJ33GdZdGxH4rIMJrs~TvTpvgewitsmSEhshX5jZTyTSuru0pDVI0hoZPQK103~OSmUd&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770083611874\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    21 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083611874\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAFuG8Vl7V-8oANA1qtA==&cid=bHwqiLo1IiFWu8V~w_Luy82i3u0tBKmBSMzi0hIjkZHOetILzAsbXXzeR7mvGJ33GdZdGxH4rIMJrs~TvTpvgewitsmSEhshX5jZTyTSuru0pDVI0hoZPQK103~OSmUd&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770083611874\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083969931\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAOXxge24MoqMANA1qtA==&cid=q4IED53Mf8rL5bcLzf_PtEpvEEE9QNMFfJFLR4zsWCgnbsQgW5tFVl5Pza_3CDzNJdOoXCTeSVFtAPZgVBzmf0xrF3WgVfKNmLtvmUEzzPdPmIqMpeMcke30kn5higci&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770083969931\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083969931\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAOXxge24MoqMANA1qtA==&cid=q4IED53Mf8rL5bcLzf_PtEpvEEE9QNMFfJFLR4zsWCgnbsQgW5tFVl5Pza_3CDzNJdOoXCTeSVFtAPZgVBzmf0xrF3WgVfKNmLtvmUEzzPdPmIqMpeMcke30kn5higci&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770083969931\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    16 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770083969931\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAOXxge24MoqMANA1qtA==&cid=q4IED53Mf8rL5bcLzf_PtEpvEEE9QNMFfJFLR4zsWCgnbsQgW5tFVl5Pza_3CDzNJdOoXCTeSVFtAPZgVBzmf0xrF3WgVfKNmLtvmUEzzPdPmIqMpeMcke30kn5higci&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770083969931\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
     },
     {
-      "t": "2026-02-03T01:54:33.226Z",
+      "t": "2026-02-03T02:00:51.944Z",
       "event": "bb-session",
-      "session": "1b312692",
-      "url": "https://www.theatermania.com/broadway/reviews/gutenberg-the-musical_96847.html"
+      "session": "d1cc7195",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
     },
     {
-      "t": "2026-02-03T01:55:02.463Z",
-      "event": "bb-session",
-      "session": "e9f8d424",
-      "url": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannel"
-    },
-    {
-      "t": "2026-02-03T01:55:49.615Z",
+      "t": "2026-02-03T02:01:43.412Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-02-03T01:56:17.019Z",
+      "t": "2026-02-03T02:02:12.995Z",
       "event": "bb-session",
-      "session": "cf7799be",
-      "url": "https://www.theatermania.com/broadway/reviews/hadestown_88061.html"
+      "session": "87447b3d",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
     },
     {
-      "t": "2026-02-03T01:56:41.996Z",
-      "event": "bb-session",
-      "session": "a1f45000",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/hamilton_72618.html"
-    },
-    {
-      "t": "2026-02-03T01:57:09.513Z",
-      "event": "bb-session",
-      "session": "eb69ffe0",
-      "url": "https://www.theatermania.com/broadway/reviews/here-lies-love_93847.html"
-    },
-    {
-      "t": "2026-02-03T01:57:35.451Z",
-      "event": "bb-session",
-      "session": "7bf06410",
-      "url": "https://www.theatermania.com/broadway/reviews/how-to-dance-in-ohio_94588.html"
-    },
-    {
-      "t": "2026-02-03T01:58:09.939Z",
-      "event": "bb-session",
-      "session": "cd73674c",
-      "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the"
-    },
-    {
-      "t": "2026-02-03T01:58:56.681Z",
+      "t": "2026-02-03T02:03:03.106Z",
       "event": "bb-login-ok",
       "domain": "wsj.com"
     }
