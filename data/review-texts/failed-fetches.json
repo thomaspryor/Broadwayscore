@@ -4576,18 +4576,6 @@
     "timestamp": "2026-02-01T23:47:25.260Z"
   },
   {
-    "reviewId": "patriots-2024/deadline--greg-evans.json",
-    "showId": "patriots-2024",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
-    "textLength": 48624,
-    "timestamp": "2026-02-01T23:47:32.783Z"
-  },
-  {
     "reviewId": "patriots-2024/new-york-sun--elysa-gardner.json",
     "showId": "patriots-2024",
     "outlet": "The New York Sun",
@@ -8162,5 +8150,29 @@
     "garbageReason": "Legal/privacy page: \"©2026 Dow Jones & Company, Inc. All Rights Reserved\"",
     "textLength": 956,
     "timestamp": "2026-02-03T02:05:43.310Z"
+  },
+  {
+    "reviewId": "patriots-2024/deadline--greg-evans.json",
+    "showId": "patriots-2024",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
+    "textLength": 48624,
+    "timestamp": "2026-02-03T02:08:11.858Z"
+  },
+  {
+    "reviewId": "queen-versailles-2025/theatre-reviews-limited--david-roberts.json",
+    "showId": "queen-versailles-2025",
+    "outlet": "Theatre Reviews Limited",
+    "critic": "David Roberts",
+    "url": "https://www.theatrereviews.com/broadway-review-the-queen-of-versailles-at-the-st-james-theatre-through-sunday-january-4-2026/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (8)",
+    "textLength": 7518,
+    "timestamp": "2026-02-03T02:08:41.009Z"
   }
 ]

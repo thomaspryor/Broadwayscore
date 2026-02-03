@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-taub-hillary-clinton-fe175dc0?gaa_at=eafs&gaa_n=AWEtsqfC_fspfgkmAp6pmECJfPCE6SAHxbgzvUKQtzE4dDREGaYrLDndad1U&gaa_ts=6980ea8d&gaa_sig=Dxud0Ho5_oQ-nP7FI9jddXuLWnaTQTaUh7YhMyWn9yJjt0ujwEdnegt_aT5c-T_9fdDSRpYOhsr5g6MI4j-91Q%3D%3D",
   "publishDate": "April 18, 2024",
-  "fullText": "https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-taub-hillary-clinton-fe175dc0\n\nJenn Colella and the ‘Suffs’ company. Joan MarcusNew York\n\n“Sisters are doin’ it for themselves,” Annie Lennox and Aretha Franklin memorably sang back in the 1980s. The musical “Suffs,” about the struggle for women’s right to vote in the U.S., provides a fresh example. With book, music and lyrics by Shaina Taub, who also plays a principal role among the all-female cast, and Leigh Silverman directing, the show highlights the talents of women, following in the admittedly more momentous footsteps—much marching was involved!—of the characters.",
-  "isFullReview": false,
+  "fullText": "https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-taub-hillary-clinton-fe175dc0\n\nJenn Colella and the ‘Suffs’ company. Joan MarcusNew York\n\n“Sisters are doin’ it for themselves,” Annie Lennox and Aretha Franklin memorably sang back in the 1980s. The musical “Suffs,” about the struggle for women’s right to vote in the U.S., provides a fresh example. With book, music and lyrics by Shaina Taub, who also plays a principal role among the all-female cast, and Leigh Silverman directing, the show highlights the talents of women, following in the admittedly more momentous footsteps—much marching was involved!—of the characters.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nContinue reading your article witha WSJ subscription\n\nClassified Whistleblower Complaint About Tulsi Gabbard Stalls Within Her AgencyThe Famous Names in the Latest Release of Epstein FilesThe Housing Market Is Swinging Toward BuyersEpstein Files Release Exposes Names of at Least 43 Victims, WSJ Review Finds‘Spy Sheikh’ Bought Secret Stake in Trump CompanyMost PopularOPINIONA Texas Election Jolt to the GOPThe Nuclear Threat After Tehran FallsThe Medicare Advantage AmbushPress Secretary? I’d Rather Do Root CanalsDonald J. Trump: My Tariffs Have Brought America BackFurther Reading‘25 | 250: A Celebration of American Art’ Review: Painting a Nation\n\n‘Emma Stebbins’ Review: A Spirit of Central Park\n\n‘World’s Fairs: Visions of Tomorrow’ Review: Fantastic Futures of the Past\n\nA Month of Remarkable Movies in New York\n\nAt the Guggenheim, Gabriele Münter and Her Vibrant Milieu",
+  "isFullReview": true,
   "dtliExcerpt": "Ms. Taub has created a stirring and accomplished work that brings fresh energy to the well-worn format of the biographical musical.",
   "originalScore": null,
   "assignedScore": 79,
@@ -72,10 +72,10 @@
   "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
-  "textWordCount": 86,
-  "archivePath": "data/archives/reviews/suffs-2024/wsj--charles-isherwood_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T23:41:17.402Z",
-  "fetchMethod": "brightdata",
+  "textWordCount": 225,
+  "archivePath": "data/archives/reviews/suffs-2024/wsj--charles-isherwood_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T02:10:20.649Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -87,34 +87,25 @@
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "Skipped - known blocked site"
-    },
-    {
-      "tier": 1.5,
-      "method": "browserbase",
-      "success": false,
-      "error": "Insufficient text: 0 chars"
+      "error": "Skipped (known-blocked site)"
     },
     {
       "tier": 2,
       "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (500): Request failed with status code 500"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "incomplete",
-  "sourceMethod": "brightdata",
-  "textIssues": [
-    "Word count too low: 145 (min: 300)"
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "paywall_or_login_prompt",
+    "no_ending_punctuation"
   ],
-  "wordCount": 86,
-  "tierReason": "Short text (86 words)"
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 225 (min: 300)"
+  ],
+  "wordCount": 225,
+  "tierReason": "Truncation detected: paywall_or_login_prompt, no_ending_punctuation"
 }
