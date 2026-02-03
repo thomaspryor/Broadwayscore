@@ -105,11 +105,6 @@ export interface TicketLink {
   priceFrom?: number;   // Starting price in dollars
 }
 
-export interface CastMember {
-  name: string;
-  role: string;         // Character name or "Ensemble"
-}
-
 export interface CreativeMember {
   name: string;
   role: string;         // Director, Book, Music, Lyrics, Choreographer, etc.
@@ -143,8 +138,7 @@ export interface Show {
   officialUrl?: string;
   trailerUrl?: string;
 
-  // Cast & creative
-  cast?: CastMember[];
+  // Creative team
   creativeTeam?: CreativeMember[];
 
   // Tickets
