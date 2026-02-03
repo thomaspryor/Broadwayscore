@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hand to God is a puppet show for grown-ups that manages to be both deeply offensive and deeply moving, a comedy that earns its laughs through genuine insight into the nature of faith, doubt, and human frailty.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hand to God is a puppet show for grown-ups that manages to be both deeply offensive and deeply moving, a comedy that earns its laughs through genuine insight into the nature of faith, doubt, and human frailty.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (37 words)"
+  "contentTierReason": "Short text (37 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "manages to be both deeply offensive and deeply moving, a comedy that earns its laughs through genuine insight",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language praising the show's ability to balance offense with emotional depth and crediting it with 'genuine insight.' The tone is enthusiastically recommending. | GPT-4o: The review praises the show as both 'deeply offensive and deeply moving,' indicating a strong emotional impact and insightful comedy. This suggests a highly positive recommendation. | Gemini: The review describes the show as \"deeply offensive and deeply moving\" and a \"comedy that earns its laughs through genuine insight.\" This indicates a positive, but not rave, recommendation. | Kimi: The critic offers strong praise, calling the show 'deeply moving' with 'genuine insight' and noting it 'earns its laughs,' indicating a clear recommendation. Confidence is low due to the brevity of the provided excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:42:00.940Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of the beloved 1964 musical is a handsome, well-sung production that honors the material without bringing much that's new to it.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of the beloved 1964 musical is a handsome, well-sung production that honors the material without bringing much that's new to it.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of the beloved 1964 musical is a handsome, well-sung production that honors the material without bringing much that's new to it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite the 80 rating, the review language is lukewarm - 'handsome' and 'well-sung' are modest praise, and 'without bringing much that's new' suggests it's merely competent rather than compelling. The phrasing doesn't contain clear recommendation language. | GPT-4o: The critic gives a positive assessment of the production as 'handsome' and 'well-sung', aligning with the original rating of 80, indicating a solid recommendation despite noting a lack of novelty. | Gemini: The review is positive, calling the production \"handsome\" and \"well-sung.\" However, it notes that the revival doesn't bring anything new, indicating a reservation. Given the original rating of 80, a score of 75 seems appropriate. | Kimi: The critic offers qualified praise, calling the production handsome and well-sung while noting it breaks no new ground, resulting in a solid but not enthusiastic recommendation that aligns with the 80-point rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:05:32.758Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

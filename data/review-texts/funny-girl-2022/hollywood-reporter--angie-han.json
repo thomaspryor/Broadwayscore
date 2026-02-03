@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Feldstein's Fanny is more sweet than sassy, more earnest than manic, which makes for a perfectly pleasant performance that doesn't quite capture the character's supposed star quality.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Feldstein's Fanny is more sweet than sassy, more earnest than manic, which makes for a perfectly pleasant performance that doesn't quite capture the character's supposed star quality.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Feldstein's Fanny is more sweet than sassy, more earnest than manic, which makes for a perfectly pleasant performance that doesn't quite capture the character's supposed star quality.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review acknowledges the performance as 'perfectly pleasant' but notes it fails to capture the essential star quality needed for the role, suggesting adequate but not compelling execution. | GPT-4o: The review describes the performance as 'perfectly pleasant' but notes it 'doesn't quite capture the character's supposed star quality,' indicating a mixed assessment. | Gemini: The review acknowledges a pleasant performance but notes that it doesn't fully capture the character's star quality, indicating a mixed assessment. | Kimi: The excerpt offers a balanced but lukewarm assessment, praising the performance as 'perfectly pleasant' while criticizing it for failing to deliver the necessary 'star quality' for the role.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:19:02.460Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

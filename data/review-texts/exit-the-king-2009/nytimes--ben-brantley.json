@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Rush brings a sweaty, antic desperation to Berenger that makes his final acceptance of death genuinely moving. This is a performance of such concentrated intensity that it seems to burn calories just watching it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Rush brings a sweaty, antic desperation to Berenger that makes his final acceptance of death genuinely moving. This is a performance of such concentrated intensity that it seems to burn calories just watching it.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (35 words)"
+  "contentTierReason": "Short text (35 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a performance of such concentrated intensity that it seems to burn calories just watching it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for Rush's performance with vivid, appreciative language, but this appears to be a brief excerpt focusing only on one actor's work, limiting broader assessment of the production. | Gemini: The review praises the performance of Mr. Rush, calling it \"genuinely moving\" and of \"such concentrated intensity\". This indicates a positive recommendation. | Kimi: The excerpt offers unqualified enthusiastic praise for the central performance, describing it as 'genuinely moving' and of 'concentrated intensity,' indicating a must-see recommendation despite the brevity of the provided text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:57:08.633Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

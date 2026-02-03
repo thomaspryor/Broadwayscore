@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tim Minchin's songs are theatrical gold, and Andy Karl gives a tour-de-force performance as Phil Connors, bringing both manic energy and genuine pathos to the role.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tim Minchin's songs are theatrical gold, and Andy Karl gives a tour-de-force performance as Phil Connors, bringing both manic energy and genuine pathos to the role.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tim Minchin's songs are theatrical gold, and Andy Karl gives a tour-de-force performance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for songs ('theatrical gold') and lead performance ('tour-de-force'), but this appears to be a brief excerpt lacking overall verdict or recommendation context. | Gemini: The review praises the songs and the lead performance, indicating a positive experience. | Kimi: The excerpt employs superlative praise ('theatrical gold', 'tour-de-force') indicating an enthusiastic, must-see recommendation, though the single-sentence limitation requires low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:35:55.432Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite a lavish production and talented cast, this Gigi feels more like an expensive museum piece than a living, breathing musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite a lavish production and talented cast, this Gigi feels more like an expensive museum piece than a living, breathing musical.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite a lavish production and talented cast, this Gigi feels more like an expensive museum piece than a living, breathing musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic acknowledges production quality and cast talent but delivers a clear negative verdict by calling it a 'museum piece' rather than vibrant theater, indicating they do not recommend it. | GPT-4o: The review highlights a lack of vitality in the production, suggesting it fails to engage as a musical despite its lavishness and talent, leading to a negative assessment. | Gemini: The review acknowledges the production value and cast talent but ultimately finds the show lacking vitality and feeling like a dated museum piece, indicating a negative overall assessment. | Kimi: While acknowledging the lavish production and talented cast, the critic ultimately dismisses the show as a lifeless 'museum piece,' indicating it fails as vibrant, engaging theater.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:22:42.966Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 44,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

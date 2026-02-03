@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Paula Vogel's powerful play about the controversial Yiddish drama 'God of Vengeance' is a moving meditation on art, censorship and Jewish identity.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Paula Vogel's powerful play about the controversial Yiddish drama 'God of Vengeance' is a moving meditation on art, censorship and Jewish identity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paula Vogel's powerful play about the controversial Yiddish drama 'God of Vengeance' is a moving meditation on art, censorship and Jewish identity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic's own 80 rating places this in positive territory, with praise like 'powerful' and 'moving meditation' supporting a recommendation, though the brief excerpt limits full assessment. | Gemini: The review uses the word \"powerful\" to describe the play and calls it a \"moving meditation,\" indicating a positive, though not overwhelmingly enthusiastic, recommendation. Given the original rating of 80, a score of 75 seems appropriate. | Kimi: The critic's rating of 80 and descriptors like 'powerful' and 'moving meditation' indicate a solid positive recommendation for this production, though the excerpt is extremely brief.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:07:52.117Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

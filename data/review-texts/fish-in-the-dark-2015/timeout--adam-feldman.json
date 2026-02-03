@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "David's play is competently constructed and has some funny moments, but it feels more like a very long sketch than a fully realized work of theater.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "David's play is competently constructed and has some funny moments, but it feels more like a very long sketch than a fully realized work of theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "David's play is competently constructed and has some funny moments, but it feels more like a very long sketch than a fully realized work of theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic acknowledges competent construction and humor but finds fundamental flaws in the work's theatrical substance. The original 40 rating confirms this as mixed-to-negative territory. | GPT-4o: The critic's rating of 40 and the description of the play as 'a very long sketch' rather than a 'fully realized work' indicate a negative review. The mention of 'some funny moments' does not outweigh the overall negative assessment. | Gemini: The critic acknowledges some positive aspects but ultimately finds the play lacking, comparing it to a sketch rather than a fully realized work. The 40 rating aligns with a negative assessment. | Kimi: The critic's explicit rating of 40 indicates a negative assessment, describing the play as an undeveloped sketch despite acknowledging competent construction and occasional humor.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:09:12.917Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }
