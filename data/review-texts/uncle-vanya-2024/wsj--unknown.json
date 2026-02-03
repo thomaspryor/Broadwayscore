@@ -5,7 +5,7 @@
   "criticName": "Unknown",
   "url": "https://www.wsj.com/articles/uncle-vanya-review-steve-carell-lincoln-center-broadway-alfred-molina-william-jackson-harper-anika-noni-rose-alison-pill-c12f1621",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "https://www.wsj.com/articles/uncle-vanya-review-steve-carell-lincoln-center-broadway-alfred-molina-william-jackson-harper-anika-noni-rose-alison-pill-c12f1621\n\nSteve Carell and Alison Pill Marc J. FranklinNew York\n\nThe Vivian Beaumont stage isn’t exactly the proverbial postage stamp. For good reason it has regularly played host in recent years to lavishly—and beautifully—presented classics from the musical-theater canon. Unhappily the new Lincoln Center Theater production of Chekhov’s “Uncle Vanya” makes this amply sized space seem like a football field. Possibly two.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nThe Harry Styles Comeback Is Already Huge\n\n‘An Ark’ Review: Ian McKellen’s Shimmering Image Off-Broadway\n\nBrazilian Supermodel Adriana Lima Sells Her L.A. Home for $12.96 Million\n\nRob Reiner, Director of ‘This Is Spinal Tap,’ ‘When Harry Met Sally…,’ Dies at 78\n\nRussell Wilson and Ciara Ask $54.9 Million for Their California Home",
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
@@ -68,6 +68,50 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Negative"
   },
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "truncated",
+  "contentTierReason": "Only aggregator excerpts available",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 45,
+  "textWordCount": 125,
+  "archivePath": "data/archives/reviews/uncle-vanya-2024/wsj--unknown_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T02:49:18.024Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_junk"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 125 (min: 300)"
+  ],
+  "wordCount": 125,
+  "tierReason": "Short text (125 words)"
 }
