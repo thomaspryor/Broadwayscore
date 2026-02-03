@@ -74,12 +74,12 @@ jobs:
 
       - name: Split shows into load-balanced batches
         id: split
+        env:
+          JOBS: ${{ inputs.parallel_jobs }}
         run: |
-          JOBS=${{ inputs.parallel_jobs }}
-
           # Validate parallel_jobs is 1-10
           if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then
-            JOBS=5
+            export JOBS=5
           fi
 
           # Count reviews needing fullText per show, sort by count for load balancing
@@ -149,7 +149,7 @@ jobs:
             // Write outputs
             fs.writeFileSync("/tmp/matrix.json", JSON.stringify(matrix));
             fs.writeFileSync("/tmp/total.txt", String(totalReviews));
-          ' JOBS=$JOBS
+          '
 
           echo "matrix=$(cat /tmp/matrix.json)" >> $GITHUB_OUTPUT
           echo "total_reviews=$(cat /tmp/total.txt)" >> $GITHUB_OUTPUT
