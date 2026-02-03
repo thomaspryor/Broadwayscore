@@ -8,6 +8,8 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import ScoreTooltip from '@/components/ScoreTooltip';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
+import { SCORE_TIERS, getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill } from '@/components/show-cards';
+import type { ScoreTier } from '@/components/show-cards';
 
 // URL parameter values
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'closing_soon' | 'all';
@@ -33,196 +35,6 @@ const statusParamToFilter: Record<StatusParam, StatusFilter> = {
   all: 'all',
 };
 
-// Score tier labels and tooltips
-const SCORE_TIERS = {
-  mustSee: {
-    label: 'Must-See',
-    tooltip: 'Drop-everything great. If you\'re seeing one show, make it this.',
-    range: '85-100',
-    color: '#FFD700',
-    glow: true,
-  },
-  recommended: {
-    label: 'Recommended',
-    tooltip: 'Strong choice—most people will have a great time.',
-    range: '75-84',
-    color: '#22c55e',
-    glow: false,
-  },
-  worthSeeing: {
-    label: 'Worth Seeing',
-    tooltip: 'Good, with caveats. Best if the premise/cast/genre is your thing.',
-    range: '65-74',
-    color: '#14b8a6',
-    glow: false,
-  },
-  skippable: {
-    label: 'Skippable',
-    tooltip: 'Optional. Fine to miss unless you\'re a completist or super fan.',
-    range: '55-64',
-    color: '#f59e0b',
-    glow: false,
-  },
-  stayAway: {
-    label: 'Stay Away',
-    tooltip: 'Not recommended—save your time and money.',
-    range: '<55',
-    color: '#ef4444',
-    glow: false,
-  },
-};
-
-function getScoreTier(score: number | null | undefined) {
-  if (score === null || score === undefined) return null;
-  const rounded = Math.round(score);
-  if (rounded >= 85) return SCORE_TIERS.mustSee;
-  if (rounded >= 75) return SCORE_TIERS.recommended;
-  if (rounded >= 65) return SCORE_TIERS.worthSeeing;
-  if (rounded >= 55) return SCORE_TIERS.skippable;
-  return SCORE_TIERS.stayAway;
-}
-
-interface ScoreBadgeProps {
-  score?: number | null;
-  size?: 'sm' | 'md' | 'lg';
-  reviewCount?: number;
-  status?: string;
-  // Tooltip props (optional)
-  tier1Count?: number;
-  tier2Count?: number;
-  tier3Count?: number;
-  showTooltip?: boolean;
-}
-
-function ScoreBadge({ score, size = 'md', reviewCount, status, tier1Count, tier2Count, tier3Count, showTooltip = false }: ScoreBadgeProps) {
-  const sizeClass = {
-    sm: 'w-11 h-11 text-lg rounded-lg',
-    md: 'w-14 h-14 text-2xl rounded-xl',
-    lg: 'w-16 h-16 sm:w-20 sm:h-20 text-3xl rounded-xl',
-  }[size];
-
-  // Show TBD for previews shows
-  if (status === 'previews') {
-    return (
-      <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>
-        TBD
-      </div>
-    );
-  }
-
-  // Show TBD if fewer than 5 reviews
-  if (reviewCount !== undefined && reviewCount < 5) {
-    return (
-      <div className={`score-badge ${sizeClass} score-none font-bold text-gray-400`}>
-        TBD
-      </div>
-    );
-  }
-
-  if (score === undefined || score === null) {
-    return (
-      <div className={`score-badge ${sizeClass} score-none font-bold`}>
-        —
-      </div>
-    );
-  }
-
-  const roundedScore = Math.round(score);
-  let colorClass: string;
-  let label: string;
-
-  if (roundedScore >= 85) {
-    colorClass = 'score-must-see';
-    label = 'Must-See';
-  } else if (roundedScore >= 75) {
-    colorClass = 'score-great';
-    label = 'Recommended';
-  } else if (roundedScore >= 65) {
-    colorClass = 'score-good';
-    label = 'Worth Seeing';
-  } else if (roundedScore >= 55) {
-    colorClass = 'score-tepid';
-    label = 'Mixed';
-  } else {
-    colorClass = 'score-skip';
-    label = 'Skip';
-  }
-
-  const badge = (
-    <div className={`score-badge ${sizeClass} ${colorClass} font-bold`}>
-      {roundedScore}
-    </div>
-  );
-
-  // Wrap with tooltip if enabled and we have the necessary data
-  if (showTooltip && reviewCount !== undefined && tier1Count !== undefined) {
-    return (
-      <ScoreTooltip
-        score={roundedScore}
-        label={label}
-        tier1Count={tier1Count}
-        tier2Count={tier2Count || 0}
-        tier3Count={tier3Count || 0}
-        totalReviews={reviewCount}
-        size="sm"
-      >
-        {badge}
-      </ScoreTooltip>
-    );
-  }
-
-  return badge;
-}
-
-// Status pill - subtle background with accent color
-function StatusBadge({ status }: { status: string }) {
-  const label = {
-    open: 'NOW PLAYING',
-    closed: 'CLOSED',
-    previews: 'IN PREVIEWS',
-  }[status] || status.toUpperCase();
-
-  const colorClass = {
-    open: 'bg-emerald-500/15 text-emerald-400',
-    closed: 'bg-gray-500/15 text-gray-400',
-    previews: 'bg-purple-500/15 text-purple-400',
-  }[status] || 'bg-gray-500/15 text-gray-400';
-
-  return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
-      {label}
-    </span>
-  );
-}
-
-// Format pill - outline style
-function FormatPill({ type }: { type: string }) {
-  const isMusical = type === 'musical' || type === 'revival';
-  const label = isMusical ? 'MUSICAL' : 'PLAY';
-  const colorClass = isMusical
-    ? 'border-purple-500/50 text-purple-400'
-    : 'border-blue-500/50 text-blue-400';
-
-  return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide border ${colorClass}`}>
-      {label}
-    </span>
-  );
-}
-
-// Production pill - solid muted fill
-function ProductionPill({ isRevival }: { isRevival: boolean }) {
-  const label = isRevival ? 'REVIVAL' : 'ORIGINAL';
-  const colorClass = isRevival
-    ? 'bg-gray-500/20 text-gray-400'
-    : 'bg-amber-500/20 text-amber-400';
-
-  return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide ${colorClass}`}>
-      {label}
-    </span>
-  );
-}
 
 // Use UTC-based formatting to avoid timezone-related hydration mismatch
 function formatOpeningDate(dateStr: string): string {
@@ -253,7 +65,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
   // Get the appropriate score based on mode
   let score: number | null | undefined;
   let label: string | undefined;
-  let tier: typeof SCORE_TIERS.mustSee | null = null;
+  let tier: ScoreTier | null = null;
   let audienceGrade: ReturnType<typeof getAudienceGrade> | null = null;
 
   if (scoreMode === 'audience') {
@@ -770,7 +582,7 @@ function HomePageInner() {
 
         {/* Score Mode Toggle (Right) - Segmented Control Style */}
         <div className="flex items-center gap-0 bg-surface-overlay rounded-lg p-0.5 border border-white/10" role="group" aria-label="Score mode">
-          {(['critics', 'audience'] as const).map((mode) => (
+          {(['audience', 'critics'] as const).map((mode) => (
             <button
               key={mode}
               onClick={() => {
@@ -784,7 +596,7 @@ function HomePageInner() {
               aria-pressed={scoreMode === mode}
               className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-md text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] sm:min-h-0 ${
                 scoreMode === mode
-                  ? 'bg-white/10 text-white shadow-sm'
+                  ? 'bg-brand text-gray-900 shadow-sm'
                   : 'text-gray-500 hover:text-gray-300'
               }`}
             >
