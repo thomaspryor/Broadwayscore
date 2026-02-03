@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheerfully silly little musical comedy about chorus girls and sailors in the 1930s is so determinedly retro that it makes 'Anything Goes' look like 'Hamilton.'",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This cheerfully silly little musical comedy about chorus girls and sailors in the 1930s is so determinedly retro that it makes 'Anything Goes' look like 'Hamilton.'",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This cheerfully silly little musical comedy about chorus girls and sailors in the 1930s is so determinedly retro that it makes 'Anything Goes' look like 'Hamilton.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The phrase 'cheerfully silly' suggests some charm, but 'so determinedly retro' in comparison to other shows implies criticism of being outdated or overly nostalgic. The tone is neither clearly positive nor negative. | Gemini: The review describes the show as \"cheerfully silly\" and \"retro,\" suggesting it's enjoyable but not particularly groundbreaking. This places it in the mixed category. | Kimi: Only one sentence provided appears to be an excerpt or severely truncated review. While 'cheerfully silly' suggests light entertainment value, the absence of a concluding verdict or sufficient evaluative context prevents definitive classification higher than Mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:27:08.245Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

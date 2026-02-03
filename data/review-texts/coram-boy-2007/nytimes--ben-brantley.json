@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show itself never quite finds its feet, wavering uncertainly between the somber and the sprightly, between the pageantry of a historical spectacle and the intimacy of a chamber piece.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show itself never quite finds its feet, wavering uncertainly between the somber and the sprightly, between the pageantry of a historical spectacle and the intimacy of a chamber piece.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show itself never quite finds its feet, wavering uncertainly between the somber and the sprightly.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic identifies fundamental tonal and structural problems with the show, describing it as wavering uncertainly and never finding its footing, which suggests a production that doesn't successfully achieve its goals. | GPT-4o: The review highlights a lack of coherence and direction, indicating a negative assessment without any redeeming praise. | Gemini: The review indicates that the show is uneven and doesn't fully succeed in its aims, placing it in the Mixed bucket. The score reflects the uncertainty and lack of clear recommendation. | Kimi: The critic describes the production as fundamentally uncertain, unable to reconcile its competing tones and scales. While the language stops short of a total disaster, the assessment that the show 'never quite finds its feet' indicates a clear recommendation against seeing it. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:22:00.244Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

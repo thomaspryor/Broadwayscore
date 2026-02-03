@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical Doctor Zhivago, which opened tonight at the Broadway Theatre, is a handsome, well-intentioned adaptation of Boris Pasternak's novel that never quite finds its theatrical heartbeat.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new musical Doctor Zhivago, which opened tonight at the Broadway Theatre, is a handsome, well-intentioned adaptation of Boris Pasternak's novel that never quite finds its theatrical heartbeat.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "never quite finds its theatrical heartbeat",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges positive qualities (handsome, well-intentioned) but delivers a clear criticism that the show fundamentally fails theatrically. This is neither a recommendation nor a complete dismissal. | GPT-4o: The review acknowledges the production's visual appeal and intentions but ultimately criticizes it for lacking a strong theatrical impact, leading to a mixed verdict. | Gemini: The review describes the show as \"handsome\" and \"well-intentioned\" but ultimately states that it \"never quite finds its theatrical heartbeat,\" indicating a mixed or neutral assessment. | Kimi: The review offers genuine praise for the production's visual qualities and intentions ('handsome, well-intentioned') but delivers a fundamental criticism that it fails theatrically ('never quite finds its theatrical heartbeat'), suggesting a show that looks good but lacks emotional or dramatic impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:32:46.317Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

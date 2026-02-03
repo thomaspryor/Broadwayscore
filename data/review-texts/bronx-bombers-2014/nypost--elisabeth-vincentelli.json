@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play strikes out because it can't decide what it wants to be — a nostalgic tribute to Yankees legends or a serious examination of what it means to be American.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play strikes out because it can't decide what it wants to be — a nostalgic tribute to Yankees legends or a serious examination of what it means to be American.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play strikes out because it can't decide what it wants to be",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict using baseball metaphor 'strikes out' with specific criticism about the play's fundamental lack of direction and purpose. | GPT-4o: The review criticizes the play for lacking a clear direction and failing to effectively deliver its themes, suggesting a negative overall impression. | Gemini: The review clearly states that the play 'strikes out' due to its inability to decide on a clear direction, indicating a negative assessment. | Kimi: The critic uses the baseball metaphor 'strikes out' to indicate clear failure, criticizing the show's confused identity and lack of thematic focus. While the excerpt is too brief to determine if this is a full pan, the available text offers an unambiguous negative verdict with no redeeming qualities mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:51:34.862Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a big, brassy, expertly crafted crowd-pleaser that succeeds on multiple levels: as a coming-of-age story, a celebration of individual expression and a rousing musical spectacle.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a big, brassy, expertly crafted crowd-pleaser that succeeds on multiple levels: as a coming-of-age story, a celebration of individual expression and a rousing musical spectacle.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a big, brassy, expertly crafted crowd-pleaser that succeeds on multiple levels.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear enthusiastic praise with strong positive language ('expertly crafted', 'succeeds on multiple levels', 'rousing') and the critic's own 80 rating confirms strong positive recommendation. | GPT-4o: The review describes the show as a 'big, brassy, expertly crafted crowd-pleaser' and highlights its success on multiple levels, aligning with the critic's original rating of 80, indicating a strong positive recommendation. | Gemini: The review is overwhelmingly positive, calling the show a \"crowd-pleaser\" and praising its success on multiple levels. Given the critic's rating of 80, a score in the high end of the positive range is appropriate. | Kimi: The critic provides an explicit rating of 80/100 and describes the show as an 'expertly crafted crowd-pleaser' and 'rousing musical spectacle,' indicating a strong positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:51:25.397Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

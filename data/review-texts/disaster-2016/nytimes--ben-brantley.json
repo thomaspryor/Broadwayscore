@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This shameless pastiche of 1970s disaster movies is performed with such gleeful commitment that you may find yourself grinning against your better judgment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This shameless pastiche of 1970s disaster movies is performed with such gleeful commitment that you may find yourself grinning against your better judgment.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "performed with such gleeful commitment that you may find yourself grinning against your better judgment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review acknowledges the show's pastiche nature but highlights the performers' commitment and the enjoyment it provides, suggesting a positive experience despite reservations. | Gemini: The review acknowledges the show is a 'shameless pastiche' but ultimately suggests it's enjoyable due to the cast's commitment, leading to a positive but reserved recommendation. | Kimi: The critic acknowledges the show's cheesy, derivative nature ('shameless pastiche') but praises the cast's energetic performances ('gleeful commitment'), promising that audiences will enjoy themselves despite reservations about the material's quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:37:04.913Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

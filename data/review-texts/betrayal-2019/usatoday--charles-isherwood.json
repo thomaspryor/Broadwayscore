@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of Harold Pinter's 'Betrayal' is a sleek, sophisticated rendering of the playwright's examination of infidelity and friendship, with particularly strong work from Zawe Ashton.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production of Harold Pinter's 'Betrayal' is a sleek, sophisticated rendering of the playwright's examination of infidelity and friendship, with particularly strong work from Zawe Ashton.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production of Harold Pinter's 'Betrayal' is a sleek, sophisticated rendering of the playwright's examination of infidelity and friendship.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive descriptors like 'sleek, sophisticated' and praise for Ashton's performance indicate a recommendation, though the brief text limits confidence. | GPT-4o: The review praises the production as 'sleek, sophisticated' with 'strong work' from a key performer, indicating a positive recommendation. | Gemini: The review describes the production as \"sleek, sophisticated\" and highlights \"particularly strong work\" from Zawe Ashton, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The review offers clear praise ('sleek, sophisticated rendering', 'particularly strong work') but is brief and lacks superlatives or enthusiastic endorsement language. The tone is appreciative but restrained, suggesting a solid recommendation without strong emotional investment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:47:36.034Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of Marc Camoletti's vintage French farce proves that when it comes to comedy, timing really is everything, and director Matthew Warchus has orchestrated a precision timepiece.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production of Marc Camoletti's vintage French farce proves that when it comes to comedy, timing really is everything, and director Matthew Warchus has orchestrated a precision timepiece.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production proves that when it comes to comedy, timing really is everything, and director Matthew Warchus has orchestrated a precision timepiece.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the direction and execution using positive metaphors ('precision timepiece'), indicating clear recommendation despite being a brief excerpt. | GPT-4o: The review offers unqualified praise for the production's comedic timing and direction, indicating a highly positive assessment. | Gemini: The review praises the director's orchestration of the comedy, indicating a positive experience. The phrase \"precision timepiece\" suggests a well-executed production. | Kimi: Strong praise for direction and comic timing with an elegant metaphor ('precision timepiece'). No reservations expressed, though the excerpt is brief. The language suggests enthusiastic appreciation for craft rather than unqualified rapture, placing it in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:52:27.160Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

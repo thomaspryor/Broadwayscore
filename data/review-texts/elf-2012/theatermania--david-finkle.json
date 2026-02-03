@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Elf the Musical is a well-meaning enterprise that suffers from the same problem as many other musicals based on movies: it doesn't add much to the original.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Elf the Musical is a well-meaning enterprise that suffers from the same problem as many other musicals based on movies: it doesn't add much to the original.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Elf the Musical is a well-meaning enterprise that suffers from the same problem as many other musicals based on movies: it doesn't add much to the original.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic acknowledges good intentions but identifies a fundamental flaw - the adaptation doesn't justify its existence by adding value to the source material. This is a measured but ultimately lukewarm assessment. | GPT-4o: The review indicates that the musical fails to offer anything new or substantial compared to the original movie, suggesting a lack of recommendation. | Gemini: The review acknowledges the musical is \"well-meaning\" but ultimately finds it lacking, stating it doesn't add much to the original movie. This suggests a mixed or neutral stance. | Kimi: While the critic acknowledges good intentions, the verdict clearly states the show fails to justify its existence as a theatrical adaptation, offering nothing new beyond the original film. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:35:03.296Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

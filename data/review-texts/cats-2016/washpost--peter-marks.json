@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival succeeds in some ways but feels oddly disconnected from the magic that made the original so compelling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival succeeds in some ways but feels oddly disconnected from the magic that made the original so compelling.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (19 words)"
+  "contentTierReason": "Short text (19 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival succeeds in some ways but feels oddly disconnected from the magic that made the original so compelling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review explicitly states the production 'succeeds in some ways' (positive element) but is 'oddly disconnected from the magic' of the original (significant negative). This balanced assessment with no clear recommendation places it in Mixed territory. | GPT-4o: The review acknowledges some success but highlights a significant disconnect from the original's magic, indicating a mixed reception. | Gemini: The review acknowledges some success but ultimately finds the revival lacking compared to the original, indicating a mixed assessment. | Kimi: The review acknowledges partial success ('succeeds in some ways') but emphasizes a fundamental failure to capture what made the original work special. The 'oddly disconnected' framing suggests disappointment outweighs the positives, placing it in Mixed territory rather than Positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:02:09.118Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

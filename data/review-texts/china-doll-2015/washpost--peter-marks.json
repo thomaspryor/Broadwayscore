@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Al Pacino can't save David Mamet's tedious play. The evening feels like an ordeal for everyone involved, including the audience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 18,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Al Pacino can't save David Mamet's tedious play. The evening feels like an ordeal for everyone involved, including the audience.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)"
+  "contentTierReason": "Short text (20 words)",
+  "llmScore": {
+    "score": 18,
+    "confidence": "medium",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The evening feels like an ordeal for everyone involved, including the audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Devastating assessment calling the play 'tedious' and 'an ordeal' with no redeeming qualities mentioned, even dismissing the star power of Al Pacino as insufficient to salvage it. | GPT-4o: The review describes the play as 'tedious' and an 'ordeal', indicating a strongly negative assessment with no redeeming qualities. | Gemini: The review is a strong pan, stating that the play is tedious and an ordeal for everyone involved. The fact that Al Pacino cannot save it further emphasizes the negative assessment. | Kimi: The critic describes the production as tedious and the theatrical experience as an ordeal, advising against attendance despite the presence of a major star.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:14:06.849Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 20,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 38,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway revival of 'Camelot' is a handsome production that serves the show well, though it can't quite overcome the musical's fundamental flaws.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new Broadway revival of 'Camelot' is a handsome production that serves the show well, though it can't quite overcome the musical's fundamental flaws.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a handsome production that serves the show well, though it can't quite overcome the musical's fundamental flaws",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Clear mixed verdict - acknowledges the production's quality while noting it cannot overcome inherent problems with the source material. Neither recommends nor discourages. | GPT-4o: The review acknowledges the production's quality but highlights fundamental flaws in the musical that are not overcome, indicating a mixed assessment. | Gemini: The review states that the production \"serves the show well\" despite \"fundamental flaws,\" indicating a positive but qualified recommendation. | Kimi: Extracted from malformed response | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:57:53.950Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

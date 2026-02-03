@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though 'Dana H.' is an extraordinary feat of performance art, it's also an incredibly difficult watch that will leave audiences pondering the nature of storytelling, memory and survival.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though 'Dana H.' is an extraordinary feat of performance art, it's also an incredibly difficult watch that will leave audiences pondering the nature of storytelling, memory and survival.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though 'Dana H.' is an extraordinary feat of performance art, it's also an incredibly difficult watch",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it an 'extraordinary feat' but warns it's 'incredibly difficult' - clear artistic praise with strong caveats about accessibility, suggesting qualified recommendation. | GPT-4o: The review praises the show as an 'extraordinary feat of performance art' but notes it is 'an incredibly difficult watch', suggesting a positive recommendation with some reservations. | Gemini: The review acknowledges the difficulty of the watch but still calls it an extraordinary feat of performance art, indicating a positive recommendation with reservations. | Kimi: The critic employs superlative praise ('extraordinary feat') and suggests lasting intellectual impact, outweighing the caveat about its challenging nature. Confidence is low due to brevity of excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:28:31.133Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

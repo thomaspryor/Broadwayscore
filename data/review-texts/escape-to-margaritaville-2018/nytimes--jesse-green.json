@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical may be as light as sea foam, but it floats on the charm of its star, Paul Alexander Nolan, and the good-natured pleasure of Mr. Buffett's songs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical may be as light as sea foam, but it floats on the charm of its star, Paul Alexander Nolan, and the good-natured pleasure of Mr. Buffett's songs.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical may be as light as sea foam, but it floats on the charm of its star.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review acknowledges the musical's lightness but praises the star's charm and the pleasure of the songs, suggesting a positive experience overall despite potential reservations. | Gemini: The review is positive, highlighting the charm of the star and the songs, but also notes that the musical is \"light as sea foam\", indicating a reservation. | Kimi: While acknowledging the material is insubstantial ('light as sea foam'), the critic delivers a clear positive verdict, praising the star's charisma and the enjoyable score as sufficient reasons to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:39:20.407Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

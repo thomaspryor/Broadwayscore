@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway is a poorer place for losing such a beauty.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite the truncated warning, the 5/5 star rating and consistent praise throughout ('seriously funny', 'wicked charms', 'trenchantly written', 'Beautiful Loser', 'such a beauty') clearly indicate a rave review. The critic's lament about Broadway losing this show and urging readers to 'make a quick trip to the Belasco' confirms enthusiastic recommendation. | GPT-4o: The review is highly positive, noting the show's critical acclaim and satirical sharpness. Despite discussing its commercial challenges, the critic's tone and original 5/5 star rating indicate a strong recommendation. The text is truncated, but the available content suggests a rave verdict. | Gemini: The critic clearly admired the show previously and states that his admiration still applies to the current production. The 5/5 stars rating also indicates a positive recommendation, although the truncated text and discussion of the show's struggles temper the enthusiasm. | Kimi: The critic awards 5/5 stars and praises the play as 'trenchantly written,' 'seriously funny,' and a 'beauty,' explicitly urging audiences to make a 'quick trip' to see it before closing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:43:33.616Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

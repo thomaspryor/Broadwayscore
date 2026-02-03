@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sharon D Clarke's towering performance as Caroline anchors this revival of Tony Kushner's musical, bringing devastating emotional depth to a character caught between economic necessity and personal dignity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Sharon D Clarke's towering performance as Caroline anchors this revival of Tony Kushner's musical, bringing devastating emotional depth to a character caught between economic necessity and personal dignity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sharon D Clarke's towering performance as Caroline anchors this revival of Tony Kushner's musical, bringing devastating emotional depth to a character caught between economic necessity and personal dignity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single sentence praising lead performance as 'towering' with 'devastating emotional depth' that 'anchors' the revival suggests positive recommendation, but extremely brief text limits confidence in overall assessment. | GPT-4o: The review highlights a 'towering performance' with 'devastating emotional depth', indicating strong praise and a recommendation to see the show. However, the review is brief, leading to medium confidence. | Gemini: The review highlights a 'towering performance' and 'devastating emotional depth,' indicating a positive experience, though brief, it is a clear recommendation. | Kimi: The excerpt offers strong praise for the lead performance ('towering', 'devastating emotional depth'), indicating a solid recommendation, though the brevity of the text limits certainty about the overall production verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:58:43.247Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

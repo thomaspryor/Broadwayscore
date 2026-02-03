@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the clever, lightweight style of Lerner's dialogue, and the show-off triple rhymes of his lyrics, clash with his ambition",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt warning applies - this fragment shows mixed evaluation (praising Lerner's cleverness but criticizing the clash with ambition, calling music 'charming tea party tunes' which sounds dismissive). With only one excerpt available, confidence is low as the full verdict is unclear. | GPT-4o: The excerpt highlights a clash between the dialogue style and the ambition of the show, suggesting a mixed impression. The lack of a full review and the single excerpt warning reduce confidence. | Gemini: The excerpt criticizes the writing and lyrics, suggesting a fundamental flaw in the show's construction. Given the negative tone and the warning about the excerpt, I'm placing it in the negative bucket. | Kimi: The excerpt identifies a fundamental creative tension in the show—between the 'lightweight' dialogue/lyrics and the 'profoundly polished' music—without clear enthusiasm or condemnation. The 'charming tea party tunes' description for the opening numbers suggests diminished impact rather than triumph. Single excerpt with mixed signals warrants low confidence and mid-range Mixed score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:57:59.434Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

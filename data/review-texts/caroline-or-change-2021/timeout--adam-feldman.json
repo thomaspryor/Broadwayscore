@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Tony Kushner and Jeanine Tesori's musical masterpiece is a stirring triumph, anchored by Sharon D Clarke's powerhouse performance as Caroline.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Tony Kushner and Jeanine Tesori's musical masterpiece is a stirring triumph, anchored by Sharon D Clarke's powerhouse performance as Caroline.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of Tony Kushner and Jeanine Tesori's musical masterpiece is a stirring triumph, anchored by Sharon D Clarke's powerhouse performance as Caroline.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Review calls it a 'masterpiece' and 'stirring triumph' with praise for the lead performance. The 80/100 rating and unqualified positive language place this in the Rave category. | GPT-4o: The review uses strong positive language ('stirring triumph') and highlights a 'powerhouse performance', indicating a highly enthusiastic recommendation. The original rating of 80 supports a high score within the Rave bucket. | Gemini: The review uses the word \"triumph\" and praises the performance as a \"powerhouse\", indicating a strong positive recommendation. The original rating of 80 also supports this classification. | Kimi: The critic's own rating of 80 (equivalent to 4/5 stars) firmly places this in the Positive bucket, while the text provides unqualified praise with words like 'masterpiece' and 'triumph.' Confidence is low due to the brevity of the provided text, suggesting it may be an excerpt. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:56:26.579Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

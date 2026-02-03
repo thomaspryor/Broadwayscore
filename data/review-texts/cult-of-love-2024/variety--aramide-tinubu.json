@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though 'Cult of Love' is often funny and features several standout performances, Headland's play feels more like a therapy session than a cohesive theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though 'Cult of Love' is often funny and features several standout performances, Headland's play feels more like a therapy session than a cohesive theatrical experience.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though 'Cult of Love' is often funny and features several standout performances, Headland's play feels more like a therapy session than a cohesive theatrical experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges positives (humor, performances) but the key criticism that it feels more like therapy than theater suggests fundamental structural problems that prevent a recommendation. | GPT-4o: The review acknowledges humor and standout performances but criticizes the overall cohesion, suggesting a mixed reception. | Gemini: The review acknowledges positive aspects like humor and performances, but ultimately finds the play lacking cohesion, suggesting a mixed or neutral recommendation. | Kimi: The critic acknowledges the show's humor and standout performances but ultimately finds it fails as cohesive theater, offering a balanced but lukewarm assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:18:32.079Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

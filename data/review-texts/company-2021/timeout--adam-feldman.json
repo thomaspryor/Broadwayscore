@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Marianne Elliott's gender-flipped revival of Stephen Sondheim's Company is a triumph that feels both fresh and timeless, anchored by Katrina Lenk's superb performance as Bobbie.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Marianne Elliott's gender-flipped revival of Stephen Sondheim's Company is a triumph that feels both fresh and timeless, anchored by Katrina Lenk's superb performance as Bobbie.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Marianne Elliott's gender-flipped revival of Stephen Sondheim's Company is a triumph that feels both fresh and timeless.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Uses 'triumph' with unqualified praise for both direction and lead performance. The critic's own 80 rating confirms strong positive territory, pushing this into the Rave bucket. | GPT-4o: The review uses strong positive language ('triumph', 'fresh and timeless') and highlights a 'superb performance', aligning with a high score in the Rave bucket. | Gemini: The review uses the word \"triumph\" and praises Katrina Lenk's performance, indicating a strong positive recommendation. The critic's rating of 80 aligns with the Positive bucket. | Kimi: The critic assigns an explicit rating of 80/100 and describes the production as a 'triumph' with a 'superb' central performance, indicating a strong positive recommendation. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:13:17.139Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

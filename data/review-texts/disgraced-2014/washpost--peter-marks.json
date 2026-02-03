@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This vital drama about race, religion and identity in post-9/11 America crackles with intelligence and uncomfortable truths.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This vital drama about race, religion and identity in post-9/11 America crackles with intelligence and uncomfortable truths.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (17 words)"
+  "contentTierReason": "Short text (17 words)",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This vital drama about race, religion and identity in post-9/11 America crackles with intelligence and uncomfortable truths.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | GPT-4o: The review uses strong positive language ('vital', 'crackles with intelligence') indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"vital\" and \"crackles with intelligence\" indicating a strong recommendation. | Kimi: The critic employs superlative evaluative language ('vital', 'crackles with intelligence') that signals an enthusiastic, must-see recommendation. Confidence is low due to the extreme brevity of the text, which may represent an excerpt or truncated review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:44:12.362Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

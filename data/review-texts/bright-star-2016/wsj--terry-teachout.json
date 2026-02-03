@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes 'Bright Star' work so well is that Mr. Martin and Ms. Brickell have written a show that sounds like what it is—a musical set in the American South—instead of trying to write a generic Broadway score.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What makes 'Bright Star' work so well is that Mr. Martin and Ms. Brickell have written a show that sounds like what it is—a musical set in the American South—instead of trying to write a generic Broadway score.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (38 words)"
+  "contentTierReason": "Short text (38 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes 'Bright Star' work so well is that Mr. Martin and Ms. Brickell have written a show that sounds like what it is.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises the authenticity of the show's music, suggesting it works well. However, the limited excerpt provides insufficient context for a higher confidence level. | Gemini: The review highlights a specific positive aspect of the show (authenticity of the score) and implies overall success ('work so well'). This indicates a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The review praises the score's authenticity and effectiveness ('work so well'), with clear approval of the creative team's approach. However, the excerpt is very brief with no explicit recommendation language or star rating, limiting confidence in the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:55:03.514Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

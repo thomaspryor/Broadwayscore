@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This gender-flipped revival of Stephen Sondheim's Company is a triumph, with Katrina Lenk delivering a tour-de-force performance as Bobbie that makes this 50-year-old musical feel utterly fresh and relevant.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This gender-flipped revival of Stephen Sondheim's Company is a triumph, with Katrina Lenk delivering a tour-de-force performance as Bobbie that makes this 50-year-old musical feel utterly fresh and relevant.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This gender-flipped revival of Stephen Sondheim's Company is a triumph, with Katrina Lenk delivering a tour-de-force performance as Bobbie that makes this 50-year-old musical feel utterly fresh and relevant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses unqualified superlatives 'triumph' and 'tour-de-force' with no reservations. Strong endorsement language that the revival makes the classic musical feel 'utterly fresh and relevant.' | GPT-4o: The review uses strong, unqualified praise ('triumph', 'tour-de-force') indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"triumph\" and \"tour-de-force\" and states that the revival feels \"utterly fresh and relevant.\" | Kimi: The critic uses unqualified superlatives ('triumph', 'tour-de-force') to praise both the production and lead performance, declaring the 50-year-old musical feels 'utterly fresh' with no caveats mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:22:53.833Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 91,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

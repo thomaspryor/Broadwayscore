@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This sentimental musical about fathers and sons and the stories they tell feels as safe and comfortable as a favorite pair of bedroom slippers. But it's also about as dramatically exciting.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This sentimental musical about fathers and sons and the stories they tell feels as safe and comfortable as a favorite pair of bedroom slippers. But it's also about as dramatically exciting.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This sentimental musical feels as safe and comfortable as a favorite pair of bedroom slippers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic uses a metaphor that's both positive (comfortable) and negative (boring). The 'but' construction emphasizes the lack of dramatic excitement as the key issue. | GPT-4o: The review suggests the show is unexciting and lacks dramatic impact, comparing it to comfortable but dull slippers. This indicates a negative assessment. | Gemini: The review describes the show as \"safe and comfortable\" but also \"about as dramatically exciting\", indicating a mixed or neutral assessment. | Kimi: The critic offers faint praise by calling the show 'safe and comfortable' but explicitly undercuts this by noting it lacks dramatic excitement, suggesting a lukewarm, middle-of-the-road assessment rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:47:00.258Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 58,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

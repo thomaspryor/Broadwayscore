@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Akhtar's play is a thoughtful, provocative examination of identity, prejudice and the price of assimilation in post-9/11 America.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,58 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Akhtar's play is a thoughtful, provocative examination of identity, prejudice and the price of assimilation in post-9/11 America.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (18 words)"
+  "contentTierReason": "Short text (18 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Akhtar's play is a thoughtful, provocative examination of identity, prejudice and the price of assimilation in post-9/11 America.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Gemini: The review uses positive language such as \"thoughtful\" and \"provocative\" to describe the play, indicating a positive recommendation. | Kimi: The critic offers unqualified praise for the play's intellectual and thematic depth, using clearly positive descriptors ('thoughtful,' 'provocative'). However, the extremely brief length (single sentence) limits confidence in the overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:39:02.771Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  }
 }

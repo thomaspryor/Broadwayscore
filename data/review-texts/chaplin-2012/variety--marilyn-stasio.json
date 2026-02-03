@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rob McClure gives a knockout performance as the Little Tramp in this earnest but overstuffed biomusical that tries to cram too much of Charlie Chaplin's life into one evening.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Rob McClure gives a knockout performance as the Little Tramp in this earnest but overstuffed biomusical that tries to cram too much of Charlie Chaplin's life into one evening.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rob McClure gives a knockout performance as the Little Tramp in this earnest but overstuffed biomusical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises McClure's 'knockout performance' but criticizes the show as 'overstuffed' and trying to 'cram too much' - classic mixed review pattern with positive performer praise but negative structural critique. | GPT-4o: The review praises McClure's performance but criticizes the show for being 'overstuffed'. The tone suggests a balanced view without a strong recommendation. | Gemini: The review praises the lead performance as a \"knockout\" but notes the show is \"overstuffed,\" indicating a positive but qualified recommendation. | Kimi: The critic offers high praise for the lead performance ('knockout') but explicitly criticizes the show's structure as 'overstuffed' and trying to 'cram too much' material into one evening. Without a clear recommendation to see it despite these flaws, this balances between praise and criticism.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:09:34.280Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

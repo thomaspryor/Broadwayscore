@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McCraney has written a beautiful play about masculinity, sexuality, and faith, and it deserves to be seen by as wide an audience as possible.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "McCraney has written a beautiful play about masculinity, sexuality, and faith, and it deserves to be seen by as wide an audience as possible.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McCraney has written a beautiful play about masculinity, sexuality, and faith, and it deserves to be seen by as wide an audience as possible.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear positive assessment calling the play 'beautiful' with an explicit recommendation that it 'deserves to be seen by as wide an audience as possible.' However, confidence is medium due to the brevity of the excerpt. | GPT-4o: The review uses strong, positive language ('beautiful play', 'deserves to be seen by as wide an audience as possible') indicating an enthusiastic recommendation. | Gemini: The review explicitly states the play 'deserves to be seen by as wide an audience as possible,' indicating a strong positive recommendation. | Kimi: The critic offers unqualified praise calling the play 'beautiful' and explicitly stating it deserves the widest possible audience, indicating an enthusiastic rave recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:05:24.328Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

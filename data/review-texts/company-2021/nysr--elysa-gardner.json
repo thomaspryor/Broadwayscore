@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Elliott and her own company trace that journey with a mix of intuition, invention and heart worthy of its creators.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for the gender-swapped revival. The critic celebrates Elliott's direction, Lenk's performance, and the meaningful adaptations, concluding the production is 'worthy of its creators' - high praise for a Sondheim work. | GPT-4o: The review is largely positive, highlighting the performances, direction, and adaptation of the production. The original 4/5 star rating aligns with a strong positive recommendation, though not without some reservations about certain elements. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and overall impact of the production. The critic highlights the show's ability to capture the wonder and joy of being alive, and the production is deemed worthy of its creators. | Kimi: The critic awards 4/5 stars and offers enthusiastic praise for the direction, performances (particularly Lenk and LuPone), and design, calling the production 'worthy of its creators,' despite minor reservations about occasional self-consciousness in the staging.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:23:22.184Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 82,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

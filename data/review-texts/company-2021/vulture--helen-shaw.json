@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production feels both fresh and inevitable, like something that should have been done years ago but somehow needed to wait for exactly this moment and exactly this cast.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production feels both fresh and inevitable, like something that should have been done years ago but somehow needed to wait for exactly this moment and exactly this cast.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production feels both fresh and inevitable, like something that should have been done years ago but somehow needed to wait for exactly this moment and exactly this cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review uses strong positive language ('fresh and inevitable') and suggests a perfect alignment of timing and casting, indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language, indicating a high level of recommendation. The phrases 'fresh and inevitable' suggest a unique and compelling production. | Kimi: The critic offers strong praise for the production's timing and casting, calling it 'fresh and inevitable,' indicating an enthusiastic recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:13:45.767Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

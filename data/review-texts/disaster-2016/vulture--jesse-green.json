@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Disaster! is a jukebox musical that uses '70s hits to soundtrack a spoof of '70s disaster movies, and it's about as clever as that sounds.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 33,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,58 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Disaster! is a jukebox musical that uses '70s hits to soundtrack a spoof of '70s disaster movies, and it's about as clever as that sounds.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 33,
+    "confidence": "low",
+    "range": {
+      "low": 28,
+      "high": 38
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's about as clever as that sounds",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Bucket disagreement: openai=Pan, gemini=Negative | GPT-4o: The critic uses a dismissive tone, suggesting the show lacks cleverness and is not worth seeing. The brief review implies a negative assessment with no redeeming qualities mentioned. | Gemini: The critic uses a sarcastic tone to indicate the show is not clever, suggesting a negative review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:37:47.371Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": null,
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Bucket disagreement: openai=Pan, gemini=Negative"
+  }
 }

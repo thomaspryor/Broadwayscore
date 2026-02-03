@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Broadway musical about the Depression-era bank robbers never finds the right tone, veering uneasily between romanticizing its antiheroes and condemning them.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Broadway musical about the Depression-era bank robbers never finds the right tone, veering uneasily between romanticizing its antiheroes and condemning them.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Broadway musical about the Depression-era bank robbers never finds the right tone, veering uneasily between romanticizing its antiheroes and condemning them.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative assessment citing fundamental tonal problems and lack of artistic coherence. The critic identifies a core failure in the show's execution without any positive elements mentioned. | GPT-4o: The review criticizes the musical for failing to find the right tone, suggesting it is unsuccessful in its execution. The lack of a clear recommendation indicates a negative verdict. | Gemini: The review indicates that the musical struggles to find the right tone, suggesting an uneven or inconsistent experience, which aligns with a mixed classification. | Kimi: The critic identifies a fundamental tonal problem that undermines the entire production. 'Never finds the right tone' and 'veering uneasily' indicate a serious structural flaw with no redeeming qualities mentioned. The single-sentence format suggests this may be a capsule review or excerpt, limiting confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:49:18.406Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

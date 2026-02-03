@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The problem with 'Enron' is that it tries to be too many things at once—documentary, satire, morality play and big splashy musical-comedy-style entertainment—and winds up being none of them particularly well.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The problem with 'Enron' is that it tries to be too many things at once—documentary, satire, morality play and big splashy musical-comedy-style entertainment—and winds up being none of them particularly well.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The problem with 'Enron' is that it tries to be too many things at once and winds up being none of them particularly well.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | GPT-4o: The review highlights a fundamental flaw in the production's execution, suggesting it fails to succeed in any of its attempted genres. This indicates a negative recommendation. | Gemini: The review states that the show tries to be many things but fails at all of them. This indicates a negative assessment. | Kimi: This excerpt indicates the show fails to successfully execute any of its attempted genres, with the critic finding it unsuccessful as documentary, satire, morality play, or entertainment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:38:22.852Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

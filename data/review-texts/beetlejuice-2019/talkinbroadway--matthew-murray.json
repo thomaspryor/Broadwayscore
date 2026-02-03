@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Beetlejuice is a show that knows exactly what it wants to be and executes that vision with remarkable precision and panache.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Beetlejuice is a show that knows exactly what it wants to be and executes that vision with remarkable precision and panache.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Beetlejuice is a show that knows exactly what it wants to be and executes that vision with remarkable precision and panache.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for the show's clarity of vision and execution quality, using positive descriptors like 'remarkable precision and panache', though the excerpt is very brief which limits confidence. | GPT-4o: The review uses strong positive language ('remarkable precision and panache') indicating a highly favorable impression of the show's execution and vision. | Gemini: The review is clearly positive, praising the show's execution and vision. The use of \"remarkable precision and panache\" indicates a strong endorsement. | Kimi: Unqualified praise with strong superlatives ('remarkable precision and panache'), clear confident recommendation with no caveats or reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:44:15.186Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

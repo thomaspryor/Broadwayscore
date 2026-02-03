@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Douglas Hodge's Cyrano is a robust, swashbuckling performance that captures both the character's poetic soul and his tragic self-doubt.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Douglas Hodge's Cyrano is a robust, swashbuckling performance that captures both the character's poetic soul and his tragic self-doubt.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (19 words)"
+  "contentTierReason": "Short text (19 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Douglas Hodge's Cyrano is a robust, swashbuckling performance that captures both the character's poetic soul and his tragic self-doubt.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single sentence praising the lead performance as 'robust' and 'swashbuckling' with emotional depth. Positive but extremely brief - confidence low due to lack of overall production assessment. | Gemini: The review praises the performance of the lead actor, suggesting a positive experience overall. | Kimi: The excerpt offers enthusiastic praise for the lead performance ('robust,' 'swashbuckling'), but as a single truncated sentence without an overall show verdict, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:28:56.509Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Pierce brings a weary dignity to Willy that makes his final descent all the more heartbreaking. This is a production that honors Miller's masterpiece while finding fresh insights in its familiar rhythms.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Pierce brings a weary dignity to Willy that makes his final descent all the more heartbreaking. This is a production that honors Miller's masterpiece while finding fresh insights in its familiar rhythms.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a production that honors Miller's masterpiece while finding fresh insights in its familiar rhythms.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for both lead performance and production overall, calling it a production that 'honors Miller's masterpiece' with 'fresh insights' - clear positive recommendation despite brief excerpt. | GPT-4o: The review praises the production for both respecting the original work and offering new insights, indicating a strong recommendation. | Gemini: The review praises the production for honoring the source material while offering fresh insights. The description of Pierce's performance as 'heartbreaking' further supports a positive classification. | Kimi: The critic offers unqualified praise for Pierce's dignified performance and the production's fresh interpretation of the classic, with no reservations mentioned despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:26:00.676Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

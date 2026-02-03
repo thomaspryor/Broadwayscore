@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a show about the very best of human nature, a quality that feels especially precious right now. 'Come From Away' is a beautiful reminder that kindness still exists in this world.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a show about the very best of human nature, a quality that feels especially precious right now. 'Come From Away' is a beautiful reminder that kindness still exists in this world.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a show about the very best of human nature, a quality that feels especially precious right now.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong emotional praise calling it 'beautiful' and highlighting its precious quality and message about human kindness. Clear enthusiastic recommendation despite brief length. | GPT-4o: The review uses strong positive language, describing the show as 'beautiful' and emphasizing its uplifting message. This suggests a highly enthusiastic recommendation. | Gemini: The review uses strong positive language, calling the show a 'beautiful reminder' and stating it's 'about the very best of human nature,' indicating a positive and enthusiastic recommendation. | Kimi: The critic offers strong praise for the show's emotional resonance and timely message, describing it as 'beautiful' and 'precious,' though the brief excerpt limits full assessment of the recommendation strength. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:15:22.666Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

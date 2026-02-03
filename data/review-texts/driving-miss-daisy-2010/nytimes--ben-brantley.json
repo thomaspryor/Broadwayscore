@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Redgrave and Mr. Freeman, who won an Oscar for playing Hoke in the 1989 film version, bring to their roles the sort of seasoned authority that can't be faked or taught.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (32 words)",
+  "rejectedAt": "2026-02-03T15:41:40.681Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "openai: The text is a brief comment on the actors' performances without evaluating the overall production.; gemini: This is a brief excerpt that describes the actors but does not offer an overall evaluation or recommendation of the production.",
+  "promptVersion": "5.2.0"
 }

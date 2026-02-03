@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Janet McTeer gives a barnstorming performance as the legendary French actress Sarah Bernhardt in Theresa Rebeck's fascinating biographical play about the Divine Sarah's determination to play Hamlet.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Janet McTeer gives a barnstorming performance as the legendary French actress Sarah Bernhardt in Theresa Rebeck's fascinating biographical play about the Divine Sarah's determination to play Hamlet.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Janet McTeer gives a barnstorming performance as the legendary French actress Sarah Bernhardt in Theresa Rebeck's fascinating biographical play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear praise for both the lead performance ('barnstorming') and the play itself ('fascinating'), but this appears to be a truncated excerpt with limited evaluative content to assess full recommendation strength. | Gemini: The review highlights a strong performance and calls the play 'fascinating,' indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: Strong positive language throughout: 'barnstorming performance' and 'fascinating biographical play' indicate clear recommendation. However, this is a very short excerpt with no explicit verdict statement, so confidence is medium rather than high.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:45:03.254Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

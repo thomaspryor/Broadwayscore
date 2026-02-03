@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Dear Evan Hansen is a gorgeous, heartbreaking, and ultimately hopeful musical that manages to be both intimate and epic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Dear Evan Hansen is a gorgeous, heartbreaking, and ultimately hopeful musical that manages to be both intimate and epic.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (19 words)"
+  "contentTierReason": "Short text (19 words)",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dear Evan Hansen is a gorgeous, heartbreaking, and ultimately hopeful musical that manages to be both intimate and epic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Strong positive language with multiple superlatives ('gorgeous', 'heartbreaking', 'hopeful') and praise for the show's ability to balance intimate and epic qualities indicates enthusiastic recommendation. | GPT-4o: The review uses strong positive descriptors like 'gorgeous', 'heartbreaking', and 'hopeful', indicating an enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"gorgeous,\" \"heartbreaking,\" and \"hopeful,\" indicating a rave review. | Kimi: The critic deploys unambiguous superlatives ('gorgeous', 'epic') and praises the show's emotional resonance ('heartbreaking', 'ultimately hopeful') and ambitious scope, indicating a strong must-see recommendation without any caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:33:00.288Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 92,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play is uncomfortable by design, and the Broadway production, directed by Joe Mantello, honors that discomfort without exploitation.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play is uncomfortable by design, and the Broadway production, directed by Joe Mantello, honors that discomfort without exploitation.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (19 words)"
+  "contentTierReason": "Short text (19 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Broadway production, directed by Joe Mantello, honors that discomfort without exploitation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review acknowledges the play's discomfort as intentional and praises the production for handling it appropriately, suggesting a positive view with some reservations. | Gemini: The review indicates that the production is successful in its artistic goals, which implies a positive assessment, though the subject matter may not be for everyone. | Kimi: The critic clearly approves of how the production handles the play's sensitive subject matter, praising it for avoiding exploitation while honoring the material's intent, though the brevity of the text limits certainty.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:49:19.520Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

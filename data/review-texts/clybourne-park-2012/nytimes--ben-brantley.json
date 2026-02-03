@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This ferociously smart and funny play about race, real estate and the persistence of good intentions gone bad has lost none of its savage bite in its move from Off Broadway to the Walter Kerr Theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This ferociously smart and funny play about race, real estate and the persistence of good intentions gone bad has lost none of its savage bite in its move from Off Broadway to the Walter Kerr Theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (36 words)"
+  "contentTierReason": "Short text (36 words)",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This ferociously smart and funny play has lost none of its savage bite in its move from Off Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise with 'ferociously smart and funny' and emphasis that the production maintains its quality in the Broadway transfer, indicating enthusiastic recommendation. | GPT-4o: The review uses strong positive language ('ferociously smart and funny', 'savage bite') indicating a high level of enthusiasm and recommendation for the play. | Gemini: The review uses strong positive language like \"ferociously smart and funny\" and notes that the play has lost none of its \"savage bite\" in its move to Broadway, indicating a positive recommendation. | Kimi: The critic employs superlatives ('ferociously smart') and emphasizes the production's retained power ('savage bite'), offering unqualified praise for this Broadway transfer.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:06:42.978Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "kimiScore": 91,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Woody Allen's 1994 film is a lavish, old-fashioned Broadway entertainment that trades the movie's bittersweet edge for crowd-pleasing razzle-dazzle.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of Woody Allen's 1994 film is a lavish, old-fashioned Broadway entertainment that trades the movie's bittersweet edge for crowd-pleasing razzle-dazzle.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation of Woody Allen's 1994 film is a lavish, old-fashioned Broadway entertainment that trades the movie's bittersweet edge for crowd-pleasing razzle-dazzle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Describes the show as 'lavish' and 'crowd-pleasing razzle-dazzle,' which are positive qualities for Broadway entertainment. While noting it differs from the source material, the tone is appreciative of what the adaptation offers. | GPT-4o: The review describes the show as 'lavish' and 'crowd-pleasing' but also notes a loss of the movie's 'bittersweet edge', suggesting a trade-off rather than a clear recommendation. | Gemini: The review describes the show as a \"lavish, old-fashioned Broadway entertainment,\" which is positive. However, it also notes that it trades the movie's \"bittersweet edge\" for \"crowd-pleasing razzle-dazzle,\" indicating a reservation. | Kimi: The critic describes the show as 'lavish' and 'crowd-pleasing' with 'razzle-dazzle,' indicating a recommendation, while noting it sacrifices the original film's 'bittersweet edge,' suggesting qualified enthusiasm rather than unqualified praise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:51:57.678Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

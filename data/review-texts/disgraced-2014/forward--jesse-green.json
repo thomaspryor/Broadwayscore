@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ayad Akhtar's 'Disgraced' is a powerful, disturbing play about identity, assimilation and the dangerous assumptions we make about each other in post-9/11 America.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ayad Akhtar's 'Disgraced' is a powerful, disturbing play about identity, assimilation and the dangerous assumptions we make about each other in post-9/11 America.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ayad Akhtar's 'Disgraced' is a powerful, disturbing play about identity, assimilation and the dangerous assumptions we make about each other in post-9/11 America.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls the play 'powerful' which is clear praise, but this appears to be a very brief excerpt with no detailed evaluation or explicit recommendation, warranting low confidence. | Gemini: The review uses the words 'powerful' and 'disturbing' to describe the play, indicating a positive recommendation. | Kimi: Single-sentence excerpt offers strong praise ('powerful') indicating a solid recommendation, though the brief length limits confidence in the overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:30:04.032Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }
