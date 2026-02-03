@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of 'Kiss Me, Kate' is so much fun that you may well find yourself grinning from ear to ear before the first act is half over.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This revival of 'Kiss Me, Kate' is so much fun that you may well find yourself grinning from ear to ear before the first act is half over.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of 'Kiss Me, Kate' is so much fun that you may well find yourself grinning from ear to ear before the first act is half over.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear enthusiastic praise with vivid imagery of audience enjoyment. The 'so much fun' language and prediction of sustained joy indicates strong positive recommendation. | GPT-4o: The review uses strong positive language ('so much fun', 'grinning from ear to ear') indicating an enthusiastic recommendation without reservations. | Gemini: The review expresses strong enjoyment and implies a highly positive experience, indicating a strong recommendation. | Kimi: The critic promises genuine delight and entertainment value with the enthusiastic description of the show being 'so much fun' that audiences will be 'grinning from ear to ear', indicating a strong recommendation to see the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:23:24.541Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

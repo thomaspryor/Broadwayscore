@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "3/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Crystal, a direct stylistic descendant of the legendary Borscht Belt comedians who so clearly inspired him, has the sort of pitch-perfect timing and delivery that can make practically any joke funny.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with praise for Crystal's performance but major criticism of songs, pacing, and musical structure. The critic clearly states the show would be 'an absolute triumph' if it eliminated the musical numbers, indicating fundamental structural problems despite the star's talent. | GPT-4o: The review acknowledges Billy Crystal's comedic talent and audience appeal but criticizes the musical's lack of memorable songs and overlong runtime. The critic's 3/5 star rating suggests a mixed reception, with praise for Crystal but significant reservations about the overall production. | Gemini: The review is mixed, praising Crystal's performance and comedic timing but criticizing the songs and formulaic plot. The 3/5 star rating supports a mixed classification. | Kimi: The 3/5 star review praises Billy Crystal's comic brilliance and stamina but heavily criticizes the forgettable songs, formulaic dramatic scenes, and excessive length, concluding the show serves only as a vehicle for its star rather than a successful musical.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:05:02.374Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

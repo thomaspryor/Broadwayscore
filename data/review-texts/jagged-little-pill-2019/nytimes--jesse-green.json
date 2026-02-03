@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical 'Jagged Little Pill,' which opened Thursday at the Broadhurst Theater, is a fierce, funny and often moving show that uses Alanis Morissette's songs to tell a story about a family in crisis.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The new musical 'Jagged Little Pill,' which opened Thursday at the Broadhurst Theater, is a fierce, funny and often moving show that uses Alanis Morissette's songs to tell a story about a family in crisis.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a fierce, funny and often moving show",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses positive descriptors ('fierce, funny and often moving') to characterize the show, indicating a recommendation, though the excerpt is brief and may lack fuller context for a higher score. | GPT-4o: The review describes the show as 'fierce, funny and often moving,' indicating a strong recommendation with positive attributes highlighted. | Gemini: The review uses strong positive language such as 'fierce, funny and often moving' to describe the show, indicating a positive recommendation. | Kimi: The critic applies clearly positive descriptors ('fierce,' 'funny,' 'moving') to the production, indicating a recommendation. Confidence is low due to the truncated nature of the provided text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:07:54.017Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

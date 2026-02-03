@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mike Bartlett's 'King Charles III' is a fascinating and largely successful experiment that imagines the newly crowned monarch's first constitutional crisis. The play works best when it focuses on the personal drama within the royal family.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Mike Bartlett's 'King Charles III' is a fascinating and largely successful experiment that imagines the newly crowned monarch's first constitutional crisis. The play works best when it focuses on the personal drama within the royal family.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play works best when it focuses on the personal drama within the royal family.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic calls it 'fascinating and largely successful' which is clear praise, but the conditional phrasing 'works best when' suggests some reservations about other aspects. | GPT-4o: The review describes the play as 'fascinating and largely successful,' indicating a positive recommendation. However, the praise is somewhat qualified, suggesting a solid but not enthusiastic endorsement. | Gemini: The review calls the play \"fascinating and largely successful,\" indicating a positive recommendation, but the qualification that it \"works best when it focuses on the personal drama\" suggests some reservations. | Kimi: The critic offers qualified praise, calling the show a 'fascinating and largely successful experiment' while noting it only 'works best' in specific portions, suggesting a solid but not unreserved recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:18:28.103Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

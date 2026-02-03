@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mrs. Doubtfire is a sweet-natured musical that delivers exactly what you'd expect—no more, no less. It's a competent adaptation that hits all the familiar beats without adding much theatrical magic.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Mrs. Doubtfire is a sweet-natured musical that delivers exactly what you'd expect—no more, no less. It's a competent adaptation that hits all the familiar beats without adding much theatrical magic.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a competent adaptation that hits all the familiar beats without adding much theatrical magic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating aligns with Mixed bucket. Review describes it as 'competent' but lacking 'theatrical magic'—neither recommending nor discouraging. | GPT-4o: The review describes the show as competent but lacking in theatrical magic, aligning with the critic's original rating of 60, which suggests a mixed reception. | Gemini: The review states that the musical delivers what is expected, but doesn't add much theatrical magic. Given the critic's rating of 60, this falls into the mixed category. | Kimi: The review describes the show as workmanlike and predictable ('no more, no less'), acknowledging it as 'sweet-natured' and 'competent' but criticizing its lack of theatrical innovation or surprise. The provided rating of 60 confirms a middle-of-the-road assessment that neither recommends strongly nor discourages.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:05:28.407Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

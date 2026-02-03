@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This sterling revival of August Wilson's 'Jitney' makes a persuasive case that the play, which opened Thursday night at the Samuel J. Friedman Theater, deserves to be regarded as highly as any in the author's celebrated Pittsburgh Cycle.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This sterling revival of August Wilson's 'Jitney' makes a persuasive case that the play, which opened Thursday night at the Samuel J. Friedman Theater, deserves to be regarded as highly as any in the author's celebrated Pittsburgh Cycle.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (38 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This sterling revival makes a persuasive case that the play deserves to be regarded as highly as any in the author's celebrated Pittsburgh Cycle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Uses superlative language 'sterling revival' and places the production among Wilson's finest work, indicating exceptional quality and strong recommendation. | GPT-4o: The review uses strong positive language ('sterling revival', 'persuasive case') and places the production on par with highly regarded works, indicating a strong recommendation. | Gemini: The review uses the word \"sterling\" and suggests the play should be regarded as highly as any in the author's cycle, indicating a strong positive recommendation. | Kimi: The critic employs the superlative 'sterling' and argues the production deserves comparison to the masterpieces of Wilson's Pittsburgh Cycle, constituting the highest recommendation despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:11:48.828Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 91,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

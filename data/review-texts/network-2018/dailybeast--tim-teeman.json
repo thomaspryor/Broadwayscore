@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bryan Cranston is electrifying as Howard Beale, the mad prophet of the airwaves, in a production that crackles with energy and relevance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Bryan Cranston is electrifying as Howard Beale, the mad prophet of the airwaves, in a production that crackles with energy and relevance.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bryan Cranston is electrifying as Howard Beale, the mad prophet of the airwaves, in a production that crackles with energy and relevance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise with 'electrifying' and 'crackles with energy' suggesting enthusiastic recommendation, though brief excerpt limits full assessment of critic's verdict. | GPT-4o: The review uses strong positive language ('electrifying', 'crackles with energy and relevance') indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"electrifying\" and \"crackles with energy and relevance\", indicating a strong recommendation. | Kimi: The critic employs rave-level superlatives ('electrifying,' 'crackles with energy') indicating a must-see endorsement, though the brevity suggests this may be an excerpt requiring low confidence. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:09:33.736Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

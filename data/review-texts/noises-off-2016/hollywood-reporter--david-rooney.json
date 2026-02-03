@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Michael Frayn's comedy classic about a touring British sex farce and the backstage chaos that ensues is slick, polished and expertly performed.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This revival of Michael Frayn's comedy classic about a touring British sex farce and the backstage chaos that ensues is slick, polished and expertly performed.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of Michael Frayn's comedy classic about a touring British sex farce and the backstage chaos that ensues is slick, polished and expertly performed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'slick, polished and expertly performed' but brief excerpt limits full assessment of enthusiasm level. | GPT-4o: The review praises the production as 'slick, polished and expertly performed,' indicating a strong recommendation. However, the brevity of the text limits the depth of evaluation, affecting confidence. | Gemini: The review uses positive language such as \"slick, polished, and expertly performed\", indicating a recommendation, though without strong enthusiasm. | Kimi: The critic describes the production as 'slick, polished and expertly performed,' indicating a solid recommendation without visible reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:17:04.964Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

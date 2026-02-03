@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bryan Cranston gives a tour de force performance as the mad prophet of the airwaves in this electrifying Broadway adaptation of the 1976 film.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Bryan Cranston gives a tour de force performance as the mad prophet of the airwaves in this electrifying Broadway adaptation of the 1976 film.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bryan Cranston gives a tour de force performance as the mad prophet of the airwaves in this electrifying Broadway adaptation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong superlatives like 'tour de force' and 'electrifying' indicate enthusiastic praise, but the brevity of the excerpt limits confidence in the full review's tone. | GPT-4o: The review uses superlatives like 'tour de force' and 'electrifying' to describe the performance and adaptation, indicating a strong recommendation. | Gemini: The review uses strong positive language such as \"tour de force\" and \"electrifying\", indicating a positive recommendation. | Kimi: Despite extreme brevity suggesting an excerpt, the use of superlatives 'tour de force' and 'electrifying' indicates unqualified enthusiasm and a must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:09:55.469Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 91,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Tina Fey's hit movie is a candy-colored confection that's as much fun as you'd expect, even if it doesn't quite reach the satirical heights of its source material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical adaptation of Tina Fey's hit movie is a candy-colored confection that's as much fun as you'd expect, even if it doesn't quite reach the satirical heights of its source material.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a candy-colored confection that's as much fun as you'd expect",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('as much fun as you'd expect') with mild reservation about not reaching source material's satirical heights, indicating solid recommendation with minor caveats. | GPT-4o: The review describes the show as 'fun' and a 'candy-colored confection,' indicating a positive experience, but notes it doesn't reach the 'satirical heights' of the original, suggesting some reservations. | Gemini: The review states the show is \"as much fun as you'd expect\", which is a positive recommendation, but notes that it doesn't quite reach the heights of the source material, indicating a reservation. | Kimi: The reviewer calls the show a 'candy-colored confection' that delivers expected fun, recommending it while noting it falls short of the movie's satirical edge.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:55:33.948Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

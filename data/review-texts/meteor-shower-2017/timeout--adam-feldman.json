@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Martin's play is a lightweight comedy that gets by on the charm of its stars and the appeal of its creator's name. It's a pleasant enough evening, but not a particularly memorable one.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Martin's play is a lightweight comedy that gets by on the charm of its stars and the appeal of its creator's name. It's a pleasant enough evening, but not a particularly memorable one.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a pleasant enough evening, but not a particularly memorable one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating and language like 'lightweight,' 'pleasant enough' but 'not particularly memorable' indicates a mixed reception - neither recommended nor discouraged. | GPT-4o: The critic describes the play as 'pleasant' but 'not particularly memorable,' aligning with a mixed review. The original rating of 60 supports this classification. | Gemini: The review is mixed, acknowledging the charm of the stars but ultimately finding the play lightweight and not particularly memorable. The critic's rating of 60 aligns with the 'Mixed' bucket. | Kimi: The review offers faint praise ('pleasant enough') but emphasizes the show's lightweight nature and lack of memorability, matching the critic's own 60/100 rating which indicates a middling, neither recommended nor discouraged experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:58:20.639Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rebecca Hall gives a mesmerizing performance as the Young Woman trapped in the mechanized routine of modern life, bringing both vulnerability and steel to this expressionist masterpiece.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Rebecca Hall gives a mesmerizing performance as the Young Woman trapped in the mechanized routine of modern life, bringing both vulnerability and steel to this expressionist masterpiece.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rebecca Hall gives a mesmerizing performance as the Young Woman trapped in the mechanized routine of modern life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the lead performance calling it 'mesmerizing' and labeling the play a 'masterpiece', but this appears to be a brief excerpt focusing only on one element rather than a complete review assessment. | GPT-4o: The review praises Rebecca Hall's performance as 'mesmerizing' and refers to the production as an 'expressionist masterpiece,' indicating a strong recommendation. | Gemini: The review uses the word \"masterpiece\" and praises Rebecca Hall's performance as \"mesmerizing\", indicating a positive recommendation. | Kimi: Despite brevity, the review uses superlatives ('masterpiece', 'mesmerizing') and the provided rating of 80 falls in the strong Positive range, indicating an enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:47:19.818Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 85,
+    "geminiScore": 80,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

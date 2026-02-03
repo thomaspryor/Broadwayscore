@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What 'Motown The Musical' lacks in dramatic sophistication, it makes up for with an exuberant celebration of the Motown sound that defined an era.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "What 'Motown The Musical' lacks in dramatic sophistication, it makes up for with an exuberant celebration of the Motown sound that defined an era.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What 'Motown The Musical' lacks in dramatic sophistication, it makes up for with an exuberant celebration of the Motown sound that defined an era.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict that acknowledges dramatic weaknesses but finds the musical celebration compensates enough to make it worthwhile. The 'makes up for' phrasing indicates overall recommendation despite reservations. | GPT-4o: The review acknowledges a lack of dramatic sophistication but emphasizes the show's exuberant celebration of Motown music, suggesting a positive experience overall. | Gemini: The review acknowledges a lack of dramatic sophistication but ultimately recommends the show due to its exuberant celebration of the Motown sound, indicating a positive but qualified recommendation. | Kimi: The critic acknowledges the show's lack of dramatic sophistication but praises its exuberant musical celebration as sufficient compensation, indicating a qualified but clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:04:08.636Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

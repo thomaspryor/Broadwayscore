@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Margulies is magnificent in this tender, funny and deeply personal show that feels like having coffee with your most charming friend.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,12 +18,59 @@
   "showScoreExcerpt": "Margulies is magnificent in this tender, funny and deeply personal show that feels like having coffee with your most charming friend.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
-  "playbillVerdictUrl": "https://nypost.com/2024/10/23/entertainment/left-on-tenth-review-julianna-margulies-broadway-show-is-a-sappy-slog/",
-  "sources": [
-    "web-search",
-    "playbill-verdict",
-    "nyc-theatre"
-  ],
-  "nycTheatreExcerpt": "\"Ephron's bio-play might've turned out better had she handed her memoir to a different, less precious writer with a better grasp of what works onstage. As it stands, what's at the Jones right now is a wannabe rom-com that delivers neither rom nor com.\"",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Margulies is magnificent in this tender, funny and deeply personal show that feels like having coffee with your most charming friend.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise with superlative language ('magnificent') and warm personal recommendation comparing the show to time with a charming friend. | GPT-4o: The review uses strong praise ('magnificent', 'tender', 'funny') indicating an enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"magnificent\" and describes the show as \"tender, funny, and deeply personal,\" indicating a strong recommendation. | Kimi: Unqualified enthusiasm with superlatives ('magnificent', 'deeply personal') and warm intimate comparison indicate strong recommendation, though brevity limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:28:35.606Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

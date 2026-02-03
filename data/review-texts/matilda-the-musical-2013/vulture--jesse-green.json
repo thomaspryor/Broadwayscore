@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Matilda the Musical is a triumph of imagination and craft, a show that manages to be both sweetly nostalgic and bracingly modern.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Matilda the Musical is a triumph of imagination and craft, a show that manages to be both sweetly nostalgic and bracingly modern.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Matilda the Musical is a triumph of imagination and craft, a show that manages to be both sweetly nostalgic and bracingly modern.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Clear praise calling it 'a triumph' with positive descriptors about both imagination and craft, indicating strong recommendation. | GPT-4o: The review uses strong positive language such as 'triumph' and praises the show for being both 'sweetly nostalgic and bracingly modern,' indicating an enthusiastic recommendation. | Gemini: The review uses the word \"triumph\" which indicates a rave review. The critic also praises the show's imagination and craft. | Kimi: The critic explicitly calls the show a 'triumph' and praises its craft and tonal balance without reservation, indicating an enthusiastic, must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:51:22.781Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

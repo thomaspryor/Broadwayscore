@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mean Girls is a solid, entertaining musical that hits its marks without transcending them. It's fetch enough—but it could have been so much more.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Mean Girls is a solid, entertaining musical that hits its marks without transcending them. It's fetch enough—but it could have been so much more.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mean Girls is a solid, entertaining musical that hits its marks without transcending them.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating and language like 'solid, entertaining' but 'could have been so much more' indicates a mixed verdict - neither recommending nor discouraging attendance. | GPT-4o: The review describes the show as 'solid' and 'entertaining' but notes it doesn't go beyond expectations, aligning with the critic's original rating of 60, indicating a mixed verdict. | Gemini: The review is mixed, calling the show \"solid\" and \"entertaining\" but also stating that it \"could have been so much more.\" The critic's rating of 60 aligns with the Mixed bucket. | Kimi: The critic's explicit 60/100 rating and the assessment that the show is 'fetch enough' but 'could have been so much more' indicates a mixed reception—competent and entertaining but ultimately disappointing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:56:19.992Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

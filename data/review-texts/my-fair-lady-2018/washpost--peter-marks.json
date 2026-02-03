@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lincoln Center Theater's revival is a loverly thing, a meticulously crafted and handsomely appointed production that honors the musical's pedigree while finding fresh angles from which to illuminate its familiar story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Lincoln Center Theater's revival is a loverly thing, a meticulously crafted and handsomely appointed production that honors the musical's pedigree while finding fresh angles from which to illuminate its familiar story.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a loverly thing, a meticulously crafted and handsomely appointed production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language with 'loverly,' 'meticulously crafted,' and 'handsomely appointed' indicates clear recommendation with high praise for production values and fresh interpretation. | GPT-4o: The review uses highly positive language ('loverly thing', 'meticulously crafted', 'handsomely appointed') and indicates a strong recommendation by praising both the production's respect for the original and its fresh perspective. | Gemini: The review uses positive language such as \"loverly thing\", \"meticulously crafted\", and \"handsomely appointed\" to describe the production, indicating a strong recommendation. | Kimi: The critic offers unreserved praise for the revival's craftsmanship and interpretation, using warm, appreciative language without caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:07:54.660Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

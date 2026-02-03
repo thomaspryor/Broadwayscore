@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bryan Cranston commands the stage with a performance that's both manic and mesmerizing, bringing Howard Beale's breakdown to vivid, unsettling life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Bryan Cranston commands the stage with a performance that's both manic and mesmerizing, bringing Howard Beale's breakdown to vivid, unsettling life.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bryan Cranston commands the stage with a performance that's both manic and mesmerizing, bringing Howard Beale's breakdown to vivid, unsettling life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: This appears to be a fragment focusing solely on praising Cranston's lead performance. Without broader production assessment or clear recommendation language, this reads as positive but incomplete coverage. | Gemini: The review focuses on Cranston's performance, describing it as \"manic and mesmerizing\" and bringing the character to \"vivid, unsettling life.\" This indicates a positive assessment, but without further context, it's a recommendation with reservations. | Kimi: The critic delivers enthusiastic praise for the lead performance ('commands', 'mesmerizing'), constituting a strong recommendation, though the excerpt's brevity prevents certainty about the overall production assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:10:45.374Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

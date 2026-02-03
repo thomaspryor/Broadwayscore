@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's spectacular 20-foot-tall puppet of the great ape is a marvel of engineering and artistry that alone makes 'King Kong' worth seeing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show's spectacular 20-foot-tall puppet of the great ape is a marvel of engineering and artistry that alone makes 'King Kong' worth seeing.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's spectacular 20-foot-tall puppet of the great ape is a marvel of engineering and artistry that alone makes 'King Kong' worth seeing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation ('worth seeing') based on the puppet spectacle, but the qualifier 'alone makes it worth seeing' suggests other elements may be lacking. This is a positive but qualified endorsement. | GPT-4o: The review highlights the impressive puppet as a reason to see the show, indicating a positive recommendation based on this element, but lacks broader context about the entire production. | Gemini: The review explicitly states the show is \"worth seeing\" due to the puppet, placing it in the positive bucket. The recommendation is based on a single element, suggesting reservations. | Kimi: The critic explicitly recommends seeing the show based on the spectacular puppet, calling it a 'marvel,' though the qualification 'alone makes' suggests the recommendation is specific to this element rather than unqualified enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:20:21.465Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

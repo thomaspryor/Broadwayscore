@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Birbiglia has crafted another winning evening of storytelling that manages to be both deeply personal and universally relatable, finding profound meaning in the mundane details of middle-aged anxiety.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Birbiglia has crafted another winning evening of storytelling that manages to be both deeply personal and universally relatable, finding profound meaning in the mundane details of middle-aged anxiety.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Birbiglia has crafted another winning evening of storytelling that manages to be both deeply personal and universally relatable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise calling it a 'winning evening' that finds 'profound meaning' - strong positive recommendation with enthusiastic language but not quite at rave level. | GPT-4o: The review uses strong positive language ('winning', 'profound meaning') and praises the show for being both personal and relatable, indicating a highly favorable recommendation. | Gemini: The review uses positive language such as \"winning evening\" and \"universally relatable\", indicating a positive recommendation. | Kimi: The excerpt offers unambiguous praise, calling the show a 'winning evening' with 'profound meaning' and highlighting its universal relatability, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:59:06.894Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

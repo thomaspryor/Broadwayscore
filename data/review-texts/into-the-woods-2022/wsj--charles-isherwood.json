@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This handsome new revival of Stephen Sondheim's 'Into the Woods' is a welcome reminder of the musical's enduring power to enchant and unsettle in equal measure.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This handsome new revival of Stephen Sondheim's 'Into the Woods' is a welcome reminder of the musical's enduring power to enchant and unsettle in equal measure.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This handsome new revival of Stephen Sondheim's 'Into the Woods' is a welcome reminder of the musical's enduring power to enchant and unsettle in equal measure.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language with 'handsome' and 'welcome reminder' suggests recommendation, though the brief excerpt limits confidence in the full critical assessment. | GPT-4o: The review uses positive language ('handsome', 'welcome reminder') and highlights the musical's 'enduring power', indicating a strong recommendation without reservations. | Gemini: The review uses positive language such as 'handsome' and 'welcome reminder,' indicating a recommendation, but it doesn't reach the level of a rave. | Kimi: The critic describes the revival as 'handsome' and a 'welcome reminder' of the show's power, offering clear praise for the production's ability to captivate audiences, though without the superlatives that would indicate a rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:04:11.853Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

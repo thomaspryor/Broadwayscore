@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Miss Saigon that opened Thursday night at the Broadway Theatre is a sumptuous, emotionally devastating experience that left me wrung out like a dishrag.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The revival of Miss Saigon that opened Thursday night at the Broadway Theatre is a sumptuous, emotionally devastating experience that left me wrung out like a dishrag.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival of Miss Saigon that opened Thursday night at the Broadway Theatre is a sumptuous, emotionally devastating experience that left me wrung out like a dishrag.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Strong positive language with 'sumptuous' and powerful emotional impact described as 'devastating' and 'wrung out like a dishrag' - indicates an intensely affecting, high-quality production that deeply moved the critic. | GPT-4o: The review uses strong positive language ('sumptuous', 'emotionally devastating') and indicates a powerful impact on the critic, suggesting a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"sumptuous\" and \"emotionally devastating\" and indicates a powerful emotional impact, suggesting a rave review. | Kimi: The critic offers unqualified praise using superlatives ('sumptuous,' 'emotionally devastating') and emphasizes the production's powerful physical and emotional impact without any reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:01:22.323Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

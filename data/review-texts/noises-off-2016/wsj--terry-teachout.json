@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Michael Frayn's 'Noises Off' that opened Sunday at the Roundabout Theatre Company's American Airlines Theatre is every bit as funny as you've heard—and then some.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The revival of Michael Frayn's 'Noises Off' that opened Sunday at the Roundabout Theatre Company's American Airlines Theatre is every bit as funny as you've heard—and then some.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival of Michael Frayn's 'Noises Off' that opened Sunday at the Roundabout Theatre Company's American Airlines Theatre is every bit as funny as you've heard—and then some.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language ('every bit as funny as you've heard—and then some') indicates enthusiastic recommendation, though the excerpt is very brief which limits confidence level. | GPT-4o: The review offers unqualified praise, stating the show is 'every bit as funny as you've heard—and then some,' indicating a strong recommendation. | Gemini: The review states that the show is \"every bit as funny as you've heard—and then some,\" which is a strong positive recommendation. | Kimi: The critic offers unqualified praise for the comedy, stating the production not only meets high expectations but exceeds them. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:17:50.313Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

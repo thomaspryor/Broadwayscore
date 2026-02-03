@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a gorgeously appointed vacation from profundity, and sometimes that's exactly what Broadway should be.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,10 +18,59 @@
   "showScoreExcerpt": "The show is a gorgeously appointed vacation from profundity, and sometimes that's exactly what Broadway should be.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (17 words)",
-  "playbillVerdictUrl": "https://www.vulture.com/2023/04/theater-review-new-york-new-york-kander-ebb-miranda-broadway.html",
-  "sources": [
-    "web-search",
-    "playbill-verdict"
-  ],
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a gorgeously appointed vacation from profundity, and sometimes that's exactly what Broadway should be.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic frames the show positively as 'gorgeously appointed' and validates its purpose on Broadway, though acknowledges it lacks depth. This is a qualified recommendation for what it is. | GPT-4o: The review describes the show as a 'gorgeously appointed vacation,' suggesting it is visually appealing and enjoyable, though not deeply profound. This indicates a positive recommendation with some reservations about its depth. | Gemini: The review recommends the show as a pleasant escape, suggesting it's enjoyable despite lacking depth. This indicates a positive but not overwhelmingly enthusiastic recommendation. | Kimi: While acknowledging the show lacks depth ('vacation from profundity'), the critic frames this as a virtue rather than a flaw, praising the production values ('gorgeously appointed') and validating the show's place on Broadway.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:11:19.193Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

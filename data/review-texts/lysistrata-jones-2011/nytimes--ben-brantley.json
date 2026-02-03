@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This aggressively upbeat musical about a sex strike staged by the girlfriends of a losing basketball team never finds the right tone for its ancient source material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This aggressively upbeat musical about a sex strike staged by the girlfriends of a losing basketball team never finds the right tone for its ancient source material.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This aggressively upbeat musical never finds the right tone for its ancient source material.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic identifies a fundamental flaw - the production 'never finds the right tone' - which indicates failure at the most basic level of adaptation. The dismissive 'aggressively upbeat' suggests the tone problem undermines the entire show. | GPT-4o: The review criticizes the musical for failing to find the right tone, suggesting a lack of recommendation. The tone is clearly negative with no redeeming qualities mentioned. | Gemini: The review explicitly states that the musical 'never finds the right tone,' indicating a negative assessment. | Kimi: The critic clearly criticizes the show's tonal imbalance, finding the 'aggressively upbeat' approach mismatched with the source material, indicating a negative assessment despite acknowledging its energy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:44:08.592Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }
