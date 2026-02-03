@@ -70,8 +70,8 @@
   "previousLlmScore": 60,
   "isFullReview": false,
   "textWordCount": 195,
-  "archivePath": "data/archives/reviews/moulin-rouge-2019/wsj--terry-teachout_2026-02-02.html",
-  "textFetchedAt": "2026-02-02T23:27:21.336Z",
+  "archivePath": "data/archives/reviews/moulin-rouge-2019/wsj--terry-teachout_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T02:07:10.864Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -84,13 +84,7 @@
       "tier": 1,
       "method": "playwright",
       "success": false,
-      "error": "Skipped - known blocked site"
-    },
-    {
-      "tier": 1.5,
-      "method": "browserbase",
-      "success": false,
-      "error": "Insufficient text: 0 chars"
+      "error": "Skipped (known-blocked site)"
     },
     {
       "tier": 2,
