@@ -68,12 +68,31 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
   },
-  "contentTier": "needs-rescrape",
+  "contentTier": "complete",
   "wordCount": 359,
-  "isFullReview": false,
+  "isFullReview": true,
   "rejectedAt": "2026-02-03T06:19:33.314Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The text cuts off mid-review with a technical error message about retrieving article content and enabling JavaScript, making it impossible to determine the critic's final verdict; openai: The text is interrupted by a message about enabling JavaScript and verifying access, indicating it is not a complete review.; gemini: The review is truncated and incomplete, ending with a message about JavaScript and inability to retrieve content.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "textWordCount": 359,
+  "archivePath": "data/archives/reviews/an-enemy-of-the-people-2024/nytimes--jesse-green_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T08:59:57.563Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250217001028",
+  "archiveOrgUrl": "http://web.archive.org/web/20250217001028/https://www.nytimes.com/2024/03/18/theater/an-enemy-of-the-people-review-jeremy-strong.html?searchResultPosition=1",
+  "tierReason": "Full review text"
 }
