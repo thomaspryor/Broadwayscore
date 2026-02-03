@@ -18,59 +18,10 @@
   "showScoreExcerpt": "The play's old-fashioned theatrical artifice might have seemed more charming if the execution weren't so labored, with forced timing that makes even the snappiest exchanges feel sluggish.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "llmScore": {
-    "score": 44,
-    "confidence": "high",
-    "range": {
-      "low": 39,
-      "high": 49
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "The play's old-fashioned theatrical artifice might have seemed more charming if the execution weren't so labored.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear criticism of the execution as 'labored' with 'forced timing' that makes everything feel 'sluggish.' No redeeming qualities mentioned. | GPT-4o: The review criticizes the execution as 'labored' and timing as 'forced', suggesting a negative experience without recommending the show. | Gemini: The review explicitly states that the execution is labored and the timing is forced, leading to a negative overall assessment. | Kimi: The critic clearly faults the production's execution as labored and sluggish, finding that forced timing undermines the material's potential charm. However, the text is extremely brief and appears truncated, warranting low confidence.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:35:12.119Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 45,
-    "geminiScore": 45,
-    "kimiScore": 42,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/ren-e-fleming-living-love-790230",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

@@ -18,59 +18,10 @@
   "showScoreExcerpt": "Fleming's performance is charming and accomplished, but the show itself feels creaky and old-fashioned, like a relic from an earlier era of Broadway entertainment.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "llmScore": {
-    "score": 44,
-    "confidence": "medium",
-    "range": {
-      "low": 39,
-      "high": 49
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "the show itself feels creaky and old-fashioned, like a relic from an earlier era",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict calling the show 'creaky and old-fashioned' despite praising the lead performance. Individual performer praise does not redeem an overall negative assessment. | GPT-4o: The review acknowledges a strong performance by Fleming but criticizes the show as outdated and unappealing, leading to a negative overall recommendation. | Gemini: The review praises the performance but criticizes the show itself, resulting in a mixed assessment. | Kimi: Although the critic praises the lead performer's charm and skill, the 'but' construction signals a negative verdict on the production itself, which is dismissed as dated and irrelevant ('creaky,' 'old-fashioned,' 'relic'), constituting a recommendation against seeing the show.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:35:37.484Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "geminiScore": 62,
-    "kimiScore": 42,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
-    "scoreDelta": 20,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://variety.com/2015/legit/reviews/living-on-love-review-broadway-1201475759/",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

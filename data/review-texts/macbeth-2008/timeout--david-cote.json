@@ -18,59 +18,10 @@
   "showScoreExcerpt": "Stewart brings his trademark intensity and intelligence to the role, but the production feels more like an acting exercise than a fully realized theatrical experience.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "llmScore": {
-    "score": 53,
-    "confidence": "medium",
-    "range": {
-      "low": 48,
-      "high": 58
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Stewart brings his trademark intensity and intelligence to the role, but the production feels more like an acting exercise than a fully realized theatrical experience.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Clear mixed verdict - praises Stewart's performance but finds the overall production lacking as a complete theatrical experience. | GPT-4o: The review acknowledges Stewart's performance but criticizes the production as lacking a complete theatrical experience, indicating a negative overall impression. | Gemini: The review praises the actor's performance but criticizes the overall production, suggesting a mixed experience. | Kimi: While the critic praises Patrick Stewart's performance ('intensity and intelligence'), the 'but' signals that the production itself is dismissed as an insubstantial 'acting exercise' that fails to deliver a complete theatrical experience, indicating a recommendation against seeing the show. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:45:04.679Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 45,
-    "geminiScore": 62,
-    "kimiScore": 48,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
-    "scoreDelta": 17,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/macbeth-22",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }
