@@ -1243,9 +1243,10 @@ function archiveAggregatorPage(aggregator, showId, url, html) {
 
   const archivePath = path.join(archiveDir, `${showId}.html`);
 
-  // Don't overwrite existing archives (preserve historical data)
+  // Refresh archives older than 14 days to capture newly added reviews
   if (fs.existsSync(archivePath)) {
-    return;
+    const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
+    if (age < 14) return;
   }
 
   const header = `<!--
