@@ -7636,66 +7636,6 @@
     "timestamp": "2026-02-03T02:48:26.828Z"
   },
   {
-    "reviewId": "uncle-vanya-2024/timeout--adam-feldman.json",
-    "showId": "uncle-vanya-2024",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/uncle-vanya-9",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6433,
-    "timestamp": "2026-02-03T02:49:05.158Z"
-  },
-  {
-    "reviewId": "water-for-elephants-2024/timeout--adam-feldman.json",
-    "showId": "water-for-elephants-2024",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/water-for-elephants-broadway-musical-review-circus",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6798,
-    "timestamp": "2026-02-03T02:49:44.050Z"
-  },
-  {
-    "reviewId": "wicked-2003/observer--rex-reed.json",
-    "showId": "wicked-2003",
-    "outlet": "Observer",
-    "critic": "Rex Reed",
-    "url": "http://observer.com/2003/11/crowe-is-master-of-briny-boys-domain/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"ad blocker\"",
-    "textLength": 12296,
-    "timestamp": "2026-02-03T02:50:09.082Z"
-  },
-  {
-    "reviewId": "wicked-2003/timeout--david-cote.json",
-    "showId": "wicked-2003",
-    "outlet": "Time Out New York",
-    "critic": "David Cote",
-    "url": "http://www.timeout.com/newyork/theater/wicked-on-broadway-tickets-and-information",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 8681,
-    "timestamp": "2026-02-03T02:50:52.217Z"
-  },
-  {
-    "reviewId": "wicked-2003/wsj--terry-teachout.json",
-    "showId": "wicked-2003",
-    "outlet": "The Wall Street Journal",
-    "critic": "Terry Teachout",
-    "url": "http://www.wsj.com/articles/SB106748686155075900",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2024 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 766,
-    "timestamp": "2026-02-03T02:51:47.023Z"
-  },
-  {
     "reviewId": "aladdin-2014/catholic-transcript--bernard-carragher.json",
     "showId": "aladdin-2014",
     "outlet": "Catholic Transcript",
@@ -8270,5 +8210,65 @@
     "garbageReason": "Multiple shows mentioned (8): the great gatsby, hamilton, aladdin, hadestown, & juliet...",
     "textLength": 11416,
     "timestamp": "2026-02-03T03:45:26.150Z"
+  },
+  {
+    "reviewId": "uncle-vanya-2024/timeout--adam-feldman.json",
+    "showId": "uncle-vanya-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/uncle-vanya-9",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6433,
+    "timestamp": "2026-02-03T03:49:37.658Z"
+  },
+  {
+    "reviewId": "water-for-elephants-2024/timeout--adam-feldman.json",
+    "showId": "water-for-elephants-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/water-for-elephants-broadway-musical-review-circus",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6319,
+    "timestamp": "2026-02-03T03:51:12.647Z"
+  },
+  {
+    "reviewId": "wicked-2003/observer--rex-reed.json",
+    "showId": "wicked-2003",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "http://observer.com/2003/11/crowe-is-master-of-briny-boys-domain/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 12296,
+    "timestamp": "2026-02-03T03:51:42.390Z"
+  },
+  {
+    "reviewId": "wicked-2003/timeout--david-cote.json",
+    "showId": "wicked-2003",
+    "outlet": "Time Out New York",
+    "critic": "David Cote",
+    "url": "http://www.timeout.com/newyork/theater/wicked-on-broadway-tickets-and-information",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 8681,
+    "timestamp": "2026-02-03T03:52:41.288Z"
+  },
+  {
+    "reviewId": "wicked-2003/wsj--terry-teachout.json",
+    "showId": "wicked-2003",
+    "outlet": "The Wall Street Journal",
+    "critic": "Terry Teachout",
+    "url": "http://www.wsj.com/articles/SB106748686155075900",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2024 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 766,
+    "timestamp": "2026-02-03T03:54:08.153Z"
   }
 ]
