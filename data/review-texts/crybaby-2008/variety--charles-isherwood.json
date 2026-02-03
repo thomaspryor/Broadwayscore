@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite some energetic performances and a few genuinely funny moments, this musical adaptation of John Waters' 1990 film never finds its footing, lurching uncertainly between affectionate parody and straightforward storytelling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite some energetic performances and a few genuinely funny moments, this musical adaptation of John Waters' 1990 film never finds its footing, lurching uncertainly between affectionate parody and straightforward storytelling.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite some energetic performances and a few genuinely funny moments, this musical adaptation never finds its footing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The review acknowledges positive elements (energetic performances, funny moments) but the overall verdict is that the show 'never finds its footing' and 'lurches uncertainly,' indicating fundamental problems that prevent a recommendation. | GPT-4o: The review acknowledges some positive elements but ultimately concludes that the show 'never finds its footing,' indicating a negative overall assessment. | Gemini: The review acknowledges positive aspects like energetic performances and funny moments, but ultimately states the musical never finds its footing, indicating a mixed or neutral recommendation. | Kimi: While the critic acknowledges energetic performances and funny moments, the overall verdict is that the show fundamentally fails to cohere, described as 'never finds its footing' and 'lurching uncertainly,' indicating a clear negative recommendation. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:16:45.059Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

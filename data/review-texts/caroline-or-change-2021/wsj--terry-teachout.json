@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a show that, despite its considerable musical and dramatic strengths, feels more like a well-intentioned lecture than a fully realized work of musical theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The result is a show that, despite its considerable musical and dramatic strengths, feels more like a well-intentioned lecture than a fully realized work of musical theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels more like a well-intentioned lecture than a fully realized work of musical theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges 'considerable musical and dramatic strengths' but the verdict is clearly that it fails as complete theater, feeling more like a lecture than entertainment. | GPT-4o: The review acknowledges 'considerable musical and dramatic strengths' but ultimately describes the show as lacking in realization, suggesting a mixed evaluation. | Gemini: The review acknowledges strengths but ultimately finds the show lacking as a fully realized work, placing it in the mixed category. | Kimi: The critic acknowledges significant artistic merits ('considerable musical and dramatic strengths') but ultimately characterizes the show as a 'well-intentioned lecture' rather than a 'fully realized work,' indicating fundamental reservations about its theatrical effectiveness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:56:58.364Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -11,5 +11,59 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The rest of Eureka Day... doesn’t quite live up to that hilarious segment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | GPT-4o: The review praises a specific scene but notes the rest of the play doesn't match its quality. The text is truncated, and while the critic's original rating is 3/5 stars, suggesting a mixed review, the final verdict may be missing. | Gemini: 3/5 stars. The review highlights a particularly funny scene and praises the performances and treatment of contemporary issues, but notes sluggish pacing and reliance on cliches. The truncated text makes the final verdict somewhat unclear, but the overall tone is positive with reservations. | Kimi: The 3/5 star rating and balanced critique support a Mixed classification. While praising the 'amazingly funny' livestream scene and fine performances, the critic notes the play 'doesn't quite live up to' its best segment, citing 'sluggish pacing' and 'tired cliches' that make the 100-minute evening 'feel longer than it is.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:40:02.173Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

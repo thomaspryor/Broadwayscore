@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Diana feels like a musical that was written by people who have heard of musicals but have never actually seen one. The show's approach to its subject matter is both exploitative and dull.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 21,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Diana feels like a musical that was written by people who have heard of musicals but have never actually seen one. The show's approach to its subject matter is both exploitative and dull.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 21,
+    "confidence": "medium",
+    "range": {
+      "low": 16,
+      "high": 26
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's approach to its subject matter is both exploitative and dull.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | GPT-4o: The review is strongly negative, describing the show as 'exploitative and dull,' suggesting a lack of redeeming qualities. | Gemini: The review is clearly negative, stating the show is both exploitative and dull, and comparing it unfavorably to other musicals. | Kimi: The critic accuses the creators of fundamental incompetence ('never actually seen one') and condemns the show as both unethical ('exploitative') and boring ('dull'), with no redeeming qualities mentioned. The extreme brevity suggests this may be an excerpt, but the visible text is unambiguously hostile.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:35:32.570Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 22,
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Pan"
+  }
 }

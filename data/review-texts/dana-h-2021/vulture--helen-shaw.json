@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is an experiment in theatrical form that pushes the boundaries of what theater can be, creating something that feels more like a fever dream than a traditional play.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is an experiment in theatrical form that pushes the boundaries of what theater can be, creating something that feels more like a fever dream than a traditional play.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is an experiment in theatrical form that pushes the boundaries of what theater can be.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The text describes the show as experimental and boundary-pushing, but offers no clear evaluative stance on whether audiences should see it. 'Fever dream' could be positive or negative. This appears to be a fragment or excerpt lacking the critic's actual recommendation. | GPT-4o: The review describes the show as experimental and boundary-pushing, which suggests a mixed reception. The lack of traditional play elements may not appeal to all audiences, indicating a neutral stance. | Gemini: The review describes the show as an experiment that pushes boundaries, which suggests a positive but potentially unconventional experience. The comparison to a \"fever dream\" implies it may not be for everyone, hence the recommendation with reservations. | Kimi: The language praises the show's experimental ambition ('pushes the boundaries'), though the brief excerpt prevents determining if this experimentation fully succeeds or if the 'fever dream' quality is ultimately appealing. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:21:43.636Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

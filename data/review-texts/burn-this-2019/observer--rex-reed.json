@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Adam Driver and Keri Russell bring volcanic intensity to Lanford Wilson's passionate play about grief, lust and the creative process.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Adam Driver and Keri Russell bring volcanic intensity to Lanford Wilson's passionate play about grief, lust and the creative process.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)"
+  "contentTierReason": "Short text (20 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Adam Driver and Keri Russell bring volcanic intensity to Lanford Wilson's passionate play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single sentence praising lead performances with strong language ('volcanic intensity', 'passionate'), but extremely brief excerpt provides minimal context for full evaluation. | GPT-4o: The review praises the performances of the lead actors with strong language ('volcanic intensity'), suggesting a highly positive view of the production. However, the review is brief, so the confidence is medium. | Gemini: The review praises the performances of the two leads, suggesting a positive experience overall. The phrase \"volcanic intensity\" indicates a strong and compelling performance. | Kimi: Brief excerpt with strong praise for lead performances ('volcanic intensity') and positive framing of the play itself ('passionate'), but limited text prevents full assessment of overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:53:08.333Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

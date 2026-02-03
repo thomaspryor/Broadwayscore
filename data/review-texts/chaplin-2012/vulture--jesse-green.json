@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The problem with Chaplin is not that it's bad — though it often is — but that it's beside the point. A musical about Charlie Chaplin that fails to be funny is like a meal about food that fails to be nourishing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 35,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The problem with Chaplin is not that it's bad — though it often is — but that it's beside the point. A musical about Charlie Chaplin that fails to be funny is like a meal about food that fails to be nourishing.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (42 words)"
+  "contentTierReason": "Short text (42 words)",
+  "llmScore": {
+    "score": 35,
+    "confidence": "medium",
+    "range": {
+      "low": 30,
+      "high": 40
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A musical about Charlie Chaplin that fails to be funny is like a meal about food that fails to be nourishing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative assessment stating the musical fundamentally fails at its core purpose, with the critic calling it both bad and pointless. | GPT-4o: The review strongly criticizes the show for missing the essential element of humor, likening it to a meal that fails to nourish. This indicates a fundamental flaw, placing it in the Pan category. | Gemini: The review states that the show 'often is' bad and uses a strong analogy to express its disappointment. | Kimi: The excerpt condemns the show as categorically failing at its essential purpose (being funny) and dismisses it as irrelevant ('beside the point'), representing a total rejection with no positive elements mentioned. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:03:41.868Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 30,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

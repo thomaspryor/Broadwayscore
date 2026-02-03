@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bengal Tiger at the Baghdad Zoo is an ambitious work that tackles weighty themes of war, morality, and the nature of existence, though it sometimes struggles under the weight of its own philosophical aspirations.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bengal Tiger at the Baghdad Zoo is an ambitious work that tackles weighty themes of war, morality, and the nature of existence, though it sometimes struggles under the weight of its own philosophical aspirations.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bengal Tiger at the Baghdad Zoo is an ambitious work that tackles weighty themes of war, morality, and the nature of existence, though it sometimes struggles under the weight of its own philosophical aspirations.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges the show's ambition and serious themes but indicates it 'struggles' with its execution. This suggests neither recommendation nor discouragement - a classic mixed response. | GPT-4o: The review acknowledges the ambition and thematic depth of the play but notes struggles with its philosophical aspirations, indicating a balanced view without a clear recommendation. | Gemini: The review acknowledges ambition but also suggests the play struggles, indicating a mixed assessment. | Kimi: The review acknowledges ambition and worthy themes but emphasizes that the show 'sometimes struggles' with its execution. The 'though' construction signals significant reservation outweighing the praise. No clear recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:44:53.953Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

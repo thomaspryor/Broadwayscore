@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This adorable little show has been buffed and polished until it gleams like a newly minted penny, and the result is a sweet, nostalgic evening of old-fashioned entertainment that left me grinning from ear to ear.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This adorable little show has been buffed and polished until it gleams like a newly minted penny, and the result is a sweet, nostalgic evening of old-fashioned entertainment that left me grinning from ear to ear.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (36 words)"
+  "contentTierReason": "Short text (36 words)",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This adorable little show has been buffed and polished until it gleams like a newly minted penny.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language throughout with 'adorable,' 'gleams,' 'sweet,' and the critic's personal satisfaction ('left me grinning from ear to ear'). Clear enthusiasm without major reservations. | GPT-4o: The review is highly positive, using enthusiastic language such as 'adorable,' 'gleams,' and 'left me grinning from ear to ear,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using words like \"adorable\", \"gleams\", \"sweet\", and \"old-fashioned entertainment\". The critic also states that the show left them \"grinning from ear to ear\", indicating a strong positive reaction. | Kimi: The critic expresses warm affection and strong satisfaction with the polished production, describing a thoroughly enjoyable nostalgic experience that provoked genuine delight.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:19:28.174Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bullets Over Broadway is a delightfully screwball musical that fires on most cylinders. The show captures the zany spirit of Woody Allen's 1994 film while adding enough theatrical pizzazz to justify its existence as a stage musical.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bullets Over Broadway is a delightfully screwball musical that fires on most cylinders. The show captures the zany spirit of Woody Allen's 1994 film while adding enough theatrical pizzazz to justify its existence as a stage musical.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (37 words)"
+  "contentTierReason": "Short text (37 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bullets Over Broadway is a delightfully screwball musical that fires on most cylinders.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating combined with enthusiastic language like 'delightfully screwball' and 'fires on most cylinders' indicates a solid positive recommendation that justifies the stage adaptation. | GPT-4o: The review describes the show as 'delightfully screwball' and 'fires on most cylinders', indicating a strong positive recommendation. The original rating of 80 aligns with the Positive bucket. | Gemini: The review is positive, calling the show \"delightfully screwball\" and saying it \"fires on most cylinders.\" The critic's rating of 80 aligns with a positive assessment. | Kimi: The critic delivers an enthusiastic endorsement with strong praise for the show's theatricality and spirit, and the provided 80-point rating confirms a solid positive recommendation in the 70-84 range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:52:54.711Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

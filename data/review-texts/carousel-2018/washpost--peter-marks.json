@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What Jack O'Brien has delivered is a sumptuous, emotionally coherent 'Carousel' that honors the show's complexities while making them feel organic to our moment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What Jack O'Brien has delivered is a sumptuous, emotionally coherent 'Carousel' that honors the show's complexities while making them feel organic to our moment.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What Jack O'Brien has delivered is a sumptuous, emotionally coherent 'Carousel' that honors the show's complexities while making them feel organic to our moment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the production as 'sumptuous' and 'emotionally coherent,' with appreciation for how it handles complexity. However, this appears to be an excerpt with limited text to assess full critical verdict. | GPT-4o: The review uses strong positive language ('sumptuous', 'emotionally coherent') and praises the production for honoring the show's complexities, indicating a highly favorable assessment. | Gemini: The review uses positive language such as \"sumptuous\" and \"emotionally coherent\" to describe the production, indicating a strong recommendation. | Kimi: The critic employs strong positive descriptors ('sumptuous', 'emotionally coherent') to praise the production's quality and contemporary resonance, indicating a solid recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:59:46.648Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

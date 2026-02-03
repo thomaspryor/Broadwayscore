@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a celebration of Fosse's choreographic vocabulary, but it feels more like a museum exhibit than a living, breathing piece of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a celebration of Fosse's choreographic vocabulary, but it feels more like a museum exhibit than a living, breathing piece of theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a celebration of Fosse's choreographic vocabulary, but it feels more like a museum exhibit than a living, breathing piece of theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Acknowledges the show celebrates Fosse's work but criticizes it as static and lifeless rather than theatrically vital. Clear mixed assessment. | GPT-4o: The review suggests that the show lacks vitality and feels static, indicating a negative evaluation. | Gemini: The review acknowledges the celebration of Fosse's choreography but compares it to a museum exhibit, indicating a lack of vitality and life. This suggests a mixed or neutral assessment. | Kimi: While acknowledging the show's technical celebration of Fosse's work, the critic's verdict emphasizes that it fails to be 'living, breathing' theater, comparing it unfavorably to a static museum exhibit. The 'but' signals that the negative assessment outweighs the positive observation. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:49:09.539Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

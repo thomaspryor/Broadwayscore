@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "To enjoy Anastasia—and I did enjoy it, quite a lot—you can't expect it to be what it isn't.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with clear enjoyment expressed upfront. Critic acknowledges the show's throwback operetta style and finds it successful on its own terms, praising performances, design, and visual spectacle while noting some reservations about authenticity choices. | GPT-4o: The review expresses enjoyment and appreciation for the show's nostalgic qualities and performances, despite noting some pronunciation issues and thematic choices. The original 4/5 star rating aligns with a positive classification, though the text is truncated, warranting low confidence. | Gemini: The critic enjoyed the show \"quite a lot\" and the review is mostly positive, but there are some reservations about historical accuracy and taste choices. The 4/5 star rating also indicates a positive but not rave review. | Kimi: The critic awards 4/5 stars and explicitly states enjoying the show 'quite a lot,' praising the lush score, charismatic performances, and visual splendor while acknowledging it's a lightweight throwback rather than serious drama. Text is flagged as potentially truncated.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:44:09.905Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

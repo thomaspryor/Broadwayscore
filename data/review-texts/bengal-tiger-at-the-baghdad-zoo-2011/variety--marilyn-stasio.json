@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Robin Williams gives a committed performance as the title character, a philosophical tiger who's shot by American soldiers and returns as a ghost to haunt the zoo where he lived and died.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -53,5 +53,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 626,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this odd, enchanting play — which was a Pulitzer finalist last year — owes much of its magic to his lordly presence",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Williams' 'phenomenal Broadway perf', calls the play 'odd, enchanting' and 'magic', identifies Joseph as 'a major player', and describes it as 'quite wonderful production'. Despite noting some over-writing issues, the overall assessment is enthusiastically positive. | GPT-4o: The review praises Robin Williams' performance as 'phenomenal' and describes the play as 'odd, enchanting' with 'magic', indicating a strong recommendation. While there are minor criticisms of the writing, the overall tone is highly positive. | Gemini: The review is generally positive, highlighting Williams' performance and the play's enchanting qualities, but also notes some issues with overdrawn characters and overwriting, leading to a recommendation with reservations. | Kimi: While the critic notes some overwritten scenes and character excesses, the review is overwhelmingly positive, praising Williams' 'phenomenal' performance, calling the play 'enchanting' and the production 'quite wonderful,' with an enthusiastic 'Go, Tiger!' endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:44:05.604Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

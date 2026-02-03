@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What if I told you that the best acting on Broadway is coming from a woman who doesn't utter a single word?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with strong opening praise calling O'Connell's performance 'the best acting on Broadway' and 'dynamite.' Despite truncation warning, the consistent admiration throughout and original 4-star rating clearly indicate a positive recommendation. | GPT-4o: The review praises the unique performance and the powerful impact of the documentary-style script. Despite the truncated text warning, the overall tone is positive, and the original 4/5 stars rating supports a positive classification. | Gemini: The review is mostly descriptive, but the critic highlights the strength in Dana's voice and the astonishing lack of bitterness, indicating a positive, albeit reserved, recommendation. The 4/5 star rating also supports this classification, despite the truncated text. | Kimi: 4/5 star review with consistent praise for Deirdre O'Connell's 'best acting on Broadway' and the ingenious documentary concept. Confidence set to 'low' due to truncated text warning indicating the final verdict may be missing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:27:55.286Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

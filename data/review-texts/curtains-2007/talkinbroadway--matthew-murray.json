@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Curtains is a show that knows exactly what it wants to be: a loving tribute to the golden age of Broadway musicals, complete with all the clichés, conventions, and crowd-pleasing moments that made those shows so enduring.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Curtains is a show that knows exactly what it wants to be: a loving tribute to the golden age of Broadway musicals, complete with all the clichés, conventions, and crowd-pleasing moments that made those shows so enduring.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (37 words)"
+  "contentTierReason": "Short text (37 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Curtains is a show that knows exactly what it wants to be: a loving tribute to the golden age of Broadway musicals, complete with all the clichés, conventions, and crowd-pleasing moments that made those shows so enduring.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review frames the show positively as a successful 'loving tribute' that delivers 'crowd-pleasing moments,' though the mention of clichés suggests some formulaic elements that prevent it from being a stronger recommendation. | GPT-4o: The review describes the show as a 'loving tribute' with 'crowd-pleasing moments,' indicating a positive reception. However, the mention of 'clichés' and 'conventions' suggests some reservations, leading to a lower score within the Positive range. | Gemini: The review describes the show as a \"loving tribute\" and highlights its crowd-pleasing moments, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The single-sentence excerpt frames the show as a successful and 'loving tribute' that effectively deploys golden age conventions to crowd-pleasing effect, though the text appears truncated and lacks a definitive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:18:52.744Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

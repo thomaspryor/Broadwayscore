@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Stephen Adly Guirgis' Pulitzer Prize-winning play gets a Broadway transfer that honors both its intimate character study and its broader social commentary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Stephen Adly Guirgis' Pulitzer Prize-winning play gets a Broadway transfer that honors both its intimate character study and its broader social commentary.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gets a Broadway transfer that honors both its intimate character study and its broader social commentary",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: This appears to be an excerpt with positive language ('honors') praising the transfer's success, but lacks detail for a confident assessment of recommendation strength. | GPT-4o: The review praises the Broadway transfer for honoring the play's character study and social commentary, indicating a positive assessment. | Gemini: The review states that the Broadway transfer 'honors' the play, indicating a positive assessment. While not overly enthusiastic, it's a clear recommendation. | Kimi: The review is extremely brief with only one evaluative sentence, but clearly positive - 'honors' indicates the production succeeds. Low confidence due to brevity with no reservations mentioned, suggesting solid recommendation in the upper-mid Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:45:25.200Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

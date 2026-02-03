@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Come Fly Away is gorgeous to look at and often thrilling to experience, but it's not quite the transcendent evening of theater it wants to be.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Come Fly Away is gorgeous to look at and often thrilling to experience, but it's not quite the transcendent evening of theater it wants to be.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Come Fly Away is gorgeous to look at and often thrilling to experience, but it's not quite the transcendent evening of theater it wants to be.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear mixed verdict - acknowledges visual beauty and thrilling moments but explicitly states it falls short of its aspirations with 'not quite transcendent.' | GPT-4o: The review praises the visual and experiential aspects of the show but notes it falls short of being 'transcendent.' This suggests a positive recommendation with some reservations. | Gemini: The review states the show is \"gorgeous\" and \"thrilling\", but not \"transcendent\", indicating a positive but not rave review. | Kimi: The critic offers strong praise for the visual beauty and thrilling experience but qualifies the recommendation by noting the production falls short of transcendent greatness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:09:31.231Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

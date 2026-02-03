@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Pierce brings a specificity to Willy that feels both fresh and inevitable, finding new depths in Miller's American tragedy while honoring its classic architecture.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Pierce brings a specificity to Willy that feels both fresh and inevitable, finding new depths in Miller's American tragedy while honoring its classic architecture.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pierce brings a specificity to Willy that feels both fresh and inevitable, finding new depths in Miller's American tragedy while honoring its classic architecture.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: This appears to be an excerpt praising the lead performance with language like 'fresh and inevitable' and 'finding new depths,' but it's too brief to assess the full critical verdict with confidence. | Gemini: The review praises the performance and finds new depths in the classic play, indicating a strong positive recommendation. | Kimi: This excerpt offers strong praise for Pierce's interpretation of Willy Loman and the production's successful balancing of innovation with faithfulness to Miller's text, indicating a solid positive recommendation despite the limited context of a single sentence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:32:59.572Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

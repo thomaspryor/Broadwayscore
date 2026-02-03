@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Al Pacino gives a bravura performance as a billionaire trapped in his penthouse apartment by legal troubles and personal demons in David Mamet's 'China Doll,' but even his magnetic stage presence can't overcome the playwright's static, repetitive script.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Al Pacino gives a bravura performance as a billionaire trapped in his penthouse apartment by legal troubles and personal demons in David Mamet's 'China Doll,' but even his magnetic stage presence can't overcome the playwright's static, repetitive script.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (38 words)"
+  "contentTierReason": "Short text (38 words)",
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "even his magnetic stage presence can't overcome the playwright's static, repetitive script",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Clear praise for Pacino's performance but decisive criticism of Mamet's script as 'static, repetitive.' The 'but even' construction indicates the performance doesn't redeem the material. | GPT-4o: The review acknowledges Al Pacino's performance but criticizes the script as static and repetitive, leading to a negative overall assessment. | Gemini: The review praises Pacino's performance but criticizes the script, resulting in a mixed assessment. | Kimi: While the critic praises Pacino's 'bravura' and 'magnetic' performance, the 'but' construction makes clear that the flawed script sinks the show, constituting a recommendation against seeing it. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:04:01.500Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }
