@@ -5,8 +5,8 @@
   "criticName": "Allison Considine",
   "url": "https://www.newyorktheatreguide.com/reviews/art-broadway-review-bobby-cannavale-james-corden-neil-patrick-harris",
   "publishDate": "September 16, 2025",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Read our review of Art on Broadway, the first revival of Yasmina Reza's Tony Award-winning comedy play, now running at the Music Box Theatre. Beauty is in the eye of the beholder. At the center of Art on Broadway is a seemingly innocuous work of art: a 4-by-5-foot white-on-white canvas. With its $300,000 price tag, however, the purchase leaves the buyer’s friends questioning both his taste and his sanity. For Marc (Bobby Cannavale), his best friend Serge’s (Neil Patrick Harris) acquisition of the painting is deplorable. He doesn’t sugarcoat his feelings, calling the painting a piece of shit. Their other friend, the ever-pleasing Yvan (James Corden), doesn’t love the painting, but he would never say that to Serge’s face. The trio's opinions bring out the worst in them, prompting them to question what truly binds their friendship in the first place. There are a lot of fighting words shared, but a lot of laughs, too, including Cannavale’s memorable bellow. The cast's comedic chops are on full display here. Their reactions to the painting earn plenty of laughs, from Harris’s head-shaking adoration to Cannavale’s up-close skepticism. The three display impeccable timing and physicality. At the performance I attended, Corden took a swig of Perrier, and it went down the wrong pipe, leading to him coughing and stalling. With a bit of encouraging banter from Cannavale, clapping from the audience, and a few swipes of tears, the scene resumed. Another (scripted) scene-stealing moment comes when Corden launches into a long, rambling monologue, recalling a phone conversation with his mother about invitations for his upcoming wedding. He delivers it at such a clip that he can hardly catch his breath. My audience hooted and hollered. Director Scott Ellis balances the heightened emotions with the absurdity of the situation. In one scene, the seething men pause their brawl for a snack break, silently popping olives and dropping the pits — one by one — into a silver bowl with a plunk. Art has humor, a wonderful cast, and the timeless clash of differing opinions. What’s missing from the script is a clear sense of place and purpose for this friendship. Where did it begin? If a 25-year bond is on the verge of breaking, the audience needs a glimpse of what’s truly at stake. Art, a comedy play written by Yasmina Reza and translated into English by Christopher Hampton, follows three longtime friends whose relationship is tested when one of them buys an expensive, modern painting. One man despises it, and another is caught in the middle as the trio debate art and friendship. The play first bowed on Broadway in 1998 with Alan Alda, Victor Garber, and Alfred Molina, and it won the Tony Award for Best Play. The play unfolds on a simple set by David Rockwell, which serves as all three characters' gray, modernistic apartments. The action is punctuated with asides, allowing the characters to share their true emotions with the audience, bringing them into the fold. The show runs 1 hour and 40 minutes with no intermission. Make sure to use the restroom beforehand, because once the performance begins, you won’t be allowed to return to your seat if you leave. As of writing, Art holds an audience rating of 87% on the review aggregator Show-Score, with viewers especially praising the script and James Corden’s performance. Others note its pacing and humor. Read more audience reviews of Art on Show-Score. This three-hander comedy blends philosophical debate, deep friendship, and biting humor, brought to life by the memorable Bobby Cannavale, James Corden, and Neil Patrick Harris. Photo credit: Art on Broadway. (Photos by Matthew Murphy) Art is playing at Music Box Theatre. The theatre is located at 239 West 45th Street (between Broadway and 8th Avenue), New York, 10036. The running time of Art is 1hr 40min. No intermission. Book tickets for Art on New York Theatre Guide. The recommended age for Art is Ages 12+. Children under 5 are not permitted in the theatre.. Art is a comedy about the value of friendship and art. When one man buys a very expensive painting that may or may not qualify as art, his two friends are unsure how to respond to the piece — and their years of knowing each other. Yasmina Reza, an acclaimed playwright, wrote this comedy, which won the Tony Award for Best Play. Scott Ellis, a Broadway vet known for his starry revivals and multiple Tony nominations, directs this play. The show features some more intellectual conversations and is not recommended for young kids; audiences must be four and over to come to Broadway shows. Art has played all over the world and won a Tony Award for Best Play, so it is widely known to be a celebrated play. Now, it's back on Broadway with an all-star cast. Originally published on Sep 16, 202522:00",
+  "isFullReview": true,
   "dtliExcerpt": "The cast's comedic chops are on full display here. Their reactions to the painting earn plenty of laughs, from Harris’s head-shaking adoration to Cannavale’s up-close skepticism. The three display impeccable timing and physicality.",
   "originalScore": null,
   "assignedScore": 50,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": null,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 50,
@@ -66,5 +66,31 @@
       "confidence": "medium",
       "reasoning": "Curated DTLI excerpt"
     }
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 50,
+  "textWordCount": 808,
+  "archivePath": "data/archives/reviews/art-2025/nytg--allison-considine_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T22:19:59.782Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 808,
+  "tierReason": "Full review text"
 }
