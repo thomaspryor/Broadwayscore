@@ -261,6 +261,45 @@ async function extractDatesFromIBDBPage(url) {
 }
 
 /**
+ * Validate whether a string looks like a real creative team member name.
+ * Rejects garbled text, sentence fragments, award references, and other non-name strings.
+ *
+ * @param {string} name - Name to validate
+ * @returns {boolean} true if the name looks valid
+ */
+function isValidCreativeTeamName(name) {
+  if (!name || typeof name !== 'string') return false;
+
+  // Normalize whitespace before checking
+  const normalized = name.replace(/\s{2,}/g, ' ').trim();
+
+  // Reject names longer than 80 characters
+  if (normalized.length > 80) return false;
+
+  // Reject names that start with articles or prepositions
+  if (/^(The|A|An|For|With|In|On|At|By|From)\s/i.test(normalized)) return false;
+
+  // Reject sentence fragments: period followed by space and lowercase letter
+  if (/\.\s+[a-z]/.test(normalized)) return false;
+
+  // Reject sentence fragment indicators (common sentence words as whole words)
+  const sentenceWords = /\b(is|are|was|were|has|have|had|will|shall|may|might|must|should|could|would)\b/i;
+  if (sentenceWords.test(normalized)) return false;
+
+  // Reject award references
+  if (/\b(Tony|Grammy|Oscar|Emmy|Pulitzer|Obie)\b/.test(normalized)) return false;
+
+  // Reject single words longer than 20 characters (likely garbled text)
+  const words = normalized.split(/\s+/);
+  if (words.length === 1 && normalized.length > 20) return false;
+
+  // Reject names containing numbers (real names don't have digits)
+  if (/\d/.test(normalized)) return false;
+
+  return true;
+}
+
+/**
  * Extract creative team members from IBDB page text.
  * IBDB credits are semicolon-separated entries like:
  *   "Directed by Saheem Ali; Choreographed by Patricia Delgado and Justin Peck; Book by Marco Ramirez"
@@ -271,7 +310,7 @@ async function extractDatesFromIBDBPage(url) {
  */
 function extractCreativeTeamFromText(text) {
   const creativeTeam = [];
-  const seen = new Set(); // Prevent duplicates
+  const seen = new Set(); // Prevent duplicates (by normalized name+role)
   const musicAndLyricsNames = new Set(); // Track "Music & Lyrics" names to suppress standalone Music/Lyrics
 
   // Role patterns: [regex, role label]
@@ -318,6 +357,8 @@ function extractCreativeTeamFromText(text) {
         .replace(/\s+Based on\b.*$/i, '')
         .replace(/\s+Originally\b.*$/i, '')
         .replace(/\s+Additional\b.*$/i, '')
+        // Final whitespace normalization
+        .replace(/\s{2,}/g, ' ')
         .trim();
 
       if (!rawName || rawName.length < 2 || rawName.length > 100) continue;
@@ -327,6 +368,9 @@ function extractCreativeTeamFromText(text) {
 
       // Skip song credit boilerplate like "(Unless otherwise noted)"
       if (/^unless\b/i.test(rawName)) continue;
+
+      // Validate name quality
+      if (!isValidCreativeTeamName(rawName)) continue;
 
       // Track "Music & Lyrics" names so we skip redundant standalone Lyrics/Music
       if (role === 'Music & Lyrics') {
@@ -338,13 +382,21 @@ function extractCreativeTeamFromText(text) {
         continue;
       }
 
-      const key = `${role}::${rawName.toLowerCase()}`;
+      // Deduplicate by normalized name+role (case-insensitive, whitespace-collapsed)
+      const normalizedName = rawName.toLowerCase().replace(/\s{2,}/g, ' ').trim();
+      const key = `${role}::${normalizedName}`;
       if (seen.has(key)) continue;
       seen.add(key);
 
       creativeTeam.push({ name: rawName, role });
       matchedOnce = true;
     }
+  }
+
+  // Safety guard: if more than 15 entries extracted, the regex likely ran on
+  // wrong text (e.g., full cast list or song credits). Return empty array.
+  if (creativeTeam.length > 15) {
+    return [];
   }
 
   return creativeTeam;
@@ -516,6 +568,7 @@ module.exports = {
   searchIBDB,
   extractDatesFromIBDBPage,
   extractCreativeTeamFromText,
+  isValidCreativeTeamName,
   findBestProduction,
   lookupIBDBDates,
   batchLookupIBDBDates,

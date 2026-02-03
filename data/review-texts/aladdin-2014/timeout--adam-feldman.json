@@ -94,7 +94,8 @@
   "sources": [
     "show-score",
     "web-search",
-    "bww-roundup"
+    "bww-roundup",
+    "playbill-verdict"
   ],
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
@@ -103,15 +104,15 @@
   "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
   "garbageFixedAt": "2026-01-29T22:45:22.649Z",
   "wordCount": 89,
-  "fullText": "Disney unveils its latest cartoon-to-musical project: the orientalist tale of a boy, an uncorked spirit and an aerodynamic rug. Composer Alan Menken adds new tunes to the 1992 original soundtrack, and Chad Beguelin provides a fresh book. Reputed highlights include James Monroe Iglehart's bouncy Genie and the flying-carpet F/X.\n\nNew Amsterdam Theatre\n \n 214 W 42nd St\n \n \n Midtown West\n \n New York\n\nbetween Seventh and Eighth Aves\n\nSubway: A, C, E to 42nd St–Port Authority; N, Q, R, 42nd St S, 1, 2, 3, 7 to 42nd St–Times Sq\n\nTheater. Musicals",
+  "fullText": null,
   "isFullReview": false,
   "textWordCount": 89,
   "textQuality": "truncated",
   "textStatus": "truncated",
   "archiveOrgTimestamp": "20140318072757",
   "archiveOrgUrl": "http://web.archive.org/web/20140318072757/http://www.timeout.com:80/newyork/theater/aladdin-1",
-  "tierReason": "Short text (89 words)",
-  "contentTier": "truncated",
+  "tierReason": "showNotMentioned — wrong content scraped",
+  "contentTier": "excerpt",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
@@ -122,5 +123,6 @@
   "showNotMentioned": true,
   "misattributedFullText": true,
   "extractedByline": "Times Sq",
-  "expectedCritic": "Adam Feldman"
+  "expectedCritic": "Adam Feldman",
+  "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/aladdin-1"
 }

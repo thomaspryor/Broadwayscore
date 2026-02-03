@@ -23,5 +23,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "openai: The text is a brief mention of performances without any evaluative content or overall assessment of the show.; gemini: This review refers to a production starring Bruce Willis and Laurie Metcalf, which is not the current Broadway production of Misery.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/bruce-willis-misery-theater-review-840382",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }
