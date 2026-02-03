@@ -7336,18 +7336,6 @@
     "timestamp": "2026-02-02T19:06:45.563Z"
   },
   {
-    "reviewId": "mary-jane-2024/timeout--adam-feldman.json",
-    "showId": "mary-jane-2024",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/mary-jane-broadway-play-review-rachel-mcadams-amy-herzog",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 5595,
-    "timestamp": "2026-02-02T19:07:12.345Z"
-  },
-  {
     "reviewId": "illinoise-2024/hollywood-reporter--david-rooney.json",
     "showId": "illinoise-2024",
     "outlet": "The Hollywood Reporter",
@@ -7526,54 +7514,6 @@
     "garbageReason": "Multiple article boundaries detected (8)",
     "textLength": 7518,
     "timestamp": "2026-02-03T02:08:41.009Z"
-  },
-  {
-    "reviewId": "illinoise-2024/deadline--greg-evans.json",
-    "showId": "illinoise-2024",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
-    "textLength": 48624,
-    "timestamp": "2026-02-03T02:12:48.542Z"
-  },
-  {
-    "reviewId": "illinoise-2024/observer--rex-reed.json",
-    "showId": "illinoise-2024",
-    "outlet": "Observer",
-    "critic": "Rex Reed",
-    "url": "https://observer.com/2024/04/illinoise-broadway-review-sufjan-stevens/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"ad blocker\"",
-    "textLength": 582,
-    "timestamp": "2026-02-03T02:13:27.982Z"
-  },
-  {
-    "reviewId": "lempicka-2024/deadline--greg-evans.json",
-    "showId": "lempicka-2024",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
-    "textLength": 48624,
-    "timestamp": "2026-02-03T02:14:05.879Z"
-  },
-  {
-    "reviewId": "lempicka-2024/observer--rex-reed.json",
-    "showId": "lempicka-2024",
-    "outlet": "Observer",
-    "critic": "Rex Reed",
-    "url": "https://observer.com/2024/05/lempicka-broadway-review-eden-espinosa/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"ad blocker\"",
-    "textLength": 582,
-    "timestamp": "2026-02-03T02:15:03.972Z"
   },
   {
     "reviewId": "mother-play-2024/timeout--adam-feldman.json",
@@ -8234,5 +8174,77 @@
     "garbageReason": "Paywall/subscription prompt: \"create a free account to\"",
     "textLength": 680,
     "timestamp": "2026-02-03T03:01:18.413Z"
+  },
+  {
+    "reviewId": "illinoise-2024/deadline--greg-evans.json",
+    "showId": "illinoise-2024",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
+    "textLength": 48624,
+    "timestamp": "2026-02-03T03:05:32.412Z"
+  },
+  {
+    "reviewId": "illinoise-2024/observer--rex-reed.json",
+    "showId": "illinoise-2024",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2024/04/illinoise-broadway-review-sufjan-stevens/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 582,
+    "timestamp": "2026-02-03T03:06:06.830Z"
+  },
+  {
+    "reviewId": "lempicka-2024/deadline--greg-evans.json",
+    "showId": "lempicka-2024",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
+    "textLength": 48624,
+    "timestamp": "2026-02-03T03:06:44.224Z"
+  },
+  {
+    "reviewId": "lempicka-2024/observer--rex-reed.json",
+    "showId": "lempicka-2024",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2024/05/lempicka-broadway-review-eden-espinosa/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 582,
+    "timestamp": "2026-02-03T03:07:18.725Z"
+  },
+  {
+    "reviewId": "mamma-mia-2025/timeout--adam-feldman.json",
+    "showId": "mamma-mia-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/mamma-mia-broadway-musical-review-abba",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 7317,
+    "timestamp": "2026-02-03T03:08:45.073Z"
+  },
+  {
+    "reviewId": "mary-jane-2024/timeout--adam-feldman.json",
+    "showId": "mary-jane-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/mary-jane-broadway-play-review-rachel-mcadams-amy-herzog",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 5770,
+    "timestamp": "2026-02-03T03:09:27.799Z"
   }
 ]
