@@ -1,151 +1,153 @@
 {
-  "runDate": "2026-02-03T19:22:28.177Z",
+  "runDate": "2026-02-03T19:28:51.539Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "harry-potter-2021",
+    "showFilter": "waitress-2016",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 16,
+    "processed": 10,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "30.4%"
+    "successRate": "52.6%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 3,
     "browserbase": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archive": 0
+    "scrapingbee": 1,
+    "brightdata": 2,
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 14,
-    "tier1Success": 5,
+    "tier1Attempts": 12,
+    "tier1Success": 4,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 0,
-    "tier3Attempts": 4,
-    "tier3Success": 1,
-    "tier4Attempts": 30,
-    "tier4Success": 8,
-    "totalFailed": 16,
+    "tier2Attempts": 12,
+    "tier2Success": 1,
+    "tier3Attempts": 11,
+    "tier3Success": 3,
+    "tier4Attempts": 23,
+    "tier4Success": 4,
+    "totalFailed": 9,
     "scrapingBeeCreditsUsed": 28,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 8,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoverySuccess": 5,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-    "harry-potter-2021/timeout--adam-feldman.json",
-    "harry-potter-2021/cititour--brian-scott-lipton.json",
-    "harry-potter-2021/broadwayworld--michael-dale.json",
-    "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "harry-potter-2021/the-times--ann-treneman.json"
+    "waitress-2016/nytimes--ben-brantley.json",
+    "waitress-2016/variety--marilyn-stasio.json",
+    "waitress-2016/guardian--jesse-dorris.json",
+    "waitress-2016/theatermania--jesse-green.json",
+    "waitress-2016/timeout--adam-feldman.json",
+    "waitress-2016/boston-arts-diary--unknown.json",
+    "waitress-2016/boston-globe--unknown.json",
+    "waitress-2016/chicagotribune--chris-jones.json",
+    "waitress-2016/npr--unknown.json",
+    "waitress-2016/unknown--unknown.json"
   ],
   "failed": [
-    "harry-potter-2021/ew--kristen-baldwin.json",
-    "harry-potter-2021/indiewire--david-ehrlich.json",
-    "harry-potter-2021/national-review--kyle-smith.json",
-    "harry-potter-2021/wsj--terry-teachout.json",
-    "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
-    "harry-potter-2021/broadway-blog--matthew-wexler.json",
-    "harry-potter-2021/curtainup--elyse-sommer.json",
-    "harry-potter-2021/exeunt-magazine--kev-berry.json",
-    "harry-potter-2021/financial-times-uk--charles-isherwood.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/frontmezzjunkies--steven-ross.json",
-    "harry-potter-2021/limelight-magazine-au--clive-paget.json",
-    "harry-potter-2021/theater-pizzazz--michael-bracken.json",
-    "harry-potter-2021/usatoday--kelly-lawler.json",
-    "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "harry-potter-2021/zeal-nyc--chris-caggiano.json"
+    "waitress-2016/vulture--jesse-green.json",
+    "waitress-2016/ew--melissa-rose-bernardo.json",
+    "waitress-2016/nypost--johnny-oleksinski.json",
+    "waitress-2016/observer--rex-reed.json",
+    "waitress-2016/wsj--terry-teachout.json",
+    "waitress-2016/909wbur--unknown.json",
+    "waitress-2016/talkinbroadway--matthew-murray.json",
+    "waitress-2016/usatoday--elysa-gardner.json",
+    "waitress-2016/washpost--peter-marks.json"
   ],
   "tierDetails": {
     "playwright": [
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+      "waitress-2016/boston-arts-diary--unknown.json",
+      "waitress-2016/boston-globe--unknown.json",
+      "waitress-2016/npr--unknown.json"
     ],
     "browserbase": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "waitress-2016/guardian--jesse-dorris.json"
+    ],
+    "brightdata": [
+      "waitress-2016/variety--marilyn-stasio.json",
+      "waitress-2016/theatermania--jesse-green.json"
+    ],
     "archive": [
-      "harry-potter-2021/broadwaynews--elizabeth-bradley.json",
-      "harry-potter-2021/timeout--adam-feldman.json",
-      "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "harry-potter-2021/broadwayworld--michael-dale.json",
-      "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
-      "harry-potter-2021/the-times--ann-treneman.json"
+      "waitress-2016/nytimes--ben-brantley.json",
+      "waitress-2016/timeout--adam-feldman.json",
+      "waitress-2016/chicagotribune--chris-jones.json",
+      "waitress-2016/unknown--unknown.json"
     ]
   },
   "failuresByOutlet": {
-    "IndieWire": {
+    "New York Post": {
       "count": 1,
-      "domain": "indiewire.com",
+      "domain": "nypost.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
     },
-    "Broadway Blog": {
+    "The Wall Street Journal": {
       "count": 1,
-      "domain": "thebroadwayblog.com",
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "CurtainUp": {
+    "USA Today": {
       "count": 1,
-      "domain": "curtainup.com",
+      "domain": "usatoday.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Front Row Center": {
+    "The Washington Post": {
       "count": 1,
-      "domain": "frontrowcenter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Front Mezz Junkies": {
-      "count": 1,
-      "domain": "frontmezzjunkies.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Theater Pizzazz": {
-      "count": 1,
-      "domain": "theaterpizzazz.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Zeal NYC": {
-      "count": 1,
-      "domain": "zealnyc.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
+      "domain": "washingtonpost.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
       "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "harry-potter-2021/ew--kristen-baldwin.json",
-      "oldUrl": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/",
-      "newUrl": "https://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/?srsltid=AfmBOorcigWYqAoRhJrFZ5I1A96j_v2buLCydnd1vgUfKDoQhGZ6gu_t"
+      "reviewId": "waitress-2016/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2016/04/25/theater/waitress-review-jessie-mueller-broadway.html",
+      "newUrl": "https://www.nytimes.com/2016/04/25/theater/review-jessie-mueller-serves-a-slice-of-life-with-pie-in-sara-bareilless-waitress.html"
     },
     {
-      "reviewId": "harry-potter-2021/curtainup--elyse-sommer.json",
-      "oldUrl": "http://www.curtainup.com/harrypottercursedchild.html",
-      "newUrl": "http://www.curtainup.com/harrypotterbway18.html"
+      "reviewId": "waitress-2016/variety--marilyn-stasio.json",
+      "oldUrl": "https://variety.com/2016/legit/reviews/waitress-review-broadway-jessie-mueller-1201747953/",
+      "newUrl": "https://variety.com/2016/legit/reviews/waitress-review-broadway-musical-1201759570/"
+    },
+    {
+      "reviewId": "waitress-2016/ew--melissa-rose-bernardo.json",
+      "oldUrl": "https://ew.com/article/2016/04/25/waitress-broadway-review/",
+      "newUrl": "https://ew.com/article/2016/04/24/waitress-broadway-review/?srsltid=AfmBOopJScCgSKoD5dHhyfoFw_8_dN4cZljiOYE5uaSo2zhZ691h8MCk"
+    },
+    {
+      "reviewId": "waitress-2016/guardian--jesse-dorris.json",
+      "oldUrl": "https://www.theguardian.com/stage/2016/apr/25/waitress-review-broadway-jessie-mueller-sara-bareilles",
+      "newUrl": "https://www.theguardian.com/stage/2016/apr/25/waitress-review-adrienne-shelly-sara-bareilles-musical"
+    },
+    {
+      "reviewId": "waitress-2016/chicagotribune--chris-jones.json",
+      "oldUrl": "https://www.chicagotribune.com/entertainment/theater/ct-waitress-broadway-review-20160425-column.html",
+      "newUrl": "https://www.chicagotribune.com/2025/02/24/review-waitress-at-the-paramount-theatre-is-a-charming-show-with-songs-youll-remember/"
     }
   ]
 }
