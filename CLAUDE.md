@@ -80,7 +80,7 @@ A website aggregating Broadway show reviews into composite scores (independent B
 ## Current State (January 2026)
 
 ### What's Working
-- **40 Broadway shows** with full metadata (synopsis, cast, creative team, venues)
+- **40 Broadway shows** with full metadata (synopsis, creative team, venues)
 - **1,150+ critic reviews** across all shows in `data/review-texts/`
 - **Critics-only scoring** (V1 approach)
 - **TodayTix-inspired UI** with card layout, hero images, show detail pages
@@ -90,7 +90,7 @@ A website aggregating Broadway show reviews into composite scores (independent B
 ### Shows Database
 - 27 currently open, 13 closed shows tracked
 - Upcoming shows (status: "previews") with opening dates and preview start dates
-- Full metadata: synopsis, cast, creative team, tags, age recommendations, theater addresses
+- Full metadata: synopsis, creative team, tags, age recommendations, theater addresses
 - Ticket links for all open shows
 
 ## Scoring Methodology (V1 - Critics Only)
@@ -141,7 +141,6 @@ data/
   synopsis, ageRecommendation, tags,
   previewsStartDate,  // For upcoming shows (status: "previews")
   ticketLinks: [{ platform, url, priceFrom }],
-  cast: [{ name, role }],
   creativeTeam: [{ name, role }],
   officialUrl, trailerUrl, theaterAddress
 }
@@ -651,7 +650,7 @@ Documented from the Jan-Feb 2026 review corpus audit (1,825→3,644 reviews). **
 
 **Outlet-specific junk in fullText (FIXED Feb 2026):** `scripts/lib/text-cleaning.js` now has outlet-specific trailing junk patterns for EW (`<img>` tags, srcset, "Related Articles"), BWW ("Get Access To Every Broadway Story"), Variety ("Related Stories", "Popular on Variety"), BroadwayNews (site navigation), and The Times UK (paywall prefix). Applied at write time in all three consumer scripts via `cleanText()`.
 
-**Byline extraction false positives (FIXED Feb 2026):** `extractByline()` in `content-quality.js` now accepts `options.excludeNames` to skip cast/creative team names that appear in review text (e.g., "Written by David Yazbek" is the songwriter, not the reviewer). Pattern 3 ("Written by X") removed since it always means playwright in theater reviews. Non-name word blocklist (Prize, Weekly, Crown, Theatre, etc.) rejects extracted "names" that are actually proper nouns. Callers (`backfill-review-flags.js`, `collect-review-texts.js`) pass show cast+creative names from shows.json.
+**Byline extraction false positives (FIXED Feb 2026):** `extractByline()` in `content-quality.js` now accepts `options.excludeNames` to skip creative team names that appear in review text (e.g., "Written by David Yazbek" is the songwriter, not the reviewer). Pattern 3 ("Written by X") removed since it always means playwright in theater reviews. Non-name word blocklist (Prize, Weekly, Crown, Theatre, etc.) rejects extracted "names" that are actually proper nouns. Callers (`backfill-review-flags.js`, `collect-review-texts.js`) pass show creative names from shows.json.
 
 **Quality classification in `gather-reviews.js` (FIXED Feb 2026):** `gather-reviews.js` now runs `classifyContentTier()` on every review before writing (line 1194). All review files have contentTier assigned.
 

@@ -132,7 +132,6 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
       endDate: show.closingDate,
       description: show.synopsis,
       status: show.status,
-      cast: show.cast,
       ticketLinks: show.ticketLinks,
     })),
     config.title

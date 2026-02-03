@@ -27,7 +27,6 @@ CREATE TABLE IF NOT EXISTS shows (
   tags TEXT,                     -- JSON array as TEXT
   images TEXT,                   -- JSON object as TEXT
   ticket_links TEXT,             -- JSON array as TEXT
-  cast_data TEXT,                -- JSON array as TEXT
   creative_team TEXT             -- JSON array as TEXT
 );
 
