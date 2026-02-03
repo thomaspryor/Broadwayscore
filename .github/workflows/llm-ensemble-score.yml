@@ -327,3 +327,19 @@ jobs:
 
           gh workflow run "LLM Ensemble Score Reviews" $CHAIN_ARGS
           echo "Next batch dispatched."
+
+      - name: Trigger rebuild + consensus (chain complete)
+        if: >-
+          ${{ github.event.inputs.chain == 'true'
+          && (steps.count-remaining.outputs.remaining <= 10
+              || github.event.inputs.remaining_batches == '0') }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Scoring chain complete. Triggering rebuild and consensus..."
+          gh workflow run "Rebuild Reviews Data" -f reason="Post LLM ensemble scoring chain"
+          echo "Rebuild dispatched."
+          # Consensus needs the rebuild to finish first, so add a delay
+          sleep 10
+          gh workflow run "Update Critics' Take"
+          echo "Consensus dispatched."
