@@ -65,7 +65,7 @@
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "archivePath": "data/archives/reviews/doubt-2024/wsj--charles-isherwood_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T02:36:11.947Z",
+  "textFetchedAt": "2026-02-03T04:59:54.053Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -74,16 +74,16 @@
       "success": true
     },
     {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "All 5 CDX snapshots had insufficient text"
+    },
+    {
       "tier": 1,
       "method": "playwright",
       "success": false,
       "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 1.5,
-      "method": "browserbase",
-      "success": false,
-      "error": "Insufficient text: 0 chars"
     },
     {
       "tier": 2,
