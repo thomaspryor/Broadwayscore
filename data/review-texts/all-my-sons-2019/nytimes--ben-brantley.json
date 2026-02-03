@@ -3,10 +3,10 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2019/04/23/theater/all-my-sons-review.html",
+  "url": "https://www.nytimes.com/2019/04/22/theater/all-my-sons-review.html",
   "publishDate": "April 23, 2019",
-  "fullText": "This revival, directed by Jack O'Brien, doesn't quite achieve the crushing inevitability that makes for great productions of this play. But it does provide a showcase for two superb performances that deepen as the evening progresses.",
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2019/04/22/theater/all-my-sons-review.htmlShare full article3030Advertisement\n\nPlays with a large moral vision are so last century. Our taste now is for the miniature and metaphoric — works too exquisite to live outside the living room.\n\nOr maybe our capacity for shame has shrunk.\n\nBut in Arthur Miller’s “All My Sons,” originally produced in 1947, domesticity is just a backdrop. The drama takes place outdoors, amid trees and sky in an Ohio backyard soon after World War II. Its anger and ambition are likewise elemental.\n\nToo bad, then, that the Roundabout Theater Company revival that opened on Monday at the American Airlines Theater reaches the play’s level only intermittently, like a poorly tuned radio. Jack O’Brien’s literal-minded production, starring Tracy Letts and Annette Bening, does not make a resonant case for the drama today.\n\nThat’s odd because although the play has its share of problems, irrelevance will never be one of them. You don’t have to dig deep into current headlines to find eerie parallels to Miller’s story. Based on a real wartime event, it tells of a manufacturer of airplane parts whose defective product wound up killing 21 pilots on missions over Australia. Boeing, anyone?\n\nThe crux of the drama is that the parts were known to be defective. The question is: Who authorized their delivery anyway?\n\nBoth Joe Keller, the boss, and Steve Deever, his underling, served time, after a trial, for doing so. But Keller, claiming he was sick on the day of the deliveries and that Deever made the decision alone, was exonerated on appeal. Deever is still in prison as the action begins some years later.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": "This revival, directed by Jack O'Brien, doesn't quite achieve the crushing inevitability that makes for great productions of this play. But it does provide a showcase for two superb performances that deepen as the evening progresses.",
   "originalScore": null,
   "assignedScore": 70,
@@ -72,5 +72,34 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
-  }
+  },
+  "previousUrl": "https://www.nytimes.com/2019/04/23/theater/all-my-sons-review.html",
+  "urlDiscoveredAt": "2026-02-03T15:01:16.259Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 70,
+  "textWordCount": 291,
+  "archivePath": "data/archives/reviews/all-my-sons-2019/nytimes--ben-brantley_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T15:01:16.263Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250426220406",
+  "archiveOrgUrl": "http://web.archive.org/web/20250426220406/https://www.nytimes.com/2019/04/22/theater/all-my-sons-review.html",
+  "textIssues": [
+    "Word count too low: 291 (min: 300)"
+  ],
+  "wordCount": 291,
+  "tierReason": "Short text (291 words)"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Nina Arianda brings fierce intelligence and surprising depth to the archetypal dumb blonde role of Billie Dawn in the Broadway revival of Garson Kanin's Born Yesterday.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Nina Arianda brings fierce intelligence and surprising depth to the archetypal dumb blonde role of Billie Dawn in the Broadway revival of Garson Kanin's Born Yesterday.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nina Arianda brings fierce intelligence and surprising depth to the archetypal dumb blonde role",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Praises the lead performance with strong positive language but this appears to be a truncated excerpt with insufficient context for full evaluation. | Gemini: The review praises Nina Arianda's performance, suggesting it's a positive aspect of the show, leading to a positive but not rave recommendation. | Kimi: The review is extremely brief (single sentence) and appears to be excerpted or truncated. While the tone is clearly positive about Arianda's performance, there's no assessment of the overall production, direction, or whether the show itself is worth seeing. Limited to 'low' confidence due to brevity and lack of complete verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:49:22.043Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

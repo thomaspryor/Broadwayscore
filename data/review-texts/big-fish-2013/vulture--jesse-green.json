@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Big Fish is a show that means well and tries hard, but it never quite finds the magic it's reaching for. The musical, based on Daniel Wallace's novel and Tim Burton's film, has lovely moments but lacks the cohesive emotional core that would make it truly moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Big Fish is a show that means well and tries hard, but it never quite finds the magic it's reaching for. The musical, based on Daniel Wallace's novel and Tim Burton's film, has lovely moments but lacks the cohesive emotional core that would make it truly moving.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (47 words)"
+  "contentTierReason": "Short text (47 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Big Fish is a show that means well and tries hard, but it never quite finds the magic it's reaching for.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear mixed verdict - acknowledges good intentions and lovely moments but identifies fundamental flaws in emotional impact and cohesion. No recommendation either way. | GPT-4o: The review acknowledges some 'lovely moments' but criticizes the show for lacking a 'cohesive emotional core' and not achieving its intended magic. This suggests a mixed evaluation. | Gemini: The review acknowledges lovely moments but ultimately finds the show lacking a cohesive emotional core, indicating a mixed reaction rather than a clear recommendation. | Kimi: The critic acknowledges lovely moments and good intentions but finds the production lacks the cohesive emotional core to be truly moving, resulting in a disappointed, mixed assessment that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:47:30.102Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

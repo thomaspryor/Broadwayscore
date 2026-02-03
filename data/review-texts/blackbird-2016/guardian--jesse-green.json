@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Daniels and Williams are both superb in their roles, bringing a raw intensity to this difficult material that makes for compelling, if deeply uncomfortable, theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Daniels and Williams are both superb in their roles, bringing a raw intensity to this difficult material that makes for compelling, if deeply uncomfortable, theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Daniels and Williams are both superb in their roles, bringing a raw intensity to this difficult material that makes for compelling, if deeply uncomfortable, theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises lead performances as 'superb' and calls the theater 'compelling,' but confidence is low due to extremely brief excerpt that may not represent the full review's verdict. | GPT-4o: The review praises the performances as 'superb' and the theater as 'compelling,' indicating a positive recommendation despite the material being 'deeply uncomfortable.' | Gemini: The review praises the performances as \"superb\" and \"compelling\", but acknowledges the material is \"deeply uncomfortable\", indicating a recommendation with reservations. | Kimi: The critic praises the lead performances as 'superb' with 'raw intensity' and calls the result 'compelling,' though notes the material is 'deeply uncomfortable.' This is a clear recommendation based on performance quality, with the 'if' qualifying clause slightly tempering the enthusiasm. Limited confidence due to brevity and lack of broader production assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:47:52.142Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

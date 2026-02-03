@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What Lynn Nottage has accomplished in 'Clyde's' is the creation of a workplace dramedy that manages to be both earthily funny and spiritually nourishing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What Lynn Nottage has accomplished in 'Clyde's' is the creation of a workplace dramedy that manages to be both earthily funny and spiritually nourishing.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What Lynn Nottage has accomplished in 'Clyde's' is the creation of a workplace dramedy that manages to be both earthily funny and spiritually nourishing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the playwright's achievement with positive descriptors 'earthily funny and spiritually nourishing,' though this appears to be an excerpt with limited context for full assessment. | GPT-4o: The review uses strong positive language, describing the show as 'earthily funny and spiritually nourishing,' indicating a solid recommendation with enthusiasm. | Gemini: The review praises the play as both funny and spiritually nourishing, indicating a positive experience and recommendation. | Kimi: The critic offers unqualified praise for the play's humor and emotional resonance, describing it as an 'accomplished' work that is both 'earthily funny and spiritually nourishing.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:08:07.984Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

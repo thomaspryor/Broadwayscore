@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Eclipsed is a stunning debut that makes the case for theater as a place where stories that might otherwise be lost can be preserved and given the full weight of their humanity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Eclipsed is a stunning debut that makes the case for theater as a place where stories that might otherwise be lost can be preserved and given the full weight of their humanity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Eclipsed is a stunning debut that makes the case for theater as a place where stories that might otherwise be lost can be preserved and given the full weight of their humanity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses strong superlative 'stunning' and positions the work as essential theater that serves an important cultural function, indicating enthusiastic recommendation. | GPT-4o: The review uses strong, enthusiastic language ('stunning debut') and emphasizes the importance and impact of the play, indicating a highly positive recommendation. | Gemini: The review uses strong positive language such as \"stunning debut\" and highlights the importance of the play, indicating a rave review. | Kimi: The review offers unqualified praise using superlatives like 'stunning' and emphasizes the show's profound humanity and importance to theater, with no reservations mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:34:35.168Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

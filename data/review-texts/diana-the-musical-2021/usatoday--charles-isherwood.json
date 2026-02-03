@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical's treatment of Diana's story feels superficial and often tone-deaf, reducing a complex and tragic figure to a series of musical theater clichés.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical's treatment of Diana's story feels superficial and often tone-deaf, reducing a complex and tragic figure to a series of musical theater clichés.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical's treatment of Diana's story feels superficial and often tone-deaf, reducing a complex and tragic figure to a series of musical theater clichés.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative assessment calling the show 'superficial and often tone-deaf' with criticism of reducing the subject to 'musical theater clichés.' No redeeming qualities mentioned. | GPT-4o: The review criticizes the show for being superficial and tone-deaf, reducing a complex figure to clichés, indicating a strong negative assessment. | Gemini: The review explicitly states that the treatment of Diana's story is superficial and tone-deaf, indicating a negative assessment. | Kimi: The critic finds the show's approach shallow and inappropriate ('tone-deaf'), criticizing its reliance on clichés rather than nuanced storytelling. While brief, the language clearly indicates a recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:27:38.518Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

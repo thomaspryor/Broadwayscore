@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Angela Lansbury brings a welcome touch of the ethereal to Broadway in Noël Coward's 'Blithe Spirit,' playing the flighty ghost Elvira with a supernatural sense of comic timing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Angela Lansbury brings a welcome touch of the ethereal to Broadway in Noël Coward's 'Blithe Spirit,' playing the flighty ghost Elvira with a supernatural sense of comic timing.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Angela Lansbury brings a welcome touch of the ethereal to Broadway",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brief excerpt praising Lansbury's performance with positive language ('welcome touch', 'supernatural sense of comic timing'), but insufficient text to determine overall show verdict or recommendation strength. | Gemini: The review praises Angela Lansbury's performance and welcomes her return to Broadway, indicating a positive experience. | Kimi: The review is brief but clearly positive, praising Lansbury's 'supernatural sense of comic timing' and calling her presence 'welcome.' However, the excerpt is very short with no broader assessment of the production, limiting confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:48:10.205Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

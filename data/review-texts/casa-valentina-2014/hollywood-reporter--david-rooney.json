@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Harvey Fierstein's new play about cross-dressing men in the Catskills in the early 1960s is a tender, thoughtful drama that finds comedy and pathos in equal measure.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Harvey Fierstein's new play about cross-dressing men in the Catskills in the early 1960s is a tender, thoughtful drama that finds comedy and pathos in equal measure.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harvey Fierstein's new play about cross-dressing men in the Catskills in the early 1960s is a tender, thoughtful drama that finds comedy and pathos in equal measure.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('tender, thoughtful') with balanced praise for both comedy and drama elements, though brief excerpt limits confidence in full assessment. | GPT-4o: The review describes the play as 'tender' and 'thoughtful,' indicating a positive assessment. The balance of 'comedy and pathos' suggests a well-rounded production, leading to a solid recommendation. | Gemini: The review describes the play as \"tender, thoughtful drama\" that finds \"comedy and pathos in equal measure,\" indicating a positive, though not overwhelmingly enthusiastic, recommendation. | Kimi: The critic offers warm appreciation for the play's emotional balance and craftsmanship, describing it as both tender and thoughtful without significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:57:45.954Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This gender-flipped revival of Stephen Sondheim's Company works better than it should, thanks largely to Katrina Lenk's compelling performance as Bobbie.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This gender-flipped revival of Stephen Sondheim's Company works better than it should, thanks largely to Katrina Lenk's compelling performance as Bobbie.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (21 words)"
+  "contentTierReason": "Short text (21 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This gender-flipped revival of Stephen Sondheim's Company works better than it should, thanks largely to Katrina Lenk's compelling performance as Bobbie.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The phrase 'works better than it should' suggests low expectations were exceeded, and praising Lenk's 'compelling performance' indicates a positive verdict, though the brevity limits confidence. | GPT-4o: The review suggests a positive outcome despite initial skepticism, highlighting Lenk's performance as a key factor. However, the praise is qualified, indicating a barely positive recommendation. | Gemini: The review states the revival \"works better than it should\", indicating a positive view, but the qualification \"thanks largely to Katrina Lenk's compelling performance\" suggests reservations. | Kimi: The critic offers a solid endorsement that the production exceeds expectations, though the qualification 'largely thanks to' the lead performance indicates some reservations about the show overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:12:41.084Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

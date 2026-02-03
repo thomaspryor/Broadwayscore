@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show has the glossy, mechanized feel of a theme park attraction, complete with an efficiently whirring set that zips the audience from airport to hospital to courtroom to cocktail party.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (31 words)",
+  "rejectedAt": "2026-02-03T14:59:03.461Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or fragment, not a complete review with an evaluative verdict; openai: The text provided is a description of the set design and does not include any evaluative content or a verdict on the show.; kimi: This appears to be an excerpt or fragment without the full review context. While it contains evaluative language comparing the show to a 'theme park attraction,' it lacks a clear verdict, scoring information, or sufficient length to determine the critic's overall recommendation. The single sentence could be opening context, a mixed observation, or part of a larger argument, but without more text, no reliable score can be assigned.",
+  "promptVersion": "5.2.0"
 }
