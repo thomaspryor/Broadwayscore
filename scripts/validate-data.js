@@ -280,6 +280,117 @@ function validateImageUrls(shows) {
 }
 
 // ===========================================
+// SHOW TYPE VALIDATION
+// ===========================================
+
+function validateShowTypes(shows) {
+  info('Checking show types...');
+  const validTypes = ['musical', 'play', 'special'];
+  let issues = 0;
+
+  for (const show of shows) {
+    if (show.type === 'revival') {
+      error(`Show "${show.title}" (${show.id}) has type "revival" - use isRevival flag instead`);
+      issues++;
+    } else if (show.type && !validTypes.includes(show.type)) {
+      error(`Show "${show.title}" (${show.id}) has invalid type "${show.type}" (must be one of: ${validTypes.join(', ')})`);
+      issues++;
+    }
+
+    if (show.isRevival !== undefined && typeof show.isRevival !== 'boolean') {
+      warn(`Show "${show.title}" (${show.id}) has isRevival of type ${typeof show.isRevival}, expected boolean`);
+    }
+  }
+
+  if (issues === 0) {
+    ok('All show types are valid');
+  }
+}
+
+// ===========================================
+// SYNOPSIS QUALITY VALIDATION
+// ===========================================
+
+function validateSynopsisQuality(shows) {
+  info('Checking synopsis quality...');
+  let issues = 0;
+
+  const accessibilityPattern = /\bwheelchair\b|\bhearing assist\b|\belevator access\b|\baccessible seating\b|\bada seating\b|\brestrooms\b|\bclosed captioning\b|\bassistive listening\b/i;
+
+  for (const show of shows) {
+    if (!show.synopsis) continue;
+
+    if (accessibilityPattern.test(show.synopsis)) {
+      warn(`Show "${show.title}" (${show.id}) synopsis contains accessibility text`);
+      issues++;
+    }
+
+    if (show.synopsis.length < 30) {
+      warn(`Show "${show.title}" (${show.id}) synopsis is very short (${show.synopsis.length} chars)`);
+      issues++;
+    }
+
+    if (/,\s*$/.test(show.synopsis)) {
+      warn(`Show "${show.title}" (${show.id}) synopsis ends mid-sentence (trailing comma)`);
+      issues++;
+    }
+  }
+
+  if (issues === 0) {
+    ok('All synopses pass quality checks');
+  }
+}
+
+// ===========================================
+// CREATIVE TEAM QUALITY VALIDATION
+// ===========================================
+
+function validateCreativeTeamQuality(shows) {
+  info('Checking creative team quality...');
+  let issues = 0;
+
+  for (const show of shows) {
+    if (!show.creativeTeam || !Array.isArray(show.creativeTeam)) continue;
+
+    const seenNameRoles = new Set();
+
+    for (const member of show.creativeTeam) {
+      if (!member.name) continue;
+
+      if (member.name.length > 100) {
+        error(`Show "${show.title}" (${show.id}) creative team member name too long (${member.name.length} chars): "${member.name.substring(0, 50)}..."`);
+        issues++;
+      } else if (member.name.length > 80) {
+        warn(`Show "${show.title}" (${show.id}) creative team member name is suspiciously long (${member.name.length} chars): "${member.name.substring(0, 50)}..."`);
+        issues++;
+      }
+
+      if (/\s{2,}/.test(member.name)) {
+        warn(`Show "${show.title}" (${show.id}) creative team member "${member.name}" has excessive whitespace`);
+        issues++;
+      }
+
+      if (/^(The |A |An )/.test(member.name)) {
+        warn(`Show "${show.title}" (${show.id}) creative team member "${member.name}" starts with an article`);
+        issues++;
+      }
+
+      // Check for duplicate name+role combinations
+      const key = `${member.name.toLowerCase().trim()}::${(member.role || '').toLowerCase().trim()}`;
+      if (seenNameRoles.has(key)) {
+        warn(`Show "${show.title}" (${show.id}) has duplicate creative team entry: "${member.name}" as "${member.role}"`);
+        issues++;
+      }
+      seenNameRoles.add(key);
+    }
+  }
+
+  if (issues === 0) {
+    ok('All creative team entries pass quality checks');
+  }
+}
+
+// ===========================================
 // SAFETY CHECKS
 // ===========================================
 
@@ -886,9 +997,13 @@ function runValidation() {
   validateRequiredFields(shows);
   console.log('');
   validateStatus(shows);
+  validateShowTypes(shows);
   validateDates(shows);
   validateSlugs(shows);
   validateImageUrls(shows);
+  console.log('');
+  validateSynopsisQuality(shows);
+  validateCreativeTeamQuality(shows);
   console.log('');
   validateMinimumCounts(shows);
   console.log('');

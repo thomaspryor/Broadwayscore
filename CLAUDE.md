@@ -394,7 +394,11 @@ Set by `classifyTextQuality()` inline in `collect-review-texts.js`. Stored as `t
 
 #### Junk Handling
 
-**Automatic junk stripping:** Removes newsletter promos (TheaterMania), login prompts (BroadwayNews), "Read more" links (amNY), signup forms (Vulture/NY Mag) from end of scraped text.
+**Leading navigation stripping:** `stripLeadingNavigation()` in `text-cleaning.js` detects "Skip to content/main" in the first 150 chars and strips all preceding nav menus. Always returns stripped text (no minimum length guard) — downstream classifiers handle short content. Prevents BroadwayNews-style pages (7KB of nav + 100-char blurb) from being classified as "complete".
+
+**showNotMentioned prevention:** When `collect-review-texts.js` detects scraped fullText doesn't mention the show (high confidence), it nulls fullText immediately (preserves in `wrongFullText`), sets contentTier to excerpt/needs-rescrape. The collector still tries URL discovery on the next run. `rebuild-all-reviews.js` allows showNotMentioned reviews through if they have aggregator excerpts.
+
+**Automatic trailing junk stripping:** Removes newsletter promos (TheaterMania), login prompts (BroadwayNews), "Read more" links (amNY), signup forms (Vulture/NY Mag) from end of scraped text.
 
 **Legitimate endings recognized:** Theater addresses, URLs, production credits, ticket info — these don't trigger false truncation.
 
