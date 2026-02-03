@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Into the Woods feels both familiar and fresh, with a cast that brings new energy to Sondheim's complex score and Lapine's intricate book.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Into the Woods feels both familiar and fresh, with a cast that brings new energy to Sondheim's complex score and Lapine's intricate book.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Into the Woods feels both familiar and fresh, with a cast that brings new energy to Sondheim's complex score and Lapine's intricate book.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language ('fresh', 'new energy') but brief excerpt lacks explicit recommendation language or strong superlatives for higher score. | GPT-4o: The review praises the cast's ability to bring new energy to the production, suggesting a positive experience. However, the brevity of the review limits the depth of evaluation, resulting in medium confidence. | Gemini: The review states that the production feels both familiar and fresh, and that the cast brings new energy to the score and book, indicating a positive recommendation. | Kimi: The critic offers clear praise for the production's freshness and the cast's energetic performances, indicating a solid recommendation without the extreme enthusiasm of a rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:03:38.258Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

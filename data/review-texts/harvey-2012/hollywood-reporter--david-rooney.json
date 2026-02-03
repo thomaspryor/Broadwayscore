@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jim Parsons brings his own distinctive comic sensibility to the role of Elwood P. Dowd, making Harvey feel fresh while honoring the gentle spirit of Mary Chase's Pulitzer Prize-winning play.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jim Parsons brings his own distinctive comic sensibility to the role of Elwood P. Dowd, making Harvey feel fresh while honoring the gentle spirit of Mary Chase's Pulitzer Prize-winning play.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jim Parsons brings his own distinctive comic sensibility to the role of Elwood P. Dowd, making Harvey feel fresh while honoring the gentle spirit of Mary Chase's Pulitzer Prize-winning play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: This appears to be a brief excerpt with positive language ('distinctive,' 'fresh,' 'honoring') but lacks a clear overall recommendation or deeper critical assessment. | GPT-4o: The review praises Jim Parsons' performance for making the play feel fresh while respecting its original spirit, indicating a positive recommendation. However, the text is very brief, so confidence is low. | Gemini: The review praises Jim Parsons' performance and states that he makes the play feel fresh while honoring the original spirit, indicating a positive recommendation. | Kimi: The excerpt offers unqualified praise for Parsons' performance and the production's fresh approach, though the single-sentence length limits full assessment of the critic's overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:40:15.804Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

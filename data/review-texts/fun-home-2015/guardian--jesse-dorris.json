@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Fun Home is a musical that manages to be both deeply personal and universally resonant, transforming Alison Bechdel's graphic memoir into something theatrically vital and emotionally devastating.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Fun Home is a musical that manages to be both deeply personal and universally resonant, transforming Alison Bechdel's graphic memoir into something theatrically vital and emotionally devastating.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fun Home is a musical that manages to be both deeply personal and universally resonant, transforming Alison Bechdel's graphic memoir into something theatrically vital and emotionally devastating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling the show 'theatrically vital and emotionally devastating' with positive descriptors throughout. The 80 rating from the critic confirms positive recommendation territory. | GPT-4o: The review praises the show as 'theatrically vital and emotionally devastating,' aligning with the critic's original rating of 80, indicating a strong recommendation. | Gemini: The review uses positive language such as \"theatrically vital and emotionally devastating\" and the critic gave it an 80, indicating a positive recommendation. | Kimi: The critic's own 80/100 rating places this in the Positive range, and the review text offers strong praise calling the production 'theatrically vital' and 'emotionally devastating' without visible reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:13:40.272Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

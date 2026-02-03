@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Midler inhabits this portrait of a Hollywood power broker with such authoritative relish that you're likely to forget you're watching an actress pretend to be someone else.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (28 words)",
+  "rejectedAt": "2026-02-03T16:56:10.540Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review that can be scored for recommendation strength.; openai: The text is a single sentence praising a performance, likely an excerpt or quote, without sufficient context to determine the overall review of the show.",
+  "promptVersion": "5.2.0"
 }

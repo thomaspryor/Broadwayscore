@@ -11,5 +11,60 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And it's… fine. Not transcendent, not even great. Frozen is solid.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly states it's 'fine' and 'solid' but 'not transcendent, not even great.' The 3/5 star rating confirms a mixed verdict - acknowledging good performances and production values while finding the overall result disappointing given the hype and talent involved. | GPT-4o: The review acknowledges the show's solid elements and performances but ultimately finds it lacking in impact and memorability. The 3/5 star rating aligns with a mixed verdict. | Gemini: The review is mixed, stating the show is \"fine\" and \"solid\" but not \"transcendent\" or \"great.\" It praises performances but finds the overall production earthbound and not particularly memorable, resulting in a mixed assessment. | Kimi: The 3/5 star rating and lukewarm verdict ('fine,' 'solid,' 'good but not great') indicate a middle-ground assessment. While praising individual performances, the critic finds the production 'earthbound' and lacking the expected wonder, ultimately delivering a qualified neither-endorse-nor-discourage judgment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:11:27.823Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

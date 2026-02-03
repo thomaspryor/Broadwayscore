@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Grand Horizons is a comedy about an elderly couple seeking divorce that never quite finds its footing, despite strong performances from Jane Alexander and James Cromwell.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Grand Horizons is a comedy about an elderly couple seeking divorce that never quite finds its footing, despite strong performances from Jane Alexander and James Cromwell.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grand Horizons is a comedy about an elderly couple seeking divorce that never quite finds its footing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Clear mixed assessment - acknowledges strong lead performances but states the show 'never quite finds its footing,' indicating fundamental problems despite good acting. | GPT-4o: The review indicates that the show fails to find its footing, suggesting a lack of overall success despite strong performances. This leads to a negative verdict. | Gemini: The review acknowledges strong performances but states the comedy 'never quite finds its footing,' indicating a mixed or neutral assessment. | Kimi: The critic explicitly states the show 'never quite finds its footing,' indicating fundamental creative failure, even while acknowledging the quality of the lead performances. This qualifies as a non-recommendation. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:29:15.177Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

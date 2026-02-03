@@ -16,11 +16,16 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Sean Hayes gives a performance of such emotional range and technical skill that you forget he's not actually Oscar Levant, the neurotic, self-deprecating pianist and wit who was a fixture of mid-20th-century entertainment.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (33 words)",
   "playbillVerdictUrl": "https://www.nytimes.com/2023/04/24/theater/good-night-oscar-review-sean-hayes-with-demerol-and-cadenzas.html",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-03T16:25:40.910Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review that can be scored for recommendation; openai: The text is a single sentence praising Sean Hayes' performance, but it lacks a broader evaluation of the show itself.",
+  "promptVersion": "5.2.0"
 }
