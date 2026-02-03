@@ -13,7 +13,7 @@
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-Updating-LIVE-20150806",
   "urlSource": "show-score",
   "urlUpdatedAt": "2026-01-25T14:20:46.932Z",
-  "sourceMethod": "archive",
+  "sourceMethod": "brightdata",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -73,20 +73,44 @@
     "modelAgreement": "All 4 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/wsj--terry-teachout_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T05:00:31.718Z",
-  "fetchMethod": "archive",
+  "textFetchedAt": "2026-02-03T19:21:11.555Z",
+  "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (500): Request failed with status code 500"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 3,
   "archiveOrgTimestamp": "20251118040836",
   "archiveOrgUrl": "http://web.archive.org/web/20251118040836/https://www.wsj.com/articles/hamilton-review-the-revolution-moves-uptown-1438907400",
   "textIssues": [
-    "Word count too low: 143 (min: 300)"
+    "Word count too low: 139 (min: 300)"
   ],
   "sources": [
     "bww-roundup",
