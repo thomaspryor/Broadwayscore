@@ -18,39 +18,10 @@
   "showScoreExcerpt": "This new production of The Color Purple is a triumph, transforming Alice Walker's novel into a soaring celebration of sisterhood and resilience that feels both intimate and epic.",
   "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "partial",
-  "previousUrl": "https://ew.com/article/2015/12/11/color-purple-broadway-review/",
-  "urlDiscoveredAt": "2026-02-03T19:16:10.085Z",
-  "urlDiscoveryMethod": "google-serp",
-  "textWordCount": 951,
-  "archivePath": "data/archives/reviews/the-color-purple-2015/ew--melissa-rose-bernardo_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T19:16:10.090Z",
-  "fetchMethod": "playwright",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": true
-    }
-  ],
-  "fetchTier": 1,
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
-  "textStatus": "partial",
-  "sourceMethod": "playwright",
-  "wordCount": 951,
-  "tierReason": "Full review text"
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://www.ew.com/article/2015/12/10/color-purple-ew-stage-review",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }
