@@ -7972,18 +7972,6 @@
     "timestamp": "2026-02-02T20:25:12.864Z"
   },
   {
-    "reviewId": "illinoise-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "illinoise-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"members only\"",
-    "textLength": 8837,
-    "timestamp": "2026-02-02T20:25:16.377Z"
-  },
-  {
     "reviewId": "boop-2025/timeout--adam-feldman.json",
     "showId": "boop-2025",
     "outlet": "Time Out New York",
@@ -8138,5 +8126,17 @@
     "garbageReason": "Multiple shows mentioned (8): maybe happy ending, oh, mary!, wicked, hamilton, chicago...",
     "textLength": 17410,
     "timestamp": "2026-02-03T01:36:04.226Z"
+  },
+  {
+    "reviewId": "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "illinoise-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"members only\"",
+    "textLength": 17480,
+    "timestamp": "2026-02-03T01:42:15.851Z"
   }
 ]
