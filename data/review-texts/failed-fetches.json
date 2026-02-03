@@ -3844,18 +3844,6 @@
     "timestamp": "2026-02-01T13:54:19.084Z"
   },
   {
-    "reviewId": "stereophonic-2024/timeout--adam-feldman.json",
-    "showId": "stereophonic-2024",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/stereophonic-broadway-play-review-david-adjmi-will-butler",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 7292,
-    "timestamp": "2026-02-01T13:54:22.889Z"
-  },
-  {
     "reviewId": "mother-play-2024/wsj--charles.json",
     "showId": "mother-play-2024",
     "outlet": "The Wall Street Journal",
@@ -6580,30 +6568,6 @@
     "timestamp": "2026-02-02T17:58:30.829Z"
   },
   {
-    "reviewId": "stranger-things-2024/broadwaynews--brittani-samuel.json",
-    "showId": "stranger-things-2024",
-    "outlet": "Broadway News",
-    "critic": "Brittani Samuel",
-    "url": "https://www.broadwaynews.com/the-broadway-review-stranger-things-the-first-shadow-is-jaw-dropping-science-fiction-with-soul/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (27): maybe happy ending, the outsiders, hell's kitchen, oh, mary!, the great gatsby...",
-    "textLength": 35074,
-    "timestamp": "2026-02-02T17:59:25.035Z"
-  },
-  {
-    "reviewId": "stranger-things-2024/timeout--adam-feldman.json",
-    "showId": "stranger-things-2024",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 9207,
-    "timestamp": "2026-02-02T17:59:46.791Z"
-  },
-  {
     "reviewId": "suffs/chelsea-community-news--michael-musto.json",
     "showId": "suffs",
     "outlet": "Chelsea Community News",
@@ -6662,18 +6626,6 @@
     "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
     "textLength": 7067,
     "timestamp": "2026-02-02T18:02:11.208Z"
-  },
-  {
-    "reviewId": "suffs-2024/chelsea-community-news--michael-musto.json",
-    "showId": "suffs-2024",
-    "outlet": "Chelsea Community News",
-    "critic": "Michael Musto",
-    "url": "https://chelseacommunitynews.com/2024/04/18/review-suffs-is-an-affecting-look-at-womens-battle-for-rights/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"paywall\"",
-    "textLength": 5277,
-    "timestamp": "2026-02-02T18:02:27.900Z"
   },
   {
     "reviewId": "suffs-2024/timeout--adam-feldman.json",
@@ -8210,5 +8162,77 @@
     "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
     "textLength": 48624,
     "timestamp": "2026-02-03T02:33:19.007Z"
+  },
+  {
+    "reviewId": "stereophonic-2024/observer--jesse-green.json",
+    "showId": "stereophonic-2024",
+    "outlet": "Observer",
+    "critic": "Jesse Green",
+    "url": "https://observer.com/2024/04/stereophonic-broadway-review/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 582,
+    "timestamp": "2026-02-03T02:33:35.795Z"
+  },
+  {
+    "reviewId": "stereophonic-2024/timeout--adam-feldman.json",
+    "showId": "stereophonic-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/stereophonic-broadway-play-review-david-adjmi-will-butler",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6569,
+    "timestamp": "2026-02-03T02:33:57.745Z"
+  },
+  {
+    "reviewId": "stranger-things-2024/broadwaynews--brittani-samuel.json",
+    "showId": "stranger-things-2024",
+    "outlet": "Broadway News",
+    "critic": "Brittani Samuel",
+    "url": "https://www.broadwaynews.com/the-broadway-review-stranger-things-the-first-shadow-is-jaw-dropping-science-fiction-with-soul/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (27): maybe happy ending, the outsiders, hell's kitchen, oh, mary!, the great gatsby...",
+    "textLength": 35074,
+    "timestamp": "2026-02-03T02:35:54.518Z"
+  },
+  {
+    "reviewId": "stranger-things-2024/timeout--adam-feldman.json",
+    "showId": "stranger-things-2024",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 9435,
+    "timestamp": "2026-02-03T02:36:22.606Z"
+  },
+  {
+    "reviewId": "suffs-2024/chelsea-community-news--michael-musto.json",
+    "showId": "suffs-2024",
+    "outlet": "Chelsea Community News",
+    "critic": "Michael Musto",
+    "url": "https://chelseacommunitynews.com/2024/04/18/review-suffs-is-an-affecting-look-at-womens-battle-for-rights/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"subscriber\"",
+    "textLength": 5625,
+    "timestamp": "2026-02-03T02:36:58.150Z"
+  },
+  {
+    "reviewId": "suffs-2024/observer--rex-reed.json",
+    "showId": "suffs-2024",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2024/04/suffs-broadway-review-shaina-taub/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 582,
+    "timestamp": "2026-02-03T02:37:30.880Z"
   }
 ]
