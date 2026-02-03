@@ -1211,7 +1211,7 @@ function createReviewFile(showId, reviewData) {
     criticName: reviewData.criticName || 'Unknown',
     url: reviewData.url || null,
     publishDate: normalizePublishDate(reviewData.publishDate) || null,
-    fullText: cleanText(reviewData.excerpt) || null,
+    fullText: null,  // Never populate from excerpts — let collect-review-texts.js scrape real fullText
     isFullReview: false,
     dtliExcerpt: cleanText(reviewData.dtliExcerpt || reviewData.excerpt) || null,
     originalScore: reviewData.originalRating ? parseRating(reviewData.originalRating, normalizedOutletId) : null,
