@@ -5452,18 +5452,6 @@
     "timestamp": "2026-02-02T02:49:13.033Z"
   },
   {
-    "reviewId": "lempicka-2024/deadline--greg-evans.json",
-    "showId": "lempicka-2024",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
-    "textLength": 48624,
-    "timestamp": "2026-02-02T02:55:34.873Z"
-  },
-  {
     "reviewId": "lempicka-2024/new-york-sun--elysa-gardner.json",
     "showId": "lempicka-2024",
     "outlet": "The New York Sun",
@@ -5474,18 +5462,6 @@
     "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
     "textLength": 614,
     "timestamp": "2026-02-02T02:56:12.397Z"
-  },
-  {
-    "reviewId": "lempicka-2024/observer--rex-reed.json",
-    "showId": "lempicka-2024",
-    "outlet": "Observer",
-    "critic": "Rex Reed",
-    "url": "https://observer.com/2024/05/lempicka-broadway-review-eden-espinosa/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"turn off your ad block\"",
-    "textLength": 582,
-    "timestamp": "2026-02-02T02:56:39.405Z"
   },
   {
     "reviewId": "moulin-rouge-2019/observer--david-cote.json",
@@ -5618,30 +5594,6 @@
     "garbageReason": "Paywall/subscription prompt: \"paywall\"",
     "textLength": 6457,
     "timestamp": "2026-02-02T03:29:08.170Z"
-  },
-  {
-    "reviewId": "illinoise-2024/deadline--greg-evans.json",
-    "showId": "illinoise-2024",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
-    "textLength": 48624,
-    "timestamp": "2026-02-02T03:31:29.141Z"
-  },
-  {
-    "reviewId": "illinoise-2024/observer--rex-reed.json",
-    "showId": "illinoise-2024",
-    "outlet": "Observer",
-    "critic": "Rex Reed",
-    "url": "https://observer.com/2024/04/illinoise-broadway-review-sufjan-stevens/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"turn off your ad block\"",
-    "textLength": 582,
-    "timestamp": "2026-02-02T03:31:58.986Z"
   },
   {
     "reviewId": "illinoise-2024/timeout--adam-feldman.json",
@@ -8174,5 +8126,53 @@
     "garbageReason": "Multiple article boundaries detected (8)",
     "textLength": 7518,
     "timestamp": "2026-02-03T02:08:41.009Z"
+  },
+  {
+    "reviewId": "illinoise-2024/deadline--greg-evans.json",
+    "showId": "illinoise-2024",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
+    "textLength": 48624,
+    "timestamp": "2026-02-03T02:12:48.542Z"
+  },
+  {
+    "reviewId": "illinoise-2024/observer--rex-reed.json",
+    "showId": "illinoise-2024",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2024/04/illinoise-broadway-review-sufjan-stevens/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 582,
+    "timestamp": "2026-02-03T02:13:27.982Z"
+  },
+  {
+    "reviewId": "lempicka-2024/deadline--greg-evans.json",
+    "showId": "lempicka-2024",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (19): the outsiders, the great gatsby, wicked, hamilton, chicago...",
+    "textLength": 48624,
+    "timestamp": "2026-02-03T02:14:05.879Z"
+  },
+  {
+    "reviewId": "lempicka-2024/observer--rex-reed.json",
+    "showId": "lempicka-2024",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2024/05/lempicka-broadway-review-eden-espinosa/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 582,
+    "timestamp": "2026-02-03T02:15:03.972Z"
   }
 ]
