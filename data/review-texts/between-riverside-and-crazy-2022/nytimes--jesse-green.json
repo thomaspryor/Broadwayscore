@@ -74,21 +74,21 @@
     "modelAgreement": "3/4 models agree: Positive"
   },
   "previousUrl": "https://www.nytimes.com/2022/12/20/theater/between-riverside-and-crazy-review.html",
-  "urlDiscoveredAt": "2026-02-03T16:11:03.796Z",
+  "urlDiscoveredAt": "2026-02-03T16:33:03.047Z",
   "urlDiscoveryMethod": "google-serp",
   "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 1097,
   "archivePath": "data/archives/reviews/between-riverside-and-crazy-2022/nytimes--jesse-green_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T16:11:03.805Z",
+  "textFetchedAt": "2026-02-03T16:33:03.056Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
       "success": false,
-      "error": "connect ECONNREFUSED 207.241.237.3:80"
+      "error": "timeout of 60000ms exceeded"
     },
     {
       "tier": 0.5,
