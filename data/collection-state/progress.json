@@ -11,7 +11,13 @@
     "cabaret-2024/variety--naveen-kumar.json",
     "chicago-1996/nytimes--ben-brantley.json",
     "grey-house-2023/newyorker--dan-stahl.json",
-    "hamilton-2015/hollywood-reporter--david-rooney.json"
+    "hamilton-2015/hollywood-reporter--david-rooney.json",
+    "harry-potter-2021/variety--marilyn-stasio.json",
+    "here-lies-love-2023/hollywood-reporter--angie-han.json",
+    "illinoise-2024/hollywood-reporter--david-rooney.json",
+    "just-for-us-2023/nytimes--jesse-green.json",
+    "mary-jane-2024/hollywood-reporter--david-rooney.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json"
   ],
   "failed": [
     "patriots-2024/deadline--greg-evans.json",
@@ -22,7 +28,11 @@
     "patriots-2024/talkinbroadway--matthew-murray.json",
     "buena-vista-social-club-2025/nyt-theater--jonathan-mandell.json",
     "cabaret-2024/nyt-theater--jonathan-mandell.json",
-    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json"
+    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+    "hamilton-2015/variety--charles-isherwood.json",
+    "hells-kitchen-2024/hollywood-reporter--david-rooney.json",
+    "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "mj-2022/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -32,7 +42,9 @@
     ],
     "browserbase": [
       "data/review-texts/hamilton-2015/hollywood-reporter--david-rooney.json",
-      "hamilton-2015/hollywood-reporter--david-rooney.json"
+      "hamilton-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json"
     ],
     "scrapingbee": [
       "patriots-2024/guardian--michael-billington.json",
@@ -47,11 +59,16 @@
       "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
       "back-to-the-future-2023/hollywood-reporter--frank-scheck.json",
       "cabaret-2024/variety--naveen-kumar.json",
-      "chicago-1996/nytimes--ben-brantley.json"
+      "chicago-1996/nytimes--ben-brantley.json",
+      "harry-potter-2021/variety--marilyn-stasio.json",
+      "here-lies-love-2023/hollywood-reporter--angie-han.json",
+      "illinoise-2024/hollywood-reporter--david-rooney.json",
+      "just-for-us-2023/nytimes--jesse-green.json",
+      "mary-jane-2024/hollywood-reporter--david-rooney.json"
     ]
   },
   "startTime": "2026-02-03T00:59:54.740Z",
-  "lastProcessed": "hamilton-2015/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "mj-2022/hollywood-reporter--lovia-gyarkye.json",
   "log": [
     {
       "t": "2026-02-03T01:03:57.584Z",
@@ -103,6 +120,30 @@
       "event": "bb-session",
       "session": "8a5effac",
       "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton"
+    },
+    {
+      "t": "2026-02-03T01:39:46.230Z",
+      "event": "bb-session",
+      "session": "c11a708b",
+      "url": "https://variety.com/2015/legit/reviews/hamilton-review-1201575393/"
+    },
+    {
+      "t": "2026-02-03T01:40:25.318Z",
+      "event": "bb-session",
+      "session": "f2b69bc3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/hells-kitchen-broadway-review-1"
+    },
+    {
+      "t": "2026-02-03T01:42:24.592Z",
+      "event": "bb-session",
+      "session": "6cc07173",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-musical-broadway-review-1235"
+    },
+    {
+      "t": "2026-02-03T01:43:52.493Z",
+      "event": "bb-session",
+      "session": "52e6522e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
     }
   ]
 }
