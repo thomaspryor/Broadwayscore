@@ -2823,8 +2823,9 @@ function commitChanges(processed) {
       if ((state.tierBreakdown?.archive?.length || 0) > 0) tierInfo.push(`Ar:${state.tierBreakdown.archive.length}`);
       const tierStr = tierInfo.length ? ` [${tierInfo.join(',')}]` : '';
       const failStr = failCount > 0 ? ` (${failCount} failed)` : '';
+      const ctFilter = CONFIG.contentTierFilter ? ` (${CONFIG.contentTierFilter})` : '';
 
-      execSync(`git commit -m "chore: Checkpoint - collected ${processed} review texts${tierStr}${failStr}"`, {
+      execSync(`git commit -m "chore: Checkpoint - collected ${processed} review texts${ctFilter}${tierStr}${failStr}"`, {
         stdio: 'pipe'
       });
 
