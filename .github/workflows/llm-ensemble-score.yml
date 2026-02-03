@@ -139,6 +139,11 @@ jobs:
 
           echo "args=$ARGS" >> $GITHUB_OUTPUT
 
+      - name: Configure git for checkpoints
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Run ensemble scoring pipeline
         run: |
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts ${{ steps.build-args.outputs.args }}

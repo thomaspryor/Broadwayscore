@@ -48,6 +48,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { execSync } from 'child_process';
 import { ReviewScorer } from './scorer';
 import { EnsembleReviewScorer } from './ensemble-scorer';
 import { runCalibration, runEnsembleCalibration } from './calibration';
@@ -86,6 +87,72 @@ function compareSemver(a: string, b: string): number {
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../../data/review-texts');
 const RUNS_LOG_PATH = path.join(__dirname, '../../data/llm-scoring-runs.json');
 const GARBAGE_SKIPS_PATH = path.join(__dirname, '../../data/llm-scoring-garbage-skips.json');
+const PROJECT_ROOT = path.join(__dirname, '../..');
+
+// ========================================
+// GIT CHECKPOINT
+// ========================================
+
+/**
+ * Commit and push scored review files as a checkpoint.
+ * Only runs in CI (detects GITHUB_ACTIONS env var).
+ * Returns true if checkpoint succeeded.
+ */
+function gitCheckpoint(processedSoFar: number, totalFiles: number): boolean {
+  if (!process.env.GITHUB_ACTIONS) {
+    return false; // Skip checkpoints in local runs
+  }
+
+  try {
+    console.log(`\n📌 Checkpoint: committing ${processedSoFar}/${totalFiles} scored reviews...`);
+
+    execSync('git add data/review-texts/', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+
+    // Check if there are staged changes
+    try {
+      execSync('git diff --staged --quiet', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+      console.log('   No changes to commit, skipping checkpoint.');
+      return true;
+    } catch {
+      // Non-zero exit = there ARE staged changes, proceed
+    }
+
+    execSync(
+      `git commit -m "checkpoint: scored ${processedSoFar}/${totalFiles} reviews"`,
+      { cwd: PROJECT_ROOT, stdio: 'pipe' }
+    );
+
+    // Push with retry (other workflows may be pushing concurrently)
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        execSync('git fetch origin main && git rebase origin/main', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+        execSync('git push origin HEAD:main', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+        console.log(`   ✓ Checkpoint pushed (attempt ${attempt})`);
+        return true;
+      } catch (e: any) {
+        if (attempt < 3) {
+          console.log(`   Push attempt ${attempt} failed, retrying...`);
+          // On rebase conflict, abort and try merge
+          try { execSync('git rebase --abort', { cwd: PROJECT_ROOT, stdio: 'pipe' }); } catch {}
+          try {
+            execSync('git fetch origin main && git merge origin/main -X ours --no-edit', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+            execSync('git push origin HEAD:main', { cwd: PROJECT_ROOT, stdio: 'pipe' });
+            console.log(`   ✓ Checkpoint pushed via merge (attempt ${attempt})`);
+            return true;
+          } catch {
+            try { execSync('git merge --abort', { cwd: PROJECT_ROOT, stdio: 'pipe' }); } catch {}
+          }
+        }
+      }
+    }
+
+    console.log('   ⚠️ Checkpoint push failed after 3 attempts (will retry at next checkpoint)');
+    return false;
+  } catch (e: any) {
+    console.log(`   ⚠️ Checkpoint error: ${e.message}`);
+    return false;
+  }
+}
 
 // ========================================
 // CONTENT QUALITY TYPES
@@ -119,6 +186,7 @@ function parseArgs(): ScoringPipelineOptions & {
   needsRescore: boolean;
   outdated: boolean;
   ensembleCalibrateOnly: boolean;
+  checkpointInterval: number;
 } {
   const args = process.argv.slice(2);
 
@@ -130,6 +198,9 @@ function parseArgs(): ScoringPipelineOptions & {
 
   const rateLimitArg = args.find(a => a.startsWith('--rate-limit='));
   const rateLimitMs = rateLimitArg ? parseInt(rateLimitArg.split('=')[1]) : 100;
+
+  const checkpointArg = args.find(a => a.startsWith('--checkpoint='));
+  const checkpointInterval = checkpointArg ? parseInt(checkpointArg.split('=')[1]) : (process.env.GITHUB_ACTIONS ? 100 : 0);
 
   const modelArg = args.find(a => a.startsWith('--model='));
   const modelChoice = modelArg ? modelArg.split('=')[1] : 'sonnet';
@@ -156,7 +227,8 @@ function parseArgs(): ScoringPipelineOptions & {
     groundTruth: args.includes('--ground-truth'),
     needsRescore: args.includes('--needs-rescore'),
     outdated,
-    ensembleCalibrateOnly: args.includes('--ensemble-calibrate')
+    ensembleCalibrateOnly: args.includes('--ensemble-calibrate'),
+    checkpointInterval
   };
 }
 
@@ -475,6 +547,9 @@ async function main(): Promise<void> {
   console.log(`Unscored files: ${filesToProcess.length}`);
   console.log(`Valid files (text >= ${options.minTextLength} chars): ${validFiles.length}`);
   console.log(`Files to process: ${finalFiles.length}`);
+  if (options.checkpointInterval && options.checkpointInterval > 0 && !options.dryRun) {
+    console.log(`Checkpoint: every ${options.checkpointInterval} reviews (git commit+push)`);
+  }
   if (options.dryRun) console.log('DRY RUN - no files will be modified\n');
   console.log('');
 
@@ -678,6 +753,13 @@ async function main(): Promise<void> {
     // Rate limiting
     if (i < finalFiles.length - 1) {
       await new Promise(r => setTimeout(r, options.rateLimitMs));
+    }
+
+    // Checkpoint: commit and push progress every N processed reviews
+    if (options.checkpointInterval && options.checkpointInterval > 0 && !options.dryRun) {
+      if (processed > 0 && processed % options.checkpointInterval === 0) {
+        gitCheckpoint(processed, finalFiles.length);
+      }
     }
   }
 
