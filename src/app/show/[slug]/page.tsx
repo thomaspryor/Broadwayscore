@@ -738,22 +738,38 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           )}
         </div>
 
-        {/* Page Being Built banner — for newly added shows with no reviews yet */}
-        {show.status !== 'previews' && (!show.criticScore || show.criticScore.reviewCount === 0) && (
-          <div className="card p-4 sm:p-5 mb-6 border border-amber-500/20 bg-amber-500/5">
-            <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center">
-                <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-amber-300">Page Under Construction</p>
-                <p className="text-xs text-gray-400 mt-0.5">This show page is currently being built and will be complete in a couple of days. Reviews and scores are on the way.</p>
+        {/* Page Being Built / Historical Production banner — for shows with no reviews yet */}
+        {show.status !== 'previews' && (!show.criticScore || show.criticScore.reviewCount === 0) && (() => {
+          const bannerYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
+          const isHistoricalBanner = show.status === 'closed' && bannerYear !== null && bannerYear < 2024;
+          return (
+            <div className={`card p-4 sm:p-5 mb-6 border ${isHistoricalBanner ? 'border-blue-500/20 bg-blue-500/5' : 'border-amber-500/20 bg-amber-500/5'}`}>
+              <div className="flex items-start gap-3">
+                <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${isHistoricalBanner ? 'bg-blue-500/15' : 'bg-amber-500/15'}`}>
+                  {isHistoricalBanner ? (
+                    <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                  )}
+                </div>
+                <div>
+                  <p className={`text-sm font-semibold ${isHistoricalBanner ? 'text-blue-300' : 'text-amber-300'}`}>
+                    {isHistoricalBanner ? 'Historical Production' : 'Page Under Construction'}
+                  </p>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    {isHistoricalBanner
+                      ? 'Reviews for this production are being compiled from archived sources.'
+                      : 'This show page is currently being built and will be complete in a couple of days. Reviews and scores are on the way.'}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* Critic Reviews */}
         {show.criticScore && show.criticScore.reviews.length > 0 ? (
@@ -765,11 +781,18 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
             <ReviewsList reviews={show.criticScore.reviews} initialCount={5} />
           </div>
-        ) : show.status === 'previews' && (
+        ) : show.status === 'previews' ? (
           <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
             <h2 className="text-lg font-bold text-white mb-3">Critic Reviews</h2>
             <p className="text-gray-400 text-sm">
               Reviews coming after opening night: <span className="text-white font-medium">{formatDate(show.openingDate)}</span>
+            </p>
+          </div>
+        ) : (
+          <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
+            <h2 className="text-lg font-bold text-white mb-3">Critic Reviews</h2>
+            <p className="text-gray-400 text-sm">
+              Archived critic reviews for this production are being collected and will appear here as they&apos;re processed.
             </p>
           </div>
         )}
