@@ -3,10 +3,10 @@
   "outletId": "variety",
   "outlet": "Variety",
   "criticName": "Marilyn Stasio",
-  "url": "https://variety.com/2016/legit/reviews/falsettos-review-broadway-revival-1201918104/",
+  "url": "https://variety.com/2016/legit/reviews/falsettos-review-broadway-musical-1201902454/",
   "publishDate": "November 4, 2016",
-  "fullText": "This ebullient revival of William Finn and James Lapine's 'Falsettos' restores a beloved musical to Broadway with such irresistible energy and emotional authenticity that it feels like a brand-new show.",
-  "isFullReview": false,
+  "fullText": "William Finn and James Lapine were ahead of the curve when they wrote a trilogy of plays about a married man, his family, and his gay lover in the age of AIDS. “In Trousers” debuted in 1979, followed by “March of the Falsettos” (1981) and “Falsettoland” (1990). The latter two went on to play Broadway in 1992 under the umbrella title of \"Falsettos\" — and this surprisingly fresh revival has been directed by original director Lapine, who plainly understands the bittersweet humor and provisional joy of that period. March on.\n\nThe warm performances of a terrific cast soften the underlying sadness of Finn’s breakthrough musical about a nebbish named Marvin (an endearing performance from Christian Borle) who leaves his loving wife, Trina (Stephanie J. Block, dynamite), and young son (Anthony Rosenthal, blessedly unaffected) for a male lover with the improbable name of Whizzer (Andrew Rannells, irresistible to all sexes).\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'Industry' Season 4 Premiere Viewership Jumps 20% From Season 3 \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'It's Florida, Man' Renewed for Season 3 at HBO\n\nThe story is largely told through the easygoing score, a fusion of tuneful melodies with insightful lyrics. The first song in the show, “Four Jews in a Room Bitching,” declares the comic intentions of this disarming musical. The songs go on to set the tender tone, disguising Marvin’s monstrous selfishness as a childish man’s delight in finding true love. In “A Tight Knit Family,” he even fancies himself the head of an extended family consisting of faithful wife, respectful son, and devoted male lover. Yet when he later learns that his wife is marrying the family psychiatrist (Brandon Uranowitz), he feels abandoned.\n\nYou have to wonder how a jerk like Marvin can move his wife to the state of mind expressed in “I’m Breaking Down,” a cri de coeur that touches all the other hearts in the house in Block’s sensitive reading of this plaintive song. But keep in mind that this is the same Marvin who eventually redeems himself with the revealing “What More Can I Say?,” which may be Borle’s finest moment.\n\nBorle’s neurotic hero is well matched with Rannells’ Whizzer, a character who must be loved by all the other characters if this show is to work. Rannells is so charming, he’d be loved by the family dog, if the family had a dog. Which makes everyone bring out the hankies in Act II, when Whizzer makes his brave farewell to all the people who loved him: “You Gotta Die Sometime,” the lyric goes. Sure, but does it have to be right now?",
+  "isFullReview": true,
   "dtliExcerpt": "This ebullient revival of William Finn and James Lapine's 'Falsettos' restores a beloved musical to Broadway with such irresistible energy and emotional authenticity that it feels like a brand-new show.",
   "originalScore": null,
   "assignedScore": 92,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This ebullient revival of William Finn and James Lapine's 'Falsettos' restores a beloved musical to Broadway with such irresistible energy and emotional authenticity that it feels like a brand-new show.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (30 words)",
   "llmScore": {
     "score": 92,
@@ -71,5 +71,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Rave"
-  }
+  },
+  "previousUrl": "https://variety.com/2016/legit/reviews/falsettos-review-broadway-revival-1201918104/",
+  "urlDiscoveredAt": "2026-02-03T23:41:46.345Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 92,
+  "textWordCount": 426,
+  "archivePath": "data/archives/reviews/falsettos-2016/variety--marilyn-stasio_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:41:46.351Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 426,
+  "tierReason": "Full review text"
 }
