@@ -1,0 +1,99 @@
+name: Update Mezzanine Data
+
+on:
+  schedule:
+    # Weekly on Sundays at 1 PM UTC (8 AM EST), after Show Score at 12 PM
+    - cron: '0 13 * * 0'
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Single show ID to update (e.g., hamilton-2015)'
+        required: false
+        type: string
+      shows:
+        description: 'Comma-separated show IDs or "missing" for shows without Mezzanine data'
+        required: false
+        type: string
+      limit:
+        description: 'Max number of shows to process'
+        required: false
+        type: number
+        default: 0
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+  # Also trigger when new shows open
+  repository_dispatch:
+    types: [show-opened]
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-mezzanine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Mezzanine scraper
+        env:
+          MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
+          MEZZANINE_SESSION_TOKEN: ${{ secrets.MEZZANINE_SESSION_TOKEN }}
+        run: |
+          ARGS="--verbose"
+
+          if [ -n "${{ inputs.show }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+
+          if [ -n "${{ inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ inputs.shows }}"
+          fi
+
+          if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
+            ARGS="$ARGS --limit=${{ inputs.limit }}"
+          fi
+
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          node scripts/scrape-mezzanine-audience.js $ARGS
+
+      - name: Commit and push changes
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add data/audience-buzz.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "data: Update Mezzanine audience scores"
+
+          # Retry push with rebase (handles concurrent pushes)
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push successful"
+              exit 0
+            fi
+            echo "Push failed, attempt $i/5. Rebasing..."
+            sleep $((RANDOM % 20 + 10))
+            git checkout -- . && git clean -fd
+            git pull --rebase -X theirs origin main || git rebase --abort
+          done
+
+          echo "Failed to push after 5 attempts"
+          exit 1
