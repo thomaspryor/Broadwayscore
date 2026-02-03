@@ -3060,8 +3060,10 @@ function findReviewsToProcess() {
         const textLen = data.fullText ? data.fullText.length : 0;
         const isTruncated = data.textQuality === 'truncated' || data.textStatus === 'truncated'
           || data.contentTier === 'truncated' || data.contentTier === 'needs-rescrape';
+        // Re-process showNotMentioned reviews for URL discovery (even if they have long text)
+        const needsUrlDiscovery = data.showNotMentioned === true && !data._showNotMentionedDiscoveryAttempted;
         // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
-        if (!isTruncated && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
+        if (!isTruncated && !needsUrlDiscovery && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
           continue;
         }
 
@@ -3119,6 +3121,7 @@ function findReviewsToProcess() {
           tierNum,
           priority: tierNum,
           publishDate,
+          showNotMentioned: data.showNotMentioned || false,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -3305,6 +3308,30 @@ async function processReview(review) {
     console.log(`  ⚠ Could not create fresh page: ${e.message}`);
   }
 
+  // showNotMentioned URL recovery: discover correct URL before wasting bandwidth re-fetching the wrong one
+  if (review.showNotMentioned && review.filePath) {
+    console.log('  [showNotMentioned] Attempting URL discovery before fetch...');
+
+    // Mark as attempted to prevent infinite retries
+    try {
+      const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+      fileData._showNotMentionedDiscoveryAttempted = true;
+      fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+    } catch (e) {}
+
+    const discoveredUrl = await discoverCorrectUrl(review);
+    if (discoveredUrl && discoveredUrl !== review.url) {
+      console.log(`  [showNotMentioned] Discovered: ${review.url} → ${discoveredUrl}`);
+      review._previousUrl = review.url;
+      review.url = discoveredUrl;
+      review._urlDiscovered = true;
+    } else {
+      console.log('  [showNotMentioned] No alternative URL found, skipping fetch');
+      stats.totalFailed++;
+      return { success: false, error: 'show_not_mentioned_no_url' };
+    }
+  }
+
   try {
     const result = await fetchReviewText(review);
 
@@ -3401,6 +3428,21 @@ async function processReview(review) {
 
     // Update JSON (pass HTML for score extraction)
     updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '', contentVerification);
+
+    // Persist URL discovery metadata if URL was changed via showNotMentioned recovery
+    if (review._urlDiscovered && review.filePath) {
+      try {
+        const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        fileData.url = review.url;
+        fileData.previousUrl = review._previousUrl;
+        fileData.urlDiscoveredAt = new Date().toISOString();
+        fileData.urlDiscoveryMethod = 'show-not-mentioned-recovery';
+        fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+        console.log(`    → URL updated: ${review._previousUrl} → ${review.url}`);
+      } catch (e) {
+        console.log(`    ⚠ Could not persist URL discovery: ${e.message}`);
+      }
+    }
 
     // Track tier breakdown
     if (result.method && state.tierBreakdown[result.method]) {
