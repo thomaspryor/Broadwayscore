@@ -6568,18 +6568,6 @@
     "timestamp": "2026-02-02T18:00:52.388Z"
   },
   {
-    "reviewId": "wicked-2003/newyorker--.json",
-    "showId": "wicked-2003",
-    "outlet": "The New Yorker",
-    "critic": null,
-    "url": "http://www.newyorker.com/magazine/2003/11/10/bitches-and-witches",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 9742,
-    "timestamp": "2026-02-02T18:01:03.649Z"
-  },
-  {
     "reviewId": "suffs/timeout--adam-feldman.json",
     "showId": "suffs",
     "outlet": "Time Out New York",
@@ -7322,18 +7310,6 @@
     "garbageReason": "Paywall/subscription prompt: \"members only\"",
     "textLength": 17480,
     "timestamp": "2026-02-03T01:42:15.851Z"
-  },
-  {
-    "reviewId": "two-strangers-bway-2025/nytimes--laura-collins-hughes.json",
-    "showId": "two-strangers-bway-2025",
-    "outlet": "The New York Times",
-    "critic": "Laura Collins-Hughes",
-    "url": "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple article boundaries detected (3)",
-    "textLength": 5720,
-    "timestamp": "2026-02-03T01:53:52.058Z"
   },
   {
     "reviewId": "marjorie-prime-2025/wsj--charles-isherwood.json",
@@ -8294,5 +8270,77 @@
     "garbageReason": "Multiple shows mentioned (8): the great gatsby, hamilton, aladdin, hadestown, & juliet...",
     "textLength": 11416,
     "timestamp": "2026-02-03T04:46:29.469Z"
+  },
+  {
+    "reviewId": "the-lion-king-1997/vulture--john-simon.json",
+    "showId": "the-lion-king-1997",
+    "outlet": "Vulture",
+    "critic": "John Simon",
+    "url": "http://nymag.com/listings/theater/the_lion_king/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (5): wicked, hamilton, home, rain, well",
+    "textLength": 2103,
+    "timestamp": "2026-02-03T04:51:43.607Z"
+  },
+  {
+    "reviewId": "the-notebook-2024/nytimes--jesse-green.json",
+    "showId": "the-notebook-2024",
+    "outlet": "The New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2024/03/14/theater/the-notebook-review-broadway-musical.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, purpose, once, evita, rain...",
+    "textLength": 7418,
+    "timestamp": "2026-02-03T04:53:11.683Z"
+  },
+  {
+    "reviewId": "the-notebook-2024/nytimes--unknown.json",
+    "showId": "the-notebook-2024",
+    "outlet": "nytimes",
+    "critic": "Unknown",
+    "url": "https://www.nytimes.com/2024/03/14/theater/the-notebook-review-broadway-musical.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, purpose, once, evita, rain...",
+    "textLength": 7293,
+    "timestamp": "2026-02-03T04:54:09.896Z"
+  },
+  {
+    "reviewId": "two-strangers-bway-2025/nytimes--laura-collins-hughes.json",
+    "showId": "two-strangers-bway-2025",
+    "outlet": "The New York Times",
+    "critic": "Laura Collins-Hughes",
+    "url": "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 5720,
+    "timestamp": "2026-02-03T04:55:07.580Z"
+  },
+  {
+    "reviewId": "wicked-2003/newyorker--.json",
+    "showId": "wicked-2003",
+    "outlet": "The New Yorker",
+    "critic": null,
+    "url": "http://www.newyorker.com/magazine/2003/11/10/bitches-and-witches",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): the wiz, the rose tattoo, frozen, summer, the audience...",
+    "textLength": 9742,
+    "timestamp": "2026-02-03T04:55:10.597Z"
+  },
+  {
+    "reviewId": "wicked-2003/variety--charles-isherwood.json",
+    "showId": "wicked-2003",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "http://variety.com/2003/legit/reviews/wicked-7-1200538236/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): ragtime, giant, the wiz, sweeney todd, pippin...",
+    "textLength": 10038,
+    "timestamp": "2026-02-03T04:55:33.279Z"
   }
 ]
