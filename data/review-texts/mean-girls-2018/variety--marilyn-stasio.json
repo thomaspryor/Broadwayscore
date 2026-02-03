@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2018/legit/reviews/mean-girls-review-broadway-1202747963/",
   "publishDate": "April 9, 2018",
-  "fullText": "The musical adaptation of the 2004 movie is a crowd-pleaser that delivers exactly what fans expect, with Tina Fey's book staying faithful to the source material while adding some contemporary updates.",
-  "isFullReview": false,
+  "fullText": "The seventh and final season of “New Girl” debuts Tuesday night. While fans are already mourning the end of the popular Fox comedy series, star Zooey Deschanel said filming the end of the show was not a sad occasion.\n\n“It felt like we were ready for it to be the end, in a bittersweet way,” Deschanel told Variety. “But it wasn’t difficult. It was like finishing a marathon, like we did this really long run for seven years and we’ve played these characters a long time. It’s not like there was any unfinished business. It felt like the right time to be ending it in the best way. I’m sad not to see my friends that I’ve worked with every day for so long, but it was all really positive in the end.”\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Oscars Set Creative Team and Producers for 98th Academy Awards \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Oscars: 'Sinners,' 'One Battle After Another' and Warner Bros. Poised to Make History and Break Records\n\n“I really wanted to do another season just so that we could send the show off properly,” she continued. “I appreciated that opportunity.”\n\nThe seventh season picks up three years after the Season 6 finale. Jess and Nick are together and returning from a European book tour for Nick’s latest novel. Stay-at-home dad Schmidt and working mom Cece are raising their daughter, Ruth, and Winston and Aly are married, with a child on the way.\n\nThe series has had no shortage of memorable — and hilarious — moments. Deschanel was hard-pressed to pick just one favorite, however.\n\n“When we had Prince on, that was pretty amazing,” she said. “There was a really fun moment with Josh Gad making up a musical. When Justin Long was, like, tripping over couches and doing all his Justin Long stuff. The Nick and Jess kiss that was so unexpected and interesting. So many True American moments. All my Cece and Jess episodes were so fun. There are so many moments that I will cherish.”\n\nAnd given the recent trend of reboots and revivals of popular shows, what would Deschanel like to see happen if the cast reunited ten years from now?\n\n“I don’t know, because it really is so much about single people. In ten years, you would hope that people have sort of figured it out,” she joked.\n\n“New Girl” Season 7 kicks off on Fox Tuesday night at 9:30 p.m.",
+  "isFullReview": true,
   "dtliExcerpt": "The musical adaptation of the 2004 movie is a crowd-pleaser that delivers exactly what fans expect, with Tina Fey's book staying faithful to the source material while adding some contemporary updates.",
   "originalScore": null,
   "assignedScore": 75,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of the 2004 movie is a crowd-pleaser that delivers exactly what fans expect, with Tina Fey's book staying faithful to the source material while adding some contemporary updates.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
     "score": 75,
@@ -77,5 +77,53 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 75,
+  "textWordCount": 399,
+  "archivePath": "data/archives/reviews/mean-girls-2018/variety--marilyn-stasio_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T19:16:16.726Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wordCount": 399,
+  "tierReason": "Full review text"
 }
